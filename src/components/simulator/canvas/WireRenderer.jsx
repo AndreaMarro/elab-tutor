@@ -225,6 +225,9 @@ function buildRoutedPath(points, opts = {}) {
 
   const style = opts.style || 'smooth'; // 'smooth' | 'orthogonal'
   const enableSag = opts.enableSag !== false;
+  // sagDirection: +1 (right) or -1 (left) for nearly-vertical wires.
+  // Prevents battery +/- wires from overlapping by sagging in opposite directions.
+  const sagDirection = opts.sagDirection || 1;
 
   // ── Book/Fritzing style: hard polyline path ──
   if (style === 'orthogonal') {
@@ -259,12 +262,13 @@ function buildRoutedPath(points, opts = {}) {
     let sagY = sag; // Default: droop downward (gravity)
 
     if (absDx < absDy * 0.3) {
-      // Nearly vertical: lateral sag instead
-      sagX = sag * 0.5;
+      // Nearly vertical: lateral sag — direction controlled by sagDirection
+      // This prevents battery +/- wires from overlapping (positive sags right, negative sags left)
+      sagX = sag * 0.5 * sagDirection;
       sagY = 0;
     } else if (absDx < absDy) {
       // Steep diagonal: mixed sag
-      sagX = sag * 0.3;
+      sagX = sag * 0.3 * sagDirection;
       sagY = sag * 0.7;
     }
 
@@ -341,8 +345,10 @@ function buildRoutedPath(points, opts = {}) {
 /**
  * Compute routed wire path between two resolved pin positions
  * Routes through breadboard holes for realistic appearance
+ * @param {string} [fromRef] - source pin reference (e.g. "battery1:positive")
+ * @param {string} [toRef] - destination pin reference (e.g. "bb1:bus-top-plus-5")
  */
-function computeRoutedWire(fromPos, toPos, components, layout) {
+function computeRoutedWire(fromPos, toPos, components, layout, fromRef, toRef) {
   // BUG FIX: Find breadboard in layout — support both half and full breadboard types
   const bbComp = components.find(c => c.type === 'breadboard-half' || c.type === 'breadboard-full');
   const bbLayout = bbComp ? layout[bbComp.id] : null;
@@ -386,11 +392,14 @@ function computeRoutedWire(fromPos, toPos, components, layout) {
   }
 
   // Case 4: Off-board (battery) → breadboard pin
+  // Detect polarity to jog positive wires right, negative wires left (prevents overlap)
   if (toIsBBPin && !fromIsBBPin) {
-    return routeToBreadboardPin(fromPos, toPos, bbX, bbY);
+    const polarity = detectPolarity(fromRef, toRef);
+    return routeToBreadboardPin(fromPos, toPos, bbX, bbY, polarity);
   }
   if (fromIsBBPin && !toIsBBPin) {
-    const reversed = routeToBreadboardPin(toPos, fromPos, bbX, bbY);
+    const polarity = detectPolarity(fromRef, toRef);
+    const reversed = routeToBreadboardPin(toPos, fromPos, bbX, bbY, polarity);
     return reversed.reverse();
   }
 
@@ -439,8 +448,19 @@ function getEdgeLane(pinY, bbY) {
  *   Row pins (lane 2+): standard edge-channel L-shape
  * Plus goes RIGHT-first, Minus goes DOWN-first → paths diverge immediately, zero crossings.
  */
-function routeToBreadboardPin(offPos, bbPinPos, bbX, bbY) {
-  // Flex mode: ALL battery/power wires use direct 2-point path → natural Bézier catenary
+function routeToBreadboardPin(offPos, bbPinPos, bbX, bbY, polarity = 0) {
+  // When polarity is known (battery wires), create L-shaped 3-point path
+  // to separate positive (+right jog) from negative (-left jog) visually
+  if (polarity !== 0) {
+    const jogX = polarity > 0 ? 15 : -15; // 15px lateral offset
+    const midY = (offPos.y + bbPinPos.y) / 2;
+    return [
+      offPos,
+      { x: offPos.x + jogX, y: midY },
+      bbPinPos,
+    ];
+  }
+  // Flex mode: non-polarized wires use direct 2-point path → natural Bézier catenary
   return [offPos, bbPinPos];
 }
 
@@ -652,6 +672,26 @@ function applyComponentAvoidance(waypoints, components, layout) {
   }
 
   return deduplicatePoints(result);
+}
+
+/**
+ * Detect polarity from pin references for sag direction.
+ * Returns +1 for positive/VCC (sag right), -1 for negative/GND (sag left), 0 for neutral.
+ */
+function detectPolarity(fromRef, toRef) {
+  const refs = [fromRef, toRef];
+  for (const ref of refs) {
+    if (!ref) continue;
+    // Bus rails
+    if (ref.includes('bus-') && ref.includes('-plus')) return 1;
+    if (ref.includes('bus-') && ref.includes('-minus')) return -1;
+    // Component pins
+    const pinId = (ref.split(':')[1] || '').toLowerCase();
+    if (pinId.includes('positive') || pinId.includes('plus') || pinId === 'vcc'
+      || pinId === '5v' || pinId === '3v3' || pinId === 'vin') return 1;
+    if (pinId.includes('negative') || pinId.includes('minus') || pinId === 'gnd') return -1;
+  }
+  return 0;
 }
 
 /**
@@ -920,7 +960,7 @@ const WireRenderer = ({
       const hasCustomWaypoints = Array.isArray(conn.waypoints) && conn.waypoints.length > 0;
       const baseWaypoints = hasCustomWaypoints
         ? conn.waypoints
-        : computeRoutedWire(fromPos, toPos, components, layout);
+        : computeRoutedWire(fromPos, toPos, components, layout, conn.from, conn.to);
 
       // Collision avoidance is useful in flex mode, but in book mode we keep
       // deterministic geometry aligned with textbook/Fritzing routes.
@@ -937,9 +977,12 @@ const WireRenderer = ({
         : waypoints;
 
       const pathStyle = conn.pathStyle || 'smooth'; // Always smooth curves — rounder, more usable
+      // Detect polarity for sag direction: positive wires sag right, negative sag left
+      const polarity = detectPolarity(conn.from, conn.to);
       const path = buildRoutedPath(waypoints, {
         style: pathStyle,
         enableSag: true,
+        sagDirection: polarity !== 0 ? polarity : 1,
       });
 
       if (!path) return null;
