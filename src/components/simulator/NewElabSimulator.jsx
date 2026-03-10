@@ -2777,16 +2777,20 @@ const NewElabSimulator = ({
               ...next[childId],
               x: (next[childId]?.x ?? childPos.x) + dx,
               y: (next[childId]?.y ?? childPos.y) + dy,
+              // S114: Preserve parentId so children stay linked to parent
+              parentId: next[childId]?.parentId ?? childPos.parentId ?? componentId,
             };
           }
         }
         return next;
       });
     } else {
-      // Regular update: just move the single component (preserve rotation)
+      // Regular update: just move the single component (preserve rotation + parentId)
       setCustomLayout(prev => {
         const posUpdate = { x: newPos.x, y: newPos.y };
         if (newPos.rotation !== undefined) posUpdate.rotation = newPos.rotation;
+        // S114: Preserve parentId so customLayout doesn't lose parent-child relationship
+        if (newPos.parentId !== undefined) posUpdate.parentId = newPos.parentId;
         return { ...prev, [componentId]: { ...prev[componentId], ...posUpdate } };
       });
     }
@@ -2871,6 +2875,16 @@ const NewElabSimulator = ({
 
 
         if (!snapped) {
+          // S114: Remove parentId when component is dropped outside breadboard
+          setCustomLayout(prev => {
+            const entry = prev[componentId];
+            if (entry?.parentId) {
+              const next = { ...prev, [componentId]: { ...entry } };
+              delete next[componentId].parentId;
+              return next;
+            }
+            return prev;
+          });
           setCustomPinAssignments(prev => {
             const next = { ...prev };
             for (const key of Object.keys(next)) {

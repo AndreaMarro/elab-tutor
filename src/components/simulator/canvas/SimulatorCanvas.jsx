@@ -10,7 +10,7 @@ import { getComponent } from '../components/registry';
 import WireRenderer, { resolvePinPosition } from './WireRenderer';
 import PinOverlay from './PinOverlay';
 import Annotation from '../components/Annotation';
-import { getChildComponents } from '../utils/parentChild';
+
 
 // Import componenti (side-effect: si registrano nel registry)
 import '../components/Battery9V';
@@ -1263,28 +1263,8 @@ const SimulatorCanvas = ({
         const dx = newRenderX - existingPos.x;
         const dy = newRenderY - existingPos.y;
 
-        // Antigravity: propagate delta to child components
-        const isBreadboard = draggedComp && (
-          draggedComp.type === 'breadboard-half' || draggedComp.type === 'breadboard-full'
-        );
-        if (isBreadboard && experiment.layout && (dx !== 0 || dy !== 0)) {
-          const children = getChildComponents(dragCompId, experiment.layout);
-          // Apply the exact delta from the last render position
-          const prevRenderX = lastDragPosRef.current ? lastDragPosRef.current.x : existingPos.x;
-          const prevRenderY = lastDragPosRef.current ? lastDragPosRef.current.y : existingPos.y;
-          const actualDx = newRenderX - prevRenderX;
-          const actualDy = newRenderY - prevRenderY;
-
-          if (actualDx !== 0 || actualDy !== 0) {
-            for (const childId of children) {
-              if (selectedComponents.has(childId) && selectedComponents.size > 1) continue;
-              const childPos = experiment.layout[childId];
-              if (childPos) {
-                onLayoutChange(childId, { ...childPos, x: childPos.x + actualDx, y: childPos.y + actualDy }, false);
-              }
-            }
-          }
-        }
+        // S114: Child cascade is handled by handleLayoutChange (geometric detection).
+        // No duplicate parentId-based cascade here — prevents double-movement.
 
         lastDragPosRef.current = { ...existingPos, x: newRenderX, y: newRenderY };
         if (snappedBbId) {
@@ -1484,33 +1464,12 @@ const SimulatorCanvas = ({
           setDropError(true);
           setTimeout(() => setDropError(false), 800);
         } else {
+          // S114: handleLayoutChange cascades children for containers automatically
           onLayoutChange(pending.componentId, finalPos, true);
-          // Antigravity: commit child positions when breadboard drag ends
-          const dragComp = experiment.components?.find(c => c.id === pending.componentId);
-          const isBB = dragComp && (
-            dragComp.type === 'breadboard-half' || dragComp.type === 'breadboard-full'
-          );
-          if (isBB && experiment.layout) {
-            const children = getChildComponents(pending.componentId, experiment.layout);
-            for (const childId of children) {
-              const childPos = experiment.layout[childId];
-              if (childPos) onLayoutChange(childId, childPos, true);
-            }
-          }
         }
       } else if (finalPos) {
+        // S114: handleLayoutChange cascades children for containers automatically
         onLayoutChange(pending.componentId, finalPos, true);
-        const dragComp = experiment.components?.find(c => c.id === pending.componentId);
-        const isBB = dragComp && (
-          dragComp.type === 'breadboard-half' || dragComp.type === 'breadboard-full'
-        );
-        if (isBB && experiment.layout) {
-          const children = getChildComponents(pending.componentId, experiment.layout);
-          for (const childId of children) {
-            const childPos = experiment.layout[childId];
-            if (childPos) onLayoutChange(childId, childPos, true);
-          }
-        }
       }
     }
 
