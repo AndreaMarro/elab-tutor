@@ -1,0 +1,11 @@
+# Large files not needed for frontend deploy
+models/
+datasets/
+notebooks/
+nanobot/
+docs/plans/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth

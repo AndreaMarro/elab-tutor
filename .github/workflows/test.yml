@@ -1,0 +1,194 @@
+# ============================================
+# ELAB Tutor - GitHub Actions CI/CD
+# Test, Build e Deploy
+# © Andrea Marro — 15/02/2026
+# ============================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # ============================================
+  # JOB: Test
+  # ============================================
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+
+  # ============================================
+  # JOB: Build
+  # ============================================
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+        env:
+          VITE_N8N_AUTH_URL: ${{ secrets.VITE_N8N_AUTH_URL }}
+          VITE_N8N_GDPR_URL: ${{ secrets.VITE_N8N_GDPR_URL }}
+          VITE_N8N_LICENSE_URL: ${{ secrets.VITE_N8N_LICENSE_URL }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+  # ============================================
+  # JOB: Security Audit
+  # ============================================
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  # ============================================
+  # JOB: Deploy (solo su main)
+  # ============================================
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://elab-builder.vercel.app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for production
+        run: npm run build
+        env:
+          VITE_N8N_AUTH_URL: ${{ secrets.VITE_N8N_AUTH_URL }}
+          VITE_N8N_GDPR_URL: ${{ secrets.VITE_N8N_GDPR_URL }}
+          VITE_N8N_LICENSE_URL: ${{ secrets.VITE_N8N_LICENSE_URL }}
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+  # ============================================
+  # JOB: Comment PR with coverage
+  # ============================================
+  coverage-comment:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const coverage = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8'));
+            
+            const message = `
+            ## 📊 Test Coverage Report
+            
+            | Metric | Coverage | Threshold | Status |
+            |--------|----------|-----------|--------|
+            | Statements | ${coverage.total.statements.pct}% | 60% | ${coverage.total.statements.pct >= 60 ? '✅' : '❌'} |
+            | Branches | ${coverage.total.branches.pct}% | 60% | ${coverage.total.branches.pct >= 60 ? '✅' : '❌'} |
+            | Functions | ${coverage.total.functions.pct}% | 60% | ${coverage.total.functions.pct >= 60 ? '✅' : '❌'} |
+            | Lines | ${coverage.total.lines.pct}% | 60% | ${coverage.total.lines.pct >= 60 ? '✅' : '❌'} |
+            
+            ${coverage.total.statements.pct < 60 || coverage.total.branches.pct < 60 || coverage.total.functions.pct < 60 || coverage.total.lines.pct < 60 
+              ? '⚠️ **Attenzione:** La coverage è sotto la soglia minima del 60%' 
+              : '✅ **Ottimo!** La coverage supera la soglia minima'}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });

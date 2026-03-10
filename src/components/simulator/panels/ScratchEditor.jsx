@@ -1,0 +1,424 @@
+import React, { useEffect, useRef, useCallback } from 'react';
+import * as Blockly from 'blockly';
+import { arduinoGenerator, generateArduinoCode } from './scratchGenerator';
+import './scratchBlocks';
+
+// ─── ELAB Custom Theme ───────────────────────────────────────
+// Palette: Navy #1E4D8C, Lime #7CB342, Bg #1E2530, Grid #2a3040
+const ELAB_THEME = Blockly.Theme.defineTheme('elab', {
+    name: 'elab',
+    base: Blockly.Themes.Classic,
+    blockStyles: {
+        logic_blocks:    { colourPrimary: '#4A7FB5', colourSecondary: '#3A6A9A', colourTertiary: '#2A5580' },
+        loop_blocks:     { colourPrimary: '#7CB342', colourSecondary: '#6A9A38', colourTertiary: '#58812E' },
+        math_blocks:     { colourPrimary: '#5C86C1', colourSecondary: '#4A72A8', colourTertiary: '#3A5F90' },
+        text_blocks:     { colourPrimary: '#5BA5A5', colourSecondary: '#4A8E8E', colourTertiary: '#3A7878' },
+        colour_blocks:   { colourPrimary: '#CF63CF', colourSecondary: '#B84DB8', colourTertiary: '#A040A0' },
+        variable_blocks: { colourPrimary: '#E57373', colourSecondary: '#CC5C5C', colourTertiary: '#B34545' },
+        list_blocks:     { colourPrimary: '#8C6BC1', colourSecondary: '#7558A8', colourTertiary: '#5E4490' },
+        // Arduino custom categories
+        arduino_io:      { colourPrimary: '#00979C', colourSecondary: '#007A80', colourTertiary: '#005E62' },
+        arduino_sound:   { colourPrimary: '#9B59B6', colourSecondary: '#8548A0', colourTertiary: '#6F388A' },
+        arduino_servo:   { colourPrimary: '#27AE60', colourSecondary: '#1E9050', colourTertiary: '#167240' },
+        arduino_time:    { colourPrimary: '#E67E22', colourSecondary: '#CC6A18', colourTertiary: '#B25710' },
+        arduino_serial:  { colourPrimary: '#34495E', colourSecondary: '#2C3E50', colourTertiary: '#243342' },
+    },
+    categoryStyles: {
+        logic_category:    { colour: '#4A7FB5' },
+        loop_category:     { colour: '#7CB342' },
+        math_category:     { colour: '#5C86C1' },
+        text_category:     { colour: '#5BA5A5' },
+        variable_category: { colour: '#E57373' },
+        arduino_io_cat:    { colour: '#00979C' },
+        arduino_sound_cat: { colour: '#9B59B6' },
+        arduino_servo_cat: { colour: '#27AE60' },
+        arduino_time_cat:  { colour: '#E67E22' },
+        arduino_serial_cat:{ colour: '#34495E' },
+    },
+    componentStyles: {
+        workspaceBackgroundColour: '#1E2530',
+        toolboxBackgroundColour: '#161B22',
+        toolboxForegroundColour: '#C9D1D9',
+        flyoutBackgroundColour: '#21262D',
+        flyoutForegroundColour: '#C9D1D9',
+        flyoutOpacity: 0.95,
+        scrollbarColour: '#3A4050',
+        scrollbarOpacity: 0.6,
+        insertionMarkerColour: '#7CB342',
+        insertionMarkerOpacity: 0.4,
+        cursorColour: '#7CB342',
+    },
+    fontStyle: {
+        family: "'Open Sans', 'Helvetica Neue', sans-serif",
+        weight: '500',
+        size: 11,
+    },
+    startHats: false,
+});
+
+// ─── Toolbox XML (ELAB palette colours) ──────────────────────
+const TOOLBOX_XML = `
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <category name="⚡ Logica" colour="#4A7FB5" categorystyle="logic_category">
+    <block type="controls_if"></block>
+    <block type="logic_compare"></block>
+    <block type="logic_operation"></block>
+    <block type="logic_negate"></block>
+    <block type="logic_boolean"></block>
+  </category>
+  <category name="🔁 Cicli" colour="#7CB342" categorystyle="loop_category">
+    <block type="controls_repeat_ext">
+      <value name="TIMES"><shadow type="math_number"><field name="NUM">10</field></shadow></value>
+    </block>
+    <block type="controls_whileUntil"></block>
+    <block type="controls_for">
+      <value name="FROM"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+      <value name="TO"><shadow type="math_number"><field name="NUM">10</field></shadow></value>
+      <value name="BY"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+    </block>
+  </category>
+  <category name="🔢 Matematica" colour="#5C86C1" categorystyle="math_category">
+    <block type="math_number"><field name="NUM">0</field></block>
+    <block type="math_arithmetic">
+      <value name="A"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+      <value name="B"><shadow type="math_number"><field name="NUM">1</field></shadow></value>
+    </block>
+    <block type="arduino_map">
+      <value name="FROM_LOW"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+      <value name="FROM_HIGH"><shadow type="math_number"><field name="NUM">1023</field></shadow></value>
+      <value name="TO_LOW"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+      <value name="TO_HIGH"><shadow type="math_number"><field name="NUM">255</field></shadow></value>
+    </block>
+    <block type="arduino_random">
+      <value name="MIN"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+      <value name="MAX"><shadow type="math_number"><field name="NUM">3</field></shadow></value>
+    </block>
+  </category>
+  <category name="📦 Variabili" colour="#E57373" categorystyle="variable_category">
+    <block type="arduino_variable_set">
+      <value name="VALUE"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
+    </block>
+    <block type="arduino_variable_get"></block>
+  </category>
+  <category name="📝 Testo" colour="#5BA5A5" categorystyle="text_category">
+    <block type="text"></block>
+    <block type="text_join"></block>
+  </category>
+  <sep gap="16"></sep>
+  <category name="📡 Input / Output" colour="#00979C" categorystyle="arduino_io_cat">
+    <block type="arduino_pin_mode"></block>
+    <block type="arduino_digital_write"></block>
+    <block type="arduino_digital_read"></block>
+    <block type="arduino_analog_write"></block>
+    <block type="arduino_analog_read"></block>
+  </category>
+  <category name="🔊 Suono" colour="#9B59B6" categorystyle="arduino_sound_cat">
+    <block type="arduino_tone">
+      <value name="FREQ"><shadow type="math_number"><field name="NUM">440</field></shadow></value>
+    </block>
+    <block type="arduino_no_tone"></block>
+  </category>
+  <category name="🎯 Servo" colour="#27AE60" categorystyle="arduino_servo_cat">
+    <block type="arduino_servo_attach"></block>
+    <block type="arduino_servo_write">
+      <value name="ANGLE"><shadow type="math_number"><field name="NUM">90</field></shadow></value>
+    </block>
+    <block type="arduino_servo_read"></block>
+  </category>
+  <category name="⏱ Tempo" colour="#E67E22" categorystyle="arduino_time_cat">
+    <block type="arduino_delay">
+      <value name="DELAY_TIME"><shadow type="math_number"><field name="NUM">1000</field></shadow></value>
+    </block>
+    <block type="arduino_millis"></block>
+  </category>
+  <category name="💬 Seriale" colour="#34495E" categorystyle="arduino_serial_cat">
+    <block type="arduino_serial_begin"></block>
+    <block type="arduino_serial_print"></block>
+  </category>
+</xml>`;
+
+// ─── CSS overrides for ELAB dark theme + iPad touch ──────────
+const ELAB_BLOCKLY_CSS = `
+/* Toolbox — iPad touch-friendly (≥44px targets) */
+.blocklyToolboxDiv {
+  background: var(--color-blockly-toolbox, #161B22) !important;
+  border-right: 1px solid var(--color-blockly-grid, #2a3040) !important;
+  padding: 4px 0 !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+.blocklyToolboxCategory {
+  padding: 10px 12px !important;
+  margin: 2px 4px !important;
+  border-radius: 8px !important;
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: background 0.15s ease !important;
+}
+.blocklyToolboxCategory:hover {
+  background: var(--color-accent-subtle, rgba(124, 179, 66, 0.12)) !important;
+}
+.blocklyToolboxCategory[aria-selected="true"],
+.blocklyToolboxCategory.blocklyTreeSelected {
+  background: var(--color-code-selection, rgba(124, 179, 66, 0.2)) !important;
+}
+.blocklyToolboxCategoryLabel {
+  font-family: var(--font-sans, 'Open Sans', sans-serif) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--color-blockly-text, #C9D1D9) !important;
+  letter-spacing: 0.02em !important;
+}
+.blocklyToolboxCategoryIcon {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+}
+
+/* Flyout */
+.blocklyFlyoutBackground {
+  fill: var(--color-blockly-flyout, #21262D) !important;
+  fill-opacity: 0.97 !important;
+}
+
+/* Workspace — touch-action for iPad drag */
+.blocklyMainBackground {
+  fill: var(--color-blockly-bg, #1E2530) !important;
+}
+.blocklySvg {
+  touch-action: none !important;
+}
+.blocklyDraggable {
+  touch-action: none !important;
+}
+
+/* Block text */
+.blocklyText {
+  font-family: var(--font-sans, 'Open Sans', sans-serif) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  fill: #fff !important;
+}
+.blocklyEditableText > .blocklyText {
+  fill: #fff !important;
+}
+.blocklyEditableText > rect {
+  fill: rgba(255,255,255,0.15) !important;
+  rx: 4 !important;
+  ry: 4 !important;
+}
+
+/* Field inputs */
+.blocklyHtmlInput {
+  font-family: var(--font-mono, 'Fira Code', monospace) !important;
+  font-size: 14px !important;
+  background: #0D1117 !important;
+  color: var(--color-blockly-text, #C9D1D9) !important;
+  border: 1px solid var(--color-accent, #7CB342) !important;
+  border-radius: 4px !important;
+  padding: 4px 6px !important;
+  min-height: 32px !important;
+}
+
+/* Dropdown arrow */
+.blocklyDropdownRect {
+  fill: rgba(255,255,255,0.12) !important;
+  rx: 4 !important;
+  ry: 4 !important;
+}
+
+/* Scrollbar — wider for touch */
+.blocklyScrollbarHandle {
+  fill: var(--color-blockly-scrollbar, #3A4050) !important;
+  rx: 4 !important;
+  ry: 4 !important;
+}
+.blocklyScrollbarBackground {
+  fill: transparent !important;
+}
+
+/* Trashcan */
+.blocklyTrash image {
+  opacity: 0.6 !important;
+}
+.blocklyTrash image:hover {
+  opacity: 0.9 !important;
+}
+
+/* Zoom controls */
+.blocklyZoom > image {
+  opacity: 0.6 !important;
+}
+.blocklyZoom > image:hover {
+  opacity: 0.9 !important;
+}
+
+/* Connection highlight — wider for touch precision */
+.blocklyHighlightedConnectionPath {
+  stroke: var(--color-accent, #7CB342) !important;
+  stroke-width: 4px !important;
+}
+
+/* Selected block glow */
+.blocklySelected > .blocklyPath {
+  stroke: var(--color-accent, #7CB342) !important;
+  stroke-width: 3px !important;
+}
+
+/* Separator in toolbox */
+.blocklyTreeSeparator {
+  border-bottom: 1px solid var(--color-blockly-grid, #2a3040) !important;
+  margin: 6px 8px !important;
+}
+
+/* Flyout blocks — bigger touch targets */
+.blocklyFlyout .blocklyDraggable {
+  cursor: grab !important;
+}
+`;
+
+const ScratchEditor = ({ onChange, initialCode }) => {
+    const blocklyDiv = useRef(null);
+    const workspaceRef = useRef(null);
+    const onChangeRef = useRef(onChange);
+    const isMountedRef = useRef(false);
+    useEffect(() => { onChangeRef.current = onChange; }, [onChange]);
+
+    // Inject ELAB CSS overrides once
+    useEffect(() => {
+        const id = 'elab-blockly-theme-css';
+        if (!document.getElementById(id)) {
+            const style = document.createElement('style');
+            style.id = id;
+            style.textContent = ELAB_BLOCKLY_CSS;
+            document.head.appendChild(style);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!blocklyDiv.current) return;
+
+        workspaceRef.current = Blockly.inject(blocklyDiv.current, {
+            toolbox: TOOLBOX_XML,
+            theme: ELAB_THEME,
+            renderer: 'zelos', // Rounded blocks — cleaner, more modern look
+            grid: {
+                spacing: 24,
+                length: 2,
+                colour: '#2a3040',
+                snap: true,
+            },
+            zoom: {
+                controls: true,
+                wheel: true,
+                pinch: true,
+                startScale: 1.0,
+                maxScale: 2.5,
+                minScale: 0.3,
+                scaleSpeed: 1.15,
+            },
+            trashcan: true,
+            sounds: false,
+            move: {
+                scrollbars: { horizontal: true, vertical: true },
+                drag: true,
+                wheel: true,
+            },
+        });
+
+        const workspace = workspaceRef.current;
+
+        // Load initial code if exists as XML
+        if (initialCode && initialCode.startsWith('<xml')) {
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(initialCode, 'text/xml');
+                Blockly.Xml.domToWorkspace(xmlDoc.documentElement, workspace);
+            } catch (e) {
+                console.error('[ScratchEditor] Invalid XML for Blockly', e);
+            }
+        } else {
+            const xml = `
+            <xml xmlns="https://developers.google.com/blockly/xml">
+              <block type="arduino_base" x="40" y="30" deletable="false"></block>
+            </xml>`;
+            Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(xml), workspace);
+        }
+
+        // S83: Wrapped in try-catch to prevent Blockly crash on block move/disconnect
+        const onChangeHandler = (event) => {
+            if (event?.type === Blockly.Events?.UI || event?.isUiEvent) return;
+            try {
+                const xmlDom = Blockly.Xml.workspaceToDom(workspace);
+                const xmlText = Blockly.Xml.domToText(xmlDom);
+                const code = generateArduinoCode(workspace);
+                onChangeRef.current?.(xmlText, code);
+            } catch (err) {
+                console.warn('[ScratchEditor] Code generation error:', err?.message);
+                // Still save workspace XML even if code gen fails
+                try {
+                    const xmlDom = Blockly.Xml.workspaceToDom(workspace);
+                    const xmlText = Blockly.Xml.domToText(xmlDom);
+                    onChangeRef.current?.(xmlText, '// Errore generazione codice\n');
+                } catch (_) { /* ignore */ }
+            }
+        };
+
+        workspace.addChangeListener(onChangeHandler);
+
+        // S83: ResizeObserver — recalculate Blockly layout when container resizes
+        let resizeObserver;
+        if (blocklyDiv.current) {
+            resizeObserver = new ResizeObserver(() => {
+                try { Blockly.svgResize(workspace); } catch (_) { /* ignore */ }
+            });
+            resizeObserver.observe(blocklyDiv.current);
+        }
+
+        return () => {
+            resizeObserver?.disconnect();
+            if (workspace) {
+                workspace.removeChangeListener(onChangeHandler);
+                workspace.dispose();
+            }
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Reload workspace when initialCode changes AFTER mount (e.g., Passo Passo step change)
+    useEffect(() => {
+        if (!isMountedRef.current) {
+            isMountedRef.current = true;
+            return;
+        }
+        if (!workspaceRef.current || !initialCode) return;
+        const workspace = workspaceRef.current;
+        workspace.clear();
+        if (initialCode.startsWith('<xml')) {
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(initialCode, 'text/xml');
+                Blockly.Xml.domToWorkspace(xmlDoc.documentElement, workspace);
+            } catch (e) {
+                console.error('[ScratchEditor] Invalid XML reload', e);
+            }
+        } else {
+            const xml = `<xml xmlns="https://developers.google.com/blockly/xml">
+              <block type="arduino_base" x="40" y="30" deletable="false"></block>
+            </xml>`;
+            Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(xml), workspace);
+        }
+    }, [initialCode]);
+
+    return (
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <div
+                ref={blocklyDiv}
+                style={{ flex: 1, width: '100%', minHeight: '200px' }}
+                className="blockly-container"
+            />
+        </div>
+    );
+};
+
+export default ScratchEditor;

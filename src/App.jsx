@@ -1,0 +1,417 @@
+// ============================================
+// ELAB TUTOR V4 - Assistente AI Premium
+// Piattaforma educativa per elettronica
+// © Andrea Marro — 08/02/2026
+// Tutti i diritti riservati
+// ============================================
+
+import React, { useState, useCallback, useEffect, lazy, Suspense } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import useIsMobile from './hooks/useIsMobile';
+// Watermark rimosso su richiesta utente
+import RequireAuth from './components/auth/RequireAuth';
+import RequireLicense from './components/auth/RequireLicense';
+import ConsentBanner from './components/common/ConsentBanner';
+import PrivacyPolicy from './components/common/PrivacyPolicy';
+import ErrorBoundary from './components/common/ErrorBoundary';
+// Lazy-loaded pages — caricate solo quando servono
+const ElabTutorV4 = lazy(() => import('./components/tutor/ElabTutorV4'));
+const AdminPage = lazy(() => import('./components/admin/AdminPage'));
+const StudentDashboard = lazy(() => import('./components/student/StudentDashboard'));
+const TeacherDashboard = lazy(() => import('./components/teacher/TeacherDashboard'));
+const LoginPage = lazy(() => import('./components/auth/LoginPage'));
+const RegisterPage = lazy(() => import('./components/auth/RegisterPage'));
+const DataDeletion = lazy(() => import('./components/auth/DataDeletion'));
+const VetrinaSimulatore = lazy(() => import('./components/VetrinaSimulatore'));
+const ShowcasePage = lazy(() => import('./components/ShowcasePage'));
+const Navbar = lazy(() => import('./components/social/Navbar'));
+
+function LoadingFallback() {
+    return (
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            background: '#F0F4F8',
+            fontFamily: "'Open Sans', sans-serif",
+        }}>
+            <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '24px', marginBottom: '12px', color: '#1E4D8C', fontWeight: '800', fontFamily: "'Open Sans', sans-serif" }}>ELAB</div>
+                <div style={{ color: '#1E4D8C', fontSize: '15px', fontWeight: '500' }}>
+                    Caricamento...
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Hash-based routing: maps hash fragments to page names (P0-6)
+const VALID_HASHES = ['tutor', 'admin', 'teacher', 'vetrina', 'login', 'register', 'dashboard', 'showcase'];
+
+function getPageFromHash() {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    return VALID_HASHES.includes(hash) ? hash : null;
+}
+
+function SkipToContent() {
+    return (
+        <a href="#main-content" className="skip-to-content"
+           onClick={(e) => {
+               e.preventDefault();
+               const target = document.getElementById('main-content');
+               if (target) { target.focus(); target.scrollIntoView(); }
+           }}>
+            Vai al simulatore
+        </a>
+    );
+}
+
+function AppRouter() {
+    const isPrivacyPage = typeof window !== 'undefined' && window.location.pathname === '/privacy';
+    const isDataDeletionPage = typeof window !== 'undefined' && window.location.pathname === '/data-deletion';
+    const initialPage = getPageFromHash() || 'showcase';
+    const [currentPage, setCurrentPage] = useState(initialPage);
+    const { user, isAdmin, isDocente } = useAuth();
+    const isMobile = useIsMobile();
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const navigate = useCallback((page) => {
+        setCurrentPage(page);
+        setMenuOpen(false);
+        window.scrollTo(0, 0);
+        // Update hash to reflect current page (P0-6)
+        if (VALID_HASHES.includes(page)) {
+            window.history.replaceState(null, '', '#' + page);
+        }
+    }, []);
+
+    // Sync hash → page on hashchange (P0-6)
+    useEffect(() => {
+        function onHashChange() {
+            const page = getPageFromHash();
+            if (page && page !== currentPage) {
+                setCurrentPage(page);
+                window.scrollTo(0, 0);
+            }
+        }
+        window.addEventListener('hashchange', onHashChange);
+        return () => window.removeEventListener('hashchange', onHashChange);
+    }, [currentPage]);
+
+    // /privacy route — full-page privacy policy (no auth, no navbar)
+    if (isPrivacyPage) {
+        return <PrivacyPolicy />;
+    }
+
+    // /data-deletion route — GDPR Art. 17 data deletion (no navbar)
+    if (isDataDeletionPage) {
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <DataDeletion
+                    user={user}
+                    onDataDeleted={() => { window.location.href = '/'; }}
+                    onCancel={() => { window.location.href = '/'; }}
+                />
+            </Suspense>
+        );
+    }
+
+    // Showcase pubblica (senza login — landing page engagement)
+    if (currentPage === 'showcase') {
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <ShowcasePage onNavigate={navigate} />
+            </Suspense>
+        );
+    }
+
+    // Vetrina simulatore (utenti autenticati senza licenza)
+    if (currentPage === 'vetrina') {
+        return (
+            <RequireAuth onNavigate={navigate}>
+                <Suspense fallback={<LoadingFallback />}>
+                    <VetrinaSimulatore onNavigate={navigate} />
+                </Suspense>
+            </RequireAuth>
+        );
+    }
+
+    // Pagine full-screen senza navbar (tutor con auth + licenza)
+    if (currentPage === 'tutor') {
+        return (
+            <div>
+                <SkipToContent />
+                {/* Top bar navigazione */}
+                <nav style={topBarStyles.bar} aria-label="Navigazione principale">
+                    <span style={topBarStyles.brand} onClick={() => navigate('tutor')}>ELAB Tutor</span>
+                    {isMobile ? (
+                        <>
+                            <button onClick={() => setMenuOpen(!menuOpen)} style={topBarStyles.hamburger}
+                                aria-expanded={menuOpen} aria-label={menuOpen ? 'Chiudi menu' : 'Apri menu'}>
+                                {menuOpen ? '✕' : '☰'}
+                            </button>
+                            {menuOpen && (
+                                <div style={topBarStyles.mobileMenu}>
+                                    {user ? (
+                                        <>
+                                            <span style={topBarStyles.mobileLink}>{user.name?.split(' ')[0] || user.username}</span>
+                                            <button onClick={() => navigate('dashboard')} style={topBarStyles.mobileLink}>🏠 Dashboard</button>
+                                            {(isDocente || isAdmin) && <button onClick={() => navigate('teacher')} style={topBarStyles.mobileLinkTeacher}>📚 Area Docente</button>}
+                                            {isAdmin && <button onClick={() => navigate('admin')} style={topBarStyles.mobileLinkAdmin}>⚙️ Admin</button>}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button onClick={() => navigate('login')} style={topBarStyles.mobileLink}>Accedi</button>
+                                            <button onClick={() => navigate('register')} style={topBarStyles.mobileLinkGreen}>Registrati</button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <div style={topBarStyles.links}>
+                            {user ? (
+                                <>
+                                    <span style={topBarStyles.link}>{user.name?.split(' ')[0] || user.username}</span>
+                                    <button onClick={() => navigate('dashboard')} style={topBarStyles.link}>🏠 Dashboard</button>
+                                    {(isDocente || isAdmin) && <button onClick={() => navigate('teacher')} style={topBarStyles.linkTeacher}>📚 Area Docente</button>}
+                                    {isAdmin && <button onClick={() => navigate('admin')} style={topBarStyles.linkAdmin}>⚙️ Admin</button>}
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={() => navigate('login')} style={topBarStyles.link}>Accedi</button>
+                                    <button onClick={() => navigate('register')} style={topBarStyles.linkGreen}>Registrati</button>
+                                </>
+                            )}
+                        </div>
+                    )}
+                </nav>
+                <main id="main-content" tabIndex="-1" style={{ outline: 'none' }}>
+                    <RequireAuth onNavigate={navigate}>
+                        <RequireLicense onNavigate={navigate}>
+                            <ErrorBoundary>
+                                <Suspense fallback={<LoadingFallback />}>
+                                    <ElabTutorV4 />
+                                </Suspense>
+                            </ErrorBoundary>
+                        </RequireLicense>
+                    </RequireAuth>
+                </main>
+            </div>
+        );
+    }
+
+    // Pagine auth (login/register) senza navbar
+    if (currentPage === 'login') {
+        return <Suspense fallback={<LoadingFallback />}><LoginPage onNavigate={navigate} /></Suspense>;
+    }
+    if (currentPage === 'register') {
+        return <Suspense fallback={<LoadingFallback />}><RegisterPage onNavigate={navigate} /></Suspense>;
+    }
+
+    // Pagine social con navbar
+    return (
+        <Suspense fallback={<LoadingFallback />}>
+            <div style={{ height: '100%', overflowY: 'auto', background: '#F0F4F8' }}>
+                <Navbar currentPage={currentPage} onNavigate={navigate} />
+                {currentPage === 'admin' && (isAdmin ? <AdminPage onNavigate={navigate} /> : <AccessDeniedMessage onNavigate={navigate} />)}
+                {currentPage === 'dashboard' && <RequireAuth onNavigate={navigate}><StudentDashboard onNavigate={navigate} /></RequireAuth>}
+                {currentPage === 'teacher' && <RequireAuth onNavigate={navigate}>{isDocente || isAdmin ? <TeacherDashboard onNavigate={navigate} /> : <AccessDeniedMessage onNavigate={navigate} />}</RequireAuth>}
+            </div>
+        </Suspense>
+    );
+}
+
+function AccessDeniedMessage({ onNavigate }) {
+    return (
+        <div style={{
+            textAlign: 'center',
+            padding: '80px 20px',
+            minHeight: 'calc(100vh - 56px)',
+            background: '#F0F4F8',
+            fontFamily: "'Open Sans', sans-serif",
+        }}>
+            <div style={{
+                maxWidth: '480px',
+                margin: '0 auto',
+                background: 'white',
+                borderRadius: '16px',
+                padding: '40px 32px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+            }}>
+                <div style={{ fontSize: '48px', marginBottom: '16px' }}>{'\u{1F6AB}'}</div>
+                <h2 style={{ color: '#1E4D8C', margin: '0 0 12px', fontSize: '20px' }}>
+                    Accesso non autorizzato
+                </h2>
+                <p style={{ color: '#666', margin: '0 0 24px', fontSize: '15px', lineHeight: '1.6' }}>
+                    Questa area richiede permessi specifici.
+                </p>
+                <button
+                    onClick={() => onNavigate('tutor')}
+                    style={{
+                        padding: '12px 28px',
+                        border: 'none',
+                        borderRadius: '10px',
+                        background: '#1E4D8C',
+                        color: 'white',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                    }}
+                >
+                    Torna al Tutor
+                </button>
+            </div>
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <ErrorBoundary>
+            <AuthProvider>
+                <AppRouter />
+                {/* Watermark rimosso */}
+                <ConsentBanner />
+            </AuthProvider>
+        </ErrorBoundary>
+    );
+}
+
+export default App;
+
+const topBarStyles = {
+    bar: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '0 16px',
+        height: '44px',
+        background: 'linear-gradient(90deg, #0d1b2a, #1E4D8C)',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        zIndex: 10000,
+        position: 'relative',
+    },
+    brand: {
+        color: '#7CB342',
+        fontSize: '14px',
+        fontWeight: '700',
+        cursor: 'pointer',
+    },
+    links: {
+        display: 'flex',
+        gap: '4px',
+        alignItems: 'center',
+    },
+    link: {
+        background: 'none',
+        border: 'none',
+        color: 'rgba(255,255,255,0.7)',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '8px 12px',
+        borderRadius: '4px',
+        fontWeight: '500',
+    },
+    linkGreen: {
+        background: 'rgba(145,191,69,0.2)',
+        border: 'none',
+        color: '#7CB342',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '8px 12px',
+        borderRadius: '4px',
+        fontWeight: '600',
+    },
+    linkTeacher: {
+        background: 'rgba(30,77,140,0.2)',
+        border: 'none',
+        color: '#93C5FD',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '8px 12px',
+        borderRadius: '4px',
+        fontWeight: '600',
+    },
+    linkAdmin: {
+        background: 'rgba(239,68,68,0.2)',
+        border: 'none',
+        color: '#EF4444',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '8px 12px',
+        borderRadius: '4px',
+        fontWeight: '600',
+    },
+    hamburger: {
+        background: 'none',
+        border: 'none',
+        color: 'white',
+        fontSize: '20px',
+        cursor: 'pointer',
+        padding: '6px 10px',
+        minWidth: 44,
+        minHeight: 44,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mobileMenu: {
+        position: 'absolute',
+        top: '44px',
+        left: 0,
+        right: 0,
+        background: 'linear-gradient(180deg, #1E4D8C, #0d1b2a)',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '8px 16px 16px',
+        gap: '4px',
+        zIndex: 9999,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    },
+    mobileLink: {
+        background: 'none',
+        border: 'none',
+        color: 'rgba(255,255,255,0.8)',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontWeight: '500',
+        textAlign: 'left',
+    },
+    mobileLinkGreen: {
+        background: 'rgba(145,191,69,0.2)',
+        border: 'none',
+        color: '#7CB342',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontWeight: '600',
+        textAlign: 'left',
+    },
+    mobileLinkTeacher: {
+        background: 'rgba(30,77,140,0.2)',
+        border: 'none',
+        color: '#93C5FD',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontWeight: '600',
+        textAlign: 'left',
+    },
+    mobileLinkAdmin: {
+        background: 'rgba(239,68,68,0.2)',
+        border: 'none',
+        color: '#EF4444',
+        fontSize: '14px',
+        cursor: 'pointer',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontWeight: '600',
+        textAlign: 'left',
+    },
+};

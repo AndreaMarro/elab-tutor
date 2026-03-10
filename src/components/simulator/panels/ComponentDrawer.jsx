@@ -1,0 +1,891 @@
+/**
+ * ELAB Simulator — ComponentDrawer
+ * Pannello bottom-anchored per modalità "Passo Passo" (guided) e "Libero" (sandbox).
+ * - Guided: mostra step corrente con navigazione Avanti/Indietro
+ * - Sandbox: griglia di componenti draggabili filtrati per volume
+ * Design: Apple-style, ELAB palette (Oswald headers, Open Sans body).
+ * © Andrea Marro — 20/02/2026
+ */
+
+import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { getComponentsByVolume, getComponent } from '../components/registry';
+
+const STEP_ICONS = {
+  resistor: '\u{1F50C}',
+  led: '\u{1F4A1}',
+  'push-button': '\u{1F518}',
+  'rgb-led': '\u{1F308}',
+  'buzzer-piezo': '\u{1F50A}',
+  capacitor: '\u{26A1}',
+  'motor-dc': '\u{1F504}',
+  potentiometer: '\u{1F39B}\uFE0F',
+  'photo-resistor': '\u{2600}\uFE0F',
+  phototransistor: '\u{1F526}',
+  'reed-switch': '\u{1F9F2}',
+  'mosfet-n': '\u{1F4A0}',
+  diode: '\u{27A1}\uFE0F',
+  servo: '\u{1F3AF}',
+  lcd16x2: '\u{1F4DF}',
+  wire: '\u{1FA9F}',
+  battery9v: '\u{1F50B}',
+};
+
+/* ─── Short labels for sandbox chips (full names, no truncation) ─── */
+const SHORT_LABELS = {
+  battery9v: 'Batteria',
+  'nano-r4': 'Arduino',
+  resistor: 'Resistore',
+  capacitor: 'Condensatore',
+  potentiometer: 'Potenziometro',
+  diode: 'Diodo',
+  'mosfet-n': 'MOSFET',
+  led: 'LED',
+  'rgb-led': 'LED RGB',
+  'buzzer-piezo': 'Cicalino',
+  'motor-dc': 'Motore DC',
+  servo: 'Servo',
+  lcd16x2: 'LCD 16x2',
+  'push-button': 'Pulsante',
+  'reed-switch': 'Reed Switch',
+  'photo-resistor': 'Fotoresist.',
+  phototransistor: 'Fototransi.',
+  multimeter: 'Multimetro',
+  wire: 'Filo',
+};
+
+/* ─── SVG sizes for each component type (viewBox crop for mini preview) ─── */
+const SVG_PREVIEW_SIZE = {
+  battery9v: { w: 60, h: 80, vb: '-30 -40 60 80' },
+  resistor: { w: 50, h: 20, vb: '-25 -10 50 20' },
+  led: { w: 30, h: 40, vb: '-15 -20 30 40' },
+  'rgb-led': { w: 30, h: 40, vb: '-15 -20 30 40' },
+  capacitor: { w: 30, h: 40, vb: '-15 -20 30 40' },
+  'push-button': { w: 40, h: 40, vb: '-20 -20 40 40' },
+  potentiometer: { w: 50, h: 50, vb: '-25 -25 50 50' },
+  diode: { w: 40, h: 20, vb: '-20 -10 40 20' },
+  'buzzer-piezo': { w: 50, h: 50, vb: '-25 -25 50 50' },
+  'motor-dc': { w: 50, h: 50, vb: '-25 -25 50 50' },
+  servo: { w: 60, h: 40, vb: '-30 -20 60 40' },
+  lcd16x2: { w: 80, h: 40, vb: '-40 -20 80 40' },
+  'photo-resistor': { w: 30, h: 40, vb: '-15 -20 30 40' },
+  phototransistor: { w: 30, h: 40, vb: '-15 -20 30 40' },
+  'reed-switch': { w: 50, h: 20, vb: '-25 -10 50 20' },
+  'mosfet-n': { w: 40, h: 40, vb: '-20 -20 40 40' },
+  multimeter: { w: 60, h: 60, vb: '-30 -30 60 60' },
+};
+
+/* ─── Draggable chip for sandbox mode — uses REAL SVG component ─── */
+const DraggableChip = React.memo(function DraggableChip({ type, label, icon }) {
+  const [dragging, setDragging] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const shortLabel = SHORT_LABELS[type] || label;
+
+  const registered = useMemo(() => getComponent(type), [type]);
+  const svgSize = SVG_PREVIEW_SIZE[type];
+
+  const handleDragStart = useCallback((e) => {
+    const payload = JSON.stringify({ type });
+    e.dataTransfer.setData('application/elab-component', payload);
+    e.dataTransfer.setData('text/plain', payload);
+    e.dataTransfer.effectAllowed = 'copy';
+    window.__elabDragType = type;
+    setDragging(true);
+  }, [type]);
+
+  // Tap-to-place for iPad: tap selects component, then tap canvas to place
+  const handleTapSelect = useCallback(() => {
+    window.__elabPendingComponent = type;
+    window.dispatchEvent(new CustomEvent('elab-component-selected', { detail: { type } }));
+  }, [type]);
+
+  const SvgComp = registered ? registered.component : null;
+
+  return (
+    <div
+      draggable="true"
+      onDragStart={handleDragStart}
+      onDragEnd={() => { window.__elabDragType = null; setDragging(false); }}
+      onClick={handleTapSelect}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        ...styles.sandboxChip,
+        opacity: dragging ? 0.35 : 1,
+        background: hovered && !dragging ? 'var(--color-primary-light)' : 'var(--color-bg-secondary)',
+        borderColor: hovered && !dragging ? 'var(--color-primary)' : 'var(--color-border)',
+        transform: hovered && !dragging ? 'translateY(-1px)' : 'none',
+        boxShadow: hovered && !dragging ? 'var(--shadow-sm)' : 'none',
+      }}
+      title={`Trascina "${label}" sul canvas`}
+    >
+      {SvgComp && svgSize ? (
+        <svg
+          width="24"
+          height="24"
+          viewBox={svgSize.vb}
+          style={{ flexShrink: 0, pointerEvents: 'none' }}
+        >
+          <SvgComp
+            id={`__chip_${type}`}
+            state={registered.defaultState}
+            value={registered.defaultState?.value}
+            color={registered.defaultState?.color}
+            selected={false}
+          />
+        </svg>
+      ) : (
+        <span style={styles.chipIcon}>{icon || '\u{2022}'}</span>
+      )}
+      <span style={styles.chipLabel}>{shortLabel}</span>
+    </div>
+  );
+});
+
+/* ─── Main ComponentDrawer ─── */
+const ComponentDrawer = ({
+  mode = 'guided',       // 'guided' | 'sandbox'
+  experiment = null,
+  currentStep = -1,
+  onStepChange,
+  volumeNumber = 1,
+  onStartScratchPhase,   // S86: callback to open Blocchi tab + load XML
+  onCompileAndPlay,      // S86: callback for final compile+play
+}) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  // S89: Drag state for guided mode — right-side default, freely draggable
+  const [dragPos, setDragPos] = useState(null); // null = default position (right side)
+  const isDraggingRef = useRef(false);
+  const didDragRef = useRef(false); // S89: true if pointer moved during drag (suppress click-to-collapse)
+  const dragOffsetRef = useRef({ x: 0, y: 0 });
+  const panelRef = useRef(null);
+
+  // S89: Pointer handlers for dragging the panel header
+  const handlePanelDragStart = useCallback((e) => {
+    if (mode !== 'guided' || !panelRef.current) return;
+    // Only drag from header area (not buttons)
+    if (e.target.closest('button')) return;
+    e.preventDefault();
+    isDraggingRef.current = true;
+    didDragRef.current = false;
+    const rect = panelRef.current.getBoundingClientRect();
+    const parentRect = panelRef.current.offsetParent?.getBoundingClientRect() || { left: 0, top: 0 };
+    dragOffsetRef.current = {
+      x: e.clientX - rect.left + parentRect.left,
+      y: e.clientY - rect.top + parentRect.top,
+    };
+    // Capture pointer for smooth dragging
+    if (e.pointerId !== undefined) {
+      e.target.setPointerCapture(e.pointerId);
+    }
+  }, [mode]);
+
+  const handlePanelDragMove = useCallback((e) => {
+    if (!isDraggingRef.current || !panelRef.current) return;
+    e.preventDefault();
+    didDragRef.current = true;
+    const parentRect = panelRef.current.offsetParent?.getBoundingClientRect() || { left: 0, top: 0, width: 800, height: 600 };
+    const panelW = panelRef.current.offsetWidth;
+    const panelH = panelRef.current.offsetHeight;
+    // Clamp within parent bounds
+    const x = Math.max(0, Math.min(e.clientX - dragOffsetRef.current.x, parentRect.width - panelW));
+    const y = Math.max(0, Math.min(e.clientY - dragOffsetRef.current.y, parentRect.height - panelH));
+    setDragPos({ x, y });
+  }, []);
+
+  const handlePanelDragEnd = useCallback(() => {
+    isDraggingRef.current = false;
+    // didDragRef stays true until next pointerDown — prevents onClick from collapsing after drag
+  }, []);
+
+  // S89: Reset drag position when experiment changes (new experiment = default position)
+  useEffect(() => {
+    setDragPos(null);
+  }, [experiment?.id]);
+
+  // S84: Auto-collapse when Passo Passo completes — panel covers the finished circuit
+  const isCompleteCheck = mode === 'guided' && experiment && currentStep >= (experiment.buildSteps || []).length + (experiment.scratchSteps || []).length;
+  useEffect(() => {
+    if (isCompleteCheck) setCollapsed(true);
+  }, [isCompleteCheck]);
+
+  /* Sandbox: volume-filtered component list */
+  const volumeComponents = useMemo(() => {
+    if (mode !== 'sandbox') return [];
+    return getComponentsByVolume(volumeNumber).filter(
+      c => c.category !== 'wire' && c.type !== 'breadboard-half' && c.type !== 'breadboard-full'
+    );
+  }, [mode, volumeNumber]);
+
+  if (!experiment) return null;
+
+  const buildSteps = experiment.buildSteps || [];
+  const scratchSteps = experiment.scratchSteps || [];
+  const hasScratch = scratchSteps.length > 0;
+
+  // Merge hardware + code steps into single sequence
+  const allSteps = useMemo(() => [
+    ...buildSteps.map(s => ({ ...s, _type: 'hardware' })),
+    ...scratchSteps.map(s => ({ ...s, _type: 'scratch' })),
+  ], [buildSteps, scratchSteps]);
+
+  const isIntro = currentStep < 0;
+  const isComplete = currentStep >= allSteps.length;
+  const isLast = !isComplete && currentStep >= allSteps.length - 1;
+  const step = isIntro || isComplete ? null : allSteps[currentStep];
+  const isScratchStep = step?._type === 'scratch';
+
+  // S86: Phase detection for split HW/Code display
+  const isHWPhase = !isIntro && !isComplete && !isScratchStep;
+  const isTransition = !isIntro && !isComplete && currentStep === buildSteps.length && isScratchStep && hasScratch;
+  const hwDone = currentStep >= buildSteps.length;
+
+  // S86: Scratch step index (0-based within scratch phase)
+  const scratchIndex = isScratchStep ? currentStep - buildSteps.length : -1;
+
+  // S86: Normalize scratch step fields — some use label/description, others use text/hint
+  const scratchStepText = isScratchStep
+    ? (step.text || step.label || '')
+    : '';
+  const scratchStepHint = isScratchStep
+    ? (step.hint || step.description || '')
+    : '';
+  const scratchStepExplanation = isScratchStep
+    ? (step.explanation || '')
+    : '';
+
+  const stepIcon = step
+    ? isScratchStep ? '\u{1F9E9}'
+    : (step.componentType ? (STEP_ICONS[step.componentType] || '\u{1F9E9}') : STEP_ICONS.wire)
+    : null;
+
+  const progressPct = allSteps.length === 0 ? 0
+    : isIntro ? 0
+    : isComplete ? 100
+    : ((currentStep + 1) / allSteps.length) * 100;
+
+  const handlePrev = () => {
+    if (onStepChange) onStepChange(Math.max(-1, currentStep - 1));
+  };
+  const handleNext = () => {
+    if (onStepChange) onStepChange(Math.min(allSteps.length - 1, currentStep + 1));
+  };
+  // S93: Start code phase — opens chosen editor mode and advances to first scratch step
+  const handleStartCode = useCallback((chosenMode) => {
+    onStartScratchPhase?.(chosenMode);
+    if (onStepChange) onStepChange(buildSteps.length);
+  }, [onStartScratchPhase, onStepChange, buildSteps.length]);
+
+  /* Collapsed state */
+  if (collapsed) {
+    if (mode === 'guided') {
+      // S89: Floating badge — top-right pill showing current step (draggable position remembered)
+      const badgeStyle = dragPos
+        ? { ...styles.collapsedBadge, top: dragPos.y, left: dragPos.x, right: 'auto' }
+        : styles.collapsedBadge;
+      return (
+        <div style={badgeStyle} onClick={() => setCollapsed(false)}>
+          <span style={{ fontSize: 14 }}>{'\u{1F527}'}</span>
+          <span style={styles.collapsedBadgeText}>
+            {isIntro ? 'Inizia' : isComplete ? 'Fatto!' : `${currentStep + 1}/${allSteps.length}`}
+          </span>
+          <span style={{ fontSize: 14, color: 'var(--color-text-gray-300, #888)' }}>{'\u{25BC}'}</span>
+        </div>
+      );
+    }
+    // Sandbox: bottom bar (unchanged)
+    return (
+      <div style={styles.collapsedBar} onClick={() => setCollapsed(false)}>
+        <div style={styles.dragHandle} />
+        <span style={styles.collapsedTitle}>
+          {'\u{1F9E9} Componenti'}
+        </span>
+      </div>
+    );
+  }
+
+  // S89: Guided mode uses floating card (right side, draggable), Sandbox uses bottom drawer
+  const guidedPosStyle = dragPos
+    ? { top: dragPos.y, left: dragPos.x, right: 'auto' }
+    : {}; // default from styles.floatingCard (right: 12, top: 12)
+  const containerStyle = mode === 'guided'
+    ? { ...styles.floatingCard, ...guidedPosStyle }
+    : styles.drawer;
+
+  return (
+    <div ref={panelRef} style={containerStyle}>
+      {/* Header — draggable in guided mode */}
+      <div
+        style={mode === 'guided' ? styles.floatingHeader : styles.header}
+        onClick={() => {
+          // S89: Suppress collapse if the user just finished dragging
+          if (didDragRef.current) { didDragRef.current = false; return; }
+          setCollapsed(true);
+        }}
+        onPointerDown={mode === 'guided' ? handlePanelDragStart : undefined}
+        onPointerMove={mode === 'guided' ? handlePanelDragMove : undefined}
+        onPointerUp={mode === 'guided' ? handlePanelDragEnd : undefined}
+        onPointerCancel={mode === 'guided' ? handlePanelDragEnd : undefined}
+      >
+        {mode === 'guided' && <div style={styles.dragHandle} />}
+        {mode !== 'guided' && <div style={styles.dragHandle} />}
+        <span style={mode === 'guided' ? styles.floatingHeaderTitle : styles.headerTitle}>
+          {mode === 'guided' ? '\u{1F527} Passo Passo' : '\u{1F9E9} Libero'}
+        </span>
+        <button
+          onClick={(e) => { e.stopPropagation(); setCollapsed(true); }}
+          style={styles.minimizeBtn}
+          title="Riduci"
+        >
+          {'\u{2212}'}
+        </button>
+      </div>
+
+      {/* === GUIDED MODE === */}
+      {mode === 'guided' && (
+        <>
+          {/* Progress bar */}
+          <div style={styles.progressContainer}>
+            <div style={{ ...styles.progressFill, width: `${progressPct}%` }} />
+          </div>
+
+          <div style={styles.guidedBody}>
+            {/* S86: Phase-aware step counter */}
+            <div style={styles.stepCounter}>
+              {isIntro
+                ? 'Pronti a montare!'
+                : isComplete
+                ? `Completato!`
+                : isScratchStep
+                ? `\u{1F9E9} Codice ${scratchIndex + 1} di ${scratchSteps.length}`
+                : `\u{1F527} Passo ${currentStep + 1} di ${buildSteps.length}`
+              }
+            </div>
+
+            {/* Step content */}
+            <div style={styles.stepContent}>
+              {isIntro ? (
+                <div style={styles.introText}>
+                  <span style={{ fontSize: 22 }}>{'\u{1F9F0}'}</span>
+                  <span>Banco vuoto: breadboard e batteria pronti. Premi <strong>Avanti</strong> per iniziare!</span>
+                </div>
+              ) : isComplete ? (
+                /* S86: Completion card with compile+play button */
+                <div style={styles.completionCard}>
+                  <span style={{ fontSize: 26 }}>{'\u{1F389}'}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={styles.completionTitle}>
+                      {hasScratch ? 'Circuito e codice pronti!' : 'Circuito completato!'}
+                    </div>
+                    <div style={styles.completionSubtitle}>
+                      {hasScratch
+                        ? 'Premi Compila e Prova per vedere il risultato!'
+                        : 'Premi \u25B6 Avvia per simulare il circuito.'
+                      }
+                    </div>
+                  </div>
+                  {hasScratch && onCompileAndPlay && (
+                    <button onClick={onCompileAndPlay} style={styles.compilePlayBtn}>
+                      {'\u25B6'} Compila e Prova!
+                    </button>
+                  )}
+                </div>
+              ) : isScratchStep ? (
+                /* S86: Dedicated Scratch step card with explanation */
+                <div style={styles.scratchStepCard}>
+                  <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1 }}>{'\u{1F9E9}'}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={styles.stepText}>{scratchStepText}</div>
+                      {scratchStepHint && (
+                        <div style={styles.scratchHint}>
+                          {'\u{1F4BB}'} {scratchStepHint}
+                        </div>
+                      )}
+                      {scratchStepExplanation && (
+                        <div style={styles.scratchExplanation}>
+                          {'\u{1F4A1}'} {scratchStepExplanation}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : step ? (
+                /* Hardware step (unchanged logic) */
+                <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'flex-start' }}>
+                  {step.componentType ? (
+                    <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                      <DraggableChip
+                        type={step.componentType}
+                        label={SHORT_LABELS[step.componentType] || step.componentType}
+                        icon={STEP_ICONS[step.componentType] || '\u{1F9E9}'}
+                      />
+                      <span style={{ fontSize: 14, color: 'var(--color-sim-text-muted)', fontFamily: 'var(--font-sans)' }}>trascina</span>
+                    </div>
+                  ) : (
+                    <span style={{ fontSize: 20, flexShrink: 0 }}>{stepIcon}</span>
+                  )}
+                  <div style={{ flex: 1 }}>
+                    <div style={styles.stepText}>{step.text}</div>
+                    {step.hint && (
+                      <div style={styles.hint}>
+                        {'\u{1F4A1}'} {step.hint}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
+            {/* S86: Navigation — handles HW→Scratch transition */}
+            <div style={styles.navRow}>
+              <button
+                onClick={handlePrev}
+                disabled={isIntro}
+                style={{
+                  ...styles.navBtn,
+                  opacity: isIntro ? 0.4 : 1,
+                  cursor: isIntro ? 'default' : 'pointer',
+                }}
+              >
+                {'\u2190'} Indietro
+              </button>
+              {!isComplete && (
+                /* S93: At last HW step with scratch → show choice: Blocchi or Codice */
+                (currentStep === buildSteps.length - 1 && hasScratch) ? (
+                  <div style={{ display: 'flex', gap: 'var(--space-1-5)', flex: 1 }}>
+                    <button
+                      onClick={() => handleStartCode('scratch')}
+                      style={{
+                        ...styles.navBtn,
+                        flex: 1,
+                        background: 'var(--color-tab-scratch, #E67E22)',
+                        color: 'var(--color-text-inverse)',
+                        fontWeight: 700,
+                        borderColor: 'var(--color-tab-scratch, #E67E22)',
+                      }}
+                    >
+                      {'\u{1F9E9}'} Blocchi
+                    </button>
+                    <button
+                      onClick={() => handleStartCode('arduino')}
+                      style={{
+                        ...styles.navBtn,
+                        flex: 1,
+                        background: 'var(--color-accent, #7CB342)',
+                        color: 'var(--color-text-inverse)',
+                        fontWeight: 700,
+                        borderColor: 'var(--color-accent, #7CB342)',
+                      }}
+                    >
+                      {'</>'} Codice
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={isLast ? () => onStepChange && onStepChange(allSteps.length) : handleNext}
+                    style={{
+                      ...styles.navBtn,
+                      background: isLast ? 'var(--color-success)' : 'var(--color-primary)',
+                      color: 'var(--color-text-inverse)',
+                      fontWeight: 700,
+                      borderColor: isLast ? 'var(--color-success)' : 'var(--color-primary)',
+                    }}
+                  >
+                    {isLast ? '\u{2714} Finito!' : isScratchStep ? '\u{1F9E9} Avanti' : 'Avanti \u{2192}'}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* === SANDBOX MODE === */}
+      {mode === 'sandbox' && (
+        <div style={styles.sandboxBody}>
+          <div style={styles.sandboxChipStrip}>
+            {volumeComponents.map(comp => (
+              <DraggableChip
+                key={comp.type}
+                type={comp.type}
+                label={comp.label}
+                icon={comp.icon}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* ─── Styles ─── */
+const styles = {
+  /* S89: Floating card for guided mode — RIGHT-side overlay, draggable */
+  floatingCard: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    width: 'clamp(230px, 25vw, 300px)',
+    background: 'var(--color-bg, #FFFFFF)',
+    borderRadius: 'var(--radius-lg, 14px)',
+    boxShadow: 'var(--shadow-lg, 0 10px 20px rgba(0,0,0,0.07)), 0 0 0 1px var(--color-border, #E5E5EA)',
+    zIndex: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: 'clamp(180px, 45vh, 320px)',
+    fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
+    overflow: 'hidden',
+    touchAction: 'none', // S89: prevent scroll interference when dragging
+    userSelect: 'none',
+  },
+
+  floatingHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '12px 12px 8px',
+    cursor: 'grab',  // S89: visual cue that header is draggable
+    borderBottom: '1px solid var(--color-border, #E5E5EA)',
+    background: 'linear-gradient(135deg, rgba(124, 179, 66, 0.06), rgba(30, 77, 140, 0.03))',
+    borderRadius: '14px 14px 0 0',
+    gap: 8,
+    flexShrink: 0,
+    touchAction: 'none',
+  },
+
+  floatingHeaderTitle: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 700,
+    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
+    color: 'var(--color-primary, #1E4D8C)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    flex: 1,
+  },
+
+  minimizeBtn: {
+    border: 'none',
+    background: 'none',
+    cursor: 'pointer',
+    fontSize: 18,
+    color: 'var(--color-text-gray-300, #888)',
+    padding: '2px 6px',
+    borderRadius: 'var(--radius-xs, 4px)',
+    minWidth: 'var(--touch-min, 44px)',
+    minHeight: 'var(--touch-min, 44px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    lineHeight: 1,
+  },
+
+  /* S89: Collapsed floating badge — small pill top-RIGHT (matches panel position) */
+  collapsedBadge: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    padding: '6px 14px',
+    background: 'var(--color-bg, #FFFFFF)',
+    borderRadius: 'var(--radius-full, 9999px)',
+    boxShadow: 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06)), 0 0 0 1px var(--color-border, #E5E5EA)',
+    zIndex: 30,
+    cursor: 'pointer',
+    fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
+    minHeight: 'var(--touch-min, 44px)',
+  },
+
+  collapsedBadgeText: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 700,
+    color: 'var(--color-primary, #1E4D8C)',
+    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
+  },
+
+  /* Bottom drawer for sandbox mode (unchanged) */
+  drawer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    background: 'var(--color-bg, #FFFFFF)',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    boxShadow: '0 -4px 20px rgba(0,0,0,0.10)',
+    zIndex: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: 200,
+    fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
+  },
+
+  collapsedBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 48,
+    background: 'var(--color-bg, #FFFFFF)',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    boxShadow: '0 -2px 10px rgba(0,0,0,0.08)',
+    zIndex: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    gap: 4,
+  },
+
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '8px 16px 6px',
+    cursor: 'pointer',
+    position: 'relative',
+    gap: 8,
+  },
+
+  dragHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    background: 'var(--color-border-hover, #D1D5DB)',
+    position: 'absolute',
+    top: 4,
+    left: '50%',
+    transform: 'translateX(-50%)',
+  },
+
+  headerTitle: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 700,
+    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
+    color: 'var(--color-text, #1A1A2E)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    marginTop: 6,
+  },
+
+  collapsedTitle: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 600,
+    color: 'var(--color-text-gray-400, #666)',
+  },
+
+  /* Progress */
+  progressContainer: {
+    height: 3,
+    background: 'var(--color-border-hover)',
+    width: '100%',
+  },
+  progressFill: {
+    height: '100%',
+    background: 'var(--color-accent)',
+    borderRadius: '0 2px 2px 0',
+    transition: 'width var(--transition-slow)',
+  },
+
+  /* Guided body */
+  guidedBody: {
+    padding: '4px 16px 10px',
+    flex: 1,
+    overflow: 'hidden',
+  },
+
+  stepCounter: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 700,
+    color: 'var(--color-primary, #1E4D8C)',
+    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    marginBottom: 4,
+  },
+
+  stepContent: {
+    marginBottom: 8,
+    overflow: 'auto',
+    flex: 1,
+    minHeight: 0,
+  },
+
+  introText: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    fontSize: 'var(--font-size-sm, 14px)',
+    color: 'var(--color-text-gray-700, #333)',
+    lineHeight: 1.45,
+  },
+
+  stepRow: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+
+  stepText: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    lineHeight: 1.45,
+    color: 'var(--color-text-gray-700, #333)',
+    fontWeight: 500,
+  },
+
+  hint: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    color: 'var(--color-text-gray-400, #666)',
+    fontStyle: 'italic',
+    lineHeight: 1.4,
+    padding: '3px 8px',
+    background: 'var(--color-warning-light, #FFF9C4)',
+    borderRadius: 'var(--radius-sm, 6px)',
+    marginTop: 4,
+  },
+
+  scratchHint: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    color: 'var(--color-primary)',
+    fontStyle: 'italic',
+    lineHeight: 1.4,
+    padding: '3px 8px',
+    background: 'var(--color-primary-light)',
+    borderRadius: 'var(--radius-sm, 6px)',
+    marginTop: 4,
+  },
+
+  /* S86: Scratch step explanation (educational insight) */
+  scratchExplanation: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    color: 'var(--color-text-gray-600, #444)',
+    lineHeight: 1.45,
+    padding: '4px 8px',
+    background: 'var(--color-accent-light, #E8F5E9)',
+    borderRadius: 'var(--radius-sm, 6px)',
+    borderLeft: '3px solid var(--color-accent, #7CB342)',
+    marginTop: 4,
+  },
+
+  /* S86: Scratch step card wrapper */
+  scratchStepCard: {
+    // No extra styling needed — inherits stepContent
+  },
+
+  /* S86: Completion card */
+  completionCard: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    flexWrap: 'wrap',
+  },
+  completionTitle: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 700,
+    color: 'var(--color-success, #16A34A)',
+    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  completionSubtitle: {
+    fontSize: 'var(--font-size-sm, 14px)',
+    color: 'var(--color-text-gray-500, #555)',
+    lineHeight: 1.4,
+    marginTop: 2,
+  },
+  compilePlayBtn: {
+    padding: '8px 16px',
+    background: 'var(--color-accent, #7CB342)',
+    color: 'var(--color-text-inverse, #fff)',
+    border: 'none',
+    borderRadius: 'var(--radius-md, 8px)',
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontWeight: 700,
+    fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
+    cursor: 'pointer',
+    minHeight: 'var(--touch-min, 44px)',
+    minWidth: 'var(--touch-min, 44px)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+
+  /* Navigation */
+  navRow: {
+    display: 'flex',
+    gap: 8,
+    flexShrink: 0,
+  },
+
+  navBtn: {
+    flex: 1,
+    padding: '8px 0',
+    border: '1px solid var(--color-border-hover, #D1D5DB)',
+    borderRadius: 'var(--radius-md, 8px)',
+    background: 'var(--color-bg, #fff)',
+    color: 'var(--color-text-gray-500, #555)',
+    fontSize: 'var(--font-size-sm, 14px)',
+    fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
+    cursor: 'pointer',
+    textAlign: 'center',
+    minHeight: 'var(--touch-min, 44px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    transition: 'all var(--transition-fast, 150ms)',
+  },
+
+  /* Sandbox body — compact horizontal strip */
+  sandboxBody: {
+    padding: '4px 12px 8px',
+    overflow: 'hidden',
+  },
+
+  sandboxChipStrip: {
+    display: 'flex',
+    gap: 6,
+    overflowX: 'auto',
+    overflowY: 'hidden',
+    paddingBottom: 4,
+    scrollbarWidth: 'thin',
+    scrollbarColor: 'var(--color-sim-scrollbar) transparent',
+  },
+
+  sandboxChip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 5,
+    padding: '5px 10px',
+    background: 'var(--color-bg-secondary)',
+    border: '1px solid var(--color-border)',
+    borderRadius: 20,
+    cursor: 'grab',
+    transition: 'all var(--transition-fast)',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
+  },
+
+  chipIcon: {
+    fontSize: 14,
+    lineHeight: 1,
+    flexShrink: 0,
+  },
+
+  chipLabel: {
+    fontSize: 14,
+    color: 'var(--color-text-gray-700)',
+    fontWeight: 600,
+    lineHeight: 1,
+    fontFamily: 'var(--font-sans)',
+  },
+};
+
+export default ComponentDrawer;

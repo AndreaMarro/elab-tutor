@@ -1,0 +1,147 @@
+// ============================================
+// ELAB Tutor - Videos & Google Meet Tab
+// Extracted from ElabTutorV4.jsx
+// © Andrea Marro — 13/02/2026
+// ============================================
+
+import React from 'react';
+
+export default function VideosTab({
+    // YouTube state
+    youtubeUrl,
+    currentVideoId,
+    onSetYoutubeUrl,
+    onSetCurrentVideoId,
+    onAddYoutubeVideo,
+    // Google Meet state
+    meetLink,
+    meetActive,
+    meetCopied,
+    onSetMeetLink,
+    onSetMeetActive,
+    onStartMeet,
+    onJoinMeet,
+    onCopyMeetLink,
+    onStopMeet,
+    // Galileo
+    onSendToGalileo,
+}) {
+    return (
+        <div className="v4-videos-container">
+            <div className="v4-sub-toolbar">
+                <div className="v4-toggle-group">
+                    <button className={`v4-toggle-btn ${!meetActive ? 'active' : ''}`} onClick={() => onSetMeetActive(false)}>Video</button>
+                    <button className={`v4-toggle-btn ${meetActive ? 'active' : ''}`} onClick={() => onSetMeetActive(true)}>Videochiamata</button>
+                </div>
+            </div>
+
+            {!meetActive ? (
+                <>
+                    <div className="v4-video-input">
+                        <input
+                            type="text"
+                            value={youtubeUrl}
+                            onChange={(e) => onSetYoutubeUrl(e.target.value)}
+                            placeholder="Incolla link YouTube..."
+                            onKeyDown={(e) => e.key === 'Enter' && onAddYoutubeVideo()}
+                        />
+                        <button className="v4-toolbar-btn primary" onClick={onAddYoutubeVideo}>▶ Carica</button>
+                    </div>
+
+                    <div className="v4-video-player">
+                        {currentVideoId ? (
+                            <>
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    src={`https://www.youtube.com/embed/${currentVideoId}?rel=0`}
+                                    title="YouTube video"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    style={{ flex: 1 }}
+                                />
+                                {onSendToGalileo && (
+                                    <div style={{ padding: '8px 12px', background: '#f8fafc', borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'center' }}>
+                                        <button
+                                            onClick={() => onSendToGalileo(`Sto guardando un video YouTube (ID: ${currentVideoId}). Puoi aiutarmi a capire l'argomento trattato?`)}
+                                            style={{
+                                                background: 'none', border: '1px solid #1E4D8C', borderRadius: 8,
+                                                color: '#1E4D8C', padding: '6px 16px', fontSize: '0.875rem',
+                                                cursor: 'pointer', fontFamily: "'Open Sans', sans-serif", fontWeight: 600,
+                                                minHeight: 44,
+                                            }}
+                                        >
+                                            Chiedi a Galileo
+                                        </button>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className="v4-placeholder">
+                                <div className="v4-icon"></div>
+                                <h3>Videolezioni YouTube</h3>
+                                <p>Incolla un link sopra oppure scegli un video consigliato</p>
+                                <div className="v4-video-suggestions">
+                                    {[
+                                        { title: 'Introduzione Arduino', id: 'fCxzA9_kg6s' },
+                                        { title: 'LED Blink Tutorial', id: '9kdgl5TBOvI' },
+                                        { title: 'Usare i Pulsanti', id: 'CfdaJ4z4u_k' },
+                                        { title: 'Buzzer e Suoni', id: 'Qf-KvR4L_xg' },
+                                    ].map(v => (
+                                        <button key={v.id} className="v4-toolbar-btn" onClick={() => onSetCurrentVideoId(v.id)}>{v.title}</button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </>
+            ) : (
+                <div className="v4-meet-container">
+                    {!meetLink.trim() || !meetActive ? (
+                        <div className="v4-meet-setup">
+                            <div className="v4-icon"></div>
+                            <h3>Videochiamata con Google Meet</h3>
+                            <p>Incolla un link Google Meet oppure creane uno nuovo</p>
+                            <div className="v4-meet-input-row">
+                                <input
+                                    type="text"
+                                    value={meetLink}
+                                    onChange={(e) => onSetMeetLink(e.target.value)}
+                                    placeholder="https://meet.google.com/abc-defg-hij"
+                                    onKeyDown={(e) => e.key === 'Enter' && onStartMeet()}
+                                />
+                                <button className="v4-meet-join" onClick={onStartMeet}>Avvia</button>
+                            </div>
+                            <button className="v4-meet-create" onClick={() => window.open('https://meet.google.com/new', '_blank', 'noopener')}>
+                                Crea nuova riunione
+                            </button>
+                            <p className="v4-meet-hint">La videochiamata si apre in una nuova scheda del browser. Richiede un account Google.</p>
+                        </div>
+                    ) : (
+                        <div className="v4-meet-active">
+                            <div className="v4-meet-bar">
+                                <span>Riunione attiva</span>
+                                <button className="v4-meet-leave" onClick={onStopMeet}>✕ Termina</button>
+                            </div>
+                            <div className="v4-meet-card">
+                                <div className="v4-meet-card-icon"></div>
+                                <h3>Google Meet</h3>
+                                <p className="v4-meet-link-display">{meetLink}</p>
+                                <div className="v4-meet-actions">
+                                    <button className="v4-meet-join-btn" onClick={onJoinMeet}>
+                                        ▶ Partecipa alla riunione
+                                    </button>
+                                    <button className="v4-meet-copy-btn" onClick={onCopyMeetLink}>
+                                        {meetCopied ? '✓ Copiato!' : 'Copia link'}
+                                    </button>
+                                </div>
+                                <p className="v4-meet-hint">La videochiamata si apre in una nuova scheda</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}

@@ -1,0 +1,120 @@
+{
+  "app": {
+    "title": "ELAB Tutor",
+    "version": "galileo.1.0",
+    "status": "Online"
+  },
+  "tabs": {
+    "manual": "Manual",
+    "simulator": "Simulator",
+    "canvas": "Whiteboard",
+    "notebooks": "Notebooks",
+    "videos": "Video Lessons"
+  },
+  "chat": {
+    "placeholder": "Ask Galileo...",
+    "welcome": "**Hello! I'm Galileo, your ELAB tutor! **\n\nI'm here to help you discover the world of electronics.\nAsk me anything about circuits, LEDs, resistors, Arduino and much more!",
+    "analyzing": "Analyzing the image...",
+    "error": "Error"
+  },
+  "quickActions": {
+    "vol1": "Vol.1",
+    "vol2": "Vol.2",
+    "vol3": "Vol.3",
+    "led": "LED",
+    "simulator": "Simulator"
+  },
+  "manual": {
+    "title": "ELAB Manual",
+    "selectVolume": "Select a volume above or type:",
+    "examples": {
+      "page": "\"page 5\" or \"p.5\"",
+      "volumePage": "\"volume 2 page 10\"",
+      "compact": "\"v2p15\" (compact format)",
+      "full": "\"vol.3 page 20\""
+    },
+    "pageOpened": "I opened page {{page}} of Volume {{vol}}.",
+    "pageHint": "To have it explained, click the \"Import\" button () above the manual, or use the \"Vision\" function."
+  },
+  "canvas": {
+    "tools": {
+      "brush": "Brush",
+      "text": "Text",
+      "eraser": "Eraser"
+    },
+    "sizes": {
+      "fine": "Fine",
+      "medium": "Medium",
+      "large": "Large",
+      "xl": "XL"
+    },
+    "actions": {
+      "uploadImage": "Upload image",
+      "addToSlides": "Add to Slides",
+      "clear": "Clear all",
+      "sendToAI": "Send to Galileo"
+    },
+    "textHint": "Click where you want to insert text",
+    "present": "Present"
+  },
+  "videos": {
+    "title": "Video Lessons",
+    "placeholder": "Paste YouTube link (e.g.: https://youtube.com/watch?v=...)",
+    "load": "Load",
+    "pasteHint": "Paste a YouTube link above to watch a video",
+    "recommended": "Recommended videos:"
+  },
+  "notebooks": {
+    "createNew": "Create New Lesson",
+    "titlePlaceholder": "Lesson title...",
+    "create": "Create",
+    "hint": "Use \"Create\" to start an empty notebook or with the current drawing.",
+    "saved": "Saved Lessons",
+    "empty": "No saved lessons.",
+    "open": "Open",
+    "delete": "Delete",
+    "back": "Back",
+    "page": "Page"
+  },
+  "presentation": {
+    "slide": "Slide",
+    "of": "of",
+    "exit": "Exit",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "simulator": {
+    "title": "ELAB Simulator",
+    "subtitle": "Pre-configured experiments for Arduino",
+    "volume": "Volume",
+    "experiments": "Experiments",
+    "chapter": "Ch.",
+    "components": "Components",
+    "showCode": "Show Code",
+    "showSimulator": "Show Simulator",
+    "copyCode": "Copy Code",
+    "openWokwi": "Open in Wokwi",
+    "selectExperiment": "Select an experiment",
+    "selectHint": "Choose an experiment from the list on the left to start"
+  },
+  "code": {
+    "editor": "Arduino Editor",
+    "compile": "Compile",
+    "simulate": "Simulate",
+    "compiling": "Compiling..."
+  },
+  "responses": {
+    "ledOn": "Done! LED on.",
+    "ledOff": "Done! LED off.",
+    "servoMoved": "Servo rotated to {{angle}} degrees.",
+    "simulationStarted": "Simulation started!",
+    "simulationPaused": "Simulation paused.",
+    "simulatorReset": "Simulator reset.",
+    "canvasOpened": "Whiteboard opened.",
+    "manualOpened": "Here's the manual.",
+    "codeEditorOpened": "Code editor opened.",
+    "notebooksOpened": "Here are your notebooks.",
+    "canvasCleared": "Whiteboard cleared.",
+    "operationCancelled": "Operation cancelled."
+  }
+}

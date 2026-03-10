@@ -1,0 +1,264 @@
+/**
+ * ELAB Simulator — Annotation Component
+ * Draggable text notes on the SVG canvas (sticky-note style).
+ * Uses foreignObject for editable text.
+ * Andrea Marro — 13/02/2026
+ */
+
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+
+const Annotation = ({
+  id,
+  x = 0,
+  y = 0,
+  text = '',
+  isSelected = false,
+  onTextChange,
+  onSelect,
+  onDelete,
+  onPositionChange,
+  onSendToGalileo,
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [localText, setLocalText] = useState(text);
+  const textareaRef = useRef(null);
+
+  // Drag state (local dx/dy offset while dragging)
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ dx: 0, dy: 0 });
+  const dragStartRef = useRef(null); // { mouseX, mouseY, startX, startY }
+
+  const handleDoubleClick = useCallback((e) => {
+    e.stopPropagation();
+    setIsEditing(true);
+    setLocalText(text);
+    setTimeout(() => textareaRef.current?.focus(), 50);
+  }, [text]);
+
+  const handleBlur = useCallback(() => {
+    setIsEditing(false);
+    if (onTextChange && localText !== text) {
+      onTextChange(id, localText);
+    }
+  }, [id, localText, text, onTextChange]);
+
+  const handleMouseDown = useCallback((e) => {
+    if (isEditing) return; // don't interfere with text editing
+    e.stopPropagation();
+    e.preventDefault();
+    if (onSelect) onSelect(id);
+
+    // Start drag: record mouse position and annotation position
+    // Use the nearest SVG element to get SVG coordinates
+    const svg = e.target.closest('svg');
+    if (!svg) return;
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+    dragStartRef.current = {
+      mouseX: svgPt.x,
+      mouseY: svgPt.y,
+      startX: x,
+      startY: y,
+    };
+    setIsDragging(true);
+    setDragOffset({ dx: 0, dy: 0 });
+  }, [id, onSelect, isEditing, x, y]);
+
+  // Window-level mousemove/mouseup for drag (attached only while dragging)
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseMove = (e) => {
+      if (!dragStartRef.current) return;
+      const svg = document.querySelector('svg');
+      if (!svg) return;
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+      const dx = svgPt.x - dragStartRef.current.mouseX;
+      const dy = svgPt.y - dragStartRef.current.mouseY;
+      setDragOffset({ dx, dy });
+    };
+
+    const handleMouseUp = () => {
+      if (dragStartRef.current && onPositionChange) {
+        const newX = dragStartRef.current.startX + dragOffset.dx;
+        const newY = dragStartRef.current.startY + dragOffset.dy;
+        // Only notify parent if position actually changed
+        if (dragOffset.dx !== 0 || dragOffset.dy !== 0) {
+          onPositionChange(id, newX, newY);
+        }
+      }
+      dragStartRef.current = null;
+      setIsDragging(false);
+      setDragOffset({ dx: 0, dy: 0 });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, id, onPositionChange, dragOffset.dx, dragOffset.dy]);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape') {
+      setIsEditing(false);
+      setLocalText(text); // revert
+    }
+    if (e.key === 'Enter' && e.ctrlKey) {
+      e.preventDefault();
+      handleBlur();
+    }
+    // Prevent Delete/Backspace from deleting the annotation while editing
+    e.stopPropagation();
+  }, [text, handleBlur]);
+
+  const displayText = isEditing ? localText : text;
+  const noteWidth = 120;
+  const noteHeight = Math.max(40, 24 + (displayText.split('\n').length) * 12);
+
+  // Apply drag offset to rendered position
+  const renderX = x + dragOffset.dx;
+  const renderY = y + dragOffset.dy;
+
+  return (
+    <g
+      onMouseDown={handleMouseDown}
+      style={{ cursor: isDragging ? 'grabbing' : (isEditing ? 'text' : 'grab') }}
+    >
+      {/* Shadow */}
+      <rect
+        x={renderX + 2}
+        y={renderY + 2}
+        width={noteWidth}
+        height={noteHeight}
+        rx="3"
+        fill="#00000015"
+      />
+      {/* Note body */}
+      <rect
+        x={renderX}
+        y={renderY}
+        width={noteWidth}
+        height={noteHeight}
+        rx="3"
+        fill="#FFF9C4"
+        stroke={isSelected ? 'var(--color-accent, #7CB342)' : '#E6DB74'}
+        strokeWidth={isSelected ? 1.5 : 0.8}
+        style={isSelected ? { filter: 'drop-shadow(0 0 3px var(--color-accent, #7CB342))' } : undefined}
+      />
+      {/* Top fold line */}
+      <line
+        x1={renderX}
+        y1={renderY + 14}
+        x2={renderX + noteWidth}
+        y2={renderY + 14}
+        stroke="#E6DB74"
+        strokeWidth="0.5"
+        opacity="0.6"
+      />
+
+      {isEditing ? (
+        <foreignObject x={renderX + 3} y={renderY + 3} width={noteWidth - 6} height={noteHeight - 6}>
+          <textarea
+            ref={textareaRef}
+            value={localText}
+            onChange={(e) => setLocalText(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              background: 'transparent',
+              resize: 'none',
+              fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
+              fontSize: '8px',
+              lineHeight: '12px',
+              color: 'var(--color-text-gray-700, #333)',
+              outline: 'none',
+              padding: 0,
+              margin: 0,
+              overflow: 'hidden',
+            }}
+          />
+        </foreignObject>
+      ) : (
+        <text
+          x={renderX + 5}
+          y={renderY + 22}
+          fontSize="8"
+          fontFamily="'Open Sans', sans-serif"
+          fill="var(--color-text-gray-700, #333)"
+          style={{ cursor: isDragging ? 'grabbing' : 'grab', userSelect: 'none' }}
+          onDoubleClick={handleDoubleClick}
+        >
+          {displayText.split('\n').map((line, i) => (
+            <tspan key={i} x={renderX + 5} dy={i === 0 ? 0 : 12}>
+              {line || '\u00A0'}
+            </tspan>
+          ))}
+        </text>
+      )}
+
+      {/* Action buttons (top-right, visible when selected) */}
+      {isSelected && (
+        <>
+          {/* Send to Galileo button (chat icon) */}
+          {onSendToGalileo && text.trim() && (
+            <g
+              style={{ cursor: 'pointer' }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onSendToGalileo(`Ho scritto questa annotazione sul circuito: "${text}". Puoi aiutarmi a capire meglio?`);
+              }}
+            >
+              <circle cx={renderX + noteWidth - 14} cy={renderY + 1} r="5" fill="var(--color-primary, #1E4D8C)" stroke="#fff" strokeWidth="0.5" />
+              {/* Chat bubble icon */}
+              <path
+                d={`M${renderX + noteWidth - 17} ${renderY - 1} h6 a1 1 0 0 1 1 1 v3 a1 1 0 0 1 -1 1 h-3 l-2 1.5 v-1.5 h-1 a1 1 0 0 1 -1 -1 v-3 a1 1 0 0 1 1 -1z`}
+                fill="#fff"
+                transform={`scale(0.6) translate(${(renderX + noteWidth - 14) * 0.667 - 3} ${(renderY + 1) * 0.667 - 3})`}
+                style={{ pointerEvents: 'none' }}
+              />
+              <text
+                x={renderX + noteWidth - 14}
+                y={renderY + 2.5}
+                fontSize="5"
+                fontWeight="bold"
+                fill="#fff"
+                textAnchor="middle"
+                style={{ pointerEvents: 'none' }}
+              >G</text>
+            </g>
+          )}
+          {/* Delete button */}
+          {onDelete && (
+            <g
+              style={{ cursor: 'pointer' }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onDelete(id);
+              }}
+            >
+              <circle cx={renderX + noteWidth - 1} cy={renderY + 1} r="5" fill="var(--color-vol3, #E54B3D)" stroke="#fff" strokeWidth="0.5" />
+              <line x1={renderX + noteWidth - 3.5} y1={renderY - 1.5} x2={renderX + noteWidth + 1.5} y2={renderY + 3.5} stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
+              <line x1={renderX + noteWidth + 1.5} y1={renderY - 1.5} x2={renderX + noteWidth - 3.5} y2={renderY + 3.5} stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
+            </g>
+          )}
+        </>
+      )}
+    </g>
+  );
+};
+
+export default Annotation;

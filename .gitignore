@@ -1,0 +1,63 @@
+# ============================================
+# ELAB Tutor — .gitignore
+# ============================================
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# AI model files (2.3 GB+)
+models/*.gguf
+models/*.safetensors
+models/*.bin
+models/*.pt
+models/*.pth
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.vercel-check
+
+# Vercel
+.vercel/
+
+# Test coverage (regenerable)
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python cache (nanobot)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Nanobot runtime sessions
+nanobot/sessions/memory/
+nanobot/sessions/site/
+nanobot/sessions/tutor/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Serena tool cache
+.serena/cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp

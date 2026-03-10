@@ -1,0 +1,368 @@
+/* (c) Andrea Marro -- 13 Febbraio 2026 -- Tutti i diritti riservati. */
+/**
+ * ELAB Design System v4.0 — Modern Design Tokens
+ *
+ * Inspired by Claude.ai / ChatGPT clean interfaces.
+ * WCAG 2.1 AA: min 14px fonts, min 44px touch targets.
+ * 4px spacing grid, subtle shadows, generous radius.
+ */
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* GLOBAL DESIGN TOKENS                                           */
+/* ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* --- Colors: ELAB palette refined for modern UI --- */
+  --color-primary: #1E4D8C;
+  --color-primary-hover: #163A6B;
+  --color-primary-light: #E8EEF6;
+  --color-primary-subtle: rgba(30, 77, 140, 0.06);
+  --color-accent: #7CB342;
+  --color-accent-hover: #558B2F;
+  --color-accent-light: #E8F5E9;
+  --color-accent-subtle: rgba(124, 179, 66, 0.08);
+  --color-vol1: #7CB342;
+  --color-vol2: #E8941C;
+  --color-vol3: #E54B3D;
+  --color-danger: #DC2626;
+  --color-danger-light: #FEE2E2;
+  --color-warning: #EA580C;
+  --color-warning-light: #FFEDD5;
+  --color-success: #16A34A;
+  --color-success-light: #DCFCE7;
+
+  /* --- Neutrals: Modern gray scale (Claude.ai inspired) --- */
+  --color-bg: #FFFFFF;
+  --color-bg-secondary: #F7F7F8;
+  --color-bg-tertiary: #ECECF1;
+  --color-bg-canvas: #F0F2F5;
+  --color-border: #E5E5EA;
+  --color-border-hover: #D1D1D6;
+  --color-border-strong: #B0B0B8;
+  --color-text: #1A1A2E;
+  --color-text-secondary: #6B6B80;
+  --color-text-tertiary: #6B6B78;
+  --color-text-inverse: #FFFFFF;
+
+  /* --- Typography --- */
+  --font-sans: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Oswald', -apple-system, sans-serif;
+  --font-display: 'Oswald', 'Arial Narrow', Arial, sans-serif;
+  --font-mono: 'Fira Code', 'SF Mono', 'Consolas', monospace;
+  --font-size-xs: 14px;
+  --font-size-sm: 14px;
+  --font-size-base: 15px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 40px;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Spacing: 4px base grid --- */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* --- Borders & Radius --- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* --- Shadows: Subtle, modern (Claude.ai style) --- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.07), 0 4px 8px rgba(0, 0, 0, 0.03);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04);
+  --shadow-focus: 0 0 0 3px rgba(30, 77, 140, 0.15);
+  --shadow-focus-accent: 0 0 0 3px rgba(124, 179, 66, 0.15);
+
+  /* --- S95: Half-step spacing (Tailwind convention: 1.5 = 6px, 2.5 = 10px) --- */
+  --space-1-5: 6px;
+  --space-2-5: 10px;
+
+  /* --- S95: Accent shadows (ELAB Lime glow for build mode selector) --- */
+  --shadow-accent-xs: 0 1px 4px rgba(124, 179, 66, 0.2);
+  --shadow-accent-sm: 0 2px 8px rgba(124, 179, 66, 0.25);
+  --shadow-accent-md: 0 4px 12px rgba(124, 179, 66, 0.35);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-spring: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- Z-index scale --- */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-max: 9999;
+
+  /* --- Touch targets (WCAG minimum) --- */
+  --touch-min: 44px;
+
+  /* --- S100: Canonical responsive breakpoints (reference — CSS vars can't be used in @media) ---
+   * Mobile portrait:   < 600px
+   * Mobile landscape:  600px – 767px
+   * iPad portrait:     768px – 1023px
+   * iPad landscape:    1024px – 1365px
+   * Desktop:           ≥ 1366px
+   * Wide desktop:      ≥ 1440px
+   * RULE: All @media queries MUST use these exact values. No 900px, no 1200px, no 1400px.
+   */
+
+  /* --- Simulator-specific tokens (S76, expanded S77) --- */
+  --color-sim-bg: #FAFAF7;
+  --color-sim-bg-dark: #1E2530;
+  --color-sim-border: #E8E4DB;
+  --color-sim-text-muted: #767676;
+  --color-sim-scrollbar: #D4C9B0;
+  --color-code-bg: #1E1E2E;
+  --color-code-header: #181825;
+  --color-code-border: #313244;
+  --color-code-text: #CDD6F4;
+
+  /* --- S77: Button state tokens --- */
+  --color-btn-active-primary: #DCE6F4;
+  --color-btn-active-primary-dark: #D0DEF0;
+  --color-btn-active-success: #D6EAD8;
+  --color-btn-active-warning: #FDDCB5;
+  --color-btn-active-danger: #FCCFCF;
+  --color-btn-warning: #C2410C;
+  --color-btn-danger: #B91C1C;
+
+  /* --- S77: Text gray scale (standardized) --- */
+  --color-text-gray-900: #1A1A2E;
+  --color-text-gray-700: #333333;
+  --color-text-gray-600: #444444;
+  --color-text-gray-500: #555555;
+  --color-text-gray-400: #666666;
+  --color-text-gray-300: #767676;
+  --color-text-gray-200: #767676;
+  --color-text-gray-100: #C0C0C0;
+
+  /* --- S77: Error/diagnostic panel --- */
+  --color-error-bg: #1a0a0a;
+  --color-error-text: #F8A0A0;
+  --color-error-border: rgba(229, 75, 61, 0.3);
+  --color-error-header-bg: rgba(229, 75, 61, 0.12);
+
+  /* --- S77: Wire mode indicator --- */
+  --color-wire-mode-bg: rgba(255, 243, 224, 0.95);
+  --color-wire-mode-text: #E65100;
+
+  /* --- S77: Overlay/panel backgrounds --- */
+  --color-overlay-backdrop: rgba(0, 0, 0, 0.35);
+  --color-overlay-cream: #F5F3EE;
+  --color-overlay-cream-alt: rgba(250, 250, 247, 0.97);
+  --color-divider-subtle: #F0EDE6;
+
+  /* --- S77: Code editor extended --- */
+  --color-code-cursor: #F59E0B;
+  --color-code-selection: rgba(124, 179, 66, 0.2);
+  --color-code-line-active: rgba(124, 179, 66, 0.06);
+  --color-code-gutter: #45475A;
+  --color-code-comment: #6B7280;
+
+  /* --- S77: Animation/highlight --- */
+  --color-highlight-pulse: #E3F2FD;
+  --color-galileo-gradient-start: #7CB342;
+  --color-galileo-gradient-end: #558B2F;
+  --color-galileo-dark: #122F57;
+
+  /* --- S77: Brand exceptions (intentional non-palette) --- */
+  --color-youtube-red: #FF0000;
+  --color-youtube-red-hover: #CC0000;
+  --color-youtube-red-active: #AA0000;
+
+  /* --- S94: Status/feedback tokens --- */
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
+  --color-status-compiling: var(--color-vol2);
+  --color-muted: #888888;
+  --color-code-green: #A6E3A1;
+  --color-wire-endpoint: #A89878;
+  --color-current-normal: #FFD700;
+  --color-current-high: #FF8C00;
+  --color-current-short: #FF0000;
+
+  /* --- S77: Blockly/Scratch workspace --- */
+  --color-blockly-bg: #1E2530;
+  --color-blockly-toolbox: #161B22;
+  --color-blockly-flyout: #21262D;
+  --color-blockly-grid: #2a3040;
+  --color-blockly-text: #C9D1D9;
+  --color-blockly-scrollbar: #3A4050;
+
+  /* --- S77: Editor panel/tab tokens --- */
+  --color-editor-bg: #161B22;
+  --color-editor-active-bg: #1E2530;
+  --color-editor-border: #2D3748;
+  --color-tab-plotter: #3498DB;
+  --color-tab-scratch: #E67E22;
+  --color-code-gutter-bg: #151528;
+  --color-warning-panel-bg: #1a1a0a;
+  --color-warning-panel-border: #F1C40F;
+  --color-warning-panel-text: #F1C40F;
+
+  /* --- Legacy aliases (backward compat with existing CSS) --- */
+  --elab-navy: var(--color-primary);
+  --elab-navy-dark: var(--color-primary-hover);
+  --elab-navy-light: #4A7CC0;
+  --elab-lime: var(--color-accent);
+  --elab-lime-dark: var(--color-accent-hover);
+  --elab-lime-light: #8BC34A;
+  --elab-lime-soft: var(--color-accent-light);
+  --elab-lime-bg: #EDF5E0;
+  --elab-orange: var(--color-vol2);
+  --elab-red: var(--color-danger);
+  --elab-red-light: var(--color-danger-light);
+  --elab-mint: var(--color-accent-light);
+  --elab-bg: var(--color-bg-secondary);
+  --elab-card: var(--color-bg);
+  --elab-text: var(--color-text);
+  --elab-muted: var(--color-text-secondary);
+  --elab-border: var(--color-border);
+  --elab-radius: var(--radius-lg);
+  --elab-radius-sm: var(--radius-md);
+  --elab-shadow: var(--shadow-sm);
+  --elab-shadow-lg: var(--shadow-lg);
+  --elab-transition: var(--transition-base);
+  --bg-app: var(--color-bg-secondary);
+  --bg-sidebar: var(--color-bg);
+  --bg-canvas: var(--color-bg-canvas);
+  --bg-panel: var(--color-bg);
+  --bg-input: var(--color-bg-secondary);
+  --text-dark: var(--color-text);
+  --text-body: var(--color-text);
+  --text-secondary: var(--color-text-secondary);
+  --text-muted: var(--color-text-tertiary);
+  --text-light: var(--color-text-inverse);
+  --border-light: var(--color-border);
+  --border-medium: var(--color-border-hover);
+  --border-strong: var(--color-border-strong);
+  --font-body: var(--font-sans);
+  --font-code: var(--font-mono);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* SIMULATOR-SCOPED TOKENS (backward compat)                      */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.elab-simulator {
+  --elab-navy: var(--color-primary);
+  --elab-lime: var(--color-accent);
+  --elab-vol1: var(--color-vol1);
+  --elab-vol2: var(--color-vol2);
+  --elab-vol3: var(--color-vol3);
+  --elab-cream: #FFF8E7;
+  --elab-dark: var(--color-text);
+  --space-xs: var(--space-1);
+  --space-sm: var(--space-2);
+  --space-md: var(--space-4);
+  --space-lg: var(--space-6);
+  --space-xl: var(--space-8);
+  --font-xs: var(--font-size-sm);
+  --font-sm: var(--font-size-sm);
+  --font-md: var(--font-size-md);
+  --font-lg: var(--font-size-lg);
+  --font-xl: var(--font-size-xl);
+  --font-2xl: var(--font-size-2xl);
+  --touch-min: 44px;
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --radius-sm: var(--radius-xs);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --font-heading: var(--font-display);
+  --font-body: var(--font-sans);
+  --font-code: var(--font-mono);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ACCESSIBILITY — Reduced Motion                                  */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ACCESSIBILITY — Skip-to-content link (WCAG 2.4.1)              */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: var(--z-max);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  text-decoration: none;
+  transition: top var(--transition-fast);
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ACCESSIBILITY — Focus-visible ring (WCAG 2.4.7)                */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Global focus-visible for ALL interactive elements (keyboard only) */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Remove default outline on mouse click (preserve keyboard ring) */
+:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* SVG components — focus ring via CSS (tabindex="0" elements inside SVG) */
+.elab-simulator svg g[tabindex="0"]:focus-visible {
+  outline: none; /* SVG can't use outline */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+    --transition-slow: 0ms;
+    --transition-spring: 0ms;
+  }
+/* © Andrea Marro — 18/02/2026 */
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

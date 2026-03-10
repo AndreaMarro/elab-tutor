@@ -1,0 +1,312 @@
+/* (c) Andrea Marro -- 13 Febbraio 2026 -- Tutti i diritti riservati. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Oswald:wght@200..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Fira+Code:wght@300..700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ELAB BUILDER v4.0 — Modern Base Styles                         */
+/* Fonts: Inter (primary), Oswald (display), Fira Code (mono)     */
+/* Colors: Navy #1E4D8C, Green #558B2F                            */
+/* ═══════════════════════════════════════════════════════════════ */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* TYPOGRAPHY                                                      */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.font-oswald {
+    font-family: var(--font-display);
+}
+
+.elab-heading {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-primary);
+}
+
+.elab-subheading {
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.01em;
+    color: var(--color-text);
+}
+
+.elab-body {
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* BUTTONS — Modern, clean with generous padding                   */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.elab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+    min-height: var(--touch-min);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.elab-btn-navy {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.elab-btn-navy:hover {
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.elab-btn-lime {
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+}
+
+.elab-btn-lime:hover {
+    background: var(--color-accent-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.elab-btn-outline {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+}
+
+.elab-btn-outline:hover {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.elab-btn-ghost {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+.elab-btn-ghost:hover {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-hover);
+    color: var(--color-text);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* CARDS — Clean, modern with subtle shadows                       */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.elab-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+}
+
+.elab-card:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.elab-card-navy {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    border: none;
+}
+
+.elab-card-lime {
+    background: var(--color-accent-light);
+    border-color: var(--color-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* BADGES                                                          */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.elab-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-full);
+}
+
+.elab-badge-navy {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.elab-badge-lime {
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+}
+
+.elab-badge-outline {
+    background: transparent;
+    border: 1.5px solid var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* INPUT FIELDS                                                    */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.elab-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    transition: all var(--transition-fast);
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
+    min-height: var(--touch-min);
+}
+/* © Andrea Marro — 18/02/2026 */
+
+.elab-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
+}
+
+.elab-input::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* SCROLLBARS — Minimal, thin (Claude.ai style)                    */
+/* ═══════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border-hover);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-strong);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-hover) transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ANIMATIONS                                                      */
+/* ═══════════════════════════════════════════════════════════════ */
+
+@keyframes slide-in-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-in-left {
+    animation: slide-in-left 0.3s var(--transition-spring) forwards;
+}
+
+@keyframes slide-in-right {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-in-right {
+    animation: slide-in-right 0.3s var(--transition-spring) forwards;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.2s ease-out forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* CANVAS BACKGROUND                                               */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.canvas-bg {
+    background-color: var(--color-bg-canvas);
+    background-image:
+        linear-gradient(rgba(30, 77, 140, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 77, 140, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* PRINT                                                           */
+/* ═══════════════════════════════════════════════════════════════ */
+
+@media print {
+    body {
+        background: white !important;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* REDUCED MOTION                                                  */
+/* ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

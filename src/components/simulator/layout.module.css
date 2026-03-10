@@ -1,0 +1,335 @@
+/* Andrea Marro — 13/02/2026 */
+/* Layout + Galileo styles — Responsive Edition (UI-5) */
+/* Breakpoints: Mobile <600, Landscape 600-767, Tablet 768-1023, Desktop 1024-1439, Wide 1440+ */
+
+/* ─── Layout ───────────────────────────────────────────────── */
+
+.controlBarRow {
+  display: flex;
+  align-items: center;
+}
+
+/* S79: Proportional width with clamp() — editor scales with viewport */
+.codeEditorPanel {
+  width: clamp(240px, 30vw, 400px);
+  min-width: 160px;
+  max-width: 40%;
+  border-left: 1px solid var(--color-sim-border, #E8E4DB);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0.5;
+  transition: width var(--transition-base, 200ms ease), min-width var(--transition-base, 200ms ease);
+}
+
+.wireModeIndicator {
+  position: absolute;
+  top: var(--space-2, 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: 6px 14px;
+  background: var(--color-wire-mode-bg, rgba(255, 243, 224, 0.95));
+  border: 1px solid var(--color-vol2, #E8941C);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-sm, 14px);
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+  color: var(--color-wire-mode-text, #E65100);
+  font-weight: var(--font-weight-semibold, 600);
+  z-index: 25;
+  pointer-events: none;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* ─── Galileo Response Panel ───────────────────────────────── */
+
+.galileoBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.galileoPanel {
+  background: var(--color-sim-bg, #FAFAF7);
+  border: 2px solid var(--color-accent, #7CB342);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-xl, 0 12px 48px rgba(0, 0, 0, 0.2));
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  max-height: 80dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+}
+
+.galileoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  background: linear-gradient(135deg, rgba(124, 179, 66, 0.08), rgba(30, 77, 140, 0.04));
+  border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
+}
+
+.galileoHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.galileoHeaderTitle {
+  font-size: var(--font-size-md, 16px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-primary, #1E4D8C);
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.galileoCloseBtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--font-size-md, 16px);
+  color: var(--color-sim-text-muted, #999);
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border-radius: var(--radius-sm, 6px);
+  min-width: var(--touch-min, 44px);
+  min-height: var(--touch-min, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.galileoBody {
+  padding: var(--space-4, 16px) var(--space-5, 20px);
+  font-size: var(--font-size-sm, 14px);
+  color: var(--color-text, #333);
+  line-height: var(--line-height-relaxed, 1.6);
+  overflow: auto;
+  flex: 1;
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+}
+
+.galileoFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2, 8px) var(--space-4, 16px);
+  border-top: 1px solid var(--color-sim-border, #E8E4DB);
+  background: var(--color-overlay-cream, #F5F3EE);
+}
+
+.galileoRetryBtn {
+  border: 1px solid var(--color-accent, #7CB342);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-bg, #fff);
+  color: var(--color-accent, #7CB342);
+  cursor: pointer;
+  padding: var(--space-2, 8px) 14px;
+  font-size: var(--font-size-sm, 14px);
+  font-weight: var(--font-weight-semibold, 600);
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+  min-height: var(--touch-min, 44px);
+}
+
+/* S93: Removed .scratchModePanel, .scratchLayout, .scratchBlockly, .scratchCodePreview
+   Side-by-side layout replaced by full-size Blockly + ScratchCompileBar */
+
+/* S93+S96: Wider panel when in Blocchi/Scratch mode — Blockly needs more space */
+.codeEditorPanelScratch {
+  width: clamp(420px, 52vw, 720px);
+  min-width: 380px;
+  max-width: 62%;
+}
+
+/* S96: Fullscreen Scratch mode — covers entire right area */
+.codeEditorPanelScratchFullscreen {
+  position: fixed !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: 100dvh !important;
+  z-index: 300;
+  border-left: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile Portrait (0-599px)
+   Stack everything vertically, bottom sheet for panels
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 599px) {
+  .codeEditorPanel {
+    width: 100% !important;
+    min-width: 0;
+    max-width: none;
+    border-left: none;
+    border-top: 1px solid var(--color-sim-border, #E8E4DB);
+    max-height: 40vh;
+    max-height: 40dvh;
+  }
+
+  .wireModeIndicator {
+    font-size: 14px;
+    padding: 4px 10px;
+    gap: 6px;
+    top: 4px;
+  }
+
+  .galileoBackdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
+
+  .galileoPanel {
+    max-width: 100%;
+    max-height: 85vh;
+    max-height: 85dvh;
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+    animation: slideUpGalileo 300ms ease;
+  }
+
+  .galileoBody {
+    padding: 16px 16px;
+    font-size: 14px;
+  }
+
+  .galileoHeaderTitle {
+    font-size: 14px;
+  }
+}
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile Landscape (600-767px) — Slightly wider but still compact
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (min-width: 600px) and (max-width: 767px) {
+  /* S79: Proportional width for mobile landscape */
+  .codeEditorPanel {
+    width: clamp(180px, 30vw, 280px);
+    min-width: 160px;
+    max-width: 40%;
+  }
+
+  /* S93+S96: Scratch wider panel — mobile landscape */
+  .codeEditorPanelScratch {
+    width: clamp(300px, 50vw, 420px);
+    min-width: 260px;
+    max-width: 60%;
+  }
+
+  .wireModeIndicator {
+    font-size: 14px;
+    padding: 5px 12px;
+  }
+
+  .galileoPanel {
+    max-width: 500px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — iPad Portrait (768-1023px)
+   S77: code editor as slide-over panel from right
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* S79/S100: iPad portrait slide-over — proportional width + slide-in animation */
+  .codeEditorPanel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: clamp(280px, 40vw, 380px);
+    max-width: 50vw;
+    height: calc(100dvh - 44px);
+    max-height: none;
+    border-left: 2px solid var(--color-primary, #1E4D8C);
+    border-top: none;
+    z-index: 250;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    animation: slideInFromRight 200ms ease-out;
+  }
+
+  /* S93+S96: Scratch wider slide-over — iPad portrait */
+  .codeEditorPanelScratch {
+    width: clamp(420px, 60vw, 580px);
+    max-width: 70vw;
+  }
+
+  .galileoPanel {
+    max-width: 560px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — iPad Landscape (1024-1365px)
+   S77: narrower editor, canvas ≥70%
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1024px) and (max-width: 1365px) {
+  /* S79: iPad landscape — keep canvas ≥60%, editor proportional */
+  .codeEditorPanel {
+    width: clamp(200px, 22vw, 300px);
+    min-width: 160px;
+    max-width: 35%;
+  }
+
+  /* S93+S96: Scratch wider panel — iPad landscape */
+  .codeEditorPanelScratch {
+    width: clamp(400px, 45vw, 580px);
+    min-width: 360px;
+    max-width: 55%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — Wide (1440px+)
+   Generous spacing
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1440px) {
+  /* S79: Wide screens — generous but capped at 40% */
+  .codeEditorPanel {
+    width: clamp(300px, 22vw, 480px);
+    max-width: 40%;
+  }
+
+  /* S93+S96: Scratch wider panel — wide screens */
+  .codeEditorPanelScratch {
+    width: clamp(500px, 42vw, 750px);
+    max-width: 55%;
+  }
+}
+
+/* ─── Animations ───────────────────────────────────────────── */
+
+@keyframes slideUpGalileo {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* S100: Slide-in animation for code editor panel on iPad portrait */
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
