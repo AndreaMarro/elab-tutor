@@ -1124,6 +1124,8 @@ const SimulatorCanvas = ({
 
     // Touch/pen on empty canvas → pan (single finger)
     if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+      // S110+: Prevent text selection on iPad during pan/drag
+      e.preventDefault();
       // Task 5: Pin tooltip on tap (touch/pen) — check before pan
       if (experiment?.components && !compClickedRef.current) {
         const pinTolerance = Math.max(12, 20 / zoom);
@@ -1709,9 +1711,13 @@ const SimulatorCanvas = ({
     // Right-click handled by context menu handler
     if (e.button !== 0) return;
     // Palm rejection: ignore non-primary pointers, BUT allow if it is the only active touch
-    // (iOS may briefly report isPrimary=false for a valid single-finger touch)
-    if (!e.isPrimary && !(e.pointerType === 'touch' && activeTouchesRef.current.size <= 1)) return;
+    // (iOS may briefly report isPrimary=false for a valid single-finger touch or Apple Pencil)
+    if (!e.isPrimary && !((e.pointerType === 'touch' || e.pointerType === 'pen') && activeTouchesRef.current.size <= 1)) return;
     e.stopPropagation();
+    // S110+: Prevent text selection on iPad during component drag (touch + Apple Pencil)
+    if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+      e.preventDefault();
+    }
     compClickedRef.current = true; // Prevent background click from deselecting
     pointerTypeRef.current = e.pointerType || 'mouse';
 

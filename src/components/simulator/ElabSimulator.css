@@ -15,6 +15,10 @@
   overflow: hidden;
   border: 1px solid var(--color-sim-border, #E8E4DB);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
+  /* S110+: Prevent text selection on iPad during component drag */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .elab-simulator__layout {
@@ -194,11 +198,11 @@
     max-height: 140px;
     border-right: none;
     border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
     min-width: 0;
     resize: none;
     overflow-y: auto;
     overflow-x: hidden;
-/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   }
 
   .elab-simulator__main {
@@ -384,6 +388,10 @@
   height: 100%;
   overflow: hidden;
   touch-action: none; /* S74: prevent browser pinch-zoom on circuit canvas — custom pan/zoom */
+  /* S110+: Prevent text selection & callout on iPad during component drag/pan */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .elab-simulator-canvas svg {
@@ -391,6 +399,7 @@
   width: 100%;
   height: 100%;
 }
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 /* ═══════════════════════════════════════════════════════════════ */
 /* MODERN TOOLBAR — VS Code / Figma inspired                      */
@@ -399,7 +408,6 @@
 .toolbar {
   display: flex;
   align-items: center;
-/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   gap: 4px;
   padding: 6px 12px;
   background: var(--color-bg, #FFFFFF);
@@ -592,6 +600,7 @@
 
 .toolbar-btn--warning:active:not(:disabled) {
   background: var(--color-btn-active-warning, #FDDCB5);
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   color: var(--color-btn-warning, #C2410C);
   transform: scale(0.95);
 }
@@ -600,7 +609,6 @@
 .toolbar-btn--danger {
   color: var(--color-danger, #DC2626);
 }
-/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 @media (hover: hover) {
   .toolbar-btn--danger:hover:not(:disabled) {
@@ -793,6 +801,7 @@
     opacity: 0.8;
   }
 
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   50% {
     transform: scale(1.02);
     opacity: 1.0;
@@ -801,7 +810,6 @@
   25%,
   75% {
     transform: scale(0.98);
-/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
     opacity: 0.8;
   }
 }
@@ -994,6 +1002,7 @@
   background: var(--color-text, #1a1a2e);
   color: var(--color-text-inverse, #fff);
   padding: var(--space-1, 4px) 10px;
+/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   border-radius: var(--radius-sm, 6px);
   font-family: var(--font-mono, 'Fira Code', monospace);
   font-size: var(--font-size-sm, 14px);
@@ -1002,7 +1011,6 @@
   box-shadow: var(--shadow-md, 0 2px 8px rgba(0, 0, 0, 0.25));
   transform: translate(-50%, -100%);
   margin-top: -10px;
-/* © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   opacity: 0;
   animation: elab-pin-tooltip-in 120ms ease-out forwards;
 }
