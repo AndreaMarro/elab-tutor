@@ -124,69 +124,52 @@ function isValidDropPosition(compType, dropX, dropY, rot, experiment, ignoreComp
 const GRID_PITCH = 7.5;
 const snapToGridPoint = (val) => Math.round(val / GRID_PITCH) * GRID_PITCH;
 
-// ─── FIX P0-1: Snap-to-hole breadboard ───
-// Breadboard hole grid constants (from BreadboardHalf.jsx)
-const BB_HOLE_PITCH = 7.5;
-const BB_PAD_X = 14;
-const BB_PAD_Y = 10;
-const BB_BUS_ROW_H = 7.5;
-const BB_BUS_GAP = 5;
-const BB_SECTION_H = 5 * BB_HOLE_PITCH; // 37.5
-const BB_GAP_H = 10;
-const BB_Y_SECTION_TOP = BB_PAD_Y + BB_BUS_ROW_H * 2 + BB_BUS_GAP;
-const BB_Y_SECTION_BOT = BB_Y_SECTION_TOP + BB_SECTION_H + BB_GAP_H;
-const BB_COLS = 30;
-const BB_ROWS = 5;
-const SNAP_THRESHOLD = BB_HOLE_PITCH * 0.9; // snap within 90% of hole pitch (~6.75px)
+// ─── FIX S112: Snap-to-hole — uses registered component pins as source of truth ───
+// Works for ANY breadboard type (Half, Full, or future variants) by reading
+// the actual pin positions from the component registry instead of hardcoded constants.
+const BB_HOLE_PITCH_DEFAULT = 7.5; // fallback for threshold calc
+const SNAP_THRESHOLD_FACTOR = 0.9; // snap within 90% of hole pitch
+
+// Cache pin arrays per breadboard type to avoid re-fetching on every mouse move
+const _snapPinCache = {};
+function getSnapPins(bbType) {
+  if (_snapPinCache[bbType]) return _snapPinCache[bbType];
+  const registered = getComponent(bbType);
+  if (!registered || !registered.pins) return null;
+  // Filter out summary power pins (bus-plus/bus-minus without row number)
+  // that share position with bus-plus-1/bus-minus-1
+  const pins = registered.pins.filter(p => p.id !== 'bus-plus' && p.id !== 'bus-minus');
+  _snapPinCache[bbType] = pins;
+  return pins;
+}
+
+function getSnapThreshold(bbType) {
+  const registered = getComponent(bbType);
+  const holeSpacing = registered?.boardDimensions?.holeSpacing || BB_HOLE_PITCH_DEFAULT;
+  return holeSpacing * SNAP_THRESHOLD_FACTOR;
+}
 
 /**
  * Find the nearest breadboard hole to a given point.
+ * Uses the breadboard component's own pin definitions as the grid source of truth,
+ * ensuring snap positions always match rendered hole positions.
  * Returns { x, y, pinId } if within snap threshold, or null.
  */
-function snapToNearestHole(px, py, bbX, bbY) {
-  let bestDist = SNAP_THRESHOLD;
+function snapToNearestHole(px, py, bbX, bbY, bbType = 'breadboard-half') {
+  const pins = getSnapPins(bbType);
+  if (!pins) return null;
+
+  const threshold = getSnapThreshold(bbType);
+  let bestDist = threshold;
   let bestPos = null;
 
-  // Check top section (a-e) and bottom section (f-j)
-  const sections = [
-    { yStart: BB_Y_SECTION_TOP, labels: ['a', 'b', 'c', 'd', 'e'] },
-    { yStart: BB_Y_SECTION_BOT, labels: ['f', 'g', 'h', 'i', 'j'] },
-  ];
-
-  for (const section of sections) {
-    for (let row = 0; row < BB_ROWS; row++) {
-      const holeY = bbY + section.yStart + row * BB_HOLE_PITCH + BB_HOLE_PITCH / 2;
-      for (let col = 0; col < BB_COLS; col++) {
-        const holeX = bbX + BB_PAD_X + col * BB_HOLE_PITCH + BB_HOLE_PITCH / 2;
-        const dist = Math.hypot(px - holeX, py - holeY);
-        if (dist < bestDist) {
-          bestDist = dist;
-          bestPos = { x: holeX, y: holeY, pinId: `${section.labels[row]}${col + 1}` };
-        }
-      }
-    }
-  }
-
-  // Also check bus rails
-  const busYOffsets = [
-    BB_PAD_Y + BB_BUS_ROW_H / 2,                    // top plus
-    BB_PAD_Y + BB_BUS_ROW_H + BB_BUS_ROW_H / 2,     // top minus
-  ];
-  const botBusStart = BB_Y_SECTION_BOT + BB_SECTION_H + BB_BUS_GAP;
-  busYOffsets.push(botBusStart + BB_BUS_ROW_H / 2);   // bot plus
-  busYOffsets.push(botBusStart + BB_BUS_ROW_H + BB_BUS_ROW_H / 2); // bot minus
-
-  const busRailNames = ['bus-top-plus', 'bus-top-minus', 'bus-bot-plus', 'bus-bot-minus'];
-  for (let bi = 0; bi < busYOffsets.length; bi++) {
-    const busY = busYOffsets[bi];
-    for (let col = 0; col < BB_COLS; col++) {
-      const holeX = bbX + BB_PAD_X + col * BB_HOLE_PITCH + BB_HOLE_PITCH / 2;
-      const holeY = bbY + busY;
-      const dist = Math.hypot(px - holeX, py - holeY);
-      if (dist < bestDist) {
-        bestDist = dist;
-        bestPos = { x: holeX, y: holeY, pinId: `${busRailNames[bi]}-${col + 1}` };
-      }
+  for (const pin of pins) {
+    const holeX = bbX + pin.x;
+    const holeY = bbY + pin.y;
+    const dist = Math.hypot(px - holeX, py - holeY);
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestPos = { x: holeX, y: holeY, pinId: pin.id };
     }
   }
 
@@ -203,27 +186,25 @@ function snapToNearestHole(px, py, bbX, bbY) {
  * never actually landed on holes. Now we test each pin's absolute position and snap
  * the component so the best-matching pin lands perfectly on its nearest hole.
  */
-function snapComponentToHole(compType, newX, newY, bbX, bbY) {
+function snapComponentToHole(compType, newX, newY, bbX, bbY, bbType = 'breadboard-half') {
   const registered = getComponent(compType);
   if (!registered || !registered.pins || registered.pins.length === 0) {
-    // Fallback: snap origin directly (for components without pin defs)
-    return snapToNearestHole(newX, newY, bbX, bbY);
+    return snapToNearestHole(newX, newY, bbX, bbY, bbType);
   }
 
-  let bestDist = SNAP_THRESHOLD * 2.5; // Wider threshold since we check all pins
+  const threshold = getSnapThreshold(bbType);
+  let bestDist = threshold * 2.5; // generous initial bound — inner snapToNearestHole limits actual catch
   let bestResult = null;
 
   for (const pin of registered.pins) {
-    // Absolute position of this pin if component is at (newX, newY)
     const pinAbsX = newX + pin.x;
     const pinAbsY = newY + pin.y;
 
-    const snap = snapToNearestHole(pinAbsX, pinAbsY, bbX, bbY);
+    const snap = snapToNearestHole(pinAbsX, pinAbsY, bbX, bbY, bbType);
     if (snap) {
       const dist = Math.hypot(pinAbsX - snap.x, pinAbsY - snap.y);
       if (dist < bestDist) {
         bestDist = dist;
-        // Component origin = hole position - pin offset
         bestResult = {
           x: snap.x - pin.x,
           y: snap.y - pin.y,
@@ -1259,7 +1240,7 @@ const SimulatorCanvas = ({
         );
         for (const bb of breadboards) {
           const bbPos = experiment.layout?.[bb.id] || { x: 0, y: 0 };
-          const snap = snapComponentToHole(draggedComp.type, newX, newY, bbPos.x, bbPos.y);
+          const snap = snapComponentToHole(draggedComp.type, newX, newY, bbPos.x, bbPos.y, bb.type);
           if (snap) {
             newX = snap.x;
             newY = snap.y;

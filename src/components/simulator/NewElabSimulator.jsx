@@ -2844,11 +2844,9 @@ const NewElabSimulator = ({
         let newPinAssignments = null;
         for (const bb of breadboards) {
           const bbPos = mergedExperiment.layout?.[bb.id] || { x: 0, y: 0 };
-          const result = computeAutoPinAssignment(componentId, comp.type, newPos.x, newPos.y, bb.id, bbPos);
+          const result = computeAutoPinAssignment(componentId, comp.type, newPos.x, newPos.y, bb.id, bbPos, bb.type);
           if (result) {
             newPinAssignments = result.pinAssignments;
-            // S89: Update component position to match electrical mapping (visual = electrical)
-            // computeAutoPinAssignment returns the exact position where pins land on holes
             setCustomLayout(prev => ({
               ...prev,
               [componentId]: {
@@ -3038,12 +3036,12 @@ const NewElabSimulator = ({
 
       for (const bb of breadboards) {
         const bbPos = mergedExperiment.layout?.[bb.id] || { x: 0, y: 0 };
-        const result = computeAutoPinAssignment(id, type, dropX, dropY, bb.id, bbPos);
+        const result = computeAutoPinAssignment(id, type, dropX, dropY, bb.id, bbPos, bb.type);
         if (result) {
           finalX = result.componentX;
           finalY = result.componentY;
           newPinAssignments = result.pinAssignments;
-          snappedBbId = bb.id; // S109: Capture parent breadboard ID
+          snappedBbId = bb.id;
           break;
         }
       }

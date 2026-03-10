@@ -15,7 +15,7 @@
 
 import { getComponent } from '../components/registry';
 
-// Breadboard geometry constants (must match BreadboardHalf.jsx)
+// BreadboardHalf geometry constants (default for backward compat)
 const BB_PITCH = 7.5;
 const BB_PAD_X = 14;
 const BB_PAD_Y_CONST = 10;
@@ -30,6 +30,24 @@ const BB_TOP_ROWS = ['a','b','c','d','e'];
 const BB_BOT_ROWS = ['f','g','h','i','j'];
 const BB_SNAP_RADIUS = BB_PITCH * 4; // max distance — increased from 3x to 4x for iPad touch precision
 
+// S112: BreadboardFull geometry (vertical layout, 63 rows × 5+5 cols)
+const BBF_HOLE_SPACING = 7;
+const BBF_ROWS = 63;
+const BBF_BOARD_PADDING = 8;
+const BBF_BUS_OFFSET = 6;
+const BBF_MAIN_OFFSET_X = 14;
+const BBF_GAP = 10;
+const BBF_COLS_PER_SIDE = 5;
+const BBF_SECTION_LEFT_X = BBF_BOARD_PADDING + BBF_MAIN_OFFSET_X; // 22
+const BBF_SECTION_RIGHT_X = BBF_SECTION_LEFT_X + BBF_COLS_PER_SIDE * BBF_HOLE_SPACING + BBF_GAP; // 67
+const BBF_BUS_PAD_LEFT = 2;
+const BBF_BUS_COL_W = 7;
+const BBF_BUS_PLUS_X = BBF_BOARD_PADDING + BBF_BUS_PAD_LEFT; // 10
+const BBF_BUS_MINUS_X = BBF_BOARD_PADDING + BBF_BUS_PAD_LEFT + BBF_BUS_COL_W; // 17
+const BBF_LEFT_LABELS = ['a','b','c','d','e'];
+const BBF_RIGHT_LABELS = ['f','g','h','i','j'];
+const BBF_SNAP_RADIUS = BBF_HOLE_SPACING * 4;
+
 /**
  * Convert SVG-absolute coords to breadboard-local coords
  */
@@ -38,8 +56,8 @@ function svgToBBLocal(svgX, svgY, bbX, bbY) {
 }
 
 /**
- * Find the nearest hole to a local position.
- * Returns { row, col, holeId, cx, cy } or null if outside board.
+ * Find the nearest hole to a local position on a BreadboardHalf.
+ * Returns { row, col, holeId, cx, cy, section } or null if outside board.
  */
 export function findNearestHole(lx, ly) {
   let best = null;
@@ -72,6 +90,62 @@ export function findNearestHole(lx, ly) {
   }
 
   if (bestDist > BB_SNAP_RADIUS) return null;
+  return best;
+}
+
+/**
+ * S112: Find the nearest hole on a BreadboardFull (vertical layout, 63 rows × 5+5 cols + bus).
+ * Returns { row, col, holeId, cx, cy, section } or null if outside board.
+ */
+export function findNearestHoleFull(lx, ly) {
+  let best = null;
+  let bestDist = Infinity;
+  const yStart = BBF_BOARD_PADDING + BBF_BUS_OFFSET; // 14
+
+  // Left section (a-e): 5 columns × 63 rows
+  for (let c = 0; c < BBF_COLS_PER_SIDE; c++) {
+    const cx = BBF_SECTION_LEFT_X + c * BBF_HOLE_SPACING;
+    for (let r = 0; r < BBF_ROWS; r++) {
+      const cy = yStart + r * BBF_HOLE_SPACING;
+      const d = Math.hypot(lx - cx, ly - cy);
+      if (d < bestDist) {
+        bestDist = d;
+        best = { row: BBF_LEFT_LABELS[c], rowIdx: c, col: r, holeId: `${BBF_LEFT_LABELS[c]}${r + 1}`, cx, cy, section: 'left' };
+      }
+    }
+  }
+
+  // Right section (f-j): 5 columns × 63 rows
+  for (let c = 0; c < BBF_COLS_PER_SIDE; c++) {
+    const cx = BBF_SECTION_RIGHT_X + c * BBF_HOLE_SPACING;
+    for (let r = 0; r < BBF_ROWS; r++) {
+      const cy = yStart + r * BBF_HOLE_SPACING;
+      const d = Math.hypot(lx - cx, ly - cy);
+      if (d < bestDist) {
+        bestDist = d;
+        best = { row: BBF_RIGHT_LABELS[c], rowIdx: c, col: r, holeId: `${BBF_RIGHT_LABELS[c]}${r + 1}`, cx, cy, section: 'right' };
+      }
+    }
+  }
+
+  // Bus columns (plus and minus): 63 rows each
+  for (let r = 0; r < BBF_ROWS; r++) {
+    const cy = yStart + r * BBF_HOLE_SPACING;
+    // Plus bus
+    const dplu = Math.hypot(lx - BBF_BUS_PLUS_X, ly - cy);
+    if (dplu < bestDist) {
+      bestDist = dplu;
+      best = { row: 'bus-plus', rowIdx: 0, col: r, holeId: `bus-plus-${r + 1}`, cx: BBF_BUS_PLUS_X, cy, section: 'bus' };
+    }
+    // Minus bus
+    const dmin = Math.hypot(lx - BBF_BUS_MINUS_X, ly - cy);
+    if (dmin < bestDist) {
+      bestDist = dmin;
+      best = { row: 'bus-minus', rowIdx: 0, col: r, holeId: `bus-minus-${r + 1}`, cx: BBF_BUS_MINUS_X, cy, section: 'bus' };
+    }
+  }
+
+  if (bestDist > BBF_SNAP_RADIUS) return null;
   return best;
 }
 
@@ -124,6 +198,7 @@ export function analyzePinLayout(pins) {
 function computeTO220Assignment(compId, pins, anchor, bbId, bbPos) {
   const pinAssignments = {};
   const holePositions = [];
+// © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati
   
   // Sort pins by X position (left to right)
   const sortedPins = [...pins].sort((a, b) => a.x - b.x);
@@ -185,7 +260,101 @@ function isTO220Style(pins) {
   return spanX > BB_PITCH && spanY > BB_PITCH;
 }
 
-export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, bbPos) {
+/**
+ * S112: Auto-pin assignment for BreadboardFull (vertical layout, 63 rows × 5+5 cols).
+ * In BreadboardFull, the axes are swapped vs BreadboardHalf:
+ *   - "horizontal" components span column letters (a→b→c) in same row number
+ *   - "vertical" components span row numbers (1→2→3) in same column letter
+ */
+function computeAutoPinAssignmentFull(compId, compType, dropX, dropY, bbId, bbPos) {
+  const registered = getComponent(compType);
+  if (!registered || !registered.pins || registered.pins.length === 0) return null;
+
+  const pins = registered.pins;
+  const { orientation, pinSpans } = analyzePinLayout(pins);
+  const yStart = BBF_BOARD_PADDING + BBF_BUS_OFFSET;
+
+  // Find anchor using closest pin to any hole
+  let anchor = null;
+  let anchorPinId = null;
+  let bestAnchorDist = Infinity;
+  for (const pin of pins) {
+    const { lx, ly } = svgToBBLocal(dropX + pin.x, dropY + pin.y, bbPos.x, bbPos.y);
+    const hole = findNearestHoleFull(lx, ly);
+    if (hole) {
+      const dist = Math.hypot(lx - hole.cx, ly - hole.cy);
+      if (dist < bestAnchorDist) {
+        bestAnchorDist = dist;
+        anchor = hole;
+        anchorPinId = pin.id;
+      }
+    }
+  }
+  if (!anchor) return null;
+
+  // Skip bus holes for pin assignment (components don't snap to bus)
+  if (anchor.section === 'bus') return null;
+
+  const anchorPinSpan = pinSpans.find(ps => ps.id === anchorPinId);
+  const anchorOffset = anchorPinSpan ? anchorPinSpan.offset : 0;
+
+  const pinAssignments = {};
+  const holePositions = [];
+
+  // anchor.row = column label (a-e or f-j), anchor.col = row index (0-based)
+  const colLabel = anchor.row;
+  const isLeft = BBF_LEFT_LABELS.includes(colLabel);
+  const labels = isLeft ? BBF_LEFT_LABELS : BBF_RIGHT_LABELS;
+  const colIdx = labels.indexOf(colLabel);
+  const sectionX = isLeft ? BBF_SECTION_LEFT_X : BBF_SECTION_RIGHT_X;
+
+  if (orientation === 'horizontal') {
+    // Pins span across column letters (a→b→c) in the same row number
+    const baseColIdx = colIdx - anchorOffset;
+    const rowIdx = anchor.col;
+
+    for (const ps of pinSpans) {
+      const ci = baseColIdx + ps.offset;
+      if (ci < 0 || ci >= BBF_COLS_PER_SIDE) return null;
+      const holeId = `${labels[ci]}${rowIdx + 1}`;
+      const holeCx = sectionX + ci * BBF_HOLE_SPACING;
+      const holeCy = yStart + rowIdx * BBF_HOLE_SPACING;
+      pinAssignments[`${compId}:${ps.id}`] = `${bbId}:${holeId}`;
+      holePositions.push({ cx: holeCx, cy: holeCy, pinId: ps.id });
+    }
+  } else {
+    // Vertical: pins span across row numbers (1→2→3) in the same column letter
+    const anchorRowIdx = anchor.col;
+    const baseRowIdx = anchorRowIdx - anchorOffset;
+    const holeCx = sectionX + colIdx * BBF_HOLE_SPACING;
+
+    for (const ps of pinSpans) {
+      const rowIdx = baseRowIdx + ps.offset;
+      if (rowIdx < 0 || rowIdx >= BBF_ROWS) return null;
+      const holeId = `${colLabel}${rowIdx + 1}`;
+      const holeCy = yStart + rowIdx * BBF_HOLE_SPACING;
+      pinAssignments[`${compId}:${ps.id}`] = `${bbId}:${holeId}`;
+      holePositions.push({ cx: holeCx, cy: holeCy, pinId: ps.id });
+    }
+  }
+
+  if (holePositions.length === 0) return null;
+
+  const firstPin = pins.find(p => p.id === holePositions[0].pinId);
+  if (!firstPin) return null;
+
+  const componentX = bbPos.x + holePositions[0].cx - firstPin.x;
+  const componentY = bbPos.y + holePositions[0].cy - firstPin.y;
+
+  return { componentX, componentY, pinAssignments };
+}
+
+export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, bbPos, bbType = 'breadboard-half') {
+  // S112: Route to BreadboardFull-specific logic if needed
+  if (bbType === 'breadboard-full') {
+    return computeAutoPinAssignmentFull(compId, compType, dropX, dropY, bbId, bbPos);
+  }
+
   const registered = getComponent(compType);
   if (!registered || !registered.pins || registered.pins.length === 0) return null;
 
@@ -193,22 +362,16 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
 
   // Special case: TO-220 style components (MOSFET) - pins in horizontal row
   if (isTO220Style(pins)) {
-    // Use leftmost pin position to find anchor (not component origin)
     const sortedPins = [...pins].sort((a, b) => a.x - b.x);
     const refPin = sortedPins[0];
     const { lx, ly } = svgToBBLocal(dropX + refPin.x, dropY + refPin.y, bbPos.x, bbPos.y);
     const anchor = findNearestHole(lx, ly);
-// © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati
     if (!anchor) return null;
     return computeTO220Assignment(compId, pins, anchor, bbId, bbPos);
   }
 
   const { orientation, pinSpans } = analyzePinLayout(pins);
 
-  // S89: Find anchor using the CLOSEST PIN to any hole
-  // This matches snapComponentToHole() behavior in SimulatorCanvas,
-  // preventing visual/electrical position mismatch that caused
-  // components to appear on one hole set but connect to another.
   let anchor = null;
   let anchorPinId = null;
   let bestAnchorDist = Infinity;
@@ -226,26 +389,23 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
   }
   if (!anchor) return null;
 
-  // Find the anchor pin's offset in pinSpans to adjust row/col mapping
-  // so that the anchor pin maps to the anchor hole, and other pins are offset correctly
   const anchorPinSpan = pinSpans.find(ps => ps.id === anchorPinId);
   const anchorOffset = anchorPinSpan ? anchorPinSpan.offset : 0;
 
   const pinAssignments = {};
-  const holePositions = []; // Track assigned hole positions for component centering
+  const holePositions = [];
 
   if (orientation === 'horizontal') {
-    // Pins span across columns on the same row
-    // Adjust base column so anchor pin maps to anchor hole
     const baseCol = anchor.col - anchorOffset;
     const anchorRow = anchor.row;
     const rowLabels = anchor.section === 'top' ? BB_TOP_ROWS : BB_BOT_ROWS;
+// © Andrea Marro — 10/03/2026 — ELAB Tutor — Tutti i diritti riservati
     const rowIdx = rowLabels.indexOf(anchorRow);
     const sectionY = anchor.section === 'top' ? BB_Y_SEC_TOP : BB_Y_SEC_BOT;
 
     for (const ps of pinSpans) {
       const col = baseCol + ps.offset;
-      if (col < 0 || col >= BB_COLS) return null; // Doesn't fit
+      if (col < 0 || col >= BB_COLS) return null;
       const holeId = `${anchorRow}${col + 1}`;
       const holeCx = BB_PAD_X + col * BB_PITCH + BB_PITCH / 2;
       const holeCy = sectionY + rowIdx * BB_PITCH + BB_PITCH / 2;
@@ -253,22 +413,18 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
       holePositions.push({ cx: holeCx, cy: holeCy, pinId: ps.id });
     }
   } else {
-    // Vertical: pins span across rows in the same column
     const anchorCol = anchor.col;
     const rowLabels = anchor.section === 'top' ? BB_TOP_ROWS : BB_BOT_ROWS;
     const sectionY = anchor.section === 'top' ? BB_Y_SEC_TOP : BB_Y_SEC_BOT;
     const anchorRowIdx = rowLabels.indexOf(anchor.row);
-    // Adjust base row so anchor pin maps to anchor hole
     const baseRowIdx = anchorRowIdx - anchorOffset;
 
     for (const ps of pinSpans) {
       const rowIdx = baseRowIdx + ps.offset;
       if (rowIdx < 0 || rowIdx >= 5) {
-        // Pin goes off this section — try crossing the gap bidirectionally
         if (anchor.section === 'top' && rowIdx >= 5) {
-          // Top → Bottom gap crossing
           const botRowIdx = rowIdx - 5;
-          if (botRowIdx < 0 || botRowIdx >= 5) return null; // Too big
+          if (botRowIdx < 0 || botRowIdx >= 5) return null;
           const holeId = `${BB_BOT_ROWS[botRowIdx]}${anchorCol + 1}`;
           const holeCx = BB_PAD_X + anchorCol * BB_PITCH + BB_PITCH / 2;
           const holeCy = BB_Y_SEC_BOT + botRowIdx * BB_PITCH + BB_PITCH / 2;
@@ -276,9 +432,8 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
           holePositions.push({ cx: holeCx, cy: holeCy, pinId: ps.id });
           continue;
         } else if (anchor.section === 'bot' && rowIdx < 0) {
-          // Bottom → Top gap crossing (bidirectional)
           const topRowIdx = rowIdx + 5;
-          if (topRowIdx < 0 || topRowIdx >= 5) return null; // Too big
+          if (topRowIdx < 0 || topRowIdx >= 5) return null;
           const holeId = `${BB_TOP_ROWS[topRowIdx]}${anchorCol + 1}`;
           const holeCx = BB_PAD_X + anchorCol * BB_PITCH + BB_PITCH / 2;
           const holeCy = BB_Y_SEC_TOP + topRowIdx * BB_PITCH + BB_PITCH / 2;
@@ -286,7 +441,7 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
           holePositions.push({ cx: holeCx, cy: holeCy, pinId: ps.id });
           continue;
         }
-        return null; // Doesn't fit
+        return null;
       }
       const holeId = `${rowLabels[rowIdx]}${anchorCol + 1}`;
       const holeCx = BB_PAD_X + anchorCol * BB_PITCH + BB_PITCH / 2;
@@ -355,4 +510,9 @@ export {
   BB_PITCH, BB_PAD_X, BB_Y_SEC_TOP, BB_Y_SEC_BOT,
   BB_COLS, BB_TOP_ROWS, BB_BOT_ROWS, BB_SECTION_H,
   BB_GAP_H, BB_SNAP_RADIUS,
+  // S112: BreadboardFull constants
+  BBF_HOLE_SPACING, BBF_ROWS, BBF_COLS_PER_SIDE,
+  BBF_SECTION_LEFT_X, BBF_SECTION_RIGHT_X,
+  BBF_BUS_PLUS_X, BBF_BUS_MINUS_X,
+  BBF_LEFT_LABELS, BBF_RIGHT_LABELS, BBF_SNAP_RADIUS,
 };
