@@ -454,55 +454,10 @@ function getEdgeLane(pinY, bbY) {
  *   - 4-point path → orthogonal-with-rounded-corners rendering in buildRoutedPath
  */
 function routeToBreadboardPin(offPos, bbPinPos, bbX, bbY) {
-  // Only apply smart L-shape routing for battery wires
-  if (offPos.compType !== 'battery9v') {
-    return [offPos, bbPinPos];
-  }
-
-  const isPositive = (offPos.pinId || '').includes('positive');
-  const LANE_SEP = 14; // Guaranteed separation between + and − wire lanes (≥10px requirement)
-
-  const dx = bbPinPos.x - offPos.x;
-  const dy = bbPinPos.y - offPos.y;
-  const absDx = Math.abs(dx);
-  const absDy = Math.abs(dy);
-
-  // If endpoints are very close, direct 2-point Bézier is sufficient
-  if (absDx + absDy < 30) {
-    return [offPos, bbPinPos];
-  }
-
-  if (absDx >= absDy) {
-    // ── Horizontal dominant: L-shape with vertical riser ──
-    // Use bbX (shared breadboard left) as anchor — bbPinPos.x differs per wire (bus columns vary)
-    // so using bbX guarantees exactly LANE_SEP separation between + and − risers
-    const sign = dx > 0 ? 1 : -1;
-    const riserX = isPositive
-      ? bbX - LANE_SEP * sign        // Positive: 1× LANE_SEP from BB edge toward battery
-      : bbX - LANE_SEP * 2 * sign;   // Negative: 2× LANE_SEP from BB edge toward battery
-
-    return [
-      offPos,
-      { x: riserX, y: offPos.y },      // Horizontal exit from battery
-      { x: riserX, y: bbPinPos.y },     // Vertical riser to bus rail level
-      bbPinPos                           // Horizontal approach to bus pin
-    ];
-  } else {
-    // ── Vertical dominant: L-shape with horizontal riser ──
-    // Use bbY (shared breadboard top) as anchor — bbPinPos.y differs per wire (bus rails 7.5px apart)
-    // so using bbY guarantees exactly LANE_SEP separation between + and − risers
-    const sign = dy > 0 ? 1 : -1;
-    const riserY = isPositive
-      ? bbY - LANE_SEP * sign        // Positive: 1× LANE_SEP from BB top toward battery
-      : bbY - LANE_SEP * 2 * sign;   // Negative: 2× LANE_SEP from BB top toward battery
-
-    return [
-      offPos,
-      { x: offPos.x, y: riserY },       // Vertical exit from battery
-      { x: bbPinPos.x, y: riserY },      // Horizontal riser to bus pin column
-      bbPinPos                            // Vertical approach to bus pin
-    ];
-  }
+  // S112: Direct 2-point Bézier for ALL off-board to bus wires.
+  // Polarity-based sag in buildRoutedPath naturally separates + and − wires.
+  // The old 4-point L-shape lane system created wide roundabout arcs.
+  return [offPos, bbPinPos];
 }
 
 /**
@@ -567,7 +522,9 @@ function deduplicateColinear(points) {
 
 /**
  * Ensures wires route AROUND components ("di fianco") instead of over them.
- * Uses A* Pathfinding on a 7.5px grid for true Manhattan orthogonal routing.
+ * Uses A* Pathfinding on a 7.5px grid for Manhattan orthogonal routing.
+ * S112: Tuned for more direct paths — reduced turn penalty, tighter obstacle
+ * boxes, fast-path skip when direct line is obstacle-free.
  */
 function applyComponentAvoidance(waypoints, components, layout) {
   if (waypoints.length < 2) return waypoints;
@@ -582,15 +539,16 @@ function applyComponentAvoidance(waypoints, components, layout) {
     .map(c => {
       const pos = layout[c.id];
       if (!pos) return null;
-      let w = 28; // Increased radius to completely avoid component footprints
-      let h = (c.type === 'nano-r4') ? 60 : 38; // Taller evasion box
+      // S112: Tighter boxes — component body only, minimal clearance
+      let w = 18; // Was 28 — reduced to actual component footprint + small margin
+      let h = (c.type === 'nano-r4') ? 50 : 28; // Was 60/38 — tighter fit
 
-      // Expand by 1 grid cell for neat clearance without absurd detours
-      const minX = Math.floor((pos.x - w) / GRID) - 1;
-      const maxX = Math.ceil((pos.x + w) / GRID) + 1;
-      const minY = Math.floor((pos.y - h) / GRID) - 1;
-      const maxY = Math.ceil((pos.y + h) / GRID) + 1;
-      return { minX, maxX, minY, maxY };
+      // S112: No grid expansion — the box width already provides sufficient clearance
+      const minX = Math.floor((pos.x - w) / GRID);
+      const maxX = Math.ceil((pos.x + w) / GRID);
+      const minY = Math.floor((pos.y - h) / GRID);
+      const maxY = Math.ceil((pos.y + h) / GRID);
+      return { minX, maxX, minY, maxY, cx: pos.x, cy: pos.y };
     })
     .filter(Boolean);
 
@@ -601,6 +559,30 @@ function applyComponentAvoidance(waypoints, components, layout) {
       if (gx >= obs.minX && gx <= obs.maxX && gy >= obs.minY && gy <= obs.maxY) return true;
     }
     return false;
+  };
+
+  // S112: Fast-path — check if direct line between endpoints is obstacle-free.
+  // Uses Bresenham-style ray march on grid to test line-of-sight.
+  const directPathClear = (sx, sy, ex, ey) => {
+    const dx = Math.abs(ex - sx);
+    const dy = Math.abs(ey - sy);
+    const stepX = sx < ex ? 1 : -1;
+    const stepY = sy < ey ? 1 : -1;
+    // March along both axes, checking each grid cell the line crosses
+    let x = sx, y = sy;
+    let err = dx - dy;
+    const maxSteps = dx + dy + 2;
+    for (let i = 0; i < maxSteps; i++) {
+      if (x === ex && y === ey) return true;
+      // Skip checking start and end cells (always valid)
+      if (!((x === sx && y === sy) || (x === ex && y === ey))) {
+        if (isBlocked(x, y)) return false;
+      }
+      const e2 = 2 * err;
+      if (e2 > -dy) { err -= dy; x += stepX; }
+      if (e2 < dx) { err += dx; y += stepY; }
+    }
+    return true;
   };
 
   const getNeighbors = (gx, gy) => [
@@ -621,6 +603,12 @@ function applyComponentAvoidance(waypoints, components, layout) {
     const sy = Math.round(start.y / GRID);
     const ex = Math.round(end.x / GRID);
     const ey = Math.round(end.y / GRID);
+
+    // S112: Skip A* if direct path is clear — most common case for short wires
+    if (directPathClear(sx, sy, ex, ey)) {
+      result.push(end);
+      continue;
+    }
 
     // Unblock the start and end cells explicitly so the router can reach them
     const blocked = (gx, gy) => {
@@ -656,13 +644,14 @@ function applyComponentAvoidance(waypoints, components, layout) {
         const nHash = hash(n.x, n.y);
         if (closedSet.has(nHash)) continue;
 
-        // Path cost + turn penalty (prefer straight lines)
+        // S112: Reduced turn penalty from 5.0 → 1.5
+        // Lower penalty allows shorter paths with more corners instead of long detours
         let cost = 1.0;
         if (current.parent) {
           const dirCurrent = { dx: current.x - current.parent.x, dy: current.y - current.parent.y };
           const dirNext = { dx: n.x - current.x, dy: n.y - current.y };
           if (dirCurrent.dx !== dirNext.dx || dirCurrent.dy !== dirNext.dy) {
-            cost += 5.0; // Heavy turn penalty encourages clean L-shapes instead of staircases
+            cost += 1.5; // Was 5.0 — gentler turn penalty, prefers shorter total path
           }
         }
 
