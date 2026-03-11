@@ -81,7 +81,7 @@
 .elab-simulator__bottom-panel {
   border-top: 1px solid var(--color-sim-border, #E8E4DB);
   background: var(--color-sim-bg-dark, #1E2530);
-  color: #E5E7EB;
+  color: var(--color-code-text-light);
   max-height: 200px;
   overflow-y: auto;
   font-family: var(--font-mono, 'Fira Code', monospace);
@@ -674,7 +674,7 @@
 
 @media (hover: hover) {
   .toolbar-btn--wire.toolbar-btn--active:hover:not(:disabled) {
-    background: #D4ECD6;
+    background: var(--color-wire-active-hover);
   }
 }
 
@@ -694,7 +694,7 @@
 
 @media (hover: hover) {
   .toolbar-btn--galileo:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--color-galileo-gradient-end, #558B2F) 0%, #457324 100%);
+    background: linear-gradient(135deg, var(--color-galileo-gradient-end, #558B2F) 0%, var(--color-galileo-gradient-pressed-start) 100%);
     color: var(--color-text-inverse, #FFFFFF);
     box-shadow: var(--shadow-accent-md);
     transform: translateY(-1px);
@@ -702,7 +702,7 @@
 }
 
 .toolbar-btn--galileo:active:not(:disabled) {
-  background: linear-gradient(135deg, #457324 0%, #365C1C 100%);
+  background: linear-gradient(135deg, var(--color-galileo-gradient-pressed-start) 0%, var(--color-galileo-gradient-pressed-end) 100%);
   color: var(--color-text-inverse, #FFFFFF);
   transform: translateY(0) scale(0.98);
   box-shadow: var(--shadow-accent-xs);
@@ -748,7 +748,7 @@
 
 @media (hover: hover) {
   .toolbar-btn--hints:hover:not(:disabled) {
-    background: #689F38;
+    background: var(--color-hints-hover);
     color: var(--color-text-inverse, #FFFFFF);
     transform: translateY(-1px);
   }
@@ -1032,7 +1032,7 @@
 }
 
 .elab-pin-tooltip__detail {
-  color: #aab;
+  color: var(--color-pin-detail);
   font-size: var(--font-size-sm, 14px);
   /* S76: bumped from 13px to 14px for WCAG */
   font-weight: var(--font-weight-normal, 400);

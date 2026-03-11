@@ -16,9 +16,9 @@ const VOL_COLORS = {
 };
 
 const VOL_BG = {
-  1: 'linear-gradient(135deg, #f1f8e9, #e8f5e9)',
-  2: 'linear-gradient(135deg, #fff8e1, #fff3e0)',
-  3: 'linear-gradient(135deg, #fce4ec, #ffebee)',
+  1: 'var(--color-vol1-gradient, linear-gradient(135deg, #f1f8e9, #e8f5e9))',
+  2: 'var(--color-vol2-gradient, linear-gradient(135deg, #fff8e1, #fff3e0))',
+  3: 'var(--color-vol3-gradient, linear-gradient(135deg, #fce4ec, #ffebee))',
 };
 
 const VOL_PATTERN = {

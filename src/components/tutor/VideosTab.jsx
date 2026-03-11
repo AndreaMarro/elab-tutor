@@ -62,12 +62,12 @@ export default function VideosTab({
                                     style={{ flex: 1 }}
                                 />
                                 {onSendToGalileo && (
-                                    <div style={{ padding: '8px 12px', background: '#f8fafc', borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'center' }}>
+                                    <div style={{ padding: '8px 12px', background: 'var(--color-bg-hover)', borderTop: '1px solid var(--color-border)', display: 'flex', justifyContent: 'center' }}>
                                         <button
                                             onClick={() => onSendToGalileo(`Sto guardando un video YouTube (ID: ${currentVideoId}). Puoi aiutarmi a capire l'argomento trattato?`)}
                                             style={{
-                                                background: 'none', border: '1px solid #1E4D8C', borderRadius: 8,
-                                                color: '#1E4D8C', padding: '6px 16px', fontSize: '0.875rem',
+                                                background: 'none', border: '1px solid var(--color-primary)', borderRadius: 8,
+                                                color: 'var(--color-primary)', padding: '6px 16px', fontSize: '0.875rem',
                                                 cursor: 'pointer', fontFamily: "'Open Sans', sans-serif", fontWeight: 600,
                                                 minHeight: 44,
                                             }}

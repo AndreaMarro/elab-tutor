@@ -34,6 +34,13 @@ export default function CanvasTab({
     // Track drawing state via ref (avoids stale closure in pointer handlers)
     const isDrawingRef = useRef(false);
 
+    // ── Undo / Redo history (ImageData snapshots) ───
+    const MAX_HISTORY = 30;
+    const historyStack = useRef([]);
+    const redoStack = useRef([]);
+    const [canUndo, setCanUndo] = useState(false);
+    const [canRedo, setCanRedo] = useState(false);
+
     // Canvas local state
     const [isDrawing, setIsDrawing] = useState(false);
     const [brushColor, setBrushColor] = useState('#1E4D8C');
@@ -188,18 +195,76 @@ export default function CanvasTab({
         lastPosRef.current = { x, y };
     }, [brushSize, brushColor, isEraser, getPressure]);
 
+    // ── Push current canvas state to history ─────────
+    const pushHistory = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas || canvas.width === 0) return;
+        try {
+            const ctx = canvas.getContext('2d');
+            historyStack.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            if (historyStack.current.length > MAX_HISTORY) historyStack.current.shift();
+            redoStack.current = [];
+            setCanUndo(true);
+            setCanRedo(false);
+        } catch(_) {}
+    }, []);
+
+    // ── Undo ───────────────────────────────────────
+    const undo = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas || historyStack.current.length === 0) return;
+        const ctx = canvas.getContext('2d');
+        // Save current state to redo stack
+        redoStack.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        // Restore previous state
+        const prev = historyStack.current.pop();
+        ctx.putImageData(prev, 0, 0);
+        setCanUndo(historyStack.current.length > 0);
+        setCanRedo(true);
+    }, []);
+
+    // ── Redo ───────────────────────────────────────
+    const redo = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas || redoStack.current.length === 0) return;
+        const ctx = canvas.getContext('2d');
+        // Save current state to history
+        historyStack.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        // Restore next state
+        const next = redoStack.current.pop();
+        ctx.putImageData(next, 0, 0);
+        setCanUndo(true);
+        setCanRedo(redoStack.current.length > 0);
+    }, []);
+
+    // ── Keyboard shortcuts (Ctrl+Z / Ctrl+Y) ──────
+    useEffect(() => {
+        const handleKey = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+                e.preventDefault(); undo();
+            } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+                e.preventDefault(); redo();
+            }
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [undo, redo]);
+
     const stopDrawing = useCallback((e) => {
         if (e && canvasRef.current) {
             try { canvasRef.current.releasePointerCapture(e.pointerId); } catch(_) {}
         }
+        // Push to history when a stroke completes
+        if (isDrawingRef.current) pushHistory();
         lastPosRef.current = null;
         isDrawingRef.current = false;
         setIsDrawing(false);
-    }, []);
+    }, [pushHistory]);
 
     const clearCanvas = () => {
         const ctx = ctxRef.current;
         if (!ctx) return;
+        pushHistory();
         ctx.fillStyle = '#FFFFFF';
         const dpr = window.devicePixelRatio || 1;
         ctx.fillRect(0, 0, canvasRef.current.width / dpr, canvasRef.current.height / dpr);
@@ -215,6 +280,7 @@ export default function CanvasTab({
 
     const insertTextOnCanvas = () => {
         if (!textInput.trim() || !textPosition) return;
+        pushHistory();
         const ctx = ctxRef.current;
         ctx.font = `${brushSize * 6}px 'Open Sans', sans-serif`;
         ctx.fillStyle = brushColor;
@@ -277,6 +343,12 @@ export default function CanvasTab({
                     </button>
                     <button className={`tool-btn ${isEraser ? 'active' : ''}`} onClick={() => { const w = !isEraser; setIsEraser(w); setCanvasTool('brush'); if (ctxRef.current) ctxRef.current.strokeStyle = w ? '#FFFFFF' : brushColor; }} title="Gomma">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+                    </button>
+                    <button className={`tool-btn${!canUndo ? ' disabled' : ''}`} onClick={undo} disabled={!canUndo} title="Annulla (Ctrl+Z)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                    </button>
+                    <button className={`tool-btn${!canRedo ? ' disabled' : ''}`} onClick={redo} disabled={!canRedo} title="Ripeti (Ctrl+Y)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/></svg>
                     </button>
                 </div>
 

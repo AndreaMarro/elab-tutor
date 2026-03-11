@@ -3,6 +3,14 @@ import * as Blockly from 'blockly';
 import { arduinoGenerator, generateArduinoCode } from './scratchGenerator';
 import './scratchBlocks';
 
+// ─── Blockly 12.4.1 safe-disposal patch ─────────────────────────────────
+// Blockly 12.4.1 has an InsertionMarkerPreviewer bug: workspace.dispose()
+// crashes in removeTypedBlock (undefined type map) and removeTopBlock
+// (throws on missing block). Fixed via postinstall patch in
+// scripts/patch-blockly.js — guards both methods at source level.
+// workspace.dispose() is now safe to call.
+// ─────────────────────────────────────────────────────────────────────────
+
 // ─── ELAB Custom Theme ───────────────────────────────────────
 // Palette: Navy #1E4D8C, Lime #7CB342, Bg #1E2530, Grid #2a3040
 const ELAB_THEME = Blockly.Theme.defineTheme('elab', {
@@ -207,10 +215,10 @@ const ELAB_BLOCKLY_CSS = `
   font-family: var(--font-sans, 'Open Sans', sans-serif) !important;
   font-size: 12px !important;
   font-weight: 500 !important;
-  fill: #fff !important;
+  fill: var(--color-text-inverse, #fff) !important;
 }
 .blocklyEditableText > .blocklyText {
-  fill: #fff !important;
+  fill: var(--color-text-inverse, #fff) !important;
 }
 .blocklyEditableText > rect {
   fill: rgba(255,255,255,0.15) !important;
@@ -222,7 +230,7 @@ const ELAB_BLOCKLY_CSS = `
 .blocklyHtmlInput {
   font-family: var(--font-mono, 'Fira Code', monospace) !important;
   font-size: 14px !important;
-  background: #0D1117 !important;
+  background: var(--color-blockly-input-bg, #0D1117) !important;
   color: var(--color-blockly-text, #C9D1D9) !important;
   border: 1px solid var(--color-accent, #7CB342) !important;
   border-radius: 4px !important;
@@ -308,6 +316,12 @@ const ScratchEditor = ({ onChange, initialCode }) => {
     useEffect(() => {
         if (!blocklyDiv.current) return;
 
+        // S161.4: Clean up any orphaned Blockly DOM from previous failed mount
+        // (prevents InsertionMarker crash cascade on ErrorBoundary retry)
+        while (blocklyDiv.current.firstChild) {
+            blocklyDiv.current.removeChild(blocklyDiv.current.firstChild);
+        }
+
         workspaceRef.current = Blockly.inject(blocklyDiv.current, {
             toolbox: TOOLBOX_XML,
             theme: ELAB_THEME,
@@ -389,7 +403,8 @@ const ScratchEditor = ({ onChange, initialCode }) => {
             resizeObserver?.disconnect();
             if (workspace) {
                 workspace.removeChangeListener(onChangeHandler);
-                workspace.dispose();
+                // Safe to dispose — patched by scripts/patch-blockly.js
+                try { workspace.dispose(); } catch (_) { /* ignore residual */ }
             }
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps

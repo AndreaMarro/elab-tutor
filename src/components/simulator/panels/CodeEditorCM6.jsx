@@ -296,30 +296,30 @@ const elabDarkTheme = EditorView.theme({
 
 // ── ELAB syntax highlighting (Arduino/C++ colors) ──────────────────
 const elabHighlightStyle = HighlightStyle.define([
-  { tag: tags.keyword, color: '#C792EA', fontWeight: '600' },
-  { tag: tags.controlKeyword, color: '#C792EA', fontWeight: '600' },
-  { tag: tags.moduleKeyword, color: '#C792EA', fontWeight: '600' },
-  { tag: tags.operatorKeyword, color: '#C792EA' },
-  { tag: tags.typeName, color: '#FFCB6B' },
-  { tag: tags.function(tags.variableName), color: '#82AAFF' },
-  { tag: tags.definition(tags.function(tags.variableName)), color: '#82AAFF', fontWeight: '600' },
-  { tag: tags.string, color: '#C3E88D' },
-  { tag: tags.character, color: '#C3E88D' },
-  { tag: tags.comment, color: '#6B7280', fontStyle: 'italic' },
-  { tag: tags.lineComment, color: '#6B7280', fontStyle: 'italic' },
-  { tag: tags.blockComment, color: '#6B7280', fontStyle: 'italic' },
-  { tag: tags.number, color: '#F78C6C' },
-  { tag: tags.integer, color: '#F78C6C' },
-  { tag: tags.float, color: '#F78C6C' },
-  { tag: tags.bool, color: '#F78C6C' },
-  { tag: tags.operator, color: '#89DDFF' },
-  { tag: tags.punctuation, color: '#89DDFF' },
-  { tag: tags.bracket, color: '#89DDFF' },
-  { tag: tags.macroName, color: '#E54B3D', fontWeight: '600' },
-  { tag: tags.processingInstruction, color: '#E54B3D', fontWeight: '600' },
-  { tag: tags.meta, color: '#E54B3D' },
-  { tag: tags.variableName, color: '#E5E7EB' },
-  { tag: tags.propertyName, color: '#82AAFF' },
+  { tag: tags.keyword, color: 'var(--color-syntax-keyword, #C792EA)', fontWeight: '600' },
+  { tag: tags.controlKeyword, color: 'var(--color-syntax-keyword, #C792EA)', fontWeight: '600' },
+  { tag: tags.moduleKeyword, color: 'var(--color-syntax-keyword, #C792EA)', fontWeight: '600' },
+  { tag: tags.operatorKeyword, color: 'var(--color-syntax-keyword, #C792EA)' },
+  { tag: tags.typeName, color: 'var(--color-syntax-type, #FFCB6B)' },
+  { tag: tags.function(tags.variableName), color: 'var(--color-syntax-function, #82AAFF)' },
+  { tag: tags.definition(tags.function(tags.variableName)), color: 'var(--color-syntax-function, #82AAFF)', fontWeight: '600' },
+  { tag: tags.string, color: 'var(--color-syntax-string, #C3E88D)' },
+  { tag: tags.character, color: 'var(--color-syntax-string, #C3E88D)' },
+  { tag: tags.comment, color: 'var(--color-syntax-comment, #6B7280)', fontStyle: 'italic' },
+  { tag: tags.lineComment, color: 'var(--color-syntax-comment, #6B7280)', fontStyle: 'italic' },
+  { tag: tags.blockComment, color: 'var(--color-syntax-comment, #6B7280)', fontStyle: 'italic' },
+  { tag: tags.number, color: 'var(--color-syntax-number, #F78C6C)' },
+  { tag: tags.integer, color: 'var(--color-syntax-number, #F78C6C)' },
+  { tag: tags.float, color: 'var(--color-syntax-number, #F78C6C)' },
+  { tag: tags.bool, color: 'var(--color-syntax-number, #F78C6C)' },
+  { tag: tags.operator, color: 'var(--color-syntax-operator, #89DDFF)' },
+  { tag: tags.punctuation, color: 'var(--color-syntax-operator, #89DDFF)' },
+  { tag: tags.bracket, color: 'var(--color-syntax-operator, #89DDFF)' },
+  { tag: tags.macroName, color: 'var(--color-syntax-macro, #E54B3D)', fontWeight: '600' },
+  { tag: tags.processingInstruction, color: 'var(--color-syntax-macro, #E54B3D)', fontWeight: '600' },
+  { tag: tags.meta, color: 'var(--color-syntax-macro, #E54B3D)' },
+  { tag: tags.variableName, color: 'var(--color-syntax-variable, #E5E7EB)' },
+  { tag: tags.propertyName, color: 'var(--color-syntax-function, #82AAFF)' },
 ]);
 
 // ── Error line decoration (red background) ─────────────────────────
@@ -530,9 +530,9 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
             >? Spiega</button>
           )}
         </div>
-        <span style={{ ...codeEditorStyles.status, color: statusColor }}>
+        <span role="status" aria-live="polite" style={{ ...codeEditorStyles.status, color: statusColor }}>
           {compilationStatus === 'compiling' && (
-            <span style={{ marginRight: 4, animation: 'spin 1s linear infinite', display: 'inline-block' }}>&#x2699;</span>
+            <span style={{ marginRight: 4, animation: 'spin 1s linear infinite', display: 'inline-block' }} aria-hidden="true">&#x2699;</span>
           )}
           {statusText}
         </span>
@@ -543,7 +543,7 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
 
       {/* Warning panel (yellow) */}
       {compilationWarnings && (
-        <div style={{ ...codeEditorStyles.errorPanel, borderTop: '2px solid var(--color-warning-panel-border, #F1C40F)', background: 'var(--color-warning-panel-bg, #1a1a0a)' }}>
+        <div role="status" aria-live="polite" style={{ ...codeEditorStyles.errorPanel, borderTop: '2px solid var(--color-warning-panel-border, #F1C40F)', background: 'var(--color-warning-panel-bg, #1a1a0a)' }}>
           <div style={codeEditorStyles.errorHeader}>
             <span style={{ color: 'var(--color-warning-panel-text, #F1C40F)', fontWeight: 700, fontSize: 14 }}>
               &#x26A0; Avvisi
@@ -557,7 +557,7 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
 
       {/* Error panel (red) */}
       {showErrors && compilationErrors && (
-        <div style={codeEditorStyles.errorPanel}>
+        <div role="alert" aria-live="assertive" style={codeEditorStyles.errorPanel}>
           <div style={codeEditorStyles.errorHeader}>
             <span style={{ color: VOL3_RED, fontWeight: 700, fontSize: 14 }}>
               &#x274C; Errori di compilazione

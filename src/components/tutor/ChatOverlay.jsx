@@ -26,10 +26,10 @@ function formatMarkdown(text) {
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         // Markdown links: [text](url) — only http/https
         .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-            '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#1E4D8C;text-decoration:underline">$1</a>')
+            '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--color-primary);text-decoration:underline">$1</a>')
         // Raw URLs (not already inside href="...") — only http/https
         .replace(/(?<!href="|">)(https?:\/\/[^\s<)"]+)/g,
-            '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#1E4D8C;text-decoration:underline">$1</a>')
+            '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:var(--color-primary);text-decoration:underline">$1</a>')
         .replace(/\n/g, '<br/>');
     // Step 3: defense-in-depth — strip any residual event handlers or dangerous tags
     html = html.replace(/\bon\w+\s*=/gi, '');
@@ -79,8 +79,8 @@ function ensureKeyframes() {
             font-size: 0.88em;
         }
         .galileo-bubble-content pre {
-            background: #1e1e2e;
-            color: #cdd6f4;
+            background: var(--color-code-bg);
+            color: var(--color-code-text);
             padding: 12px;
             border-radius: 8px;
             overflow-x: auto;
@@ -102,7 +102,7 @@ function ensureKeyframes() {
             width: 5px;
         }
         .galileo-messages-scroll::-webkit-scrollbar-thumb {
-            background: #D0D0D0;
+            background: var(--color-border-hover);
             border-radius: 3px;
         }
         .galileo-messages-scroll::-webkit-scrollbar-track {
@@ -121,20 +121,20 @@ function TypingIndicator() {
         }}>
             <div style={{
                 width: '28px', height: '28px', borderRadius: '50%',
-                background: '#1E4D8C', display: 'flex', alignItems: 'center',
+                background: 'var(--color-primary)', display: 'flex', alignItems: 'center',
                 justifyContent: 'center', flexShrink: 0, marginTop: '2px',
             }}>
                 <span style={{ fontSize: '14px', lineHeight: 1 }} role="img" aria-hidden="true">G</span>
             </div>
             <div style={{
                 display: 'flex', gap: '5px', padding: '14px 18px',
-                background: '#F7F7F8', borderRadius: '16px 16px 16px 4px',
+                background: 'var(--color-bg-secondary)', borderRadius: '16px 16px 16px 4px',
                 width: 'fit-content', alignItems: 'center',
             }}>
                 {[0, 1, 2].map(i => (
                     <div key={i} style={{
                         width: '8px', height: '8px', borderRadius: '50%',
-                        background: '#9B9BA8',
+                        background: 'var(--color-chat-thinking)',
                         animation: `galileoBounce 1.4s ease-in-out ${i * 0.16}s infinite`,
                     }} />
                 ))}
@@ -154,10 +154,10 @@ function SuggestionChip({ text, onClick }) {
             style={{
                 padding: '8px 16px',
                 borderRadius: '20px',
-                background: hovered ? '#E8EBF0' : '#F0F0F5',
-                border: '1px solid ' + (hovered ? '#C5C8D0' : '#E5E5E5'),
+                background: hovered ? 'var(--color-chat-hover-bg)' : 'var(--color-bg-tertiary)',
+                border: '1px solid ' + (hovered ? 'var(--color-chat-hover-border)' : 'var(--color-border)'),
                 fontSize: '14px',
-                color: hovered ? '#1E4D8C' : '#4A4A5A',
+                color: hovered ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                 cursor: 'pointer',
                 transition: 'all 150ms ease',
                 fontFamily: "'Open Sans', -apple-system, sans-serif",
@@ -309,7 +309,7 @@ export default React.memo(function ChatOverlay({
                 <div style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     padding: '14px 18px',
-                    background: '#1E4D8C', color: 'white',
+                    background: 'var(--color-primary)', color: 'var(--color-text-inverse)',
                     cursor: 'pointer',
                 }} onClick={() => setMinimized(false)}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -325,7 +325,7 @@ export default React.memo(function ChatOverlay({
                         }}>
                             <span style={{
                                 width: '7px', height: '7px', borderRadius: '50%',
-                                background: '#7CB342', display: 'inline-block',
+                                background: 'var(--color-accent)', display: 'inline-block',
                             }} />
                             Online
                         </span>
@@ -354,14 +354,14 @@ export default React.memo(function ChatOverlay({
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000,
         width: '100vw', height: '100vh', maxWidth: '100vw', maxHeight: '100vh',
         transform: 'none', resize: 'none',
-        background: '#FFFFFF', display: 'flex', flexDirection: 'column',
+        background: 'var(--color-bg)', display: 'flex', flexDirection: 'column',
         fontFamily: "'Open Sans', -apple-system, sans-serif",
     } : {
         position: 'fixed',
         bottom: 0, right: 0, transform: `translate(${position.x}px, ${position.y}px)`,
         width: `${panelWidth}px`, height: `${panelHeight}px`,
         maxWidth: '100vw', maxHeight: '100vh',
-        background: '#FFFFFF', borderRadius: '16px',
+        background: 'var(--color-bg)', borderRadius: '16px',
         boxShadow: isDragging ? '0 16px 48px rgba(0,0,0,0.2)' : '0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)',
         display: 'flex', flexDirection: 'column',
         zIndex: 400, transition: isDragging ? 'none' : 'width 300ms ease, height 300ms ease',
@@ -383,7 +383,7 @@ export default React.memo(function ChatOverlay({
                 style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     padding: '14px 18px',
-                    background: '#1E4D8C', color: 'white',
+                    background: 'var(--color-primary)', color: 'var(--color-text-inverse)',
                     borderRadius: isFullscreen ? '0' : '16px 16px 0 0',
                     flexShrink: 0,
                     cursor: isFullscreen ? 'default' : (isDragging ? 'grabbing' : 'grab'),
@@ -403,7 +403,7 @@ export default React.memo(function ChatOverlay({
                         }}>
                             <span style={{
                                 width: '6px', height: '6px', borderRadius: '50%',
-                                background: '#7CB342', display: 'inline-block',
+                                background: 'var(--color-accent)', display: 'inline-block',
                             }} />
                             {isLoading ? 'Sta scrivendo...' : 'Sono qui'}
                         </span>
@@ -463,14 +463,14 @@ export default React.memo(function ChatOverlay({
                 justifyContent: 'space-between',
                 gap: '10px',
                 padding: '10px 16px',
-                background: '#EAF1FB',
-                borderBottom: '1px solid #D4E0F4',
+                background: 'var(--color-chat-suggestion-bg)',
+                borderBottom: '1px solid var(--color-chat-suggestion-border)',
                 flexShrink: 0,
             }}>
                 <span style={{
                     fontSize: '14px',
                     fontWeight: 700,
-                    color: '#1E4D8C',
+                    color: 'var(--color-primary)',
                     letterSpacing: '0.2px',
                     fontFamily: 'Open Sans, sans-serif',
                 }}>
@@ -485,9 +485,9 @@ export default React.memo(function ChatOverlay({
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
-                        border: socraticMode ? '1px solid #6DA830' : '1px solid #B9C6D9',
-                        background: socraticMode ? '#7CB342' : '#E5E7EB',
-                        color: socraticMode ? '#FFFFFF' : '#4B5563',
+                        border: socraticMode ? '1px solid var(--color-accent-hover)' : '1px solid var(--color-border-hover)',
+                        background: socraticMode ? 'var(--color-accent)' : 'var(--color-border)',
+                        color: socraticMode ? 'var(--color-text-inverse)' : 'var(--color-text-secondary)',
                         borderRadius: '999px',
                         padding: '4px 10px 4px 4px',
                         minHeight: '44px',
@@ -501,7 +501,7 @@ export default React.memo(function ChatOverlay({
                         width: '20px',
                         height: '20px',
                         borderRadius: '50%',
-                        background: '#FFFFFF',
+                        background: 'var(--color-bg)',
                         display: 'inline-block',
                         boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
                     }} />
@@ -516,7 +516,7 @@ export default React.memo(function ChatOverlay({
                 style={{
                     flex: 1, overflowY: 'auto', padding: '16px 16px 8px',
                     display: 'flex', flexDirection: 'column', gap: '4px',
-                    background: '#FFFFFF',
+                    background: 'var(--color-bg)',
                     scrollBehavior: 'smooth',
                 }}
             >
@@ -525,11 +525,11 @@ export default React.memo(function ChatOverlay({
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: '6px',
                         padding: '8px 12px', margin: '0 0 8px',
-                        background: '#FFF8E1', borderRadius: '10px',
-                        border: '1px solid #FFE082', fontSize: '14px',
-                        color: '#795548', lineHeight: '1.4',
+                        background: 'var(--color-chat-socratic-bg)', borderRadius: '10px',
+                        border: '1px solid var(--color-chat-socratic-border)', fontSize: '14px',
+                        color: 'var(--color-chat-socratic-text)', lineHeight: '1.4',
                     }}>
-                        <span style={{ flexShrink: 0, fontWeight: 700, color: '#E8941C' }}>{'\u26A0'}</span>
+                        <span style={{ flexShrink: 0, fontWeight: 700, color: 'var(--color-vol2)' }}>{'\u26A0'}</span>
                         <span>Galileo è un assistente AI e può commettere errori. Verifica sempre le informazioni importanti con il tuo insegnante.</span>
                     </div>
                 )}
@@ -555,7 +555,7 @@ export default React.memo(function ChatOverlay({
                 <div style={{
                     display: 'flex', gap: '8px', flexWrap: 'wrap',
                     padding: '8px 16px 4px',
-                    borderTop: '1px solid #F0F0F0',
+                    borderTop: '1px solid var(--color-chat-footer-border)',
                     overflowX: 'auto',
                 }}>
                     {/* Show dynamic quickActions — first 3 by default, all when expanded */}
@@ -570,10 +570,10 @@ export default React.memo(function ChatOverlay({
                                     style={{
                                         padding: '8px 14px',
                                         borderRadius: '20px',
-                                        background: actionsExpanded ? '#E0E7FF' : '#F0F0F5',
-                                        border: '1px solid #D0D0DD',
+                                        background: actionsExpanded ? 'var(--color-chat-actions-bg)' : 'var(--color-bg-tertiary)',
+                                        border: '1px solid var(--color-chat-actions-border)',
                                         fontSize: '14px',
-                                        color: '#1E4D8C',
+                                        color: 'var(--color-primary)',
                                         cursor: 'pointer',
                                         fontFamily: "'Open Sans', -apple-system, sans-serif",
                                         lineHeight: '1.4',
@@ -599,8 +599,8 @@ export default React.memo(function ChatOverlay({
             <div style={{
                 display: 'flex', alignItems: 'flex-end', gap: '8px',
                 padding: '12px 16px 14px',
-                borderTop: '1px solid #E5E5E5',
-                background: '#FAFAFA',
+                borderTop: '1px solid var(--color-border)',
+                background: 'var(--color-chat-footer-bg)',
                 flexShrink: 0,
             }}>
                 {/* Text input */}
@@ -614,7 +614,7 @@ export default React.memo(function ChatOverlay({
                     rows={1}
                     style={{
                         flex: 1,
-                        border: '1px solid #E5E5E5',
+                        border: '1px solid var(--color-border)',
                         borderRadius: '12px',
                         padding: '11px 14px',
                         fontSize: '15px',
@@ -625,13 +625,13 @@ export default React.memo(function ChatOverlay({
                         maxHeight: '120px',
                         lineHeight: '1.45',
                         transition: 'border-color 200ms',
-                        background: isLoading ? '#F5F5F5' : '#FFFFFF',
-                        color: '#1A1A2E',
+                        background: isLoading ? 'var(--color-bg-secondary)' : 'var(--color-bg)',
+                        color: 'var(--color-text)',
                         boxSizing: 'border-box',
                         overflowY: 'auto',
                     }}
-                    onFocus={(e) => { e.target.style.borderColor = '#1E4D8C'; e.target.style.boxShadow = '0 0 0 3px rgba(30,77,140,0.08)'; }}
-                    onBlur={(e) => { e.target.style.borderColor = '#E5E5E5'; e.target.style.boxShadow = 'none'; }}
+                    onFocus={(e) => { e.target.style.borderColor = 'var(--color-primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(30,77,140,0.08)'; }}
+                    onBlur={(e) => { e.target.style.borderColor = 'var(--color-border)'; e.target.style.boxShadow = 'none'; }}
                 />
 
                 {/* Screenshot button (always visible) */}
@@ -643,9 +643,9 @@ export default React.memo(function ChatOverlay({
                         title="Cattura screenshot"
                         style={{
                             width: '44px', height: '44px', borderRadius: '10px',
-                            background: isLoading ? '#E5E5E5' : '#F0F4FF',
-                            color: isLoading ? '#999' : '#1E4D8C',
-                            border: '1px solid ' + (isLoading ? '#DDD' : '#C5D4EE'),
+                            background: isLoading ? 'var(--color-border)' : 'var(--color-chat-camera-bg)',
+                            color: isLoading ? 'var(--color-muted)' : 'var(--color-primary)',
+                            border: '1px solid ' + (isLoading ? 'var(--color-border)' : 'var(--color-chat-camera-border)'),
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             cursor: isLoading ? 'not-allowed' : 'pointer',
                             transition: 'all 150ms',
@@ -669,7 +669,7 @@ export default React.memo(function ChatOverlay({
                     aria-label="Invia messaggio"
                     style={{
                         width: '44px', height: '44px', borderRadius: '10px',
-                        background: (!input.trim() || isLoading) ? '#C5C8D0' : (sendHovered ? '#163A6D' : '#1E4D8C'),
+                        background: (!input.trim() || isLoading) ? 'var(--color-chat-disabled-bg)' : (sendHovered ? 'var(--color-primary-hover)' : 'var(--color-primary)'),
                         color: 'white', border: 'none',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         cursor: (!input.trim() || isLoading) ? 'not-allowed' : 'pointer',
@@ -689,8 +689,8 @@ export default React.memo(function ChatOverlay({
             {/* ======== AI DISCLAIMER FOOTER ======== */}
             <div style={{
                 textAlign: 'center', padding: '4px 16px 6px',
-                fontSize: '14px', color: '#9CA3AF',
-                background: '#FAFAFA', borderTop: '1px solid #F0F0F0',
+                fontSize: '14px', color: 'var(--color-text-secondary)',
+                background: 'var(--color-chat-footer-bg)', borderTop: '1px solid var(--color-chat-footer-border)',
                 lineHeight: '1.3', flexShrink: 0,
             }}>
                 Le risposte di Galileo sono generate dall'AI e potrebbero non essere accurate.
@@ -776,9 +776,9 @@ function MessageBubble({ msg, onRetry }) {
             {!isUser && (
                 <div style={{
                     width: '28px', height: '28px', borderRadius: '50%',
-                    background: '#1E4D8C', display: 'flex', alignItems: 'center',
+                    background: 'var(--color-primary)', display: 'flex', alignItems: 'center',
                     justifyContent: 'center', flexShrink: 0, marginTop: '2px',
-                    color: 'white', fontSize: '14px', fontWeight: 700,
+                    color: 'var(--color-text-inverse)', fontSize: '14px', fontWeight: 700,
                     fontFamily: 'Oswald, sans-serif',
                 }}>
                     G
@@ -810,18 +810,18 @@ function MessageBubble({ msg, onRetry }) {
                     style={{
                         padding: '12px 16px',
                         background: isError
-                            ? '#FFF0F0'
-                            : (isUser ? '#1E4D8C' : '#F7F7F8'),
+                            ? 'var(--color-chat-msg-error-bg)'
+                            : (isUser ? 'var(--color-primary)' : 'var(--color-bg-secondary)'),
                         color: isError
-                            ? '#D32F2F'
-                            : (isUser ? '#FFFFFF' : '#1A1A2E'),
+                            ? 'var(--color-chat-msg-error-text)'
+                            : (isUser ? 'var(--color-text-inverse)' : 'var(--color-text)'),
                         borderRadius: isUser
                             ? '16px 16px 4px 16px'
                             : '16px 16px 16px 4px',
                         fontSize: '15px',
                         lineHeight: '1.55',
                         wordBreak: 'break-word',
-                        border: isError ? '1px solid #FFCDD2' : 'none',
+                        border: isError ? '1px solid var(--color-chat-msg-error-border)' : 'none',
                         // Code block styling via nested CSS (handled by ElabTutorV4.css .v4-bubble fallback)
                     }}
                     className="galileo-bubble-content"
@@ -836,8 +836,8 @@ function MessageBubble({ msg, onRetry }) {
                         {msg._executedActions.map((action, i) => (
                             <span key={i} style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '3px',
-                                padding: '2px 8px', background: '#E8F5E9',
-                                borderRadius: '10px', fontSize: '14px', color: '#2E7D32',
+                                padding: '2px 8px', background: 'var(--color-chat-action-tag-bg)',
+                                borderRadius: '10px', fontSize: '14px', color: 'var(--color-chat-action-tag-text)',
                                 fontWeight: 600, lineHeight: '1.4',
                                 animation: 'galileoFadeInUp 0.3s ease',
                             }}>
@@ -856,14 +856,14 @@ function MessageBubble({ msg, onRetry }) {
                         style={{
                             display: 'flex', alignItems: 'center', gap: '8px',
                             marginTop: '8px', padding: '10px 14px',
-                            background: '#FFFFFF', borderRadius: '12px',
-                            border: '1.5px solid #E0E0E0', textDecoration: 'none',
-                            color: '#1A1A2E', fontSize: '14px', fontWeight: 500,
+                            background: 'var(--color-bg)', borderRadius: '12px',
+                            border: '1.5px solid var(--color-chat-youtube-border)', textDecoration: 'none',
+                            color: 'var(--color-text)', fontSize: '14px', fontWeight: 500,
                             transition: 'border-color 150ms, box-shadow 150ms',
                             cursor: 'pointer',
                         }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = '#FF0000'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(255,0,0,0.1)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#E0E0E0'; e.currentTarget.style.boxShadow = 'none'; }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--color-youtube-red)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(255,0,0,0.1)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--color-chat-youtube-border)'; e.currentTarget.style.boxShadow = 'none'; }}
                     >
                         <span style={{ fontSize: '18px' }}>{'\u25B6\uFE0F'}</span>
                         <span>Cerca su YouTube: <strong>{msg.youtubeSearch.query}</strong></span>
@@ -875,11 +875,11 @@ function MessageBubble({ msg, onRetry }) {
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: '4px',
                         marginTop: '4px', padding: '3px 10px',
-                        background: '#EAF1FB', borderRadius: '12px',
-                        fontSize: '14px', color: '#1E4D8C',
+                        background: 'var(--color-chat-suggestion-bg)', borderRadius: '12px',
+                        fontSize: '14px', color: 'var(--color-primary)',
                         fontWeight: 500, lineHeight: '1.3',
                     }}>
-                        <span style={{ fontSize: '14px', fontWeight: 700, color: '#1E4D8C' }}>{'\u25B8'}</span>
+                        <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-primary)' }}>{'\u25B8'}</span>
                         Risposta dalla guida locale
                     </div>
                 )}
@@ -890,8 +890,8 @@ function MessageBubble({ msg, onRetry }) {
                         onClick={() => onRetry(msg.retryMessage)}
                         style={{
                             marginTop: '6px', padding: '8px 16px',
-                            borderRadius: '8px', background: '#FFFFFF',
-                            border: '1.5px solid #E54B3D', color: '#E54B3D',
+                            borderRadius: '8px', background: 'var(--color-bg)',
+                            border: '1.5px solid var(--color-vol3)', color: 'var(--color-vol3)',
                             cursor: 'pointer', fontWeight: 600, fontSize: '14px',
                             transition: 'all 150ms', minHeight: '44px',
                         }}
@@ -905,9 +905,9 @@ function MessageBubble({ msg, onRetry }) {
             {isUser && (
                 <div style={{
                     width: '28px', height: '28px', borderRadius: '50%',
-                    background: '#7CB342', display: 'flex', alignItems: 'center',
+                    background: 'var(--color-accent)', display: 'flex', alignItems: 'center',
                     justifyContent: 'center', flexShrink: 0, marginTop: '2px',
-                    color: 'white', fontSize: '14px', fontWeight: 700,
+                    color: 'var(--color-text-inverse)', fontSize: '14px', fontWeight: 700,
                 }}>
                     Tu
                 </div>

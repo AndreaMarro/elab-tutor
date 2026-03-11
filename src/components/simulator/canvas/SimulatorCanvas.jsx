@@ -2203,7 +2203,8 @@ const SimulatorCanvas = ({
   const renderComponentGroup = (componentsList) => {
     return componentsList.map((comp) => {
       const registered = getComponent(comp.type);
-      const pos = experiment.layout?.[comp.id] || { x: 0, y: 0 };
+      const rawPos = experiment.layout?.[comp.id] || {};
+      const pos = { x: rawPos.x ?? 0, y: rawPos.y ?? 0, rotation: rawPos.rotation, parentId: rawPos.parentId };
       const rotation = pos.rotation || 0;
 
       if (!registered) {
@@ -2949,7 +2950,7 @@ const SimulatorCanvas = ({
       {pendingPlacement && (
         <div role="alert" style={{
           position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
-          background: 'var(--color-primary, #1E4D8C)', color: '#fff', padding: '8px 20px',
+          background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', padding: '8px 20px',
           borderRadius: 20, fontSize: 14, fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
           fontWeight: 600, display: 'flex', alignItems: 'center', gap: 10,
           boxShadow: '0 2px 12px rgba(30,77,140,0.25)', zIndex: 40,
@@ -2960,7 +2961,7 @@ const SimulatorCanvas = ({
             onClick={() => { setPendingPlacement(null); window.__elabPendingComponent = null; }}
             aria-label="Annulla piazzamento"
             style={{
-              background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff',
+              background: 'rgba(255,255,255,0.2)', border: 'none', color: 'var(--color-text-inverse, #fff)',
               borderRadius: 22, width: 44, height: 44, cursor: 'pointer',
               fontSize: 18, lineHeight: 1, display: 'flex', alignItems: 'center',
               justifyContent: 'center', padding: 0, flexShrink: 0,

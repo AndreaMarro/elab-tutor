@@ -1116,7 +1116,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                 if (panel) {
                     const { default: html2canvas } = await import('html2canvas');
                     const canvas = await html2canvas(panel, {
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: '#FFFFFF', /* html2canvas requires literal hex */
                         useCORS: true,
                         logging: false,
                         scale: 1,

@@ -63,6 +63,7 @@ const WING_PINS = [
   { id: 'W_D12', label: 'D12/MISO', type: 'digital', arduino: 12, mapsTo: 'D12' },
   { id: 'W_D11', label: '~D11/MOSI', type: 'pwm', arduino: 11, mapsTo: 'D11' },
   { id: 'W_D10', label: '~D10', type: 'pwm', arduino: 10, mapsTo: 'D10' },
+  { id: 'W_D8', label: 'D8', type: 'digital', arduino: 8, mapsTo: 'D8' },
 ];
 
 // ─── Layout constants — aligned to breadboard grid ────────────────────────

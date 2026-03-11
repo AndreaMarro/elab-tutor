@@ -202,7 +202,10 @@ function computeTO220Assignment(compId, pins, anchor, bbId, bbPos) {
   
   // Sort pins by X position (left to right)
   const sortedPins = [...pins].sort((a, b) => a.x - b.x);
-  const anchorCol = anchor.col;
+  // Clamp anchorCol so all pins fit within column bounds
+  let anchorCol = anchor.col;
+  if (anchorCol + sortedPins.length - 1 >= BB_COLS) anchorCol = BB_COLS - sortedPins.length;
+  if (anchorCol < 0) anchorCol = 0;
   const anchorRow = anchor.row;
   const rowLabels = anchor.section === 'top' ? BB_TOP_ROWS : BB_BOT_ROWS;
   const rowIdx = rowLabels.indexOf(anchorRow);
@@ -310,8 +313,13 @@ function computeAutoPinAssignmentFull(compId, compType, dropX, dropY, bbId, bbPo
 
   if (orientation === 'horizontal') {
     // Pins span across column letters (a→b→c) in the same row number
-    const baseColIdx = colIdx - anchorOffset;
+    let baseColIdx = colIdx - anchorOffset;
     const rowIdx = anchor.col;
+
+    // Clamp so all pins stay within column bounds
+    const maxOffset = Math.max(...pinSpans.map(ps => ps.offset));
+    if (baseColIdx + maxOffset >= BBF_COLS_PER_SIDE) baseColIdx = BBF_COLS_PER_SIDE - 1 - maxOffset;
+    if (baseColIdx < 0) baseColIdx = 0;
 
     for (const ps of pinSpans) {
       const ci = baseColIdx + ps.offset;
@@ -325,8 +333,13 @@ function computeAutoPinAssignmentFull(compId, compType, dropX, dropY, bbId, bbPo
   } else {
     // Vertical: pins span across row numbers (1→2→3) in the same column letter
     const anchorRowIdx = anchor.col;
-    const baseRowIdx = anchorRowIdx - anchorOffset;
+    let baseRowIdx = anchorRowIdx - anchorOffset;
     const holeCx = sectionX + colIdx * BBF_HOLE_SPACING;
+
+    // Clamp so all pins stay within row bounds
+    const maxRowOffset = Math.max(...pinSpans.map(ps => ps.offset));
+    if (baseRowIdx + maxRowOffset >= BBF_ROWS) baseRowIdx = BBF_ROWS - 1 - maxRowOffset;
+    if (baseRowIdx < 0) baseRowIdx = 0;
 
     for (const ps of pinSpans) {
       const rowIdx = baseRowIdx + ps.offset;
@@ -386,6 +399,7 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
         anchorPinId = pin.id;
       }
     }
+// © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati
   }
   if (!anchor) return null;
 
@@ -396,12 +410,16 @@ export function computeAutoPinAssignment(compId, compType, dropX, dropY, bbId, b
   const holePositions = [];
 
   if (orientation === 'horizontal') {
-    const baseCol = anchor.col - anchorOffset;
+    let baseCol = anchor.col - anchorOffset;
     const anchorRow = anchor.row;
     const rowLabels = anchor.section === 'top' ? BB_TOP_ROWS : BB_BOT_ROWS;
-// © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati
     const rowIdx = rowLabels.indexOf(anchorRow);
     const sectionY = anchor.section === 'top' ? BB_Y_SEC_TOP : BB_Y_SEC_BOT;
+
+    // Clamp baseCol so all pins stay within column bounds (fixes column 30 edge case)
+    const maxOffset = Math.max(...pinSpans.map(ps => ps.offset));
+    if (baseCol + maxOffset >= BB_COLS) baseCol = BB_COLS - 1 - maxOffset;
+    if (baseCol < 0) baseCol = 0;
 
     for (const ps of pinSpans) {
       const col = baseCol + ps.offset;

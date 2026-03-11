@@ -17,7 +17,7 @@ export default function SafeMarkdown({ text, className = '' }) {
   const elements = parseMarkdown(text);
 
   return (
-    <div className={`safe-markdown ${className}`} style={{ fontSize: '0.88rem', color: '#334155', lineHeight: 1.6 }}>
+    <div className={`safe-markdown ${className}`} style={{ fontSize: '0.88rem', color: 'var(--color-text-body)', lineHeight: 1.6 }}>
       {elements}
     </div>
   );
@@ -48,7 +48,7 @@ function parseMarkdown(text) {
     if (part.type === 'codeblock') {
       return (
         <pre key={i} style={{
-          background: '#1E293B', color: '#e2e8f0', padding: 12,
+          background: 'var(--color-code-bg)', color: 'var(--color-code-text)', padding: 12,
           borderRadius: 8, overflowX: 'auto', fontSize: '0.875rem',
           margin: '8px 0', fontFamily: "'Fira Code', 'Consolas', monospace",
           lineHeight: 1.5

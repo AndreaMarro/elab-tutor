@@ -38,8 +38,9 @@ import CodeEditorCM6 from './panels/CodeEditorCM6';
 const ScratchEditor = lazy(() => import('./panels/ScratchEditor'));
 
 // ErrorBoundary for ScratchEditor — graceful fallback on Blockly crash
+// S161.4: retryKey forces full React remount on retry (cleans orphaned Blockly DOM)
 class ScratchErrorBoundary extends React.Component {
-  constructor(props) { super(props); this.state = { hasError: false }; }
+  constructor(props) { super(props); this.state = { hasError: false, retryKey: 0 }; }
   static getDerivedStateFromError() { return { hasError: true }; }
   componentDidCatch(err) { console.error('[ScratchErrorBoundary]', err); }
   render() {
@@ -53,7 +54,7 @@ class ScratchErrorBoundary extends React.Component {
           <span style={{ fontSize: 32 }}>⚠️</span>
           <p style={{ fontSize: 14, margin: 0 }}>Errore nell'editor blocchi.</p>
           <button
-            onClick={() => this.setState({ hasError: false })}
+            onClick={() => this.setState(prev => ({ hasError: false, retryKey: prev.retryKey + 1 }))}
             style={{
               padding: '8px 16px', borderRadius: 6, border: 'none', cursor: 'pointer',
               background: 'var(--color-accent)', color: 'var(--color-text)', fontSize: 14, fontWeight: 600,
@@ -63,7 +64,7 @@ class ScratchErrorBoundary extends React.Component {
         </div>
       );
     }
-    return this.props.children;
+    return <React.Fragment key={this.state.retryKey}>{this.props.children}</React.Fragment>;
   }
 }
 
@@ -274,6 +275,7 @@ const NewElabSimulator = ({
   const mergedExperimentRef = useRef(null); // Added mergedExperimentRef
   const [componentStates, setComponentStates] = useState({});
   const [isRunning, setIsRunning] = useState(false);
+  const [simulationAnnouncement, setSimulationAnnouncement] = useState(''); // S161.3: aria-live announcer
   const isRunningRef = useRef(false);
   useEffect(() => { isRunningRef.current = isRunning; }, [isRunning]);
   const [simulationTime, setSimulationTime] = useState(0);
@@ -2201,6 +2203,7 @@ const NewElabSimulator = ({
       solverRef.current.start();
     }
     setIsRunning(true);
+    setSimulationAnnouncement('Simulazione avviata'); // S161.3
     recordEvent('simulation_started');
     /* Andrea Marro — 12/02/2026 — Analytics + Events */
     try { sendAnalyticsEvent(EVENTS.SIMULATION_STARTED, { experimentId: currentExperiment?.id, mode: currentExperiment?.simulationMode }); } catch { }
@@ -2213,6 +2216,7 @@ const NewElabSimulator = ({
     setComponentStates(prev => ({ ...prev, _avrRunning: false, _txActive: false, _rxActive: false }));
     if (avrPollRef.current) { clearInterval(avrPollRef.current); avrPollRef.current = null; }
     setIsRunning(false);
+    setSimulationAnnouncement('Simulazione in pausa'); // S161.3
     recordEvent('simulation_stopped');
     /* Andrea Marro — 12/02/2026 — Analytics + Events */
     try { sendAnalyticsEvent(EVENTS.SIMULATION_PAUSED); } catch { }
@@ -2221,6 +2225,7 @@ const NewElabSimulator = ({
 
   const handleReset = useCallback(() => {
     handlePause();
+    setSimulationAnnouncement('Simulazione resettata'); // S161.3: overrides "in pausa" from handlePause
     avrTxLenRef.current = 0;
     if (currentExperiment) {
       // Full reset: clear custom components, localStorage, and re-solve from original
@@ -2730,55 +2735,58 @@ const NewElabSimulator = ({
 
     if (isContainer && mergedExperiment) {
       // ─── CASCADE MOVE: breadboard/nano drags its children ───
-      const oldPos = mergedExperiment.layout?.[componentId] || { x: 0, y: 0 };
-      const dx = newPos.x - oldPos.x;
-      const dy = newPos.y - oldPos.y;
-
-      // GEOMETRIC child detection: any component physically on this container
-      // moves with it (not just pin-connected ones). This makes breadboard +
-      // components behave as a single physical unit.
+      // Collect child IDs using BOTH parentId tracking AND geometric fallback.
+      // parentId is the primary source (set when component snaps to breadboard).
+      // Geometric fallback catches components placed by experiments without parentId.
       const childIds = new Set();
-      if (dx !== 0 || dy !== 0) {
-        const registered = getComponent(comp.type);
-        const dims = registered?.boardDimensions;
-        // Bounding box of the container (breadboard) at its OLD position
-        const bbW = dims?.width || 256;
-        const bbH = dims?.height || 165;
-        const bbLeft = oldPos.x;
-        const bbRight = oldPos.x + bbW;
-        const bbTop = oldPos.y;
-        const bbBottom = oldPos.y + bbH;
-        // Margin: include components slightly outside the physical edge
-        const MARGIN = 10;
+      const registered = getComponent(comp.type);
+      const dims = registered?.boardDimensions;
+      const bbW = dims?.width || 256;
+      const bbH = dims?.height || 165;
 
-        for (const c of (mergedExperiment.components || [])) {
-          if (c.id === componentId) continue;
-          // Skip other containers — they don't ride on a breadboard
-          if (containerTypes.includes(c.type)) continue;
-          const cPos = mergedExperiment.layout?.[c.id];
-          if (!cPos) continue;
-          // Check if component center is inside breadboard bounding box (+ margin)
-          if (cPos.x >= bbLeft - MARGIN && cPos.x <= bbRight + MARGIN &&
-            cPos.y >= bbTop - MARGIN && cPos.y <= bbBottom + MARGIN) {
-            childIds.add(c.id);
-          }
+      for (const c of (mergedExperiment.components || [])) {
+        if (c.id === componentId) continue;
+        if (containerTypes.includes(c.type)) continue;
+        const cLayout = mergedExperiment.layout?.[c.id];
+        if (!cLayout) continue;
+        // Primary: parentId match
+        if (cLayout.parentId === componentId) {
+          childIds.add(c.id);
+          continue;
+        }
+        // Fallback: geometric bounding box (for experiment-placed components without parentId)
+        const bbPos = mergedExperiment.layout?.[componentId] || { x: 0, y: 0 };
+        const MARGIN = 15;
+        if (cLayout.x >= bbPos.x - MARGIN && cLayout.x <= bbPos.x + bbW + MARGIN &&
+          cLayout.y >= bbPos.y - MARGIN && cLayout.y <= bbPos.y + bbH + MARGIN) {
+          childIds.add(c.id);
         }
       }
 
-      // Single setCustomLayout: update container + all children in one batch
+      // Single setCustomLayout: compute dx/dy INSIDE functional update to avoid stale state
       setCustomLayout(prev => {
+        // Get the LATEST container position from prev (custom) or base experiment
+        const basePos = currentExperiment?.layout?.[componentId] || { x: 0, y: 0 };
+        const oldPos = prev[componentId]
+          ? { x: prev[componentId].x ?? basePos.x, y: prev[componentId].y ?? basePos.y }
+          : basePos;
+        const dx = newPos.x - oldPos.x;
+        const dy = newPos.y - oldPos.y;
+
         const posUpdate = { x: newPos.x, y: newPos.y };
         if (newPos.rotation !== undefined) posUpdate.rotation = newPos.rotation;
         const next = { ...prev, [componentId]: { ...prev[componentId], ...posUpdate } };
+
         if (dx !== 0 || dy !== 0) {
           for (const childId of childIds) {
-            const childPos = mergedExperiment.layout?.[childId] || { x: 0, y: 0 };
+            const baseChildPos = currentExperiment?.layout?.[childId] || { x: 0, y: 0 };
+            const childX = prev[childId]?.x ?? baseChildPos.x;
+            const childY = prev[childId]?.y ?? baseChildPos.y;
             next[childId] = {
-              ...next[childId],
-              x: (next[childId]?.x ?? childPos.x) + dx,
-              y: (next[childId]?.y ?? childPos.y) + dy,
-              // S114: Preserve parentId so children stay linked to parent
-              parentId: next[childId]?.parentId ?? childPos.parentId ?? componentId,
+              ...prev[childId],
+              x: childX + dx,
+              y: childY + dy,
+              parentId: prev[childId]?.parentId ?? baseChildPos.parentId ?? componentId,
             };
           }
         }
@@ -2822,7 +2830,7 @@ const NewElabSimulator = ({
       // SNAP-BACK: If dropped near original position, restore original state
       // This ensures "move and put back" always reconnects the circuit.
       const originalPos = currentExperiment?.layout?.[componentId];
-      const SNAP_BACK_THRESHOLD = 8; // units — ~1 breadboard pitch (reduced from 20 to prevent false revert)
+      const SNAP_BACK_THRESHOLD = 3; // Must be < holePitch/2 (7.5/2=3.75) so adjacent-hole moves work
       if (originalPos && Math.hypot(newPos.x - originalPos.x, newPos.y - originalPos.y) < SNAP_BACK_THRESHOLD) {
         // Restore original position (remove custom override)
         setCustomLayout(prev => {
@@ -3782,9 +3790,14 @@ const NewElabSimulator = ({
                   } : undefined}
                 />
 
+                {/* S161.3: Visually-hidden simulation state announcer for screen readers */}
+                <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+                  {simulationAnnouncement}
+                </div>
+
                 {/* Short-circuit warning overlay */}
                 {circuitWarning && (
-                  <div style={{
+                  <div role="alert" aria-live="assertive" style={{
                     position: 'absolute',
                     top: 10,
                     left: '50%',
@@ -3839,7 +3852,7 @@ const NewElabSimulator = ({
 
                 {/* Export toast */}
                 {exportToast && (
-                  <div style={{
+                  <div role="status" aria-live="polite" style={{
                     position: 'absolute',
                     bottom: 50,
                     left: '50%',
@@ -3861,7 +3874,7 @@ const NewElabSimulator = ({
 
                 {/* Wire deletion feedback toast */}
                 {wireToast && (
-                  <div style={{
+                  <div role="status" aria-live="polite" style={{
                     position: 'absolute',
                     bottom: 50,
                     left: '50%',
@@ -3885,7 +3898,7 @@ const NewElabSimulator = ({
 
                 {/* Wire mode indicator */}
                 {wireMode && (
-                  <div className={lyStyles.wireModeIndicator}>
+                  <div className={lyStyles.wireModeIndicator} role="status" aria-live="polite">
                     <span style={{ fontSize: 14 }}>&#x1F50C;</span>
                     <span>Collegamento fili attivo</span>
                     {wireStartRef.current && (

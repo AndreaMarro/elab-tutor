@@ -97,7 +97,7 @@
   justify-content: space-between;
   padding: 0 16px;
   height: var(--tutor-topbar-height);
-  background: linear-gradient(135deg, #1E4D8C 0%, #153a6a 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
   color: white;
   flex-shrink: 0;
   z-index: 100;
@@ -138,7 +138,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid #7CB342;
+  border: 2px solid var(--color-accent);
   object-fit: contain;
   background: white;
   flex-shrink: 0;
@@ -213,8 +213,8 @@
 }
 
 .topbar-btn.active {
-  background: #7CB342;
-  border-color: #7CB342;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
   color: white;
 }
 
@@ -225,7 +225,7 @@
 .topbar-session-btn .session-dot {
   width: 6px;
   height: 6px;
-  background: #ef4444;
+  background: var(--color-error-red);
   border-radius: 50%;
   animation: blink 1.5s infinite;
   flex-shrink: 0;
@@ -250,8 +250,8 @@
 .tutor-sidebar {
   display: flex;
   flex-direction: column;
-  background: #FFFFFF;
-  border-right: 1px solid #E2E8F0;
+  background: var(--color-bg);
+  border-right: 1px solid var(--color-border-light);
   overflow-y: auto;
   overflow-x: hidden;
   resize: horizontal;
@@ -286,7 +286,7 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background: #E2E8F0;
+  background: var(--color-border-light);
   border-radius: 3px;
 }
 
@@ -324,17 +324,17 @@
 }
 
 .sidebar-item:hover {
-  background: #F8FAFC;
-  color: #1E4D8C;
+  background: var(--color-bg-hover);
+  color: var(--color-primary);
 }
 
 /* © Andrea Marro — 18/02/2026 */
 
 .sidebar-item.active {
   background: rgba(30, 77, 140, 0.06);
-  color: #1E4D8C;
+  color: var(--color-primary);
   font-weight: 600;
-  border-left-color: #1E4D8C;
+  border-left-color: var(--color-primary);
 }
 
 .sidebar-icon {
@@ -364,7 +364,7 @@
 }
 
 .sidebar-footer {
-  border-top: 1px solid #E2E8F0;
+  border-top: 1px solid var(--color-border-light);
   padding: 8px;
   display: flex;
   justify-content: center;
@@ -377,17 +377,17 @@
   width: 44px;
   height: 44px;
   background: none;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--color-border-light);
   border-radius: 6px;
-  color: #64748B;
+  color: var(--color-text-muted);
   cursor: pointer;
   transition: all var(--tutor-transition);
 }
 
 .sidebar-collapse-btn:hover {
-  background: #F1F5F9;
-  color: #1E4D8C;
-  border-color: #CBD5E1;
+  background: var(--color-bg-subtle);
+  color: var(--color-primary);
+  border-color: var(--color-border-medium);
 }
 
 /* ═══════════════════════════════════════════════
@@ -397,7 +397,7 @@
 .chat-overlay {
   position: fixed;
   z-index: 300;
-  background: #FFFFFF;
+  background: var(--color-bg);
   border-radius: 16px;
 /* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
@@ -444,7 +444,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
-  background: linear-gradient(135deg, #1E4D8C, #153a6a);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
   color: white;
   flex-shrink: 0;
 }
@@ -459,7 +459,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 2px solid #7CB342;
+  border: 2px solid var(--color-accent);
   object-fit: contain;
   background: white;
 }
@@ -482,9 +482,9 @@
 .chat-status-dot {
   width: 6px;
   height: 6px;
-  background: #7CB342;
+  background: var(--color-accent);
   border-radius: 50%;
-  box-shadow: 0 0 4px #7CB342;
+  box-shadow: 0 0 4px var(--color-accent);
 }
 
 .chat-overlay-header-actions {
@@ -534,7 +534,7 @@
 /* © Andrea Marro — 18/02/2026 */
 
 .chat-overlay-messages::-webkit-scrollbar-thumb {
-  background: #E2E8F0;
+  background: var(--color-border-light);
   border-radius: 4px;
 }
 
@@ -588,20 +588,20 @@
 }
 
 .chat-msg.user .chat-bubble {
-  background: #1E4D8C;
+  background: var(--color-primary);
   color: white;
   border-bottom-right-radius: 4px;
 }
 
 .chat-msg.assistant .chat-bubble {
-  background: #F0F4F8;
-  color: #1E293B;
+  background: var(--color-bg-cool);
+  color: var(--color-code-bg);
   border-bottom-left-radius: 4px;
 }
 
 .chat-msg.error .chat-bubble {
 /* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
-  border-left: 3px solid #ef4444;
+  border-left: 3px solid var(--color-error-red);
   background: rgba(239, 68, 68, 0.05);
 }
 
@@ -633,7 +633,7 @@
 .chat-typing span {
   width: 7px;
   height: 7px;
-  background: #7CB342;
+  background: var(--color-accent);
   border-radius: 50%;
   animation: chatBounce 1.4s infinite ease-in-out;
 }
@@ -663,7 +663,7 @@
 .chat-retry-btn {
   margin-top: 4px;
   padding: 6px 14px;
-  background: #1E4D8C;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -676,7 +676,7 @@
 }
 
 .chat-retry-btn:hover {
-  background: #7CB342;
+  background: var(--color-accent);
 }
 
 /* Suggestions & Confusion */
@@ -690,7 +690,7 @@
   border: 1px solid rgba(124, 179, 66, 0.2);
   border-radius: 10px;
   font-size: 14px;
-  color: #558B2F;
+  color: var(--color-galileo-gradient-end);
   flex-shrink: 0;
 }
 
@@ -708,7 +708,7 @@
 .chat-suggestion-dismiss {
   background: none;
   border: none;
-  color: #64748B;
+  color: var(--color-text-muted);
   cursor: pointer;
   font-size: 14px;
   padding: 2px 6px;
@@ -716,7 +716,7 @@
 }
 
 .chat-suggestion-dismiss:hover {
-  color: #ef4444;
+  color: var(--color-error-red);
   background: rgba(239, 68, 68, 0.05);
 }
 
@@ -732,7 +732,7 @@
 .chat-confusion-text {
   margin: 0 0 8px;
   font-size: 14px;
-  color: #1E4D8C;
+  color: var(--color-primary);
   line-height: 1.4;
 }
 
@@ -749,23 +749,23 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms ease;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--color-border-light);
   background: white;
-  color: #64748B;
+  color: var(--color-text-muted);
   min-height: 44px;
 }
 
 /* © Andrea Marro — 18/02/2026 */
 
 .chat-confusion-btns button:hover {
-  border-color: #1E4D8C;
-  color: #1E4D8C;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .chat-confusion-btns button.confused {
-  background: #1E4D8C;
+  background: var(--color-primary);
   color: white;
-  border-color: #1E4D8C;
+  border-color: var(--color-primary);
 }
 
 .chat-confusion-input-row {
@@ -776,14 +776,14 @@
 .chat-confusion-input-row input {
   flex: 1;
   padding: 7px 12px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--color-border-light);
   border-radius: 8px;
   font-size: 14px;
 }
 
 .chat-confusion-input-row button {
   padding: 7px 14px;
-  background: #1E4D8C;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -803,7 +803,7 @@
   padding: 8px 14px;
 /* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   overflow-x: auto;
-  border-top: 1px solid #F1F5F9;
+  border-top: 1px solid var(--color-bg-subtle);
   flex-shrink: 0;
 }
 
@@ -812,16 +812,16 @@
 }
 
 .chat-quick-actions::-webkit-scrollbar-thumb {
-  background: #E2E8F0;
+  background: var(--color-border-light);
   border-radius: 2px;
 }
 
 .chat-quick-actions button {
   padding: 5px 12px;
   background: white;
-  border: 1.5px solid #1E4D8C;
+  border: 1.5px solid var(--color-primary);
   border-radius: 16px;
-  color: #1E4D8C;
+  color: var(--color-primary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -832,7 +832,7 @@
 }
 
 .chat-quick-actions button:hover {
-  background: #1E4D8C;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -841,8 +841,8 @@
   display: flex;
   gap: 8px;
   padding: 10px 14px;
-  background: #F8FAFC;
-  border-top: 1px solid #E2E8F0;
+  background: var(--color-bg-hover);
+  border-top: 1px solid var(--color-border-light);
   flex-shrink: 0;
 }
 
@@ -852,11 +852,11 @@
   justify-content: center;
   padding: 0 10px;
   background: white;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--color-border-light);
   border-radius: 8px;
   font-family: 'Fira Code', monospace;
   font-size: 14px;
-  color: #64748B;
+  color: var(--color-text-muted);
   cursor: pointer;
   transition: all var(--tutor-transition);
   min-width: 44px;
@@ -864,15 +864,15 @@
 
 .chat-code-toggle:hover,
 .chat-code-toggle.active {
-  background: #1E4D8C;
+  background: var(--color-primary);
   color: white;
-  border-color: #1E4D8C;
+  border-color: var(--color-primary);
 }
 
 .chat-overlay-input input {
   flex: 1;
   padding: 9px 14px;
-  border: 1.5px solid #E2E8F0;
+  border: 1.5px solid var(--color-border-light);
   border-radius: 20px;
   font-size: 14px;
   transition: border-color var(--tutor-transition);
@@ -882,7 +882,7 @@
 
 .chat-overlay-input input:focus {
   outline: none;
-  border-color: #1E4D8C;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(30, 77, 140, 0.08);
 }
 
@@ -892,7 +892,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: #7CB342;
+  background: var(--color-accent);
   border: none;
   border-radius: 50%;
   color: white;
@@ -902,7 +902,7 @@
 }
 
 .chat-send-btn:hover:not(:disabled) {
-  background: #558B2F;
+  background: var(--color-galileo-gradient-end);
   transform: scale(1.05);
 }
 
@@ -925,7 +925,7 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid #E2E8F0;
+  border-top: 1px solid var(--color-border-light);
   padding: 6px 0;
   padding-bottom: calc(6px + env(safe-area-inset-bottom));
   z-index: 500;
@@ -940,7 +940,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #64748B;
+  color: var(--color-text-muted);
   font-size: 14px;
   font-weight: 400;
   font-family: var(--font-sans, 'Open Sans', -apple-system, sans-serif);
@@ -952,7 +952,7 @@
 }
 
 .mobile-tab.active {
-  color: #1E4D8C;
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -1216,7 +1216,7 @@
 .chat-overlay button:focus-visible,
 .chat-overlay input:focus-visible,
 .tutor-mobile-tabs button:focus-visible {
-  outline: 2px solid #7CB342;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 

@@ -391,8 +391,8 @@
 /* ═══════════════════════════════════════════════════════════════ */
 
 .elab-tool__code {
-    background: #1E293B;
-    color: #E2E8F0;
+    background: var(--color-code-bg, #1E293B);
+    color: var(--color-code-text, #E2E8F0);
     padding: var(--space-4);
     border-radius: var(--radius-md);
     overflow: auto;
@@ -407,7 +407,7 @@
 
 /* Schematic Text Block */
 .elab-tool__schematic {
-    background: #0F172A;
+    background: var(--color-code-bg-dark, #0F172A);
     color: var(--color-accent);
     padding: var(--space-4);
     border-radius: var(--radius-md);

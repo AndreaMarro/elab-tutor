@@ -156,7 +156,8 @@
   max-width: 62%;
 }
 
-/* S96: Fullscreen Scratch mode — covers entire right area */
+/* S96: Fullscreen Scratch mode — covers entire viewport */
+/* S161.4: z-index 300→900 (above chat 400, below hints 1000) + solid background */
 .codeEditorPanelScratchFullscreen {
   position: fixed !important;
   top: 0;
@@ -167,8 +168,9 @@
   max-width: 100% !important;
   min-width: 0 !important;
   height: 100dvh !important;
-  z-index: 300;
+  z-index: 900;
   border-left: none !important;
+  background: var(--color-editor-active-bg, #1E2530);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -196,9 +198,9 @@
 
   .galileoBackdrop {
     padding: 0;
+/* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
     align-items: flex-end;
   }
-/* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 
   .galileoPanel {
     max-width: 100%;

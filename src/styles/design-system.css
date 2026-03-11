@@ -186,11 +186,76 @@
   --color-code-gutter: #45475A;
   --color-code-comment: #6B7280;
 
+  /* --- S161.2: Syntax highlighting (code editor theme) --- */
+  --color-syntax-keyword: #C792EA;
+  --color-syntax-type: #FFCB6B;
+  --color-syntax-function: #82AAFF;
+  --color-syntax-string: #C3E88D;
+  --color-syntax-comment: #6B7280;
+  --color-syntax-number: #F78C6C;
+  --color-syntax-operator: #89DDFF;
+  --color-syntax-macro: #E54B3D;
+  --color-syntax-variable: #E5E7EB;
+
+  /* --- S161.2: Volume gradient backgrounds --- */
+/* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
+  --color-vol1-gradient: linear-gradient(135deg, #f1f8e9, #e8f5e9);
+  --color-vol2-gradient: linear-gradient(135deg, #fff8e1, #fff3e0);
+  --color-vol3-gradient: linear-gradient(135deg, #fce4ec, #ffebee);
+
+  /* --- S161.2: Blockly field input background --- */
+  --color-blockly-input-bg: #0D1117;
+
   /* --- S77: Animation/highlight --- */
   --color-highlight-pulse: #E3F2FD;
   --color-galileo-gradient-start: #7CB342;
   --color-galileo-gradient-end: #558B2F;
   --color-galileo-dark: #122F57;
+
+  /* --- S161.1: Chat/tutor semantic tokens --- */
+  --color-chat-thinking: #9B9BA8;
+  --color-chat-hover-bg: #E8EBF0;
+  --color-chat-hover-border: #C5C8D0;
+  --color-chat-input-focus-border: var(--color-primary);
+  --color-chat-socratic-bg: #FFF8E1;
+  --color-chat-socratic-border: #FFE082;
+  --color-chat-socratic-text: #795548;
+  --color-chat-actions-bg: #E0E7FF;
+  --color-chat-actions-border: #D0D0DD;
+  --color-chat-camera-bg: #F0F4FF;
+  --color-chat-camera-border: #C5D4EE;
+  --color-chat-disabled-bg: #C5C8D0;
+  --color-chat-footer-border: #F0F0F0;
+  --color-chat-footer-bg: #FAFAFA;
+  --color-chat-msg-error-bg: #FFF0F0;
+  --color-chat-msg-error-text: #D32F2F;
+  --color-chat-msg-error-border: #FFCDD2;
+  --color-chat-action-tag-bg: #E8F5E9;
+  --color-chat-action-tag-text: #2E7D32;
+  --color-chat-youtube-border: #E0E0E0;
+  --color-chat-suggestion-bg: #EAF1FB;
+  --color-chat-suggestion-border: #D4E0F4;
+  --color-success-dark: #2E7D32;
+  --color-success-darker: #166534;
+  --color-pulse-green: #4ADE80;
+  --color-danger-hover-light: #FECACA;
+  --color-danger-dark: #B91C1C;
+  --color-overlay-black: #000000;
+  --color-code-text-light: #E5E7EB;
+  --color-wire-active-hover: #D4ECD6;
+  --color-galileo-gradient-pressed-start: #457324;
+  --color-galileo-gradient-pressed-end: #365C1C;
+  --color-hints-hover: #689F38;
+  --color-pin-detail: #AAAABB;
+  --color-error-red: #ef4444;
+  --color-border-light: #E2E8F0;
+  --color-text-muted: #64748B;
+  --color-bg-hover: #F8FAFC;
+  --color-bg-subtle: #F1F5F9;
+  --color-bg-cool: #F0F4F8;
+  --color-border-medium: #CBD5E1;
+  --color-code-bg-dark: #0F172A;
+  --color-text-body: #334155;
 
   /* --- S77: Brand exceptions (intentional non-palette) --- */
   --color-youtube-red: #FF0000;
@@ -198,7 +263,6 @@
   --color-youtube-red-active: #AA0000;
 
   /* --- S94: Status/feedback tokens --- */
-/* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   --color-status-compiling: var(--color-vol2);
   --color-muted: #888888;
   --color-code-green: #A6E3A1;
@@ -335,6 +399,7 @@
 
 /* Global focus-visible for ALL interactive elements (keyboard only) */
 :focus-visible {
+/* © Andrea Marro — 11/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   box-shadow: var(--shadow-focus);
@@ -365,4 +430,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* S161.3: Screen-reader only utility                             */
+/* ═══════════════════════════════════════════════════════════════ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

@@ -31,14 +31,14 @@ function OnboardingTooltip({ onDismiss, onNavigate }) {
             animation: 'fadeIn 0.3s ease',
         }}>
             <div style={{
-                background: '#fff', borderRadius: '16px', padding: '28px 32px',
+                background: 'var(--color-bg)', borderRadius: '16px', padding: '28px 32px',
                 maxWidth: '420px', width: '90%', boxShadow: '0 12px 40px rgba(0,0,0,0.2)',
                 textAlign: 'center',
             }}>
-                <h2 style={{ margin: '0 0 4px', fontSize: '20px', fontFamily: 'var(--font-display, Oswald, sans-serif)', color: '#1E4D8C' }}>
+                <h2 style={{ margin: '0 0 4px', fontSize: '20px', fontFamily: 'var(--font-display, Oswald, sans-serif)', color: 'var(--color-primary)' }}>
                     Benvenuto nel Tutor!
                 </h2>
-                <p style={{ margin: '0 0 20px', fontSize: '14px', color: '#666' }}>
+                <p style={{ margin: '0 0 20px', fontSize: '14px', color: 'var(--color-text-secondary)' }}>
                     Ecco le sezioni principali:
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
@@ -48,17 +48,17 @@ function OnboardingTooltip({ onDismiss, onNavigate }) {
                             onClick={() => { onNavigate(t.tab); onDismiss(); }}
                             style={{
                                 display: 'flex', alignItems: 'center', gap: '12px',
-                                padding: '10px 14px', borderRadius: '10px', border: '1px solid #e5e7eb',
-                                background: '#fafafa', cursor: 'pointer', textAlign: 'left',
+                                padding: '10px 14px', borderRadius: '10px', border: '1px solid var(--color-border)',
+                                background: 'var(--color-bg-secondary)', cursor: 'pointer', textAlign: 'left',
                                 transition: 'background 0.15s',
                             }}
-                            onMouseEnter={e => e.currentTarget.style.background = '#f0f4ff'}
-                            onMouseLeave={e => e.currentTarget.style.background = '#fafafa'}
+                            onMouseEnter={e => e.currentTarget.style.background = 'var(--color-chat-camera-bg)'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'var(--color-bg-secondary)'}
                         >
                             <span style={{ fontSize: '22px', flexShrink: 0 }}>{t.icon}</span>
                             <div>
-                                <div style={{ fontWeight: 600, fontSize: '14px', color: '#1E4D8C' }}>{t.label}</div>
-                                <div style={{ fontSize: '14px', color: '#888' }}>{t.desc}</div>
+                                <div style={{ fontWeight: 600, fontSize: '14px', color: 'var(--color-primary)' }}>{t.label}</div>
+                                <div style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>{t.desc}</div>
                             </div>
                         </button>
                     ))}
@@ -66,7 +66,7 @@ function OnboardingTooltip({ onDismiss, onNavigate }) {
                 <button
                     onClick={onDismiss}
                     style={{
-                        background: '#1E4D8C', color: '#fff', border: 'none',
+                        background: 'var(--color-primary)', color: 'var(--color-text-inverse)', border: 'none',
                         borderRadius: '10px', padding: '12px 32px', fontSize: '15px',
                         fontWeight: 600, cursor: 'pointer', width: '100%',
                     }}

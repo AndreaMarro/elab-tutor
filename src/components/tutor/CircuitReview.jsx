@@ -245,7 +245,7 @@ Rispondi in italiano, tono amichevole ma preciso.`;
       {/* Domande di Revisione */}
       {generated && generated.questions.length > 0 && (
         <div className="elab-tool__card elab-tool__card--warning">
-          <h3 style={{ color: '#ea580c' }}>La tua revisione</h3>
+          <h3 style={{ color: 'var(--color-warning)' }}>La tua revisione</h3>
           <p style={{ color: 'var(--elab-muted)', fontSize: '0.875rem', marginBottom: 16 }}>
             Non fidarti ciecamente dell'AI! Rispondi a queste domande:
           </p>
@@ -253,7 +253,7 @@ Rispondi in italiano, tono amichevole ma preciso.`;
           {generated.questions.map((q, i) => (
             <div key={i} style={{
               marginBottom: 14, padding: '12px 14px', borderRadius: 10,
-              background: '#fafafa', animation: 'elab-cardIn 0.3s ease backwards',
+              background: 'var(--color-bg-secondary)', animation: 'elab-cardIn 0.3s ease backwards',
               animationDelay: `${i * 0.08}s`
             }}>
               <p style={{ fontWeight: 600, fontSize: '0.88rem', color: 'var(--elab-text)', marginBottom: 8 }}>
