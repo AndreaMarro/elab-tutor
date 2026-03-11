@@ -1,9 +1,12 @@
 /**
- * ELAB Simulator — Whiteboard Overlay V3
+ * ELAB Simulator — Whiteboard Overlay V4
  * Canvas 2D drawing layer with pencil, eraser, text, shapes, undo/redo, export.
  * V3: Selection, move, delete, resize for shapes/text/arrows/lines.
- * Touch support for LIM/tablet. localStorage persistence per experiment.
- * Andrea Marro — 20/02/2026
+ * V4 (S112): Pointer Events API — unified mouse/touch/Apple Pencil.
+ *   - Pressure-sensitive strokes (pen pointerType)
+ *   - Palm rejection (ignore touch while pen in use)
+ *   - setPointerCapture for reliable drag tracking
+ * Andrea Marro — 11/03/2026
  */
 
 import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react';
@@ -404,15 +407,19 @@ export default function WhiteboardOverlay({
   }, [experimentId]);
 
   // ── Get canvas coords from event ─────────────
+  // S112: Pointer Events API — unified mouse/touch/stylus with pressure support
   const getCoords = useCallback((e) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    // Pointer Events provide clientX/clientY directly (no e.touches needed)
+    const clientX = e.clientX ?? (e.touches?.[0]?.clientX ?? 0);
+    const clientY = e.clientY ?? (e.touches?.[0]?.clientY ?? 0);
     return {
       x: (clientX - rect.left) * (canvas.width / rect.width),
       y: (clientY - rect.top) * (canvas.height / rect.height),
+      pressure: e.pressure ?? 0.5, // Apple Pencil: 0-1, mouse: 0.5 default
+      pointerType: e.pointerType || 'mouse', // 'pen' for Apple Pencil, 'touch', 'mouse'
     };
   }, []);
 
@@ -451,9 +458,15 @@ export default function WhiteboardOverlay({
     }
   }, [color, thickness, tool]);
 
+  // S112: Track if Apple Pencil (pen) is being used — enables palm rejection
+  const lastPointerType = useRef('mouse');
+
   // ── Start drawing / shape / select ────────────
   const startDraw = useCallback((e) => {
     e.preventDefault();
+    // S112: Palm rejection — if pen was used recently, ignore touch events
+    if (e.pointerType) lastPointerType.current = e.pointerType;
+    if (e.pointerType === 'touch' && lastPointerType.current === 'pen') return;
     if (tool === 'text') return;
     const pt = getCoords(e);
     if (!pt) return;
@@ -501,6 +514,8 @@ export default function WhiteboardOverlay({
   const draw = useCallback((e) => {
     if (!isDrawing.current) return;
     e.preventDefault();
+    // S112: Palm rejection — ignore touch while pen is in use
+    if (e.pointerType === 'touch' && lastPointerType.current === 'pen') return;
     const pt = getCoords(e);
     if (!pt) return;
 
@@ -547,7 +562,12 @@ export default function WhiteboardOverlay({
     ctx.lineTo(pt.x, pt.y);
     const dpr = window.devicePixelRatio || 1;
     ctx.strokeStyle = tool === 'eraser' ? 'rgba(0,0,0,1)' : color;
-    ctx.lineWidth = (tool === 'eraser' ? thickness * 4 : thickness) * dpr;
+    // S112: Pressure-sensitive stroke width for Apple Pencil (pen pointerType)
+    const pressureMultiplier = pt.pointerType === 'pen'
+      ? 0.5 + pt.pressure * 1.5 // pen: 0.5x → 2x based on pressure
+      : 1; // mouse/touch: no pressure scaling
+    const baseWidth = tool === 'eraser' ? thickness * 4 : thickness;
+    ctx.lineWidth = baseWidth * dpr * pressureMultiplier;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.globalCompositeOperation = tool === 'eraser' ? 'destination-out' : 'source-over';
     ctx.stroke();
@@ -688,6 +708,7 @@ export default function WhiteboardOverlay({
         }} />
       )}
 
+      {/* S112: Pointer Events API — unified mouse/touch/Apple Pencil with pressure */}
       <canvas
         ref={canvasRef}
         data-elab-whiteboard-canvas="true"
@@ -696,8 +717,17 @@ export default function WhiteboardOverlay({
           cursor: getCursor(), touchAction: 'none',
           transform: `scale(${zoom})`, transformOrigin: '0 0',
         }}
-        onMouseDown={startDraw} onMouseMove={draw} onMouseUp={endDraw} onMouseLeave={endDraw}
-        onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={endDraw}
+        onPointerDown={(e) => {
+          e.currentTarget.setPointerCapture(e.pointerId); // capture all pointer moves
+          startDraw(e);
+        }}
+        onPointerMove={draw}
+        onPointerUp={(e) => {
+          e.currentTarget.releasePointerCapture(e.pointerId);
+          endDraw(e);
+        }}
+        onPointerLeave={endDraw}
+        onPointerCancel={endDraw}
         onClick={handleCanvasClick}
       />
 

@@ -2531,7 +2531,8 @@ async def get_experiment_hints(request: Request, req: HintsRequest):
 
 
 # ─── Preload: pre-generate hints when student opens experiment ─
-EXPERIMENT_ID_RE = re.compile(r"^v[1-3]-cap\d+-esp\d+$")
+# S112: Allow Vol3 named experiments (v3-cap6-blink, v3-extra-simon, etc.)
+EXPERIMENT_ID_RE = re.compile(r"^v[1-3]-(cap\d+|extra)-[a-z0-9-]+$")
 
 
 @app.post("/preload")

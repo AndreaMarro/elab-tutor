@@ -12,6 +12,7 @@ export default function ManualTab({
     selectedVolume,
     volumePages,
     loadingVolume,
+    volumeProgress,
     onLoadVolume,
     // Document state
     uploadedDocs,
@@ -79,19 +80,34 @@ export default function ManualTab({
             {viewMode === 'manual' && (
                 <>
                     <div className="v4-volume-selector">
-                        {[1, 2, 3].map(v => (
-                            <button key={v} className={`v4-volume-btn ${selectedVolume === v ? 'active' : ''}`} onClick={() => onLoadVolume(v)} disabled={loadingVolume !== null}>
-                                {loadingVolume === v ? '...' : ''} Volume {v}
-                                {volumePages[v]?.length > 0 && <span className="vol-count">({volumePages[v].length} pag)</span>}
-                            </button>
-                        ))}
+                        {[1, 2, 3].map(v => {
+                            // S112: count only actually rendered pages (non-null entries)
+                            const totalPages = volumePages[v]?.length || 0;
+                            return (
+                                <button key={v} className={`v4-volume-btn ${selectedVolume === v ? 'active' : ''}`} onClick={() => onLoadVolume(v)} disabled={loadingVolume !== null}>
+                                    {loadingVolume === v ? '...' : ''} Volume {v}
+                                    {totalPages > 0 && <span className="vol-count">({totalPages} pag)</span>}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {loadingVolume !== null && (
                         <div className="v4-loading">
                             <div className="v4-spinner"></div>
                             <h3>Caricamento Volume {loadingVolume}...</h3>
-                            <p>{volumePages[loadingVolume]?.length || 0} pagine caricate</p>
+                            {/* S112: Download progress bar */}
+                            {volumeProgress !== null && volumeProgress !== undefined && (
+                                <div style={{ width: '60%', maxWidth: 300, margin: '12px auto', background: '#e0e0e0', borderRadius: 6, height: 8, overflow: 'hidden' }}>
+                                    <div style={{ width: `${volumeProgress}%`, height: '100%', background: volumeProgress < 90 ? '#1E4D8C' : '#7CB342', borderRadius: 6, transition: 'width 0.3s ease, background 0.3s ease' }} />
+                                </div>
+                            )}
+                            <p>{volumeProgress !== null && volumeProgress < 90
+                                ? `Scaricamento PDF... ${volumeProgress}%`
+                                : volumeProgress !== null && volumeProgress < 100
+                                    ? 'Preparazione pagine...'
+                                    : 'Quasi pronto...'
+                            }</p>
                         </div>
                     )}
 
@@ -106,15 +122,23 @@ export default function ManualTab({
                             </div>
 
                             <div ref={docViewerRef} className="v4-page-container" style={{ alignItems: fitMode === 'page' ? 'center' : 'flex-start' }}>
-                                <img
-                                    src={volumePages[selectedVolume][currentDocPage]}
-                                    alt={`Volume ${selectedVolume} - Pagina ${currentDocPage + 1}`}
-                                    style={{
-                                        maxWidth: fitMode === 'width' || fitMode === 'page' ? '100%' : 'none',
-                                        maxHeight: fitMode === 'height' || fitMode === 'page' ? '100%' : 'none',
-                                        width: fitMode === 'free' ? `${pdfZoom * 100}%` : 'auto',
-                                    }}
-                                />
+                                {volumePages[selectedVolume][currentDocPage] ? (
+                                    <img
+                                        src={volumePages[selectedVolume][currentDocPage]}
+                                        alt={`Volume ${selectedVolume} - Pagina ${currentDocPage + 1}`}
+                                        style={{
+                                            maxWidth: fitMode === 'width' || fitMode === 'page' ? '100%' : 'none',
+                                            maxHeight: fitMode === 'height' || fitMode === 'page' ? '100%' : 'none',
+                                            width: fitMode === 'free' ? `${pdfZoom * 100}%` : 'auto',
+                                        }}
+                                    />
+                                ) : (
+                                    /* S112: Lazy page placeholder — page renders on navigation */
+                                    <div className="v4-loading" style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                                        <div className="v4-spinner"></div>
+                                        <p style={{ marginTop: 12, color: '#888' }}>Rendering pagina {currentDocPage + 1}...</p>
+                                    </div>
+                                )}
                             </div>
                         </>
                     )}

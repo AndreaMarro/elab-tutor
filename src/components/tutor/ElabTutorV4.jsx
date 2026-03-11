@@ -127,6 +127,7 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
     // Preloaded Volumes State
     const [volumePages, setVolumePages] = useState({ 1: [], 2: [], 3: [] });
     const [loadingVolume, setLoadingVolume] = useState(null);
+    const [volumeProgress, setVolumeProgress] = useState(null); // S112: download progress 0-100
     const [selectedVolume, setSelectedVolume] = useState(null);
 
     // Document Viewer State
@@ -612,49 +613,156 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
     }, [isFullscreen]);
 
     // ===================== VOLUME LOADING =====================
+    // S112: Lazy PDF rendering — store the pdf object, render pages on demand
+    // Old approach: rendered ALL 114 pages at 3x scale → blocked UI for minutes + GB of RAM
+    // New approach: load PDF once, render only the visible page on navigation
+
+    const volumePdfRef = useRef({}); // { [volNum]: pdfDocument }
+
+    const renderVolumePage = useCallback(async (volNum, pageNum) => {
+        const pdf = volumePdfRef.current[volNum];
+        if (!pdf) return null;
+        const pageIndex = pageNum + 1; // pdf.js is 1-indexed
+        if (pageIndex < 1 || pageIndex > pdf.numPages) return null;
+        try {
+            const page = await pdf.getPage(pageIndex);
+            const scale = 1.5; // S112: was 3 — 75% less memory per page
+            const viewport = page.getViewport({ scale });
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext('2d');
+            await page.render({ canvasContext: ctx, viewport }).promise;
+            return canvas.toDataURL('image/jpeg', 0.85); // S112: JPEG = ~5x smaller than PNG
+        } catch (err) {
+            logger.error(`Errore render pagina ${pageIndex}:`, err);
+            return null;
+        }
+    }, []);
 
     const loadVolume = async (volNum) => {
-        if (volumePages[volNum] && volumePages[volNum].length > 0) {
+        // If PDF already loaded, just switch to it
+        if (volumePdfRef.current[volNum]) {
             setSelectedVolume(volNum);
             setCurrentDocPage(0);
             setViewMode('manual');
+            // Render first page if not cached
+            if (!volumePages[volNum]?.[0]) {
+                const firstPage = await renderVolumePage(volNum, 0);
+                if (firstPage) {
+                    setVolumePages(prev => ({ ...prev, [volNum]: [firstPage] }));
+                }
+            }
+            setLoadingVolume(null);
             return;
         }
 
         setLoadingVolume(volNum);
+        setVolumeProgress(0);
 
         try {
             if (!window.pdfjsLib) {
                 await loadPdfJs();
             }
             const response = await fetch(`/volumes/volume${volNum}.pdf`);
-            const arrayBuffer = await response.arrayBuffer();
-            const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            const pages = [];
-            for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const scale = 3;
-                const viewport = page.getViewport({ scale });
-                const canvas = document.createElement('canvas');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
-                const ctx = canvas.getContext('2d');
-                await page.render({ canvasContext: ctx, viewport }).promise;
-                pages.push(canvas.toDataURL('image/png'));
-                if (i % 5 === 0 || i === pdf.numPages) {
-                    setVolumePages(prev => ({ ...prev, [volNum]: [...pages] }));
-                }
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
             }
+
+            // S112: Stream download with progress tracking
+            const contentLength = +response.headers.get('Content-Length') || 0;
+            let arrayBuffer;
+            if (contentLength && response.body) {
+                const reader = response.body.getReader();
+                const chunks = [];
+                let received = 0;
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    received += value.length;
+                    setVolumeProgress(Math.round((received / contentLength) * 90)); // 0-90% = download
+                }
+                const combined = new Uint8Array(received);
+                let offset = 0;
+                for (const chunk of chunks) {
+                    combined.set(chunk, offset);
+                    offset += chunk.length;
+                }
+                arrayBuffer = combined.buffer;
+            } else {
+                // Fallback: no Content-Length header
+                arrayBuffer = await response.arrayBuffer();
+                setVolumeProgress(90);
+            }
+
+            setVolumeProgress(92); // Parsing PDF...
+            const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+            // Store the PDF document for lazy page rendering
+            volumePdfRef.current[volNum] = pdf;
+
+            // Render only the first page immediately — rest rendered on navigation
+            setVolumeProgress(95); // Rendering first page...
+            const firstPage = await renderVolumePage(volNum, 0);
+            const placeholders = new Array(pdf.numPages).fill(null);
+            if (firstPage) placeholders[0] = firstPage;
+
+            setVolumeProgress(100);
+            setVolumePages(prev => ({ ...prev, [volNum]: placeholders }));
             setSelectedVolume(volNum);
             setCurrentDocPage(0);
             setViewMode('manual');
         } catch (err) {
             logger.error('Errore caricamento volume:', err);
-            alert(`Errore nel caricamento del Volume ${volNum}`);
+            alert(`Errore nel caricamento del Volume ${volNum}. Controlla la connessione.`);
         }
 
         setLoadingVolume(null);
+        setVolumeProgress(null);
     };
+
+    // S112: Lazy page renderer — renders pages as the user navigates
+    useEffect(() => {
+        if (viewMode !== 'manual' || !selectedVolume) return;
+        const volNum = selectedVolume;
+        const pageIdx = currentDocPage;
+
+        // Already rendered?
+        if (volumePages[volNum]?.[pageIdx]) return;
+        // PDF not loaded?
+        if (!volumePdfRef.current[volNum]) return;
+
+        let cancelled = false;
+        renderVolumePage(volNum, pageIdx).then(rendered => {
+            if (cancelled || !rendered) return;
+            setVolumePages(prev => {
+                const pages = [...(prev[volNum] || [])];
+                pages[pageIdx] = rendered;
+                return { ...prev, [volNum]: pages };
+            });
+        });
+
+        // Pre-render adjacent pages for smooth navigation
+        const prerender = [pageIdx - 1, pageIdx + 1];
+        for (const adj of prerender) {
+            if (adj < 0 || !volumePdfRef.current[volNum] || adj >= volumePdfRef.current[volNum].numPages) continue;
+            if (volumePages[volNum]?.[adj]) continue;
+            renderVolumePage(volNum, adj).then(rendered => {
+                if (cancelled || !rendered) return;
+                setVolumePages(prev => {
+                    const pages = [...(prev[volNum] || [])];
+                    if (!pages[adj]) { // Don't overwrite if already rendered
+                        pages[adj] = rendered;
+                        return { ...prev, [volNum]: pages };
+                    }
+                    return prev;
+                });
+            });
+        }
+
+        return () => { cancelled = true; };
+    }, [viewMode, selectedVolume, currentDocPage, renderVolumePage]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // ===================== DOC SCREENSHOT =====================
 
@@ -2077,6 +2185,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                                 selectedVolume={selectedVolume}
                                 volumePages={volumePages}
                                 loadingVolume={loadingVolume}
+                                volumeProgress={volumeProgress}
                                 onLoadVolume={loadVolume}
                                 uploadedDocs={uploadedDocs}
                                 currentDoc={currentDoc}
