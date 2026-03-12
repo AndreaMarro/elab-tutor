@@ -1,6 +1,6 @@
 # PDR ATTUALE — Stato Progetto ELAB
-## 3 Marzo 2026 — Fotografia Completa Post-Sessione 66
-## Metodo: Sintesi di TUTTI i report (S3-S66) + MEMORY.md + CoV + Chrome verification + curl verification
+## 12 Marzo 2026 — Aggiornato Post-Sessione 113
+## Metodo: Sintesi di TUTTI i report (S3-S113) + MEMORY.md + CoV + Chrome verification + curl verification
 
 ---
 
@@ -55,7 +55,7 @@
 | Sito Pubblico | https://funny-pika-3d1029.netlify.app | **LIVE** ✅ |
 | ELAB Tutor | https://www.elabtutor.school | **LIVE** ✅ |
 | Nanobot API | https://elab-galileo.onrender.com | **STABILE** (Starter $7/mo) ✅ |
-| Nanobot Health | https://elab-galileo.onrender.com/health | v5.2.0 ✅ |
+| Nanobot Health | https://elab-galileo.onrender.com/health | v5.3.0 ✅ |
 
 ### Path Locali
 | Progetto | Path |
@@ -115,7 +115,10 @@ Score NON vengono MAI gonfiati. Se un test non e' stato eseguito, lo dichiariamo
 | S62 | 9.6 | Vision WORKING, env var .trim(), toolbar fix |
 | S63 | 9.2 | Score abbassato per onesta': action routing fix |
 | S65 | 9.5 | Vision Mastery — 10/10 test, thinkingBudget fix |
-| **S66 (attuale)** | **9.4** | Credential rotation COMPLETA. MEGA DEBUG Chrome. Score conservativo perche' nessuna feature nuova — solo testing + security hardening |
+| S66 | 9.4 | Credential rotation COMPLETA. MEGA DEBUG Chrome. Score conservativo |
+| S108 | 9.2 | ROADMAP COMPLETE. iPad 8/8, Ralph 21/22, Scratch 17/18 |
+| S111 | 9.3 | LCD Blockly 4 blocks, Scratch 22 blocks total |
+| **S113 (attuale)** | **9.4** | Scratch generator 41 blocks (was 30). NanoR4Board SVG matching hardware photos. Systematic sprint prompt created. Qwen training ready. |
 
 ---
 
@@ -159,6 +162,34 @@ Score NON vengono MAI gonfiati. Se un test non e' stato eseguito, lo dichiariamo
 ---
 
 ## 4. SESSIONI RECENTI — DETTAGLIO
+
+### ✅ S113 — Scratch Generator Fix + NanoR4Board Visual + Sprint Prompt (12/03/2026)
+
+**Scope**: Fix root cause errori compilazione Scratch + visual matching hardware + preparazione overnight sprint per Qwen training.
+
+| Azione | Dettaglio | Stato |
+|--------|-----------|-------|
+| **ROOT CAUSE Scratch** | Aggiunti 11 generatori Blockly built-in mancanti a scratchGenerator.js | ✅ FIX |
+| Generatori variabili | `variables_set`/`variables_get` — fix `if(x=3)` → `if(x==3)` | ✅ |
+| Generatori math | `math_modulo`, `math_constrain`, `math_random_int` | ✅ |
+| Generatori flow | `controls_flow_statements` (break/continue) | ✅ |
+| Generatori procedure | `procedures_def*`/`procedures_call*` (4 blocchi) | ✅ |
+| Variable tracking | `_declaredVars` Set con reset in `arduino_base` | ✅ |
+| NanoR4Board SVG | "ELAB" su semicerchio, barrel jack, 3 LED blu — matching foto hardware | ✅ |
+| Sprint prompt | 9 fasi + CoV + Ralph Loop + context maintenance + ragionamenti folder | ✅ |
+| Voice design | Pipeline microfono→VAD→STT→Nanobot→TTS + 20 abilita vocali documentate | ✅ DESIGN |
+| Build | 0 errori, Main 304KB gzip, ScratchEditor 190KB gzip | ✅ |
+| Deploy | Vercel production https://www.elabtutor.school | ✅ |
+| Git | 2 commits pushati (a362f12, b2f542c) | ✅ |
+
+**Bug trovati**: BUG-9 drag&drop in Libero mode (da investigare), BUG-10 variables generators (FIXED)
+**Totale generatori scratchGenerator.js**: 41 (era 30)
+**File modificati**: scratchGenerator.js, NanoR4Board.jsx, 6 prompt files
+
+### ✅ S108-S112 — Roadmap Complete + LCD Blocks + Build Fixes (03-12/03/2026)
+- S108: ROADMAP COMPLETE — iPad 8/8, CSP header, Ralph 21/22
+- S111: LCD Blockly 4 blocks (lcd_init, lcd_print, lcd_set_cursor, lcd_clear), Scratch 22 blocks total
+- S112: Blockly editor crash fix (patch-blockly v2), direct wire routing A*
 
 ### ✅ S66 — Credential Rotation + MEGA DEBUG (03/03/2026)
 
@@ -274,7 +305,7 @@ Score NON vengono MAI gonfiati. Se un test non e' stato eseguito, lo dichiariamo
 | File CSS | 9 (modulare) + design-system.css |
 | File Dati esperimenti | 8 (658KB, 3 volumi) |
 | Servizi frontend | 10 |
-| Esperimenti | 69 (Vol1:38, Vol2:18, Vol3:13) |
+| Esperimenti | 70 (Vol1:38, Vol2:18, Vol3:14) |
 | Quiz | 138 domande (2 per esperimento) |
 | Sfide Giochi | 53 (20 detective + 15 mystery + 18 POE) |
 | SVG Componenti | 21 (tutti Tinkercad flat) |
@@ -291,7 +322,7 @@ Score NON vengono MAI gonfiati. Se un test non e' stato eseguito, lo dichiariamo
 | Security Headers | 5 (CSP, HSTS, XFO, XCTO, RP) |
 | Escluse da widget | admin, login, reset-password, dashboard |
 
-### Nanobot v5.2.0 (Render — Starter $7/mo)
+### Nanobot v5.3.0 (Render — Starter $7/mo)
 | Categoria | Dettaglio |
 |-----------|-----------|
 | Framework | FastAPI + Docker |

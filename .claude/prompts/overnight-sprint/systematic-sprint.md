@@ -3,7 +3,7 @@
 ## STRINGA DI ATTIVAZIONE
 
 ```
-Esegui il prompt systematic-sprint. Obiettivo: portare il simulatore ELAB alla perfezione assoluta per l'allenamento di Qwen. Segui OGNI fase in ordine, applica CoV dopo ogni step, testa visivamente con Chrome, MAI regredire. Se un build fallisce, FERMA e correggi. Scrivi ragionamenti in .claude/prompts/overnight-sprint/ragionamenti/. Usa Ralph Loop per sviluppo incrementale.
+Esegui il prompt systematic-sprint. Obiettivo: portare il simulatore ELAB alla perfezione assoluta per l'allenamento di Qwen e l'integrazione vocale. Segui OGNI fase in ordine (0-9), applica CoV dopo ogni step, testa visivamente con Chrome, MAI regredire. Dopo le 9 fasi, LOOP 10 volte: cerca bug attivamente, fixa, verifica, deploy. Scrivi ragionamenti cronologici in .claude/prompts/overnight-sprint/ragionamenti/. Usa Ralph Loop. Aggiorna PDR in sessioni/PDR-ATTUALE-03-03-2026.md dopo ogni fase. Pin positions IMMUTABILI (47 pin). Il sistema deve essere pronto per Qwen training e integrazione vocale LIM.
 ```
 
 ---
@@ -382,6 +382,97 @@ microfono LIM → VAD (Silero) → STT (whisper.cpp/faster-whisper)
 - Fase 3: domande classe + wake word + echo cancellation
 
 **File:** Creare `ragionamenti/voice-integration-design.md` con dettagli completi
+
+---
+
+## LOOP AUTO-MIGLIORANTE (10 ITERAZIONI)
+
+### Meccanismo
+Dopo aver completato TUTTE le fasi (0-9), il prompt RICOMINCIA DA CAPO.
+Ogni iterazione cerca bug, imperfezioni, e opportunita di miglioramento.
+
+### Struttura Loop
+
+```
+PER iterazione = 1 a 10:
+  1. SCAN — Apri Chrome, naviga su www.elabtutor.school
+  2. HUNT — Cerca attivamente bug e imperfezioni:
+     a. Console errors (0 tollerati)
+     b. Visual glitches (rendering, allineamento, colori)
+     c. Drag & drop broken (OGNI componente)
+     d. Scratch compilation (OGNI esperimento AVR)
+     e. 3 modalita (Gia Montato, Passo Passo, Libero)
+     f. Responsive (375px, 768px, 1024px, 1280px)
+     g. Galileo chat (contesto, action tags, vision)
+     h. Wiring (connessioni wing → breadboard)
+     i. Simon game (4 LED, 4 pulsanti, buzzer, sequenza)
+     j. Pin positions (47 pin IMMUTATI)
+  3. DOCUMENT — Scrivi `ragionamenti/LOOP-{iterazione}-findings.md`:
+     - Data e ora
+     - Bug trovati (con screenshot/evidence)
+     - Imperfezioni estetiche
+     - Suggerimenti di miglioramento
+  4. FIX — Correggi ogni bug trovato:
+     - Build check dopo OGNI fix
+     - CoV dopo OGNI fix
+     - Git commit dopo OGNI fix
+  5. VERIFY — Ralph Loop:
+     - Load → Test → Verify → Next
+     - Se regressione → revert e approccio alternativo
+  6. DEPLOY — Se ci sono fix:
+     - npm run build (0 errori)
+     - npx vercel --prod --yes
+     - git push origin main
+  7. COMPARE — Confronta con iterazione precedente:
+     - Quanti bug risolti?
+     - Nuovi bug introdotti?
+     - Score migliorato?
+  8. EVOLVE — Aggiorna il prompt stesso:
+     - Aggiungi nuovi check scoperti
+     - Raffina criteri di qualita
+     - Documenta pattern di bug ricorrenti
+
+  SE 0 bug trovati per 2 iterazioni consecutive:
+    SISTEMA PERFETTO — Scrivi report finale
+    BREAK
+```
+
+### Ragionamenti cronologici
+Ogni iterazione produce un file in ordine:
+```
+ragionamenti/LOOP-01-findings.md  (prima iterazione)
+ragionamenti/LOOP-02-findings.md  (seconda iterazione)
+...
+ragionamenti/LOOP-10-findings.md  (decima iterazione)
+ragionamenti/LOOP-FINAL-REPORT.md (report finale)
+```
+
+### Focus per iterazione
+| Iterazione | Focus primario |
+|-----------|---------------|
+| 1 | Scratch compilation su TUTTI i 12 AVR |
+| 2 | Drag & drop su TUTTI i componenti in Libero |
+| 3 | Simon game perfection + wiring |
+| 4 | Responsive su 4 breakpoints |
+| 5 | Galileo integration + action tags |
+| 6 | NanoR4Board visual vs foto hardware |
+| 7 | Tutti 70 esperimenti — 3 modalita |
+| 8 | Console errors + performance |
+| 9 | Accessibilita + touch targets |
+| 10 | Final polish + Qwen readiness |
+
+### Metriche di qualita per iterazione
+| Metrica | Target |
+|---------|--------|
+| Console errors | 0 |
+| Build errors | 0 |
+| Scratch compilation pass rate | 12/12 AVR |
+| Drag & drop pass rate | 100% componenti |
+| 3 modalita pass rate | 100% esperimenti |
+| Responsive pass rate | 4/4 breakpoints |
+| Galileo action tags | 13/13 |
+| Pin positions immutate | 47/47 |
+| Simon game functional | 100% |
 
 ---
 
