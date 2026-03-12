@@ -40,6 +40,7 @@ arduinoGenerator.forBlock['arduino_base'] = function (block) {
     arduinoGenerator._lcdIncludes = false;
     arduinoGenerator._lcdPins = null;
     arduinoGenerator._lcdBegin = null;
+    arduinoGenerator._declaredVars = new Set(); // Reset variable declarations
 
     const setupCode = arduinoGenerator.statementToCode(block, 'SETUP') || '';
     const loopCode = arduinoGenerator.statementToCode(block, 'LOOP') || '';
@@ -197,8 +198,8 @@ arduinoGenerator.forBlock['logic_operation'] = function (block) {
     const defaultArgument = operator === '&&' ? 'true' : 'false';
     const code = (argument0 || defaultArgument) + ' ' + operator + ' ' + (argument1 || defaultArgument);
     return [code, order];
-};
 // © Andrea Marro — 12/03/2026 — ELAB Tutor — Tutti i diritti riservati
+};
 
 arduinoGenerator.forBlock['logic_boolean'] = function (block) {
     const code = block.getFieldValue('BOOL') === 'TRUE' ? 'true' : 'false';
@@ -331,6 +332,7 @@ arduinoGenerator.forBlock['arduino_lcd_clear'] = function (block) {
 
 // --- Variables --- //
 
+// Custom ELAB variable blocks (with TYPE field for explicit declaration)
 arduinoGenerator.forBlock['arduino_variable_set'] = function (block) {
     const varName = block.getFieldValue('VAR') || 'x';
     const type = block.getFieldValue('TYPE') || 'int';
@@ -341,6 +343,84 @@ arduinoGenerator.forBlock['arduino_variable_set'] = function (block) {
 arduinoGenerator.forBlock['arduino_variable_get'] = function (block) {
     const varName = block.getFieldValue('VAR') || 'x';
     return [varName, arduinoGenerator.ORDER_ATOMIC];
+};
+
+// Blockly BUILT-IN variable blocks (FieldVariable — created from Variables toolbox category)
+// These use getField('VAR').getText() to retrieve the variable name from the FieldVariable widget.
+// Without these generators, any variable created via the default Blockly Variables category
+// would produce malformed C++ (e.g., `if (x = 3)` instead of `if (x == 3)`).
+arduinoGenerator._declaredVars = new Set();
+
+arduinoGenerator.forBlock['variables_set'] = function (block) {
+    const varField = block.getField('VAR');
+    const varName = varField ? varField.getText() : 'x';
+    const value = arduinoGenerator.valueToCode(block, 'VALUE', arduinoGenerator.ORDER_ASSIGNMENT) || '0';
+    // Declare with int on first use, plain assignment thereafter
+    if (!arduinoGenerator._declaredVars.has(varName)) {
+        arduinoGenerator._declaredVars.add(varName);
+        return `  int ${varName} = ${value};\n`;
+    }
+    return `  ${varName} = ${value};\n`;
+};
+
+arduinoGenerator.forBlock['variables_get'] = function (block) {
+    const varField = block.getField('VAR');
+    const varName = varField ? varField.getText() : 'x';
+    return [varName, arduinoGenerator.ORDER_ATOMIC];
+};
+
+// --- Math Extras (Blockly built-in) --- //
+
+arduinoGenerator.forBlock['math_modulo'] = function (block) {
+    const dividend = arduinoGenerator.valueToCode(block, 'DIVIDEND', arduinoGenerator.ORDER_MULTIPLICATION) || '0';
+    const divisor = arduinoGenerator.valueToCode(block, 'DIVISOR', arduinoGenerator.ORDER_MULTIPLICATION) || '1';
+    return [`${dividend} % ${divisor}`, arduinoGenerator.ORDER_MULTIPLICATION];
+};
+
+arduinoGenerator.forBlock['math_constrain'] = function (block) {
+    const value = arduinoGenerator.valueToCode(block, 'VALUE', arduinoGenerator.ORDER_ATOMIC) || '0';
+    const low = arduinoGenerator.valueToCode(block, 'LOW', arduinoGenerator.ORDER_ATOMIC) || '0';
+    const high = arduinoGenerator.valueToCode(block, 'HIGH', arduinoGenerator.ORDER_ATOMIC) || '255';
+    return [`constrain(${value}, ${low}, ${high})`, arduinoGenerator.ORDER_ATOMIC];
+};
+
+arduinoGenerator.forBlock['math_random_int'] = function (block) {
+    const from = arduinoGenerator.valueToCode(block, 'FROM', arduinoGenerator.ORDER_ATOMIC) || '0';
+    const to = arduinoGenerator.valueToCode(block, 'TO', arduinoGenerator.ORDER_ATOMIC) || '100';
+    return [`random(${from}, ${to} + 1)`, arduinoGenerator.ORDER_ATOMIC];
+};
+
+// --- Flow Control (break/continue) --- //
+
+arduinoGenerator.forBlock['controls_flow_statements'] = function (block) {
+    const flow = block.getFieldValue('FLOW');
+    return flow === 'BREAK' ? '  break;\n' : '  continue;\n';
+};
+
+// --- Procedures (Blockly built-in function blocks) --- //
+
+// © Andrea Marro — 12/03/2026 — ELAB Tutor — Tutti i diritti riservati
+arduinoGenerator.forBlock['procedures_defnoreturn'] = function (block) {
+    const funcName = block.getFieldValue('NAME') || 'myFunction';
+    const branch = arduinoGenerator.statementToCode(block, 'STACK') || '';
+    return `void ${funcName}() {\n${branch}}\n\n`;
+};
+
+arduinoGenerator.forBlock['procedures_defreturn'] = function (block) {
+    const funcName = block.getFieldValue('NAME') || 'myFunction';
+    const branch = arduinoGenerator.statementToCode(block, 'STACK') || '';
+    const returnValue = arduinoGenerator.valueToCode(block, 'RETURN', arduinoGenerator.ORDER_NONE) || '0';
+    return `int ${funcName}() {\n${branch}  return ${returnValue};\n}\n\n`;
+};
+
+arduinoGenerator.forBlock['procedures_callnoreturn'] = function (block) {
+    const funcName = block.getFieldValue('NAME') || 'myFunction';
+    return `  ${funcName}();\n`;
+};
+
+arduinoGenerator.forBlock['procedures_callreturn'] = function (block) {
+    const funcName = block.getFieldValue('NAME') || 'myFunction';
+    return [`${funcName}()`, arduinoGenerator.ORDER_ATOMIC];
 };
 
 // --- Random --- //

@@ -508,29 +508,74 @@ function PowerBusPads() {
 // ─── Sub-component: Board silkscreen & decorations ─────────────────────
 
 function BoardSilkscreen() {
+  // Silkscreen matches real hardware: "ELAB" on semicircle (left), version on wing
+  const semiCenterX = SEMI_CX;
+  const semiCenterY = BOARD_H / 2;
   const wingCenterX = (WING_X + BOARD_W) / 2;
   const wingCenterY = (WING_TOP + WING_BOT) / 2;
 
   return (
     <g>
-      {/* ELAB label on wing area */}
-      <text x={wingCenterX} y={wingCenterY - 8} textAnchor="middle"
-        fontSize="4.0" fill={PCB_BORDER} fontFamily="Oswald, Arial, sans-serif"
-        fontWeight="800" letterSpacing="1.5" opacity="0.9">
+      {/* ELAB label on semicircle area (matching real PCB — vertical left side) */}
+      <text
+        x={semiCenterX - 18} y={semiCenterY}
+        textAnchor="middle" dominantBaseline="central"
+        fontSize="7.0" fill={PCB_BORDER} fontFamily="Oswald, Arial, sans-serif"
+        fontWeight="800" letterSpacing="3.0" opacity="0.85"
+        transform={`rotate(-90, ${semiCenterX - 18}, ${semiCenterY})`}
+      >
         ELAB
       </text>
 
-      {/* Version label */}
-      <text x={wingCenterX} y={wingCenterY - 2} textAnchor="middle"
+      {/* "Electronics Laboratory" below ELAB (matching photo silkscreen) */}
+      <text
+        x={semiCenterX - 10} y={semiCenterY}
+        textAnchor="middle" dominantBaseline="central"
+        fontSize="2.0" fill={PCB_BORDER} fontFamily="Fira Code, monospace"
+        fontWeight="500" opacity="0.55"
+        transform={`rotate(-90, ${semiCenterX - 10}, ${semiCenterY})`}
+      >
+        Electronics Laboratory
+      </text>
+
+      {/* Version label on wing area */}
+      <text x={wingCenterX} y={wingCenterY - 4} textAnchor="middle"
         fontSize="1.6" fill={PCB_BORDER} fontFamily="Fira Code, monospace"
         fontWeight="600" opacity="0.7">
         Nano Breakout
       </text>
-      <text x={wingCenterX} y={wingCenterY + 2} textAnchor="middle"
+      <text x={wingCenterX} y={wingCenterY} textAnchor="middle"
         fontSize="1.4" fill={PCB_BORDER} fontFamily="Fira Code, monospace"
         opacity="0.6">
         V1.1 GP
       </text>
+
+      {/* Barrel jack connector (VIN 5-20V — prominent black connector on wing) */}
+      <g>
+        {/* Connector body */}
+        <rect x={WING_X + 1} y={WING_TOP + 2} width="10" height="8" rx="1"
+          fill={CONNECTOR_BODY} stroke={CONNECTOR_DARK} strokeWidth="0.5" />
+        {/* Barrel opening */}
+        <circle cx={WING_X + 6} cy={WING_TOP + 6} r="2.5"
+          fill={HOLE_DARK} stroke="#444" strokeWidth="0.3" />
+        <circle cx={WING_X + 6} cy={WING_TOP + 6} r="1.0"
+          fill="#666" />
+        {/* VIN label */}
+        <text x={WING_X + 6} y={WING_TOP + 13} textAnchor="middle"
+          fontSize="1.2" fill={PCB_BORDER} fontFamily="Fira Code, monospace"
+          fontWeight="600" opacity="0.7">
+          5-20V
+        </text>
+      </g>
+
+      {/* Blue LEDs on breakout board (3 visible in photos at corners) */}
+      {[[SEMI_CX + 20, TOP_PIN_Y - 8], [SEMI_CX + 20, BOTTOM_PIN_Y + 8],
+        [WING_X - 8, BOARD_H / 2]].map(([lx, ly], i) => (
+        <g key={`brd-led-${i}`}>
+          <circle cx={lx} cy={ly} r="1.3" fill="#3498db" opacity="0.6" />
+          <circle cx={lx} cy={ly} r="0.6" fill="#5DADE2" />
+        </g>
+      ))}
 
       {/* Copper trace hints on yellow PCB (cosmetic lines) */}
       <g opacity="0.12" stroke={PCB_YELLOW_DARK} strokeWidth="0.6">
