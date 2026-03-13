@@ -2041,8 +2041,24 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
         qtype = classify_question(user_message)
         print(f"[UNLIM] Question classified as: {qtype}")
 
-    # Build messages with conversation memory (last 6 messages = 3 turns)
-    messages = [{"role": "system", "content": prompt}]
+    # Build messages: inject circuit context INTO system prompt for stronger enforcement.
+    # LLMs weight system prompt instructions much higher than user-message preambles.
+    effective_prompt = prompt
+    if circuit_context and not images:
+        context_injection = (
+            "\n\n=== STATO ATTUALE DEL SIMULATORE (DATI REALI — LEGGI PRIMA DI RISPONDERE) ===\n"
+            f"{circuit_context}\n"
+            "=== FINE STATO ATTUALE ===\n\n"
+            "REGOLA IMPERATIVA: La tua risposta DEVE essere coerente con lo stato attuale qui sopra.\n"
+            "- Se ci sono componenti piazzati, RIFERISCITI a quelli per nome/ID. NON parlare di componenti che non esistono.\n"
+            "- Se c'è un passo di costruzione attivo (es. passo 2/5), guida verso il passo SUCCESSIVO.\n"
+            "- Se la simulazione è in esecuzione, commenta il comportamento osservato.\n"
+            "- Se c'è un errore di compilazione, aiuta a risolverlo.\n"
+            "- NON ripetere istruzioni generiche se il contesto fornisce dati specifici.\n"
+        )
+        effective_prompt = effective_prompt + context_injection
+
+    messages = [{"role": "system", "content": effective_prompt}]
 
     if conversation_history:
         for msg in conversation_history[-6:]:
@@ -2053,7 +2069,7 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
 
     full_message = user_message
     if images:
-        # Vision mode: prioritize image analysis instruction
+        # Vision mode: prioritize image analysis instruction + context in user message
         vision_prefix = (
             "IMPORTANTE: Lo studente ha inviato un'immagine. "
             "Analizza PRIMA l'immagine allegata, descrivi cosa vedi nel dettaglio, "
@@ -2063,8 +2079,8 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
             full_message = f"{vision_prefix}\n\n{circuit_context}\n\nMessaggio studente:\n{user_message}"
         else:
             full_message = f"{vision_prefix}\n\nMessaggio studente:\n{user_message}"
-    elif circuit_context:
-        full_message = f"{circuit_context}\n\nMessaggio studente:\n{user_message}"
+    # For non-vision: context is already in system prompt, keep user message clean
+    # This makes the user's actual question stand out more clearly
 
     messages.append({"role": "user", "content": full_message})
 

@@ -19,10 +19,11 @@ let recordingStream = null;
 export async function checkVoiceCapabilities() {
     const result = { stt: false, tts: false, microphone: false, error: null };
 
-    // Check microphone access (iPad Safari + Chrome supported)
+    // Check microphone API availability (actual permission requested on first record)
+    // Note: enumerateDevices() often returns empty before getUserMedia() is called,
+    // so we just check the API exists — real permission check happens at startRecording()
     try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        result.microphone = devices.some(d => d.kind === 'audioinput');
+        result.microphone = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
     } catch {
         result.microphone = false;
     }
@@ -46,6 +47,34 @@ export async function checkVoiceCapabilities() {
     }
 
     return result;
+}
+
+/**
+ * Unlock audio playback on browsers with strict autoplay policies.
+ * Must be called directly from a user gesture (click/tap) handler.
+ * Creates a silent AudioContext + tiny silent play to unlock the session.
+ */
+let audioUnlocked = false;
+export function unlockAudioPlayback() {
+    if (audioUnlocked) return;
+    try {
+        // Resume/create AudioContext (works on most browsers)
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') ctx.resume();
+        const buf = ctx.createBuffer(1, 1, 22050);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.connect(ctx.destination);
+        src.start(0);
+
+        // Also unlock HTMLAudioElement path
+        const silent = new Audio('data:audio/mp3;base64,SUQzBAAAAAA=');
+        silent.volume = 0;
+        silent.play().catch(() => {});
+
+        audioUnlocked = true;
+        console.log('[Voice] Audio playback unlocked');
+    } catch { /* silent */ }
 }
 
 /**
@@ -248,12 +277,17 @@ export function playAudio(audio, format = 'audio/mpeg') {
             const url = URL.createObjectURL(blob);
             const player = new Audio(url);
 
+            // Track for stop functionality
+            currentPlayer = player;
+
             player.onended = () => {
                 URL.revokeObjectURL(url);
+                if (currentPlayer === player) currentPlayer = null;
                 resolve(player);
             };
             player.onerror = (e) => {
                 URL.revokeObjectURL(url);
+                if (currentPlayer === player) currentPlayer = null;
                 reject(new Error('Audio playback failed'));
             };
 
@@ -283,6 +317,5 @@ export function stopPlayback() {
  */
 export async function playTracked(audio, format = 'audio/mpeg') {
     stopPlayback();
-    const player = await playAudio(audio, format);
-    currentPlayer = null; // Already finished
+    await playAudio(audio, format);
 }

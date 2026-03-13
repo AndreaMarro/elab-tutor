@@ -41,6 +41,7 @@ import { captureWhiteboardScreenshot } from '../../utils/whiteboardScreenshot';
 import {
     checkVoiceCapabilities, startRecording, stopRecording, isRecording as isVoiceRecording,
     cancelRecording, sendVoiceChat, synthesizeSpeech, playAudio, playTracked, stopPlayback,
+    unlockAudioPlayback,
 } from '../../services/voiceService';
 
 /**
@@ -149,6 +150,7 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
             console.warn('[Voice] Not available — cannot enable');
             return;
         }
+        if (enabled) unlockAudioPlayback(); // Unlock browser autoplay on user gesture
         setVoiceEnabled(enabled);
         if (!enabled) {
             cancelRecording();
@@ -165,6 +167,7 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
      */
     const handleVoiceRecord = useCallback(async () => {
         if (isLoading) return;
+        unlockAudioPlayback(); // Ensure audio unlocked on every record tap
 
         if (isVoiceRecording()) {
             // Stop recording → send to nanobot
@@ -214,16 +217,34 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
                             : m
                     ));
 
-                    // Add AI response (action tags [AZIONE:...] will be parsed by
-                    // the existing message renderer + action execution system)
+                    // Add AI response with tags stripped + execute actions (shared with text chat)
                     if (result.response) {
+                        const voiceAiResponse = sanitizeOutput(String(result.response));
+                        const voiceMsgId = 'voice-resp-' + Date.now();
+
+                        // Strip tags for display
+                        let voiceStripped = voiceAiResponse;
+                        for (const { fullMatch } of extractIntentTags(voiceAiResponse)) {
+                            voiceStripped = voiceStripped.replace(fullMatch, '');
+                        }
+                        const voiceDisplayText = voiceStripped
+                            .replace(/\[azione:[^\]]+\]/gi, '')
+                            .replace(/\[AZIONE:[^\]]+\]/g, '')
+                            .replace(/\n{3,}/g, '\n\n')
+                            .trim();
+
+                        // Add cleaned message
                         setMessages(prev => [...prev, {
-                            id: 'voice-resp-' + Date.now(),
+                            id: voiceMsgId,
                             role: 'assistant',
-                            content: result.response,
+                            content: voiceDisplayText || voiceAiResponse,
                             isVoice: true,
                             timing: result.timing,
+                            _executedActions: [],
                         }]);
+
+                        // Execute ALL action tags (same as text chat — skipRalphLoop to avoid latency)
+                        await processAiResponse(voiceAiResponse, result.userText || '', voiceMsgId, { skipRalphLoop: true });
                     }
 
                     // Play audio response if available
@@ -1480,6 +1501,548 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
         volumePages,
     ]);
 
+    // ===================== AI RESPONSE PROCESSOR (shared between text + voice) =====================
+
+    /**
+     * Process AI response: strip action/intent tags from display text, parse + execute actions.
+     * Used by BOTH handleSend (text chat) and handleVoiceRecord (voice chat).
+     * @param {string} aiResponse - raw AI response (may contain [AZIONE:...] and [INTENT:...] tags)
+     * @param {string} userMessage - the user's original message (for Ralph Loop repair + quiz fallback)
+     * @param {number|string} msgId - message ID to update with _executedActions
+     * @param {Object} opts - { skipRalphLoop: boolean } — voice skips Ralph Loop to avoid double API call
+     * @returns {Promise<string>} displayText (tags stripped)
+     */
+    const processAiResponse = async (aiResponse, userMessage, msgId, opts = {}) => {
+        const aiLower = aiResponse.toLowerCase();
+        const userLower = userMessage.toLowerCase();
+
+        // ── Strip action tags from display text ──
+        let strippedResponse = aiResponse;
+        for (const { fullMatch } of extractIntentTags(aiResponse)) {
+            strippedResponse = strippedResponse.replace(fullMatch, '');
+        }
+        const displayText = strippedResponse
+            .replace(/\[azione:[^\]]+\]/gi, '')
+            .replace(/\[AZIONE:[^\]]+\]/g, '')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+
+        // ── Parse action tags ──
+        let actionTags = aiResponse.match(/\[azione:([^\]]+)\]/gi) || [];
+        const api = typeof window !== 'undefined' && window.__ELAB_API;
+        const executedActions = [];
+        const actionFailures = [];
+        const actionIntentRegex = /\b(carica|apri|vai|metti|aggiungi|costruisci|collega|rimuovi|togli|evidenzia|mostra|mostrami|sposta|premi|gira|avvia|ferma|reset|compila|imposta|setta|cancella|pulisci|interagisci|annulla|ripeti|indietro|avanti|prossimo|precedente|scrivi|elenca|stato|misura|diagnostica|programma|codice|codifica|ripristina)\b/i;
+
+        // ── Ralph Loop repair (silent second-pass) — skip for voice to avoid extra latency ──
+        if (!opts.skipRalphLoop && actionTags.length === 0 && actionIntentRegex.test(userMessage)) {
+            try {
+                const repairPrompt = [
+                    '[RIPARAZIONE TAG AZIONE]',
+                    "L'utente ha chiesto un'azione ma la risposta precedente non contiene tag [AZIONE:...].",
+                    'Genera SOLO i tag [AZIONE:...] necessari (uno per riga), senza testo aggiuntivo.',
+                    '',
+                    `[MESSAGGIO UTENTE]\\n${userMessage}`,
+                    '',
+                    `[RISPOSTA PRECEDENTE]\\n${aiResponse}`,
+                ].join('\\n');
+
+                const experimentContext = activeExperiment
+                    ? `[Esp: "${activeExperiment.title || activeExperiment.id || ''}"]`
+                    : '';
+
+                const repairResult = await sendChat(repairPrompt, [], {
+                    socraticMode: false,
+                    experimentContext,
+                    circuitState: circuitStateRef.current?.structured
+                        ? { structured: circuitStateRef.current.structured, text: circuitStateRef.current.text }
+                        : (circuitStateRef.current ? { raw: circuitStateRef.current } : null),
+                    experimentId: activeExperiment?.id || null,
+                });
+
+                if (repairResult?.success && repairResult?.response) {
+                    const repaired = sanitizeOutput(String(repairResult.response));
+                    const recovered = repaired.match(/\[azione:([^\]]+)\]/gi) || [];
+                    if (recovered.length > 0) {
+                        actionTags = recovered;
+                    }
+                }
+            } catch {
+                // Silent: keep original response even if repair step fails.
+            }
+        }
+
+        const parseIntOr = (value, fallback) => {
+            const parsed = Number.parseInt(value, 10);
+            return Number.isFinite(parsed) ? parsed : fallback;
+        };
+        const normalizeComponentToken = (value) =>
+            (value || '').toLowerCase().replace(/[\s_-]+/g, '');
+        const TYPE_ALIASES = {
+            led: 'led', rgbled: 'rgb-led', resistor: 'resistor', resistore: 'resistor',
+            resistenza: 'resistor', battery: 'battery9v', batteria: 'battery9v', battery9v: 'battery9v',
+            buzzer: 'buzzer-piezo', cicalino: 'buzzer-piezo', buzzerpiezo: 'buzzer-piezo',
+            button: 'push-button', pulsante: 'push-button', pushbutton: 'push-button',
+            potentiometer: 'potentiometer', potenziometro: 'potentiometer', pot: 'potentiometer',
+            photoresistor: 'photo-resistor', fotoresistore: 'photo-resistor', ldr: 'photo-resistor',
+            reed: 'reed-switch', reedswitch: 'reed-switch', motor: 'motor-dc', motore: 'motor-dc',
+            motoredc: 'motor-dc', capacitor: 'capacitor', condensatore: 'capacitor',
+            diode: 'diode', diodo: 'diode', mosfet: 'mosfet-n', mosfetn: 'mosfet-n',
+            servo: 'servo', arduino: 'nano-r4-board', nano: 'nano-r4-board', nanor4board: 'nano-r4-board',
+        };
+        const getLiveComponents = () => {
+            try {
+                const layout = api?.getLayout?.();
+                return Array.isArray(layout?.components) ? layout.components : [];
+            } catch { return []; }
+        };
+        const resolveComponentIds = (token, allowMultiple = false) => {
+            const cleaned = (token || '').trim();
+            if (!cleaned) return [];
+            const components = getLiveComponents();
+            if (!components.length) return [cleaned];
+            const normalizedToken = normalizeComponentToken(cleaned);
+            const byId = components.filter(c => normalizeComponentToken(c?.id) === normalizedToken);
+            if (byId.length) return allowMultiple ? byId.map(c => c.id) : [byId[0].id];
+            const byPrefixId = components.filter(c => normalizeComponentToken(c?.id).startsWith(normalizedToken));
+            if (byPrefixId.length) return allowMultiple ? byPrefixId.map(c => c.id) : [byPrefixId[0].id];
+            const normalizedType = normalizeComponentToken(TYPE_ALIASES[normalizedToken] || cleaned);
+            const byType = components.filter(c => normalizeComponentToken(c?.type) === normalizedType);
+            if (byType.length) return allowMultiple ? byType.map(c => c.id) : [byType[0].id];
+            return [];
+        };
+        const resolveSingleComponentId = (token) => {
+            const ids = resolveComponentIds(token, false);
+            return ids.length ? ids[0] : null;
+        };
+        const resolveExperimentId = (requestedId) => {
+            const raw = (requestedId || '').trim();
+            if (!raw || !api?.getExperimentList) return raw;
+            if (api?.getExperiment?.(raw)) return raw;
+            const EXP_ID_ALIASES = {
+                'v1-cap6-primo-circuito': 'v1-cap6-esp1', 'v1-cap6-led-rosso': 'v1-cap6-esp2',
+                'v1-cap6-led-bruciato': 'v1-cap6-esp3', 'v1-cap8-pulsante-led': 'v1-cap8-esp1',
+                'v1-cap8-semaforo-pulsante': 'v1-cap8-esp5', 'v1-cap11-buzzer': 'v1-cap11-esp1',
+                'v3-cap6-led-blink': 'v3-cap6-blink',
+            };
+            if (EXP_ID_ALIASES[raw]) return EXP_ID_ALIASES[raw];
+            const normalize = (value) => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+            const prefixMatch = raw.match(/^(v\d-cap\d+)/i);
+            const prefix = prefixMatch ? prefixMatch[1].toLowerCase() : '';
+            const rawTokens = raw.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)
+                .filter(tok => !/^v\d$/.test(tok) && !/^cap\d+$/.test(tok) && tok !== 'esp');
+            const list = api.getExperimentList?.() || {};
+            const flat = [...(list.vol1 || []), ...(list.vol2 || []), ...(list.vol3 || [])];
+            let candidates = flat;
+            if (prefix) {
+                const prefixed = flat.filter(exp => (exp.id || '').toLowerCase().startsWith(prefix));
+                if (prefixed.length) candidates = prefixed;
+            }
+            if (!candidates.length) return raw;
+            const scored = candidates.map(exp => {
+                const idNorm = normalize(exp.id);
+                const titleNorm = normalize(exp.title);
+                let score = 0;
+                if (idNorm.includes(normalize(raw))) score += 8;
+                for (const tok of rawTokens) {
+                    if (idNorm.includes(tok)) score += 3;
+                    if (titleNorm.includes(tok)) score += 4;
+                }
+                return { id: exp.id, score };
+            }).sort((a, b) => b.score - a.score);
+            if (scored[0]?.score > 0) return scored[0].id;
+            if (candidates.length === 1) return candidates[0].id;
+            return raw;
+        };
+        const recordActionFailure = (tagText, reason) => {
+            actionFailures.push(`${tagText} → ${reason}`);
+        };
+
+        // ── PlacementEngine intent resolution ──
+        const PLACEMENT_ENGINE_ENABLED = true;
+        const intentTags = extractIntentTags(aiResponse);
+
+        if (PLACEMENT_ENGINE_ENABLED && intentTags.length > 0 && api) {
+            try {
+                const { resolvePlacement } = await import('../simulator/engine/PlacementEngine');
+                const currentLayout = api.getLayout?.() || {};
+                const snapshot = {
+                    components: currentLayout.components || [],
+                    connections: currentLayout.connections || [],
+                    layout: currentLayout.layout || {},
+                    pinAssignments: currentLayout.pinAssignments || {},
+                };
+                const peActions = [];
+                for (const tag of intentTags) {
+                    try {
+                        const intent = JSON.parse(tag.json);
+                        const placementResult = resolvePlacement(intent, snapshot);
+                        if (placementResult.success) {
+                            peActions.push(...placementResult.actions);
+                            for (const action of placementResult.actions) {
+                                if (action.pinAssignments) Object.assign(snapshot.pinAssignments, action.pinAssignments);
+                            }
+                        }
+                        if (placementResult.errors.length > 0) console.warn('[PlacementEngine]', placementResult.errors);
+                    } catch (parseErr) {
+                        console.warn('[PlacementEngine] Invalid INTENT JSON:', parseErr.message);
+                    }
+                }
+                if (peActions.length > 0) {
+                    const peIdMap = {};
+                    for (const action of peActions) {
+                        if (action.type !== 'addcomponent') continue;
+                        try {
+                            const tagMatch = action.tag.match(/addcomponent:([^:]+):(-?\d+):(-?\d+)/);
+                            if (!tagMatch) continue;
+                            const type = TYPE_ALIASES[normalizeComponentToken(tagMatch[1])] || tagMatch[1];
+                            const x = parseInt(tagMatch[2], 10) || 200;
+                            const y = parseInt(tagMatch[3], 10) || 150;
+                            if (api.addComponent) {
+                                const realId = api.addComponent(type, { x, y });
+                                if (realId && action.componentId) peIdMap[action.componentId] = realId;
+                                executedActions.push(`addcomponent:${realId || type}`);
+                            }
+                        } catch (err) { recordActionFailure(action.tag, err.message); }
+                    }
+                    for (const action of peActions) {
+                        if (action.type !== 'addwire') continue;
+                        try {
+                            const inner = action.tag.slice(action.tag.indexOf(':') + 1, -1);
+                            const parts = inner.split(':').map(s => s.trim());
+                            if (!(parts[1] && parts[2] && parts[3] && parts[4])) continue;
+                            let fromComp = peIdMap[parts[1]] || parts[1];
+                            let toComp = peIdMap[parts[3]] || parts[3];
+                            const fromId = resolveSingleComponentId(fromComp) || fromComp;
+                            const toId = resolveSingleComponentId(toComp) || toComp;
+                            const fromPin = `${fromId}:${parts[2]}`;
+                            const toPin = `${toId}:${parts[4]}`;
+                            if (api.addWire) {
+                                api.addWire(fromPin, toPin);
+                                executedActions.push(`addwire:${fromPin}->${toPin}`);
+                            }
+                        } catch (err) { recordActionFailure(action.tag, err.message); }
+                    }
+                }
+            } catch (err) {
+                console.warn('[PlacementEngine] fallback to raw AZIONE tags:', err.message);
+            }
+        }
+
+        // ── Execute [AZIONE:cmd:args] tags ──
+        for (const tag of actionTags) {
+            const colonIdx = tag.indexOf(':');
+            if (colonIdx < 0) continue;
+            const inner = tag.slice(colonIdx + 1, -1);
+            const parts = inner.split(':').map(s => s.trim());
+            const cmd = parts[0]?.toLowerCase();
+            const tagText = `[AZIONE:${inner}]`;
+            try {
+                if (cmd === 'play') {
+                    if (!api?.play) throw new Error('API simulatore non disponibile');
+                    api.play(); executedActions.push('play');
+                } else if (cmd === 'pause') {
+                    if (!api?.pause) throw new Error('API simulatore non disponibile');
+                    api.pause(); executedActions.push('pause');
+                } else if (cmd === 'reset') {
+                    if (!api?.reset) throw new Error('API simulatore non disponibile');
+                    api.reset(); executedActions.push('reset');
+                } else if (cmd === 'highlight') {
+                    if (!api?.unlim?.highlightComponent) throw new Error('highlight non disponibile');
+                    const rawTargets = (parts[1] || '').split(',').map(s => s.trim()).filter(Boolean);
+                    const resolvedTargets = [...new Set(rawTargets.flatMap(token => resolveComponentIds(token, true)))];
+                    if (!resolvedTargets.length) throw new Error('componenti da evidenziare non trovati');
+                    api.unlim.highlightComponent(resolvedTargets);
+                    setTimeout(() => api.unlim.clearHighlights(), 4000);
+                    executedActions.push(`highlight:${resolvedTargets.join(',')}`);
+                } else if (cmd === 'loadexp' && parts[1]) {
+                    const resolvedId = resolveExperimentId(parts[1]);
+                    if (!api?.getExperiment?.(resolvedId)) throw new Error(`esperimento non trovato: ${parts[1]}`);
+                    setPendingExperimentId(resolvedId);
+                    setActiveTab('simulator');
+                    executedActions.push(`loadexp:${resolvedId}`);
+                } else if (cmd === 'opentab' && parts[1]) {
+                    const tabMap = { simulatore: 'simulator', manuale: 'manual', video: 'videos', lavagna: 'canvas', taccuini: 'notebooks', detective: 'detective', poe: 'poe', reverse: 'reverse', review: 'review' };
+                    const tab = tabMap[parts[1].toLowerCase()] || parts[1];
+                    setActiveTab(tab);
+                    executedActions.push(`opentab:${parts[1]}`);
+                } else if (cmd === 'openvolume' && parts[1]) {
+                    const vol = parseInt(parts[1]);
+                    const page = parts[2] ? parseInt(parts[2]) : null;
+                    if (vol >= 1 && vol <= 3) {
+                        loadVolume(vol).then(() => { if (page) setCurrentDocPage(Math.max(0, page - 1)); }).catch(() => { });
+                        setActiveTab('manual');
+                        executedActions.push(`openvolume:${parts[1]}`);
+                    } else throw new Error(`volume non valido: ${parts[1]}`);
+                } else if (cmd === 'addwire') {
+                    if (!api?.addWire) throw new Error('addWire non disponibile');
+                    if (!(parts[1] && parts[2] && parts[3] && parts[4])) throw new Error('argomenti addwire incompleti');
+                    const fromId = resolveSingleComponentId(parts[1]);
+                    const toId = resolveSingleComponentId(parts[3]);
+                    if (!fromId) throw new Error(`componente sorgente non trovato: ${parts[1]}`);
+                    if (!toId) throw new Error(`componente destinazione non trovato: ${parts[3]}`);
+                    api.addWire(`${fromId}:${parts[2]}`, `${toId}:${parts[4]}`);
+                    executedActions.push(`addwire:${fromId}:${parts[2]}->${toId}:${parts[4]}`);
+                } else if (cmd === 'removewire') {
+                    if (!api?.removeWire) throw new Error('removeWire non disponibile');
+                    const wireIndex = Number.parseInt(parts[1], 10);
+                    if (!Number.isFinite(wireIndex) || wireIndex < 0) throw new Error(`indice filo non valido: ${parts[1] || ''}`);
+                    api.removeWire(wireIndex);
+                    executedActions.push(`removewire:${wireIndex}`);
+                } else if (cmd === 'addcomponent') {
+                    if (!api?.addComponent) throw new Error('addComponent non disponibile');
+                    if (!parts[1]) throw new Error('tipo componente mancante');
+                    const type = TYPE_ALIASES[normalizeComponentToken(parts[1])] || parts[1];
+                    const x = parseIntOr(parts[2], 200);
+                    const y = parseIntOr(parts[3], 150);
+                    const addedId = api.addComponent(type, { x, y });
+                    if (!addedId) throw new Error(`aggiunta componente fallita: ${type}`);
+                    executedActions.push(`addcomponent:${addedId}`);
+                } else if (cmd === 'removecomponent') {
+                    if (!api?.removeComponent) throw new Error('removeComponent non disponibile');
+                    if (!parts[1]) throw new Error('componente da rimuovere mancante');
+                    const targets = [...new Set(resolveComponentIds(parts[1], true))];
+                    if (!targets.length) throw new Error(`componente non trovato: ${parts[1]}`);
+                    targets.forEach(id => api.removeComponent(id));
+                    executedActions.push(`removecomponent:${targets.join(',')}`);
+                } else if (cmd === 'interact') {
+                    if (!api?.interact) throw new Error('interact non disponibile');
+                    if (!parts[1]) throw new Error('componente da interagire mancante');
+                    const compId = resolveSingleComponentId(parts[1]) || parts[1];
+                    const action = parts[2] || 'press';
+                    const parsedValue = parts[3] ? Number.parseFloat(parts[3]) : undefined;
+                    const value = Number.isFinite(parsedValue) ? parsedValue : undefined;
+                    api.interact(compId, action, value);
+                    if (action === 'press') setTimeout(() => api.interact(compId, 'release'), 300);
+                    executedActions.push(`interact:${compId}:${action}`);
+                } else if (cmd === 'compile') {
+                    if (!api?.getEditorCode) throw new Error('compile non disponibile');
+                    const code = api.getEditorCode();
+                    if (code) {
+                        const compileFn = api.compileAndLoad || api.compile;
+                        compileFn(code).then(compileResult => {
+                            if (compileResult && !compileResult.success) {
+                                setMessages(prev => [...prev, { id: Date.now(), role: 'assistant', content: `\u274C Errore: ${compileResult.errors || 'sconosciuto'}`, proactive: true }]);
+                            }
+                        }).catch(() => { recordActionFailure(tagText, 'compilazione fallita'); });
+                    } else throw new Error('editor codice vuoto');
+                    executedActions.push('compile');
+                } else if (cmd === 'movecomponent') {
+                    if (!api?.moveComponent) throw new Error('moveComponent non disponibile');
+                    if (!parts[1]) throw new Error('componente da spostare mancante');
+                    const compId = resolveSingleComponentId(parts[1]) || parts[1];
+                    const positions = api?.getComponentPositions?.() || {};
+                    const fallbackPos = positions?.[compId] || { x: 200, y: 150 };
+                    api.moveComponent(compId, parseIntOr(parts[2], fallbackPos.x), parseIntOr(parts[3], fallbackPos.y));
+                    executedActions.push(`movecomponent:${compId}`);
+                } else if (cmd === 'clearall') {
+                    if (!api?.clearAll) throw new Error('clearAll non disponibile');
+                    api.clearAll(); executedActions.push('clearall');
+                } else if (cmd === 'quiz') {
+                    const expId = parts[1] || activeExperiment?.id || null;
+                    window.dispatchEvent(new CustomEvent('unlim-quiz', { detail: { experimentId: expId } }));
+                    executedActions.push('quiz');
+                } else if (cmd === 'youtube' && parts.length > 1) {
+                    const query = parts.slice(1).join(' ');
+                    handleYouTubeSearch(query);
+                    executedActions.push(`youtube:${query.slice(0, 20)}`);
+                } else if (cmd === 'createnotebook') {
+                    const title = parts.slice(1).join(' ').trim() || `Lezione ${new Date().toLocaleDateString()}`;
+                    createNotebook(title);
+                    executedActions.push(`createnotebook:${title}`);
+                } else if (cmd === 'setvalue') {
+                    if (!api?.interact) throw new Error('interact non disponibile');
+                    if (!parts[1] || !parts[2] || parts[3] === undefined) throw new Error('argomenti setvalue incompleti');
+                    const compId = resolveSingleComponentId(parts[1]) || parts[1];
+                    const param = parts[2].toLowerCase();
+                    const value = Number.parseFloat(parts[3]);
+                    if (!Number.isFinite(value)) throw new Error(`valore non numerico: ${parts[3]}`);
+                    const PARAM_MAP = {
+                        resistance: 'setResistance', position: 'setPosition', lightlevel: 'setLightLevel',
+                        light: 'setLightLevel', luce: 'setLightLevel', angle: 'setPosition', angolo: 'setPosition',
+                    };
+                    api.interact(compId, PARAM_MAP[param] || `set${param.charAt(0).toUpperCase()}${param.slice(1)}`, value);
+                    executedActions.push(`setvalue:${compId}:${param}:${value}`);
+                } else if (cmd === 'measure') {
+                    if (!parts[1]) throw new Error('componente da misurare mancante');
+                    const compId = resolveSingleComponentId(parts[1]) || parts[1];
+                    const circuitState = api?.getCircuitState?.();
+                    if (!circuitState?.measurements) throw new Error('misurazioni non disponibili — avvia la simulazione');
+                    const meas = circuitState.measurements[compId];
+                    if (!meas) throw new Error(`nessuna misura per ${compId}`);
+                    const vStr = meas.voltage !== undefined ? `${meas.voltage.toFixed(3)} V` : 'N/D';
+                    const iStr = meas.current !== undefined ? `${(meas.current * 1000).toFixed(1)} mA` : 'N/D';
+                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCCA **Misura ${compId}**: Tensione = ${vStr} | Corrente = ${iStr}`, proactive: true }]);
+                    executedActions.push(`measure:${compId}`);
+                } else if (cmd === 'diagnose') {
+                    handleDiagnoseCircuit();
+                    executedActions.push('diagnose');
+                } else if (cmd === 'openeditor') {
+                    if (!api?.showEditor) throw new Error('showEditor non disponibile');
+                    api.showEditor(); executedActions.push('openeditor');
+                } else if (cmd === 'closeeditor') {
+                    if (!api?.hideEditor) throw new Error('hideEditor non disponibile');
+                    api.hideEditor(); executedActions.push('closeeditor');
+                } else if (cmd === 'switcheditor') {
+                    if (!api?.setEditorMode) throw new Error('setEditorMode non disponibile');
+                    const mode = (parts[1] || '').toLowerCase();
+                    if (mode !== 'scratch' && mode !== 'arduino') throw new Error(`modo editor non valido: ${mode}`);
+                    if (!api.isEditorVisible?.()) api.showEditor?.();
+                    api.setEditorMode(mode);
+                    executedActions.push(`switcheditor:${mode}`);
+                } else if (cmd === 'loadblocks') {
+                    if (!api?.loadScratchWorkspace) throw new Error('loadScratchWorkspace non disponibile');
+                    const xml = parts.slice(1).join(':');
+                    if (!xml) throw new Error('XML workspace mancante');
+                    api.loadScratchWorkspace(xml);
+                    executedActions.push('loadblocks');
+                } else if (cmd === 'undo') {
+                    if (!api?.undo) throw new Error('undo non disponibile');
+                    api.undo(); executedActions.push('undo');
+                } else if (cmd === 'redo') {
+                    if (!api?.redo) throw new Error('redo non disponibile');
+                    api.redo(); executedActions.push('redo');
+                } else if (cmd === 'highlightpin') {
+                    if (!api?.highlightPin) throw new Error('highlightPin non disponibile');
+                    const rawPins = (parts.slice(1).join(':') || '').split(',').map(s => s.trim()).filter(Boolean);
+                    if (!rawPins.length) throw new Error('pin da evidenziare mancanti');
+                    api.highlightPin(rawPins);
+                    setTimeout(() => api.highlightPin([]), 4000);
+                    executedActions.push(`highlightpin:${rawPins.join(',')}`);
+                } else if (cmd === 'serialwrite') {
+                    if (!api?.serialWrite) throw new Error('serialWrite non disponibile');
+                    const text = parts.slice(1).join(':');
+                    if (!text) throw new Error('testo seriale mancante');
+                    api.serialWrite(text);
+                    executedActions.push('serialwrite');
+                } else if (cmd === 'setbuildmode') {
+                    if (!api?.setBuildMode) throw new Error('setBuildMode non disponibile');
+                    const modeMap = {
+                        montato: 'complete', 'già montato': 'complete', giamontato: 'complete', complete: 'complete',
+                        passopasso: 'guided', 'passo passo': 'guided', guided: 'guided',
+                        libero: 'sandbox', costruisci: 'sandbox', sandbox: 'sandbox',
+                    };
+                    const mode = modeMap[(parts[1] || '').toLowerCase().replace(/[\s_-]+/g, '')] || parts[1];
+                    if (!mode) throw new Error('modalità mancante');
+                    api.setBuildMode(mode);
+                    executedActions.push(`setbuildmode:${mode}`);
+                } else if (cmd === 'nextstep') {
+                    if (!api?.nextStep) throw new Error('nextStep non disponibile');
+                    api.nextStep(); executedActions.push('nextstep');
+                } else if (cmd === 'prevstep') {
+                    if (!api?.prevStep) throw new Error('prevStep non disponibile');
+                    api.prevStep(); executedActions.push('prevstep');
+                } else if (cmd === 'showbom') {
+                    if (!api?.showBom) throw new Error('showBom non disponibile');
+                    api.showBom(); executedActions.push('showbom');
+                } else if (cmd === 'showserial') {
+                    if (!api?.showSerialMonitor) throw new Error('showSerialMonitor non disponibile');
+                    api.showSerialMonitor(); executedActions.push('showserial');
+                } else if (cmd === 'listcomponents') {
+                    const components = getLiveComponents();
+                    if (components.length === 0) {
+                        setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: '\uD83D\uDCCB **Componenti**: Nessun componente piazzato.', proactive: true }]);
+                    } else {
+                        const list = components.map(c => `\u2022 **${c.id}** (${c.type})`).join('\n');
+                        setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCCB **Componenti piazzati** (${components.length}):\n${list}`, proactive: true }]);
+                    }
+                    executedActions.push('listcomponents');
+                } else if (cmd === 'getstate') {
+                    const circuitState = api?.getCircuitState?.() || api?.unlim?.getCircuitState?.();
+                    if (!circuitState) throw new Error('stato circuito non disponibile');
+                    const comps = (circuitState.components || []).length;
+                    const wires = (circuitState.connections || []).length;
+                    const simState = circuitState.isSimulating ? '\u25B6 In esecuzione' : '\u23F8 Fermata';
+                    const expName = circuitState.experiment?.title || 'Nessuno';
+                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCCA **Stato Circuito**:\n\u2022 Esperimento: **${expName}**\n\u2022 Componenti: **${comps}**\n\u2022 Fili: **${wires}**\n\u2022 Simulazione: **${simState}**`, proactive: true }]);
+                    executedActions.push('getstate');
+                } else if (cmd === 'setcode') {
+                    const arg = parts.slice(1).join(':').replace(/\\n/g, '\n');
+                    if (!arg) throw new Error('codice mancante');
+                    if (!api?.setEditorCode) throw new Error('setEditorCode non disponibile');
+                    api.showEditor?.(); api.setEditorMode?.('arduino');
+                    api.setEditorCode(arg);
+                    executedActions.push('setcode');
+                } else if (cmd === 'appendcode') {
+                    const arg = parts.slice(1).join(':').replace(/\\n/g, '\n');
+                    if (!arg) throw new Error('codice mancante');
+                    if (!api?.appendEditorCode) throw new Error('appendEditorCode non disponibile');
+                    api.showEditor?.(); api.setEditorMode?.('arduino');
+                    api.appendEditorCode(arg);
+                    executedActions.push('appendcode');
+                } else if (cmd === 'getcode') {
+                    const code = api?.getEditorCode?.() || '';
+                    const mode = api?.getEditorMode?.() || 'arduino';
+                    const displayCode = code ? code.substring(0, 500) + (code.length > 500 ? '\n// ... (troncato)' : '') : '(vuoto)';
+                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCDD **Codice ${mode === 'scratch' ? 'Scratch (generato)' : 'Arduino'}**:\n\`\`\`cpp\n${displayCode}\n\`\`\``, proactive: true }]);
+                    executedActions.push('getcode');
+                } else if (cmd === 'resetcode') {
+                    if (!api?.resetEditorCode) throw new Error('resetEditorCode non disponibile');
+                    api.showEditor?.(); api.setEditorMode?.('arduino');
+                    api.resetEditorCode();
+                    executedActions.push('resetcode');
+                } else if (cmd === 'openchat') {
+                    setShowChat(true); executedActions.push('openchat');
+                } else if (cmd === 'closechat') {
+                    setShowChat(false); executedActions.push('closechat');
+                } else if (cmd === 'fullscreenscratch') {
+                    if (!api?.showEditor) throw new Error('showEditor non disponibile');
+                    api.showEditor(); api.setEditorMode?.('scratch'); api.setScratchFullscreen?.(true);
+                    executedActions.push('fullscreenscratch');
+                } else if (cmd === 'exitscratchfullscreen') {
+                    api.setScratchFullscreen?.(false);
+                    executedActions.push('exitscratchfullscreen');
+                }
+            } catch (err) {
+                recordActionFailure(tagText, err?.message || 'errore sconosciuto');
+            }
+        }
+
+        if (actionFailures.length > 0) {
+            const uniqueFailures = [...new Set(actionFailures)];
+            errorHistoryRef.current.push(...uniqueFailures.map(f => `action_fail:${f}`));
+            if (errorHistoryRef.current.length > 10) errorHistoryRef.current = errorHistoryRef.current.slice(-10);
+            console.warn('[UNLIM] Action failures:', uniqueFailures);
+        }
+
+        // ── Quiz fallback ──
+        const quizKeywords = /\b(quiz|verificami|testami|domande\s+di\s+verifica)\b/i;
+        if (quizKeywords.test(userLower) && !executedActions.some(a => a === 'quiz')) {
+            window.dispatchEvent(new CustomEvent('unlim-quiz', { detail: { experimentId: activeExperiment?.id || null } }));
+            executedActions.push('quiz');
+        }
+
+        // Update message with executed actions badge
+        if (executedActions.length > 0 && msgId) {
+            setMessages(prev => prev.map(m =>
+                m.id === msgId ? { ...m, _executedActions: executedActions } : m
+            ));
+        }
+
+        // ── Implicit navigation ──
+        if (!actionTags.length) {
+            if (aiLower.includes('simulatore') || aiLower.includes('circuito')) setActiveTab('simulator');
+            const elabPageMatch = aiResponse.match(/\[V(\d)P(\d+)\]/i);
+            const volPageMatch2 = aiLower.match(/(?:volume|vol\.?|v)\s*(\d)\s*(?:pagina|pag\.?|p\.?)\s*(\d+)/i) || aiLower.match(/v(\d)p(\d+)/i);
+            const simplePageMatch = aiLower.match(/pagina\s*(\d+)/);
+            if (elabPageMatch) {
+                loadVolume(parseInt(elabPageMatch[1])).then(() => setCurrentDocPage(Math.max(0, parseInt(elabPageMatch[2]) - 1))).catch(() => { });
+                setActiveTab('manual');
+            } else if (volPageMatch2) {
+                loadVolume(parseInt(volPageMatch2[1])).then(() => setCurrentDocPage(Math.max(0, parseInt(volPageMatch2[2]) - 1))).catch(() => { });
+                setActiveTab('manual');
+            } else if (simplePageMatch) {
+                const volMention = aiLower.match(/(?:volume|vol\.?)\s*(\d)/);
+                const vol = volMention ? parseInt(volMention[1]) : 1;
+                loadVolume(vol).then(() => setCurrentDocPage(Math.max(0, parseInt(simplePageMatch[1]) - 1))).catch(() => { });
+                setActiveTab('manual');
+            }
+            if (userLower.includes('led') && (userLower.includes('accendi') || userLower.includes('spegni'))) setActiveTab('simulator');
+        }
+
+        return displayText;
+    };
+
     // ===================== CHAT HANDLER =====================
 
     const handleSend = async (messageOverride) => {
@@ -1609,796 +2172,30 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
         if (result.success) {
             const rawResponse = (typeof result.response === 'string') ? result.response : (result.response ? JSON.stringify(result.response) : 'Errore: risposta non valida.');
             const aiResponse = sanitizeOutput(rawResponse);
-            const aiLower = aiResponse.toLowerCase();
-            const userLower = userMessage.toLowerCase();
-
-            // ── Strip action tags from display text (UNLIM Onnipotente: esecuzione silenziosa) ──
-            // Tags get executed below but NEVER shown to the student
-            // S58 FIX: More permissive regex — also catches [Azione:...], [azione:...], and partial matches
-            // Strip INTENT tags using balanced-brace parser (regex fails on nested JSON brackets)
-            let strippedResponse = aiResponse;
+            // Use shared processAiResponse for tag stripping + action execution
+            const msgId = Date.now() + 1;
+            // Step 1: Strip tags to get display text (synchronous part)
+            let strippedForDisplay = aiResponse;
             for (const { fullMatch } of extractIntentTags(aiResponse)) {
-                strippedResponse = strippedResponse.replace(fullMatch, '');
+                strippedForDisplay = strippedForDisplay.replace(fullMatch, '');
             }
-            const displayText = strippedResponse
-                .replace(/\[azione:[^\]]+\]/gi, '')  // catch all case variants
-                .replace(/\[AZIONE:[^\]]+\]/g, '')   // exact uppercase (redundant safety)
+            const displayText = strippedForDisplay
+                .replace(/\[azione:[^\]]+\]/gi, '')
+                .replace(/\[AZIONE:[^\]]+\]/g, '')
                 .replace(/\n{3,}/g, '\n\n')
                 .trim();
 
-            const msgId = Date.now() + 1;
+            // Step 2: Add message FIRST (so action execution can reference/update it)
             setMessages(prev => [...prev, {
                 id: msgId,
                 role: 'assistant',
                 content: displayText || aiResponse,
                 source: result.source || null,
-                _executedActions: [], // populated after action parsing
+                _executedActions: [],
             }]);
 
-            // ── AI Action Tags: parse [AZIONE:cmd:args] from ORIGINAL response ──
-            // Allows nanobot to trigger frontend actions via structured tags
-            // S58 FIX: Case-insensitive match + robust inner extraction
-            let actionTags = aiResponse.match(/\[azione:([^\]]+)\]/gi) || [];
-            const api = typeof window !== 'undefined' && window.__ELAB_API;
-            const executedActions = []; // track what was executed for badge display
-            const actionFailures = [];
-            const actionIntentRegex = /\b(carica|apri|vai|metti|aggiungi|costruisci|collega|rimuovi|togli|evidenzia|mostra|mostrami|sposta|premi|gira|avvia|ferma|reset|compila|imposta|setta|cancella|pulisci|interagisci|annulla|ripeti|indietro|avanti|prossimo|precedente|scrivi|elenca|stato|misura|diagnostica|programma|codice|codifica|ripristina)\b/i;
-
-            // Ralph Loop hardening: if user asked for an action but AI omitted tags,
-            // do a silent second-pass request to recover missing [AZIONE:...] commands.
-            if (actionTags.length === 0 && actionIntentRegex.test(userMessage)) {
-                try {
-                    const repairPrompt = [
-                        '[RIPARAZIONE TAG AZIONE]',
-                        "L'utente ha chiesto un'azione ma la risposta precedente non contiene tag [AZIONE:...].",
-                        'Genera SOLO i tag [AZIONE:...] necessari (uno per riga), senza testo aggiuntivo.',
-                        '',
-                        `[MESSAGGIO UTENTE]\\n${userMessage}`,
-                        '',
-                        `[RISPOSTA PRECEDENTE]\\n${aiResponse}`,
-                    ].join('\\n');
-
-                    const repairResult = await sendChat(repairPrompt, [], {
-                        socraticMode: false,
-                        experimentContext,
-                        circuitState: circuitStateRef.current?.structured
-                            ? { structured: circuitStateRef.current.structured, text: circuitStateRef.current.text }
-                            : (circuitStateRef.current ? { raw: circuitStateRef.current } : null),
-                        experimentId: activeExperiment?.id || null,
-                    });
-
-                    if (repairResult?.success && repairResult?.response) {
-                        const repaired = sanitizeOutput(String(repairResult.response));
-                        const recovered = repaired.match(/\[azione:([^\]]+)\]/gi) || [];
-                        if (recovered.length > 0) {
-                            actionTags = recovered;
-                        }
-                    }
-                } catch {
-                    // Silent: keep original response even if repair step fails.
-                }
-            }
-
-            const parseIntOr = (value, fallback) => {
-                const parsed = Number.parseInt(value, 10);
-                return Number.isFinite(parsed) ? parsed : fallback;
-            };
-            const normalizeComponentToken = (value) =>
-                (value || '').toLowerCase().replace(/[\s_-]+/g, '');
-            const TYPE_ALIASES = {
-                led: 'led',
-                rgbled: 'rgb-led',
-                resistor: 'resistor',
-                resistore: 'resistor',
-                resistenza: 'resistor',
-                battery: 'battery9v',
-                batteria: 'battery9v',
-                battery9v: 'battery9v',
-                buzzer: 'buzzer-piezo',
-                cicalino: 'buzzer-piezo',
-                buzzerpiezo: 'buzzer-piezo',
-                button: 'push-button',
-                pulsante: 'push-button',
-                pushbutton: 'push-button',
-                potentiometer: 'potentiometer',
-                potenziometro: 'potentiometer',
-                pot: 'potentiometer',
-                photoresistor: 'photo-resistor',
-                fotoresistore: 'photo-resistor',
-                ldr: 'photo-resistor',
-                reed: 'reed-switch',
-                reedswitch: 'reed-switch',
-                motor: 'motor-dc',
-                motore: 'motor-dc',
-                motoredc: 'motor-dc',
-                capacitor: 'capacitor',
-                condensatore: 'capacitor',
-                diode: 'diode',
-                diodo: 'diode',
-                mosfet: 'mosfet-n',
-                mosfetn: 'mosfet-n',
-                servo: 'servo',
-                arduino: 'nano-r4-board',
-                nano: 'nano-r4-board',
-                nanor4board: 'nano-r4-board',
-            };
-            const getLiveComponents = () => {
-                try {
-                    const layout = api?.getLayout?.();
-                    return Array.isArray(layout?.components) ? layout.components : [];
-                } catch {
-                    return [];
-                }
-            };
-            const resolveComponentIds = (token, allowMultiple = false) => {
-                const cleaned = (token || '').trim();
-                if (!cleaned) return [];
-
-                const components = getLiveComponents();
-                if (!components.length) return [cleaned];
-
-                const normalizedToken = normalizeComponentToken(cleaned);
-                const byId = components.filter(c => normalizeComponentToken(c?.id) === normalizedToken);
-                if (byId.length) {
-                    return allowMultiple ? byId.map(c => c.id) : [byId[0].id];
-                }
-
-                const byPrefixId = components.filter(c => normalizeComponentToken(c?.id).startsWith(normalizedToken));
-                if (byPrefixId.length) {
-                    return allowMultiple ? byPrefixId.map(c => c.id) : [byPrefixId[0].id];
-                }
-
-                const normalizedType = normalizeComponentToken(TYPE_ALIASES[normalizedToken] || cleaned);
-                const byType = components.filter(c => normalizeComponentToken(c?.type) === normalizedType);
-                if (byType.length) {
-                    return allowMultiple ? byType.map(c => c.id) : [byType[0].id];
-                }
-
-                return [];
-            };
-            const resolveSingleComponentId = (token) => {
-                const ids = resolveComponentIds(token, false);
-                return ids.length ? ids[0] : null;
-            };
-            const resolveExperimentId = (requestedId) => {
-                const raw = (requestedId || '').trim();
-                if (!raw || !api?.getExperimentList) return raw;
-
-                // Exact runtime ID
-                if (api?.getExperiment?.(raw)) return raw;
-
-                // Backward-compat aliases used by older prompts/docs
-                const EXP_ID_ALIASES = {
-                    'v1-cap6-primo-circuito': 'v1-cap6-esp1',
-                    'v1-cap6-led-rosso': 'v1-cap6-esp2',
-                    'v1-cap6-led-bruciato': 'v1-cap6-esp3',
-                    'v1-cap8-pulsante-led': 'v1-cap8-esp1',
-                    'v1-cap8-semaforo-pulsante': 'v1-cap8-esp5',
-                    'v1-cap11-buzzer': 'v1-cap11-esp1',
-                    'v3-cap6-led-blink': 'v3-cap6-blink',
-                };
-                if (EXP_ID_ALIASES[raw]) return EXP_ID_ALIASES[raw];
-
-                const normalize = (value) => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
-                const prefixMatch = raw.match(/^(v\d-cap\d+)/i);
-                const prefix = prefixMatch ? prefixMatch[1].toLowerCase() : '';
-                const rawTokens = raw.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)
-                    .filter(tok => !/^v\d$/.test(tok) && !/^cap\d+$/.test(tok) && tok !== 'esp');
-
-                const list = api.getExperimentList?.() || {};
-                const flat = [...(list.vol1 || []), ...(list.vol2 || []), ...(list.vol3 || [])];
-                let candidates = flat;
-                if (prefix) {
-                    const prefixed = flat.filter(exp => (exp.id || '').toLowerCase().startsWith(prefix));
-                    if (prefixed.length) candidates = prefixed;
-                }
-                if (!candidates.length) return raw;
-
-                const scored = candidates.map(exp => {
-                    const idNorm = normalize(exp.id);
-                    const titleNorm = normalize(exp.title);
-                    let score = 0;
-                    if (idNorm.includes(normalize(raw))) score += 8;
-                    for (const tok of rawTokens) {
-                        if (idNorm.includes(tok)) score += 3;
-                        if (titleNorm.includes(tok)) score += 4;
-                    }
-                    return { id: exp.id, score };
-                }).sort((a, b) => b.score - a.score);
-
-                if (scored[0]?.score > 0) return scored[0].id;
-                if (candidates.length === 1) return candidates[0].id;
-                return raw;
-            };
-            const recordActionFailure = (tagText, reason) => {
-                const failure = `${tagText} → ${reason}`;
-                actionFailures.push(failure);
-            };
-
-            // ── NEW: Placement Engine intent resolution ──
-            // Processes [INTENT:{json}] tags BEFORE the existing [AZIONE:] loop.
-            // Two-pass execution: (1) addcomponent → capture real IDs, (2) addwire → remap pe_* IDs.
-            // If INTENT fails → fallback silently to raw AZIONE tags from LLM.
-            const PLACEMENT_ENGINE_ENABLED = true; // kill-switch
-            // Use balanced-brace parser instead of regex (regex fails on nested JSON brackets)
-            const intentTags = extractIntentTags(aiResponse);
-
-            if (PLACEMENT_ENGINE_ENABLED && intentTags.length > 0 && api) {
-                try {
-                    const { resolvePlacement } = await import('../simulator/engine/PlacementEngine');
-                    const currentLayout = api.getLayout?.() || {};
-                    const snapshot = {
-                        components: currentLayout.components || [],
-                        connections: currentLayout.connections || [],
-                        layout: currentLayout.layout || {},
-                        pinAssignments: currentLayout.pinAssignments || {},
-                    };
-
-                    // Collect ALL PE actions across all intents
-                    const peActions = [];
-                    for (const tag of intentTags) {
-                        try {
-                            const intent = JSON.parse(tag.json);
-                            const placementResult = resolvePlacement(intent, snapshot);
-                            if (placementResult.success) {
-                                peActions.push(...placementResult.actions);
-                                // Update snapshot for subsequent intents
-                                for (const action of placementResult.actions) {
-                                    if (action.pinAssignments) {
-                                        Object.assign(snapshot.pinAssignments, action.pinAssignments);
-                                    }
-                                }
-                            }
-                            if (placementResult.errors.length > 0) {
-                                console.warn('[PlacementEngine]', placementResult.errors);
-                            }
-                        } catch (parseErr) {
-                            console.warn('[PlacementEngine] Invalid INTENT JSON:', parseErr.message);
-                        }
-                    }
-
-                    // Two-pass execution: addcomponent first (capture real IDs), then addwire (remap IDs)
-                    if (peActions.length > 0) {
-                        const peIdMap = {}; // pe_* synthetic ID → real simulator ID
-
-                        // Pass 1: Execute addcomponent actions, build ID map
-                        for (const action of peActions) {
-                            if (action.type !== 'addcomponent') continue;
-                            try {
-                                const tagMatch = action.tag.match(/addcomponent:([^:]+):(-?\d+):(-?\d+)/);
-                                if (!tagMatch) continue;
-                                const type = TYPE_ALIASES[normalizeComponentToken(tagMatch[1])] || tagMatch[1];
-                                const x = parseInt(tagMatch[2], 10) || 200;
-                                const y = parseInt(tagMatch[3], 10) || 150;
-                                if (api.addComponent) {
-                                    const realId = api.addComponent(type, { x, y });
-                                    if (realId && action.componentId) {
-                                        peIdMap[action.componentId] = realId;
-                                    }
-                                    executedActions.push(`addcomponent:${realId || type}`);
-                                }
-                            } catch (err) {
-                                recordActionFailure(action.tag, err.message);
-                            }
-                        }
-
-                        // Pass 2: Execute addwire actions with pe_* → real ID remapping
-                        for (const action of peActions) {
-                            if (action.type !== 'addwire') continue;
-                            try {
-                                const inner = action.tag.slice(action.tag.indexOf(':') + 1, -1);
-                                const parts = inner.split(':').map(s => s.trim());
-                                // parts: [addwire, fromComp, fromPin, toComp, toPin, (color)]
-                                if (!(parts[1] && parts[2] && parts[3] && parts[4])) continue;
-
-                                // Remap pe_* synthetic IDs to real simulator IDs
-                                let fromComp = peIdMap[parts[1]] || parts[1];
-                                let toComp = peIdMap[parts[3]] || parts[3];
-
-                                // Resolve to actual simulator component IDs
-                                const fromId = resolveSingleComponentId(fromComp) || fromComp;
-                                const toId = resolveSingleComponentId(toComp) || toComp;
-
-                                const fromPin = `${fromId}:${parts[2]}`;
-                                const toPin = `${toId}:${parts[4]}`;
-                                if (api.addWire) {
-                                    api.addWire(fromPin, toPin);
-                                    executedActions.push(`addwire:${fromPin}->${toPin}`);
-                                }
-                            } catch (err) {
-                                recordActionFailure(action.tag, err.message);
-                            }
-                        }
-                    }
-                } catch (err) {
-                    // PlacementEngine import or resolution failed — fall back silently
-                    console.warn('[PlacementEngine] fallback to raw AZIONE tags:', err.message);
-                }
-            }
-
-            for (const tag of actionTags) {
-                // S58: Robust inner extraction — find first ":" after "[" bracket
-                const colonIdx = tag.indexOf(':');
-                if (colonIdx < 0) continue;
-                const inner = tag.slice(colonIdx + 1, -1); // everything between first : and ]
-                const parts = inner.split(':').map(s => s.trim());
-                const cmd = parts[0]?.toLowerCase();
-                const tagText = `[AZIONE:${inner}]`;
-                try {
-                    if (cmd === 'play') {
-                        if (!api?.play) throw new Error('API simulatore non disponibile');
-                        api.play();
-                        executedActions.push('play');
-                    }
-                    else if (cmd === 'pause') {
-                        if (!api?.pause) throw new Error('API simulatore non disponibile');
-                        api.pause();
-                        executedActions.push('pause');
-                    }
-                    else if (cmd === 'reset') {
-                        if (!api?.reset) throw new Error('API simulatore non disponibile');
-                        api.reset();
-                        executedActions.push('reset');
-                    }
-                    else if (cmd === 'highlight') {
-                        if (!api?.unlim?.highlightComponent) throw new Error('highlight non disponibile');
-                        const rawTargets = (parts[1] || '').split(',').map(s => s.trim()).filter(Boolean);
-                        const resolvedTargets = [...new Set(rawTargets.flatMap(token => resolveComponentIds(token, true)))];
-                        if (!resolvedTargets.length) throw new Error('componenti da evidenziare non trovati');
-                        api.unlim.highlightComponent(resolvedTargets);
-                        setTimeout(() => api.unlim.clearHighlights(), 4000);
-                        executedActions.push(`highlight:${resolvedTargets.join(',')}`);
-                    }
-                    else if (cmd === 'loadexp' && parts[1]) {
-                        const requestedId = parts[1];
-                        const resolvedId = resolveExperimentId(requestedId);
-                        if (!api?.getExperiment?.(resolvedId)) {
-                            throw new Error(`esperimento non trovato: ${requestedId}`);
-                        }
-                        setPendingExperimentId(resolvedId);
-                        setActiveTab('simulator');
-                        executedActions.push(`loadexp:${resolvedId}`);
-                    }
-                    else if (cmd === 'opentab' && parts[1]) {
-                        const tabMap = { simulatore: 'simulator', manuale: 'manual', video: 'videos', lavagna: 'canvas', taccuini: 'notebooks', detective: 'detective', poe: 'poe', reverse: 'reverse', review: 'review' };
-                        const tab = tabMap[parts[1].toLowerCase()] || parts[1];
-                        setActiveTab(tab);
-                        executedActions.push(`opentab:${parts[1]}`);
-                    }
-                    else if (cmd === 'openvolume' && parts[1]) {
-                        const vol = parseInt(parts[1]);
-                        const page = parts[2] ? parseInt(parts[2]) : null;
-                        if (vol >= 1 && vol <= 3) {
-                            loadVolume(vol).then(() => { if (page) setCurrentDocPage(Math.max(0, page - 1)); }).catch(() => { });
-                            setActiveTab('manual');
-                            executedActions.push(`openvolume:${parts[1]}`);
-                        } else {
-                            throw new Error(`volume non valido: ${parts[1]}`);
-                        }
-                    }
-                    else if (cmd === 'addwire') {
-                        if (!api?.addWire) throw new Error('addWire non disponibile');
-                        if (!(parts[1] && parts[2] && parts[3] && parts[4])) {
-                            throw new Error('argomenti addwire incompleti');
-                        }
-                        const fromId = resolveSingleComponentId(parts[1]);
-                        const toId = resolveSingleComponentId(parts[3]);
-                        if (!fromId) throw new Error(`componente sorgente non trovato: ${parts[1]}`);
-                        if (!toId) throw new Error(`componente destinazione non trovato: ${parts[3]}`);
-                        const fromPin = `${fromId}:${parts[2]}`;
-                        const toPin = `${toId}:${parts[4]}`;
-                        api.addWire(fromPin, toPin);
-                        executedActions.push(`addwire:${fromPin}->${toPin}`);
-                    }
-                    else if (cmd === 'removewire') {
-                        if (!api?.removeWire) throw new Error('removeWire non disponibile');
-                        const wireIndex = Number.parseInt(parts[1], 10);
-                        if (!Number.isFinite(wireIndex) || wireIndex < 0) {
-                            throw new Error(`indice filo non valido: ${parts[1] || ''}`);
-                        }
-                        api.removeWire(wireIndex);
-                        executedActions.push(`removewire:${wireIndex}`);
-                    }
-                    else if (cmd === 'addcomponent') {
-                        if (!api?.addComponent) throw new Error('addComponent non disponibile');
-                        if (!parts[1]) throw new Error('tipo componente mancante');
-                        const rawType = parts[1];
-                        const type = TYPE_ALIASES[normalizeComponentToken(rawType)] || rawType;
-                        const x = parseIntOr(parts[2], 200);
-                        const y = parseIntOr(parts[3], 150);
-                        const addedId = api.addComponent(type, { x, y });
-                        if (!addedId) throw new Error(`aggiunta componente fallita: ${type}`);
-                        executedActions.push(`addcomponent:${addedId}`);
-                    }
-                    else if (cmd === 'removecomponent') {
-                        if (!api?.removeComponent) throw new Error('removeComponent non disponibile');
-                        if (!parts[1]) throw new Error('componente da rimuovere mancante');
-                        const targets = [...new Set(resolveComponentIds(parts[1], true))];
-                        if (!targets.length) throw new Error(`componente non trovato: ${parts[1]}`);
-                        targets.forEach(id => api.removeComponent(id));
-                        executedActions.push(`removecomponent:${targets.join(',')}`);
-                    }
-                    else if (cmd === 'interact') {
-                        if (!api?.interact) throw new Error('interact non disponibile');
-                        if (!parts[1]) throw new Error('componente da interagire mancante');
-                        const compId = resolveSingleComponentId(parts[1]) || parts[1];
-                        // S58 FIX: was `break` which killed ALL subsequent actions! → `continue`
-                        // Also try interact even if component not in stale state ref — let API handle it
-                        const action = parts[2] || 'press';
-                        const parsedValue = parts[3] ? Number.parseFloat(parts[3]) : undefined;
-                        const value = Number.isFinite(parsedValue) ? parsedValue : undefined;
-                        api.interact(compId, action, value);
-                        if (action === 'press') {
-                            setTimeout(() => api.interact(compId, 'release'), 300);
-                        }
-                        executedActions.push(`interact:${compId}:${action}`);
-                    }
-                    else if (cmd === 'compile') {
-                        if (!api?.getEditorCode) throw new Error('compile non disponibile');
-                        const code = api.getEditorCode();
-                        if (code) {
-                            // S116: Use compileAndLoad (updates UI + loads hex into AVR)
-                            // Falls back to raw api.compile if compileAndLoad not available
-                            const compileFn = api.compileAndLoad || api.compile;
-                            compileFn(code).then(compileResult => {
-                                // compileAndLoad returns undefined on success, raw compile returns {success, errors}
-                                if (compileResult && !compileResult.success) {
-                                    setMessages(prev => [...prev, {
-                                        id: Date.now(),
-                                        role: 'assistant',
-                                        content: `\u274C Errore: ${compileResult.errors || 'sconosciuto'}`,
-                                        proactive: true,
-                                    }]);
-                                }
-                                // Success message is already shown by compilationStatus UI
-                            }).catch(() => {
-                                recordActionFailure(tagText, 'compilazione fallita');
-                            });
-                        } else {
-                            throw new Error('editor codice vuoto');
-                        }
-                        executedActions.push('compile');
-                    }
-                    // ── NEW ACTION TAGS (UNLIM Onnipotente) ──
-                    else if (cmd === 'movecomponent') {
-                        if (!api?.moveComponent) throw new Error('moveComponent non disponibile');
-                        if (!parts[1]) throw new Error('componente da spostare mancante');
-                        const compId = resolveSingleComponentId(parts[1]) || parts[1];
-                        const positions = api?.getComponentPositions?.() || {};
-                        const fallbackPos = positions?.[compId] || { x: 200, y: 150 };
-                        const x = parseIntOr(parts[2], fallbackPos.x);
-                        const y = parseIntOr(parts[3], fallbackPos.y);
-                        api.moveComponent(compId, x, y);
-                        executedActions.push(`movecomponent:${compId}`);
-                    }
-                    else if (cmd === 'clearall') {
-                        if (!api?.clearAll) throw new Error('clearAll non disponibile');
-                        api.clearAll();
-                        executedActions.push('clearall');
-                    }
-                    else if (cmd === 'quiz') {
-                        const expId = parts[1] || activeExperiment?.id || null;
-                        window.dispatchEvent(new CustomEvent('unlim-quiz', { detail: { experimentId: expId } }));
-                        executedActions.push('quiz');
-                    }
-                    else if (cmd === 'youtube' && parts.length > 1) {
-                        const query = parts.slice(1).join(' ');
-                        handleYouTubeSearch(query);
-                        executedActions.push(`youtube:${query.slice(0, 20)}`);
-                    }
-                    // S115-FIX: old setcode handler REMOVED — replaced by S115 version below with showEditor+setEditorMode
-                    // S66: create notebook from chat — "crea un taccuino chiamato X"
-                    else if (cmd === 'createnotebook') {
-                        const notebookName = parts.slice(1).join(' ').trim();
-                        const title = notebookName || `Lezione ${new Date().toLocaleDateString()}`;
-                        createNotebook(title);
-                        executedActions.push(`createnotebook:${title}`);
-                    }
-                    else if (cmd === 'setvalue') {
-                        // [AZIONE:setvalue:componentId:paramName:value]
-                        // Es: [AZIONE:setvalue:r1:resistance:470], [AZIONE:setvalue:pot1:position:0.5]
-                        if (!api?.interact) throw new Error('interact non disponibile');
-                        if (!parts[1] || !parts[2] || parts[3] === undefined) throw new Error('argomenti setvalue incompleti (id:param:value)');
-                        const compId = resolveSingleComponentId(parts[1]) || parts[1];
-                        const param = parts[2].toLowerCase();
-                        const value = Number.parseFloat(parts[3]);
-                        if (!Number.isFinite(value)) throw new Error(`valore non numerico: ${parts[3]}`);
-
-                        // Map param names to interact actions
-                        const PARAM_MAP = {
-                            resistance: 'setResistance',
-                            position: 'setPosition',
-                            lightlevel: 'setLightLevel',
-                            light: 'setLightLevel',
-                            luce: 'setLightLevel',
-                            angle: 'setPosition',
-                            angolo: 'setPosition',
-                        };
-                        const action = PARAM_MAP[param] || `set${param.charAt(0).toUpperCase()}${param.slice(1)}`;
-                        api.interact(compId, action, value);
-                        executedActions.push(`setvalue:${compId}:${param}:${value}`);
-                    }
-                    else if (cmd === 'measure') {
-                        // [AZIONE:measure:componentId] — legge tensione e corrente
-                        if (!parts[1]) throw new Error('componente da misurare mancante');
-                        const compId = resolveSingleComponentId(parts[1]) || parts[1];
-                        const circuitState = api?.getCircuitState?.();
-                        if (!circuitState?.measurements) throw new Error('misurazioni non disponibili — avvia la simulazione');
-                        const meas = circuitState.measurements[compId];
-                        if (!meas) throw new Error(`nessuna misura per ${compId}`);
-                        const vStr = meas.voltage !== undefined ? `${meas.voltage.toFixed(3)} V` : 'N/D';
-                        const iStr = meas.current !== undefined ? `${(meas.current * 1000).toFixed(1)} mA` : 'N/D';
-                        setMessages(prev => [...prev, {
-                            id: Date.now() + 2,
-                            role: 'assistant',
-                            content: `📊 **Misura ${compId}**: Tensione = ${vStr} | Corrente = ${iStr}`,
-                            proactive: true,
-                        }]);
-                        executedActions.push(`measure:${compId}`);
-                    }
-                    else if (cmd === 'diagnose') {
-                        // [AZIONE:diagnose] — analisi completa circuito
-                        handleDiagnoseCircuit();
-                        executedActions.push('diagnose');
-                    }
-                    // ── S76: Scratch Universale — Editor control action tags ──
-                    else if (cmd === 'openeditor') {
-                        // [AZIONE:openeditor] — apre il pannello editor codice
-                        if (!api?.showEditor) throw new Error('showEditor non disponibile');
-                        api.showEditor();
-                        executedActions.push('openeditor');
-                    }
-                    else if (cmd === 'closeeditor') {
-                        // [AZIONE:closeeditor] — chiude il pannello editor codice
-                        if (!api?.hideEditor) throw new Error('hideEditor non disponibile');
-                        api.hideEditor();
-                        executedActions.push('closeeditor');
-                    }
-                    else if (cmd === 'switcheditor') {
-                        // [AZIONE:switcheditor:scratch] or [AZIONE:switcheditor:arduino]
-                        if (!api?.setEditorMode) throw new Error('setEditorMode non disponibile');
-                        const mode = (parts[1] || '').toLowerCase();
-                        if (mode !== 'scratch' && mode !== 'arduino') {
-                            throw new Error(`modo editor non valido: ${mode} (usa 'scratch' o 'arduino')`);
-                        }
-                        // Auto-open editor if not visible
-                        if (!api.isEditorVisible?.()) api.showEditor?.();
-                        api.setEditorMode(mode);
-                        executedActions.push(`switcheditor:${mode}`);
-                    }
-                    else if (cmd === 'loadblocks') {
-                        // [AZIONE:loadblocks:xml] — carica workspace Blockly pre-costruito
-                        if (!api?.loadScratchWorkspace) throw new Error('loadScratchWorkspace non disponibile');
-                        const xml = parts.slice(1).join(':');
-                        if (!xml) throw new Error('XML workspace mancante');
-                        api.loadScratchWorkspace(xml);
-                        executedActions.push('loadblocks');
-                    }
-                    // ── S115: UNLIM Onnipotente v2 — 12 nuove azioni ──
-                    else if (cmd === 'undo') {
-                        if (!api?.undo) throw new Error('undo non disponibile');
-                        api.undo();
-                        executedActions.push('undo');
-                    }
-                    else if (cmd === 'redo') {
-                        if (!api?.redo) throw new Error('redo non disponibile');
-                        api.redo();
-                        executedActions.push('redo');
-                    }
-                    else if (cmd === 'highlightpin') {
-                        // [AZIONE:highlightpin:r1:pin1,led1:anode]
-                        if (!api?.highlightPin) throw new Error('highlightPin non disponibile');
-                        const rawPins = (parts.slice(1).join(':') || '').split(',').map(s => s.trim()).filter(Boolean);
-                        if (!rawPins.length) throw new Error('pin da evidenziare mancanti');
-                        api.highlightPin(rawPins);
-                        setTimeout(() => api.highlightPin([]), 4000); // S115-FIX: clear pin highlights, not component highlights
-                        executedActions.push(`highlightpin:${rawPins.join(',')}`);
-                    }
-                    else if (cmd === 'serialwrite') {
-                        // [AZIONE:serialwrite:testo] — scrive nel monitor seriale
-                        if (!api?.serialWrite) throw new Error('serialWrite non disponibile');
-                        const text = parts.slice(1).join(':');
-                        if (!text) throw new Error('testo seriale mancante');
-                        api.serialWrite(text);
-                        executedActions.push('serialwrite');
-                    }
-                    else if (cmd === 'setbuildmode') {
-                        // [AZIONE:setbuildmode:guided] — cambia modalità costruzione
-                        if (!api?.setBuildMode) throw new Error('setBuildMode non disponibile');
-                        const modeMap = {
-                            montato: 'complete', 'già montato': 'complete', giamontato: 'complete', complete: 'complete',
-                            passopasso: 'guided', 'passo passo': 'guided', guided: 'guided',
-                            libero: 'sandbox', costruisci: 'sandbox', sandbox: 'sandbox',
-                        };
-                        const mode = modeMap[(parts[1] || '').toLowerCase().replace(/[\s_-]+/g, '')] || parts[1];
-                        if (!mode) throw new Error('modalità mancante (montato/passopasso/libero)');
-                        api.setBuildMode(mode);
-                        executedActions.push(`setbuildmode:${mode}`);
-                    }
-                    else if (cmd === 'nextstep') {
-                        // [AZIONE:nextstep] — avanza di un passo in Passo Passo
-                        if (!api?.nextStep) throw new Error('nextStep non disponibile');
-                        api.nextStep();
-                        executedActions.push('nextstep');
-                    }
-                    else if (cmd === 'prevstep') {
-                        // [AZIONE:prevstep] — torna indietro di un passo
-                        if (!api?.prevStep) throw new Error('prevStep non disponibile');
-                        api.prevStep();
-                        executedActions.push('prevstep');
-                    }
-                    else if (cmd === 'showbom') {
-                        // [AZIONE:showbom] — mostra lista componenti (Bill of Materials)
-                        if (!api?.showBom) throw new Error('showBom non disponibile');
-                        api.showBom();
-                        executedActions.push('showbom');
-                    }
-                    else if (cmd === 'showserial') {
-                        // [AZIONE:showserial] — apre il monitor seriale
-                        if (!api?.showSerialMonitor) throw new Error('showSerialMonitor non disponibile');
-                        api.showSerialMonitor();
-                        executedActions.push('showserial');
-                    }
-                    else if (cmd === 'listcomponents') {
-                        // [AZIONE:listcomponents] — elenca componenti piazzati come messaggio
-                        const components = getLiveComponents();
-                        if (components.length === 0) {
-                            setMessages(prev => [...prev, {
-                                id: Date.now() + 2, role: 'assistant',
-                                content: '📋 **Componenti**: Nessun componente piazzato.', proactive: true,
-                            }]);
-                        } else {
-                            const list = components.map(c => `• **${c.id}** (${c.type})`).join('\n');
-                            setMessages(prev => [...prev, {
-                                id: Date.now() + 2, role: 'assistant',
-                                content: `📋 **Componenti piazzati** (${components.length}):\n${list}`, proactive: true,
-                            }]);
-                        }
-                        executedActions.push('listcomponents');
-                    }
-                    else if (cmd === 'getstate') {
-                        // [AZIONE:getstate] — mostra stato completo del circuito
-                        const circuitState = api?.getCircuitState?.() || api?.unlim?.getCircuitState?.();
-                        if (!circuitState) throw new Error('stato circuito non disponibile');
-                        const comps = (circuitState.components || []).length;
-                        const wires = (circuitState.connections || []).length;
-                        const simState = circuitState.isSimulating ? '▶ In esecuzione' : '⏸ Fermata';
-                        const expName = circuitState.experiment?.title || 'Nessuno';
-                        setMessages(prev => [...prev, {
-                            id: Date.now() + 2, role: 'assistant',
-                            content: `📊 **Stato Circuito**:\n• Esperimento: **${expName}**\n• Componenti: **${comps}**\n• Fili: **${wires}**\n• Simulazione: **${simState}**`,
-                            proactive: true,
-                        }]);
-                        executedActions.push('getstate');
-                    }
-                    // ── S115: Code Control — UNLIM scrive/legge codice Arduino e Scratch ──
-                    else if (cmd === 'setcode') {
-                        // [AZIONE:setcode:CODE] — sostituisce tutto il codice nell'editor
-                        const arg = parts.slice(1).join(':').replace(/\\n/g, '\n');
-                        if (!arg) throw new Error('codice mancante');
-                        if (!api?.setEditorCode) throw new Error('setEditorCode non disponibile');
-                        api.showEditor?.();
-                        api.setEditorMode?.('arduino');
-                        api.setEditorCode(arg);
-                        executedActions.push('setcode');
-                    }
-                    else if (cmd === 'appendcode') {
-                        // [AZIONE:appendcode:CODE] — aggiunge codice alla fine dell'editor
-                        const arg = parts.slice(1).join(':').replace(/\\n/g, '\n');
-                        if (!arg) throw new Error('codice mancante');
-                        if (!api?.appendEditorCode) throw new Error('appendEditorCode non disponibile');
-                        api.showEditor?.();
-                        api.setEditorMode?.('arduino');
-                        api.appendEditorCode(arg);
-                        executedActions.push('appendcode');
-                    }
-                    else if (cmd === 'getcode') {
-                        // [AZIONE:getcode] — legge il codice corrente e lo mostra nel chat
-                        const code = api?.getEditorCode?.() || '';
-                        const mode = api?.getEditorMode?.() || 'arduino';
-                        const displayCode = code ? code.substring(0, 500) + (code.length > 500 ? '\n// ... (troncato)' : '') : '(vuoto)';
-                        setMessages(prev => [...prev, {
-                            id: Date.now() + 2, role: 'assistant',
-                            content: `📝 **Codice ${mode === 'scratch' ? 'Scratch (generato)' : 'Arduino'}**:\n\`\`\`cpp\n${displayCode}\n\`\`\``,
-                            proactive: true,
-                        }]);
-                        executedActions.push('getcode');
-                    }
-                    else if (cmd === 'resetcode') {
-                        // [AZIONE:resetcode] — ripristina il codice originale dell'esperimento
-                        if (!api?.resetEditorCode) throw new Error('resetEditorCode non disponibile');
-                        api.showEditor?.();
-                        api.setEditorMode?.('arduino');
-                        api.resetEditorCode();
-                        executedActions.push('resetcode');
-                    }
-                    // ── S115: Chat/View control — UNLIM controlla finestre ──
-                    else if (cmd === 'openchat') {
-                        setShowChat(true);
-                        executedActions.push('openchat');
-                    }
-                    else if (cmd === 'closechat') {
-                        setShowChat(false);
-                        executedActions.push('closechat');
-                    }
-                    else if (cmd === 'fullscreenscratch') {
-                        // [AZIONE:fullscreenscratch] — Scratch a schermo intero
-                        if (!api?.showEditor) throw new Error('showEditor non disponibile');
-                        api.showEditor();
-                        api.setEditorMode?.('scratch');
-                        api.setScratchFullscreen?.(true);
-                        executedActions.push('fullscreenscratch');
-                    }
-                    else if (cmd === 'exitscratchfullscreen') {
-                        api.setScratchFullscreen?.(false);
-                        executedActions.push('exitscratchfullscreen');
-                    }
-                } catch (err) {
-                    recordActionFailure(tagText, err?.message || 'errore sconosciuto');
-                }
-            }
-
-            if (actionFailures.length > 0) {
-                const uniqueFailures = [...new Set(actionFailures)];
-                errorHistoryRef.current.push(...uniqueFailures.map(f => `action_fail:${f}`));
-                if (errorHistoryRef.current.length > 10) {
-                    errorHistoryRef.current = errorHistoryRef.current.slice(-10);
-                }
-                if (typeof console !== 'undefined') {
-                    console.warn('[UNLIM] Action failures:', uniqueFailures);
-                }
-            }
-
-            // ── S58: Quiz fallback — if user asked for quiz but AI forgot the tag ──
-            // Dispatches without expId so simulator handler uses its own currentExperiment
-            const quizKeywords = /\b(quiz|verificami|testami|domande\s+di\s+verifica)\b/i;
-            if (quizKeywords.test(userLower) && !executedActions.some(a => a === 'quiz')) {
-                const expId = activeExperiment?.id || null;
-                window.dispatchEvent(new CustomEvent('unlim-quiz', { detail: { experimentId: expId } }));
-                executedActions.push('quiz');
-            }
-
-            // Update message with executed actions for badge display
-            if (executedActions.length > 0) {
-                setMessages(prev => prev.map(m =>
-                    m.id === msgId ? { ...m, _executedActions: executedActions } : m
-                ));
-            }
-
-            // ── Implicit navigation from AI response text ──
-            if (!actionTags.length) {
-                if (aiLower.includes('simulatore') || aiLower.includes('circuito')) {
-                    setActiveTab('simulator');
-                }
-
-                const elabPageMatch = aiResponse.match(/\[V(\d)P(\d+)\]/i);
-                const volPageMatch2 = aiLower.match(/(?:volume|vol\.?|v)\s*(\d)\s*(?:pagina|pag\.?|p\.?)\s*(\d+)/i) ||
-                    aiLower.match(/v(\d)p(\d+)/i);
-                const simplePageMatch = aiLower.match(/pagina\s*(\d+)/);
-
-                if (elabPageMatch) {
-                    const vol = parseInt(elabPageMatch[1]);
-                    const pageNum = parseInt(elabPageMatch[2]);
-                    loadVolume(vol).then(() => setCurrentDocPage(Math.max(0, pageNum - 1))).catch(() => { });
-                    setActiveTab('manual');
-                } else if (volPageMatch2) {
-                    const vol = parseInt(volPageMatch2[1]);
-                    const pageNum = parseInt(volPageMatch2[2]);
-                    loadVolume(vol).then(() => setCurrentDocPage(Math.max(0, pageNum - 1))).catch(() => { });
-                    setActiveTab('manual');
-                } else if (simplePageMatch) {
-                    const pageNum = parseInt(simplePageMatch[1]);
-                    const volMention = aiLower.match(/(?:volume|vol\.?)\s*(\d)/);
-                    const vol = volMention ? parseInt(volMention[1]) : 1;
-                    loadVolume(vol).then(() => setCurrentDocPage(Math.max(0, pageNum - 1))).catch(() => { });
-                    setActiveTab('manual');
-                }
-
-                if (userLower.includes('led') && (userLower.includes('accendi') || userLower.includes('spegni'))) {
-                    setActiveTab('simulator');
-                }
-            }
-
+            // Step 3: Execute actions (async — Ralph Loop, PlacementEngine, AZIONE commands)
+            await processAiResponse(aiResponse, userMessage, msgId);
         } else {
             const errorMsg = result.error || 'Errore sconosciuto';
             let friendlyError = errorMsg;
