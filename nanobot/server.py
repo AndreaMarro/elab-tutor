@@ -1438,7 +1438,7 @@ def sanitize_message(message: str) -> str:
 
 # ─── FastAPI App ──────────────────────────────────────────────
 limiter = Limiter(key_func=get_remote_address)
-app = FastAPI(title="UNLIM Nanobot", version="5.1.0")
+app = FastAPI(title="UNLIM Nanobot", version="5.4.0")
 
 
 # Session cleanup: every 10 minutes
