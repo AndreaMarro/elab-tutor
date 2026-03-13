@@ -646,12 +646,12 @@ CACHE_TTL = 3600  # 1 hour
 # ─── Layer 1: Smart Router ────────────────────────────────────
 QUESTION_PATTERNS = {
     "navigation": r"(come si usa|dove trovo|apri|vai a|barra|menu|sidebar|schermata|area docente|profilo|vetrina|home|impostazioni|come funziona elab|come accedo|dove clicco)",
-    "factual": r"(cos.è|cosa sono|cosa significa|come funziona|spiega|definizione|differenza tra|a cosa serve|perch[eé])",
-    "circuit": r"(circuito|led|resistore|filo|collegamento|non si accende|bruciato|cortocircuito|polarit|breadboard|bus|corrente|tensione|ohm|manca|sbagliato|errore nel circuito)",
-    "code": r"(codice|errore|compilazione|setup|loop|digital|analog|serial|pin|arduino|variabile|funzione|void|int |delay|tone|servo|pwm|blink)",
+    "circuit": r"(circuito|led|resistore|resistenza|filo|collegamento|non si accende|non funziona|bruciato|cortocircuito|polarit|breadboard|bus|corrente|tensione|ohm|manca|sbagliato|errore nel circuito|batteria|condensatore|diodo|mosfet|pulsante|buzzer|potenziometro|fotoresist|motore|servo)",
+    "code": r"(codice|errore di compilazione|compilazione|setup\(\)|loop\(\)|digital|analog|serial|pin\s*[daDa]\d|arduino|variabile|funzione|void |int |delay|tone|servo\.|pwm|blink|blocchi|scratch|millis|if\s*\(|for\s*\()",
     "teacher": r"(come spiego|lezione|classe|studenti|attivit[aà]|didattic|valutazione|introdurre|presentare alla classe|suggerisci.*lezione|come faccio a insegnare)",
     "game": r"(gioco|sfida|detective|poe|reverse|review|stelle|badge|punteggio|classifica)",
     "creative": r"(progetto|idea|costruire|inventare|cosa posso|voglio fare|creare)",
+    "factual": r"(cos.è|cosa sono|cosa significa|come funziona|spiega|definizione|differenza tra|a cosa serve|perch[eé])",
 }
 
 NAVIGATION_RESPONSES = {
@@ -664,12 +664,23 @@ NAVIGATION_RESPONSES = {
 
 
 def classify_question(message: str) -> str:
-    """Layer 1: Classify question type for optimal provider routing."""
+    """Layer 1: Classify question type for optimal provider routing.
+    Collects ALL matching types and prefers domain-specific (circuit/code)
+    over generic (factual) when both match. This prevents 'perché il LED
+    non si accende?' from being classified as factual instead of circuit."""
     msg = message.lower()
+    matches = []
     for qtype, pattern in QUESTION_PATTERNS.items():
         if re.search(pattern, msg):
-            return qtype
-    return "general"
+            matches.append(qtype)
+    if not matches:
+        return "general"
+    # Domain-specific types always win over generic ones
+    PRIORITY = ["navigation", "circuit", "code", "teacher", "game", "creative", "factual"]
+    for ptype in PRIORITY:
+        if ptype in matches:
+            return ptype
+    return matches[0]
 
 
 def get_navigation_response(message: str) -> Optional[str]:
@@ -695,18 +706,20 @@ def get_navigation_response(message: str) -> Optional[str]:
 
 def get_racing_providers(qtype: str) -> list:
     """Layer 1: Select providers for parallel racing based on question type.
-    Gemini 2.5/3 partecipa a TUTTE le categorie come modello general-purpose.
-    Kimi participates in text racing (if configured in AI_PROVIDERS) for multi-way speed.
+    CRITICAL (S62): Gemini is RESERVED for vision only — NOT in text racing pools.
+    Free-tier Gemini has 20 req/min limit; text racing exhausts quota leaving
+    nothing for vision. DeepSeek + Groq handle all text routing.
+    Kimi participates if configured in AI_PROVIDERS (currently on standby).
     Vision routing in race_providers() handles tiered vision selection separately."""
     routing = {
-        "navigation": [],                                                          # Static response, no AI
-        "factual":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # DeepSeek + Gemini + Groq + Kimi
-        "circuit":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini reasoning + DeepSeek + speed
-        "code":       ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini code + DeepSeek + speed
-        "teacher":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini pedagogia + DeepSeek
-        "game":       ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Multi-way racing
-        "creative":   ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini creatività + DeepSeek
-        "general":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Tutti i provider
+        "navigation": [],                                                # Static response, no AI
+        "factual":    ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek + Groq + Kimi
+        "circuit":    ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek reasoning + Groq speed
+        "code":       ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek code + Groq speed
+        "teacher":    ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek pedagogia + Groq
+        "game":       ["deepseek", "groq", "kimi", "moonshot"],          # Multi-way racing
+        "creative":   ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek creatività + Groq
+        "general":    ["deepseek", "groq", "kimi", "moonshot"],          # All text providers
     }
     preferred = routing.get(qtype, routing["general"])
     matched = [p for p in AI_PROVIDERS if p["provider"] in preferred]
