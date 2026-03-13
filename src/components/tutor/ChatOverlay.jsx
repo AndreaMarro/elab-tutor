@@ -1,5 +1,5 @@
 // ============================================
-// ELAB Tutor - Chat Galileo Overlay
+// ELAB Tutor - Chat UNLIM Overlay
 // Modern AI chat interface (Claude.ai / NotebookLM style)
 // Floating panel, bottom-right
 // © Andrea Marro — 13/02/2026
@@ -10,7 +10,7 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 // SECURITY: HTML escape FIRST, then markdown regex. Defense-in-depth strip after.
 function formatMarkdown(text) {
     if (!text) return '';
-    // Step 0 (Galileo Onnipotente): defense-in-depth strip of any residual action tags
+    // Step 0 (UNLIM): defense-in-depth strip of any residual action tags
     let clean = text.replace(/\[AZIONE:[^\]]+\]/gi, '');
     // Step 1: escape ALL HTML entities (prevents <script>, <iframe>, etc.)
     let safe = clean
@@ -68,6 +68,11 @@ function ensureKeyframes() {
         @keyframes galileoMsgIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
 
         /* Scoped bubble content styles (code blocks inside markdown) */
@@ -193,6 +198,12 @@ export default React.memo(function ChatOverlay({
     onToggleSocraticMode,
     // Screenshot
     onScreenshot,
+    // Voice mode (UNLIM speaks — realtime via nanobot)
+    voiceEnabled = false,
+    onVoiceToggle,
+    voiceRecording = false,
+    onVoiceRecord,
+    voicePlaying = false,
 }) {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
@@ -201,6 +212,7 @@ export default React.memo(function ChatOverlay({
     const [sendHovered, setSendHovered] = useState(false);
     // (codeHovered rimosso — editor eliminato)
     const [actionsExpanded, setActionsExpanded] = useState(false);
+    const [voiceHovered, setVoiceHovered] = useState(false);
 
     // ── Draggable & Fullscreen State ──
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -210,6 +222,16 @@ export default React.memo(function ChatOverlay({
 
     // Inject keyframes on mount
     useEffect(() => { ensureKeyframes(); }, []);
+
+    // S115: Escape key exits fullscreen chat
+    useEffect(() => {
+        if (!isFullscreen) return;
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') { e.stopPropagation(); setIsFullscreen(false); }
+        };
+        window.addEventListener('keydown', handleEsc, true);
+        return () => window.removeEventListener('keydown', handleEsc, true);
+    }, [isFullscreen]);
 
     // Auto-scroll to latest message
     useEffect(() => {
@@ -313,11 +335,11 @@ export default React.memo(function ChatOverlay({
                     cursor: 'pointer',
                 }} onClick={() => setMinimized(false)}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <img src="/elab-mascot.png" alt="Galileo"
+                        <img src="/elab-mascot.png" alt="UNLIM"
                             style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
                         />
                         <span style={{ fontWeight: 600, fontSize: '15px', fontFamily: 'Oswald, sans-serif', letterSpacing: '0.3px' }}>
-                            Galileo
+                            UNLIM
                         </span>
                         <span style={{
                             display: 'inline-flex', alignItems: 'center', gap: '5px',
@@ -351,11 +373,13 @@ export default React.memo(function ChatOverlay({
     // FULL PANEL
     // ========================
     const panelStyle = isFullscreen ? {
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000,
-        width: '100vw', height: '100vh', maxWidth: '100vw', maxHeight: '100vh',
-        transform: 'none', resize: 'none',
+        position: 'fixed', top: 12, left: 12, right: 12, bottom: 12, zIndex: 1000,
+        width: 'calc(100vw - 24px)', height: 'calc(100vh - 24px)',
+        maxWidth: 'calc(100vw - 24px)', maxHeight: 'calc(100vh - 24px)',
+        transform: 'none', resize: 'none', borderRadius: '16px',
         background: 'var(--color-bg)', display: 'flex', flexDirection: 'column',
         fontFamily: "'Open Sans', -apple-system, sans-serif",
+        boxShadow: '0 16px 64px rgba(0,0,0,0.3), 0 0 0 1px rgba(30,77,140,0.2)',
     } : {
         position: 'fixed',
         bottom: 0, right: 0, transform: `translate(${position.x}px, ${position.y}px)`,
@@ -390,12 +414,12 @@ export default React.memo(function ChatOverlay({
                     userSelect: 'none', touchAction: 'none'
                 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src="/elab-mascot.png" alt="Galileo"
+                    <img src="/elab-mascot.png" alt="UNLIM"
                         style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.3)' }}
                     />
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{ fontWeight: 600, fontSize: '15px', fontFamily: 'Oswald, sans-serif', letterSpacing: '0.3px' }}>
-                            Galileo
+                            UNLIM
                         </span>
                         <span style={{
                             display: 'flex', alignItems: 'center', gap: '5px',
@@ -410,26 +434,29 @@ export default React.memo(function ChatOverlay({
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: '2px' }}>
-                    <HeaderButton onClick={() => setIsFullscreen(!isFullscreen)} title={isFullscreen ? 'Riduci Finestra' : 'A Tutto Schermo'}>
+                    <HeaderButton
+                        onClick={() => setIsFullscreen(!isFullscreen)}
+                        title={isFullscreen ? 'Riduci Finestra' : 'A Tutto Schermo'}
+                        style={isFullscreen ? { padding: '4px 10px', gap: 5, display: 'flex', alignItems: 'center', fontSize: 12, fontWeight: 600 } : undefined}
+                    >
                         {isFullscreen ? (
-                            /* Minimize — 4 inward corner brackets (distinct from "Comprimi" diagonal arrows) */
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
-                            </svg>
+                            <>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+                                </svg>
+                                <span>Riduci</span>
+                            </>
                         ) : (
-                            /* Maximize — 4 outward corner brackets (distinct from "Espandi Larghezza" diagonal arrows) */
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
                             </svg>
                         )}
                     </HeaderButton>
-                    {!isFullscreen && (
-                        <HeaderButton onClick={() => setMinimized(true)} title="Riduci a barra">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                            </svg>
-                        </HeaderButton>
-                    )}
+                    <HeaderButton onClick={() => { if (isFullscreen) setIsFullscreen(false); setMinimized(true); }} title="Riduci a barra">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                    </HeaderButton>
                     {!isFullscreen && (
                         <HeaderButton onClick={onToggleExpanded} title={expanded ? 'Comprimi' : 'Espandi Larghezza'}>
                             {expanded ? (
@@ -526,7 +553,7 @@ export default React.memo(function ChatOverlay({
                         color: 'var(--color-chat-socratic-text)', lineHeight: '1.4',
                     }}>
                         <span style={{ flexShrink: 0, fontWeight: 700, color: 'var(--color-vol2)' }}>{'\u26A0'}</span>
-                        <span>Galileo è un assistente AI e può commettere errori. Verifica sempre le informazioni importanti con il tuo insegnante.</span>
+                        <span>UNLIM è un assistente AI e può commettere errori. Verifica sempre le informazioni importanti con il tuo insegnante.</span>
                     </div>
                 )}
 
@@ -605,7 +632,7 @@ export default React.memo(function ChatOverlay({
                     value={input}
                     onChange={e => onInputChange(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Chiedi a Galileo..."
+                    placeholder="Chiedi a UNLIM..."
                     disabled={isLoading}
                     rows={1}
                     style={{
@@ -635,7 +662,7 @@ export default React.memo(function ChatOverlay({
                     <button
                         onClick={onScreenshot}
                         disabled={isLoading}
-                        aria-label="Cattura screenshot e chiedi a Galileo"
+                        aria-label="Cattura screenshot e chiedi a UNLIM"
                         title="Cattura screenshot"
                         style={{
                             width: '44px', height: '44px', borderRadius: '10px',
@@ -656,30 +683,129 @@ export default React.memo(function ChatOverlay({
                     </button>
                 )}
 
-                {/* Send button */}
-                <button
-                    onClick={() => onSend()}
-                    disabled={!input.trim() || isLoading}
-                    onMouseEnter={() => setSendHovered(true)}
-                    onMouseLeave={() => setSendHovered(false)}
-                    aria-label="Invia messaggio"
-                    style={{
-                        width: '44px', height: '44px', borderRadius: '10px',
-                        background: (!input.trim() || isLoading) ? 'var(--color-chat-disabled-bg)' : (sendHovered ? 'var(--color-primary-hover)' : 'var(--color-primary)'),
-                        color: 'white', border: 'none',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        cursor: (!input.trim() || isLoading) ? 'not-allowed' : 'pointer',
-                        transition: 'background 150ms, transform 100ms',
-                        flexShrink: 0,
-                        transform: sendHovered && input.trim() && !isLoading ? 'scale(1.05)' : 'scale(1)',
-                    }}
-                >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13" />
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                    </svg>
-                </button>
+                {/* Voice mode toggle button */}
+                {onVoiceToggle && (
+                    <button
+                        onClick={() => onVoiceToggle(!voiceEnabled)}
+                        disabled={isLoading}
+                        onMouseEnter={() => setVoiceHovered(true)}
+                        onMouseLeave={() => setVoiceHovered(false)}
+                        aria-label={voiceEnabled ? 'Disattiva modalità vocale' : 'Attiva modalità vocale'}
+                        title={voiceEnabled ? 'Modalità vocale attiva' : 'Attiva modalità vocale'}
+                        style={{
+                            width: '44px', height: '44px', borderRadius: '10px',
+                            background: isLoading
+                                ? 'var(--color-border)'
+                                : (voiceEnabled
+                                    ? 'rgba(52, 211, 153, 0.2)'
+                                    : 'var(--color-chat-camera-bg)'),
+                            color: isLoading ? 'var(--color-muted)' : (voiceEnabled ? '#34D399' : 'var(--color-primary)'),
+                            border: '1px solid ' + (isLoading
+                                ? 'var(--color-border)'
+                                : (voiceEnabled
+                                    ? '#34D399'
+                                    : 'var(--color-chat-camera-border)')),
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: isLoading ? 'not-allowed' : 'pointer',
+                            transition: 'all 150ms',
+                            flexShrink: 0,
+                            boxShadow: voiceEnabled && !isLoading ? '0 0 12px rgba(52, 211, 153, 0.4)' : 'none',
+                        }}
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            {voiceEnabled ? (
+                                /* Speaker icon when voice is ON */
+                                <>
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                    <path d="M15.54 5.47A9 9 0 0 1 19 12a9 9 0 0 1-3.46 6.53" />
+                                    <path d="M17.92 16.02A5.5 5.5 0 0 0 18 12a5.5 5.5 0 0 0-.08-4.02" />
+                                </>
+                            ) : (
+                                /* Microphone icon when voice is OFF */
+                                <>
+                                    <path d="M12 1a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                    <line x1="12" y1="19" x2="12" y2="23" />
+                                    <line x1="8" y1="23" x2="16" y2="23" />
+                                </>
+                            )}
+                        </svg>
+                    </button>
+                )}
+
+                {/* Record button — appears when voice is on and input is empty */}
+                {voiceEnabled && onVoiceRecord && !input.trim() ? (
+                    <button
+                        onClick={onVoiceRecord}
+                        disabled={isLoading && !voiceRecording}
+                        aria-label={voiceRecording ? 'Ferma registrazione' : 'Parla con UNLIM'}
+                        title={voiceRecording ? 'Tap per inviare' : 'Tap per parlare'}
+                        style={{
+                            width: '44px', height: '44px', borderRadius: voiceRecording ? '50%' : '10px',
+                            background: voiceRecording
+                                ? '#EF4444'  // Red when recording
+                                : voicePlaying
+                                    ? 'rgba(52, 211, 153, 0.3)'
+                                    : 'var(--color-primary)',
+                            color: 'white',
+                            border: voiceRecording ? '2px solid #FCA5A5' : 'none',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: (isLoading && !voiceRecording) ? 'not-allowed' : 'pointer',
+                            transition: 'all 200ms',
+                            flexShrink: 0,
+                            animation: voiceRecording ? 'pulse 1.5s infinite' : 'none',
+                        }}
+                    >
+                        {voiceRecording ? (
+                            /* Stop/Send icon when recording */
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="6" y="6" width="12" height="12" rx="2" />
+                            </svg>
+                        ) : voicePlaying ? (
+                            /* Speaker waves when AI is speaking */
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <path d="M15.54 5.47A9 9 0 0 1 19 12a9 9 0 0 1-3.46 6.53" />
+                            </svg>
+                        ) : (
+                            /* Microphone icon — ready to record */
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v12a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" y1="19" x2="12" y2="23" />
+                                <line x1="8" y1="23" x2="16" y2="23" />
+                            </svg>
+                        )}
+                    </button>
+                ) : (
+                    /* Send button (text mode or voice mode with text) */
+                    <button
+                        onClick={() => onSend()}
+                        disabled={!input.trim() || isLoading}
+                        onMouseEnter={() => setSendHovered(true)}
+                        onMouseLeave={() => setSendHovered(false)}
+                        aria-label="Invia messaggio"
+                        style={{
+                            width: '44px', height: '44px', borderRadius: '10px',
+                            background: (!input.trim() || isLoading) ? 'var(--color-chat-disabled-bg)' : (sendHovered ? 'var(--color-primary-hover)' : 'var(--color-primary)'),
+                            color: 'white', border: 'none',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: (!input.trim() || isLoading) ? 'not-allowed' : 'pointer',
+                            transition: 'background 150ms, transform 100ms',
+                            flexShrink: 0,
+                            transform: sendHovered && input.trim() && !isLoading ? 'scale(1.05)' : 'scale(1)',
+                        }}
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                    </button>
+                )}
             </div>
 
             {/* ======== AI DISCLAIMER FOOTER ======== */}
@@ -689,7 +815,7 @@ export default React.memo(function ChatOverlay({
                 background: 'var(--color-chat-footer-bg)', borderTop: '1px solid var(--color-chat-footer-border)',
                 lineHeight: '1.3', flexShrink: 0,
             }}>
-                Le risposte di Galileo sono generate dall'AI e potrebbero non essere accurate.
+                Le risposte di UNLIM sono generate dall'AI e potrebbero non essere accurate.
             </div>
         </div>
     );
@@ -749,7 +875,7 @@ function actionToLabel(action) {
     return labels[cmd] || `\u2705 ${action}`;
 }
 
-// -- Message bubble (Galileo or User) --
+// -- Message bubble (UNLIM or User) --
 function MessageBubble({ msg, onRetry }) {
     const isUser = msg.role === 'user';
     const isError = msg.isError;

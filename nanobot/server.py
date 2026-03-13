@@ -1,8 +1,8 @@
 """
-Galileo Nanobot Server v4 — ELAB AI Backend
-Multi-Galileo: Orchestrator + 4 Specialists (Circuit/Code/Tutor/Vision)
+UNLIM Nanobot Server v5 — ELAB AI Backend
+Multi-UNLIM: Orchestrator + 4 Specialists (Circuit/Code/Tutor/Vision)
 4-Layer Intelligence: Cache → Smart Router → Parallel Racing → Quality Boost
-Two AI entities: Galileo (tutor, multi-specialist) + ELAB Assistant (public site)
+Two AI entities: UNLIM (tutor, multi-specialist) + ELAB Assistant (public site)
 Persistent JSON sessions, profanity filter, 2-level learning (individual + collective).
 Supports DeepSeek, Google Gemini, Groq, and OpenAI-compatible providers.
 (c) Andrea Marro — 28/02/2026
@@ -19,9 +19,11 @@ import pathlib
 import yaml
 import memory as galileo_memory
 import httpx
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
+import io
+import tempfile
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 from typing import Optional, List
 from slowapi import Limiter
@@ -43,7 +45,7 @@ except FileNotFoundError:
     SITE_PROMPT = ""
 
 
-# ─── Multi-Galileo: Specialist Prompts ────────────────────────
+# ─── Multi-UNLIM: Specialist Prompts ────────────────────────
 SPECIALIST_PROMPTS = {}  # {intent: compiled_prompt_string}
 SHARED_CONTEXT = {}      # Shared context sections from shared.yml
 
@@ -54,7 +56,7 @@ def _load_specialist_prompts():
 
     prompts_dir = pathlib.Path(__file__).parent / "prompts"
     if not prompts_dir.exists():
-        print("[Galileo] WARNING: prompts/ directory not found, using monolithic prompt")
+        print("[UNLIM] WARNING: prompts/ directory not found, using monolithic prompt")
         return
 
     # Load shared context
@@ -63,16 +65,16 @@ def _load_specialist_prompts():
         try:
             with open(shared_path, "r", encoding="utf-8") as f:
                 SHARED_CONTEXT = yaml.safe_load(f) or {}
-            print(f"[Galileo] Loaded shared context: {list(SHARED_CONTEXT.keys())}")
+            print(f"[UNLIM] Loaded shared context: {list(SHARED_CONTEXT.keys())}")
         except Exception as e:
-            print(f"[Galileo] Failed to load shared.yml: {e}")
+            print(f"[UNLIM] Failed to load shared.yml: {e}")
 
     # Load each specialist
     for intent, filename in [("circuit", "circuit.yml"), ("code", "code.yml"),
                              ("tutor", "tutor.yml"), ("vision", "vision.yml")]:
         filepath = prompts_dir / filename
         if not filepath.exists():
-            print(f"[Galileo] WARNING: {filename} not found")
+            print(f"[UNLIM] WARNING: {filename} not found")
             continue
         try:
             with open(filepath, "r", encoding="utf-8") as f:
@@ -106,7 +108,7 @@ def _load_specialist_prompts():
                     if scratch_parts:
                         parts.append("[SCRATCH/BLOCKLY EDITOR]\n" + "\n".join(scratch_parts))
                 except Exception as se:
-                    print(f"[Galileo] Failed to load scratch.yml: {se}")
+                    print(f"[UNLIM] Failed to load scratch.yml: {se}")
 
             # Shared reference data (experiments, components, breadboard)
             if SHARED_CONTEXT.get("experiments_catalog"):
@@ -126,15 +128,15 @@ def _load_specialist_prompts():
 
             compiled = "\n\n".join(parts)
             SPECIALIST_PROMPTS[intent] = compiled
-            print(f"[Galileo] Loaded specialist '{intent}': {len(compiled)} chars")
+            print(f"[UNLIM] Loaded specialist '{intent}': {len(compiled)} chars")
 
         except Exception as e:
-            print(f"[Galileo] Failed to load {filename}: {e}")
+            print(f"[UNLIM] Failed to load {filename}: {e}")
 
     if SPECIALIST_PROMPTS:
-        print(f"[Galileo] Multi-Galileo ready: {list(SPECIALIST_PROMPTS.keys())} specialists")
+        print(f"[UNLIM] Multi-UNLIM ready: {list(SPECIALIST_PROMPTS.keys())} specialists")
     else:
-        print("[Galileo] WARNING: No specialist prompts loaded, falling back to monolithic")
+        print("[UNLIM] WARNING: No specialist prompts loaded, falling back to monolithic")
 
 
 # ─── Intent Classification (Hybrid Router) ────────────────────
@@ -278,7 +280,7 @@ def classify_intent(message: str, page_context: str = "", has_images: bool = Fal
     # Ambiguous — for now use highest score (Groq flash classify TBD in future)
     # TODO: Add Groq flash classify for ambiguous cases (Phase 2b)
     winner = sorted_scores[0][0]
-    print(f"[Galileo] Ambiguous intent, scores={dict(sorted_scores)}, chose={winner}")
+    print(f"[UNLIM] Ambiguous intent, scores={dict(sorted_scores)}, chose={winner}")
     return winner
 
 
@@ -296,7 +298,7 @@ def detect_all_intents(message: str) -> list:
     return [k for k, _ in sorted(scores.items(), key=lambda x: x[1], reverse=True)]
 
 
-# ─── Complexity Classifier (Multi-Galileo v5) ────────────────
+# ─── Complexity Classifier (Multi-UNLIM v5) ────────────────
 COMPLEX_PATTERNS = [
     r"(costruisci|monta|crea|fai).+(circuito|schema|montaggio).+(con|usando).+e\s",
     r"(togli tutto|pulisci|clearall|svuota).+(metti|aggiungi|costruisci|fai)",
@@ -317,9 +319,9 @@ def _detect_reasoner():
     for p in AI_PROVIDERS:
         if "reasoner" in p.get("model", "").lower():
             REASONER_PROVIDER = p
-            print(f"[Galileo] Reasoner detected: {p['provider']}/{p['model']}")
+            print(f"[UNLIM] Reasoner detected: {p['provider']}/{p['model']}")
             return
-    print("[Galileo] No Reasoner provider found — complex requests use standard path")
+    print("[UNLIM] No Reasoner provider found — complex requests use standard path")
 
 
 # NOTE: _detect_reasoner() is called AFTER AI_PROVIDERS is populated (see below)
@@ -378,7 +380,7 @@ def build_specialist_context(intent: str, session_id: str = "",
         if memory_context:
             parts.append(memory_context)
     except Exception as e:
-        print(f"[Galileo] Memory context failed: {e}")
+        print(f"[UNLIM] Memory context failed: {e}")
 
     return "\n".join(parts)
 
@@ -419,9 +421,9 @@ for i in ["1", "2", "3"]:
         VISION_PROVIDERS.append({"provider": v_provider, "api_key": v_key, "model": v_model})
 
 if VISION_PROVIDERS:
-    print(f"[Galileo] Vision providers (primary tier): {[p['provider']+'/'+p['model'] for p in VISION_PROVIDERS]}")
+    print(f"[UNLIM] Vision providers (primary tier): {[p['provider']+'/'+p['model'] for p in VISION_PROVIDERS]}")
 else:
-    print("[Galileo] No dedicated vision providers — using Gemini from AI_PROVIDERS for vision")
+    print("[UNLIM] No dedicated vision providers — using Gemini from AI_PROVIDERS for vision")
 
 # CORS: merge env var with hardcoded essential origins
 _ESSENTIAL_ORIGINS = [
@@ -442,15 +444,57 @@ PROVIDER_TIMEOUT = httpx.Timeout(45.0, connect=5.0)
 IS_DEV = os.getenv("GALILEO_ENV", "production") != "production"
 
 if IS_DEV:
-    print(f"[Galileo] CORS origins ({len(CORS_ORIGINS)}): {CORS_ORIGINS}")
+    print(f"[UNLIM] CORS origins ({len(CORS_ORIGINS)}): {CORS_ORIGINS}")
 if AI_PROVIDERS:
     PRIMARY = AI_PROVIDERS[0]
 else:
     PRIMARY = {"provider": "none", "model": "none", "api_key": ""}
-    print("[Galileo] WARNING: No AI providers configured! Set AI_PROVIDER1 + AI_API_KEY1 env vars.")
+    print("[UNLIM] WARNING: No AI providers configured! Set AI_PROVIDER1 + AI_API_KEY1 env vars.")
 
 # Detect Reasoner AFTER AI_PROVIDERS is populated
 _detect_reasoner()
+
+
+# ─── Voice: STT + TTS Configuration ──────────────────────────
+# STT: Groq Whisper (fastest, ~200ms) — uses existing Groq provider if available
+# TTS: OpenAI tts-1 (high quality) — uses existing OpenAI provider if available
+# Fallback: Google Cloud TTS/STT via Gemini key
+
+def _find_provider_key(provider_name: str) -> str:
+    """Find API key for a specific provider from AI_PROVIDERS."""
+    for p in AI_PROVIDERS:
+        if p["provider"] == provider_name:
+            return p["api_key"]
+    return ""
+
+# STT config (Groq Whisper — fastest available)
+STT_API_KEY = os.getenv("STT_API_KEY", "").strip() or _find_provider_key("groq")
+STT_MODEL = os.getenv("STT_MODEL", "whisper-large-v3-turbo").strip()
+STT_PROVIDER = os.getenv("STT_PROVIDER", "groq").strip()
+
+# TTS config (OpenAI tts-1)
+TTS_API_KEY = os.getenv("TTS_API_KEY", "").strip() or _find_provider_key("openai")
+TTS_MODEL = os.getenv("TTS_MODEL", "tts-1").strip()
+TTS_VOICE = os.getenv("TTS_VOICE", "nova").strip()  # nova = friendly female, good for kids
+TTS_PROVIDER = os.getenv("TTS_PROVIDER", "openai").strip()
+
+# Fallback: if no OpenAI key for TTS, try Google
+if not TTS_API_KEY:
+    _google_key = _find_provider_key("google")
+    if _google_key:
+        TTS_API_KEY = _google_key
+        TTS_PROVIDER = "google"
+        print("[UNLIM Voice] TTS fallback: using Google TTS")
+
+if STT_API_KEY:
+    print(f"[UNLIM Voice] STT ready: {STT_PROVIDER}/{STT_MODEL}")
+else:
+    print("[UNLIM Voice] WARNING: No STT API key. Set STT_API_KEY or add Groq provider.")
+
+if TTS_API_KEY:
+    print(f"[UNLIM Voice] TTS ready: {TTS_PROVIDER}/{TTS_MODEL} voice={TTS_VOICE}")
+else:
+    print("[UNLIM Voice] WARNING: No TTS API key. Set TTS_API_KEY or add OpenAI provider.")
 
 
 # ─── Session Storage (file-persistent + in-memory cache) ─────
@@ -651,18 +695,18 @@ def get_navigation_response(message: str) -> Optional[str]:
 
 def get_racing_providers(qtype: str) -> list:
     """Layer 1: Select providers for parallel racing based on question type.
-    NOTE: Gemini is EXCLUDED from text-only racing to preserve free-tier quota for vision.
-    Kimi participates in text racing (if configured in AI_PROVIDERS) for 3-way speed.
+    Gemini 2.5/3 partecipa a TUTTE le categorie come modello general-purpose.
+    Kimi participates in text racing (if configured in AI_PROVIDERS) for multi-way speed.
     Vision routing in race_providers() handles tiered vision selection separately."""
     routing = {
-        "navigation": [],                                        # Static response, no AI
-        "factual":    ["deepseek", "groq", "kimi", "moonshot"],   # 3-way: DeepSeek + Groq + Kimi
-        "circuit":    ["deepseek", "groq", "kimi", "moonshot"],    # DeepSeek reasoning + Groq/Kimi speed
-        "code":       ["deepseek", "groq", "kimi", "moonshot"],    # DeepSeek code + Groq/Kimi speed
-        "teacher":    ["deepseek", "groq", "kimi", "moonshot"],    # DeepSeek + Groq/Kimi pedagogy
-        "game":       ["deepseek", "groq", "kimi", "moonshot"],    # 3-way racing
-        "creative":   ["deepseek", "groq", "kimi", "moonshot"],    # DeepSeek + Groq/Kimi
-        "general":    ["deepseek", "groq", "kimi", "moonshot"],    # DeepSeek + Groq/Kimi
+        "navigation": [],                                                          # Static response, no AI
+        "factual":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # DeepSeek + Gemini + Groq + Kimi
+        "circuit":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini reasoning + DeepSeek + speed
+        "code":       ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini code + DeepSeek + speed
+        "teacher":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini pedagogia + DeepSeek
+        "game":       ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Multi-way racing
+        "creative":   ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Gemini creatività + DeepSeek
+        "general":    ["deepseek", "google", "gemini", "groq", "kimi", "moonshot"],  # Tutti i provider
     }
     preferred = routing.get(qtype, routing["general"])
     matched = [p for p in AI_PROVIDERS if p["provider"] in preferred]
@@ -723,7 +767,7 @@ _BRACKET_TAG_RE = re.compile(r'\[(ADMIN|SYSTEM|ROOT|SUDO|OVERRIDE|DEBUG|DEV|FILT
 
 INJECTION_BLOCK_RESPONSE = (
     "Non posso eseguire questo tipo di richiesta. "
-    "Sono Galileo, il tuo tutor di elettronica! "
+    "Sono UNLIM, il tuo tutor di elettronica! "
     "Chiedimi qualcosa sui circuiti, i componenti o gli esperimenti ELAB. ⚡"
 )
 
@@ -1381,7 +1425,7 @@ def sanitize_message(message: str) -> str:
 
 # ─── FastAPI App ──────────────────────────────────────────────
 limiter = Limiter(key_func=get_remote_address)
-app = FastAPI(title="Galileo Nanobot", version="5.0.0")
+app = FastAPI(title="UNLIM Nanobot", version="5.0.0")
 
 
 # Session cleanup: every 10 minutes
@@ -1391,9 +1435,9 @@ def _session_cleanup_loop():
         time.sleep(600)
         try:
             cleanup_sessions()
-            print(f"[Galileo] Session cleanup — cache: {len(SESSION_CACHE)} entries")
+            print(f"[UNLIM] Session cleanup — cache: {len(SESSION_CACHE)} entries")
         except Exception as e:
-            print(f"[Galileo] Cleanup error: {e}")
+            print(f"[UNLIM] Cleanup error: {e}")
 
 
 _cleanup_thread = threading.Thread(target=_session_cleanup_loop, daemon=True)
@@ -1445,7 +1489,7 @@ class ChatRequest(BaseModel):
     experimentId: Optional[str] = None  # S59: was missing from model but frontend sends it
     conversationHistory: Optional[List[dict]] = None
     images: Optional[List[ImageData]] = None
-    simulatorContext: Optional[dict] = None  # S104: Galileo Context Engine — unified simulator snapshot
+    simulatorContext: Optional[dict] = None  # S104: UNLIM Context Engine — unified simulator snapshot
 
 
 class DiagnoseRequest(BaseModel):
@@ -1568,9 +1612,9 @@ def format_circuit_context(state: dict) -> str:
     return "\n".join(parts)
 
 
-# ─── S104: Galileo Context Engine — Simulator Context ─────────────
+# ─── S104: UNLIM Context Engine — Simulator Context ─────────────
 def format_simulator_context(ctx: dict) -> str:
-    """Parse unified simulator context (S104) into compact text for Galileo.
+    """Parse unified simulator context (S104) into compact text for UNLIM.
     Provides editor mode, build step, compilation results, and simulation state.
     Complements circuit_context which focuses on component/wire physics."""
     if not ctx:
@@ -1687,7 +1731,7 @@ async def call_openai_compatible(messages: list, api_key: str, model: str, provi
                         "image_url": {"url": f"data:{mime};base64,{b64}"}
                     })
                 formatted_messages.append({"role": msg["role"], "content": content_parts})
-                print(f"[Galileo-Vision] {provider}: injected {len(images)} images into last message")
+                print(f"[UNLIM-Vision] {provider}: injected {len(images)} images into last message")
             else:
                 formatted_messages.append(msg)
     else:
@@ -1743,14 +1787,14 @@ async def call_google(messages: list, api_key: str, model: str, max_tokens: int 
 
     if images:
         img_count = sum(1 for c in contents for p in c.get("parts", []) if "inlineData" in p)
-        print(f"[Galileo-Vision] call_google: {len(images)} images, {img_count} attached, model={model}")
+        print(f"[UNLIM-Vision] call_google: {len(images)} images, {img_count} attached, model={model}")
 
     gen_config = {"maxOutputTokens": max_tokens, "temperature": TEMPERATURE}
     # Gemini 2.5 uses "thinking tokens" that count against maxOutputTokens.
     # For vision (complex image analysis), set a thinking budget so output isn't starved.
     if images and "2.5" in model:
         gen_config["thinkingConfig"] = {"thinkingBudget": 2048}
-        print(f"[Galileo-Vision] Gemini 2.5 thinking budget: 2048, maxOutputTokens: {max_tokens}")
+        print(f"[UNLIM-Vision] Gemini 2.5 thinking budget: 2048, maxOutputTokens: {max_tokens}")
     payload = {
         "contents": contents,
         "systemInstruction": {"parts": [{"text": sys_prompt}]},
@@ -1769,35 +1813,35 @@ async def call_google(messages: list, api_key: str, model: str, max_tokens: int 
             if resp.status_code == 429 and images and attempt < max_retries - 1:
                 # Rate limited on vision: wait and retry
                 wait_time = min(10 * (attempt + 1), 30)  # 10s, 20s, 30s
-                print(f"[Galileo-Vision] 429 rate limit on attempt {attempt+1}, retrying in {wait_time}s...")
+                print(f"[UNLIM-Vision] 429 rate limit on attempt {attempt+1}, retrying in {wait_time}s...")
                 await asyncio.sleep(wait_time)
                 continue
             if resp.status_code != 200:
-                print(f"[Galileo-Vision] Gemini error: status={resp.status_code}, body={resp.text[:300]}")
+                print(f"[UNLIM-Vision] Gemini error: status={resp.status_code}, body={resp.text[:300]}")
             resp.raise_for_status()
             data = resp.json()
             candidates = data.get("candidates", [])
             if not candidates:
-                print(f"[Galileo-Vision] WARNING: no candidates! Keys={list(data.keys())}")
+                print(f"[UNLIM-Vision] WARNING: no candidates! Keys={list(data.keys())}")
                 raise ValueError("No candidates in Gemini response")
             finish = candidates[0].get("finishReason", "STOP")
             text_out = data["candidates"][0]["content"]["parts"][0]["text"]
             if finish not in ("STOP", None):
-                print(f"[Galileo-Vision] WARNING: finishReason={finish}, output_len={len(text_out)} chars")
+                print(f"[UNLIM-Vision] WARNING: finishReason={finish}, output_len={len(text_out)} chars")
             if images:
-                print(f"[Galileo-Vision] Response: {len(text_out)} chars, finishReason={finish}")
+                print(f"[UNLIM-Vision] Response: {len(text_out)} chars, finishReason={finish}")
             return text_out
         except httpx.HTTPStatusError as e:
             last_err = e
             if e.response.status_code == 429 and images and attempt < max_retries - 1:
                 wait_time = min(10 * (attempt + 1), 30)
-                print(f"[Galileo-Vision] 429 HTTPStatusError attempt {attempt+1}, retrying in {wait_time}s...")
+                print(f"[UNLIM-Vision] 429 HTTPStatusError attempt {attempt+1}, retrying in {wait_time}s...")
                 await asyncio.sleep(wait_time)
                 continue
-            print(f"[Galileo-Vision] HTTPStatusError: {e.response.status_code} — {e.response.text[:300]}")
+            print(f"[UNLIM-Vision] HTTPStatusError: {e.response.status_code} — {e.response.text[:300]}")
             raise
         except (KeyError, IndexError) as e:
-            print(f"[Galileo-Vision] Response parsing error: {e}")
+            print(f"[UNLIM-Vision] Response parsing error: {e}")
             raise
     raise last_err or RuntimeError("Gemini call failed after retries")
 
@@ -1842,7 +1886,7 @@ async def _race_vision_tier(messages: list, tier_providers: list, max_tokens: in
         result = await call_single_provider(messages, tier_providers[0], max_tokens, images=images)
         elapsed = int((time.monotonic() - t0) * 1000)
         name = f"{tier_providers[0]['provider']}/{tier_providers[0]['model']}"
-        print(f"[Galileo-Vision] Tier winner: {name} in {elapsed}ms")
+        print(f"[UNLIM-Vision] Tier winner: {name} in {elapsed}ms")
         return result, name, elapsed
 
     async def _call(prov):
@@ -1861,11 +1905,11 @@ async def _race_vision_tier(messages: list, tier_providers: list, max_tokens: in
                 elapsed = int((time.monotonic() - t0) * 1000)
                 for t in pending:
                     t.cancel()
-                print(f"[Galileo-Vision] Tier winner: {name} in {elapsed}ms (cancelled {len(pending)} others)")
+                print(f"[UNLIM-Vision] Tier winner: {name} in {elapsed}ms (cancelled {len(pending)} others)")
                 return result, name, elapsed
             except Exception as e:
                 last_error = e
-                print(f"[Galileo-Vision] Tier provider failed: {e}")
+                print(f"[UNLIM-Vision] Tier provider failed: {e}")
 
     raise last_error or RuntimeError("All tier providers failed")
 
@@ -1883,18 +1927,18 @@ async def race_providers(messages: list, providers: list = None, max_tokens: int
     if images:
         if VISION_PROVIDERS:
             # Tier 1: race dedicated vision providers first
-            print(f"[Galileo-Vision] Tier 1: racing {len(VISION_PROVIDERS)} dedicated vision provider(s)")
+            print(f"[UNLIM-Vision] Tier 1: racing {len(VISION_PROVIDERS)} dedicated vision provider(s)")
             try:
                 tier1_result = await _race_vision_tier(messages, VISION_PROVIDERS, max_tokens, images)
                 return tier1_result
             except Exception as tier1_err:
-                print(f"[Galileo-Vision] Tier 1 FAILED ({tier1_err}), falling back to Tier 2 (Gemini)")
+                print(f"[UNLIM-Vision] Tier 1 FAILED ({tier1_err}), falling back to Tier 2 (Gemini)")
                 # Fall through to Tier 2
 
             # Tier 2: Gemini fallback from AI_PROVIDERS
             gemini_targets = [p for p in AI_PROVIDERS if p["provider"] in ("google", "gemini")]
             if gemini_targets:
-                print(f"[Galileo-Vision] Tier 2: trying Gemini fallback")
+                print(f"[UNLIM-Vision] Tier 2: trying Gemini fallback")
                 targets = gemini_targets
             else:
                 raise RuntimeError("All vision providers failed (Tier 1 + no Gemini fallback)")
@@ -1937,11 +1981,11 @@ async def race_providers(messages: list, providers: list = None, max_tokens: int
                 # Cancel remaining
                 for t in pending:
                     t.cancel()
-                print(f"[Galileo] Winner: {name} in {elapsed}ms (cancelled {len(pending)} others)")
+                print(f"[UNLIM] Winner: {name} in {elapsed}ms (cancelled {len(pending)} others)")
                 return result, name, elapsed
             except Exception as e:
                 last_error = e
-                print(f"[Galileo] Provider failed in race: {e}")
+                print(f"[UNLIM] Provider failed in race: {e}")
 
     raise last_error or RuntimeError("All providers failed in race")
 
@@ -1964,7 +2008,7 @@ async def maybe_enhance(response: str, qtype: str, messages: list, winner: str):
         if len(enhanced) > len(response) * 1.3:
             return enhanced
     except Exception as e:
-        print(f"[Galileo] L3 enhancement failed: {e}")
+        print(f"[UNLIM] L3 enhancement failed: {e}")
     return None
 
 
@@ -1980,7 +2024,7 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
     # Vision mode: skip static routing, force Gemini
     if images:
         qtype = "circuit"
-        print(f"[Galileo] Vision mode: {len(images)} image(s), routing to Gemini")
+        print(f"[UNLIM] Vision mode: {len(images)} image(s), routing to Gemini")
     else:
         # Layer 1: Static navigation responses
         nav_response = get_navigation_response(user_message)
@@ -1995,7 +2039,7 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
 
         # Classify question for smart routing
         qtype = classify_question(user_message)
-        print(f"[Galileo] Question classified as: {qtype}")
+        print(f"[UNLIM] Question classified as: {qtype}")
 
     # Build messages with conversation memory (last 6 messages = 3 turns)
     messages = [{"role": "system", "content": prompt}]
@@ -2031,7 +2075,7 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
     if images:
         max_tokens = max(max_tokens, 8192)
     provider_names = [f"{p['provider']}/{p['model']}" for p in racing_providers]
-    print(f"[Galileo] Racing: {provider_names} (max_tokens={max_tokens})")
+    print(f"[UNLIM] Racing: {provider_names} (max_tokens={max_tokens})")
 
     response_text, winner, elapsed = await race_providers(messages, racing_providers, max_tokens, images=images)
 
@@ -2048,7 +2092,7 @@ async def orchestrate(user_message: str, circuit_context: str = "", conversation
 async def route_to_specialist(message: str, session_id: str = "", experiment_id: str = "",
                                circuit_context: str = "", conversation_history: list = None,
                                images: list = None) -> dict:
-    """Multi-Galileo routing: classify intent → select specialist → call orchestrate.
+    """Multi-UNLIM routing: classify intent → select specialist → call orchestrate.
     Handles vision chaining (Vision → domain specialist).
     Fallback: if no specialist prompts loaded, uses monolithic SYSTEM_PROMPT."""
 
@@ -2056,7 +2100,7 @@ async def route_to_specialist(message: str, session_id: str = "", experiment_id:
 
     # FASE 1: CAPIRE — classify intent
     intent = classify_intent(message, has_images=has_images)
-    print(f"[Galileo] Intent: {intent} (images={has_images})")
+    print(f"[UNLIM] Intent: {intent} (images={has_images})")
 
     # FASE 2: ARRICCHIRE — build specialist context
     enriched_context = build_specialist_context(intent, session_id, experiment_id, circuit_context)
@@ -2064,14 +2108,14 @@ async def route_to_specialist(message: str, session_id: str = "", experiment_id:
     # FASE 3: ROUTING — select specialist prompt and route
     if not SPECIALIST_PROMPTS:
         # Fallback: no specialist prompts loaded → monolithic
-        print("[Galileo] No specialists, falling back to monolithic prompt")
+        print("[UNLIM] No specialists, falling back to monolithic prompt")
         return await orchestrate(message, enriched_context, conversation_history, images=images)
 
     if has_images and intent == "vision":
         # S73 FIX-5: If user sent images AND has action verbs ("correggi", "sistema", "ripara"),
         # chain Vision → Circuit specialist so we get [AZIONE:] tags.
         if is_action_request(message):
-            print(f"[Galileo] Vision + action request: chaining Vision → Circuit")
+            print(f"[UNLIM] Vision + action request: chaining Vision → Circuit")
             intent = "circuit"
             # Fall through to vision+domain chain below
         else:
@@ -2090,7 +2134,7 @@ async def route_to_specialist(message: str, session_id: str = "", experiment_id:
             vision_result = await orchestrate(message, enriched_context, conversation_history,
                                               images=images, system_prompt=vision_prompt)
             vision_description = vision_result.get("response", "")
-            print(f"[Galileo] Vision chain: got {len(vision_description)} chars description")
+            print(f"[UNLIM] Vision chain: got {len(vision_description)} chars description")
 
             # Step 2: Domain specialist uses Vision's description
             domain_prompt = get_specialist_prompt(intent)
@@ -2100,7 +2144,7 @@ async def route_to_specialist(message: str, session_id: str = "", experiment_id:
             result["specialist"] = f"vision+{intent}"
             return result
         except Exception as e:
-            print(f"[Galileo] Vision chain failed: {e}, falling back to {intent} only")
+            print(f"[UNLIM] Vision chain failed: {e}, falling back to {intent} only")
             domain_prompt = get_specialist_prompt(intent)
             result = await orchestrate(message, enriched_context, conversation_history,
                                        system_prompt=domain_prompt)
@@ -2115,7 +2159,7 @@ async def route_to_specialist(message: str, session_id: str = "", experiment_id:
         return result
 
 
-# ─── Multi-Galileo v5: Inter-Agent Communication ─────────────
+# ─── Multi-UNLIM v5: Inter-Agent Communication ─────────────
 async def chain_specialists(message: str, intents: list, context: str,
                             conversation_history: list = None) -> dict:
     """Chain multiple specialists: each receives the output of the previous one.
@@ -2144,7 +2188,7 @@ async def chain_specialists(message: str, intents: list, context: str,
             result["specialist"] = intent
             results.append(result)
         except Exception as e:
-            print(f"[Galileo] Chain failed at {intent}: {e}")
+            print(f"[UNLIM] Chain failed at {intent}: {e}")
             break
 
     if not results:
@@ -2168,7 +2212,7 @@ async def reasoner_then_specialist(message: str, intent: str, context: str,
     # Step 1: Reasoner plans (system prompt = specialist's, so it knows action tags)
     reasoner_msg = (
         f"[ISTRUZIONI RAGIONAMENTO]\n"
-        f"Sei il motore di ragionamento di Galileo. Analizza questa richiesta complessa "
+        f"Sei il motore di ragionamento di UNLIM. Analizza questa richiesta complessa "
         f"e genera un PIANO d'azione dettagliato:\n"
         f"- Quali componenti servono e dove piazzarli (coordinate x,y)\n"
         f"- Quali connessioni (fili) creare e tra quali pin\n"
@@ -2184,7 +2228,7 @@ async def reasoner_then_specialist(message: str, intent: str, context: str,
              {"role": "user", "content": reasoner_msg}],
             REASONER_PROVIDER, max_tokens=2000
         )
-        print(f"[Galileo] Reasoner plan: {len(plan)} chars")
+        print(f"[UNLIM] Reasoner plan: {len(plan)} chars")
 
         # Step 2: Domain specialist executes the plan with proper formatting
         final_msg = (
@@ -2200,7 +2244,7 @@ async def reasoner_then_specialist(message: str, intent: str, context: str,
         result["layer"] = f"L5-reasoner({intent})"
         return result
     except Exception as e:
-        print(f"[Galileo] Reasoner failed: {e}, falling back to standard {intent}")
+        print(f"[UNLIM] Reasoner failed: {e}, falling back to standard {intent}")
         # Fallback: standard specialist
         result = await orchestrate(message, context, conversation_history,
                                    system_prompt=specialist_prompt)
@@ -2211,7 +2255,7 @@ async def reasoner_then_specialist(message: str, intent: str, context: str,
 async def route_to_specialist_v5(message: str, session_id: str = "", experiment_id: str = "",
                                   circuit_context: str = "", conversation_history: list = None,
                                   images: list = None) -> dict:
-    """Multi-Galileo v5 routing: intent + complexity → best path.
+    """Multi-UNLIM v5 routing: intent + complexity → best path.
     Paths:
       - Vision: images → Gemini (unchanged from v4)
       - Simple: single specialist (unchanged from v4)
@@ -2227,7 +2271,7 @@ async def route_to_specialist_v5(message: str, session_id: str = "", experiment_
 
     # No specialist prompts → monolithic (unchanged)
     if not SPECIALIST_PROMPTS:
-        print("[Galileo] No specialists, falling back to monolithic prompt")
+        print("[UNLIM] No specialists, falling back to monolithic prompt")
         return await orchestrate(message, enriched_context, conversation_history, images=images)
 
     # PATH 1: Vision (unchanged from v4)
@@ -2240,7 +2284,7 @@ async def route_to_specialist_v5(message: str, session_id: str = "", experiment_
 
     # PATH 2: Classify complexity for non-vision requests
     complexity = classify_complexity(message, circuit_context)
-    print(f"[Galileo] v5 routing: intent={intent}, complexity={complexity}")
+    print(f"[UNLIM] v5 routing: intent={intent}, complexity={complexity}")
 
     # PATH 2a: COMPLEX → Reasoner (if available)
     if complexity == "complex" and REASONER_PROVIDER:
@@ -2252,7 +2296,7 @@ async def route_to_specialist_v5(message: str, session_id: str = "", experiment_
     if complexity == "multi_domain":
         all_intents = detect_all_intents(message)
         if len(all_intents) >= 2:
-            print(f"[Galileo] Multi-domain chain: {all_intents[:3]}")
+            print(f"[UNLIM] Multi-domain chain: {all_intents[:3]}")
             return await chain_specialists(
                 message, all_intents[:3], enriched_context, conversation_history
             )
@@ -2350,7 +2394,7 @@ async def chat(request: Request, req: ChatRequest):
     sanitized = sanitize_message(req.message)
     circuit_context = format_circuit_context(req.circuitState) if req.circuitState else ""
 
-    # S104: Galileo Context Engine — append simulator context (editor mode, compilation, build step)
+    # S104: UNLIM Context Engine — append simulator context (editor mode, compilation, build step)
     simulator_context = format_simulator_context(req.simulatorContext) if req.simulatorContext else ""
     if simulator_context:
         circuit_context = f"{simulator_context}\n\n{circuit_context}" if circuit_context else simulator_context
@@ -2504,7 +2548,7 @@ async def diagnose_circuit(request: Request, req: DiagnoseRequest):
 
 
 # ─── MCP Tool: getExperimentHints ────────────────────────────
-HINTS_PROMPT = """Sei Galileo, tutor di elettronica per bambini.
+HINTS_PROMPT = """Sei UNLIM, tutor di elettronica per bambini.
 Lo studente sta lavorando sull'esperimento "{experiment_id}" (step {step}).
 Dai 3 suggerimenti progressivi:
 1. SUGGERIMENTO LEGGERO: una domanda guida che fa riflettere senza dare la risposta
@@ -2535,7 +2579,7 @@ async def get_experiment_hints(request: Request, req: HintsRequest):
     cache_key = f"{req.experimentId}:{req.currentStep}"
     cached = EXPERIMENT_CACHE.get(cache_key)
     if cached and (time.time() - cached["timestamp"]) < CACHE_TTL:
-        print(f"[Galileo] L0 cache hit: {cache_key}")
+        print(f"[UNLIM] L0 cache hit: {cache_key}")
         return {
             "success": True,
             "hints": cached["hints"],
@@ -2633,9 +2677,9 @@ async def precompute_experiment(exp_id: str):
         hints = await call_single_provider(messages, fast)
         cache_key = f"{exp_id}:0"
         EXPERIMENT_CACHE[cache_key] = {"hints": hints, "timestamp": time.time()}
-        print(f"[Galileo] Preloaded hints for {exp_id} via {fast['provider']}")
+        print(f"[UNLIM] Preloaded hints for {exp_id} via {fast['provider']}")
     except Exception as e:
-        print(f"[Galileo] Preload failed for {exp_id}: {e}")
+        print(f"[UNLIM] Preload failed for {exp_id}: {e}")
 
 
 # ─── Site Chat: Public Website Chatbot ──────────────────────
@@ -2712,7 +2756,7 @@ class TutorChatRequest(BaseModel):
     circuitState: Optional[dict] = None
     sessionId: Optional[str] = None
     conversationHistory: Optional[List[dict]] = None
-    simulatorContext: Optional[dict] = None  # S104: Galileo Context Engine
+    simulatorContext: Optional[dict] = None  # S104: UNLIM Context Engine
 
 
 @app.post("/tutor-chat", response_model=ChatResponse)
@@ -2720,7 +2764,7 @@ class TutorChatRequest(BaseModel):
 @limiter.limit("10/minute")
 @limiter.limit("3/10seconds")
 async def tutor_chat(request: Request, req: TutorChatRequest, background_tasks: BackgroundTasks):
-    """Multi-Galileo tutor chatbot — routes to specialist (circuit/code/tutor/vision)."""
+    """Multi-UNLIM tutor chatbot — routes to specialist (circuit/code/tutor/vision)."""
     if not AI_PROVIDERS:
         raise HTTPException(status_code=503, detail="No AI providers configured")
 
@@ -2737,7 +2781,7 @@ async def tutor_chat(request: Request, req: TutorChatRequest, background_tasks: 
     circuit_context = format_circuit_context(req.circuitState) if req.circuitState else ""
     user_msg = sanitize_message(req.message)
 
-    # S104: Galileo Context Engine — append simulator context
+    # S104: UNLIM Context Engine — append simulator context
     simulator_context = format_simulator_context(req.simulatorContext) if req.simulatorContext else ""
     if simulator_context:
         circuit_context = f"{simulator_context}\n\n{circuit_context}" if circuit_context else simulator_context
@@ -2747,7 +2791,7 @@ async def tutor_chat(request: Request, req: TutorChatRequest, background_tasks: 
     history = get_session_history(session_id) if session_id else req.conversationHistory
 
     try:
-        # Multi-Galileo v5: intent + complexity routing
+        # Multi-UNLIM v5: intent + complexity routing
         result = await route_to_specialist_v5(
             message=user_msg,
             session_id=session_id,
@@ -2926,3 +2970,331 @@ async def sync_memory(request: Request, req: MemorySyncRequest):
     except Exception as e:
         print(f"[Memory] Sync error: {e}")
         return {"success": False, "error": str(e)}
+
+
+# ─── Voice Endpoints: STT + TTS + Voice Chat ─────────────────
+# Full voice pipeline routed through nanobot (NOT browser APIs).
+# STT: audio → text (Groq Whisper, ~200ms)
+# TTS: text → audio (OpenAI tts-1 / Google, ~500ms)
+# Voice-chat: audio → text → AI → audio (complete round-trip)
+
+VOICE_TIMEOUT = httpx.Timeout(30.0, connect=5.0)
+
+
+async def _stt_groq(audio_bytes: bytes, content_type: str = "audio/webm") -> str:
+    """Transcribe audio using Groq Whisper API."""
+    if not STT_API_KEY:
+        raise HTTPException(status_code=503, detail="STT not configured")
+
+    # Determine file extension from content type
+    ext_map = {
+        "audio/webm": "webm", "audio/wav": "wav", "audio/mp4": "m4a",
+        "audio/mpeg": "mp3", "audio/ogg": "ogg", "audio/flac": "flac",
+    }
+    ext = ext_map.get(content_type, "webm")
+
+    async with httpx.AsyncClient(timeout=VOICE_TIMEOUT) as client:
+        resp = await client.post(
+            "https://api.groq.com/openai/v1/audio/transcriptions",
+            headers={"Authorization": f"Bearer {STT_API_KEY}"},
+            files={"file": (f"audio.{ext}", audio_bytes, content_type)},
+            data={
+                "model": STT_MODEL,
+                "language": "it",  # Italian — target audience is Italian kids
+                "response_format": "text",
+            },
+        )
+        if resp.status_code != 200:
+            print(f"[STT] Groq error {resp.status_code}: {resp.text[:200]}")
+            raise HTTPException(status_code=502, detail="STT transcription failed")
+        return resp.text.strip()
+
+
+async def _tts_openai(text: str) -> bytes:
+    """Generate speech from text using OpenAI TTS API."""
+    if not TTS_API_KEY:
+        raise HTTPException(status_code=503, detail="TTS not configured")
+
+    # Limit text length for safety (kids won't get 4000-char responses)
+    text = text[:4000]
+
+    if TTS_PROVIDER == "google":
+        return await _tts_google(text)
+
+    async with httpx.AsyncClient(timeout=VOICE_TIMEOUT) as client:
+        resp = await client.post(
+            "https://api.openai.com/v1/audio/speech",
+            headers={
+                "Authorization": f"Bearer {TTS_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": TTS_MODEL,
+                "input": text,
+                "voice": TTS_VOICE,
+                "response_format": "mp3",
+                "speed": 1.05,  # Slightly faster — keeps kids engaged
+            },
+        )
+        if resp.status_code != 200:
+            print(f"[TTS] OpenAI error {resp.status_code}: {resp.text[:200]}")
+            raise HTTPException(status_code=502, detail="TTS synthesis failed")
+        return resp.content
+
+
+async def _tts_google(text: str) -> bytes:
+    """Fallback TTS via Google Cloud Text-to-Speech (uses Gemini API key)."""
+    async with httpx.AsyncClient(timeout=VOICE_TIMEOUT) as client:
+        resp = await client.post(
+            f"https://texttospeech.googleapis.com/v1/text:synthesize?key={TTS_API_KEY}",
+            json={
+                "input": {"text": text[:4000]},
+                "voice": {
+                    "languageCode": "it-IT",
+                    "name": "it-IT-Wavenet-A",  # Female wavenet voice
+                    "ssmlGender": "FEMALE",
+                },
+                "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.05},
+            },
+        )
+        if resp.status_code != 200:
+            print(f"[TTS] Google error {resp.status_code}: {resp.text[:200]}")
+            raise HTTPException(status_code=502, detail="TTS synthesis failed (Google)")
+        import base64 as b64
+        audio_b64 = resp.json().get("audioContent", "")
+        return b64.b64decode(audio_b64)
+
+
+def _strip_action_tags_for_voice(text: str) -> str:
+    """Remove [AZIONE:...] and [INTENT:{...}] tags — not speakable."""
+    text = re.sub(r'\[AZIONE:[^\]]*\]', '', text)
+    text = re.sub(r'\[INTENT:\{[^}]*\}\]', '', text)
+    # Remove markdown formatting
+    text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    text = re.sub(r'#{1,4}\s*', '', text)
+    # Clean up extra whitespace
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
+
+
+@app.post("/stt")
+@limiter.limit("30/minute")
+@limiter.limit("5/10seconds")
+async def speech_to_text(request: Request, audio: UploadFile = File(...)):
+    """Convert speech audio to text (Groq Whisper)."""
+    if not STT_API_KEY:
+        raise HTTPException(status_code=503, detail="STT non configurato. Imposta STT_API_KEY.")
+
+    audio_bytes = await audio.read()
+    if len(audio_bytes) > 25 * 1024 * 1024:  # 25MB limit
+        raise HTTPException(status_code=413, detail="File audio troppo grande (max 25MB)")
+    if len(audio_bytes) < 100:
+        raise HTTPException(status_code=400, detail="File audio troppo piccolo")
+
+    content_type = audio.content_type or "audio/webm"
+    print(f"[STT] Received {len(audio_bytes)} bytes ({content_type})")
+
+    try:
+        transcript = await _stt_groq(audio_bytes, content_type)
+        print(f"[STT] Transcribed: '{transcript[:80]}...'")
+        return {"success": True, "text": transcript}
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[STT] Error: {e}")
+        raise HTTPException(status_code=500, detail="Errore trascrizione vocale")
+
+
+@app.post("/tts")
+@limiter.limit("30/minute")
+@limiter.limit("5/10seconds")
+async def text_to_speech(request: Request, text: str = Form(...)):
+    """Convert text to speech audio (OpenAI TTS / Google fallback)."""
+    if not TTS_API_KEY:
+        raise HTTPException(status_code=503, detail="TTS non configurato. Imposta TTS_API_KEY.")
+
+    if not text or not text.strip():
+        raise HTTPException(status_code=400, detail="Testo vuoto")
+
+    # Strip action tags — not speakable
+    clean_text = _strip_action_tags_for_voice(text)
+    if not clean_text:
+        raise HTTPException(status_code=400, detail="Nessun testo da sintetizzare")
+
+    print(f"[TTS] Synthesizing {len(clean_text)} chars with {TTS_PROVIDER}/{TTS_MODEL}")
+
+    try:
+        audio_bytes = await _tts_openai(clean_text)
+        print(f"[TTS] Generated {len(audio_bytes)} bytes audio")
+        return Response(
+            content=audio_bytes,
+            media_type="audio/mpeg",
+            headers={"Content-Disposition": "inline; filename=unlim-voice.mp3"},
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[TTS] Error: {e}")
+        raise HTTPException(status_code=500, detail="Errore sintesi vocale")
+
+
+@app.post("/voice-chat")
+@limiter.limit("20/minute")
+@limiter.limit("3/10seconds")
+async def voice_chat(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    audio: UploadFile = File(...),
+    sessionId: str = Form(""),
+    experimentId: str = Form(""),
+    circuitState: str = Form(""),  # JSON string
+    simulatorContext: str = Form(""),  # JSON string
+):
+    """Complete voice round-trip: Audio → STT → AI → TTS → Audio.
+    Returns JSON with text fields + base64-encoded audio for playback.
+    This is the REALTIME endpoint — single round-trip for full voice interaction."""
+    if not STT_API_KEY:
+        raise HTTPException(status_code=503, detail="Voice non configurato (STT)")
+
+    # Step 1: Read and validate audio
+    audio_bytes = await audio.read()
+    if len(audio_bytes) < 100:
+        raise HTTPException(status_code=400, detail="Audio troppo corto")
+    if len(audio_bytes) > 25 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="Audio troppo grande (max 25MB)")
+
+    content_type = audio.content_type or "audio/webm"
+    t0 = time.time()
+
+    # Step 2: STT — transcribe user speech
+    try:
+        transcript = await _stt_groq(audio_bytes, content_type)
+    except Exception as e:
+        print(f"[Voice] STT failed: {e}")
+        raise HTTPException(status_code=502, detail="Trascrizione vocale fallita")
+
+    t_stt = time.time()
+    if not transcript.strip():
+        return JSONResponse(content={
+            "success": True,
+            "userText": "",
+            "response": "Non ho sentito nulla. Puoi ripetere?",
+            "audio": None,
+            "timing": {"stt_ms": int((t_stt - t0) * 1000)},
+        })
+
+    print(f"[Voice] STT ({int((t_stt - t0) * 1000)}ms): '{transcript[:80]}'")
+
+    # Step 3: AI processing — route through existing tutor-chat logic
+    # Parse optional JSON fields
+    circuit_state = None
+    if circuitState:
+        try:
+            circuit_state = json.loads(circuitState)
+        except json.JSONDecodeError:
+            pass
+
+    simulator_ctx = None
+    if simulatorContext:
+        try:
+            simulator_ctx = json.loads(simulatorContext)
+        except json.JSONDecodeError:
+            pass
+
+    profanity_msg = check_profanity(transcript)
+    if profanity_msg:
+        ai_response = profanity_msg
+    else:
+        injection_msg = check_injection(transcript)
+        if injection_msg:
+            ai_response = injection_msg
+        else:
+            circuit_context = format_circuit_context(circuit_state) if circuit_state else ""
+            sim_context = format_simulator_context(simulator_ctx) if simulator_ctx else ""
+            if sim_context:
+                circuit_context = f"{sim_context}\n\n{circuit_context}" if circuit_context else sim_context
+
+            user_msg = sanitize_message(transcript)
+            session_id = sessionId or ""
+            history = get_session_history(session_id) if session_id else []
+
+            try:
+                result = await route_to_specialist_v5(
+                    message=user_msg,
+                    session_id=session_id,
+                    experiment_id=experimentId or "",
+                    circuit_context=circuit_context,
+                    conversation_history=history,
+                    images=None,
+                )
+                ai_response = sanitize_identity_leaks(normalize_action_tags(result["response"]))
+                ai_response = convert_addcomponent_to_intent(ai_response)
+
+                # Action injection (same logic as tutor-chat)
+                has_intent = '[INTENT:' in ai_response
+                if not has_intent and is_action_request(user_msg):
+                    ai_response = deterministic_intent_injection(user_msg, ai_response, circuit_context)
+
+                # Persist to session
+                if session_id:
+                    save_to_session(session_id, "user", transcript)
+                    save_to_session(session_id, "assistant", ai_response)
+
+                # Background learning
+                if session_id:
+                    background_tasks.add_task(
+                        galileo_memory.async_learn,
+                        session_id, user_msg, ai_response,
+                        circuit_context, experimentId or ""
+                    )
+            except Exception as e:
+                print(f"[Voice] AI processing failed: {e}")
+                ai_response = "Scusa, non sono riuscito a elaborare la risposta. Riprova!"
+
+    t_ai = time.time()
+    print(f"[Voice] AI ({int((t_ai - t_stt) * 1000)}ms): '{ai_response[:80]}...'")
+
+    # Step 4: TTS — synthesize AI response to speech
+    audio_b64 = None
+    if TTS_API_KEY:
+        try:
+            clean_response = _strip_action_tags_for_voice(ai_response)
+            if clean_response:
+                tts_bytes = await _tts_openai(clean_response)
+                import base64 as b64
+                audio_b64 = b64.b64encode(tts_bytes).decode("ascii")
+        except Exception as e:
+            print(f"[Voice] TTS failed (non-blocking): {e}")
+            # TTS failure is non-blocking — text still returned
+
+    t_tts = time.time()
+    total_ms = int((t_tts - t0) * 1000)
+    print(f"[Voice] Complete round-trip: {total_ms}ms (STT:{int((t_stt-t0)*1000)} AI:{int((t_ai-t_stt)*1000)} TTS:{int((t_tts-t_ai)*1000)})")
+
+    return JSONResponse(content={
+        "success": True,
+        "userText": transcript,
+        "response": ai_response,
+        "audio": audio_b64,  # base64 MP3 or null
+        "audioFormat": "audio/mpeg" if audio_b64 else None,
+        "timing": {
+            "stt_ms": int((t_stt - t0) * 1000),
+            "ai_ms": int((t_ai - t_stt) * 1000),
+            "tts_ms": int((t_tts - t_ai) * 1000),
+            "total_ms": total_ms,
+        },
+    })
+
+
+@app.get("/voice-status")
+async def voice_status(request: Request):
+    """Check voice capabilities status (for frontend feature detection)."""
+    return {
+        "stt": bool(STT_API_KEY),
+        "tts": bool(TTS_API_KEY),
+        "stt_provider": STT_PROVIDER if STT_API_KEY else None,
+        "tts_provider": TTS_PROVIDER if TTS_API_KEY else None,
+        "tts_voice": TTS_VOICE if TTS_API_KEY else None,
+    }

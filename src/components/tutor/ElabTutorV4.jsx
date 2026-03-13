@@ -38,6 +38,10 @@ import PresentationModal from './PresentationModal';
 import { loadPdfJs } from './utils/documentConverters';
 import logger from '../../utils/logger';
 import { captureWhiteboardScreenshot } from '../../utils/whiteboardScreenshot';
+import {
+    checkVoiceCapabilities, startRecording, stopRecording, isRecording as isVoiceRecording,
+    cancelRecording, sendVoiceChat, synthesizeSpeech, playAudio, playTracked, stopPlayback,
+} from '../../services/voiceService';
 
 /**
  * Extract [INTENT:{...}] tags from text using balanced-brace matching.
@@ -88,7 +92,7 @@ export default function ElabTutorV4() {
     const [messages, setMessages] = useState([{
         id: 'welcome',
         role: 'assistant',
-        content: `**Ciao, sono Galileo**
+        content: `**Ciao, sono UNLIM**
 
 Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
 
@@ -104,6 +108,12 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
     const [isLoading, setIsLoading] = useState(false);
     const [isSocraticMode, setIsSocraticMode] = useState(false);
 
+    // Voice State (UNLIM speaks — realtime via nanobot)
+    const [voiceEnabled, setVoiceEnabled] = useState(false);
+    const [voiceRecording, setVoiceRecording] = useState(false);
+    const [voicePlaying, setVoicePlaying] = useState(false);
+    const [voiceAvailable, setVoiceAvailable] = useState(false);
+
     // S92: Safety timeout — auto-reset isLoading if stuck for >30s
     useEffect(() => {
         if (!isLoading) return;
@@ -113,6 +123,170 @@ Ti accompagno nei laboratori ELAB con spiegazioni pratiche e domande guida.
         }, 30000);
         return () => clearTimeout(timeout);
     }, [isLoading]);
+
+    // ─── Voice: detect capabilities on mount ───
+    useEffect(() => {
+        checkVoiceCapabilities().then(caps => {
+            const available = caps.stt && caps.tts && caps.microphone;
+            setVoiceAvailable(available);
+            console.log(`[Voice] Capabilities: STT=${caps.stt} TTS=${caps.tts} Mic=${caps.microphone}`, available ? '✅ Ready' : '❌ Not available');
+        }).catch(() => setVoiceAvailable(false));
+    }, []);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => { cancelRecording(); stopPlayback(); };
+    }, []);
+
+    /**
+     * Toggle voice mode on/off.
+     */
+    const handleVoiceToggle = useCallback((enabled) => {
+        if (enabled && !voiceAvailable) {
+            console.warn('[Voice] Not available — cannot enable');
+            return;
+        }
+        setVoiceEnabled(enabled);
+        if (!enabled) {
+            cancelRecording();
+            stopPlayback();
+            setVoiceRecording(false);
+            setVoicePlaying(false);
+        }
+        console.log(`[Voice] ${enabled ? 'Enabled' : 'Disabled'}`);
+    }, [voiceAvailable]);
+
+    /**
+     * Start/stop voice recording. On stop, sends to /voice-chat.
+     * Called by ChatOverlay microphone button (press-to-talk or toggle).
+     */
+    const handleVoiceRecord = useCallback(async () => {
+        if (isLoading) return;
+
+        if (isVoiceRecording()) {
+            // Stop recording → send to nanobot
+            setVoiceRecording(false);
+            setIsLoading(true);
+
+            try {
+                const audioBlob = await stopRecording();
+                if (!audioBlob || audioBlob.size < 100) {
+                    setIsLoading(false);
+                    return;
+                }
+
+                // Add "recording" indicator to chat
+                const recordingMsgId = 'voice-' + Date.now();
+                setMessages(prev => [...prev, {
+                    id: recordingMsgId,
+                    role: 'user',
+                    content: '🎙️ *Messaggio vocale in elaborazione...*',
+                    isVoice: true,
+                }]);
+
+                // Send to nanobot voice-chat (STT → AI → TTS in one call)
+                const result = await sendVoiceChat(audioBlob, {
+                    sessionId: localStorage.getItem('elab_tutor_session') || '',
+                    experimentId: activeExperiment?.id || '',
+                    circuitState: circuitStateRef.current?.structured
+                        ? { structured: circuitStateRef.current.structured, text: circuitStateRef.current.text }
+                        : (circuitStateRef.current ? { raw: circuitStateRef.current } : null),
+                });
+
+                if (result.success) {
+                    // Update user message with transcript
+                    setMessages(prev => prev.map(m =>
+                        m.id === recordingMsgId
+                            ? { ...m, content: result.userText || '🎙️ (audio)', isVoice: true }
+                            : m
+                    ));
+
+                    // Add AI response (action tags [AZIONE:...] will be parsed by
+                    // the existing message renderer + action execution system)
+                    if (result.response) {
+                        setMessages(prev => [...prev, {
+                            id: 'voice-resp-' + Date.now(),
+                            role: 'assistant',
+                            content: result.response,
+                            isVoice: true,
+                            timing: result.timing,
+                        }]);
+                    }
+
+                    // Play audio response if available
+                    if (result.audio && voiceEnabled) {
+                        setVoicePlaying(true);
+                        try {
+                            await playTracked(result.audio, result.audioFormat || 'audio/mpeg');
+                        } catch (e) {
+                            console.error('[Voice] Playback failed:', e);
+                        }
+                        setVoicePlaying(false);
+                    }
+                } else {
+                    setMessages(prev => prev.map(m =>
+                        m.id === recordingMsgId
+                            ? { ...m, content: '❌ Non sono riuscito a capire. Riprova!' }
+                            : m
+                    ));
+                }
+            } catch (err) {
+                console.error('[Voice] Error:', err);
+                setMessages(prev => [...prev, {
+                    id: 'voice-err-' + Date.now(),
+                    role: 'assistant',
+                    content: 'Scusa, c\'è stato un problema con la voce. Prova a scrivere oppure riprova! 🔄',
+                }]);
+            } finally {
+                setIsLoading(false);
+            }
+        } else {
+            // Start recording
+            const started = await startRecording();
+            if (started) {
+                setVoiceRecording(true);
+                stopPlayback(); // Stop any playing audio
+            } else {
+                // Microphone denied
+                setMessages(prev => [...prev, {
+                    id: 'mic-err-' + Date.now(),
+                    role: 'assistant',
+                    content: 'Per usare la voce, devi permettere l\'accesso al microfono nelle impostazioni del browser. 🎙️',
+                }]);
+            }
+        }
+    }, [isLoading, voiceEnabled, activeExperiment]);
+
+    /**
+     * Auto-speak the latest AI response when voice mode is on.
+     * Uses useEffect to react to new messages — works for ALL chat paths
+     * (text, voice, vision, hints, detective, etc.) without modifying each one.
+     */
+    const lastMsgRef = useRef(null);
+    useEffect(() => {
+        if (!voiceEnabled || messages.length === 0) return;
+        const lastMsg = messages[messages.length - 1];
+        // Only speak assistant messages, not user messages
+        if (lastMsg.role !== 'assistant') return;
+        // Don't re-speak same message
+        if (lastMsg.id === lastMsgRef.current) return;
+        // Don't speak voice responses (already spoken via /voice-chat)
+        if (lastMsg.isVoice) return;
+        lastMsgRef.current = lastMsg.id;
+
+        // Async TTS in background
+        (async () => {
+            try {
+                setVoicePlaying(true);
+                const audioData = await synthesizeSpeech(lastMsg.content);
+                await playTracked(audioData, 'audio/mpeg');
+            } catch (e) {
+                console.error('[Voice] Auto-speak failed:', e);
+            } finally {
+                setVoicePlaying(false);
+            }
+        })();
+    }, [messages, voiceEnabled]);
 
     // (CodePanel rimosso — editor Arduino eliminato)
 
@@ -2128,6 +2302,27 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                         api.resetEditorCode();
                         executedActions.push('resetcode');
                     }
+                    // ── S115: Chat/View control — Galileo controlla finestre ──
+                    else if (cmd === 'openchat') {
+                        setShowChat(true);
+                        executedActions.push('openchat');
+                    }
+                    else if (cmd === 'closechat') {
+                        setShowChat(false);
+                        executedActions.push('closechat');
+                    }
+                    else if (cmd === 'fullscreenscratch') {
+                        // [AZIONE:fullscreenscratch] — Scratch a schermo intero
+                        if (!api?.showEditor) throw new Error('showEditor non disponibile');
+                        api.showEditor();
+                        api.setEditorMode?.('scratch');
+                        api.setScratchFullscreen?.(true);
+                        executedActions.push('fullscreenscratch');
+                    }
+                    else if (cmd === 'exitscratchfullscreen') {
+                        api.setScratchFullscreen?.(false);
+                        executedActions.push('exitscratchfullscreen');
+                    }
                 } catch (err) {
                     recordActionFailure(tagText, err?.message || 'errore sconosciuto');
                 }
@@ -2198,7 +2393,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
             const errorMsg = result.error || 'Errore sconosciuto';
             let friendlyError = errorMsg;
             if (errorMsg.includes('Timeout') || errorMsg.includes('timeout')) {
-                friendlyError = 'Galileo ci sta mettendo un po\'. Riprova tra qualche secondo.';
+                friendlyError = 'UNLIM ci sta mettendo un po\'. Riprova tra qualche secondo.';
             } else if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
                 friendlyError = 'Controlla la connessione internet e riprova.';
             } else if (errorMsg.includes('500') || errorMsg.includes('502') || errorMsg.includes('503')) {
@@ -2298,6 +2493,12 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     socraticMode={isSocraticMode}
                     onToggleSocraticMode={() => setIsSocraticMode(prev => !prev)}
                     allowedGames={isDocente ? null : user?.classActiveGames ?? null}
+                    voiceEnabled={voiceEnabled}
+                    onVoiceToggle={handleVoiceToggle}
+                    voiceRecording={voiceRecording}
+                    onVoiceRecord={handleVoiceRecord}
+                    voicePlaying={voicePlaying}
+                    voiceAvailable={voiceAvailable}
                     onScreenshot={async () => {
                         try {
                             const { dataUrl, source: captureSource } = await captureActiveVisualContext('screenshot');

@@ -111,6 +111,13 @@ export default function TutorLayout({
     allowedGames,
     // Screenshot
     onScreenshot,
+    // Voice (UNLIM speaks — realtime via nanobot)
+    voiceEnabled,
+    onVoiceToggle,
+    voiceRecording,
+    onVoiceRecord,
+    voicePlaying,
+    voiceAvailable,
 }) {
     // S84: Auto-collapse left nav on iPad/tablet to maximize canvas space
     const [sidebarCollapsed, setSidebarCollapsed] = useState(
@@ -222,6 +229,11 @@ export default function TutorLayout({
                     socraticMode={socraticMode}
                     onToggleSocraticMode={onToggleSocraticMode}
                     onScreenshot={onScreenshot}
+                    voiceEnabled={voiceEnabled}
+                    onVoiceToggle={voiceAvailable ? onVoiceToggle : undefined}
+                    voiceRecording={voiceRecording}
+                    onVoiceRecord={onVoiceRecord}
+                    voicePlaying={voicePlaying}
                 />
             </div>
 
