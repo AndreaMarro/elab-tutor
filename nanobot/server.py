@@ -1867,13 +1867,13 @@ async def call_single_provider(messages: list, prov: dict, max_tokens: int = MAX
 # Dynamic token limits by question type (faster responses for simple questions)
 TOKENS_BY_QTYPE = {
     "navigation": 400,   # Short, structured
-    "factual": 600,      # Definitions, explanations
-    "game": 500,         # Game info
-    "circuit": 1200,     # Detailed circuit analysis
-    "code": 1200,        # Code explanations/fixes
-    "teacher": 1000,     # Pedagogical advice
-    "creative": 1000,    # Project ideas
-    "general": 800,      # Default
+    "factual": 800,      # Definitions, explanations
+    "game": 600,         # Game info
+    "circuit": 1500,     # Detailed circuit analysis
+    "code": 1500,        # Code explanations/fixes
+    "teacher": 1200,     # Pedagogical advice
+    "creative": 1200,    # Project ideas
+    "general": 1200,     # Default — raised from 800 (context-aware answers need more room)
 }
 
 
