@@ -111,7 +111,12 @@ class TemplateSection(Section):
         }
 
     def generate(self, target_count: int) -> list[dict]:
-        """Generate up to target_count examples with corruption variants."""
+        """Generate up to target_count examples with corruption variants.
+
+        Uses progressive corruption: starts with config-level corruption,
+        escalates aggressiveness every 500 failed attempts to maximize
+        unique output diversity.
+        """
         # Phase 1: expand all templates combinatorially
         base_examples = []
         for tmpl in self.templates:
@@ -122,18 +127,40 @@ class TemplateSection(Section):
 
         results = list(base_examples)
 
-        # Phase 2: fill to target via repetition + corruption
-        while len(results) < target_count:
+        # Track seen inputs to avoid intra-section duplicates
+        seen_inputs = {ex["_clean_input"] for ex in results}
+
+        # Phase 2: fill to target via corruption with progressive escalation
+        max_attempts = target_count * 5
+        attempts = 0
+        level = 1  # escalation level
+
+        while len(results) < target_count and attempts < max_attempts:
             ex = self.cp.rng.choice(base_examples)
-            corrupted_input = self.cp.apply_config(ex["_clean_input"], self.corruptions)
-            new_ex = {
-                "messages": [
-                    ex["messages"][0],  # system
-                    {"role": "user", "content": corrupted_input},
-                    ex["messages"][2],  # assistant (same output)
-                ],
-                "_clean_input": ex["_clean_input"],
-            }
-            results.append(new_ex)
+            clean = ex["_clean_input"]
+
+            # Apply config-level corruption first
+            corrupted = self.cp.apply_config(clean, self.corruptions)
+
+            # Escalate: apply extra random corruptions at higher levels
+            if level > 1:
+                corrupted = self.cp.apply_random(corrupted, level=min(level, 4))
+
+            if corrupted not in seen_inputs:
+                seen_inputs.add(corrupted)
+                new_ex = {
+                    "messages": [
+                        ex["messages"][0],  # system
+                        {"role": "user", "content": corrupted},
+                        ex["messages"][2],  # assistant (same output)
+                    ],
+                    "_clean_input": clean,
+                }
+                results.append(new_ex)
+
+            attempts += 1
+            # Every 500 failed attempts, escalate corruption aggressiveness
+            if attempts % 500 == 0:
+                level += 1
 
         return results[:target_count]

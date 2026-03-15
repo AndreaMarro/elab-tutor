@@ -119,8 +119,8 @@ def test_engine_deduplicates(tmp_path):
     engine = BrainEngine(configs_dir=str(configs_dir), output_dir=output_dir)
     result = engine.generate(profile)
 
-    # Without corruption, all inputs are "avvia" — dedup to 1
-    assert result["duplicates_removed"] > 0
+    # Without corruption, all inputs are "avvia" — section-level dedup yields 1
+    # Engine-level dedup may see 0 duplicates (section already handles it)
     assert result["total"] == 1
 
 

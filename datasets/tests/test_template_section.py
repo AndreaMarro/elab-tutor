@@ -147,5 +147,6 @@ corruptions: {}
     cp = CorruptionPipeline(seed=42)
     section = TemplateSection(config, cp)
     examples = section.generate(target_count=5)
-    assert len(examples) == 5
+    # With no corruption, only 1 unique output is possible (section-level dedup)
+    assert len(examples) == 1
     assert examples[0]["messages"][1]["content"] == "avvia"

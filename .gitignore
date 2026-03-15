@@ -9,6 +9,9 @@ node_modules/
 dist/
 build/
 
+# Dataset output (regenerable)
+datasets/output/
+
 # AI model files (2.3 GB+)
 models/*.gguf
 models/*.safetensors

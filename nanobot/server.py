@@ -18,6 +18,7 @@ import threading
 import pathlib
 import yaml
 import memory as galileo_memory
+from brain import get_brain
 import httpx
 import io
 import tempfile
@@ -2229,6 +2230,11 @@ async def route_to_specialist(message: str, session_id: str = "", experiment_id:
     intent = classify_intent(message, has_images=has_images)
     print(f"[UNLIM] Intent: {intent} (images={has_images})")
 
+    # BRAIN SHADOW MODE: run local Brain in parallel (non-blocking, fire-and-forget)
+    brain = get_brain()
+    if brain.mode == "shadow" and not has_images:
+        asyncio.create_task(brain.shadow_classify(message, intent))
+
     # FASE 2: ARRICCHIRE — build specialist context
     enriched_context = build_specialist_context(intent, session_id, experiment_id, circuit_context)
 
@@ -2458,6 +2464,15 @@ async def health():
         "reasoner": REASONER_PROVIDER["model"] if REASONER_PROVIDER else None,
         "v5_routing": True,
     }
+
+
+@app.get("/brain-stats")
+async def brain_stats():
+    """Get Brain shadow mode comparison statistics."""
+    brain = get_brain()
+    stats = brain.get_shadow_stats()
+    stats["available"] = await brain.is_available()
+    return stats
 
 
 @app.get("/debug-vision")
