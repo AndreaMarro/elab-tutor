@@ -3096,12 +3096,1595 @@ def gen_layer_direct_action(n):
 
 
 def gen_layer_context_aware(n):
-    """Layer 3: Esempi context-aware.
+    """Layer 3: Esempi context-aware (~3000).
     Il contesto (tab, esperimento, stato sim, editor mode) influenza il routing.
-    Es: "compila" su tab canvas → tutor, "compila" su tab editor → action.
+    Stessa frase -> output diverso in base al contesto del simulatore.
+    7 sub-generators:
+      1. disambiguation (600)   — same phrase, different result based on context
+      2. multi_action (500)     — multiple actions in one sentence
+      3. conditional (400)      — response changes based on circuit state
+      4. experiment_aware (500) — navigation based on current experiment
+      5. step_aware (300)       — passo passo context
+      6. editor_aware (300)     — editor mode affects response
+      7. component_state (400)  — referring to components by description
     """
-    # TODO: Task 4 — implementare
-    return []
+
+    # ================================================================
+    # Helper: component ID generator
+    # ================================================================
+    def _comp_id(comp_type, index=1):
+        """Generate component ID like 'led1', 'resistor2', etc."""
+        return comp_type.replace("-", "") + str(index)
+
+    def _comp_alias(comp_type):
+        """Get a random alias for a component type."""
+        if comp_type in COMPONENT_ALIASES:
+            return random.choice(COMPONENT_ALIASES[comp_type])
+        return comp_type
+
+    # ================================================================
+    # 1. CONTEXT DISAMBIGUATION (600)
+    # ================================================================
+    def _context_disambiguation(n_target=600):
+        """Same phrase, different result based on context."""
+        results = []
+
+        # --- "compilalo" / "compila" variants ---
+        COMPILE_PHRASES = [
+            "compilalo", "compila", "compila il codice", "build",
+            "verifica il codice", "fai il build", "lancia la compilazione",
+            "prova a compilare", "controlla il codice", "compila tutto",
+        ]
+
+        # compile + arduino editor + code present
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(COMPILE_PHRASES)))
+            ctx = random_context_v6(tab="editor", editor_mode="arduino", code_present=True)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:compile]"],
+                needs_llm=False,
+                response=random.choice(["Compilazione Arduino avviata.", "Compilo il codice Arduino...", "Build Arduino in corso!", "Verifico il codice Arduino."]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # compile + scratch editor + code present
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(COMPILE_PHRASES)))
+            ctx = random_context_v6(tab="editor", editor_mode="scratch", code_present=True)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:compile]"],
+                needs_llm=False,
+                response=random.choice(["Compilazione Scratch avviata!", "Compilo i blocchi Scratch...", "Build dei blocchi in corso!", "Verifico il programma Scratch."]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # compile + no code present
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(COMPILE_PHRASES)))
+            ctx = random_context_v6(tab="editor", code_present=False)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice(["Non c'e' codice da compilare. Apri l'editor e scrivi qualcosa prima!", "L'editor e' vuoto! Scrivi del codice prima di compilare.", "Prima devi scrivere il codice, poi posso compilarlo!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "avvia" / "play" variants ---
+        PLAY_PHRASES = [
+            "avvia", "avvialo", "play", "vai", "fai partire", "start",
+            "metti in moto", "accendi", "lancia", "fallo andare",
+            "avvia la simulazione", "premi play",
+        ]
+
+        # avvia + already running
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(PLAY_PHRASES)))
+            ctx = random_context_v6(sim_state="running")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice(["La simulazione e' gia' in corso!", "Sta gia' andando!", "E' gia' avviata! Guarda la breadboard.", "Play gia' attivo!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # avvia + stopped
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(PLAY_PHRASES)))
+            ctx = random_context_v6(sim_state="stopped")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:play]"],
+                needs_llm=False,
+                response=random.choice(ACTIONS["play"]["responses"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # avvia + paused (resume)
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(PLAY_PHRASES)))
+            ctx = random_context_v6(sim_state="paused")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:play]"],
+                needs_llm=False,
+                response=random.choice(["Riprendo la simulazione! ▶", "Si riparte! ▶", "Tolgo la pausa, via! ▶"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "pausa" / "ferma" variants ---
+        PAUSE_PHRASES = [
+            "pausa", "metti in pausa", "ferma", "stop", "fermalo",
+            "blocca", "fermati", "stoppa", "basta",
+        ]
+
+        # pausa + already paused
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(PAUSE_PHRASES)))
+            ctx = random_context_v6(sim_state="paused")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice(["La simulazione e' gia' in pausa.", "E' gia' ferma!", "Siamo gia' in pausa.", "E' tutto fermo gia'."]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # pausa + running
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(PAUSE_PHRASES)))
+            ctx = random_context_v6(sim_state="running")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:pause]"],
+                needs_llm=False,
+                response=random.choice(ACTIONS["pause"]["responses"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # pausa + stopped (nothing to pause)
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(PAUSE_PHRASES)))
+            ctx = random_context_v6(sim_state="stopped")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice(["La simulazione non e' attiva, niente da fermare.", "Non c'e' nulla in esecuzione.", "La simulazione non e' avviata!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "mostrami il codice" / "vedi il codice" ---
+        CODE_VIEW_PHRASES = [
+            "mostrami il codice", "fammi vedere il codice", "apri l'editor",
+            "voglio vedere il codice", "dove il codice?", "il codice?",
+            "apri il codice", "editor", "mostra il programma",
+        ]
+
+        # mostra codice + already on editor tab
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(CODE_VIEW_PHRASES)))
+            ctx = random_context_v6(tab="editor")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice(["Il codice e' gia' visibile!", "Sei gia' sul tab editor!", "L'editor e' gia' aperto!", "Guarda, il codice e' gia' qui!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # mostra codice + on simulator tab
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(CODE_VIEW_PHRASES)))
+            other_tab = random.choice(["simulator", "canvas", "manual", "video"])
+            ctx = random_context_v6(tab=other_tab)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=["[AZIONE:opentab:editor]"],
+                needs_llm=False,
+                response=random.choice(["Apro il tab editor!", "Ecco il codice!", "Ti porto all'editor."]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "mostra la breadboard" / "voglio il simulatore" ---
+        SIM_VIEW_PHRASES = [
+            "mostra la breadboard", "torna al simulatore", "voglio il simulatore",
+            "fammi vedere il circuito", "apri il simulatore", "torna al circuito",
+            "mostrami la breadboard", "vai al simulatore",
+        ]
+
+        # mostra breadboard + already on simulator
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(SIM_VIEW_PHRASES)))
+            ctx = random_context_v6(tab="simulator")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice(["Sei gia' sul simulatore!", "La breadboard e' gia' davanti a te!", "Ci sei gia'!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # mostra breadboard + on other tab
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(SIM_VIEW_PHRASES)))
+            other_tab = random.choice(["editor", "canvas", "manual", "video"])
+            ctx = random_context_v6(tab=other_tab)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=["[AZIONE:opentab:simulator]"],
+                needs_llm=False,
+                response=random.choice(["Ecco il simulatore!", "Ti porto alla breadboard!", "Apro il simulatore!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "reset" variants ---
+        RESET_PHRASES = [
+            "resetta", "reset", "ricomincia", "ripristina", "torna all'inizio",
+            "pulisci tutto", "cancella tutto", "svuota",
+        ]
+
+        # reset + simulation running
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(RESET_PHRASES)))
+            ctx = random_context_v6(sim_state="running")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:pause]", "[AZIONE:clearall]"],
+                needs_llm=False,
+                response=random.choice(["Fermo la simulazione e pulisco tutto!", "Stop e reset! Breadboard svuotata.", "Prima fermo, poi pulisco tutto!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # reset + stopped
+        for _ in range(n_target // 18):
+            phrase = augment_phrase(apply_typo(random.choice(RESET_PHRASES)))
+            ctx = random_context_v6(sim_state="stopped")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:clearall]"],
+                needs_llm=False,
+                response=random.choice(ACTIONS["clearall"]["responses"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        return results
+
+    # ================================================================
+    # 2. CONTEXT MULTI-ACTION (500)
+    # ================================================================
+    def _context_multi_action(n_target=500):
+        """Multiple actions in one sentence."""
+        results = []
+
+        # Template groups: (phrases, actions, intent, entities_fn, response, needs_llm)
+        MULTI_ACTION_TEMPLATES = [
+            # place + wire + play
+            {
+                "phrases": [
+                    "metti un {c1}, collegalo e avvia",
+                    "aggiungi un {c1}, collega i fili e fai partire",
+                    "piazza un {c1} poi avvia la simulazione",
+                    "metti {c1} e avvia tutto",
+                ],
+                "actions_fn": lambda c1: ["[INTENT:place_and_wire]", "[AZIONE:play]"],
+                "intent": "circuit",
+                "entities_fn": lambda c1: [c1],
+                "responses": [
+                    "Piazzo {c1_alias}, collego e avvio! ▶",
+                    "Ecco {c1_alias} sulla breadboard, collegato e simulazione avviata! ▶",
+                ],
+                "needs_llm": False,
+            },
+            # loadexp + compile
+            {
+                "phrases": [
+                    "carica l'esperimento {exp_name} e compila il codice",
+                    "apri {exp_name} e fai il build",
+                    "metti {exp_name} e compila",
+                    "carica {exp_name} poi compila",
+                ],
+                "actions_fn": lambda exp_id: [f"[AZIONE:loadexp:{exp_id}]", "[AZIONE:compile]"],
+                "intent": "navigation",
+                "entities_fn": lambda exp_id: [exp_id],
+                "responses": [
+                    "Carico l'esperimento e compilo!",
+                    "Esperimento caricato e compilazione avviata!",
+                    "Ecco l'esperimento! Ora compilo...",
+                ],
+                "needs_llm": False,
+            },
+            # clearall + place
+            {
+                "phrases": [
+                    "resetta tutto e aggiungi un {c1}",
+                    "cancella tutto, poi metti un {c1}",
+                    "pulisci e piazza un {c1}",
+                    "svuota la breadboard e metti {c1}",
+                    "via tutto e aggiungi {c1}",
+                ],
+                "actions_fn": lambda c1: ["[AZIONE:clearall]", "[INTENT:place_and_wire]"],
+                "intent": "circuit",
+                "entities_fn": lambda c1: [c1],
+                "responses": [
+                    "Pulisco tutto e piazzo {c1_alias}!",
+                    "Breadboard svuotata, ecco {c1_alias}!",
+                    "Via tutto! Ecco {c1_alias} nuovo di zecca!",
+                ],
+                "needs_llm": False,
+            },
+            # switch editor + open editor + compile
+            {
+                "phrases": [
+                    "apri Scratch, fai il programma e compila",
+                    "passa a Scratch e compila",
+                    "vai su Scratch e fai il build",
+                    "apri l'editor Scratch e compila il codice",
+                    "passa ai blocchi e compila",
+                ],
+                "actions_fn": lambda: ["[AZIONE:switcheditor:scratch]", "[AZIONE:openeditor]", "[AZIONE:compile]"],
+                "intent": "action",
+                "entities_fn": lambda: [],
+                "responses": [
+                    "Passo a Scratch, apro l'editor e compilo!",
+                    "Editor Scratch aperto e compilazione avviata!",
+                    "Blocchi Scratch attivi, compilo!",
+                ],
+                "needs_llm": False,
+            },
+            # clearall + loadexp
+            {
+                "phrases": [
+                    "cancella tutto e ricomincia dall'esperimento {exp_name}",
+                    "resetta e carica {exp_name}",
+                    "pulisci tutto e apri {exp_name}",
+                    "via tutto, voglio ricominciare con {exp_name}",
+                ],
+                "actions_fn": lambda exp_id: ["[AZIONE:clearall]", f"[AZIONE:loadexp:{exp_id}]"],
+                "intent": "navigation",
+                "entities_fn": lambda exp_id: [exp_id],
+                "responses": [
+                    "Pulisco e carico l'esperimento!",
+                    "Tutto resettato, ecco l'esperimento!",
+                    "Reset e via con l'esperimento nuovo!",
+                ],
+                "needs_llm": False,
+            },
+            # place two components
+            {
+                "phrases": [
+                    "metti un {c1} e un {c2}",
+                    "aggiungi {c1} e {c2} al circuito",
+                    "piazza un {c1} e un {c2}",
+                    "mi servono un {c1} e un {c2}",
+                    "metti {c1} con {c2}",
+                ],
+                "actions_fn": lambda c1, c2: ["[INTENT:place_and_wire]"],
+                "intent": "circuit",
+                "entities_fn": lambda c1, c2: [c1, c2],
+                "responses": [
+                    "Piazzo {c1_alias} e {c2_alias}!",
+                    "Ecco {c1_alias} e {c2_alias} sulla breadboard!",
+                    "Aggiunti {c1_alias} e {c2_alias}! ✅",
+                ],
+                "needs_llm": False,
+            },
+            # play + compile (avvia e compila)
+            {
+                "phrases": [
+                    "compila e avvia",
+                    "fai il build e poi play",
+                    "compila il codice e avvia la simulazione",
+                    "build e start",
+                    "verifica e avvia",
+                ],
+                "actions_fn": lambda: ["[AZIONE:compile]", "[AZIONE:play]"],
+                "intent": "action",
+                "entities_fn": lambda: [],
+                "responses": [
+                    "Compilo e avvio! ▶",
+                    "Build e play! ▶",
+                    "Compilazione avviata, poi si parte!",
+                ],
+                "needs_llm": False,
+            },
+            # pause + reset
+            {
+                "phrases": [
+                    "ferma e resetta",
+                    "stop e ricomincia",
+                    "pausa e poi resetta tutto",
+                    "fermati e riparti dall'inizio",
+                    "blocca tutto e resetta",
+                ],
+                "actions_fn": lambda: ["[AZIONE:pause]", "[AZIONE:reset]"],
+                "intent": "action",
+                "entities_fn": lambda: [],
+                "responses": [
+                    "Fermo e resetto!",
+                    "Stop e reset!",
+                    "Simulazione fermata e ripristinata.",
+                ],
+                "needs_llm": False,
+            },
+            # open tab + do something
+            {
+                "phrases": [
+                    "vai al manuale e poi torna al simulatore",
+                    "apri il video e poi torna",
+                    "mostrami il manuale e poi il simulatore",
+                ],
+                "actions_fn": lambda tab1, tab2: [f"[AZIONE:opentab:{tab1}]", f"[AZIONE:opentab:{tab2}]"],
+                "intent": "navigation",
+                "entities_fn": lambda tab1, tab2: [],
+                "responses": [
+                    "Apro e poi torno!",
+                    "Ecco, ti porto la'!",
+                ],
+                "needs_llm": False,
+                "param_type": "tabs",
+            },
+            # undo multiple times
+            {
+                "phrases": [
+                    "annulla le ultime due azioni",
+                    "fai due undo",
+                    "annulla due volte",
+                    "torna indietro di due passi",
+                ],
+                "actions_fn": lambda: ["[AZIONE:undo]", "[AZIONE:undo]"],
+                "intent": "action",
+                "entities_fn": lambda: [],
+                "responses": [
+                    "Due azioni annullate!",
+                    "Undo doppio! Torno indietro di due passi.",
+                    "Annullate le ultime due azioni!",
+                ],
+                "needs_llm": False,
+            },
+        ]
+
+        per_template = n_target // len(MULTI_ACTION_TEMPLATES)
+        seen = set()
+
+        for tmpl in MULTI_ACTION_TEMPLATES:
+            for _ in range(per_template):
+                phrases = tmpl["phrases"]
+                phrase_tmpl = random.choice(phrases)
+
+                # Determine what parameters this template needs
+                param_type = tmpl.get("param_type", None)
+                if param_type == "tabs":
+                    tab1 = random.choice(["manual", "video", "canvas"])
+                    tab2 = "simulator"
+                    phrase = phrase_tmpl
+                    actions = tmpl["actions_fn"](tab1, tab2)
+                    entities = tmpl["entities_fn"](tab1, tab2)
+                    response = random.choice(tmpl["responses"])
+                elif "{c1}" in phrase_tmpl and "{c2}" in phrase_tmpl:
+                    c1 = random.choice(PLACEABLE)
+                    c2 = random.choice([p for p in PLACEABLE if p != c1])
+                    c1_alias = _comp_alias(c1)
+                    c2_alias = _comp_alias(c2)
+                    phrase = phrase_tmpl.format(c1=c1_alias, c2=c2_alias)
+                    actions = tmpl["actions_fn"](c1, c2)
+                    entities = tmpl["entities_fn"](c1, c2)
+                    resp_tmpl = random.choice(tmpl["responses"])
+                    response = resp_tmpl.format(c1_alias=c1_alias, c2_alias=c2_alias) if "{c1_alias}" in resp_tmpl else resp_tmpl
+                elif "{c1}" in phrase_tmpl:
+                    c1 = random.choice(PLACEABLE)
+                    c1_alias = _comp_alias(c1)
+                    phrase = phrase_tmpl.format(c1=c1_alias)
+                    actions = tmpl["actions_fn"](c1)
+                    entities = tmpl["entities_fn"](c1)
+                    resp_tmpl = random.choice(tmpl["responses"])
+                    response = resp_tmpl.format(c1_alias=c1_alias) if "{c1_alias}" in resp_tmpl else resp_tmpl
+                elif "{exp_name}" in phrase_tmpl:
+                    exp_id = random.choice(EXPERIMENTS)
+                    exp_name = EXP_NAMES.get(exp_id, exp_id)
+                    phrase = phrase_tmpl.format(exp_name=exp_name)
+                    actions = tmpl["actions_fn"](exp_id)
+                    entities = tmpl["entities_fn"](exp_id)
+                    response = random.choice(tmpl["responses"])
+                else:
+                    phrase = phrase_tmpl
+                    actions = tmpl["actions_fn"]()
+                    entities = tmpl["entities_fn"]()
+                    response = random.choice(tmpl["responses"])
+
+                phrase = augment_phrase(apply_typo(phrase))
+                key = phrase.strip().lower()
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                ctx = random_context_v6()
+                results.append(make_example(
+                    user_msg=phrase,
+                    intent=tmpl["intent"],
+                    entities=entities,
+                    actions=actions,
+                    needs_llm=tmpl["needs_llm"],
+                    response=response,
+                    llm_hint=None,
+                    ctx=ctx,
+                ))
+
+        return results
+
+    # ================================================================
+    # 3. CONTEXT CONDITIONAL (400)
+    # ================================================================
+    def _context_conditional(n_target=400):
+        """Response changes based on circuit state (componenti field)."""
+        results = []
+        per_case = n_target // 10
+
+        # --- "il LED non si accende" ---
+        LED_PROBLEM_PHRASES = [
+            "il LED non si accende", "la lucina non funziona", "il led e' spento",
+            "perche' il LED non si accende?", "il LED non va", "la luce non si accende",
+            "non si illumina il LED", "il mio LED non fa luce",
+        ]
+
+        # LED present + resistor = needs LLM to diagnose
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(LED_PROBLEM_PHRASES)))
+            comps = ["led1", "resistor1"]
+            if random.random() < 0.4:
+                comps.append(random.choice(["pushbutton1", "buzzerPiezo1", "resistor2"]))
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="tutor",
+                entities=["led1"],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="L'utente ha un LED e un resistore sul circuito ma il LED non si accende. Controlla: polarita' LED (anodo/catodo), valore resistenza, connessioni, alimentazione.",
+                ctx=ctx,
+            ))
+
+        # LED NOT present = tell them to add one
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(LED_PROBLEM_PHRASES)))
+            comps = []
+            if random.random() < 0.3:
+                comps = ["resistor1"]
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=["led"],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Non c'e' nessun LED sul circuito! Vuoi che ne aggiunga uno?",
+                    "Non vedo nessun LED sulla breadboard. Devo aggiungerne uno?",
+                    "Il LED non c'e'! Prima devi piazzarlo. Lo aggiungo io?",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "togli il resistore" ---
+        REMOVE_PHRASES = [
+            "togli il resistore", "rimuovi la resistenza", "elimina il resistore",
+            "via il resistore", "togli la resistenza", "leva il resistore",
+        ]
+
+        # single resistor = deterministic remove
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(REMOVE_PHRASES)))
+            comps = ["led1", "resistor1"]
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=["resistor1"],
+                actions=["[AZIONE:removecomponent:resistor1]"],
+                needs_llm=False,
+                response=random.choice(["Resistore rimosso!", "Tolto il resistore!", "Via il resistore! ✅"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # multiple resistors = ambiguous, needs LLM
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(REMOVE_PHRASES)))
+            comps = ["led1", "resistor1", "resistor2"]
+            if random.random() < 0.3:
+                comps.append("resistor3")
+            ctx = random_context_v6(comps=comps)
+            n_res = len([c for c in comps if c.startswith("resistor")])
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=["resistor"],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Ci sono {n_res} resistori sul circuito ({', '.join(c for c in comps if c.startswith('resistor'))}). Chiedi quale vuole rimuovere.",
+                ctx=ctx,
+            ))
+
+        # --- "collega il buzzer" ---
+        CONNECT_PHRASES = [
+            "collega il buzzer", "collegami il cicalino", "connetti il buzzer",
+            "fai i fili del buzzer", "cabla il buzzer", "collega il cicalino",
+        ]
+
+        # buzzer present
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(CONNECT_PHRASES)))
+            comps = ["buzzerPiezo1", "led1"]
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=["buzzerPiezo1"],
+                actions=["[INTENT:place_and_wire]"],
+                needs_llm=False,
+                response=random.choice(["Collego il buzzer!", "Fili del buzzer collegati! ✅", "Buzzer connesso!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # buzzer NOT present
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(CONNECT_PHRASES)))
+            comps = ["led1", "resistor1"]
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=["buzzer-piezo"],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Prima devi aggiungere un buzzer! Vuoi che lo piazzi io?",
+                    "Non c'e' nessun buzzer sul circuito. Lo aggiungo?",
+                    "Il buzzer non c'e'! Devo metterlo prima di collegarlo.",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "diagnosi" with/without components ---
+        DIAG_PHRASES = [
+            "controlla il circuito", "c'e' qualche errore?", "diagnosi",
+            "analizza il circuito", "trova il problema", "cosa c'e' che non va?",
+        ]
+
+        # circuit has components
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(DIAG_PHRASES)))
+            n = random.randint(2, 5)
+            comps = []
+            for i in range(n):
+                c = random.choice(PLACEABLE)
+                comps.append(_comp_id(c, i + 1))
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[],
+                actions=["[AZIONE:diagnose]"],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Diagnostica circuito con {len(comps)} componenti: {', '.join(comps)}. Controlla connessioni, polarita', alimentazione.",
+                ctx=ctx,
+            ))
+
+        # circuit is empty
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(DIAG_PHRASES)))
+            ctx = random_context_v6(comps=[])
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "La breadboard e' vuota! Aggiungi dei componenti prima di fare una diagnosi.",
+                    "Non c'e' niente da controllare, il circuito e' vuoto!",
+                    "Devi prima costruire un circuito! Inizia aggiungendo qualche componente.",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        return results
+
+    # ================================================================
+    # 4. CONTEXT EXPERIMENT-AWARE (500)
+    # ================================================================
+    def _context_experiment_aware(n_target=500):
+        """Navigation based on current experiment."""
+        results = []
+        per_case = n_target // 8
+
+        # --- "carica il prossimo esperimento" ---
+        NEXT_EXP_PHRASES = [
+            "carica il prossimo esperimento", "prossimo esperimento", "avanti",
+            "voglio il prossimo", "vai avanti", "esperimento successivo",
+            "carica il successivo", "andiamo al prossimo", "next",
+        ]
+
+        for _ in range(per_case):
+            idx = random.randint(0, len(EXPERIMENTS) - 2)  # not last
+            current = EXPERIMENTS[idx]
+            next_exp = EXPERIMENTS[idx + 1]
+            phrase = augment_phrase(apply_typo(random.choice(NEXT_EXP_PHRASES)))
+            ctx = random_context_v6(exp=current)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[next_exp],
+                actions=[f"[AZIONE:loadexp:{next_exp}]"],
+                needs_llm=False,
+                response=random.choice([
+                    f"Carico '{EXP_NAMES.get(next_exp, next_exp)}'!",
+                    f"Ecco il prossimo: {EXP_NAMES.get(next_exp, next_exp)}!",
+                    f"Avanti con {EXP_NAMES.get(next_exp, next_exp)}!",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- next experiment when on LAST experiment ---
+        LAST_PHRASES = [
+            "carica il prossimo esperimento", "prossimo", "avanti",
+            "ce ne sono altri?", "cosa c'e' dopo?",
+        ]
+
+        for _ in range(per_case):
+            # Pick last experiment of a volume
+            last_v1 = "v1-cap14-esp3"
+            last_v2 = "v2-cap10-esp1"
+            last_v3 = "v3-cap13-esp1"
+            current = random.choice([last_v1, last_v2, last_v3])
+            vol = int(current[1])
+            phrase = augment_phrase(apply_typo(random.choice(LAST_PHRASES)))
+            ctx = random_context_v6(exp=current, vol=vol)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    f"Hai completato tutti gli esperimenti del Volume {vol}! Complimenti! 🎉",
+                    f"Questo e' l'ultimo esperimento del Volume {vol}! Bravo/a!",
+                    f"Non ci sono altri esperimenti nel Volume {vol}. Vuoi provare un altro volume?",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "torna a quello di prima" ---
+        PREV_EXP_PHRASES = [
+            "torna a quello di prima", "esperimento precedente", "indietro",
+            "voglio il precedente", "torna indietro", "ricarica quello prima",
+            "quello di prima", "l'esperimento prima",
+        ]
+
+        for _ in range(per_case):
+            idx = random.randint(1, len(EXPERIMENTS) - 1)  # not first
+            current = EXPERIMENTS[idx]
+            prev_exp = EXPERIMENTS[idx - 1]
+            phrase = augment_phrase(apply_typo(random.choice(PREV_EXP_PHRASES)))
+            ctx = random_context_v6(exp=current)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[prev_exp],
+                actions=[f"[AZIONE:loadexp:{prev_exp}]"],
+                needs_llm=False,
+                response=random.choice([
+                    f"Torno a '{EXP_NAMES.get(prev_exp, prev_exp)}'!",
+                    f"Ecco l'esperimento precedente: {EXP_NAMES.get(prev_exp, prev_exp)}!",
+                    f"Ricarico {EXP_NAMES.get(prev_exp, prev_exp)}!",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- previous when on FIRST experiment ---
+        for _ in range(per_case):
+            first_exps = ["v1-cap1-esp1", "v2-cap1-esp1", "v3-cap1-esp1"]
+            current = random.choice(first_exps)
+            vol = int(current[1])
+            phrase = augment_phrase(apply_typo(random.choice(PREV_EXP_PHRASES)))
+            ctx = random_context_v6(exp=current, vol=vol)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Sei gia' al primo esperimento! Non c'e' niente prima.",
+                    f"Questo e' il primo esperimento del Volume {vol}!",
+                    "Non si puo' andare piu' indietro, sei all'inizio!",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "ricomincia questo esperimento" ---
+        RESTART_PHRASES = [
+            "ricomincia questo esperimento", "ricominciamo", "riparti dall'inizio",
+            "ricarica questo esperimento", "voglio ricominciare", "restart",
+            "ripristina l'esperimento", "torna all'inizio di questo",
+        ]
+
+        for _ in range(per_case):
+            exp = random.choice(EXPERIMENTS)
+            phrase = augment_phrase(apply_typo(random.choice(RESTART_PHRASES)))
+            ctx = random_context_v6(exp=exp)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[exp],
+                actions=["[AZIONE:reset]"],
+                needs_llm=False,
+                response=random.choice(["Esperimento ripristinato!", "Ricomincio da capo!", "Reset! Ricominciamo!", "Tutto dall'inizio!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "che esperimento e' questo?" ---
+        WHAT_EXP_PHRASES = [
+            "che esperimento e' questo?", "che esperimento sto facendo?",
+            "come si chiama questo esperimento?", "quale esperimento e'?",
+            "dimmi il nome dell'esperimento", "che cosa stiamo facendo?",
+        ]
+
+        for _ in range(per_case):
+            exp = random.choice(EXPERIMENTS)
+            name = EXP_NAMES.get(exp, exp)
+            vol = int(exp[1])
+            phrase = augment_phrase(apply_typo(random.choice(WHAT_EXP_PHRASES)))
+            ctx = random_context_v6(exp=exp, vol=vol)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[exp],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    f"Stai facendo '{name}' del Volume {vol}!",
+                    f"L'esperimento corrente e' '{name}' (Volume {vol}).",
+                    f"Questo e' '{name}', Volume {vol}!",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "voglio qualcosa di piu' difficile" ---
+        HARDER_PHRASES = [
+            "voglio qualcosa di piu' difficile", "troppo facile!",
+            "c'e' qualcosa di piu' avanzato?", "voglio una sfida",
+            "questo e' troppo semplice", "qualcosa di piu' impegnativo",
+        ]
+
+        for _ in range(per_case):
+            exp = random.choice(EXPERIMENTS)
+            vol = int(exp[1])
+            phrase = augment_phrase(apply_typo(random.choice(HARDER_PHRASES)))
+            ctx = random_context_v6(exp=exp, vol=vol)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Lo studente vuole un esperimento piu' difficile. Attualmente su {EXP_NAMES.get(exp, exp)} (Volume {vol}). Suggerisci esperimenti avanzati o il volume successivo.",
+                ctx=ctx,
+            ))
+
+        # --- no experiment loaded ---
+        NO_EXP_PHRASES = [
+            "che esperimento e' questo?", "quale esperimento ho caricato?",
+            "ricomincia l'esperimento",
+        ]
+
+        for _ in range(per_case // 2):
+            phrase = augment_phrase(apply_typo(random.choice(NO_EXP_PHRASES)))
+            ctx = random_context_v6(exp=None)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Non c'e' nessun esperimento caricato! Vuoi sceglierne uno?",
+                    "Non hai caricato nessun esperimento. Quale vuoi fare?",
+                    "Nessun esperimento attivo. Dimmi quale vuoi caricare!",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        return results
+
+    # ================================================================
+    # 5. CONTEXT STEP-AWARE (300)
+    # ================================================================
+    def _context_step_aware(n_target=300):
+        """Passo passo context."""
+        results = []
+        per_case = n_target // 8
+
+        # --- "cosa devo fare?" mid-build ---
+        WHAT_DO_PHRASES = [
+            "cosa devo fare?", "e adesso?", "che devo fare?",
+            "qual e' il prossimo passo?", "aiutami", "cosa faccio ora?",
+            "non so cosa fare", "sono bloccato",
+        ]
+
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            current = random.randint(2, total - 1)
+            step_str = f"{current}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(WHAT_DO_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=["[AZIONE:nextstep]"],
+                needs_llm=False,
+                response=f"Sei al passo {current} di {total}. Premi 'Avanti' per continuare!",
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "ho finito" at last step ---
+        DONE_PHRASES = [
+            "ho finito", "fatto!", "finito!", "completato", "ce l'ho fatta",
+            "tutto fatto", "ecco finito", "ho completato tutto",
+        ]
+
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            step_str = f"{total}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(DONE_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Complimenti! Hai completato il montaggio! 🎉",
+                    "Bravissimo/a! Tutti i passi completati! 🎉",
+                    f"Fantastico! {total} passi completati, il circuito e' pronto! 🎉",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "avanti" mid-build ---
+        FWD_PHRASES = [
+            "avanti", "prossimo passo", "vai avanti", "next", "continua",
+            "passo successivo", "step successivo",
+        ]
+
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            current = random.randint(1, total - 1)
+            step_str = f"{current}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(FWD_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=["[AZIONE:nextstep]"],
+                needs_llm=False,
+                response=random.choice(ACTIONS["nextstep"]["responses"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "indietro" at first step ---
+        BACK_PHRASES = [
+            "indietro", "torna indietro", "passo precedente", "back",
+            "il passo prima", "step precedente",
+        ]
+
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            step_str = f"1/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(BACK_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Sei gia' al primo passo!",
+                    "Non si puo' andare piu' indietro, sei all'inizio!",
+                    "Questo e' il passo 1, non c'e' niente prima!",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "indietro" mid-build ---
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            current = random.randint(2, total)
+            step_str = f"{current}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(BACK_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=["[AZIONE:prevstep]"],
+                needs_llm=False,
+                response=random.choice(ACTIONS["prevstep"]["responses"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "quanti passi mancano?" ---
+        HOW_MANY_PHRASES = [
+            "quanti passi mancano?", "quanto manca?", "a che punto siamo?",
+            "manca molto?", "quanti step ci sono ancora?", "quanto manca alla fine?",
+        ]
+
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            current = random.randint(1, total)
+            remaining = total - current
+            step_str = f"{current}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(HOW_MANY_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            if remaining == 0:
+                response = "Hai finito! Tutti i passi completati! 🎉"
+            elif remaining == 1:
+                response = "Manca solo 1 passo! Quasi finito!"
+            else:
+                response = random.choice([
+                    f"Mancano ancora {remaining} passi. Sei al passo {current} di {total}.",
+                    f"Sei al passo {current} di {total}, mancano {remaining} passi!",
+                    f"Ancora {remaining} passi! Ce la puoi fare!",
+                ])
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "avanti" at last step ---
+        for _ in range(per_case):
+            total = random.randint(4, 10)
+            step_str = f"{total}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(FWD_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Sei gia' all'ultimo passo! Il circuito e' completo.",
+                    "Hai gia' finito tutti i passi! Il montaggio e' completo.",
+                    "Non ci sono altri passi, hai completato il circuito! 🎉",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "ho finito" NOT at last step ---
+        for _ in range(per_case // 2):
+            total = random.randint(5, 10)
+            current = random.randint(1, total - 2)
+            remaining = total - current
+            step_str = f"{current}/{total}"
+            phrase = augment_phrase(apply_typo(random.choice(DONE_PHRASES)))
+            ctx = random_context_v6(build_mode="passopasso", step=step_str)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    f"Non ancora! Sei al passo {current} di {total}, mancano {remaining} passi.",
+                    f"Calma! Ci sono ancora {remaining} passi da fare.",
+                    f"Mancano {remaining} passi! Premi 'Avanti' per continuare.",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        return results
+
+    # ================================================================
+    # 6. CONTEXT EDITOR-AWARE (300)
+    # ================================================================
+    def _context_editor_aware(n_target=300):
+        """Editor mode affects response."""
+        results = []
+        per_case = n_target // 8
+
+        # --- "passa all'altro editor" ---
+        SWITCH_PHRASES = [
+            "passa all'altro editor", "cambia editor", "l'altro editor",
+            "switch editor", "voglio l'altro", "cambia modalita'",
+            "prova l'altro", "passami all'altro",
+        ]
+
+        # currently scratch -> switch to arduino
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(SWITCH_PHRASES)))
+            ctx = random_context_v6(editor_mode="scratch", tab="editor")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:switcheditor:arduino]"],
+                needs_llm=False,
+                response=random.choice(["Passo ad Arduino C++!", "Ecco l'editor testuale!", "Modalita' codice Arduino attiva!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # currently arduino -> switch to scratch
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(SWITCH_PHRASES)))
+            ctx = random_context_v6(editor_mode="arduino", tab="editor")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=["[AZIONE:switcheditor:scratch]"],
+                needs_llm=False,
+                response=random.choice(["Passo a Scratch! 🧩", "Ecco i blocchi!", "Modalita' Scratch attiva!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "quale editor sto usando?" ---
+        WHICH_EDITOR_PHRASES = [
+            "quale editor sto usando?", "che editor e'?", "che modalita' ho?",
+            "sono su Scratch o Arduino?", "che editor ho aperto?",
+            "in che modalita' sono?",
+        ]
+
+        # scratch
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(WHICH_EDITOR_PHRASES)))
+            ctx = random_context_v6(editor_mode="scratch")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Stai usando Scratch (blocchi). Vuoi passare ad Arduino C++?",
+                    "Sei in modalita' Scratch con i blocchi!",
+                    "Editor attuale: Scratch (programmazione a blocchi).",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # arduino
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(WHICH_EDITOR_PHRASES)))
+            ctx = random_context_v6(editor_mode="arduino")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response=random.choice([
+                    "Stai usando Arduino C++ (codice testuale). Vuoi passare a Scratch?",
+                    "Sei in modalita' Arduino, scrivi codice C++!",
+                    "Editor attuale: Arduino C++ (programmazione testuale).",
+                ]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "il codice non compila" ---
+        NO_COMPILE_PHRASES = [
+            "il codice non compila", "errore di compilazione", "non compila",
+            "c'e' un errore nel codice", "il build fallisce", "mi da errore",
+            "il programma non funziona", "errore!",
+        ]
+
+        # scratch mode
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(NO_COMPILE_PHRASES)))
+            ctx = random_context_v6(editor_mode="scratch", tab="editor", code_present=True)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="code",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Errore in modalita' Scratch. Controlla: blocchi collegati correttamente, setup/loop presenti, tipi di pin corretti, nessun blocco isolato.",
+                ctx=ctx,
+            ))
+
+        # arduino mode
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(NO_COMPILE_PHRASES)))
+            ctx = random_context_v6(editor_mode="arduino", tab="editor", code_present=True)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="code",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Errore di compilazione C++. Controlla: punto e virgola, parentesi, #include, setup()/loop() presenti, variabili dichiarate, tipi corretti.",
+                ctx=ctx,
+            ))
+
+        # --- "scrivi il codice per..." ---
+        WRITE_CODE_PHRASES = [
+            "scrivi il codice per il LED", "fammi il codice del blink",
+            "programma il buzzer", "scrivi il programma", "fai tu il codice",
+        ]
+
+        # scratch mode -> hint about blocks
+        for _ in range(per_case):
+            phrase = augment_phrase(apply_typo(random.choice(WRITE_CODE_PHRASES)))
+            ctx = random_context_v6(editor_mode="scratch", tab="editor")
+            results.append(make_example(
+                user_msg=phrase,
+                intent="code",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Lo studente e' in modalita' Scratch. Guida con i blocchi: 'Imposta Pin', 'Attendi', 'Ripeti'. Non scrivere codice C++, ma descrivi i blocchi da trascinare.",
+                ctx=ctx,
+            ))
+
+        return results
+
+    # ================================================================
+    # 7. CONTEXT COMPONENT-STATE (400)
+    # ================================================================
+    def _context_component_state(n_target=400):
+        """Referring to components by description, color, position, order."""
+        results = []
+        per_case = n_target // 8
+
+        # Color mapping for LEDs
+        LED_COLORS = ["rosso", "verde", "blu", "giallo", "bianco"]
+
+        # --- "togli quello rosso" (LED by color) ---
+        REMOVE_COLOR_PHRASES = [
+            "togli quello {color}", "rimuovi il {color}", "elimina quello {color}",
+            "via il LED {color}", "togli la lucina {color}a",
+        ]
+
+        for _ in range(per_case):
+            color1, color2 = random.sample(LED_COLORS, 2)
+            phrase_tmpl = random.choice(REMOVE_COLOR_PHRASES)
+            target_color = random.choice([color1, color2])
+            target_id = "led1" if target_color == color1 else "led2"
+            phrase = augment_phrase(apply_typo(phrase_tmpl.format(color=target_color)))
+            comps = ["led1", "led2", "resistor1"]
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[target_id],
+                actions=[f"[AZIONE:removecomponent:{target_id}]"],
+                needs_llm=False,
+                response=random.choice([f"LED {target_color} rimosso!", f"Tolto il LED {target_color}!", f"Via il {target_color}! ✅"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "sposta il secondo resistore" (by ordinal) ---
+        ORDINAL_PHRASES = [
+            "sposta il secondo {comp}", "muovi il primo {comp}", "togli il terzo {comp}",
+            "evidenzia il secondo {comp}", "seleziona il primo {comp}",
+        ]
+        ORDINALS = {"primo": 1, "secondo": 2, "terzo": 3}
+
+        for _ in range(per_case):
+            comp_type = random.choice(["resistor", "led", "capacitor", "push-button"])
+            n_comps = random.randint(2, 3)
+            comp_ids = [_comp_id(comp_type, i + 1) for i in range(n_comps)]
+            ordinal_word = random.choice(list(ORDINALS.keys()))
+            ordinal_idx = ORDINALS[ordinal_word]
+            if ordinal_idx > n_comps:
+                ordinal_word = "primo" if n_comps == 1 else "secondo"
+                ordinal_idx = min(ordinal_idx, n_comps)
+
+            target_id = comp_ids[ordinal_idx - 1]
+            comp_alias = _comp_alias(comp_type)
+            action_type = random.choice(["removecomponent", "highlight", "movecomponent"])
+
+            if action_type == "movecomponent":
+                direction = random.choice(["up", "down", "left", "right"])
+                action_tag = f"[AZIONE:movecomponent:{target_id}:{direction}]"
+                response = f"Spostato il {ordinal_word} {comp_alias}!"
+            elif action_type == "highlight":
+                action_tag = f"[AZIONE:highlight:{target_id}]"
+                response = f"Ecco il {ordinal_word} {comp_alias} evidenziato!"
+            else:
+                action_tag = f"[AZIONE:removecomponent:{target_id}]"
+                response = f"Rimosso il {ordinal_word} {comp_alias}!"
+
+            phrase = f"{random.choice(['sposta', 'evidenzia', 'togli'])} il {ordinal_word} {comp_alias}"
+            phrase = augment_phrase(apply_typo(phrase))
+
+            # Add some other random components
+            all_comps = comp_ids.copy()
+            if random.random() < 0.5:
+                extra = random.choice([c for c in PLACEABLE if c != comp_type])
+                all_comps.append(_comp_id(extra, 1))
+
+            ctx = random_context_v6(comps=all_comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[target_id],
+                actions=[action_tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "evidenzia il sensore" (unique component type) ---
+        HIGHLIGHT_UNIQUE_PHRASES = [
+            "evidenzia il sensore", "seleziona il sensore", "mostrami il sensore",
+            "dov'e' il sensore?", "trova il sensore", "indicami il sensore",
+        ]
+
+        for _ in range(per_case):
+            sensor_type = random.choice(["photo-resistor", "phototransistor", "reed-switch"])
+            sensor_id = _comp_id(sensor_type, 1)
+            comps = [sensor_id, "led1", "resistor1"]
+            phrase = augment_phrase(apply_typo(random.choice(HIGHLIGHT_UNIQUE_PHRASES)))
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[sensor_id],
+                actions=[f"[AZIONE:highlight:{sensor_id}]"],
+                needs_llm=False,
+                response=random.choice(["Ecco il sensore evidenziato!", "Sensore evidenziato! Lo vedi?", "Eccolo! ✅"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "collega quello piu' grande" (ambiguous) ---
+        AMBIGUOUS_PHRASES = [
+            "collega quello piu' grande", "quello grosso", "il componente grande",
+            "quello in alto", "quello a sinistra", "quello piccolo",
+            "collega la cosa la'", "quello coso",
+        ]
+
+        for _ in range(per_case):
+            comps = [_comp_id(c, 1) for c in random.sample(PLACEABLE, random.randint(3, 5))]
+            phrase = augment_phrase(apply_typo(random.choice(AMBIGUOUS_PHRASES)))
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Riferimento ambiguo a componente. Componenti sul circuito: {', '.join(comps)}. Chiedere chiarimento su quale componente intende.",
+                ctx=ctx,
+            ))
+
+        # --- "l'ultimo che ho messo" (last placed) ---
+        LAST_PLACED_PHRASES = [
+            "l'ultimo che ho messo", "togli l'ultimo", "rimuovi l'ultimo componente",
+            "elimina quello che ho appena messo", "via l'ultimo", "annulla l'ultimo piazzamento",
+        ]
+
+        for _ in range(per_case):
+            n = random.randint(2, 5)
+            comp_types = random.sample(PLACEABLE, min(n, len(PLACEABLE)))
+            comps = [_comp_id(c, 1) for c in comp_types]
+            last = comps[-1]
+            phrase = augment_phrase(apply_typo(random.choice(LAST_PLACED_PHRASES)))
+            ctx = random_context_v6(comps=comps)
+            results.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[last],
+                actions=[f"[AZIONE:removecomponent:{last}]"],
+                needs_llm=False,
+                response=random.choice(["Ultimo componente rimosso!", "Tolto l'ultimo! ✅", "Via l'ultimo componente aggiunto!"]),
+                llm_hint=None,
+                ctx=ctx,
+            ))
+
+        # --- "quanti LED ci sono?" (count) ---
+        COUNT_PHRASES = [
+            "quanti LED ci sono?", "quanti resistori ho?", "quanti componenti ho?",
+            "cosa c'e' sul circuito?", "elenca i componenti", "che componenti ho?",
+            "fammi vedere cosa c'e' sulla breadboard", "lista componenti",
+        ]
+
+        for _ in range(per_case):
+            n = random.randint(1, 6)
+            comps = []
+            for _ in range(n):
+                c = random.choice(PLACEABLE)
+                idx = len([x for x in comps if x.startswith(c.replace("-", ""))]) + 1
+                comps.append(_comp_id(c, idx))
+            phrase = augment_phrase(apply_typo(random.choice(COUNT_PHRASES)))
+            ctx = random_context_v6(comps=comps)
+            if comps:
+                results.append(make_example(
+                    user_msg=phrase,
+                    intent="circuit",
+                    entities=[],
+                    actions=["[AZIONE:getstate]"],
+                    needs_llm=False,
+                    response=f"Hai {len(comps)} componenti sulla breadboard: {', '.join(comps)}.",
+                    llm_hint=None,
+                    ctx=ctx,
+                ))
+            else:
+                results.append(make_example(
+                    user_msg=phrase,
+                    intent="circuit",
+                    entities=[],
+                    actions=[],
+                    needs_llm=False,
+                    response="La breadboard e' vuota! Non c'e' nessun componente.",
+                    llm_hint=None,
+                    ctx=ctx,
+                ))
+
+        # --- "cambia il valore del primo resistore" ---
+        SETVAL_PHRASES = [
+            "cambia il valore del resistore", "metti la resistenza a 1k",
+            "imposta il resistore a 220 ohm", "cambia il valore a 10k",
+        ]
+
+        for _ in range(per_case):
+            n_res = random.choice([1, 2])
+            comps = [_comp_id("resistor", i + 1) for i in range(n_res)]
+            comps.append("led1")
+            val = random.choice(["220", "330", "470", "1000", "4700", "10000"])
+            phrase = augment_phrase(apply_typo(random.choice(SETVAL_PHRASES)))
+            ctx = random_context_v6(comps=comps)
+
+            if n_res == 1:
+                results.append(make_example(
+                    user_msg=phrase,
+                    intent="circuit",
+                    entities=["resistor1"],
+                    actions=[f"[AZIONE:setvalue:resistor1:resistance:{val}]"],
+                    needs_llm=False,
+                    response=f"Resistenza impostata a {val} ohm!",
+                    llm_hint=None,
+                    ctx=ctx,
+                ))
+            else:
+                results.append(make_example(
+                    user_msg=phrase,
+                    intent="circuit",
+                    entities=["resistor"],
+                    actions=[],
+                    needs_llm=True,
+                    response=None,
+                    llm_hint=f"Ci sono {n_res} resistori ({', '.join(c for c in comps if c.startswith('resistor'))}). Chiedi a quale vuole cambiare il valore.",
+                    ctx=ctx,
+                ))
+
+        return results
+
+    # ================================================================
+    # ORCHESTRATOR — distribute n across 7 sub-generators
+    # ================================================================
+    # Target distribution (inflated ~20% to compensate dedup losses):
+    # 720 + 600 + 480 + 600 + 360 + 360 + 480 = 3600 -> dedup -> ~3000
+    INFLATE = 1.20
+    ratio_sum = 600 + 500 + 400 + 500 + 300 + 300 + 400  # = 3000
+    n1 = int(n * INFLATE * 600 / ratio_sum)
+    n2 = int(n * INFLATE * 500 / ratio_sum)
+    n3 = int(n * INFLATE * 400 / ratio_sum)
+    n4 = int(n * INFLATE * 500 / ratio_sum)
+    n5 = int(n * INFLATE * 300 / ratio_sum)
+    n6 = int(n * INFLATE * 300 / ratio_sum)
+    n7 = int(n * INFLATE * 400 / ratio_sum)
+
+    examples = []
+    examples.extend(_context_disambiguation(n1))
+    examples.extend(_context_multi_action(n2))
+    examples.extend(_context_conditional(n3))
+    examples.extend(_context_experiment_aware(n4))
+    examples.extend(_context_step_aware(n5))
+    examples.extend(_context_editor_aware(n6))
+    examples.extend(_context_component_state(n7))
+
+    print(f"    Context-aware sub-totals: disambiguation={len(examples) - sum(1 for _ in [])}")
+    print(f"      disambiguation:  {n1} target")
+    print(f"      multi_action:    {n2} target")
+    print(f"      conditional:     {n3} target")
+    print(f"      experiment_aware:{n4} target")
+    print(f"      step_aware:      {n5} target")
+    print(f"      editor_aware:    {n6} target")
+    print(f"      component_state: {n7} target")
+
+    return examples
 
 
 def gen_layer_adversarial(n):
