@@ -1166,9 +1166,956 @@ def make_multi_turn(turns, base_ctx=None):
 def gen_layer_replay(n):
     """Layer 1: Riformulazioni fedeli dal dataset esistente.
     Prende esempi v3/20k e li rigenera con SYSTEM_PROMPT_V6 e contesto esteso.
+    ~3000 examples covering ALL intents to prevent catastrophic forgetting.
     """
-    # TODO: Task 2 — implementare
-    return []
+
+    # ================================================================
+    # PHRASE TEMPLATES (rich Italian variants: formal, informal, slang)
+    # ================================================================
+
+    # --- Action phrases per type ---
+    REPLAY_PLAY_PHRASES = [
+        "Avvia", "Avvia la simulazione", "Play", "Start", "Vai", "Fai partire",
+        "Accendi", "Fai partire il circuito", "Lancia la simulazione", "Metti in moto",
+        "Premi play", "Fallo andare", "Daje!", "Via!", "Parti!", "Accendilo",
+        "Fai girare", "Attiva", "Dai che si parte", "Andiamo!", "Proviamo",
+        "Testiamo il circuito", "Facciamo andare", "OK avvia", "Si parte", "Go!",
+        "Run it", "Let's go", "Fire it up", "Ho finito di montare, avvia",
+        "Pronto, fai partire", "Il circuito e' pronto, avvia", "Dai vai",
+        "Forza avvia", "Fammelo vedere in azione", "Aziona il circuito",
+        "Metti in funzione", "Fammi vedere come va", "Partiamo!", "Iniziamo!",
+        "Mandalo", "Prova!", "Vediamo se funziona", "Fallo funzionare",
+        "voglio vederlo in azione", "accendi tutto", "manda avanti",
+    ]
+    REPLAY_PAUSE_PHRASES = [
+        "Stop", "Ferma", "Pausa", "Metti in pausa", "Ferma tutto", "Fermalo",
+        "Stoppa", "Blocca", "Fermati", "Basta", "Stop la simulazione", "Premi stop",
+        "Spegni", "Alt", "Aspetta", "Fermo!", "Stoppalo!", "Basta cosi'",
+        "Ok basta", "Fermati un attimo", "Frena", "Stoppami tutto", "Blocca tutto",
+        "Tieni fermo", "Pause", "Hold", "Halt", "Stop it", "Fermami tutto",
+        "Un attimo", "Wait", "No no ferma!", "Blocca blocca!", "Stai fermo",
+        "Aspe'", "Ferma un secondo", "fermala", "basta fermati", "stop stop",
+        "ferma la simulazione", "spegni tutto",
+    ]
+    REPLAY_RESET_PHRASES = [
+        "Reset", "Resetta", "Resetta il circuito", "Ripristina", "Ricomincia",
+        "Ricomincia da capo", "Resetta tutto", "Rimetti a zero", "Reimposta",
+        "Da capo", "Daccapo", "Dall'inizio", "Ricominciamo", "Azzera",
+        "Azzera tutto", "Fai reset", "Premi reset", "Resettiamo", "Come prima",
+        "Rifai da capo", "Riportami alla situazione iniziale",
+        "Torna allo stato originale", "riparti da zero",
+        "rimetti tutto a posto", "restart",
+    ]
+    REPLAY_CLEARALL_PHRASES = [
+        "Cancella tutto", "Pulisci tutto", "Svuota", "Svuota tutto", "Togli tutto",
+        "Rimuovi tutto", "Elimina tutto", "Pulisci la breadboard",
+        "Svuota la breadboard", "Via tutto", "Butta via tutto", "Sgombra",
+        "Fai piazza pulita", "Tabula rasa", "Leva tutto", "Spazza via",
+        "Sparecchia", "Ripulisci", "Togli tutta sta roba",
+        "Voglio ricominciare da zero", "Voglio una breadboard vuota",
+        "Toglimi tutto di mezzo", "Via via tutto", "Clear all",
+        "pulisci", "cancella", "elimina tutto quanto",
+    ]
+    REPLAY_COMPILE_PHRASES = [
+        "Compila", "Compila il codice", "Compila lo sketch", "Verifica il codice",
+        "Controlla il codice", "Build", "Prova a compilare", "Lancia la compilazione",
+        "Vedi se il codice e' giusto", "Testami il codice", "Compilalo",
+        "Fai il build", "Manda in compilazione", "Verifica lo sketch",
+        "compile", "compilazione",
+    ]
+    REPLAY_QUIZ_PHRASES = [
+        "Quiz", "Fammi un quiz", "Domanda", "Fammi una domanda",
+        "Prova a interrogarmi", "Verificami", "Test", "Fammi un test",
+        "Mettimi alla prova", "Interrogami", "Challenge", "Sfidami",
+        "Sparami un quiz", "Facciamo un quiz", "Quiz!", "Interrogazione!",
+        "Testami", "Daje col quiz", "Voglio mettermi alla prova",
+        "Vediamo se ho capito", "Prova a farmi qualche domanda",
+    ]
+    REPLAY_DIAGNOSE_PHRASES = [
+        "Diagnosi", "Diagnostica", "Cosa c'e' che non va?", "Trova l'errore",
+        "Controlla cosa non funziona", "Perche' non funziona?", "Debug",
+        "Cerca il problema", "Cosa non va?", "Analizza il circuito",
+        "Verifica il mio circuito", "C'e' qualcosa di sbagliato?",
+    ]
+    REPLAY_UNDO_PHRASES = [
+        "Annulla", "Undo", "Torna indietro", "Ctrl Z",
+        "annulla l'ultima cosa", "indietro", "torna come prima",
+    ]
+    REPLAY_REDO_PHRASES = [
+        "Rifai", "Redo", "Ripeti", "rimetti quello che ho tolto",
+        "Ctrl Y", "ripristina", "rimetti",
+    ]
+    REPLAY_NEXTSTEP_PHRASES = [
+        "Avanti", "Prossimo passo", "Prossimo step", "Vai avanti",
+        "Next", "next step", "continua", "andiamo avanti",
+        "passo successivo", "step dopo",
+    ]
+    REPLAY_PREVSTEP_PHRASES = [
+        "Indietro", "Passo precedente", "Step precedente",
+        "Torna indietro", "Previous", "back", "passo prima",
+        "step prima", "vai indietro",
+    ]
+    REPLAY_SHOWBOM_PHRASES = [
+        "Mostra i componenti", "BOM", "Lista componenti", "Cosa mi serve?",
+        "Quali pezzi servono?", "materiali", "mostra la lista",
+        "che componenti ci sono?", "bill of materials",
+    ]
+    REPLAY_SHOWSERIAL_PHRASES = [
+        "Monitor seriale", "Serial monitor", "Apri la seriale",
+        "Mostra output", "Mostra seriale", "serial",
+        "fammi vedere la seriale", "output seriale",
+    ]
+    REPLAY_RESETCODE_PHRASES = [
+        "Resetta il codice", "Codice originale",
+        "Rimetti il codice di default", "codice iniziale", "reset code",
+        "rimetti il codice originale", "codice di partenza",
+    ]
+
+    REPLAY_ACTION_PHRASES = {
+        "play": REPLAY_PLAY_PHRASES,
+        "pause": REPLAY_PAUSE_PHRASES,
+        "reset": REPLAY_RESET_PHRASES,
+        "clearall": REPLAY_CLEARALL_PHRASES,
+        "undo": REPLAY_UNDO_PHRASES,
+        "redo": REPLAY_REDO_PHRASES,
+        "compile": REPLAY_COMPILE_PHRASES,
+        "quiz": REPLAY_QUIZ_PHRASES,
+        "diagnose": REPLAY_DIAGNOSE_PHRASES,
+        "nextstep": REPLAY_NEXTSTEP_PHRASES,
+        "prevstep": REPLAY_PREVSTEP_PHRASES,
+        "showbom": REPLAY_SHOWBOM_PHRASES,
+        "showserial": REPLAY_SHOWSERIAL_PHRASES,
+        "resetcode": REPLAY_RESETCODE_PHRASES,
+    }
+
+    # --- Placement templates ---
+    REPLAY_PLACE_TEMPLATES = [
+        "Metti {comp}", "Aggiungi {comp}", "Piazza {comp}", "Mettimi {comp}",
+        "Voglio {comp}", "Dammi {comp}", "Mi serve {comp}", "Ho bisogno di {comp}",
+        "Metti {comp} sulla breadboard", "Aggiungi {comp} al circuito",
+        "Piazzami {comp}", "Posiziona {comp}", "Inserisci {comp}",
+        "Ci metti {comp}?", "Puoi mettere {comp}?", "Aggiungimi {comp}",
+        "Manca {comp}, aggiungilo", "Serve {comp}", "Ci vuole {comp}",
+        "Mettici {comp}", "Daje metti {comp}", "Su metti {comp}",
+    ]
+
+    REPLAY_PLACE_MULTI_TEMPLATES = [
+        "Metti {list}", "Aggiungi {list}", "Mi servono {list}",
+        "Piazza {list}", "Costruisci un circuito con {list}",
+        "Voglio {list} sulla breadboard", "Ho bisogno di {list}",
+        "Mettimi {list}", "Dammi {list}", "Prepara {list}",
+        "Piazzami {list} per favore", "Costruiscimi {list}",
+    ]
+
+    # --- Wiring templates ---
+    REPLAY_WIRE_P2P = [
+        "Collega {c1} a {c2}", "Metti un filo da {c1} a {c2}",
+        "Connetti {c1} con {c2}", "Fai un collegamento tra {c1} e {c2}",
+        "Cabla {c1} a {c2}", "Wire da {c1} a {c2}",
+        "Collega il pin {p1} di {c1} al pin {p2} di {c2}",
+        "Metti un filo tra {c1} pin {p1} e {c2} pin {p2}",
+        "Unisci {c1} e {c2}", "Fai un filo tra {c1} e {c2}",
+    ]
+    REPLAY_WIRE_BUS = [
+        "Collega {comp} al bus positivo", "Collega {comp} al bus negativo",
+        "Metti {comp} a massa", "Collega {comp} al GND",
+        "Collega {comp} al 5V", "Collega {comp} a VCC",
+        "Collega {comp} al bus-bot-plus", "Connetti {comp} al bus-bot-minus",
+        "Porta {comp} al positivo", "Metti {comp} sul bus GND",
+        "{comp} al positivo", "{comp} al negativo", "{comp} a GND",
+    ]
+    REPLAY_WIRE_WING = [
+        "Collega {comp} al pin {wing}", "Metti un filo da {comp} a {wing}",
+        "Connetti {comp} al pin digitale {pin}", "Collega {comp} all'analogico {pin}",
+        "Fai un filo tra {comp} e il pin {wing}",
+        "Porta {comp} al pin {wing} della board",
+        "Collega {comp} a {wing}",
+    ]
+
+    # --- Navigation templates ---
+    REPLAY_LOADEXP_TEMPLATES = [
+        "Carica l'esperimento {name}", "Apri {name}", "Vai a {name}",
+        "Voglio fare {name}", "Fammi fare {name}", "Carica {name}",
+        "Portami a {name}", "Apri l'esperimento {name}", "Mostra {name}",
+        "Seleziona {name}", "Facciamo {name}", "Andiamo a {name}",
+    ]
+    REPLAY_TAB_TEMPLATES = [
+        "Apri il {tab}", "Vai al {tab}", "Mostra il {tab}", "Passa al {tab}",
+        "Fammi vedere il {tab}", "Apri la scheda {tab}", "Portami al {tab}",
+        "Voglio il {tab}", "Vai sulla scheda {tab}",
+    ]
+    REPLAY_VOLUME_TEMPLATES = [
+        "Apri il Volume {n}", "Vai al Volume {n}", "Volume {n}",
+        "Mostra il Volume {n}", "Passa al Volume {n}",
+        "Voglio il Volume {n}", "Carica il Volume {n}",
+    ]
+    REPLAY_EDITOR_SWITCH = {
+        "scratch": [
+            "Passa a Scratch", "Usa Scratch", "Voglio programmare con i blocchi",
+            "Apri l'editor Scratch", "Modalita' blocchi", "Passa ai blocchi",
+            "Blocchi", "Voglio i blocchi", "Fammi usare Scratch",
+            "Metti Scratch", "Apri Scratch", "Blocchetti",
+        ],
+        "arduino": [
+            "Torna ad Arduino", "Usa Arduino C++", "Codice testuale",
+            "Passa all'editor Arduino", "Modalita' codice", "Torna al codice",
+            "Arduino", "Voglio scrivere il codice", "Fammi usare Arduino",
+            "Metti Arduino", "Apri l'editor codice", "C++",
+        ],
+    }
+
+    # --- Code question templates ---
+    REPLAY_CODE_QUESTIONS = [
+        "Come si fa a {action}?", "Scrivi il codice per {action}",
+        "Programmami {action}", "Codice per {action}",
+        "Mi aiuti con il codice per {action}?",
+        "Come faccio a {action} con Arduino?", "Voglio {action}",
+        "Scrivimi lo sketch per {action}", "Fammi il programma per {action}",
+        "Mi scrivi il codice per {action}?", "Come posso {action}?",
+    ]
+    REPLAY_CODE_ACTIONS = [
+        "far lampeggiare un LED", "accendere un LED con il pulsante",
+        "leggere il potenziometro", "controllare la luminosita' del LED",
+        "suonare una melodia con il buzzer", "muovere il servo",
+        "leggere il sensore di luce", "scrivere sul display LCD",
+        "usare il Serial Monitor", "fare un semaforo",
+        "fare il gioco SOS Morse", "far lampeggiare 3 LED in sequenza",
+        "leggere un valore analogico", "usare il PWM per controllare un motore",
+        "usare un if-else", "usare un ciclo for", "definire una funzione",
+        "usare una variabile", "fare un conto alla rovescia",
+        "creare un allarme con il buzzer",
+        "controllare il servo con il potenziometro",
+        "usare millis invece di delay", "leggere la temperatura",
+        "fare un Simon Says", "usare map()",
+    ]
+    REPLAY_SCRATCH_QUESTIONS = [
+        "Come faccio con i blocchi a {action}?",
+        "Quale blocco uso per {action}?",
+        "In Scratch come si fa {action}?",
+        "Con i blocchi posso {action}?",
+        "Programmami {action} con Scratch",
+        "Blocchi per {action}",
+        "Fammi il codice a blocchi per {action}",
+    ]
+    REPLAY_SCRATCH_ACTIONS = [
+        "far lampeggiare un LED", "leggere un sensore",
+        "muovere il servo", "accendere un LED",
+        "suonare il buzzer", "leggere il potenziometro",
+        "controllare un motore", "fare un ciclo",
+        "usare una variabile", "aspettare un secondo",
+        "scrivere sulla seriale", "usare un if",
+    ]
+
+    # --- Tutor: theory topics ---
+    REPLAY_THEORY_TEMPLATES = [
+        "Cos'e' {topic}?", "Spiegami {topic}", "Come funziona {topic}?",
+        "A cosa serve {topic}?", "Cosa fa {topic}?", "Perche' si usa {topic}?",
+        "Mi spieghi {topic}?", "Non capisco {topic}", "Che cos'e' {topic}?",
+        "Parlami di {topic}", "Vorrei sapere di piu' su {topic}",
+    ]
+    REPLAY_THEORY_TOPICS = [
+        "una resistenza", "un LED", "un condensatore", "un diodo",
+        "un transistor", "un potenziometro", "un buzzer", "un motore DC",
+        "un servo", "un LED RGB", "la legge di Ohm", "la corrente elettrica",
+        "la tensione", "il voltaggio", "la resistenza",
+        "i circuiti in serie", "i circuiti in parallelo",
+        "la breadboard", "il GND", "il 5V", "il bus positivo", "il bus negativo",
+        "il pin digitale", "il pin analogico", "il PWM", "Arduino",
+        "il codice Arduino", "la funzione setup", "la funzione loop",
+        "digitalWrite", "analogRead", "analogWrite", "delay",
+        "il Serial Monitor", "la corrente continua", "gli ampere",
+        "i volt", "gli ohm", "i watt", "il cortocircuito", "la polarita'",
+        "l'anodo", "il catodo", "la capacita'", "i farad", "la frequenza",
+        "il duty cycle", "Scratch", "Blockly", "i blocchi di programmazione",
+        "il compilatore", "la fotoresistenza", "il fototransistor",
+        "il reed switch", "il display LCD", "la comunicazione seriale",
+        "il baud rate",
+    ]
+
+    # --- Tutor: comparison pairs ---
+    REPLAY_COMPARE_TEMPLATES = [
+        "Qual e' la differenza tra {a} e {b}?",
+        "Cosa cambia tra {a} e {b}?",
+        "Meglio usare {a} o {b}?",
+        "{a} e {b} sono la stessa cosa?",
+        "Quando uso {a} e quando {b}?",
+        "In cosa differiscono {a} e {b}?",
+    ]
+    REPLAY_COMPARE_PAIRS = [
+        ("serie", "parallelo"), ("LED", "buzzer"),
+        ("resistenza", "potenziometro"), ("digitale", "analogico"),
+        ("input", "output"), ("5V", "3.3V"), ("diodo", "LED"),
+        ("motore DC", "servo"), ("Scratch", "Arduino C++"),
+        ("corrente", "tensione"), ("condensatore", "resistenza"),
+        ("setup", "loop"), ("digitalRead", "analogRead"),
+        ("delay", "millis"), ("HIGH", "LOW"),
+        ("fotoresistenza", "fototransistor"), ("volt", "ampere"),
+        ("PWM", "digitale"), ("anodo", "catodo"),
+    ]
+
+    # --- Tutor: debug templates ---
+    REPLAY_DEBUG_TEMPLATES = [
+        "Il LED non si accende, cosa sbaglio?", "Il circuito non funziona",
+        "Non succede niente quando premo play", "Il buzzer non suona",
+        "Il motore non gira", "Il codice non compila", "Errore di compilazione",
+        "Il servo non si muove", "Il display e' vuoto",
+        "Non leggo valori dal sensore", "La resistenza e' troppo alta?",
+        "Ho collegato tutto ma non va", "Il LED lampeggia strano",
+        "Il serial monitor non mostra nulla", "Il pulsante non risponde",
+        "Qualcosa non funziona, aiutami", "Ho un problema con il circuito",
+        "C'e' un errore da qualche parte", "Il LED e' collegato al contrario?",
+        "Non capisco perche' non va", "Mi da' errore nel codice",
+        "Il sensore da' sempre lo stesso valore",
+        "Ho sbagliato qualcosa nei collegamenti",
+        "Perche' si scalda la resistenza?",
+        "Il condensatore e' al contrario?",
+        "Il diodo non fa passare corrente",
+        "Il LED si accende ma non lampeggia",
+        "Il potenziometro non cambia niente",
+        "Il motore gira al contrario", "Il circuito fa cortocircuito",
+    ]
+
+    # --- Vision templates ---
+    REPLAY_VISION_TEMPLATES = [
+        "Guarda il mio circuito", "Cosa c'e' di sbagliato?",
+        "Controlla se e' collegato bene", "Analizza lo screenshot",
+        "Guarda cosa ho fatto", "Vedi se va bene",
+        "Dai un'occhiata al circuito", "Dimmi cosa vedi",
+        "Controlla il mio lavoro", "Guarda se e' giusto",
+        "Foto del circuito, controllala", "Cosa ne pensi del circuito?",
+        "Verifica i collegamenti dalla foto", "Guarda questa immagine",
+        "Analizza il mio circuito", "Vedi il mio progetto",
+        "E' corretto il circuito?", "Controlla dalla foto",
+        "Guarda e dimmi se va bene", "Osserva il circuito",
+        "Guarda la breadboard", "Cos'e' che non va? Guarda",
+        "Verifica dalla foto se manca qualcosa", "Guarda se ho collegato bene",
+        "Riesci a vedere il circuito?", "Analizzi la foto?",
+        "Controlla i fili dalla foto", "Guarda l'immagine e dimmi",
+        "Fammi un check visivo", "Guarda se e' tutto a posto",
+        "Osserva bene e dimmi se manca qualcosa",
+        "Controllo visivo del circuito", "Vedi qualcosa che non va?",
+        "Analizza questa foto del mio circuito",
+    ]
+
+    # --- Teacher templates ---
+    REPLAY_TEACHER_TEMPLATES = [
+        "Mostra i risultati della classe", "Come stanno andando i miei studenti?",
+        "Report del quiz", "Statistiche della classe",
+        "Quanti hanno fatto il quiz?", "Chi ha preso il voto migliore?",
+        "Mostra i progressi degli studenti", "Andamento della classe",
+        "Risultati degli esperimenti", "Quanto tempo hanno impiegato?",
+        "Mostra le statistiche", "Fammi vedere i risultati",
+        "Report di {name}", "Come va {name}?", "Progressi di {name}",
+        "Quanto ha fatto {name}?", "Voti del quiz", "Classifica della classe",
+        "Media dei voti", "Chi e' rimasto indietro?",
+        "Quali studenti hanno finito?", "Mostra il report completo",
+        "Andamento quiz per capitolo", "Statistiche per esperimento",
+        "Fammi un riassunto dei risultati", "Dashboard della classe",
+        "Risultati del test di oggi", "Mostrami gli errori comuni",
+        "Chi ha bisogno di aiuto?", "Evidenzia i punti deboli della classe",
+    ]
+
+    # --- Off-topic/negation ---
+    REPLAY_OFFTOPIC = [
+        "Che ore sono?", "Mi piace il calcio", "Cosa mangi a pranzo?",
+        "Hai visto Minecraft?", "Giochi a Fortnite?", "Quanti anni hai?",
+        "Dove abiti?", "Mi racconti una barzelletta?", "Chi sei?",
+        "Sei un robot?", "Sei vero?", "Puoi fare i compiti di matematica?",
+        "Qual e' il tuo colore preferito?", "Ti piace la pizza?",
+        "Cosa fai nel tempo libero?", "Sai cantare?", "Parlami di te",
+        "Conosci ChatGPT?", "Sei meglio di Siri?", "Mi annoio",
+        "Non ho voglia di studiare", "Posso giocare?", "Che giorno e' oggi?",
+        "Mi aiuti con la tesina?", "Sai giocare a scacchi?",
+        "Quanto fa 2+2?", "Chi ha inventato il telefono?",
+        "Come si chiama il presidente?", "Che tempo fa domani?",
+        "Raccontami una storia", "Dimmi una battuta", "Ciao come stai?",
+    ]
+    REPLAY_NEGATION_TEMPLATES = [
+        "Non avviare la simulazione", "Non compilare", "Non cancellare niente",
+        "Non resettare", "Aspetta, non fare nulla", "Fermo, non ho ancora finito",
+        "No, non quello", "Non volevo dire quello", "Lascia tutto cosi'",
+        "Non cambiare niente", "No stop, non era quello che volevo",
+        "Non avviare ancora", "Fermati, non ho chiesto io",
+        "Non spostare niente", "Non toccare nulla", "Aspetta, fermo",
+        "Stop, non intendevo quello", "Annulla, non era quello",
+        "Fermo, aspetta un momento", "No, lascia stare",
+    ]
+
+    # ================================================================
+    # SUB-GENERATORS
+    # ================================================================
+
+    def _replay_actions(count):
+        """Generate action command examples for all 14 basic action types."""
+        examples = []
+        action_types = list(REPLAY_ACTION_PHRASES.keys())
+        per_type = max(1, count // len(action_types))
+        remainder = count - per_type * len(action_types)
+
+        for act_key in action_types:
+            phrases = REPLAY_ACTION_PHRASES[act_key]
+            act_data = ACTIONS[act_key]
+            num = per_type + (1 if remainder > 0 else 0)
+            if remainder > 0:
+                remainder -= 1
+
+            for i in range(num):
+                phrase = random.choice(phrases)
+                phrase = augment_phrase(phrase)
+                phrase = apply_typo(phrase, 0.3)
+
+                response = random.choice(act_data["responses"])
+                tag = act_data["tag"]
+                intent = act_data["intent"]
+                entities = list(act_data["entities"])
+
+                examples.append(make_example(
+                    user_msg=phrase,
+                    intent=intent,
+                    entities=entities,
+                    actions=[tag],
+                    needs_llm=False,
+                    response=response,
+                    llm_hint=None,
+                    ctx=random_context_v6(),
+                ))
+        random.shuffle(examples)
+        return examples[:count]
+
+    def _replay_circuit(count):
+        """Generate circuit placement examples: single + multi-component."""
+        examples = []
+        n_single = count // 2
+        n_multi = count - n_single
+
+        # --- Single component placement ---
+        for _ in range(n_single):
+            comp = random.choice(PLACEABLE)
+            aliases = COMPONENT_ALIASES.get(comp, [comp])
+            alias = random.choice(aliases)
+            tpl = random.choice(REPLAY_PLACE_TEMPLATES)
+            phrase = tpl.replace("{comp}", alias)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            intent_obj = json.dumps(
+                {"action": "place_and_wire", "components": [{"type": comp}], "wires": "auto"},
+                ensure_ascii=False,
+            )
+            action_tag = f"[INTENT:{intent_obj}]"
+            response = random.choice(ACTIONS["place_and_wire"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[comp],
+                actions=[action_tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        # --- Multi-component placement (2-5 components) ---
+        for _ in range(n_multi):
+            num_comps = random.randint(2, 5)
+            comps = random.sample(PLACEABLE, min(num_comps, len(PLACEABLE)))
+            comp_aliases = []
+            comp_types = []
+            for c in comps:
+                aliases = COMPONENT_ALIASES.get(c, [c])
+                comp_aliases.append(random.choice(aliases))
+                comp_types.append({"type": c})
+
+            # Build human-readable list
+            if len(comp_aliases) == 2:
+                list_str = f"{comp_aliases[0]} e {comp_aliases[1]}"
+            else:
+                list_str = ", ".join(comp_aliases[:-1]) + f" e {comp_aliases[-1]}"
+
+            tpl = random.choice(REPLAY_PLACE_MULTI_TEMPLATES)
+            phrase = tpl.replace("{list}", list_str)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            intent_obj = json.dumps(
+                {"action": "place_and_wire", "components": comp_types, "wires": "auto"},
+                ensure_ascii=False,
+            )
+            action_tag = f"[INTENT:{intent_obj}]"
+            response = random.choice(ACTIONS["place_and_wire"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[c["type"] for c in comp_types],
+                actions=[action_tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        random.shuffle(examples)
+        return examples[:count]
+
+    def _replay_wiring(count):
+        """Generate wiring examples: pin-to-pin, bus, wing."""
+        examples = []
+        n_p2p = count // 3
+        n_bus = count // 3
+        n_wing = count - n_p2p - n_bus
+
+        bus_targets = {
+            "bus positivo": "bus-bot-plus",
+            "bus negativo": "bus-bot-minus",
+            "massa": "bus-bot-minus",
+            "GND": "bus-bot-minus",
+            "5V": "bus-bot-plus",
+            "VCC": "bus-bot-plus",
+            "bus-bot-plus": "bus-bot-plus",
+            "bus-bot-minus": "bus-bot-minus",
+        }
+
+        # --- Pin-to-pin ---
+        for _ in range(n_p2p):
+            c1, c2 = random.sample(PLACEABLE, 2)
+            p1 = random.choice(PIN_MAP.get(c1, ["pin1"]))
+            p2 = random.choice(PIN_MAP.get(c2, ["pin1"]))
+            a1 = random.choice(COMPONENT_ALIASES.get(c1, [c1]))
+            a2 = random.choice(COMPONENT_ALIASES.get(c2, [c2]))
+
+            tpl = random.choice(REPLAY_WIRE_P2P)
+            phrase = tpl.replace("{c1}", a1).replace("{c2}", a2)
+            phrase = phrase.replace("{p1}", p1).replace("{p2}", p2)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            from_pin = f"{c1}:{p1}"
+            to_pin = f"{c2}:{p2}"
+            wire_tag = f"[AZIONE:addwire:{from_pin}:{to_pin}]"
+            response = random.choice(ACTIONS["addwire"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[c1, c2],
+                actions=[wire_tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        # --- Bus connections ---
+        for _ in range(n_bus):
+            comp = random.choice(PLACEABLE)
+            alias = random.choice(COMPONENT_ALIASES.get(comp, [comp]))
+            pin = random.choice(PIN_MAP.get(comp, ["pin1"]))
+
+            tpl = random.choice(REPLAY_WIRE_BUS)
+            # Extract bus target from template
+            phrase = tpl.replace("{comp}", alias)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            # Determine bus target
+            bus_key = random.choice(["bus-bot-plus", "bus-bot-minus"])
+            from_pin = f"{comp}:{pin}"
+            wire_tag = f"[AZIONE:addwire:{from_pin}:{bus_key}]"
+            response = random.choice(ACTIONS["addwire"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[comp],
+                actions=[wire_tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        # --- Wing pin connections ---
+        for _ in range(n_wing):
+            comp = random.choice(PLACEABLE)
+            alias = random.choice(COMPONENT_ALIASES.get(comp, [comp]))
+            pin = random.choice(PIN_MAP.get(comp, ["pin1"]))
+            wing = random.choice(WING_PINS)
+            dig_pin = wing.replace("W_", "")
+
+            tpl = random.choice(REPLAY_WIRE_WING)
+            phrase = tpl.replace("{comp}", alias).replace("{wing}", wing).replace("{pin}", dig_pin)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            from_pin = f"{comp}:{pin}"
+            wire_tag = f"[AZIONE:addwire:{from_pin}:{wing}]"
+            response = random.choice(ACTIONS["addwire"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="circuit",
+                entities=[comp],
+                actions=[wire_tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        random.shuffle(examples)
+        return examples[:count]
+
+    def _replay_navigation(count):
+        """Generate navigation examples: loadexp, opentab, openvolume, editor switch."""
+        examples = []
+        n_loadexp = int(count * 100 / 300)
+        n_opentab = int(count * 100 / 300)
+        n_volume = int(count * 50 / 300)
+        n_editor = count - n_loadexp - n_opentab - n_volume
+
+        # --- Load experiment ---
+        for _ in range(n_loadexp):
+            exp_id = random.choice(EXPERIMENTS)
+            exp_name = EXP_NAMES.get(exp_id, exp_id)
+            tpl = random.choice(REPLAY_LOADEXP_TEMPLATES)
+            phrase = tpl.replace("{name}", exp_name)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            tag = f"[AZIONE:loadexp:{exp_id}]"
+            response = random.choice(ACTIONS["loadexp"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[exp_id],
+                actions=[tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        # --- Open tab ---
+        for _ in range(n_opentab):
+            tab = random.choice(TABS)
+            aliases = TAB_ALIASES.get(tab, [tab])
+            alias = random.choice(aliases)
+            tpl = random.choice(REPLAY_TAB_TEMPLATES)
+            phrase = tpl.replace("{tab}", alias)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            tag = f"[AZIONE:opentab:{tab}]"
+            response = random.choice(ACTIONS["opentab"]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[tab],
+                actions=[tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        # --- Open volume ---
+        for _ in range(n_volume):
+            vol = random.randint(1, 3)
+            tpl = random.choice(REPLAY_VOLUME_TEMPLATES)
+            phrase = tpl.replace("{n}", str(vol))
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            tag = f"[AZIONE:openvolume:{vol}]"
+            response = random.choice(ACTIONS["openvolume"]["responses"]).replace("{n}", str(vol))
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="navigation",
+                entities=[],
+                actions=[tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        # --- Editor switching ---
+        for _ in range(n_editor):
+            mode = random.choice(["scratch", "arduino"])
+            phrase = random.choice(REPLAY_EDITOR_SWITCH[mode])
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            act_key = f"switcheditor_{mode}"
+            tag = f"[AZIONE:switcheditor:{mode}]"
+            response = random.choice(ACTIONS[act_key]["responses"])
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[tag],
+                needs_llm=False,
+                response=response,
+                llm_hint=None,
+                ctx=random_context_v6(editor_mode="scratch" if mode == "arduino" else "arduino"),
+            ))
+
+        random.shuffle(examples)
+        return examples[:count]
+
+    def _replay_code(count):
+        """Generate code question examples (Arduino + Scratch). All needs_llm=true."""
+        examples = []
+        n_arduino = int(count * 0.65)
+        n_scratch = count - n_arduino
+
+        # --- Arduino code questions ---
+        for _ in range(n_arduino):
+            action = random.choice(REPLAY_CODE_ACTIONS)
+            tpl = random.choice(REPLAY_CODE_QUESTIONS)
+            phrase = tpl.replace("{action}", action)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="code",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Lo studente chiede codice Arduino per: {action}",
+                ctx=random_context_v6(editor_mode="arduino"),
+            ))
+
+        # --- Scratch code questions ---
+        for _ in range(n_scratch):
+            action = random.choice(REPLAY_SCRATCH_ACTIONS)
+            tpl = random.choice(REPLAY_SCRATCH_QUESTIONS)
+            phrase = tpl.replace("{action}", action)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="code",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Lo studente chiede codice Scratch/Blockly per: {action}",
+                ctx=random_context_v6(editor_mode="scratch"),
+            ))
+
+        random.shuffle(examples)
+        return examples[:count]
+
+    def _replay_tutor(count):
+        """Generate tutor question examples: theory, comparison, debug. All needs_llm=true."""
+        examples = []
+        n_theory = int(count * 250 / 600)
+        n_compare = int(count * 150 / 600)
+        n_debug = count - n_theory - n_compare
+
+        # --- Theory questions ---
+        for _ in range(n_theory):
+            topic = random.choice(REPLAY_THEORY_TOPICS)
+            tpl = random.choice(REPLAY_THEORY_TEMPLATES)
+            phrase = tpl.replace("{topic}", topic)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="tutor",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Lo studente chiede una spiegazione su: {topic}",
+                ctx=random_context_v6(),
+            ))
+
+        # --- Comparison questions ---
+        for _ in range(n_compare):
+            a, b = random.choice(REPLAY_COMPARE_PAIRS)
+            tpl = random.choice(REPLAY_COMPARE_TEMPLATES)
+            phrase = tpl.replace("{a}", a).replace("{b}", b)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="tutor",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint=f"Lo studente chiede un confronto tra {a} e {b}",
+                ctx=random_context_v6(),
+            ))
+
+        # --- Debug questions ---
+        for _ in range(n_debug):
+            phrase = random.choice(REPLAY_DEBUG_TEMPLATES)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="tutor",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Lo studente ha un problema col circuito e chiede aiuto per il debug",
+                ctx=random_context_v6(),
+            ))
+
+        random.shuffle(examples)
+        return examples[:count]
+
+    def _replay_vision(count):
+        """Generate vision request examples. All needs_llm=true, intent=vision."""
+        examples = []
+        for _ in range(count):
+            phrase = random.choice(REPLAY_VISION_TEMPLATES)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="vision",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Lo studente chiede analisi visiva del circuito/screenshot",
+                ctx=random_context_v6(),
+            ))
+        return examples
+
+    def _replay_teacher(count):
+        """Generate teacher request examples. All needs_llm=true, intent=teacher."""
+        examples = []
+        for _ in range(count):
+            tpl = random.choice(REPLAY_TEACHER_TEMPLATES)
+            # Fill {name} if present
+            if "{name}" in tpl:
+                name = random.choice(KID_NAMES)
+                phrase = tpl.replace("{name}", name)
+            else:
+                phrase = tpl
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="teacher",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Richiesta pedagogica: statistiche, report, progressi studenti",
+                ctx=random_context_v6(),
+            ))
+        return examples
+
+    def _replay_offtopic(count):
+        """Generate off-topic and negation examples."""
+        examples = []
+        n_offtopic = count // 2
+        n_negation = count - n_offtopic
+
+        # --- Off-topic (needs_llm=true, intent=tutor) ---
+        for _ in range(n_offtopic):
+            phrase = random.choice(REPLAY_OFFTOPIC)
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="tutor",
+                entities=[],
+                actions=[],
+                needs_llm=True,
+                response=None,
+                llm_hint="Messaggio off-topic. Rispondi brevemente e riporta lo studente all'elettronica.",
+                ctx=random_context_v6(),
+            ))
+
+        # --- Negations (needs_llm=false, intent=action) ---
+        for _ in range(n_negation):
+            tpl = random.choice(REPLAY_NEGATION_TEMPLATES)
+            if "{comp}" in tpl:
+                comp = random.choice(PLACEABLE)
+                alias = random.choice(COMPONENT_ALIASES.get(comp, [comp]))
+                phrase = tpl.replace("{comp}", alias)
+            else:
+                phrase = tpl
+            phrase = augment_phrase(phrase)
+            phrase = apply_typo(phrase, 0.3)
+
+            examples.append(make_example(
+                user_msg=phrase,
+                intent="action",
+                entities=[],
+                actions=[],
+                needs_llm=False,
+                response="Ok, non faccio nulla.",
+                llm_hint=None,
+                ctx=random_context_v6(),
+            ))
+
+        random.shuffle(examples)
+        return examples[:count]
+
+    # ================================================================
+    # MAIN REPLAY ORCHESTRATION
+    # ================================================================
+
+    # Target distribution (proportional to n, base is 3000)
+    scale = n / 3000.0
+    targets = {
+        "actions":    int(420 * scale),
+        "circuit":    int(400 * scale),
+        "wiring":     int(300 * scale),
+        "navigation": int(300 * scale),
+        "code":       int(400 * scale),
+        "tutor":      int(600 * scale),
+        "vision":     int(200 * scale),
+        "teacher":    int(200 * scale),
+        "offtopic":   int(180 * scale),
+    }
+
+    # Adjust to hit exact n
+    total_targeted = sum(targets.values())
+    diff = n - total_targeted
+    if diff != 0:
+        # Add/subtract from the largest category (tutor)
+        targets["tutor"] += diff
+
+    # Generate all sub-layers
+    all_examples = []
+    all_examples.extend(_replay_actions(targets["actions"]))
+    all_examples.extend(_replay_circuit(targets["circuit"]))
+    all_examples.extend(_replay_wiring(targets["wiring"]))
+    all_examples.extend(_replay_navigation(targets["navigation"]))
+    all_examples.extend(_replay_code(targets["code"]))
+    all_examples.extend(_replay_tutor(targets["tutor"]))
+    all_examples.extend(_replay_vision(targets["vision"]))
+    all_examples.extend(_replay_teacher(targets["teacher"]))
+    all_examples.extend(_replay_offtopic(targets["offtopic"]))
+
+    # Shuffle and trim to exact n
+    random.shuffle(all_examples)
+    return all_examples[:n]
 
 
 def gen_layer_direct_action(n):
