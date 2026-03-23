@@ -73,7 +73,8 @@ def _load_specialist_prompts():
 
     # Load each specialist
     for intent, filename in [("circuit", "circuit.yml"), ("code", "code.yml"),
-                             ("tutor", "tutor.yml"), ("vision", "vision.yml")]:
+                             ("tutor", "tutor.yml"), ("vision", "vision.yml"),
+                             ("teacher", "teacher.yml")]:
         filepath = prompts_dir / filename
         if not filepath.exists():
             print(f"[UNLIM] WARNING: {filename} not found")
@@ -174,6 +175,13 @@ INTENT_KEYWORDS = {
         "cosa vedi", "guarda", "screen", "mostrami", "analizza l'immagine",
         "foto", "screenshot", "vedo", "lavagna", "canvas", "disegno",
     ],
+    "teacher": [
+        "come spiego", "lezione", "classe", "studenti", "prepara la lezione",
+        "briefing", "come faccio a insegnare", "suggerisci una lezione",
+        "presentare alla classe", "introdurre", "materiale per la lezione",
+        "attività didattica", "valutazione", "obiettivo didattico",
+        "come insegno", "preparazione lezione", "piano lezione",
+    ],
 }
 
 # Keywords that are ALWAYS tutor (override other matches)
@@ -235,7 +243,7 @@ CODE_OVERRIDE_KEYWORDS = [
 
 def classify_intent(message: str, page_context: str = "", has_images: bool = False) -> str:
     """Hybrid intent classifier: keywords first (~1ms), Groq flash fallback for ambiguous.
-    Returns: 'circuit' | 'code' | 'tutor' | 'vision'"""
+    Returns: 'circuit' | 'code' | 'tutor' | 'vision' | 'teacher'"""
 
     # Vision trigger: images present OR visual keywords
     if has_images:
