@@ -33,7 +33,7 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 sys.path.insert(0, str(AUTOMA_ROOT))
 from checks import run_all_checks, print_results
 from queue_manager import get_next_task, claim_task, complete_task, fail_task, stats
-from tools import search_papers, gulpease_index
+from tools import search_papers, gulpease_index, chat_galileo
 
 
 def load_state() -> dict:
@@ -54,7 +54,8 @@ def write_heartbeat():
     HEARTBEAT_FILE.write_text(datetime.now().isoformat())
 
 
-def compose_prompt(check_results: list, task: dict | None, state: dict) -> str:
+def compose_prompt(check_results: list, task: dict | None, state: dict,
+                   mode: str = "IMPROVE", program: str = "") -> str:
     """Compose the prompt for Claude Code headless."""
     # Check summary
     check_summary = "\n".join(
@@ -63,7 +64,7 @@ def compose_prompt(check_results: list, task: dict | None, state: dict) -> str:
     )
     failed_checks = [r for r in check_results if r["status"] == "fail"]
 
-    # Priority: fix failed checks FIRST, then work on task
+    # Priority: fix failed checks FIRST, then work by mode
     if failed_checks:
         work_section = f"""## PRIORITY: FIX FAILED CHECKS
 The following checks FAILED. Fix them BEFORE working on any task.
@@ -71,17 +72,51 @@ The following checks FAILED. Fix them BEFORE working on any task.
 
 Fix these issues. Run `npm run build` after any code changes. Verify the fix works.
 """
-    elif task:
-        work_section = f"""## TASK: {task.get('title', 'Unknown')}
+    elif mode == "IMPROVE" and task:
+        work_section = f"""## MODE: IMPROVE — Migliora il codice
+TASK: {task.get('title', 'Unknown')}
 Priority: {task.get('priority', '?')}
 Description: {task.get('description', 'No description')}
-Tags: {task.get('tags', '')}
 
-Complete this task. Test your changes. Run `npm run build` to verify no regressions.
+Complete this task. Test. `npm run build`. Verify. Keep/discard.
+Dopo il task: `python3 automa/evaluate.py` per misurare l'impatto.
+"""
+    elif mode == "RESEARCH":
+        work_section = """## MODE: RESEARCH — Studia e scopri
+Usa i tool AI per ricerca:
+1. `python3 -c "from automa.tools import search_papers; print(search_papers('EdTech electronics children', 5))"` per paper
+2. `python3 -c "from automa.tools import call_gemini; print(call_gemini('Analizza competitor EdTech simulatori elettronica scuole medie Italia 2026'))"` per market analysis
+3. Salva findings in `automa/knowledge/research-cycle-{cycle}.md`
+4. Se trovi un problema concreto, crea un task in `automa/queue/pending/`
+"""
+    elif mode == "WRITE":
+        work_section = """## MODE: WRITE — Produci un articolo
+Scrivi UN articolo in `automa/articles/`. Formato:
+- Frontmatter YAML: title, author (Andrea Marro), date, tags, watermark
+- 500-1000 parole. Argomenti: come ELAB cambia la didattica, tutorial insegnanti,
+  trend EdTech, confronto competitor, storie di successo.
+- Tono: professionale ma accessibile. L'insegnante inesperto è il lettore target.
+- Watermark: "© Andrea Marro — ELAB Tutor" in footer.
+"""
+    elif mode == "AUDIT":
+        work_section = """## MODE: AUDIT — Trova bug e problemi
+1. Naviga il sito con Playwright come un utente reale
+2. Esegui `npx axe https://www.elabtutor.school` per accessibilità
+3. Esegui `npx lighthouse https://www.elabtutor.school --quiet --chrome-flags=--headless` per performance
+4. Ogni bug trovato → crea task YAML in `automa/queue/pending/`
+5. Report in `automa/reports/audit-cycle-{cycle}.md`
+"""
+    elif mode == "EVOLVE":
+        work_section = """## MODE: EVOLVE — Migliora il sistema stesso
+1. Rivedi results.tsv — quale metrica è troppo facile? Quale manca?
+2. Proponi nuove metriche in `automa/metrics-proposals.md`
+3. Rivedi le frequenze tool — DeepSeek/Gemini/Kimi vengono usati abbastanza?
+4. Il sistema si auto-migliora: se qualcosa non funziona, fixalo.
 """
     else:
-        work_section = """## NO TASKS IN QUEUE
-All tasks completed. Run quality checks and look for improvements.
+        work_section = """## MODE: IMPROVE — Nessun task specifico
+Guarda PDR.md e trova il prossimo miglioramento da fare.
+Priorità: esperienza insegnante > UX simulatore > bug > performance.
 """
 
     # Load context files
@@ -96,7 +131,12 @@ All tasks completed. Run quality checks and look for improvements.
     if pdr_path.exists():
         pdr_summary = pdr_path.read_text()[:3000]
 
-    prompt = f"""Sei l'agente autonomo di ELAB Tutor. Lavori in italiano. Project root: {PROJECT_ROOT}
+    prompt = f"""Sei l'agente autonomo di ELAB Tutor (ELAB Autoresearch). Lavori in italiano. Project root: {PROJECT_ROOT}
+Modo corrente: {mode}
+
+## PROGRAMMA AUTORESEARCH
+{program[:3000]}
+
 
 ## PRINCIPIO ZERO
 L'insegnante è il vero utente. Galileo è un libro intelligente, non un professore.
@@ -180,6 +220,67 @@ def run_claude_headless(prompt: str, max_time: int = 1500) -> dict:
         return {"task": "error", "status": "failed", "error": str(e)[:300]}
 
 
+def select_mode(cycle: int, check_results: list, task: dict | None) -> str:
+    """Autoresearch mode selection based on cycle number and state.
+    Modes: IMPROVE, RESEARCH, WRITE, AUDIT, EVOLVE"""
+    failed = [r for r in check_results if r["status"] == "fail"]
+    if failed:
+        return "IMPROVE"  # Always fix failures first
+
+    # Frequency table from program.md
+    if cycle % 20 == 0 and cycle > 0:
+        return "WRITE"     # Every 20 cycles: write an article
+    if cycle % 10 == 0 and cycle > 0:
+        return "EVOLVE"    # Every 10 cycles: review metrics
+    if cycle % 5 == 0:
+        return "AUDIT"     # Every 5 cycles: find bugs with Playwright
+    if cycle % 3 == 0:
+        return "RESEARCH"  # Every 3 cycles: Semantic Scholar + Gemini
+    return "IMPROVE"       # Default: improve code/prompts
+
+
+def ai_scoring(state: dict, cycle: int) -> str | None:
+    """Use DeepSeek/Gemini/Kimi at scheduled intervals."""
+    from tools import call_deepseek_reasoner, call_gemini, call_kimi
+
+    results = []
+
+    # Every 5 cycles: DeepSeek scores Galileo responses
+    if cycle % 5 == 0:
+        galileo_resp = chat_galileo("Cos'è un LED e come si usa con la breadboard?")
+        if not galileo_resp["error"]:
+            score = call_deepseek_reasoner(
+                f"Valuta questa risposta di un tutor AI per bambini 10 anni su una scala 1-10.\n"
+                f"Criteri: chiarezza, età-appropriatezza, correttezza, incoraggiamento.\n"
+                f"Risposta da valutare:\n{galileo_resp['response'][:1000]}\n"
+                f"Rispondi SOLO con: SCORE:N MOTIVO:breve spiegazione"
+            )
+            results.append(f"DeepSeek scoring: {score[:200]}")
+
+    # Every 10 cycles: Gemini competitor analysis
+    if cycle % 10 == 0:
+        analysis = call_gemini(
+            "Analizza brevemente il mercato EdTech italiano 2026 per simulatori di elettronica "
+            "nelle scuole medie. Chi sono i competitor di ELAB Tutor? Cosa manca nel mercato? "
+            "Max 200 parole, fatti concreti."
+        )
+        results.append(f"Gemini market: {analysis[:300]}")
+
+    # Every 10 cycles: Kimi review
+    if cycle % 10 == 5:
+        kimi_review = call_kimi(
+            f"Sei un reviewer esperto di EdTech. Lo stato del progetto ELAB Tutor:\n"
+            f"- 62 esperimenti di elettronica per bambini 8-14\n"
+            f"- AI tutor 'Galileo' con 5 specialisti (circuit, code, tutor, vision, teacher)\n"
+            f"- Simulatore browser con KVL/KCL solver + AVR emulation\n"
+            f"- Score attuale: {json.dumps(state.get('scores', {}))}\n"
+            f"Cosa miglioreresti? Max 200 parole, concreto."
+        )
+        results.append(f"Kimi review: {kimi_review[:300]}")
+
+    return "\n".join(results) if results else None
+
+
 def micro_research(state: dict) -> str | None:
     """Run 1 micro-research per cycle (Semantic Scholar)."""
     topics = [
@@ -191,6 +292,10 @@ def micro_research(state: dict) -> str | None:
         "iPad touch interface educational",
         "offline progressive web app education",
         "Socratic questioning AI tutor",
+        "inexperienced teacher technology adoption",
+        "maker education elementary school",
+        "gamification STEM learning engagement",
+        "EdTech marketing school district adoption",
     ]
 
     cycle = state.get("loop", {}).get("cycles_today", 0)
@@ -205,17 +310,20 @@ def micro_research(state: dict) -> str | None:
     return None
 
 
-def save_report(cycle_num: int, check_results: list, task_result: dict, research: str | None):
+def save_report(cycle_num: int, check_results: list, task_result: dict, research: str | None,
+                mode: str = "IMPROVE", ai_scoring: str | None = None):
     """Save cycle report as JSON."""
     report = {
         "cycle": cycle_num,
         "timestamp": datetime.now().isoformat(),
         "date": date.today().isoformat(),
+        "mode": mode,
         "checks": check_results,
         "checks_passed": sum(1 for r in check_results if r["status"] == "pass"),
         "checks_total": sum(1 for r in check_results if r["status"] != "skip"),
         "task_result": task_result,
         "research": research,
+        "ai_scoring": ai_scoring,
     }
 
     filename = f"{date.today().isoformat()}-cycle-{cycle_num}.json"
@@ -249,17 +357,33 @@ def run_cycle(skip_slow: bool = False, dry_run: bool = False) -> dict:
     check_results = run_all_checks(skip_slow=skip_slow)
     print_results(check_results)
 
-    # Step 2: Get next task
+    # Step 2: Select mode (autoresearch pattern)
+    mode = select_mode(cycle_num, check_results, None)
+    print(f"\n🎯 Mode: {mode}")
+
+    # Step 2b: Get next task (for IMPROVE mode)
     task = get_next_task()
     if task:
-        print(f"\n📦 Next task: [{task.get('priority', '?')}] {task.get('title', task.get('_file', '?'))}")
+        print(f"📦 Next task: [{task.get('priority', '?')}] {task.get('title', task.get('_file', '?'))}")
         if not dry_run:
             claim_task(task["_file"])
     else:
-        print("\n📦 No pending tasks")
+        print("📦 No pending tasks")
+
+    # Step 2c: AI scoring at scheduled intervals
+    print("\n🧠 AI tool calls...")
+    ai_result = ai_scoring(state, cycle_num) if not dry_run else None
+    if ai_result:
+        print(f"   {ai_result[:200]}")
+    else:
+        print("   (none this cycle)")
 
     # Step 3: Compose prompt and run Claude
-    prompt = compose_prompt(check_results, task, state)
+    # Load program.md (autoresearch instructions) for the agent
+    program_path = AUTOMA_ROOT / "program.md"
+    program_md = program_path.read_text()[:4000] if program_path.exists() else ""
+
+    prompt = compose_prompt(check_results, task, state, mode=mode, program=program_md)
 
     if dry_run:
         print("\n🔍 DRY RUN — Prompt composed but NOT executing Claude.")
@@ -287,7 +411,7 @@ def run_cycle(skip_slow: bool = False, dry_run: bool = False) -> dict:
             else:
                 fail_task(task["_file"], task_result.get("error", "unknown"))
 
-    # Step 4: Micro-research
+    # Step 4: Micro-research (every cycle — costante ricerca)
     print("\n🔬 Micro-research...")
     research = micro_research(state)
     if research:
@@ -296,7 +420,8 @@ def run_cycle(skip_slow: bool = False, dry_run: bool = False) -> dict:
         print("   No results")
 
     # Step 5: Save report
-    report_path = save_report(cycle_num, check_results, task_result, research)
+    report_path = save_report(cycle_num, check_results, task_result, research,
+                              mode=mode, ai_scoring=ai_result)
     print(f"\n📊 Report saved: {report_path}")
 
     # Step 6: Update state
