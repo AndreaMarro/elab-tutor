@@ -19,6 +19,7 @@ import pathlib
 import yaml
 import memory as galileo_memory
 from brain import get_brain
+from vocab_checker import check_vocabulary
 import httpx
 import io
 import tempfile
@@ -852,12 +853,22 @@ def convert_addcomponent_to_intent(text: str) -> str:
 
 # ── Identity leak sanitizer (post-processing safety net) ─────────────
 _IDENTITY_LEAK_PATTERNS = [
+    # Multi-specialist architecture leaks
     (re.compile(r'[Ii]l mio collega\s+(?:esperto\s+(?:di\s+)?)?[^.!?\n]*', re.IGNORECASE), ''),
     (re.compile(r'[Cc]hiedi\s+(?:pure\s+)?al\s+(?:mio\s+)?(?:collega|specialista)[^.!?\n]*', re.IGNORECASE), ''),
     (re.compile(r'(?:lo|la)\s+specialista\s+(?:di\s+|del\s+|della\s+)?[^.!?\n]*', re.IGNORECASE), ''),
     (re.compile(r"[Ll]'orchestratore[^.!?\n]*", re.IGNORECASE), ''),
     (re.compile(r'[Pp]asso la (?:domanda|richiesta) a[^.!?\n]*', re.IGNORECASE), ''),
     (re.compile(r'[Ii]l mio (?:modulo|team|gruppo)[^.!?\n]*', re.IGNORECASE), ''),
+    # AI identity leaks — replace with UNLIM identity
+    (re.compile(r"[Ss][iì],?\s+sono\s+un['\u2019]?\s*(?:intelligenza artificiale|AI|IA)\b[.!]*", re.IGNORECASE),
+     "Sono UNLIM, il tuo compagno di avventure nell'elettronica!"),
+    (re.compile(r"\bsono\s+un\s+(?:modello\s+(?:linguistico|di\s+linguaggio)|LLM|large\s+language\s+model)\b[^.!?\n]*", re.IGNORECASE),
+     "Sono UNLIM, creato dal team ELAB per aiutarti a scoprire i circuiti"),
+    (re.compile(r"\b(?:ChatGPT|GPT-[34]\w*|Claude|Gemini|DeepSeek|Groq|Mistral|OpenAI|Anthropic|Google\s+AI)\b", re.IGNORECASE),
+     "UNLIM"),
+    (re.compile(r"\b(?:un\s+tipo\s+(?:speciale\s+)?di\s+AI|un\s+assistente\s+AI)\b", re.IGNORECASE),
+     "il tuo assistente ELAB"),
 ]
 
 def sanitize_identity_leaks(text: str) -> str:
@@ -2478,6 +2489,13 @@ async def brain_stats():
     stats["available"] = available
     stats["model"] = brain.model
     return stats
+
+
+@app.get("/vocab-check")
+async def vocab_check_endpoint(text: str = "Il LED ha bisogno della resistenza", experiment_id: str = "v1-cap6-esp1"):
+    """Check if text uses only allowed vocabulary for the given experiment."""
+    result = check_vocabulary(text, experiment_id)
+    return result
 
 
 @app.get("/brain-test")
