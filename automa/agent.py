@@ -162,6 +162,57 @@ TOOLS = [
         "description": "Run evaluate.py to get the current composite score. Use to measure impact of changes.",
         "input_schema": {"type": "object", "properties": {}},
     },
+    {
+        "name": "kimi_vision",
+        "description": "Analyze a screenshot with Kimi moonshot-v1-128k vision. Use for finding visual bugs, UX issues, design problems in screenshots.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "image_path": {"type": "string", "description": "Path to screenshot PNG/JPG"},
+                "prompt": {"type": "string", "description": "What to analyze in the image"},
+            },
+            "required": ["image_path", "prompt"],
+        },
+    },
+    {
+        "name": "write_article",
+        "description": "Write an article and validate it with DeepSeek before saving. The article is scored 1-10 and only saved if score >= 7.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "title": {"type": "string"},
+                "content": {"type": "string", "description": "Full article in markdown"},
+                "tags": {"type": "string", "description": "Comma-separated tags"},
+            },
+            "required": ["title", "content"],
+        },
+    },
+    {
+        "name": "search_context",
+        "description": "Search the persistent SQLite context database for knowledge, research, experiments, scores. Use to recall what was learned in previous cycles.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Search query"},
+                "category": {"type": "string", "description": "Optional: research, improvement, bug, article, decision, metric"},
+            },
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "save_knowledge",
+        "description": "Save a finding, insight, or decision to the persistent context database. This survives across cycles.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "category": {"type": "string", "description": "research, improvement, bug, article, decision, metric"},
+                "topic": {"type": "string"},
+                "content": {"type": "string"},
+                "source": {"type": "string", "description": "Where this came from: deepseek, gemini, kimi, semantic_scholar, playwright, manual"},
+            },
+            "required": ["category", "topic", "content"],
+        },
+    },
 ]
 
 
@@ -184,12 +235,52 @@ def execute_tool(name: str, input_data: dict) -> str:
             return json.dumps(papers, indent=2, ensure_ascii=False)[:3000]
 
         elif name == "web_search":
-            # Use subprocess to call a web search
-            r = subprocess.run(
-                ["curl", "-s", f"https://api.duckduckgo.com/?q={input_data['query']}&format=json&no_html=1"],
-                capture_output=True, text=True, timeout=15
-            )
-            return r.stdout[:3000] if r.stdout else "No results"
+            # Multi-source web search: DuckDuckGo API + Google Scholar scrape
+            import urllib.parse
+            query = input_data["query"]
+            encoded = urllib.parse.quote(query)
+            results = []
+
+            # Source 1: DuckDuckGo instant answers
+            try:
+                r = subprocess.run(
+                    ["curl", "-s", "-L", f"https://api.duckduckgo.com/?q={encoded}&format=json&no_html=1"],
+                    capture_output=True, text=True, timeout=15
+                )
+                ddg = json.loads(r.stdout) if r.stdout else {}
+                if ddg.get("Abstract"):
+                    results.append(f"DuckDuckGo: {ddg['Abstract'][:500]}")
+                if ddg.get("RelatedTopics"):
+                    for topic in ddg["RelatedTopics"][:3]:
+                        if isinstance(topic, dict) and topic.get("Text"):
+                            results.append(f"  - {topic['Text'][:150]}")
+            except Exception:
+                pass
+
+            # Source 2: Direct URL fetch (if query looks like URL)
+            if query.startswith("http"):
+                try:
+                    r = subprocess.run(
+                        ["curl", "-s", "-L", "--max-time", "10", query],
+                        capture_output=True, text=True, timeout=15
+                    )
+                    # Strip HTML tags for readability
+                    text = re.sub(r'<[^>]+>', ' ', r.stdout)
+                    text = re.sub(r'\s+', ' ', text).strip()
+                    results.append(f"Page content: {text[:2000]}")
+                except Exception:
+                    pass
+
+            # Source 3: Semantic Scholar (for academic queries)
+            if any(w in query.lower() for w in ["paper", "research", "study", "academic", "pedagogy", "education"]):
+                papers = search_papers(query, 3)
+                valid = [p for p in papers if p.get("title")]
+                if valid:
+                    results.append("Academic papers:")
+                    for p in valid:
+                        results.append(f"  [{p.get('year','?')}] {p.get('title','?')[:80]} ({p.get('citationCount',0)} cites)")
+
+            return "\n".join(results)[:4000] if results else "No results found"
 
         elif name == "test_galileo":
             r = chat_galileo(input_data["message"], input_data.get("experiment_id", "v1-cap6-esp1"))
@@ -251,7 +342,6 @@ const {{ chromium }} = require('playwright');
                 capture_output=True, text=True, timeout=600,
                 cwd=str(PROJECT_ROOT),
             )
-            # Extract scores
             scores = {}
             for line in r.stdout.splitlines():
                 if line.startswith("SCORE:"):
@@ -259,6 +349,76 @@ const {{ chromium }} = require('playwright');
                     if len(parts) == 2:
                         scores[parts[0]] = parts[1]
             return json.dumps(scores, indent=2)
+
+        elif name == "kimi_vision":
+            from tools import call_kimi_vision
+            return call_kimi_vision(
+                input_data["prompt"],
+                str(PROJECT_ROOT / input_data["image_path"]),
+            )
+
+        elif name == "write_article":
+            # Step 1: Validate with DeepSeek BEFORE saving
+            title = input_data["title"]
+            content = input_data["content"]
+            tags = input_data.get("tags", "edtech")
+
+            validation = call_deepseek_reasoner(
+                f"Valuta questo articolo per il blog di ELAB Tutor (simulatore elettronica per bambini).\n"
+                f"Titolo: {title}\n"
+                f"Contenuto (prime 1000 parole):\n{content[:3000]}\n\n"
+                f"Dai un punteggio 1-10 su: chiarezza, utilità per insegnanti inesperti, "
+                f"correttezza tecnica, appeal marketing. Rispondi con: SCORE:N MOTIVO:breve"
+            )
+
+            # Extract score
+            score_match = re.search(r'SCORE:\s*(\d+)', validation)
+            score = int(score_match.group(1)) if score_match else 5
+
+            if score < 7:
+                return f"ARTICLE REJECTED (score={score}/10). DeepSeek feedback: {validation[:500]}\nRewrite needed."
+
+            # Step 2: Save with watermark
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            filename = f"automa/articles/{date_str}-{re.sub(r'[^a-z0-9]+', '-', title.lower())[:50]}.md"
+            full_article = f"""---
+title: "{title}"
+author: "Andrea Marro"
+date: "{date_str}"
+tags: [{tags}]
+watermark: "© Andrea Marro — ELAB Tutor"
+quality_score: {score}/10
+validated_by: "DeepSeek R1"
+---
+
+{content}
+
+---
+*© Andrea Marro — ELAB Tutor. Tutti i diritti riservati.*
+"""
+            path = PROJECT_ROOT / filename
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(full_article)
+            return f"ARTICLE APPROVED (score={score}/10). Saved: {filename}. Validation: {validation[:200]}"
+
+        elif name == "search_context":
+            from context_db import search_knowledge
+            results = search_knowledge(
+                input_data["query"],
+                category=input_data.get("category"),
+                limit=10,
+            )
+            return json.dumps(results, indent=2, ensure_ascii=False, default=str)[:5000]
+
+        elif name == "save_knowledge":
+            from context_db import add_knowledge
+            add_knowledge(
+                category=input_data["category"],
+                topic=input_data["topic"],
+                content=input_data["content"],
+                source=input_data.get("source", "agent"),
+            )
+            return f"Saved to context DB: [{input_data['category']}] {input_data['topic']}"
 
         else:
             return f"Unknown tool: {name}"
@@ -270,7 +430,7 @@ const {{ chromium }} = require('playwright');
 # ─── Agent Loop ──────────────────────────────────
 
 def run_agent(system_prompt: str, user_prompt: str, max_turns: int = 25,
-              model: str = "claude-sonnet-4-20250514") -> dict:
+              model: str = "claude-opus-4-20250514") -> dict:
     """Run the agent with tool calling loop. Returns conversation result."""
 
     if not ANTHROPIC_API_KEY:
@@ -347,6 +507,6 @@ if __name__ == "__main__":
         system_prompt="Sei ELAB Autoresearch. Rispondi brevemente.",
         user_prompt="Usa il tool test_galileo per mandare 'Cos è un LED?' a Galileo. Poi valuta la risposta con deepseek_reason.",
         max_turns=5,
-        model="claude-sonnet-4-20250514",
+        model="claude-opus-4-20250514",
     )
     print(json.dumps(result, indent=2, ensure_ascii=False)[:2000])

@@ -180,6 +180,14 @@ Priorità: esperienza insegnante > UX simulatore > bug > performance.
     if eval_path.exists():
         eval_score = eval_path.read_text()[:500]
 
+    # Layer 8: SQLite context DB summary (persistent cross-cycle knowledge)
+    db_summary = ""
+    try:
+        from context_db import get_context_summary
+        db_summary = get_context_summary()
+    except Exception:
+        pass
+
     prompt = f"""Sei l'agente autonomo di ELAB Tutor (ELAB Autoresearch). Lavori in italiano. Project root: {PROJECT_ROOT}
 Modo corrente: {mode}
 
@@ -221,6 +229,9 @@ Per leggere un file: `cat automa/knowledge/NOME.md`
 
 ### 7. Score composito corrente
 {eval_score if eval_score else "(evaluate.py non ancora eseguito — ESEGUILO come prima cosa!)"}
+
+### 8. Context Database (SQLite — memoria persistente)
+{db_summary if db_summary else "(DB vuoto)"}
 
 ## RISULTATI CHECK (appena eseguiti)
 {check_summary}

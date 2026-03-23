@@ -139,6 +139,51 @@ def call_kimi(prompt: str, max_tokens: int = 2048) -> str:
         return f"[ERROR] Unexpected Kimi response: {json.dumps(resp)[:300]}"
 
 
+def call_kimi_vision(prompt: str, image_path: str, max_tokens: int = 2048) -> str:
+    """Call Kimi moonshot-v1-128k with image for visual analysis.
+    image_path: local file path to PNG/JPG screenshot."""
+    if not KIMI_API_KEY or "placeholder" in KIMI_API_KEY:
+        return "[SKIP] Kimi API key not configured"
+
+    import base64
+    from pathlib import Path
+
+    img_path = Path(image_path)
+    if not img_path.exists():
+        return f"[ERROR] Image not found: {image_path}"
+
+    with open(img_path, "rb") as f:
+        img_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+    mime = "image/png" if img_path.suffix == ".png" else "image/jpeg"
+
+    resp = _http_post(
+        "https://api.moonshot.ai/v1/chat/completions",
+        {
+            "model": "moonshot-v1-128k",
+            "messages": [{
+                "role": "user",
+                "content": [
+                    {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{img_b64}"}},
+                    {"type": "text", "text": prompt},
+                ],
+            }],
+            "max_tokens": max_tokens,
+        },
+        {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {KIMI_API_KEY}",
+        },
+        timeout=120,
+    )
+    if "error" in resp:
+        return f"[ERROR] Kimi Vision: {resp['error']}"
+    try:
+        return resp["choices"][0]["message"]["content"]
+    except (KeyError, IndexError):
+        return f"[ERROR] Unexpected Kimi Vision response: {json.dumps(resp)[:300]}"
+
+
 # ─── Brain V13 (local routing) ──────────────────────────
 
 def call_brain(message: str, context: str = "") -> dict:
