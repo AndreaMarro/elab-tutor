@@ -458,7 +458,7 @@ const S = {
     cursor: 'pointer',
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
     transition: 'background 150ms',
-    minHeight: 44,
+    minHeight: 56,
   },
 };
 

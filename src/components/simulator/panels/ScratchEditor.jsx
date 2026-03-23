@@ -184,7 +184,7 @@ const ELAB_BLOCKLY_CSS = `
   padding: 10px 12px !important;
   margin: 2px 4px !important;
   border-radius: 8px !important;
-  min-height: 44px !important;
+  min-height: 56px !important;
   display: flex !important;
   align-items: center !important;
   transition: background 0.15s ease !important;

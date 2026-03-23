@@ -181,7 +181,7 @@
   }
 
   .toolbar-btn {
-    min-height: 44px;
+    min-height: var(--touch-min, 56px);
     padding: 6px 8px;
   }
 }
@@ -476,8 +476,8 @@
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
-  min-height: 44px;
-  min-width: 44px;
+  min-height: var(--touch-min, 56px);
+  min-width: var(--touch-min, 56px);
   line-height: 1;
   white-space: nowrap;
   transition: all var(--transition-spring);
@@ -716,8 +716,8 @@
   padding: 6px 12px;
   font-weight: var(--font-weight-semibold, 600);
   border-radius: var(--radius-sm, 6px);
-  min-height: var(--touch-min, 44px);
-  min-width: var(--touch-min, 44px);
+  min-height: var(--touch-min, 56px);
+  min-width: var(--touch-min, 56px);
 }
 
 @media (hover: hover) {
@@ -742,8 +742,8 @@
   padding: 6px 12px;
   font-weight: var(--font-weight-semibold, 600);
   border-radius: var(--radius-sm, 6px);
-  min-height: var(--touch-min, 44px);
-  min-width: var(--touch-min, 44px);
+  min-height: var(--touch-min, 56px);
+  min-width: var(--touch-min, 56px);
 }
 
 @media (hover: hover) {
@@ -767,8 +767,8 @@
   padding: 6px 12px;
   font-weight: 600;
   border-radius: var(--radius-sm, 6px);
-  min-height: 44px;
-  min-width: 44px;
+  min-height: var(--touch-min, 56px);
+  min-width: var(--touch-min, 56px);
 }
 
 @media (hover: hover) {
@@ -946,8 +946,8 @@
 
   .toolbar-btn {
     padding: 6px 8px;
-    min-height: 44px;
-    min-width: 44px;
+    min-height: var(--touch-min, 56px);
+    min-width: var(--touch-min, 56px);
   }
 
   .toolbar-info {
@@ -977,8 +977,8 @@
 /* © Andrea Marro — 18/02/2026 */
 .elab-simulator [title*="Chiudi"],
 .elab-simulator [title*="chiudi"] {
-  min-width: 44px;
-  min-height: 44px;
+  min-width: var(--touch-min, 56px);
+  min-height: var(--touch-min, 56px);
 }
 
 /* ═══════════════════════════════════════════════════════════════ */

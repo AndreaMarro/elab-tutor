@@ -107,8 +107,8 @@
   color: var(--color-sim-text-muted, #999);
   padding: var(--space-1, 4px) var(--space-2, 8px);
   border-radius: var(--radius-sm, 6px);
-  min-width: var(--touch-min, 44px);
-  min-height: var(--touch-min, 44px);
+  min-width: var(--touch-min, 56px);
+  min-height: var(--touch-min, 56px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +143,7 @@
   font-size: var(--font-size-sm, 14px);
   font-weight: var(--font-weight-semibold, 600);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
-  min-height: var(--touch-min, 44px);
+  min-height: var(--touch-min, 56px);
 }
 
 /* S93: Removed .scratchModePanel, .scratchLayout, .scratchBlockly, .scratchCodePreview

@@ -4,6 +4,9 @@
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Ensure claude CLI is in PATH
+export PATH="$HOME/.npm-global/bin:$PATH"
+
 echo "╔════════════════════════════════════╗"
 echo "║   ELAB AUTOMA — Avvio sistema     ║"
 echo "╚════════════════════════════════════╝"

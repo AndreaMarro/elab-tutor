@@ -187,7 +187,7 @@ const S = {
     padding: '8px 14px',
     borderBottom: '1px solid var(--color-border-light, #F0F0F0)',
     background: 'var(--color-bg-secondary, #FAFAFA)',
-    minHeight: 44,
+    minHeight: 56,
   },
 
   headerTitle: {
@@ -249,7 +249,7 @@ const S = {
     cursor: 'grab',
     transition: 'all 120ms ease',
     fontSize: 14,
-    minHeight: 44,
+    minHeight: 56,
     overflow: 'hidden',
   },
 
@@ -285,7 +285,7 @@ const S = {
     cursor: 'pointer',
     textAlign: 'center',
     transition: 'all 150ms ease',
-    minHeight: 44,
+    minHeight: 56,
   },
 
   emptyMsg: {

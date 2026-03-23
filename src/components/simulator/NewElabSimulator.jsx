@@ -109,7 +109,7 @@ const ScratchCompileBar = React.memo(function ScratchCompileBar({
             <span style={{ color: 'var(--color-vol3)', fontWeight: 700, fontSize: 13 }}>{'\u274C'} Errori di compilazione</span>
             <button
               onClick={() => setShowErrors(false)}
-              style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: 16, padding: 0, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: 16, padding: 0, minWidth: 56, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               aria-label="Chiudi pannello errori"
             >{'\u2715'}</button>
           </div>
@@ -4140,7 +4140,7 @@ const NewElabSimulator = ({
                             background: bottomPanel === 'monitor' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)',
                             color: bottomPanel === 'monitor' ? LIME : 'var(--color-text-gray-400, #666)',
                             borderBottom: bottomPanel === 'monitor' ? `2px solid ${LIME}` : '2px solid transparent',
-                            minHeight: 'var(--touch-min, 44px)',
+                            minHeight: 'var(--touch-min, 56px)',
                           }}
                         >
                           Monitor
@@ -4153,7 +4153,7 @@ const NewElabSimulator = ({
                             background: bottomPanel === 'plotter' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)',
                             color: bottomPanel === 'plotter' ? 'var(--color-tab-plotter, #3498DB)' : 'var(--color-text-gray-400, #666)',
                             borderBottom: bottomPanel === 'plotter' ? '2px solid var(--color-tab-plotter, #3498DB)' : '2px solid transparent',
-                            minHeight: 'var(--touch-min, 44px)',
+                            minHeight: 'var(--touch-min, 56px)',
                           }}
                         >
                           Plotter
@@ -4166,7 +4166,7 @@ const NewElabSimulator = ({
                             padding: '4px 10px', border: 'none', cursor: 'pointer',
                             background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-300, #888)', fontSize: 16,
                             borderBottom: '2px solid transparent',
-                            minHeight: 'var(--touch-min, 44px)', minWidth: 44,
+                            minHeight: 'var(--touch-min, 56px)', minWidth: 56,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'color 150ms, background 150ms',
                           }}
@@ -4316,7 +4316,7 @@ const NewElabSimulator = ({
                   title={scratchFullscreen ? 'Esci da schermo intero (Esc)' : 'Schermo intero'}
                   aria-label={scratchFullscreen ? 'Esci da schermo intero' : 'Schermo intero'}
                   style={{
-                    padding: scratchFullscreen ? '7px 16px' : '7px 12px', border: 'none', cursor: 'pointer', minHeight: 44, minWidth: 44,
+                    padding: scratchFullscreen ? '7px 16px' : '7px 12px', border: 'none', cursor: 'pointer', minHeight: 44, minWidth: 56,
                     fontFamily: "var(--font-sans)", fontSize: scratchFullscreen ? 14 : 18, fontWeight: scratchFullscreen ? 600 : 400,
                     background: scratchFullscreen ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-editor-bg, #161B22)',
                     color: scratchFullscreen ? '#fff' : 'var(--color-text-gray-400, #666)',

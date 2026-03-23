@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 // Custom per-chunk obfuscation — preserves code-splitting, skips vendor libs
@@ -66,6 +67,48 @@ function copyrightWatermark() {
 export default defineConfig(({ mode }) => ({
     plugins: [
         react(),
+        VitePWA({
+            registerType: 'autoUpdate',
+            includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+            manifest: {
+                name: 'ELAB Tutor — Simulatore Arduino',
+                short_name: 'ELAB Tutor',
+                description: 'Simulatore di circuiti e tutor AI per imparare elettronica e Arduino',
+                theme_color: '#1E4D8C',
+                background_color: '#F8FAFC',
+                display: 'standalone',
+                orientation: 'any',
+                start_url: '/',
+                icons: [
+                    { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+                    { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+                    { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+                ],
+            },
+            workbox: {
+                maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB — ElabTutorV4 chunk is ~1.1MB
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                runtimeCaching: [
+                    {
+                        urlPattern: /^https:\/\/elab-galileo\.onrender\.com\/.*/i,
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'galileo-api',
+                            expiration: { maxEntries: 50, maxAgeSeconds: 86400 },
+                            networkTimeoutSeconds: 10,
+                        },
+                    },
+                    {
+                        urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
+                        handler: 'CacheFirst',
+                        options: {
+                            cacheName: 'google-fonts',
+                            expiration: { maxEntries: 20, maxAgeSeconds: 31536000 },
+                        },
+                    },
+                ],
+            },
+        }),
         ...(mode === 'production' ? [obfuscateChunks({
             compact: true,
             // Control flow — DISABLED: causes TDZ errors across chunk boundaries

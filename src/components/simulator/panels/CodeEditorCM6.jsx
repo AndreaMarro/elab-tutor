@@ -564,7 +564,7 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
             </span>
             <button
               onClick={() => setShowErrors(false)}
-              style={{ background: 'none', border: 'none', color: 'var(--color-text-gray-300, #888)', cursor: 'pointer', fontSize: 16, padding: 0, minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-sm)' }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-text-gray-300, #888)', cursor: 'pointer', fontSize: 16, padding: 0, minWidth: 56, minHeight: 56, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-sm)' }}
               title="Chiudi errori"
               aria-label="Chiudi pannello errori"
             >
@@ -635,8 +635,8 @@ const codeEditorStyles = {
     cursor: 'pointer',
     fontFamily: FONT_CODE,
     lineHeight: 1,
-    minWidth: 44,
-    minHeight: 44,
+    minWidth: 56,
+    minHeight: 56,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -662,7 +662,7 @@ const codeEditorStyles = {
     fontWeight: 700,
     cursor: 'pointer',
     transition: 'opacity 0.15s',
-    minHeight: 44,
+    minHeight: 56,
   },
   errorPanel: {
     maxHeight: 120,

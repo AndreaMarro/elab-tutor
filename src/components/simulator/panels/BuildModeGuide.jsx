@@ -240,7 +240,7 @@ const navBtnStyle = {
   fontFamily: 'var(--font-sans)',
   cursor: 'pointer',
   textAlign: 'center',
-  minHeight: 44,
+  minHeight: 56,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

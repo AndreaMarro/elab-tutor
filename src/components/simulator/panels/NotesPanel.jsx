@@ -205,8 +205,8 @@ const styles = {
   },
 
   colorDot: {
-    width: 44,
-    height: 44,
+    width: 56,
+    height: 56,
     borderRadius: '50%',
     border: 'none',
     cursor: 'pointer',
@@ -214,8 +214,8 @@ const styles = {
   },
 
   weightBtn: {
-    width: 44,
-    height: 44,
+    width: 56,
+    height: 56,
     borderRadius: 6,
     border: '1px solid transparent',
     cursor: 'pointer',

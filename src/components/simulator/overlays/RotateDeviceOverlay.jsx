@@ -112,7 +112,7 @@ const styles = {
     borderRadius: 'var(--radius-sm, 6px)',
     padding: '8px 20px',
     cursor: 'pointer',
-    minHeight: 'var(--touch-min, 44px)',
+    minHeight: 'var(--touch-min, 56px)',
   },
 };
 

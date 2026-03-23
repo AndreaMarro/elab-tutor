@@ -84,20 +84,56 @@ Complete this task. Test your changes. Run `npm run build` to verify no regressi
 All tasks completed. Run quality checks and look for improvements.
 """
 
-    prompt = f"""You are the ELAB Tutor autonomous maintenance agent. You work on the ELAB Tutor project at:
-{PROJECT_ROOT}
+    # Load context files
+    context_parts = []
+    for ctx_file in ["context/teacher-principles.md", "context/volume-path.md"]:
+        ctx_path = AUTOMA_ROOT / ctx_file
+        if ctx_path.exists():
+            context_parts.append(ctx_path.read_text()[:2000])
 
-## CHECK RESULTS (just ran)
+    pdr_path = AUTOMA_ROOT / "PDR.md"
+    pdr_summary = ""
+    if pdr_path.exists():
+        pdr_summary = pdr_path.read_text()[:3000]
+
+    prompt = f"""Sei l'agente autonomo di ELAB Tutor. Lavori in italiano. Project root: {PROJECT_ROOT}
+
+## PRINCIPIO ZERO
+L'insegnante è il vero utente. Galileo è un libro intelligente, non un professore.
+Tutti possono insegnare con ELAB Tutor. L'insegnante impara mentre insegna.
+Il linguaggio sulla LIM è SEMPRE 10-14 anni. Galileo segue i volumi ELAB — non usa mai termini di capitoli futuri.
+
+## CONTESTO PEDAGOGICO
+{chr(10).join(context_parts[:2])}
+
+## PIANO (PDR)
+{pdr_summary[:2000]}
+
+## RISULTATI CHECK (appena eseguiti)
 {check_summary}
 
 {work_section}
 
-## RULES
-- ZERO regressions. `npm run build` must pass.
-- Fix the most critical issue first.
-- Be concise in your work. No unnecessary changes.
-- After completing work, output a JSON summary on the LAST line:
-{{"task": "description", "status": "done|partial|failed", "files_changed": ["file1.js"], "build_pass": true}}
+## REGOLE INDEROGABILI
+1. ZERO REGRESSIONI — `npm run build` DEVE passare. Se rompi qualcosa, fixalo prima di continuare.
+2. CoV (Chain of Verification) su ogni output — verifica punto per punto che funzioni.
+3. Massima onestà — se qualcosa non funziona, scrivi FAIL non "parzialmente ok".
+4. L'insegnante è il vero utente — ogni modifica deve migliorare la sua esperienza.
+5. iPad e LIM sono vincoli centrali — touch ≥56px, font leggibili, no overflow.
+6. Dopo il lavoro, fai 1 micro-ricerca: cerca su Semantic Scholar un paper utile al task appena fatto.
+7. Scrivi cosa hai fatto in reports/ — brutale onestà sui risultati.
+
+## TOOLS DISPONIBILI
+- DeepSeek R1: per scoring/giudizio (API key in automa/.env)
+- Gemini 2.5 Pro: per vision screenshot e ricerca
+- Kimi K2.5: per review e secondo parere
+- Brain VPS (72.60.129.50:11434): per test routing
+- Playwright: per test browser reali
+- Semantic Scholar API: per ricerca paper
+
+## OUTPUT (OBBLIGATORIO)
+Alla FINE del lavoro, scrivi un JSON summary sull'ULTIMA riga:
+{{"task": "descrizione", "status": "done|partial|failed", "files_changed": ["file1.js"], "build_pass": true, "cov_verified": true, "research": "1 paper trovato: ..."}}
 """
     return prompt
 
@@ -289,13 +325,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.loop:
-        print("🔄 Starting continuous loop (every 2h)...")
+        interval = 3600  # 1h between cycles (12 tasks/night)
+        print(f"🔄 Starting continuous loop (every {interval//60}min)...")
         while True:
             try:
                 run_cycle(skip_slow=args.fast)
             except Exception as e:
                 print(f"❌ Cycle error: {e}")
-            print(f"\n💤 Sleeping 2h until next cycle...")
-            time.sleep(7200)
+                import traceback
+                traceback.print_exc()
+            print(f"\n💤 Sleeping {interval//60}min until next cycle...")
+            time.sleep(interval)
     else:
         run_cycle(skip_slow=args.fast, dry_run=args.dry_run)

@@ -3,7 +3,7 @@
  * ELAB Design System v4.0 — Modern Design Tokens
  *
  * Inspired by Claude.ai / ChatGPT clean interfaces.
- * WCAG 2.1 AA: min 14px fonts, min 44px touch targets.
+ * WCAG 2.1 AA: min 14px fonts, min 56px touch targets (LIM/iPad).
  * 4px spacing grid, subtle shadows, generous radius.
  */
 
@@ -121,7 +121,7 @@
   --z-max: 9999;
 
   /* --- Touch targets (WCAG minimum) --- */
-  --touch-min: 44px;
+  --touch-min: 56px;
 
   /* --- S100: Canonical responsive breakpoints (reference — CSS vars can't be used in @media) ---
    * Mobile portrait:   < 600px
@@ -353,7 +353,7 @@
   --font-lg: var(--font-size-lg);
   --font-xl: var(--font-size-xl);
   --font-2xl: var(--font-size-2xl);
-  --touch-min: 44px;
+  --touch-min: 56px;
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
