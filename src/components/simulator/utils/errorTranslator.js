@@ -56,6 +56,21 @@ const GCC_FRIENDLY_ERRORS = [
   { pattern: /unused variable '([^']+)'/, translate: (m) => `La variabile "${m[1]}" è stata creata ma non usata. Puoi rimuoverla o usarla nel codice.` },
   // Narrowing conversion
   { pattern: /narrowing conversion/, translate: () => `Un numero viene convertito in un tipo più piccolo e potrebbe perdere precisione. Usa un cast esplicito se è intenzionale.` },
+  // Missing setup/loop — most common beginner error
+  { pattern: /undefined reference to 'main'/, translate: () => `Il tuo programma non ha le funzioni setup() e loop(). Ogni programma Arduino deve avere entrambe!` },
+  { pattern: /undefined reference to 'setup'/, translate: () => `Manca la funzione setup()! Ogni programma Arduino inizia con void setup() { }` },
+  { pattern: /undefined reference to 'loop'/, translate: () => `Manca la funzione loop()! Ogni programma Arduino ha bisogno di void loop() { }` },
+  // Case sensitivity — kids often write pinmode instead of pinMode
+  { pattern: /'pinmode' was not declared/, translate: () => `Hai scritto "pinmode" ma si scrive "pinMode" con la M maiuscola! In Arduino le maiuscole contano.` },
+  { pattern: /'digitalwrite' was not declared/, translate: () => `Hai scritto "digitalwrite" ma si scrive "digitalWrite" con la W maiuscola!` },
+  { pattern: /'digitalread' was not declared/, translate: () => `Hai scritto "digitalread" ma si scrive "digitalRead" con la R maiuscola!` },
+  { pattern: /'analogwrite' was not declared/, translate: () => `Hai scritto "analogwrite" ma si scrive "analogWrite" con la W maiuscola!` },
+  { pattern: /'analogread' was not declared/, translate: () => `Hai scritto "analogread" ma si scrive "analogRead" con la R maiuscola!` },
+  { pattern: /'Serial' was not declared/, translate: () => `"Serial" deve avere la S maiuscola. E ricorda di aggiungere Serial.begin(9600) nel setup()!` },
+  // Constant too large
+  { pattern: /integer constant is too large/, translate: () => `Il numero che hai scritto è troppo grande. Per numeri grandi usa il tipo "long" invece di "int".` },
+  // Unterminated string
+  { pattern: /missing terminating " character/, translate: () => `Hai aperto le virgolette " ma non le hai chiuse. Ogni testo deve iniziare e finire con "` },
 ];
 
 function translateGccError(line) {
