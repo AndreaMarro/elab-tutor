@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+"""
+ELAB Automa — Parallel Research Loop (Kimi K2.5)
+Runs alongside each cycle, using Kimi K2.5 for research/review/analysis.
+Communicates findings back to the main cycle via shared state files.
+
+Architecture:
+  main cycle (Claude) ──→ parallel_research (Kimi K2.5)
+       │                        │
+       │  writes context   reads context + writes findings
+       │                        │
+       └── shared state ←───────┘
+           (automa/state/parallel-research.json)
+"""
+
+import json
+import time
+import threading
+from datetime import datetime
+from pathlib import Path
+
+AUTOMA_ROOT = Path(__file__).parent
+FINDINGS_FILE = AUTOMA_ROOT / "state" / "parallel-research.json"
+KNOWLEDGE_DIR = AUTOMA_ROOT / "knowledge"
+
+# Research topics rotate each cycle for diverse coverage
+RESEARCH_AGENDA = [
+    {
+        "id": "pedagogy",
+        "topic": "pedagogia docenti inesperti elettronica scuola media Italia",
+        "prompt_template": (
+            "SEI ELAB-RESEARCH-LOOP. Ricerca: {topic}\n"
+            "Contesto ELAB: tutor elettronica per bambini 8-12, simulatore circuiti browser, AI Galileo.\n"
+            "Trova 3 insight utili e 1 proposta concreta di miglioramento.\n"
+            "Rispondi in italiano. Max 300 parole. Formato:\n"
+            "INSIGHT-1: ...\nINSIGHT-2: ...\nINSIGHT-3: ...\nPROPOSTA: ...\nSEVERITY: low/medium/high"
+        ),
+    },
+    {
+        "id": "competitor",
+        "topic": "competitor EdTech simulatori elettronica 2026 Tinkercad Wokwi Arduino",
+        "prompt_template": (
+            "Analizza brevemente i competitor di ELAB Tutor nel mercato EdTech simulatori elettronica 2026.\n"
+            "Focus: Tinkercad Circuits, Wokwi, Falstad, PhET.\n"
+            "Cosa fanno meglio? Cosa manca a tutti? Dove ELAB puo' differenziarsi?\n"
+            "Max 300 parole. Formato:\n"
+            "COMPETITOR-1: [nome] — forza/debolezza\n...\nGAP-MERCATO: ...\nOPPORTUNITA-ELAB: ...\nSEVERITY: low/medium/high"
+        ),
+    },
+    {
+        "id": "ux_children",
+        "topic": "UX design bambini 8-12 anni interfaccia educativa touch tablet",
+        "prompt_template": (
+            "Quali sono le best practice UX per interfacce educative per bambini 8-12 anni?\n"
+            "Focus: touch target, font, colori, feedback, gamification, attenzione, carico cognitivo.\n"
+            "Contestualizza per un simulatore di circuiti elettronici su tablet scolastico.\n"
+            "Max 300 parole. Formato:\n"
+            "BEST-PRACTICE-1: ...\n...\nAPPLICAZIONE-ELAB: ...\nSEVERITY: low/medium/high"
+        ),
+    },
+    {
+        "id": "ai_tutoring",
+        "topic": "AI tutoring adattivo per STEM education scaffolding ZPD",
+        "prompt_template": (
+            "Come dovrebbe comportarsi un AI tutor per bambini che imparano elettronica?\n"
+            "Concetti: scaffolding, ZPD (Vygotsky), metodo socratico, feedback formativo.\n"
+            "Galileo (il tutor AI di ELAB) deve essere un libro intelligente, NON un professore.\n"
+            "Max 300 parole. Formato:\n"
+            "PRINCIPIO-1: ...\n...\nERRORE-COMUNE: ...\nRACCOMANDAZIONE-GALILEO: ...\nSEVERITY: low/medium/high"
+        ),
+    },
+    {
+        "id": "lim_classroom",
+        "topic": "LIM lavagna interattiva aula tecnologia scuola media lezione tipo",
+        "prompt_template": (
+            "Come si svolge una lezione tipo di tecnologia in una scuola media italiana con LIM?\n"
+            "Focus: flusso lezione, uso della LIM, interazione docente-studenti, tempi.\n"
+            "ELAB Tutor deve funzionare in questo contesto. Cosa serve per essere usabile su LIM?\n"
+            "Max 300 parole. Formato:\n"
+            "FLUSSO-LEZIONE: ...\nVINCOLI-LIM: ...\nREQUISITI-ELAB: ...\nSEVERITY: low/medium/high"
+        ),
+    },
+    {
+        "id": "circuit_accuracy",
+        "topic": "accuratezza simulatore circuiti educativo KCL KVL MNA errori comuni",
+        "prompt_template": (
+            "Quali sono gli errori piu' comuni nei simulatori di circuiti educativi?\n"
+            "Focus: accuratezza solver (KCL/KVL/MNA), LED modeling, paralleli, cortocircuiti.\n"
+            "ELAB usa un MNA solver proprio (~1700 LOC). Quali edge case testare?\n"
+            "Max 300 parole. Formato:\n"
+            "EDGE-CASE-1: ...\n...\nTEST-SUGGERITO: ...\nSEVERITY: low/medium/high"
+        ),
+    },
+]
+
+
+def load_findings() -> dict:
+    """Load existing parallel research findings."""
+    if FINDINGS_FILE.exists():
+        return json.loads(FINDINGS_FILE.read_text())
+    return {"findings": [], "last_cycle": 0, "total_insights": 0}
+
+
+def save_findings(data: dict):
+    """Save findings to shared state."""
+    data["updated"] = datetime.now().isoformat()
+    FINDINGS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+
+
+def run_parallel_research(cycle_num: int, state: dict, blocking: bool = False) -> dict | None:
+    """Run Kimi K2.5 research in parallel with the main cycle.
+
+    Args:
+        cycle_num: current cycle number
+        state: current orchestrator state
+        blocking: if True, wait for result; if False, run in thread
+
+    Returns:
+        Finding dict if blocking, None if async
+    """
+    from tools import call_kimi, KIMI_API_KEY
+
+    if not KIMI_API_KEY or "placeholder" in KIMI_API_KEY:
+        return {"status": "skip", "reason": "Kimi API key not configured"}
+
+    # Select topic by rotation
+    topic_idx = cycle_num % len(RESEARCH_AGENDA)
+    agenda_item = RESEARCH_AGENDA[topic_idx]
+
+    def _do_research():
+        start = time.time()
+
+        # Build prompt with context from state
+        prompt = agenda_item["prompt_template"].format(topic=agenda_item["topic"])
+
+        # Add cycle context if available
+        last_eval = state.get("scores", {})
+        if last_eval:
+            prompt += f"\n\nContesto ciclo corrente: score={json.dumps(last_eval)}"
+
+        # Call Kimi
+        result = call_kimi(prompt, max_tokens=1500)
+        elapsed = time.time() - start
+
+        # Parse and structure finding
+        finding = {
+            "cycle": cycle_num,
+            "topic_id": agenda_item["id"],
+            "topic": agenda_item["topic"],
+            "timestamp": datetime.now().isoformat(),
+            "elapsed_s": round(elapsed, 1),
+            "raw_response": result[:2000],
+            "status": "error" if result.startswith("[") else "ok",
+        }
+
+        # Extract severity if present
+        for line in result.splitlines():
+            if line.strip().startswith("SEVERITY:"):
+                finding["severity"] = line.split(":", 1)[1].strip().lower()
+                break
+
+        # Save to shared state
+        data = load_findings()
+        data["findings"].append(finding)
+        data["last_cycle"] = cycle_num
+        data["total_insights"] = len(data["findings"])
+        # Keep last 50 findings
+        if len(data["findings"]) > 50:
+            data["findings"] = data["findings"][-50:]
+        save_findings(data)
+
+        # Also save to knowledge dir for inter-cycle context
+        if finding["status"] == "ok":
+            knowledge_file = KNOWLEDGE_DIR / f"kimi-research-cycle-{cycle_num}.md"
+            knowledge_file.write_text(
+                f"# Kimi Research — Cycle {cycle_num}\n"
+                f"Topic: {agenda_item['topic']}\n"
+                f"Date: {finding['timestamp']}\n\n"
+                f"{result}\n"
+            )
+
+        return finding
+
+    if blocking:
+        return _do_research()
+    else:
+        thread = threading.Thread(target=_do_research, daemon=True)
+        thread.start()
+        return None
+
+
+def get_latest_findings(n: int = 5) -> str:
+    """Get latest N findings as formatted string for prompt injection."""
+    data = load_findings()
+    findings = data.get("findings", [])[-n:]
+    if not findings:
+        return ""
+
+    lines = []
+    for f in findings:
+        status = "OK" if f.get("status") == "ok" else "ERR"
+        severity = f.get("severity", "?")
+        lines.append(
+            f"  [{status}] Cycle {f['cycle']} — {f['topic_id']} "
+            f"(severity={severity}): {f.get('raw_response', '')[:150]}"
+        )
+    return "\n".join(lines)
+
+
+def get_actionable_findings() -> list[dict]:
+    """Get findings with severity medium or high that haven't been actioned."""
+    data = load_findings()
+    return [
+        f for f in data.get("findings", [])
+        if f.get("severity") in ("medium", "high") and not f.get("actioned")
+    ]
