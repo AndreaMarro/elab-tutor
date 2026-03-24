@@ -133,6 +133,154 @@ def _apply_rules(rules, context):
     return actions
 
 
+# ═══════════════════════════════════════════════════════════════
+# LOOP CLOSERS — the 3 functions that make the system actually evolve
+# ═══════════════════════════════════════════════════════════════
+
+def _snapshot_before_work():
+    """Take a git snapshot + score BEFORE the agent works. For keep/discard."""
+    snapshot = {"timestamp": datetime.now().isoformat()}
+    try:
+        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                           capture_output=True, text=True, cwd=str(PROJECT_ROOT), timeout=5)
+        snapshot["git_hash"] = r.stdout.strip()[:7]
+    except Exception:
+        snapshot["git_hash"] = "unknown"
+    eval_path = AUTOMA_ROOT / "state" / "last-eval.json"
+    if eval_path.exists():
+        try:
+            snapshot["score_before"] = json.loads(eval_path.read_text()).get("composite", 0)
+        except Exception:
+            snapshot["score_before"] = 0
+    else:
+        snapshot["score_before"] = 0
+    # Save snapshot
+    snap_path = AUTOMA_ROOT / "state" / "cycle-snapshot.json"
+    snap_path.write_text(json.dumps(snapshot, indent=2))
+    return snapshot
+
+
+def _keep_or_discard(task_result, snapshot):
+    """After work: measure score, compare with before, keep or revert.
+    Returns 'keep', 'discard', or 'no_measurement'."""
+    if task_result.get("status") != "done":
+        return "no_measurement"
+    # Run evaluate.py to get fresh score
+    try:
+        ev = subprocess.run(
+            ["python3", str(AUTOMA_ROOT / "evaluate.py")],
+            capture_output=True, text=True, timeout=300, cwd=str(PROJECT_ROOT))
+        score_after = None
+        for line in ev.stdout.splitlines():
+            if line.startswith("SCORE:composite="):
+                score_after = float(line.split("=")[1])
+                break
+        if score_after is None:
+            return "no_measurement"
+        score_before = snapshot.get("score_before", 0)
+        delta = score_after - score_before
+        # Keep if score didn't drop
+        if delta >= -0.005:  # Allow tiny noise (0.5%)
+            print(f"   KEEP: score {score_before:.4f} -> {score_after:.4f} (delta={delta:+.4f})")
+            # Update last-eval
+            ep = AUTOMA_ROOT / "state" / "last-eval.json"
+            ep.write_text(json.dumps({"composite": score_after,
+                "timestamp": datetime.now().isoformat()}, indent=2))
+            return "keep"
+        else:
+            print(f"   DISCARD: score {score_before:.4f} -> {score_after:.4f} (delta={delta:+.4f})")
+            # Revert to snapshot
+            git_hash = snapshot.get("git_hash", "")
+            if git_hash and git_hash != "unknown":
+                try:
+                    subprocess.run(["git", "checkout", "--", "."],
+                                   cwd=str(PROJECT_ROOT), timeout=10)
+                    print(f"   Reverted to {git_hash}")
+                except Exception:
+                    print("   Revert failed — manual intervention needed")
+            return "discard"
+    except Exception as e:
+        print(f"   Keep/discard error: {e}")
+        return "no_measurement"
+
+
+def _research_to_tasks():
+    """Convert high-severity research findings into task YAML files.
+    This closes the Research -> Task loop."""
+    actionable = get_actionable_findings()
+    created = 0
+    pending_dir = AUTOMA_ROOT / "queue" / "pending"
+    pending_dir.mkdir(parents=True, exist_ok=True)
+    for finding in actionable:
+        severity = finding.get("severity", "low")
+        if severity not in ("medium", "high", "blocker"):
+            continue
+        topic_id = finding.get("topic_id", "unknown")
+        cycle = finding.get("cycle", 0)
+        action = finding.get("raw_response", "")[:200]
+        # Create task YAML
+        task_id = f"research-{topic_id}-c{cycle}"
+        task_path = pending_dir / f"{task_id}.yaml"
+        if task_path.exists():
+            continue  # Don't duplicate
+        priority = "P1" if severity in ("high", "blocker") else "P2"
+        task_path.write_text(
+            f"id: {task_id}\n"
+            f"priority: {priority}\n"
+            f"title: '[Research] {topic_id}: finding from cycle {cycle}'\n"
+            f"description: |\n"
+            f"  Auto-generated from parallel research finding.\n"
+            f"  Severity: {severity}\n"
+            f"  {action}\n"
+            f"tags: research,auto-generated\n"
+        )
+        finding["actioned"] = True
+        created += 1
+    # Save back actioned status
+    if created > 0:
+        from parallel_research import save_findings, load_findings
+        data = load_findings()
+        for f in data.get("findings", []):
+            for af in actionable:
+                if f.get("cycle") == af.get("cycle") and f.get("topic_id") == af.get("topic_id"):
+                    f["actioned"] = True
+        save_findings(data)
+        print(f"   Research->Task: {created} new tasks created")
+    return created
+
+
+def _requeue_fixable_failed():
+    """Move fixable failed tasks back to pending. Closes the failed->retry loop."""
+    failed_dir = AUTOMA_ROOT / "queue" / "failed"
+    pending_dir = AUTOMA_ROOT / "queue" / "pending"
+    if not failed_dir.exists():
+        return 0
+    requeued = 0
+    # Unfixable patterns — don't retry these
+    unfixable = ["csp-invalid", "pedagogy-sim", "classi-simulate", "lighthouse-baseline", "backstopjs"]
+    for f in failed_dir.iterdir():
+        if not f.name.endswith((".yaml", ".yml")):
+            continue
+        # Skip if unfixable
+        if any(pat in f.name.lower() for pat in unfixable):
+            continue
+        # Check if already retried (look for retry count)
+        content = f.read_text()
+        retry_count = content.count("retry:")
+        if retry_count >= 2:
+            continue  # Max 2 retries
+        # Move to pending with retry marker
+        new_content = content + f"\nretry: {retry_count + 1}\nrequeued_at: {datetime.now().isoformat()}\n"
+        dest = pending_dir / f.name
+        if not dest.exists():
+            dest.write_text(new_content)
+            f.unlink()
+            requeued += 1
+    if requeued > 0:
+        print(f"   Requeued {requeued} failed tasks")
+    return requeued
+
+
 def load_state():
     if STATE_FILE.exists():
         return json.loads(STATE_FILE.read_text())
@@ -544,10 +692,20 @@ def run_cycle(skip_slow=False, dry_run=False):
     print(f" ELAB Automa V2 - Cycle {cycle_num} ({datetime.now().strftime('%H:%M:%S')})")
     print(f"{'='*60}")
 
-    # Step 0: Parallel Kimi research
+    # Step 0a: Snapshot git + score BEFORE work (for keep/discard)
+    snapshot = _snapshot_before_work() if not dry_run else {}
+    if snapshot.get("git_hash"):
+        print(f"\n  Snapshot: {snapshot['git_hash']} score={snapshot.get('score_before', '?')}")
+
+    # Step 0b: Parallel Kimi research (async)
     if run_parallel_research and not dry_run:
-        print("\n  Parallel Kimi research (background)...")
+        print("  Parallel Kimi research (background)...")
         run_parallel_research(cycle_num, state, blocking=False)
+
+    # Step 0c: Re-queue fixable failed tasks + convert research to tasks
+    if cycle_num % 3 == 1 and not dry_run:
+        _requeue_fixable_failed()
+        _research_to_tasks()
 
     # Step 1: Checks
     print("\n  Running 7 checks...")
@@ -607,8 +765,24 @@ def run_cycle(skip_slow=False, dry_run=False):
             elif task_result.get("status") != "pending_interactive":
                 fail_task(task["_file"], task_result.get("error","unknown"))
 
-    # Step 3b: Evaluate
-    if cycle_num % 5 == 1 and not dry_run:
+    # Step 3b: Keep/Discard (Karpathy pattern)
+    verdict = "no_measurement"
+    if not dry_run and task_result.get("status") == "done" and snapshot:
+        print("\n  Keep/Discard evaluation...")
+        verdict = _keep_or_discard(task_result, snapshot)
+        # Log to results.tsv with real score delta
+        if verdict in ("keep", "discard"):
+            try:
+                tsv = AUTOMA_ROOT / "results.tsv"
+                gh = snapshot.get("git_hash", "?")
+                sb = snapshot.get("score_before", 0)
+                with open(tsv, "a") as f:
+                    f.write(f"{gh}\t{sb:.4f}\t{mode}\t{verdict}\t{task_result.get('task','?')[:80]}\n")
+            except Exception:
+                pass
+
+    # Step 3c: Evaluate (if not already done by keep/discard)
+    if cycle_num % 5 == 1 and not dry_run and verdict == "no_measurement":
         print("\n  evaluate.py...")
         try:
             ev = subprocess.run(["python3", str(AUTOMA_ROOT / "evaluate.py")],
@@ -643,19 +817,7 @@ def run_cycle(skip_slow=False, dry_run=False):
         except Exception as e:
             print(f"   Self-exam error: {e}")
 
-    # Step 5: results.tsv
-    tsv = AUTOMA_ROOT / "results.tsv"
-    if mode == "IMPROVE" and task_result.get("status") in ("done", "failed"):
-        try:
-            gh = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
-                capture_output=True, text=True, cwd=str(PROJECT_ROOT)).stdout.strip()[:7] or "?"
-            st = "keep" if task_result.get("status") == "done" else "discard"
-            with open(tsv, "a") as f:
-                f.write(f"{gh}\t0.0000\t{mode}\t{st}\t{task_result.get('task','?')[:80]}\n")
-        except Exception:
-            pass
-
-    # Step 5b: Report
+    # Step 5: Report
     rp = save_report(cycle_num, check_results, task_result, research,
                      mode=mode, ai_scoring=ai_result, self_exam_result=se_result)
     print(f"\n  Report: {rp}")
