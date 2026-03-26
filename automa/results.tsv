@@ -3,3 +3,4 @@ commit	composite	mode	status	description
 740dbdc	0.9730	IMPROVE	discard	unknown
 d897c66	0.9745	IMPROVE	discard	C43: browser-check-fix + galileo-breve-didattico
 4a98017	0.9580	IMPROVE	keep	Progressive disclosure — CSS fade + toast sblocco + changedComponent milestone
+489dd39	0.9655	IMPROVE	keep	Fix Galileo loadexp tag — tutor.yml riga 6 bloccava [AZIONE:loadexp] anche per r

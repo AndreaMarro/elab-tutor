@@ -1,7 +1,8 @@
 {
-  "updated": "2026-03-26T15:17:23.943246",
+  "updated": "2026-03-26T23:45:03.892446",
   "session": "S117",
   "scores": {
+    "_WARNING": "INFLATED MANUAL SCORES BELOW — NOT FROM evaluate.py. Use composite_v3 as ground truth.",
     "auth_security": 9.8,
     "sito_pubblico": 9.6,
     "simulatore_funzionalita": 10.0,
@@ -12,18 +13,20 @@
     "ai_integration": 10.0,
     "responsive_a11y": 9.2,
     "code_quality": 9.8,
-    "overall": 9.2,
-    "composite": 0.9586,
-    "timestamp": "2026-03-24T23:56:18.462645",
-    "cycle": 56,
-    "output": "\n\n  Running identity... \u2705 1.00 (0 leaks / 5) [103.2s]\nSCORE:galileo_identity=1.0000\n\n  Running content_integrity... \u2705 1.00 (62/62 experiments) [0.0s]\nSCORE:content_integrity=1.0000\n\n  Running ipad... \u26a0\ufe0f 0.68 (overflow=False small_btns=13) [3.9s]\nSCORE:ipad_compliance=0.6750\n\n  Running lighthouse... \u26a0\ufe0f 0.62 (62/100) [16.9s]\nSCORE:lighthouse_perf=0.6200\n\n============================================================\nSCORE:composite=0.8934\n============================================================\n",
+    "overall": "INFLATED — see composite_v3",
+    "composite_v2_7metrics": "0.7225 (BASELINE — Galileo metrics included, NO LONGER MEASURED)",
+    "composite_v3_4metrics": 0.9565,
+    "composite_v3_note": "4 metriche: build(0.35) content(0.25) ipad(0.25) lighthouse(0.15). 3 su 4 al massimo — metrica quasi satura, basso potere discriminante",
+    "composite": 0.9565,
+    "timestamp": "2026-03-27T10:40:00",
+    "cycle": 48,
     "build_pass": 1.0,
-    "galileo_tag_accuracy": 0.9,
-    "galileo_gulpease": 0.8,
-    "galileo_identity": 1.0,
+    "galileo_tag_accuracy": "0.9 (from checks.py, NOT in evaluate.py composite)",
+    "galileo_gulpease": "0.8 (from checks.py, NOT in evaluate.py composite)",
+    "galileo_identity": "1.0 (from checks.py, NOT in evaluate.py composite)",
     "content_integrity": 1.0,
-    "ipad_compliance": 0.675,
-    "lighthouse_perf": 0.62
+    "ipad_compliance": "0.675 (STALE — from production site last deployed 2026-03-10)",
+    "lighthouse_perf": "0.62 (STALE — from production site last deployed 2026-03-10)"
   },
   "deploy": {
     "vercel": {
@@ -44,7 +47,9 @@
   },
   "build": {
     "status": "pass",
-    "last_check": "2026-03-26T15:17:23.943182"
+    "last_check": "2026-03-27T10:30:00",
+    "build_time_s": 21.15,
+    "note": "Verified live build 2026-03-27"
   },
   "bugs": {
     "p1": [
@@ -65,14 +70,14 @@
     ]
   },
   "loop": {
-    "status": "running",
-    "cycles_today": 39,
-    "last_cycle": "2026-03-26T15:17:23.943102",
+    "status": "stopped",
+    "cycles_today": 48,
+    "last_cycle": "2026-03-26T23:45:03.892371",
     "tasks_completed_today": 3,
     "last_date": "2026-03-26",
-    "last_elapsed_s": 609,
-    "self_exam_last_run": "2026-03-26T12:38:30.596568",
-    "self_exam_last_cycle": 35
+    "last_elapsed_s": 793,
+    "self_exam_last_run": "2026-03-26T20:26:18.663722",
+    "self_exam_last_cycle": 45
   },
   "budget": {
     "monthly_limit_eur": 50,

@@ -333,7 +333,7 @@ const NewElabSimulator = ({
     if (disclosureLevel > prev && prev >= 1) {
       const messages = {
         2: 'Nuovi strumenti sbloccati: Fili, Componenti, Editor',
-        3: 'Modalità avanzata: Seriale, Salva/Carica, Lavagna',
+        3: 'Nuovi strumenti: Monitor Arduino, Salva/Carica, Lavagna',
       };
       const text = messages[disclosureLevel];
       if (!text) return;
@@ -3670,7 +3670,7 @@ const NewElabSimulator = ({
     const cx = (vb?.x || 0) + (vb?.width || 400) / 2;
     const cy = (vb?.y || 0) + (vb?.height || 300) / 2;
     setAnnotations(prev => {
-      const next = [...prev, { id, x: cx - 60, y: cy - 20, text: 'Nota...' }];
+      const next = [...prev, { id, x: cx - 80, y: cy - 24, text: 'Nota...' }];
       saveAnnotations(next);
       return next;
     });

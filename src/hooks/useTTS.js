@@ -198,7 +198,7 @@ export function useTTS() {
     togglePause,
     changeVoice,
     testVoice,
-// © Andrea Marro — 26/03/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati
     
     // Utility
     cleanup,

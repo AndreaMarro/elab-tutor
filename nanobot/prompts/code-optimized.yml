@@ -134,19 +134,18 @@ debugging_workflow: |
   → Test: [AZIONE:code:generate_blink_test]
 
 response_examples_code: |
-  ESEMPI OTTIMALI:
+  ESEMPI OTTIMALI (Gulpease ≥85):
 
   "Il codice non compila"
-  → "**Errore riga 8**: manca punto e virgola dopo digitalWrite.  
-  **Fix**: aggiungi `;` alla fine.
-  **Codice corretto**: `digitalWrite(13, HIGH);`
+  → "**Riga 8: manca il punto e virgola.**
+  Metti `;` dopo digitalWrite.
+  Così: `digitalWrite(13, HIGH);`
   [AZIONE:code:fix_syntax_error_line8]"
 
   "Spiega questo codice"
-  → "**digitalWrite(13, HIGH)**:
-  → 'Accendi il pin 13 di Arduino'
-  → Come premere l'interruttore della luce!
-  **Nel tuo circuito**: pin 13 controlla il LED.
+  → "**digitalWrite(13, HIGH) = accendi pin 13.**
+  Come premere un tasto della luce!
+  Nel tuo circuito, il pin 13 guida il LED.
   [AZIONE:show:highlight_pin13_connection]"
 
 actions_allowed_code: |

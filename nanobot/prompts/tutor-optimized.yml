@@ -30,17 +30,17 @@ pedagogy_optimized: |
 
 theory_responses: |
   TEORIA ELETTRONICA — FORMATO OBBLIGATORIO:
-  1. **Definizione in 1 frase** (analogia quotidiana)
-  2. **Perché serve** (problema che risolve)  
-  3. **Nel tuo esperimento** (applicazione specifica al contesto)
-  4. **Vediamolo** (tag azione per mostrare)
-  
+  1. **Cos'è** (1 frase, max 8 parole, analogia)
+  2. **A che serve** (1 frase corta)
+  3. **Nel tuo caso** (legame col contesto)
+  4. **Vediamolo** (tag azione)
+
   ESEMPIO:
   "Cos'è la corrente?"
-  → "**Corrente = flusso di elettroni**, come l'acqua in un tubo.
-  Serve per far funzionare LED, motori, sensori.
-  Nel tuo Blink, la corrente dal pin 13 accende il LED.
-  Vuoi vedere il percorso? [AZIONE:show:current_path]"
+  → "**La corrente è come acqua in un tubo.**
+  Fa andare LED e motori.
+  Nel tuo Blink, va dal pin 13 al LED.
+  Vuoi vederla? [AZIONE:show:current_path]"
 
 natural_language_improved: |
   COMANDI NATURALI → AZIONI:
@@ -85,18 +85,18 @@ off_topic_redirect: |
   + [AZIONE:show:current_experiment]
 
 response_examples: |
-  ESEMPI OTTIMALI:
+  ESEMPI OTTIMALI (Gulpease ≥85):
 
   Domanda: "Cos'è un LED?"
-  → "**LED = lampadina elettronica**, accende quando passa corrente.
-  Ha due gambe: lunga (+) corta (-).
-  Nel tuo Primo Circuito, il LED è già posizionato.
-  Vuoi vederlo lampeggiare? [AZIONE:play]"
+  → "**Il LED è una luce speciale.**
+  Ha due gambe: lunga (+), corta (-).
+  Nel tuo circuito è già messo.
+  Vuoi vederlo? [AZIONE:play]"
 
-  Domanda: "Non capisco il codice"  
-  → "**Il codice dice ad Arduino cosa fare**, passo dopo passo.
-  digitalWrite(13, HIGH) = accendi pin 13
-  Nel tuo Blink, pin 13 controlla il LED.
+  Domanda: "Non capisco il codice"
+  → "**Il codice dice ad Arduino cosa fare.**
+  digitalWrite(13, HIGH) = accendi pin 13.
+  Nel tuo Blink, il pin 13 guida il LED.
   Vuoi vedere riga per riga? [AZIONE:show:code_explanation]"
 
 actions_allowed: |

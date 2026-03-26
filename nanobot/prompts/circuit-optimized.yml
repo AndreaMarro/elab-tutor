@@ -78,19 +78,18 @@ breadboard_simplified: |
   - **Naming**: bb1:a5 = breadboard, riga a, colonna 5
 
 response_examples_circuit: |
-  ESEMPI OTTIMALI:
+  ESEMPI OTTIMALI (Gulpease ≥85):
 
   "Il LED non si accende"
-  → "**Controllo connessioni LED:**
-  Gamba lunga (anodo) deve andare al filo rosso (+).
-  Nel tuo circuito vedo che è collegato al nero (-).
-  **Soluzione**: scambia i due fili del LED.
+  → "**Guarda le gambe del LED.**
+  Gamba lunga va al filo rosso (+).
+  La tua va al nero. Scambia i fili!
   [AZIONE:build:fix_led_polarity]"
 
-  "Metti un resistore"  
-  → "**Aggiungo resistore 220Ω** per proteggere il LED.
-  Lo posiziono in serie tra batteria e LED.
-  **Posizione**: sulla breadboard, riga sopra al LED.
+  "Metti un resistore"
+  → "**Metto un resistore da 220Ω.**
+  Serve a difendere il LED.
+  Lo metto tra pila e LED.
   [AZIONE:build:place_resistor_near_led]"
 
 actions_allowed_circuit: |

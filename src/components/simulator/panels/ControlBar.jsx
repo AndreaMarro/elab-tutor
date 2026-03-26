@@ -310,7 +310,7 @@ const ControlBar = ({
   onComponentRotate,
   onShowProperties,
   // Progressive disclosure (P0): 1=novizio, 2=esploratore, 3=costruttore
-  disclosureLevel = 3,
+  disclosureLevel = 1, // Principio Zero: default NOVIZIO
 }) => {
   const [mobileOverflowOpen, setMobileOverflowOpen] = useState(false);
 
@@ -518,9 +518,12 @@ const ControlBar = ({
           disclosureLevel >= 2 && onTogglePalette && { label: 'Componenti', checked: showPalette, action: onTogglePalette },
           disclosureLevel >= 2 && onToggleCodeEditor && { label: 'Editor', checked: showCodeEditor, action: onToggleCodeEditor },
           disclosureLevel >= 3 && onToggleBom && { label: 'Lista Pezzi', checked: showBom, action: onToggleBom },
-          disclosureLevel >= 3 && onToggleNotes && { label: 'Appunti', checked: showNotes, action: onToggleNotes },
           disclosureLevel >= 2 && onToggleQuiz && hasQuiz && { label: 'Quiz', checked: showQuiz, action: onToggleQuiz },
+          /* ── Appunti (sempre visibili — essenziali per insegnanti) ── */
+          (onToggleNotes || onAddAnnotation || onToggleLessonPath) && { type: 'separator', label: 'Insegnante' },
           onToggleLessonPath && { label: 'Percorso Lezione', checked: showLessonPath, action: onToggleLessonPath },
+          onToggleNotes && { label: 'Appunti', checked: showNotes, action: onToggleNotes },
+          onAddAnnotation && { label: 'Nota sul Circuito', action: onAddAnnotation },
           /* ── Strumenti (L2+) ── */
           disclosureLevel >= 2 && { type: 'separator', label: 'Strumenti' },
           disclosureLevel >= 2 && onToggleWireMode && { label: 'Collega Fili', checked: wireMode, action: onToggleWireMode },

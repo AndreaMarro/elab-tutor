@@ -165,3 +165,34 @@ Formato: ## [nome-task] YYYY-MM-DD HH:MM → risultati strutturati
 
 1. **GAP PNRR**: ELAB non ha una pagina/landing dedicata ai bandi PNRR con codici MEPA e documentazione pronta per i dirigenti scolastici. Le scuole comprano tramite MEPA/Consip.
 2. **GAP Mistral**: L'integrazione Mistral API come fallback GDPR-safe non è implementata. Costo stimato: €6/mese per 1000 studenti con Mistral Nemo. Galileo attualmente dipende solo da Anthropic (non EU).
+
+
+---
+
+## Automa Doctor -- 2026-03-26 23:32
+
+### Status
+- Orchestrator: ALIVE (PID 56062)
+- Stuck tasks moved to failed/: 3
+
+### Ultimi 5 Lessons
+- Ciclo 28: Fix v4-zoom-btn 44x44px. done/keep.
+- Ciclo 29: Write permissions bloccate. no_measurement.
+- Ciclo 30: exit 0, 602 chars, nessun JSON. done/keep.
+- Ciclo 45: max_turns. partial/no_measurement.
+- Ciclo 46: max_turns. partial/no_measurement.
+
+### Task stuck -> moved to failed/
+- P1-001-classi-simulate.yaml: stuck 94h (dal 2026-03-23)
+- P1-font-self-hosted-not-imported.yaml: stuck 10.5h
+- P1-teacher-prep-expansion.yaml: stuck 11.5h
+
+### Active queue dopo pulizia
+- P1-037-gulpease-improve.yaml (23:11)
+- P1-brain-v14-training.yaml (23:31)
+- P1-breadboard-appunti-centrali.yaml (23:26)
+
+### Note
+- Cicli 45-46 max_turns: scope troppo ampio
+- P1-001 stuck 94h: richiede infrastruttura mancante
+- Orchestrator vivo ma no_measurement ripetuti: verificare write permissions

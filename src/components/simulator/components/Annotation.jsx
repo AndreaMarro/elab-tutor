@@ -121,8 +121,8 @@ const Annotation = ({
   }, [text, handleBlur]);
 
   const displayText = isEditing ? localText : text;
-  const noteWidth = 120;
-  const noteHeight = Math.max(40, 24 + (displayText.split('\n').length) * 12);
+  const noteWidth = 160;
+  const noteHeight = Math.max(48, 28 + (displayText.split('\n').length) * 16);
 
   // Apply drag offset to rendered position
   const renderX = x + dragOffset.dx;
@@ -157,16 +157,16 @@ const Annotation = ({
       {/* Top fold line */}
       <line
         x1={renderX}
-        y1={renderY + 14}
+        y1={renderY + 16}
         x2={renderX + noteWidth}
-        y2={renderY + 14}
+        y2={renderY + 16}
         stroke="#E6DB74"
         strokeWidth="0.5"
         opacity="0.6"
       />
 
       {isEditing ? (
-        <foreignObject x={renderX + 3} y={renderY + 3} width={noteWidth - 6} height={noteHeight - 6}>
+        <foreignObject x={renderX + 4} y={renderY + 4} width={noteWidth - 8} height={noteHeight - 8}>
           <textarea
             ref={textareaRef}
             value={localText}
@@ -180,8 +180,8 @@ const Annotation = ({
               background: 'transparent',
               resize: 'none',
               fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
-              fontSize: '8px',
-              lineHeight: '12px',
+              fontSize: '12px',
+              lineHeight: '16px',
               color: 'var(--color-text-gray-700, #333)',
               outline: 'none',
               padding: 0,
@@ -192,16 +192,16 @@ const Annotation = ({
         </foreignObject>
       ) : (
         <text
-          x={renderX + 5}
-          y={renderY + 22}
-          fontSize="8"
+          x={renderX + 6}
+          y={renderY + 28}
+          fontSize="12"
           fontFamily="'Open Sans', sans-serif"
           fill="var(--color-text-gray-700, #333)"
           style={{ cursor: isDragging ? 'grabbing' : 'grab', userSelect: 'none' }}
           onDoubleClick={handleDoubleClick}
         >
           {displayText.split('\n').map((line, i) => (
-            <tspan key={i} x={renderX + 5} dy={i === 0 ? 0 : 12}>
+            <tspan key={i} x={renderX + 6} dy={i === 0 ? 0 : 16}>
               {line || '\u00A0'}
             </tspan>
           ))}

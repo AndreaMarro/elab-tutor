@@ -198,7 +198,7 @@ export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
         formData.append('circuitState', JSON.stringify(options.circuitState));
     }
     if (options.simulatorContext) {
-// © Andrea Marro — 26/03/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati
         formData.append('simulatorContext', JSON.stringify(options.simulatorContext));
     }
 
