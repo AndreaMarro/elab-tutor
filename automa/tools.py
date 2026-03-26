@@ -113,6 +113,26 @@ def call_gemini(prompt: str, images: list = None, model: str = "gemini-2.5-pro")
 
 # ─── Kimi K2.5 (review, second opinion) ─────────────────
 
+def call_gemini_cli(prompt: str, model: str = "gemini-2.5-flash", timeout: int = 60) -> str:
+    """Call Gemini via CLI (OAuth, no API key needed). Uses ermagician@gmail.com account."""
+    import subprocess
+    try:
+        env = os.environ.copy()
+        env["GOOGLE_GENAI_USE_GCA"] = "true"
+        env["PATH"] = "/Users/andreamarro/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:" + env.get("PATH", "")
+        result = subprocess.run(
+            ["gemini", "-m", model, "-p", prompt],
+            capture_output=True, text=True, timeout=timeout, env=env,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip()[:2000]
+        return f"[GEMINI-CLI-ERROR] exit={result.returncode} stderr={result.stderr[:200]}"
+    except subprocess.TimeoutExpired:
+        return "[GEMINI-CLI-TIMEOUT]"
+    except Exception as e:
+        return f"[GEMINI-CLI-CRASH] {str(e)[:200]}"
+
+
 def call_kimi(prompt: str, max_tokens: int = 2048) -> str:
     """Call Kimi K2.5 for review and second opinions."""
     if not KIMI_API_KEY or "placeholder" in KIMI_API_KEY:

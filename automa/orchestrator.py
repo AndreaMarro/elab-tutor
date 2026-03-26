@@ -26,7 +26,7 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 sys.path.insert(0, str(AUTOMA_ROOT))
 from checks import run_all_checks, print_results
 from queue_manager import get_next_task, claim_task, complete_task, fail_task, stats
-from tools import search_papers, gulpease_index, chat_galileo
+from tools import search_papers, gulpease_index, chat_galileo, call_gemini_cli
 
 try:
     from self_exam import run_self_exam, load_learned_rules
