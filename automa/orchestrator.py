@@ -609,16 +609,25 @@ def ai_scoring(state, cycle):
 
     if cycle % 10 == 0:
         analysis = call_gemini(
-            "Analizza il mercato EdTech italiano 2026 per simulatori elettronica scuole medie. "
-            "Competitor di ELAB Tutor? Cosa manca? Max 200 parole."
+            "CONTESTO: ELAB UNLIM — simulatore circuiti + AI tutor per scuole medie italiane. "
+            "67 esperimenti, 3 volumi, kit fisico €75, licenza €500-1000/anno. "
+            "Committenti: Omaric (Franzoso, produttore Arduino) + Fagherazzi (Raas Impact). "
+            "Principio Zero: insegnante inesperto alla LIM deve spiegare subito. "
+            "ANALISI: mercato EdTech italiano 2026. Competitor CONCRETI di UNLIM? "
+            "Cosa manca per vendere alle scuole? Bandi PNRR? Max 200 parole."
         )
         results.append(f"Gemini market: {analysis[:300]}")
         _persist_ai_feedback(f"[Gemini market] {analysis[:300]}")
 
     if cycle % 10 == 5:
         kimi_review = call_kimi(
-            f"Review EdTech: ELAB Tutor ha 62 esperimenti, AI Galileo, simulatore KVL/KCL+AVR.\n"
-            f"Score: {json.dumps(state.get('scores', {}))}\nCosa miglioreresti? Max 200 parole."
+            f"CONTESTO: ELAB UNLIM — simulatore circuiti + AI tutor per scuole medie italiane. "
+            f"67 esperimenti, 3 volumi, kit fisico €75, licenza €500-1000/anno. "
+            f"Principio Zero: insegnante inesperto alla LIM deve spiegare subito. "
+            f"Committenti: Omaric (Franzoso) + Fagherazzi (Raas Impact). "
+            f"Score: {json.dumps(state.get('scores', {}))}\n"
+            f"DOMANDA: qual e' il problema PIU' GRAVE che impedisce la vendita alle scuole ORA? "
+            f"Suggerisci 1 fix concreto con file e righe. Max 200 parole."
         )
         results.append(f"Kimi review: {kimi_review[:300]}")
         _persist_ai_feedback(f"[Kimi review] {kimi_review[:300]}")
@@ -656,13 +665,22 @@ def run_adversarial_review(cycle_num, state):
     except:
         git_diff = "(non disponibile)"
 
-    base_context = f"""ELAB UNLIM — Score: {score}
-Git diff ultimi 3 commit: {git_diff}
-Lessons recenti:
-{lessons}
+    # Read full context
+    ctx_path = AUTOMA_ROOT / "context" / "ELAB-COMPLETE-CONTEXT.md"
+    full_ctx = ctx_path.read_text()[:2000] if ctx_path.exists() else ""
 
-OBIETTIVO: insegnante inesperto (Prof.ssa Rossi, 52 anni) usa UNLIM alla LIM.
-Il prodotto DEVE funzionare in 5 secondi senza spiegazioni."""
+    base_context = f"""ELAB UNLIM — Score: {score}
+CONTESTO: {full_ctx}
+
+COMMITTENTI: Omaric (Riccardo Franzoso, grande produttore Arduino mondiale) +
+Giovanni Fagherazzi (Raas Impact, 8.8K LinkedIn). Andrea Marro = UNICO sviluppatore.
+FONDAMENTALE fare un grande lavoro. La reputazione di Andrea dipende da questo.
+
+Git diff ultimi 3 commit: {git_diff}
+Lessons recenti: {lessons}
+
+PRINCIPIO ZERO: insegnante inesperto (Prof.ssa Rossi, 52 anni) alla LIM.
+DEVE funzionare in 5 secondi senza spiegazioni. Mai mostrare tutto subito."""
 
     results = []
     all_tasks = []

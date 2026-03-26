@@ -174,8 +174,21 @@ def run_parallel_research(cycle_num: int, state: dict, blocking: bool = False) -
     def _do_research():
         start = time.time()
 
-        # Build prompt with context from state
-        prompt = agenda_item["prompt_template"].format(topic=agenda_item["topic"])
+        # Build prompt with FULL context
+        # Inject project identity so Kimi knows what ELAB UNLIM is
+        elab_context = (
+            "CONTESTO OBBLIGATORIO — ELAB UNLIM:\n"
+            "Simulatore circuiti educativo + AI tutor per scuole medie italiane (10-14 anni).\n"
+            "67 esperimenti in 3 volumi. Kit fisico €75 + licenza €500-1000/anno.\n"
+            "PRINCIPIO ZERO: l'insegnante inesperto deve poter arrivare alla LIM e spiegare subito.\n"
+            "Galileo/UNLIM e' un libro intelligente, NON un professore sostitutivo.\n"
+            "Committenti: Omaric (Riccardo Franzoso, grande produttore Arduino), Giovanni Fagherazzi (Raas Impact).\n"
+            "Competitor: Tinkercad (gratis, no AI), Wokwi (gratis, no pedagogia), Arduino Education (€€€).\n"
+            "Stack: React 19 + Vite, Vercel, Nanobot su Render, Brain V13 locale.\n"
+            "GDPR: modelli locali + Mistral (EU) per produzione. Mai dati minori su server USA.\n"
+        )
+
+        prompt = elab_context + "\n" + agenda_item["prompt_template"].format(topic=agenda_item["topic"])
 
         # Add cycle context if available
         last_eval = state.get("scores", {})
