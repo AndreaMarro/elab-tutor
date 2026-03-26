@@ -906,6 +906,53 @@
   letter-spacing: 0.05em;
 }
 
+/* ─── Progressive Disclosure: fade-in animation ─── */
+/* P0: Bottoni sbloccati appaiono con fade+slide per non spaventare l'insegnante */
+@keyframes disclosure-fade-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.toolbar-disclosure-fade {
+  animation: disclosure-fade-in 0.4s ease-out both;
+}
+
+/* Toast sblocco nuove funzionalità */
+@keyframes disclosure-toast-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes disclosure-toast-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+
+.disclosure-toast {
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-inverse, #fff);
+  background: var(--color-primary, #1E4D8C);
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+  animation: disclosure-toast-in 0.35s ease-out;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.disclosure-toast--exit {
+  animation: disclosure-toast-out 0.3s ease-in forwards;
+}
+
 /* ─── Responsive: Progressive label hiding ─── */
 
 /* S62/S100: Hide secondary labels below desktop breakpoint (1366px) */
@@ -955,6 +1002,7 @@
   }
 }
 
+/* © Andrea Marro — 26/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 /* ─── BUG FIX: Button hover/active/focus states for non-toolbar buttons ─── */
 @media (hover: hover) {
   .elab-simulator button:not(.toolbar-btn):hover {
@@ -1002,7 +1050,6 @@
   background: var(--color-text, #1a1a2e);
   color: var(--color-text-inverse, #fff);
   padding: var(--space-1, 4px) 10px;
-/* © Andrea Marro — 26/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   border-radius: var(--radius-sm, 6px);
   font-family: var(--font-mono, 'Fira Code', monospace);
   font-size: var(--font-size-sm, 14px);

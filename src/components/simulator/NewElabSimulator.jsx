@@ -323,6 +323,26 @@ const NewElabSimulator = ({
 
   // Progressive disclosure: tracks user milestones for gradual UI complexity
   const { level: disclosureLevel, recordMilestone, recordExperimentLoad } = useDisclosureLevel();
+  const prevDisclosureLevelRef = useRef(disclosureLevel);
+  const [disclosureToast, setDisclosureToast] = useState(null); // { text, exiting }
+
+  // P0: Show toast when disclosure level increases
+  useEffect(() => {
+    const prev = prevDisclosureLevelRef.current;
+    prevDisclosureLevelRef.current = disclosureLevel;
+    if (disclosureLevel > prev && prev >= 1) {
+      const messages = {
+        2: 'Nuovi strumenti sbloccati: Fili, Componenti, Editor',
+        3: 'Modalità avanzata: Seriale, Salva/Carica, Lavagna',
+      };
+      const text = messages[disclosureLevel];
+      if (!text) return;
+      setDisclosureToast({ text, exiting: false });
+      const exitTimer = setTimeout(() => setDisclosureToast(t => t ? { ...t, exiting: true } : null), 3000);
+      const removeTimer = setTimeout(() => setDisclosureToast(null), 3400);
+      return () => { clearTimeout(exitTimer); clearTimeout(removeTimer); };
+    }
+  }, [disclosureLevel]);
 
   // S100: Persist sidebar preference to localStorage
   useEffect(() => {
@@ -2698,6 +2718,7 @@ const NewElabSimulator = ({
     if (!mergedExperiment) return;
     const comp = mergedExperiment.components.find(c => c.id === componentId);
     if (!comp) return;
+    recordMilestone('changedComponent');
 
     if (comp.type === 'potentiometer') {
       // Update visual state
@@ -2723,7 +2744,7 @@ const NewElabSimulator = ({
         }
       }
     }
-  }, [mergedExperiment]);
+  }, [mergedExperiment, recordMilestone]);
 
   /* ─────────────────────────────────────────────────
      Serial input from SerialMonitor
@@ -3763,6 +3784,14 @@ const NewElabSimulator = ({
           disclosureLevel={disclosureLevel}
         />
       </div>
+
+      {/* ──── Progressive Disclosure Toast ──── */}
+      {disclosureToast && (
+        <div className={`disclosure-toast${disclosureToast.exiting ? ' disclosure-toast--exit' : ''}`}>
+          <span>🔓</span>
+          <span>{disclosureToast.text}</span>
+        </div>
+      )}
 
       {/* ──── PDF Ready Toast — fresh user gesture triggers download ──── */}
       {pdfReady && (
