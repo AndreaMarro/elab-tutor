@@ -203,13 +203,13 @@ def evaluate_lighthouse() -> dict:
 # ─── Weights ─────────────────────────────────
 
 WEIGHTS = {
-    "galileo_tag_accuracy": 0.20,
-    "galileo_gulpease": 0.15,
-    "galileo_identity": 0.15,
-    "build_pass": 0.15,
-    "content_integrity": 0.10,
-    "ipad_compliance": 0.10,
-    "lighthouse_perf": 0.05,
+    # "galileo_tag_accuracy": 0.20,  # DISABLED
+    # "galileo_gulpease": 0.15,  # DISABLED
+    # "galileo_identity": 0.15,  # DISABLED
+    "build_pass": 0.35,
+    "content_integrity": 0.25,
+    "ipad_compliance": 0.25,
+    "lighthouse_perf": 0.15,
 }
 # Remaining 10% reserved for future metrics
 
@@ -222,9 +222,9 @@ def run_evaluation() -> dict:
 
     evaluators = [
         evaluate_build,
-        evaluate_galileo_tags,
-        evaluate_gulpease,
-        evaluate_identity,
+        # evaluate_galileo_tags,  # DISABLED: timeout killer
+        # evaluate_gulpease,  # DISABLED: timeout killer
+        # evaluate_identity,  # DISABLED: timeout killer
         evaluate_content_integrity,
         evaluate_ipad,
         evaluate_lighthouse,

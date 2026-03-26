@@ -506,12 +506,18 @@ def run_claude_headless(prompt, max_time=1500):
     log_file = AUTOMA_ROOT / "logs" / f"claude-{datetime.now().strftime('%H%M%S')}.log"
     try:
         result = subprocess.run(
-            ["claude", "-p", prompt, "--output-format", "text"],
+            ["claude", "-p", prompt, "--output-format", "text",
+             "--dangerously-skip-permissions", "--model", "claude-opus-4-20250514", "--max-turns", "40"],
             capture_output=True, text=True, timeout=max_time,
             cwd=str(PROJECT_ROOT),
             env={**os.environ, "CLAUDE_AUTO_ACCEPT": "1"},
         )
         output = result.stdout
+        # Handle max turns error
+        if "Reached max turns" in output:
+            return {"task": "max_turns", "status": "partial",
+                    "lesson": "Raggiunto limite turni. Task troppo complesso — ridurre scope.",
+                    "error": "max_turns_reached"}
         log_file.write_text(f"=== PROMPT ===\n{prompt[:500]}\n\n=== OUTPUT ===\n{output}")
         lines = output.strip().splitlines()
         for line in reversed(lines):
@@ -742,7 +748,7 @@ def run_cycle(skip_slow=False, dry_run=False):
                 print("\n  Agent SDK...")
                 ar = run_agent(system_prompt=prompt,
                     user_prompt=f"Modo: {mode}. Esegui. Tool. Documenta. CoV.",
-                    max_turns=20, model="claude-sonnet-4-20250514")
+                    max_turns=20, model="claude-opus-4-20250514")
                 task_result = {"task": task.get("title","?") if task else mode,
                     "status": ar.get("status","unknown"), "turns": ar.get("turns",0),
                     "tool_calls": ar.get("tool_calls",0), "tokens": ar.get("tokens",0),
