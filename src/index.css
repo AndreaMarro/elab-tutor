@@ -1,5 +1,5 @@
 /* (c) Andrea Marro -- 13 Febbraio 2026 -- Tutti i diritti riservati. */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Oswald:wght@200..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Fira+Code:wght@300..700&display=swap');
+@import './styles/fonts.css';
 
 @tailwind base;
 @tailwind components;

@@ -208,7 +208,7 @@ export default React.memo(function ChatOverlay({
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const messagesContainerRef = useRef(null);
-    const [minimized, setMinimized] = useState(false);
+    const [minimized, setMinimized] = useState(true);
     const [sendHovered, setSendHovered] = useState(false);
     // (codeHovered rimosso — editor eliminato)
     const [actionsExpanded, setActionsExpanded] = useState(false);
@@ -429,7 +429,7 @@ export default React.memo(function ChatOverlay({
                                 width: '6px', height: '6px', borderRadius: '50%',
                                 background: 'var(--color-accent)', display: 'inline-block',
                             }} />
-                            {isLoading ? 'Sta scrivendo...' : 'Sono qui'}
+                            {isLoading ? 'Sta scrivendo...' : 'Online'}
                         </span>
                     </div>
                 </div>

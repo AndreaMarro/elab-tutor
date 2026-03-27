@@ -156,7 +156,7 @@ function AppRouter() {
                                     {user ? (
                                         <>
                                             <span style={topBarStyles.mobileLink}>{user.name?.split(' ')[0] || user.username}</span>
-                                            <button onClick={() => navigate('dashboard')} style={topBarStyles.mobileLink}>🏠 Dashboard</button>
+                                            {(isDocente || isAdmin) && <button onClick={() => navigate('dashboard')} style={topBarStyles.mobileLink}>🏠 Dashboard</button>}
                                             {(isDocente || isAdmin) && <button onClick={() => navigate('teacher')} style={topBarStyles.mobileLinkTeacher}>📚 Area Docente</button>}
                                             {isAdmin && <button onClick={() => navigate('admin')} style={topBarStyles.mobileLinkAdmin}>⚙️ Admin</button>}
                                         </>
@@ -174,7 +174,7 @@ function AppRouter() {
                             {user ? (
                                 <>
                                     <span style={topBarStyles.link}>{user.name?.split(' ')[0] || user.username}</span>
-                                    <button onClick={() => navigate('dashboard')} style={topBarStyles.link}>🏠 Dashboard</button>
+                                    {(isDocente || isAdmin) && <button onClick={() => navigate('dashboard')} style={topBarStyles.link}>🏠 Dashboard</button>}
                                     {(isDocente || isAdmin) && <button onClick={() => navigate('teacher')} style={topBarStyles.linkTeacher}>📚 Area Docente</button>}
                                     {isAdmin && <button onClick={() => navigate('admin')} style={topBarStyles.linkAdmin}>⚙️ Admin</button>}
                                 </>

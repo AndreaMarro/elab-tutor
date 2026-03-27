@@ -19,9 +19,9 @@ FONDAMENTALE: Galileo deve conoscere TUTTI i 67 esperimenti, sapere in che
 target_files: src/components/simulator/panels/ExperimentGuide.jsx nanobot/prompts/tutor.yml
 created_at: "2026-03-26T17:00:00"
 source: decisione-andrea-26-03-2026
-claimed_at: "2026-03-26T21:31:46.692894"
+claimed_at: "2026-03-27T01:08:35.358049"
 claimed_by: orchestrator
 failed_at: "2026-03-26T21:37:50.591824"
 error: max_turns_reached
-retry: 1
-requeued_at: "2026-03-26T21:26:18.670591"
+retry: 2
+requeued_at: "2026-03-27T01:05:06.123827"

@@ -1,13 +1,13 @@
 # Kimi Research — Cycle 3
 Topic: AI tutoring adattivo per STEM education scaffolding ZPD
-Date: 2026-03-26T00:34:03.185131
+Date: 2026-03-27T02:09:00.021606
 
-PRINCIPIO-1: Galileo dovrebbe adottare il principio di scaffolding, offrendo ai bambini supporto adeguato per affrontare compiti più complessi di elettronica in modo incrementale.
+PRINCIPIO-1: Un AI tutor per bambini che imparano elettronica deve essere un supporto educativo che facilita l'apprendimento attraverso l'interazione e la guida personalizzata, rispettando il principio di non sostituire il docente ma integrarsi con lui.
 
-ERRORE-COMUNE: Fornire ai bambini compiti troppo complessi senza un adeguato supporto iniziale può causare frustrazione e disinteresse verso l'argomento.
+ERRORE-COMUNE: Gli AI tutor spesso forniscono risposte troppo immediate o troppo dettagliate, limitando così l'esplorazione e l'imparare autonomo dei bambini.
 
-RACCOMANDAZIONE-GALILEO: Galileo dovrebbe identificare il livello di competenza di ciascun bambino e fornire supporto personalizzato, utilizzando il concetto di ZPD (zona prossimale di sviluppo) di Vygotsky. Inizialmente, Galileo dovrebbe guidare i bambini attraverso compiti semplici, aumentando gradualmente la difficoltà e la complessità. Utilizzare il metodo socratico per stimolare la riflessione e l'apprendimento critico, e fornire feedback formativo costante per aiutare i bambini a migliorare le loro abilità.
+RACCOMANDAZIONE-GALILEO: Galileo dovrebbe adottare una strategia di "scaffolding", offrendo aiuto progressivamente meno intrusivo man mano che lo studente acquisisce le competenze. Dovrebbe operare entro la ZPD (zona prossima allo sviluppo) dei bambini, utilizzando il metodo socratico per stimolare la riflessione e il ragionamento critico. Il feedback formativo dovrebbe essere costante e costruttivo, incoraggiando gli studenti a riflettere sui loro progressi e sugli errori.
 
 SEVERITY: medium
 
-Galileo dovrebbe anche essere progettato come un "libro intelligente" che si adatta al ritmo di apprendimento dei bambini, piuttosto che un professore tradizionale. Ciò significa che dovrebbe essere accessibile, interattivo e in grado di fornire informazioni e risorse pertinenti in base alle esigenze dei bambini. L'integrazione di un AI in Galileo, come indicato dal contesto ciclo corrente, può svolgere un ruolo chiave in questo processo, offrendo personalizzazione e interazione dinamica.
+Il contesto ciclo corrente mostra che il simulatore ha ottenuto punteggi elevati in diverse aree, come la funzionalità, l'integrazione dell'AI e la qualità del codice, indicando che il prodotto è solido in termini di base. Tuttavia, la nota sulla "ipad_compliance" obsoleta e il "lighthouse_perf" suggeriscono che ci sono aree in cui potrebbero essere miglioramenti, specialmente in termini di prestazioni e conformità con i dispositivi mobile. La conformità con la privacy GDPR è un aspetto positivo, poiché mantiene i dati locali e non li trasferisce sui server statunitensi, garantendo così la protezione dei dati dei minori.

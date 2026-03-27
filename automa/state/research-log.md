@@ -1670,3 +1670,40 @@ Con l'avanzare della tecnologia, i simulatori di circu
 DeepSeek: **Problema 1 (Analisi):** I concetti di elettronica (corrente, resistenza) sono astratti per i bambini. Gli esperimenti fisici con componenti reali possono essere frustranti a causa di cablaggi errati o componenti danneggiati, portando a confusione e perdita di interesse.
 
 **Problema 2 (Sintesi):** I bambini faticano a tradurre la teoria in progetti funzionali. La pianificazione di un circuito sem
+
+## Cycle 1 - Scratch to Arduino C++ block programming
+DeepSeek: **Problema 1 (Transizione):** Gli studenti, abituati all'ambiente visivo e a prova di errore di Scratch, affrontano un brusco salto verso la sintassi testuale e rigorosa del C++ per Arduino, causando frustrazione e abbandono.
+
+**Problema 2 (Debugging):** L'assenza di un feedback immediato e comprensibile per errori comuni (es., punti e virgola mancanti, tipi di dati) nel codice C++ rende il debugg
+
+## Cycle 2 - AI tutoring scaffolding real-time
+Scholar: 'AI tutoring scaffolding real-time' -> 5 papers
+  - [2022] Applying Real-Time Dynamic Scaffolding Techniques during Tutoring Sessions Using
+  - [2018] The Impact of Multiple Real-Time Scaffolding Experiences on Science Inquiry Prac
+  - [2018] Real-Time Scaffolding of Students’ Online Data Interpretation During Inquiry wit
+Kimi: Il tema 'AI tutoring scaffolding real-time' si riferisce all'uso dell'intelligenza artificiale per supportare gli studenti in modo personalizzato e in tempo reale. Ecco 3 tendenze, 1 idea e 1 rischio in questo campo:
+
+1. Tendenza 1: Personalizzazione dell'apprendimento
+L'AI può analizzare i dati degli studenti per creare piani di studio personalizzati, adattando il contenuto e la difficoltà in bas
+
+## Cycle 3 - circuit simulation browser WebAssembly
+DeepSeek: **Problemi:**
+1. **Performance limitate:** Le simulazioni di circuiti in JavaScript puro nel browser sono spesso lente per progetti complessi, frustrando l'apprendimento con lunghi tempi di attesa.
+2. **Portabilità del codice:** Gli educatori hanno difficoltà a portare simulatori didattici esistenti (es. scritti in C++) sul web senza richiedere installazioni locali.
+
+**Soluzione:**
+Utilizzare **We
+
+## Cycle 3 - circuit simulation browser WebAssembly
+DeepSeek: **Problema 1:** Accesso limitato. Gli studenti spesso non possono installare software di simulazione circuitale avanzato (come SPICE) sui propri dispositivi, a causa di requisiti di sistema, costi di licenza o restrizioni amministrative.
+
+**Problema 2:** Coinvolgimento passivo. Anche quando disponibili, le simulazioni tradizionali possono essere "scatole nere" che non incoraggiano l'esplorazione a
+
+## Cycle 4 - readability index Italian children
+Kimi: Il tema "readability index Italian children" si riferisce all'analisi della facilità di comprensione dei testi per i bambini italiani. L'ELAB Tutor, un simulatore di circuiti pensato per i bambini, può essere utilizzato per comprendere meglio i livelli di lettura dei bambini e migliorare la loro comprensione.
+
+1. Tre tendenze:
+   a. Digitalizzazione: Con l'aumento dell'uso di dispositivi digitali,
+DeepSeek: **2 Problemi:**
+1.  **Complessità linguistica sottovalutata:** Gli indici tradizionali (es. Gulpease) considerano lunghezza di parole e frasi, ma non catturano pienamente ostacoli per i bambini come lessico astratto, costruzioni ipotattiche complesse o connettivi logici.
+2.  **Mancanza di adattamento al target:** Non integrano database lessicali specifici per fasce d'età, ignorando quali parole si
