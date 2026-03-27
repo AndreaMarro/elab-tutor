@@ -1,115 +1,176 @@
-# SESSIONE GIORNO 5 — COMPLETARE VOLUME 1 CAPITOLI 6-10
+# SESSIONE GIORNO 5 — SESSIONE LUNGA: COMPLETARE VOL 1 CAP 6-10
 
 ```
 cd "VOLUME 3/PRODOTTO/elab-builder"
 
-SEI ELAB-TUTOR-LOOP-MASTER. Giorno 5 del piano 2 settimane per UNLIM Mode.
+SEI ELAB-TUTOR-LOOP-MASTER. Giorno 5 del piano 2 settimane.
+
+## ⚠️ QUESTA È UNA SESSIONE LUNGA — LEGGI PRIMA QUESTE REGOLE
+
+Questa sessione è progettata per durare e produrre il massimo risultato.
+Le regole vengono da Anthropic Engineering ("Harness Design for Long-Running Apps",
+"Building a C Compiler", "Long-Running Claude") — pattern testati su sessioni 6+ ore.
+
+### REGOLE SESSIONE LUNGA
+1. **COMMIT OGNI 5 FILE** — non accumulare. Git è il tuo checkpoint system.
+2. **PROGRESS FILE** — aggiorna `automa/PROGRESS-G5.md` dopo OGNI blocco. Scrivi: cosa fatto, cosa manca, problemi trovati. Questo sopravvive alla compressione del contesto.
+3. **CoV INTERMEDIA** — dopo ogni capitolo completato (8, 9, 10), fai mini-CoV (build + vocab check + count). Non aspettare la fine.
+4. **RALPH LOOP** — dopo ogni blocco chiediti: "Ho DAVVERO finito questo blocco? Il count è giusto? Il build passa?" Se no, continua prima di andare avanti.
+5. **TEST ORACLE** — i due script Python (vocab check + circuit data match) sono i tuoi test. Eseguili PRIMA di ogni commit, non dopo.
+6. **SE IL BUILD FALLISCE** — fix SUBITO. Non andare avanti con un build rotto. Pivot: rileggi l'errore, fix, rebuild, poi continua.
+7. **ONESTÀ** — se un lesson path è dubbio (dati esperimento ambigui, vocabolario incerto), segnalo nel PROGRESS file. Non inventare.
 
 ## STATO VERIFICATO (27/03/2026 fine G4)
 - Build: ✅ PASSA (26s)
-- Deploy: ✅ HTTP 200 su elabtutor.school
-- Git: pulito, ultimo commit 2e19e41 (fix vocab)
+- Deploy: ✅ HTTP 200 su elabtutor.school — commit 6b7c553
 - Lesson paths: 13/67 totali, 13/38 Volume 1
-- Capitoli COMPLETI (con lesson paths): 6 ✅, 7 ✅
-- Capitoli PARZIALI: 8 (2/5), 9 (1/9), 10 (1/6)
-- Bug critici: 0 (tutti fixati G4)
-- Vocab check automatico: 0 violazioni reali
-- Audit indipendente G4: 0 bug runtime, 0 data mismatch
-- Rapporto commit feat/fix:docs = 2:0 (G4 invertito il trend)
-
-## OBIETTIVO G5: COMPLETARE CAPITOLI 8-10
-
-Target: generare i 16 lesson paths rimanenti per cap 8-10.
-Da 13 a 29 lesson paths. Volume 1 cap 6-10 = 100% completo.
-Questo chiude l'arco narrativo "circuiti DC senza Arduino".
-
-### Perché questo è il lavoro più impattante
-1. Cap 6-10 = tutta l'elettronica di base (LED → RGB → pulsante → pot → LDR)
-2. Un insegnante può fare 10 lezioni COMPLETE con percorsi strutturati
-3. Demo a Giovanni: "Ecco i primi 5 capitoli completi, 29 esperimenti guidati"
-4. Cap 11-14 (buzzer, reed switch, condensatore, Arduino) richiedono vocabolario diverso → sessione separata
-5. Al ritmo G4 (10/sessione), 16 è ambizioso ma fattibile perché i circuiti cap8-10 sono variazioni dello stesso pattern
+  - Cap 6: ✅ COMPLETO (3/3: esp1, esp2, esp3)
+  - Cap 7: ✅ COMPLETO (6/6: esp1-esp6)
+  - Cap 8: 2/5 (esp1, esp2 fatti — mancano esp3, esp4, esp5)
+  - Cap 9: 1/9 (esp1 fatto — mancano esp2-esp9)
+  - Cap 10: 1/6 (esp1 fatto — mancano esp2-esp6)
+- Bug critici: 0
+- Vocab check automatico: 0 violazioni reali (4 meta "NON dire X")
+- JSON schema: tutte 16 chiavi consistenti across 13 file
+- Circuit data match: 100% (intent = experiments-vol1.js)
 
 ## CONTESTO IMMUTABILE
 - Giovanni Fagherazzi = ex Global Sales Director ARDUINO
 - PNRR deadline 30/06/2026 — 93 giorni
+- ELAB Tutor + kit + volumi = STESSO PRODOTTO
 - Palette: Navy #1E4D8C, Lime #558B2F
 - NON toccare: CircuitSolver, AVRBridge, evaluate.py, checks.py
+- Visione UNLIM: mascotte contestuale, messaggi overlay, sessioni salvate
+  (dettagli in automa/context/UNLIM-VISION-COMPLETE.md — NON rileggere, solo riferimento)
 
-## PIANO SESSIONE — 3 BLOCCHI
+## SPRINT CONTRACT (pattern Anthropic "Harness Design")
 
-### BLOCCO 1: BATCH 16 LESSON PATHS (120 min)
+### Deliverable
+- 16 lesson paths nuovi → cap 8-10 COMPLETI
+- Da 13 a 29 lesson paths totali
+- Vol 1 capitoli 6-10 = 100% copertura (29/29 esperimenti)
 
-#### Cap 8 — Pulsante (3 rimanenti)
-| # | ID | Titolo | Note |
-|---|---|--------|------|
-| 1 | v1-cap8-esp3 | RGB + pulsante = viola | RGB + pulsante, combo cap7+cap8 |
-| 2 | v1-cap8-esp4 | 3 pulsanti → 3 colori RGB | 3 pulsanti separati |
-| 3 | v1-cap8-esp5 | Mix avanzato con resistori diversi | combo resistori + pulsanti |
+### Definizione di DONE (hard threshold)
+- `grep "import" src/data/lesson-paths/index.js | wc -l` = 29
+- `npm run build` = Exit 0
+- Vocab check Python = 0 violazioni reali
+- Circuit data match = 0 mismatch
+- Deploy Vercel = HTTP 200
 
-#### Cap 9 — Potenziometro (8 rimanenti)
-| # | ID | Titolo | Note |
-|---|---|--------|------|
-| 4 | v1-cap9-esp2 | Inverti la rotazione | pot al contrario |
-| 5 | v1-cap9-esp3 | LED di colore diverso con pot | pot + LED colorato |
-| 6 | v1-cap9-esp4 | Dimmer RGB azzurrino | pot regola RGB |
-| 7 | v1-cap9-esp5 | Pot miscelatore blu rosso | pot sceglie tra R e B |
-| 8 | v1-cap9-esp6 | Lampada RGB con 3 pot | 3 pot × 3 canali |
-| 9 | v1-cap9-esp7 | Sfida: aggiungi pulsanti alla lampada | pot + pulsanti |
-| 10 | v1-cap9-esp8 | Sfida: combina esp 5+6 | combo |
-| 11 | v1-cap9-esp9 | Sfida: aggiungi pulsante all'esp 8 | combo avanzata |
+### Se anche UNA condizione fallisce → NON dichiarare successo. Fix prima.
 
-#### Cap 10 — Fotoresistenza (5 rimanenti)
-| # | ID | Titolo | Note |
-|---|---|--------|------|
-| 12 | v1-cap10-esp2 | LED diverso colore con LDR | variazione colore |
-| 13 | v1-cap10-esp3 | 3 LDR controllano RGB | 3 sensori × 3 canali |
-| 14 | v1-cap10-esp4 | LED bianco illumina LDR → LED blu | LDR luce artificiale |
+## PIANO — 5 BLOCCHI CON CoV INTERMEDIA
+
+### BLOCCO 1: CAP 8 (3 lesson paths) — ~25 min
+
+| # | ID | Titolo | Note chiave |
+|---|---|--------|-------------|
+| 1 | v1-cap8-esp3 | RGB + pulsante = viola | Combo cap7 (RGB) + cap8 (pulsante) |
+| 2 | v1-cap8-esp4 | 3 pulsanti → 3 colori RGB | 3 pulsanti separati, circuito complesso |
+| 3 | v1-cap8-esp5 | Mix avanzato con resistori diversi | Resistori misti + pulsanti |
+
+**Dopo il blocco**:
+1. Run vocab check → 0 violazioni
+2. Run circuit data match → 0 mismatch
+3. `npm run build` → Exit 0
+4. `git add + commit` (feat: cap8 completo)
+5. Aggiorna PROGRESS-G5.md
+6. **RALPH CHECK**: `grep "v1-cap8" src/data/lesson-paths/index.js | wc -l` = 5? Se no, cosa manca?
+
+### BLOCCO 2: CAP 9 prima metà (4 lesson paths) — ~35 min
+
+| # | ID | Titolo | Note chiave |
+|---|---|--------|-------------|
+| 4 | v1-cap9-esp2 | Inverti la rotazione | Pot al contrario |
+| 5 | v1-cap9-esp3 | LED di colore diverso con pot | Pot + LED colorato |
+| 6 | v1-cap9-esp4 | Dimmer RGB azzurrino | Pot regola RGB |
+| 7 | v1-cap9-esp5 | Pot miscelatore blu rosso | Pot sceglie tra R e B |
+
+**Dopo il blocco**:
+1. Vocab check → 0
+2. Build → Exit 0
+3. Commit (feat: cap9 esp2-5)
+4. Aggiorna PROGRESS-G5.md
+5. **RALPH CHECK**: count in index.js ora = 20?
+
+### BLOCCO 3: CAP 9 seconda metà (4 lesson paths) — ~35 min
+
+| # | ID | Titolo | Note chiave |
+|---|---|--------|-------------|
+| 8 | v1-cap9-esp6 | Lampada RGB con 3 pot | 3 pot × 3 canali, circuito più grande |
+| 9 | v1-cap9-esp7 | Sfida: aggiungi pulsanti alla lampada | Pot + pulsanti combo |
+| 10 | v1-cap9-esp8 | Sfida: combina esp 5+6 | Combinazione di due esperimenti |
+| 11 | v1-cap9-esp9 | Sfida: aggiungi pulsante all'esp 8 | Combo avanzata |
+
+**Dopo il blocco**:
+1. Vocab check → 0
+2. Build → Exit 0
+3. Commit (feat: cap9 completo esp6-9)
+4. Aggiorna PROGRESS-G5.md
+5. **RALPH CHECK**: `grep "v1-cap9" index.js | wc -l` = 9? Cap 9 COMPLETO?
+
+### BLOCCO 4: CAP 10 (5 lesson paths) — ~40 min
+
+| # | ID | Titolo | Note chiave |
+|---|---|--------|-------------|
+| 12 | v1-cap10-esp2 | LED diverso colore con LDR | Variazione colore LED |
+| 13 | v1-cap10-esp3 | 3 LDR controllano RGB | 3 sensori × 3 canali, circuito complesso |
+| 14 | v1-cap10-esp4 | LED bianco illumina LDR → LED blu | LDR con luce artificiale |
 | 15 | v1-cap10-esp5 | Aggiungi pot per controllare LED bianco | LDR + pot combo |
 | 16 | v1-cap10-esp6 | Aggiungi pulsante al circuito LDR | LDR + pulsante combo |
 
-#### Vocabolario per capitolo (REGOLE):
-- Cap 8: permesso "pulsante", "circuito aperto/chiuso", "LED RGB", "catodo comune", "resistore"
-  VIETATO: ohm, volt, tensione, parallelo, serie, condensatore, potenziometro, Arduino
-- Cap 9: come Cap 8 + permesso "potenziometro", "resistenza variabile", "manopola", "dimmer"
-  VIETATO: ohm, volt, tensione, parallelo, serie, condensatore, Arduino, partitore
-- Cap 10: come Cap 9 + permesso "fotoresistenza", "sensore", "LDR"
-  VIETATO: ohm, volt, tensione, parallelo, serie, condensatore, Arduino, partitore
+**Dopo il blocco**:
+1. Vocab check → 0
+2. Circuit data match → 0
+3. Build → Exit 0
+4. Commit (feat: cap10 completo)
+5. Aggiorna PROGRESS-G5.md
+6. **RALPH CHECK**: `grep "v1-cap10" index.js | wc -l` = 6? Cap 10 COMPLETO?
 
-#### Processo per ogni JSON (veloce — no curriculum data per questi):
-1. Leggi dati da experiments-vol1.js (components, connections, steps, observe, concept, unlimPrompt)
-2. Genera JSON 5 fasi: PREPARA→MOSTRA→CHIEDI→OSSERVA→CONCLUDI
-3. build_circuit.intent: copia components + connections dall'esperimento
-4. Analogie: genera dal concept + unlimPrompt dell'esperimento
-5. Aggiungi a index.js
-6. VERIFICA VOCABOLARIO con lo script automatico (vedi BLOCCO 3)
+### BLOCCO 5: DEPLOY + CoV FINALE + HANDOFF — ~20 min
 
-### BLOCCO 2: BUILD + DEPLOY (15 min)
-1. `npm run build` — DEVE passare
-2. `npx vercel --prod --yes`
-3. `curl -s -o /dev/null -w "%{http_code}" https://www.elabtutor.school` → 200
+1. Build finale
+2. Deploy Vercel
+3. CoV completa (11 verifiche — vedi sotto)
+4. Test browser (preview_console_logs, preview_snapshot)
+5. Commit handoff ≤ 30 righe
+6. Scrivi NEXT-SESSION-PROMPT-G6.md
 
-### BLOCCO 3: CHAIN OF VERIFICATION (15 min)
+## VOCABOLARIO PER CAPITOLO (REGOLE STRICT)
 
-Eseguire TUTTE queste verifiche, riportare risultato PASS/FAIL:
+### Cap 8 — Pulsante
+**PERMESSO**: pulsante, circuito aperto/chiuso, LED, LED RGB, catodo comune, resistore, corrente, breadboard, batteria, filo, anodo, catodo
+**VIETATO**: ohm, volt, tensione, parallelo, serie, condensatore, potenziometro, Arduino, codice, programma, digitale, toggle, latch
 
-| # | Verifica | Comando/Azione | Evidenza attesa |
-|---|----------|----------------|-----------------|
-| V1 | Build passa | `npm run build` | Exit 0 |
-| V2 | Lesson paths in index.js | `grep "import" src/data/lesson-paths/index.js \| wc -l` | ≥ 29 |
-| V3 | Deploy OK | `curl -s -o /dev/null -w "%{http_code}" https://www.elabtutor.school` | 200 |
-| V4 | Cap 8 completo | Tutti 5 esp in index.js | v1-cap8-esp1..esp5 |
-| V5 | Cap 9 completo | Tutti 9 esp in index.js | v1-cap9-esp1..esp9 |
-| V6 | Cap 10 completo | Tutti 6 esp in index.js | v1-cap10-esp1..esp6 |
-| V7 | Vocab check automatico | Script Python (sotto) | 0 violazioni reali |
-| V8 | JSON schema consistency | Script Python | Tutte stesse chiavi top-level |
-| V9 | Circuit data match | Per ogni JSON: intent.components = experiments-vol1 components | 100% match |
-| V10 | Console errors | preview_console_logs level=error | Solo borderColor pre-esistente |
-| V11 | Git commit feat | `git log -1 --oneline` | Commit feat, 16+ nuovi file |
+### Cap 9 — Potenziometro
+**PERMESSO**: come Cap 8 + potenziometro, resistenza variabile, manopola, dimmer
+**VIETATO**: ohm, volt, tensione, parallelo, serie, condensatore, Arduino, codice, programma, partitore
 
-### Script vocab check (V7) — ESEGUIRE DOPO AVER GENERATO I JSON:
-```python
-python3 -c "
+### Cap 10 — Fotoresistenza
+**PERMESSO**: come Cap 9 + fotoresistenza, sensore, LDR, luce, buio
+**VIETATO**: ohm, volt, tensione, parallelo, serie, condensatore, Arduino, codice, programma, partitore, digitale
+
+### Eccezione "NON dire X"
+Se un'istruzione per il docente dice "NON dire/introdurre [termine proibito]", il termine può apparire nel contesto meta. Lo script vocab check ha un filtro per questo pattern.
+
+## PROCESSO PER OGNI JSON
+
+1. Leggi dati esperimento da experiments-vol1.js (id, title, components, connections, steps, observe, concept, unlimPrompt)
+2. Usa il template del capitolo corrispondente come modello:
+   - Cap 8: `v1-cap8-esp1.json` (già fatto G4)
+   - Cap 9: `v1-cap9-esp1.json` (già fatto G4)
+   - Cap 10: `v1-cap10-esp1.json` (già fatto G4)
+3. Genera JSON 5 fasi: PREPARA→MOSTRA→CHIEDI→OSSERVA→CONCLUDI
+4. build_circuit.intent: copia components + connections dall'esperimento (ESATTI, non modificare)
+5. Analogie: genera dal concept + unlimPrompt dell'esperimento
+6. Verifica vocabolario MENTALMENTE prima di scrivere (poi lo script conferma)
+7. Aggiungi a index.js
+
+## SCRIPT TEST ORACLE (eseguire PRIMA di ogni commit)
+
+### Vocab check:
+```bash
+cd "VOLUME 3/PRODOTTO/elab-builder" && python3 -c "
 import json, glob, re
 violations = []
 for f in sorted(glob.glob('src/data/lesson-paths/v1-*.json')):
@@ -121,25 +182,24 @@ for f in sorted(glob.glob('src/data/lesson-paths/v1-*.json')):
             text = (phase.get(field) or '').lower()
             for fw in forbidden:
                 if re.search(r'\b' + re.escape(fw) + r'\b', text):
-                    context = re.search(r'non\s+(dire|introdurre|usare)\b.*\b' + re.escape(fw), text)
-                    if not context:
-                        violations.append(f'VIOLATION: {eid} phase[{pi}].{field}: \"{fw}\"')
+                    if not re.search(r'non\s+(dire|introdurre|usare)\b.*\b' + re.escape(fw), text):
+                        violations.append(f'{eid} phase[{pi}].{field}: \"{fw}\"')
         for mi, m in enumerate(phase.get('common_mistakes', [])):
             for mf in ['mistake','teacher_response','analogy']:
                 text = (m.get(mf) or '').lower()
                 for fw in forbidden:
                     if re.search(r'\b' + re.escape(fw) + r'\b', text):
-                        violations.append(f'VIOLATION: {eid} phase[{pi}].mistakes[{mi}].{mf}: \"{fw}\"')
+                        violations.append(f'{eid} phase[{pi}].mistakes[{mi}].{mf}: \"{fw}\"')
 if violations:
     print(f'FAIL: {len(violations)} violations'); [print(f'  {v}') for v in violations]
 else:
-    print(f'PASS: 0 vocabulary violations')
+    print('PASS: 0 vocabulary violations')
 "
 ```
 
-### Script circuit data match (V9):
-```python
-python3 -c "
+### Circuit data match:
+```bash
+cd "VOLUME 3/PRODOTTO/elab-builder" && python3 -c "
 import json, glob, re
 with open('src/data/experiments-vol1.js') as f:
     content = f.read()
@@ -152,17 +212,16 @@ for f in sorted(glob.glob('src/data/lesson-paths/v1-*.json')):
         if not bc: continue
         intent_comps = bc.get('intent', {}).get('components', [])
         intent_wires = bc.get('intent', {}).get('wires', [])
-        # Quick check: number of components and wires
         exp_match = re.search(rf'id:\s*\"{eid}\".*?components:\s*\[(.*?)\]', content, re.DOTALL)
         conn_match = re.search(rf'id:\s*\"{eid}\".*?connections:\s*\[(.*?)\]', content, re.DOTALL)
         if exp_match:
-            exp_comp_count = len(re.findall(r'type:', exp_match.group(1)))
-            if len(intent_comps) != exp_comp_count:
-                mismatches.append(f'{eid}: {len(intent_comps)} intent comps vs {exp_comp_count} exp comps')
+            n = len(re.findall(r'type:', exp_match.group(1)))
+            if len(intent_comps) != n:
+                mismatches.append(f'{eid}: {len(intent_comps)} intent vs {n} exp comps')
         if conn_match:
-            exp_wire_count = len(re.findall(r'from:', conn_match.group(1)))
-            if len(intent_wires) != exp_wire_count:
-                mismatches.append(f'{eid}: {len(intent_wires)} intent wires vs {exp_wire_count} exp wires')
+            n = len(re.findall(r'from:', conn_match.group(1)))
+            if len(intent_wires) != n:
+                mismatches.append(f'{eid}: {len(intent_wires)} intent vs {n} exp wires')
 if mismatches:
     print(f'FAIL: {len(mismatches)} mismatches'); [print(f'  {m}') for m in mismatches]
 else:
@@ -170,77 +229,118 @@ else:
 "
 ```
 
-## FILE DA LEGGERE (MAX 8 file)
+### JSON schema consistency:
+```bash
+cd "VOLUME 3/PRODOTTO/elab-builder" && python3 -c "
+import json, os, glob
+ref_keys = None
+for f in sorted(glob.glob('src/data/lesson-paths/v1-*.json')):
+    d = json.load(open(f))
+    keys = sorted([k for k in d.keys() if k != '_meta'])
+    if ref_keys is None: ref_keys = keys
+    elif keys != ref_keys:
+        print(f'FAIL: {os.path.basename(f)} has different keys')
+        print(f'  Extra: {set(keys)-set(ref_keys)}, Missing: {set(ref_keys)-set(keys)}')
+        exit(1)
+print(f'PASS: all {len(list(glob.glob(\"src/data/lesson-paths/v1-*.json\")))} files consistent ({len(ref_keys)} keys)')
+"
+```
 
-### Obbligatori prima di scrivere codice (4 file)
-1. `src/data/lesson-paths/v1-cap6-esp1.json` — TEMPLATE (170 righe)
-2. `src/data/experiments-vol1.js` — righe per cap8-10 (vedi tabella sopra)
-3. `src/data/lesson-paths/index.js` — per aggiornare import
-4. `src/data/curriculumData.js` — ha curriculum per v1-cap8-esp1, v1-cap9-esp1, v1-cap10-esp1 (già usati)
+## CHAIN OF VERIFICATION FINALE (11 verifiche)
 
-### Se serve
-5. `src/data/lesson-paths/v1-cap8-esp1.json` — template cap8 (già fatto G4)
-6. `src/data/lesson-paths/v1-cap9-esp1.json` — template cap9 (già fatto G4)
-7. `src/data/lesson-paths/v1-cap10-esp1.json` — template cap10 (già fatto G4)
+| # | Verifica | Comando | Evidenza attesa |
+|---|----------|---------|-----------------|
+| V1 | Build passa | `npm run build` | Exit 0 |
+| V2 | Import count | `grep "import" src/data/lesson-paths/index.js \| wc -l` | 29 |
+| V3 | Deploy OK | `curl -s -o /dev/null -w "%{http_code}" https://www.elabtutor.school` | 200 |
+| V4 | Cap 8 completo | `grep "v1-cap8" src/data/lesson-paths/index.js \| wc -l` | 5 |
+| V5 | Cap 9 completo | `grep "v1-cap9" src/data/lesson-paths/index.js \| wc -l` | 9 |
+| V6 | Cap 10 completo | `grep "v1-cap10" src/data/lesson-paths/index.js \| wc -l` | 6 |
+| V7 | Vocab check | Script Python | 0 violazioni reali |
+| V8 | Circuit data match | Script Python | 0 mismatch |
+| V9 | JSON schema | Script Python | Tutte stesse chiavi |
+| V10 | Console errors | preview_console_logs level=error | Solo borderColor |
+| V11 | Git log | `git log --oneline -5` | 4+ commit feat/fix, 0 docs |
 
-### NON leggere
-- CLAUDE.md (già nel contesto)
+## FILE DA LEGGERE (in ordine — STRICT)
+
+### OBBLIGATORI prima di scrivere codice (leggere UNA VOLTA, non rileggere)
+1. `src/data/lesson-paths/v1-cap8-esp1.json` — template cap8 (~170 righe)
+2. `src/data/lesson-paths/v1-cap9-esp1.json` — template cap9
+3. `src/data/lesson-paths/v1-cap10-esp1.json` — template cap10
+4. `src/data/experiments-vol1.js` — righe 1337-1600 (cap8), 2360-3500 (cap9), 4148-5340 (cap10)
+5. `src/data/lesson-paths/index.js` — per aggiornare import
+
+### SE SERVE (non leggere preventivamente)
+6. `src/data/curriculumData.js` — ha curriculum per cap8-esp1, cap9-esp1, cap10-esp1
+
+### NON LEGGERE MAI
+- CLAUDE.md (già nel contesto automatico)
+- automa/context/*.md (visione già nota, non rileggere)
 - Contesto business (già nel prompt)
-- File automa/context/
-- I 5 componenti UNLIM
-- TeacherDashboard (1774 righe — NON toccare oggi)
+- TeacherDashboard (non toccare oggi)
+- I 5 componenti UNLIM (non toccare oggi)
+- File automa/knowledge/* (ricerca, non codice)
 
 ## REGOLE SESSIONE
 1. ❌ ZERO commit `docs:` — solo `feat:` e `fix:`
-2. ❌ ZERO agenti di ricerca/audit prima di aver scritto codice
-3. ❌ ZERO handoff >50 righe
-4. ✅ CODICE FIRST — batch genera JSON
-5. ✅ Build dopo ogni blocco
-6. ✅ Deploy una volta alla fine
-7. ✅ CoV obbligatoria con le 11 verifiche sopra
-8. ✅ Vocab check automatico PRIMA del commit
-9. ✅ Se un JSON è dubbio, leggi l'esperimento originale prima
+2. ❌ ZERO agenti di ricerca/audit PRIMA di scrivere codice
+3. ❌ ZERO handoff > 30 righe
+4. ❌ NON rileggere file già letti — scrivi codice
+5. ✅ CODICE FIRST — genera JSON, poi testa, poi committa
+6. ✅ Test oracle PRIMA di ogni commit (vocab + circuit + build)
+7. ✅ CoV intermedia dopo ogni capitolo
+8. ✅ PROGRESS-G5.md aggiornato dopo ogni blocco
+9. ✅ Se un JSON è dubbio, leggi l'esperimento originale per quel singolo ID
+10. ✅ Massima onestà — se qualcosa non quadra, segnalo
 
-## ANTI-PATTERN (da G1-G4)
-- ❌ Spendere 30min+ su audit prima di scrivere codice
-- ❌ 10 commit docs per 3 commit feat
-- ❌ Rileggere 43 file di contesto
-- ❌ Handoff da 200+ righe
-- ❌ Usare parole proibite nelle istruzioni per l'insegnante (audit G4 trovò 5 violazioni)
+## ANTI-PATTERN (provati e falliti G1-G3)
+- ❌ 30min+ audit prima di scrivere codice → G1-G3 producevano 1 lesson path/giorno
+- ❌ 10 commit docs per 3 commit feat → invertito
+- ❌ Rileggere 43 file di contesto → compressione contesto
+- ❌ Handoff da 200+ righe → nessuno li legge
+- ❌ Lanciare agenti di ricerca quando il lavoro è batch meccanico
+- ❌ Dichiarare successo senza count verificato (Ralph loop!)
 
 ## OUTPUT ATTESO
-- 16 lesson paths nuovi (da 13 a 29 totali)
-- Cap 6-10 COMPLETI al 100% (29/29 esperimenti coperti)
-- Build ✅ + Deploy ✅
-- CoV con 11 verifiche PASS
-- Vocab check: 0 violazioni reali
-- Handoff ≤50 righe
+- 16 lesson paths nuovi (da 13 a 29)
+- Cap 6-10 COMPLETI al 100%
+- 4+ commit feat, 0 commit docs
+- CoV intermedia dopo ogni capitolo (3 mini-CoV)
+- CoV finale con 11 verifiche PASS
+- PROGRESS-G5.md con storia onesta della sessione
+- NEXT-SESSION-PROMPT-G6.md per completare Vol 1 (cap 11-14, 9 esperimenti)
+- Handoff ≤ 30 righe
+
+## PROGRESS FILE (creare all'inizio, aggiornare dopo ogni blocco)
+
+Crea `automa/PROGRESS-G5.md` con questa struttura:
+```markdown
+# G5 Progress — [data]
+## Blocco 1: Cap 8
+- [ ] v1-cap8-esp3
+- [ ] v1-cap8-esp4
+- [ ] v1-cap8-esp5
+- Build: ?  Vocab: ?  Commit: ?
+
+## Blocco 2: Cap 9 (esp2-5)
+...
+## Blocco 3: Cap 9 (esp6-9)
+...
+## Blocco 4: Cap 10 (esp2-6)
+...
+## Blocco 5: Deploy + CoV
+...
+## Problemi trovati
+(lista onesta di qualsiasi problema)
+## Tempo totale
+```
+
+Aggiorna DOPO ogni blocco. Questo file sopravvive alla compressione del contesto.
 
 ## REFERENCE
 - Build: `export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH" && npm run build`
 - Deploy: `export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH" && npx vercel --prod --yes`
 - Sito: https://www.elabtutor.school
 - Palette: Navy #1E4D8C, Lime #558B2F
-
-## VALUTAZIONE ONESTA DEL PERCORSO
-
-### Ritmo attuale (dopo G4)
-- G1-G3: 3 lesson paths in 3 giorni (1/giorno) → LENTO
-- G4: 10 lesson paths + 4 bug fix + vocab fix → SVOLTA
-- G5 target: 16 lesson paths → se riuscita, Vol 1 cap6-10 completo
-- Al ritmo G4-G5: Vol 1 completabile in G6 (cap11-14 = 9 rimanenti)
-
-### Cosa manca dopo G5 (onestamente)
-- Vol 1 cap 11-14: 9 esperimenti (buzzer, reed switch, condensatore, Arduino base)
-- Vol 2: 18 esperimenti (tutti Arduino)
-- Vol 3: 11 esperimenti (Arduino avanzato)
-- Teacher Dashboard: 1774 righe esistenti ma ZERO collegamento con lesson paths
-- Demo-ready: manca integrazione lesson paths ↔ teacher view
-
-### Priorità post-G5
-1. G6: Completare Vol 1 (9 esp cap11-14) → Vol 1 = 38/38 = 100%
-2. G7: Collegare lesson paths a TeacherDashboard (lista esperimenti con percorsi, progress)
-3. G8-G9: Vol 2 lesson paths (18 esp Arduino)
-4. G10: Vol 3 lesson paths (11 esp Arduino avanzato)
-5. G11-G14: Polish, demo prep, Teacher Dashboard features
 ```
