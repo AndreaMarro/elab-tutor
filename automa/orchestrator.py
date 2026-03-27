@@ -13,6 +13,11 @@ import time
 from datetime import datetime, date
 from pathlib import Path
 
+# Ensure npm/node are in PATH (required for build checks, evaluate.py, Playwright)
+_EXTRA_PATH = "/opt/homebrew/bin:/usr/local/bin:/Users/andreamarro/.npm-global/bin"
+if _EXTRA_PATH not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = _EXTRA_PATH + ":" + os.environ.get("PATH", "")
+
 AUTOMA_ROOT = Path(__file__).parent
 PROJECT_ROOT = AUTOMA_ROOT.parent
 STATE_FILE = AUTOMA_ROOT / "state" / "state.json"
@@ -339,7 +344,7 @@ Guarda PDR.md. Priorita: insegnante > UX > bug > performance."""
 
     # 10-layer context
     context_parts = []
-    for ctx_file in ["context/teacher-principles.md", "context/volume-path.md"]:
+    for ctx_file in ["context/teacher-principles.md", "context/volume-path.md", "context/project-history.md"]:
         ctx_path = AUTOMA_ROOT / ctx_file
         if ctx_path.exists():
             context_parts.append(ctx_path.read_text()[:2000])
@@ -396,6 +401,14 @@ Guarda PDR.md. Priorita: insegnante > UX > bug > performance."""
         db_summary = get_context_summary()
     except Exception:
         pass
+
+    # Layer 11: Shared results from scheduled tasks (bidirectional communication)
+    shared_results = ""
+    sr_path = AUTOMA_ROOT / "state" / "shared-results.md"
+    if sr_path.exists():
+        sr_lines = sr_path.read_text().strip().splitlines()
+        # Last 30 lines = most recent task results
+        shared_results = "\n".join(sr_lines[-30:])
 
     learned_rules = load_learned_rules()
     parallel_findings = get_latest_findings(5)
@@ -494,6 +507,9 @@ Se il tuo codice non supera questo scenario → NON COMMITTARE.
 ### 10. Ricerca Parallela (Kimi K2.5)
 {parallel_findings if parallel_findings else "(nessuna)"}
 {f"AZIONI URGENTI:{chr(10)}{actionable_summary}" if actionable_summary else ""}
+
+### 11. Risultati Task Paralleli (scheduled tasks comunicano qui)
+{shared_results if shared_results else "(nessun risultato dai task paralleli)"}
 
 ## CHECK RESULTS
 {check_summary}

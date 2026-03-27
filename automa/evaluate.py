@@ -16,6 +16,11 @@ import sys
 import time
 from pathlib import Path
 
+# Ensure npm/node are in PATH when run from nohup/cron
+_EXTRA = "/opt/homebrew/bin:/usr/local/bin:/Users/andreamarro/.npm-global/bin"
+if _EXTRA not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = _EXTRA + ":" + os.environ.get("PATH", "")
+
 AUTOMA_ROOT = Path(__file__).parent
 PROJECT_ROOT = AUTOMA_ROOT.parent
 sys.path.insert(0, str(AUTOMA_ROOT))
