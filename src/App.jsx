@@ -26,6 +26,7 @@ const VetrinaSimulatore = lazy(() => import('./components/VetrinaSimulatore'));
 const ShowcasePage = lazy(() => import('./components/ShowcasePage'));
 const LandingPNRR = lazy(() => import('./components/LandingPNRR'));
 const Navbar = lazy(() => import('./components/social/Navbar'));
+const UnlimWrapper = lazy(() => import('./components/unlim/UnlimWrapper'));
 
 function LoadingFallback() {
     return (
@@ -220,7 +221,9 @@ function AppRouter() {
                         <RequireLicense onNavigate={navigate}>
                             <ErrorBoundary>
                                 <Suspense fallback={<LoadingFallback />}>
-                                    <ElabTutorV4 />
+                                    <UnlimWrapper>
+                                        <ElabTutorV4 />
+                                    </UnlimWrapper>
                                 </Suspense>
                             </ErrorBoundary>
                         </RequireLicense>
