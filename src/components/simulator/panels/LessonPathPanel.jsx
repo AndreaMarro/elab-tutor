@@ -161,7 +161,7 @@ function getPrerequisiteText(id) {
 }
 
 /* ─── Phase data structure ─── */
-const PHASE_ICONS = ['📋', '🖥️', '❓', '👀', '🤖', '✅'];
+const LP_PHASE_ICONS = ['📋', '🖥️', '❓', '👀', '🤖', '✅'];
 const PHASE_TITLES = [
   'PREPARA',
   'MOSTRA',
@@ -788,7 +788,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
               }}
             >
               <span style={S.phaseNum}>{i + 1}</span>
-              <span style={S.phaseIcon}>{PHASE_ICONS[i]}</span>
+              <span style={S.phaseIcon}>{LP_PHASE_ICONS[i]}</span>
               <span style={S.phaseName}>{title}</span>
               <span style={S.phaseDuration}>{PHASE_DURATIONS[i]}</span>
               <span style={S.phaseChevron}>{expandedPhase === i ? '▾' : '▸'}</span>
