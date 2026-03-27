@@ -22,7 +22,7 @@
     "note": "Cap 9 Vol 2 — fototransistor + MOSFET, luce notturna automatica."
   },
   "prerequisites": ["v2-cap9-esp1"],
-  "next_experiment": { "id": "v2-cap10-esp1", "title": "Far girare il motore", "preview": "Nel Capitolo 10 scoprirete il motore DC: trasformiamo l'elettricità in movimento!" },
+  "next_experiment": { "id": "v2-cap10-esp1", "title": "Elettricità in movimento", "preview": "Nel Capitolo 10 scoprirete come trasformare l'elettricità in movimento!" },
   "phases": [
     {
       "name": "PREPARA", "icon": "📋", "duration_minutes": 5,
@@ -102,7 +102,7 @@
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
       "summary_for_class": "Avete costruito una luce notturna automatica! Il fototransistor rileva il buio, il resistore pull-down mantiene il Gate basso con la luce, e il MOSFET accende il LED quando viene notte. Logica invertita: buio = LED acceso!",
       "concepts_learned": ["fototransistor come sensore di luce", "MOSFET come interruttore controllato in tensione", "resistore pull-down al Gate", "logica invertita: buio accende LED"],
-      "next_preview": "Nel Capitolo 10 incontrerete il motore DC: l'energia elettrica diventa movimento! Prepáratevi a far girare le cose!"
+      "next_preview": "Nel Capitolo 10 l'energia elettrica diventa movimento! Preparatevi a far girare le cose!"
     }
   ],
   "assessment_invisible": [
@@ -113,6 +113,6 @@
   "session_save": {
     "concepts_covered": ["fototransistor_sensore", "MOSFET_gate_controllo", "pull_down", "logica_invertita"],
     "next_suggested": "v2-cap10-esp1",
-    "resume_message": "Avete costruito la luce notturna automatica! Ora scoprirete il motore DC nel Capitolo 10."
+    "resume_message": "Avete costruito la luce notturna automatica! Il Capitolo 10 vi aspetta con un componente che si muove!"
   }
 }

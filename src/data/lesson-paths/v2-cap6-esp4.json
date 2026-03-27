@@ -20,7 +20,7 @@
     "note": "Vol 2 Cap 6 — LED in serie, tensione forward, multimetro"
   },
   "prerequisites": ["v2-cap6-esp3"],
-  "next_experiment": { "id": "v2-cap7-esp1", "title": "Scarica condensatore con multimetro", "preview": "Nel Capitolo 7 scoprirete i condensatori: componenti che immagazzinano energia e la rilasciano lentamente!" },
+  "next_experiment": { "id": "v2-cap7-esp1", "title": "Scarica e carica con il multimetro", "preview": "Nel Capitolo 7 scoprirete componenti che immagazzinano energia elettrica e la rilasciano lentamente!" },
   "phases": [
     {
       "name": "PREPARA", "icon": "📋", "duration_minutes": 6,
@@ -94,7 +94,7 @@
         },
         {
           "concept": "Vf_firma_LED",
-          "text": "La tensione forward è la firma unica di ogni LED: 1.8V per il rosso, 2.2V per il verde, 3V per il blu. È come un codice segreto che il multimetro può leggere! Conoscere questi valori vi permette di calcolare qualsiasi circuito LED.",
+          "text": "La tensione forward è la firma unica di ogni LED: 1.8V per il rosso, 2.2V per il verde, 3V per il blu. È come un'impronta unica che il multimetro può leggere! Conoscere questi valori vi permette di calcolare qualsiasi circuito LED.",
           "evidence": "Curriculum ELAB Vol 2"
         }
       ]
@@ -117,6 +117,6 @@
   "session_save": {
     "concepts_covered": ["misura_Vf_multimetro", "voltmetro_parallelo", "Vf_rosso_1.8V_confermata"],
     "next_suggested": "v2-cap7-esp1",
-    "resume_message": "Hai completato il Capitolo 6! Ora conosci la tensione forward di ogni LED. Il Capitolo 7 ti aspetta con un componente misterioso: il condensatore!"
+    "resume_message": "Hai completato il Capitolo 6! Ora conosci la tensione forward di ogni LED. Il Capitolo 7 ti aspetta con un componente misterioso: un componente che immagazzina energia!"
   }
 }

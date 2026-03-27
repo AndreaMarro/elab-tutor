@@ -67,13 +67,13 @@
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
       "common_mistakes": [
         { "mistake": "Invertire collettore ed emettitore del fototransistor", "teacher_response": "Il fototransistor ha polarità! Il collettore (gamba più lunga o con il segno nel datasheet) va verso la tensione alta. L'emettitore va verso il resistore e poi a massa. Se invertiti, il circuito non risponde alla luce!", "analogy": "Come una valvola: ha un senso di flusso preciso, invertita non funziona" },
-        { "mistake": "Aspettarsi che il multimetro mostri un valore fisso", "teacher_response": "Il valore sul multimetro CAMBIA continuamente con la luce! È un sensore analogico: varia tra quasi 0V (buio) e quasi 9V (luce intensa). Muovete una torcia o coprite con la mano e guardate il numero cambiare in diretta!", "analogy": null }
+        { "mistake": "Aspettarsi che il multimetro mostri un valore fisso", "teacher_response": "Il valore sul multimetro CAMBIA continuamente con la luce! È un sensore che varia in modo continuo: tra quasi 0V (buio) e quasi 9V (luce intensa). Muovete una torcia o coprite con la mano e guardate il numero cambiare in diretta!", "analogy": null }
       ]
     },
     {
       "name": "OSSERVA", "icon": "👀", "duration_minutes": 8,
       "teacher_message": "Premi Play. Il simulatore mostra la risposta alla luce. Fai variare la luce nel simulatore: il multimetro cambia! Con luce intensa, tensione alta. Al buio, tensione vicina a zero.",
-      "teacher_tip": "Evidenzia il fototransistor e il multimetro. Fai variare la luce nel simulatore e osserva il multimetro in tempo reale. 'Questo è un sensore analogico: non è ON/OFF come un interruttore, ma varia in modo continuo con la luce!'",
+      "teacher_tip": "Evidenzia il fototransistor e il multimetro. Fai variare la luce nel simulatore e osserva il multimetro in tempo reale. 'Questo è un sensore continuo: non è ON/OFF come un interruttore, ma varia gradualmente con la luce!'",
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pt1]", "[AZIONE:highlight:r1]", "[AZIONE:highlight:mm1]"],
       "auto_action": "play_and_highlight",
@@ -85,21 +85,21 @@
     },
     {
       "name": "CONCLUDI", "icon": "✅", "duration_minutes": 5,
-      "teacher_message": "Il fototransistor è un sensore di luce analogico: la tensione all'emettitore varia in modo continuo con la luce. Combinato con un resistore forma un partitore di tensione controllato dalla luce!",
+      "teacher_message": "Il fototransistor è un sensore di luce continuo: la tensione all'emettitore varia gradualmente con la luce. Combinato con un resistore forma un partitore di tensione controllato dalla luce!",
       "teacher_tip": "Collega al prossimo esperimento: 'Avete un sensore di luce che dà una tensione variabile. Nel prossimo esperimento userete questa tensione per controllare un MOSFET + LED: luce notturna automatica!'",
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
       "summary_for_class": "Il fototransistor ha 2 pin: collettore ed emettitore. Più luce riceve, più corrente lascia passare. Con un resistore da 10kΩ forma un partitore di tensione: il multimetro mostra una tensione variabile tra 0V (buio) e quasi 9V (luce intensa)!",
-      "concepts_learned": ["fototransistor come sensore di luce", "collettore ed emettitore", "partitore di tensione controllato dalla luce", "segnale analogico variabile"],
+      "concepts_learned": ["fototransistor come sensore di luce", "collettore ed emettitore", "partitore di tensione controllato dalla luce", "segnale continuo variabile"],
       "next_preview": "Prossimo esperimento: collegherete il fototransistor a un MOSFET per costruire una luce notturna automatica. Al buio il LED si accende da solo!"
     }
   ],
   "assessment_invisible": [
     "Se spiega che più luce = più corrente = tensione più alta → comprensione del principio",
     "Se identifica il partitore di tensione luce-resistore → comprensione circuitale",
-    "Se distingue sensore analogico da interruttore digitale ON/OFF → comprensione avanzata"
+    "Se distingue sensore continuo da interruttore ON/OFF → comprensione avanzata"
   ],
   "session_save": {
-    "concepts_covered": ["fototransistor_sensore", "partitore_tensione_luce", "segnale_analogico", "collettore_emettitore"],
+    "concepts_covered": ["fototransistor_sensore", "partitore_tensione_luce", "segnale_continuo", "collettore_emettitore"],
     "next_suggested": "v2-cap9-esp2",
     "resume_message": "Avete scoperto il fototransistor! Tensione variabile con la luce. Prossimo: luce notturna automatica con MOSFET!"
   }

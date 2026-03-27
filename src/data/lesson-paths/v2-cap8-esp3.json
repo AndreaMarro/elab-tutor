@@ -22,7 +22,7 @@
     "note": "Cap 8 Vol 2 — tensione di soglia Vth del MOSFET, potenziometro per variare tensione Gate."
   },
   "prerequisites": ["v2-cap8-esp2"],
-  "next_experiment": { "id": "v2-cap9-esp1", "title": "Fototransistor come sensore", "preview": "Nel Capitolo 9 scoprirete il fototransistor: un componente controllato dalla luce invece che dalla tensione!" },
+  "next_experiment": { "id": "v2-cap9-esp1", "title": "Sensore di luce", "preview": "Nel Capitolo 9 scoprirete un componente controllato dalla luce invece che dalla tensione!" },
   "phases": [
     {
       "name": "PREPARA", "icon": "📋", "duration_minutes": 6,
@@ -93,11 +93,11 @@
     {
       "name": "CONCLUDI", "icon": "✅", "duration_minutes": 7,
       "teacher_message": "Avete trovato sperimentalmente Vth ≈ 2V! Sotto Vth il MOSFET è spento, sopra si accende gradualmente, a 4V+ è completamente aperto. Il potenziometro ci ha permesso di controllare la transizione con precisione.",
-      "teacher_tip": "Questo conclude il Capitolo 8. Riepiloga i 3 esperimenti: 'Esp.1: Gate a 9V = ON/OFF. Esp.2: Gate flottante e carica del dito. Esp.3: trovare Vth con il potenziometro.' Il Capitolo 9 introduce il fototransistor!",
+      "teacher_tip": "Questo conclude il Capitolo 8. Riepiloga i 3 esperimenti: 'Esp.1: Gate a 9V = ON/OFF. Esp.2: Gate flottante e carica del dito. Esp.3: trovare Vth con il potenziometro.' Il Capitolo 9 introduce un sensore controllato dalla luce!",
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
       "summary_for_class": "La tensione di soglia Vth ≈ 2V: sotto questo valore il MOSFET è spento, sopra si apre. Il potenziometro ha permesso di variare la tensione al Gate con precisione. Il multimetro ha mostrato esattamente il punto critico!",
       "concepts_learned": ["tensione di soglia Vth del MOSFET", "zona di transizione graduale ON/OFF", "potenziometro per variare tensione al Gate", "misurare Vth con il multimetro"],
-      "next_preview": "Capitolo 9: il fototransistor! Un componente controllato dalla luce: più luce riceve, più corrente lascia passare. Combinato con un MOSFET farà cose incredibili!"
+      "next_preview": "Capitolo 9: un sensore controllato dalla luce! Più luce riceve, più corrente lascia passare. Combinato con quello che sapete farà cose incredibili!"
     }
   ],
   "assessment_invisible": [
@@ -108,6 +108,6 @@
   "session_save": {
     "concepts_covered": ["Vth_tensione_soglia", "transizione_graduale", "potenziometro_Gate", "multimetro_Gate"],
     "next_suggested": "v2-cap9-esp1",
-    "resume_message": "Avete completato il Capitolo 8! Conoscete Vth e la transizione del MOSFET. Il Capitolo 9 vi aspetta con il fototransistor!"
+    "resume_message": "Avete completato il Capitolo 8! Conoscete Vth e la transizione del MOSFET. Il Capitolo 9 vi aspetta con un sensore di luce!"
   }
 }

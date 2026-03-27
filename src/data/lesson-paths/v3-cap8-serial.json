@@ -84,7 +84,7 @@
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
       "summary_for_class": "I pin analogici di Arduino leggono valori da 0 a 1023 grazie all'ADC (convertitore analogico-digitale). Il Serial Monitor ci permette di vedere questi valori in tempo reale sul computer. Con potenziometri, sensori di temperatura, di luce e tanti altri componenti, questi strumenti ci permettono di misurare il mondo reale!",
       "concepts_learned": ["pin analogici vs digitali", "analogRead() e range 0-1023", "ADC a 10 bit", "Serial.begin() e baud rate", "Serial.println() per stampare dati"],
-      "next_preview": "Nei prossimi esperimenti Extra scoprirete componenti avanzati: il display LCD 16x2 per scrivere messaggi, il servomotore per fare movimenti precisi, e il gioco Simon Says!"
+      "next_preview": "Nei prossimi esperimenti Extra scoprirete componenti avanzati: il display LCD 16x2 per scrivere messaggi, il servo per fare movimenti precisi, e il gioco Simon Says!"
     }
   ],
   "assessment_invisible": [

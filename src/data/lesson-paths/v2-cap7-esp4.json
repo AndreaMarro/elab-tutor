@@ -25,7 +25,7 @@
     "note": "Cap 7 Vol 2 — costante di tempo Tau = R×C, variare R cambia velocità di scarica."
   },
   "prerequisites": ["v2-cap7-esp3"],
-  "next_experiment": { "id": "v2-cap8-esp1", "title": "MOSFET come interruttore", "preview": "Nel Capitolo 8 incontrerete un componente speciale: il MOSFET, un interruttore controllato dalla tensione!" },
+  "next_experiment": { "id": "v2-cap8-esp1", "title": "Interruttore elettronico", "preview": "Nel Capitolo 8 incontrerete un componente speciale: un interruttore elettronico controllato dalla tensione!" },
   "phases": [
     {
       "name": "PREPARA", "icon": "📋", "duration_minutes": 5,
@@ -96,11 +96,11 @@
     {
       "name": "CONCLUDI", "icon": "✅", "duration_minutes": 5,
       "teacher_message": "Tau = R × C funziona in entrambe le direzioni: aumentando R o C, il tempo di scarica cresce proporzionalmente. Con R=10kΩ e C=1000µF otteniamo ben 10 secondi!",
-      "teacher_tip": "Riepiloga: 'Avete due 'manopole' per controllare Tau: R e C. Capitolo 7 è finito! Nel Capitolo 8 incontrerete il MOSFET, un interruttore controllato dalla tensione.'",
+      "teacher_tip": "Riepiloga: 'Avete due 'manopole' per controllare Tau: R e C. Capitolo 7 è finito! Nel Capitolo 8 incontrerete un interruttore elettronico controllato dalla tensione.'",
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
       "summary_for_class": "Tau = R × C: la costante di tempo RC dipende sia da R che da C. Aumentando R si rallenta la scarica. R=470Ω → Tau≈0.5s. R=10kΩ → Tau=10s. Il multimetro mostra la tensione scendere esponenzialmente!",
       "concepts_learned": ["Tau = R × C dipende da R", "resistore più grande = scarica più lenta", "curva di scarica esponenziale", "misurare tensione con il multimetro"],
-      "next_preview": "Capitolo 8: scoprirete il MOSFET, un interruttore elettronico controllato dalla tensione al Gate!"
+      "next_preview": "Capitolo 8: scoprirete un interruttore elettronico controllato dalla tensione — un componente rivoluzionario!"
     }
   ],
   "assessment_invisible": [
@@ -111,6 +111,6 @@
   "session_save": {
     "concepts_covered": ["tau_RC", "R_varia_scarica", "multimetro_tensione", "scarica_esponenziale"],
     "next_suggested": "v2-cap8-esp1",
-    "resume_message": "Avete completato il Capitolo 7! Conoscete Tau = R × C. Il Capitolo 8 vi aspetta con il MOSFET!"
+    "resume_message": "Avete completato il Capitolo 7! Conoscete Tau = R × C. Il Capitolo 8 vi aspetta con un interruttore elettronico!"
   }
 }

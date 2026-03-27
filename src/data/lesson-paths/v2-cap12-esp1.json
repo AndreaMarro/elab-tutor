@@ -5,7 +5,7 @@
   "title": "Robot Segui Luce",
   "chapter_title": "Robot Segui Luce",
   "difficulty": 3, "duration_minutes": 55, "target_age": "10-14 anni",
-  "objective": "PROGETTO FINALE del Volume 2! Costruire un robot analogico che segue la luce: due fototransistor funzionano come 'occhi', due MOSFET come 'muscoli', due motori come 'gambe'. Il segreto è la cross-connection: l'occhio destro controlla il motore sinistro e viceversa!",
+  "objective": "PROGETTO FINALE del Volume 2! Costruire un robot puramente elettronico che segue la luce: due fototransistor funzionano come 'occhi', due MOSFET come 'muscoli', due motori come 'gambe'. Il segreto è la cross-connection: l'occhio destro controlla il motore sinistro e viceversa!",
   "components_needed": [
     { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
     { "name": "Breadboard grande (full-size)", "quantity": 1, "icon": "🔲" },
@@ -22,11 +22,11 @@
     "note": "Cap 12 Vol 2 — robot segui luce, cross-connection fototransistor-MOSFET-motore, diodi flyback."
   },
   "prerequisites": ["v2-cap10-esp4"],
-  "next_experiment": { "id": "v3-cap6-semaforo", "title": "Semaforo 3 LED", "preview": "Nel Volume 3 scoprirete Arduino e la programmazione!" },
+  "next_experiment": { "id": "v3-cap6-semaforo", "title": "Semaforo 3 LED", "preview": "Nel Volume 3 scoprirete come dare istruzioni ai circuiti!" },
   "phases": [
     {
       "name": "PREPARA", "icon": "📋", "duration_minutes": 8,
-      "teacher_message": "È il PROGETTO FINALE del Volume 2! Costruiamo un robot che segue la luce da solo, senza nessun programma — solo con componenti elettronici collegati in modo intelligente!",
+      "teacher_message": "È il PROGETTO FINALE del Volume 2! Costruiamo un robot che segue la luce da solo, senza alcuna istruzione scritta — solo con componenti elettronici collegati in modo intelligente!",
       "teacher_tip": "Fai un recap di tutto quello che gli studenti hanno imparato: 'Fototransistor (cap 9): sente la luce. MOSFET (cap 9): interruttore comandato da tensione. Motore DC (cap 10): trasforma corrente in rotazione. Diodo (cap 11): lascia passare la corrente in una sola direzione. Oggi usiamo tutto insieme!'",
       "components_list": "Ti servono: 1 breadboard full-size, 1 batteria 9V, 2 fototransistor, 2 MOSFET-N, 2 resistori 10kΩ, 2 diodi, 2 motori DC, tanti fili!",
       "class_hook": "Avete mai visto una falena che vola sempre verso la luce? Lo fa automaticamente, senza pensarci! Oggi costruiamo un robot che fa la stessa cosa, usando solo i componenti che conoscete già.",
@@ -99,7 +99,7 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pt1]", "[AZIONE:highlight:pt2]", "[AZIONE:highlight:mos1]", "[AZIONE:highlight:mos2]", "[AZIONE:highlight:mot1]", "[AZIONE:highlight:mot2]", "[AZIONE:highlight:d1]", "[AZIONE:highlight:d2]"],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Illuminando pt1 (sinistra): il segnale va a X al Gate di mos2, che attiva mot2 (destra). Il robot gira verso la luce! I diodi d1 e d2 proteggono i MOSFET dalla forza controelettromotrice dei motori quando si fermano. Nessun programma, solo fisica e collegamento intelligente!",
+      "observation_prompt": "Illuminando pt1 (sinistra): il segnale va a X al Gate di mos2, che attiva mot2 (destra). Il robot gira verso la luce! I diodi d1 e d2 proteggono i MOSFET dalla forza controelettromotrice dei motori quando si fermano. Nessuna istruzione scritta, solo fisica e collegamento intelligente!",
       "analogies": [
         { "concept": "cross_connection", "text": "Gli occhi del robot sono come quelli umani: quando guardi a destra, il tuo cervello manda il segnale al muscolo sinistro della testa per girare. Anche il robot usa questa 'connessione a X' — il fototransistor di destra attiva il motore di sinistra per girare verso la luce!", "evidence": "Curriculum ELAB Vol 2 Cap 12" },
         { "concept": "diodo_protezione", "text": "I diodi di protezione sono come le valvole anti-ritorno in un impianto idraulico: lasciano passare l'acqua (corrente) in una direzione, ma la bloccano se tenta di tornare indietro. Quando il motore si ferma e genera un piccolo 'contraccolpo' di energia, il diodo lo blocca e protegge il MOSFET.", "evidence": "Curriculum ELAB Vol 2 Cap 12" }
@@ -107,23 +107,23 @@
     },
     {
       "name": "CONCLUDI", "icon": "✅", "duration_minutes": 7,
-      "teacher_message": "COMPLIMENTI! Avete costruito il Robot Segui Luce e completato il Volume 2! Un robot intelligente fatto solo con fototransistor, MOSFET, motori e diodi — zero programmazione!",
-      "teacher_tip": "Celebra il momento! Fai un recap del viaggio del Volume 2: 'Avete imparato i fototransistor (cap 9), il MOSFET (cap 9), i motori DC (cap 10), i diodi (cap 11), e ora avete messo tutto insieme in un robot che pensa con l'elettronica!' Anticipa il Volume 3: Arduino e la programmazione.",
+      "teacher_message": "COMPLIMENTI! Avete costruito il Robot Segui Luce e completato il Volume 2! Un robot intelligente fatto solo con fototransistor, MOSFET, motori e diodi — zero istruzioni scritte!",
+      "teacher_tip": "Celebra il momento! Fai un recap del viaggio del Volume 2: 'Avete imparato i fototransistor (cap 9), il MOSFET (cap 9), i motori DC (cap 10), i diodi (cap 11), e ora avete messo tutto insieme in un robot che pensa con l'elettronica!' Anticipa il Volume 3: circuiti ancora più intelligenti!",
       "components_list": null, "class_hook": null, "action_tags": [], "auto_action": null,
-      "summary_for_class": "Il Robot Segui Luce usa la cross-connection per seguire automaticamente una fonte di luce. Due fototransistor sono gli occhi, due MOSFET sono i muscoli, due motori sono le gambe. I diodi proteggono i MOSFET. Tutto questo senza nessun programma — solo elettronica analogica intelligente!",
-      "concepts_learned": ["cross-connection fototransistor-MOSFET-motore", "robot analogico", "diodi di protezione (flyback)", "integrazione di tutti i concetti del Volume 2"],
-      "next_preview": "Nel Volume 3 scoprirete Arduino: un piccolo computer che potete programmare per controllare circuiti ancora più complessi. Il robot segui luce diventerà ancora più intelligente!"
+      "summary_for_class": "Il Robot Segui Luce usa la cross-connection per seguire automaticamente una fonte di luce. Due fototransistor sono gli occhi, due MOSFET sono i muscoli, due motori sono le gambe. I diodi proteggono i MOSFET. Tutto questo senza alcuna istruzione scritta — solo elettronica pura e intelligente!",
+      "concepts_learned": ["cross-connection fototransistor-MOSFET-motore", "robot puramente elettronico", "diodi di protezione (flyback)", "integrazione di tutti i concetti del Volume 2"],
+      "next_preview": "Nel Volume 3 scoprirete un piccolo computer che potete istruire per controllare circuiti ancora più complessi. Il robot segui luce diventerà ancora più intelligente!"
     }
   ],
   "assessment_invisible": [
     "Se traccia correttamente il percorso del segnale dalla luce al motore → comprensione del sistema completo",
     "Se spiega la cross-connection e perché è necessaria → comprensione del principio del robot",
     "Se spiega il ruolo dei diodi di protezione → comprensione avanzata del circuito",
-    "Se collega il robot alla falena o ad altri esempi naturali → transfer analogico"
+    "Se collega il robot alla falena o ad altri esempi naturali → transfer concettuale"
   ],
   "session_save": {
-    "concepts_covered": ["cross_connection", "robot_analogico", "fototransistor_MOSFET_motore", "diodi_protezione", "integrazione_volume2"],
+    "concepts_covered": ["cross_connection", "robot_elettronico", "fototransistor_MOSFET_motore", "diodi_protezione", "integrazione_volume2"],
     "next_suggested": "v3-cap6-semaforo",
-    "resume_message": "Avete completato il Volume 2 e costruito il Robot Segui Luce! Il Volume 3 con Arduino vi aspetta!"
+    "resume_message": "Avete completato il Volume 2 e costruito il Robot Segui Luce! Il Volume 3 vi aspetta!"
   }
 }
