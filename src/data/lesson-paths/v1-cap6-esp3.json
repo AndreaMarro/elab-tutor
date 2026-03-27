@@ -12,38 +12,97 @@
   "difficulty": 1,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che cambiando la resistenza cambia la luminosità del LED: più resistenza = meno luce.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Resistore 220Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "Resistore 1kΩ", "quantity": 1, "icon": "⚡" },
-    { "name": "LED verde", "quantity": 1, "icon": "💡" },
-    { "name": "Fili di collegamento", "quantity": 4, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Resistore 220Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Resistore 1kΩ",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED verde",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 4,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "batteria", "filo", "circuito", "acceso", "spento", "corrente", "polo positivo", "polo negativo", "anodo", "catodo", "breadboard", "piedino lungo", "piedino corto", "resistenza", "luminosità", "più luminoso", "meno luminoso"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "MOSFET", "Arduino", "codice", "programma", "digitale", "legge di Ohm"],
+    "allowed": [
+      "LED",
+      "batteria",
+      "filo",
+      "circuito",
+      "acceso",
+      "spento",
+      "corrente",
+      "polo positivo",
+      "polo negativo",
+      "anodo",
+      "catodo",
+      "breadboard",
+      "piedino lungo",
+      "piedino corto",
+      "resistenza",
+      "luminosità",
+      "più luminoso",
+      "meno luminoso",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "MOSFET",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "legge di Ohm"
+    ],
     "note": "Cap 6 Vol 1 — terzo esperimento. Si introduce il concetto di resistenza variabile ma NON i termini tecnici."
   },
-
-  "prerequisites": ["v1-cap6-esp1", "v1-cap6-esp2"],
+  "prerequisites": [
+    "v1-cap6-esp1",
+    "v1-cap6-esp2"
+  ],
   "next_experiment": {
     "id": "v1-cap7-esp1",
     "title": "Accendi il rosso del RGB",
     "preview": "Ora che sai come funzionano LED e resistenze, scopriamo un LED speciale che ha 3 colori dentro!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori in ohm — devono osservare l'effetto.",
+      "teacher_message": "Oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
       "teacher_tip": "Prepara 3 resistori con valori diversi (220Ω, 470Ω, 1kΩ). NON dire i valori — i ragazzi devono osservare l'effetto sulla luminosità.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 resistori diversi, 1 LED verde, 4 fili.",
       "class_hook": "L'ultima volta abbiamo acceso un LED e scoperto che serve un resistore per proteggerlo. Ma cosa succede se cambiamo il resistore?",
@@ -58,25 +117,65 @@
       "teacher_tip": "Usa il Passo Passo del simulatore. Dopo aver montato con 220Ω, chiedi: 'Provate a cambiare il valore del resistore nel simulatore — cosa succede?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap6-esp3]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap6-esp3]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito con resistore 220Ω",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 220 },
-            { "type": "led", "id": "led1", "color": "green" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 220
+            },
+            {
+              "type": "led",
+              "id": "led1",
+              "color": "green"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:b2", "color": "red" },
-            { "from": "bb1:e9", "to": "bb1:f9", "color": "green" },
-            { "from": "bb1:j10", "to": "bb1:bus-bot-minus-10", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-1", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:b2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e9",
+              "to": "bb1:f9",
+              "color": "green"
+            },
+            {
+              "from": "bb1:j10",
+              "to": "bb1:bus-bot-minus-10",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-1",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -86,7 +185,7 @@
       "icon": "❓",
       "duration_minutes": 10,
       "teacher_message": "Fai provare le 3 resistenze una alla volta. Chiedi di metterle in ordine dalla più luminosa alla meno luminosa.",
-      "teacher_tip": "NON introdurre la legge di Ohm. L'obiettivo è che scoprano da soli: 'resistenza grande = LED meno luminoso'. Chiedi: 'Secondo voi, perché cambia?'",
+      "teacher_tip": "NON introdurre formule. L'obiettivo è che scoprano da soli: 'resistenza grande = LED meno luminoso'. Chiedi: 'Secondo voi, perché cambia?'",
       "provocative_question": "Se metto una resistenza grandissima, il LED si spegne del tutto? E se ne metto una piccolissima?",
       "components_list": null,
       "class_hook": null,
@@ -118,7 +217,10 @@
       "teacher_tip": "Chiedi ai ragazzi di ordinare le resistenze dalla più luminosa alla meno luminosa. Se lo fanno correttamente, hanno capito!",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Guardate il LED con ogni resistore! Con quello piccolo è più luminoso, con quello grande è più fioco. Più resistenza = meno luce!",
       "analogies": [
@@ -145,19 +247,23 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Più resistenza = meno corrente = meno luce. Il resistore è come un rubinetto: più lo chiudi, meno acqua (corrente) passa!",
-      "concepts_learned": ["resistenza limita la corrente", "luminosità proporzionale alla corrente"],
+      "concepts_learned": [
+        "resistenza limita la corrente",
+        "luminosità proporzionale alla corrente"
+      ],
       "next_preview": "Nel prossimo capitolo scopriremo un LED speciale che ha 3 colori dentro — il LED RGB!"
     }
   ],
-
   "assessment_invisible": [
     "Se ordina correttamente le resistenze per luminosità → ha capito la relazione",
     "Se dice 'la resistenza frena la corrente' → concetto chiave acquisito",
     "Se chiede 'quanto frena esattamente?' → pronto per Cap 7"
   ],
-
   "session_save": {
-    "concepts_covered": ["resistenza_variabile", "luminosità_corrente"],
+    "concepts_covered": [
+      "resistenza_variabile",
+      "luminosità_corrente"
+    ],
     "next_suggested": "v1-cap7-esp1",
     "resume_message": "L'ultima volta avete visto come la resistenza cambia la luminosità del LED. Ora scopriamo un LED con 3 colori dentro!"
   }

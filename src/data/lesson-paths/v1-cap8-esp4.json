@@ -12,31 +12,83 @@
   "difficulty": 2,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono il controllo indipendente: ogni pulsante accende un colore diverso del LED RGB, e le combinazioni creano 7 colori possibili.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Pulsante (tact switch)", "quantity": 3, "icon": "🔘" },
-    { "name": "Resistore 470Ω", "quantity": 3, "icon": "⚡" },
-    { "name": "LED RGB (catodo comune)", "quantity": 1, "icon": "🎮" },
-    { "name": "Fili di collegamento", "quantity": 9, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Pulsante (tact switch)",
+      "quantity": 3,
+      "icon": "🔘"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 3,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED RGB (catodo comune)",
+      "quantity": 1,
+      "icon": "🎮"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 9,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "resistore", "catodo comune", "breadboard", "corrente", "pulsante", "circuito aperto", "circuito chiuso", "premere", "rilasciare", "anodo", "catodo"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma", "digitale", "toggle", "latch"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "catodo comune",
+      "breadboard",
+      "corrente",
+      "pulsante",
+      "circuito aperto",
+      "circuito chiuso",
+      "premere",
+      "rilasciare",
+      "anodo",
+      "catodo",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "toggle",
+      "latch"
+    ],
     "note": "Cap 8 Vol 1 — 3 pulsanti per controllo indipendente RGB."
   },
-
-  "prerequisites": ["v1-cap8-esp3"],
+  "prerequisites": [
+    "v1-cap8-esp3"
+  ],
   "next_experiment": {
     "id": "v1-cap8-esp5",
     "title": "Mix avanzato con resistori diversi",
     "preview": "Cosa succede se ogni canale ha un resistore diverso? Le sfumature cambiano!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -57,33 +109,101 @@
       "teacher_tip": "Il circuito è più grande ma il principio è semplice: 3 circuiti indipendenti che condividono lo stesso LED RGB e la stessa batteria.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap8-esp4]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap8-esp4]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito 3 pulsanti RGB",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "push-button", "id": "btn1" },
-            { "type": "push-button", "id": "btn2" },
-            { "type": "push-button", "id": "btn3" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "resistor", "id": "r2", "value": 470 },
-            { "type": "resistor", "id": "r3", "value": 470 },
-            { "type": "rgb-led", "id": "rgb1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "push-button",
+              "id": "btn1"
+            },
+            {
+              "type": "push-button",
+              "id": "btn2"
+            },
+            {
+              "type": "push-button",
+              "id": "btn3"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "resistor",
+              "id": "r2",
+              "value": 470
+            },
+            {
+              "type": "resistor",
+              "id": "r3",
+              "value": 470
+            },
+            {
+              "type": "rgb-led",
+              "id": "rgb1"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:a2", "color": "red" },
-            { "from": "bb1:bus-top-plus-6", "to": "bb1:a6", "color": "red" },
-            { "from": "bb1:bus-top-plus-10", "to": "bb1:a10", "color": "red" },
-            { "from": "bb1:j4", "to": "bb1:a16", "color": "orange" },
-            { "from": "bb1:j8", "to": "bb1:a18", "color": "green" },
-            { "from": "bb1:j12", "to": "bb1:a19", "color": "blue" },
-            { "from": "bb1:a24", "to": "bb1:bus-top-minus-24", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:a2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-6",
+              "to": "bb1:a6",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-10",
+              "to": "bb1:a10",
+              "color": "red"
+            },
+            {
+              "from": "bb1:j4",
+              "to": "bb1:a16",
+              "color": "orange"
+            },
+            {
+              "from": "bb1:j8",
+              "to": "bb1:a18",
+              "color": "green"
+            },
+            {
+              "from": "bb1:j12",
+              "to": "bb1:a19",
+              "color": "blue"
+            },
+            {
+              "from": "bb1:a24",
+              "to": "bb1:bus-top-minus-24",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -125,7 +245,12 @@
       "teacher_tip": "Evidenzia i pulsanti uno alla volta. Chiedi ai ragazzi di prevedere il colore PRIMA di premere la combinazione.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]", "[AZIONE:highlight:btn2]", "[AZIONE:highlight:btn3]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:btn1]",
+        "[AZIONE:highlight:btn2]",
+        "[AZIONE:highlight:btn3]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Ogni pulsante accende un colore! R+G=giallo, R+B=viola, G+B=ciano, tutti=bianco! 3 pulsanti = 7 combinazioni possibili.",
       "analogies": [
@@ -152,19 +277,24 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Con 3 pulsanti indipendenti puoi creare 7 combinazioni di colore! R, G, B, R+G=giallo, R+B=viola, G+B=ciano, R+G+B=bianco. Ogni pixel del tuo telefono funziona così!",
-      "concepts_learned": ["controllo indipendente", "7 combinazioni RGB", "sintesi additiva completa"],
+      "concepts_learned": [
+        "controllo indipendente",
+        "7 combinazioni RGB",
+        "sintesi additiva completa"
+      ],
       "next_preview": "La prossima volta usiamo resistori di valori diversi — e le sfumature cambiano!"
     }
   ],
-
   "assessment_invisible": [
     "Se conta le combinazioni (7) → ragionamento combinatorio",
     "Se dice 'tutti = bianco' → ha capito la sintesi additiva",
-    "Se chiede di regolare l'intensità → pronto per il potenziometro"
+    "Se chiede di regolare l'intensità → pronto per il capitolo della manopola"
   ],
-
   "session_save": {
-    "concepts_covered": ["controllo_indipendente", "combinazioni_rgb_7"],
+    "concepts_covered": [
+      "controllo_indipendente",
+      "combinazioni_rgb_7"
+    ],
     "next_suggested": "v1-cap8-esp5",
     "resume_message": "L'ultima volta avete creato 7 colori con 3 pulsanti! Ora cambiamo i resistori per creare sfumature diverse."
   }

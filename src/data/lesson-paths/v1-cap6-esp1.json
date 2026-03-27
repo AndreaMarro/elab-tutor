@@ -14,30 +14,74 @@
   "difficulty": 1,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "LED rosso", "quantity": 1, "icon": "💡" },
-    { "name": "Fili di collegamento", "quantity": 4, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 4,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "batteria", "filo", "circuito", "acceso", "spento", "corrente", "polo positivo", "polo negativo", "anodo", "catodo", "breadboard", "piedino lungo", "piedino corto"],
-    "forbidden": ["resistenza", "ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "MOSFET", "Arduino", "codice", "programma", "digitale"],
+    "allowed": [
+      "LED",
+      "batteria",
+      "filo",
+      "circuito",
+      "acceso",
+      "spento",
+      "corrente",
+      "polo positivo",
+      "polo negativo",
+      "anodo",
+      "catodo",
+      "breadboard",
+      "piedino lungo",
+      "piedino corto",
+      "volt"
+    ],
+    "forbidden": [
+      "resistenza",
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "MOSFET",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale"
+    ],
     "note": "Cap 6 Vol 1 — il primo esperimento. Zero prerequisiti."
   },
-
   "prerequisites": [],
   "next_experiment": {
     "id": "v1-cap6-esp2",
     "title": "LED senza resistore",
     "preview": "Cosa succede se togliamo il resistore? Il LED è in pericolo!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -58,25 +102,65 @@
       "teacher_tip": "Usa il Passo Passo del simulatore — i componenti appaiono progressivamente. Ogni passo è un momento per chiedere 'cosa pensate che succeda adesso?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap6-esp1]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap6-esp1]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito sulla breadboard",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "led", "id": "led1", "color": "red" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "led",
+              "id": "led1",
+              "color": "red"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:b2", "color": "red" },
-            { "from": "bb1:e9", "to": "bb1:f9", "color": "green" },
-            { "from": "bb1:j10", "to": "bb1:bus-bot-minus-10", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-1", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:b2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e9",
+              "to": "bb1:f9",
+              "color": "green"
+            },
+            {
+              "from": "bb1:j10",
+              "to": "bb1:bus-bot-minus-10",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-1",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -118,7 +202,10 @@
       "teacher_tip": "Evidenzia il LED sul simulatore per attirare l'attenzione. Chiedi: 'Vedete la luce? Perché secondo voi funziona solo in un verso?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Guardate il LED! Si accende quando il piedino lungo (anodo) è collegato al polo positivo. Giratelo — si spegne!",
       "analogies": [
@@ -145,19 +232,24 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Il LED è come una porta girevole: funziona solo in un verso! Il piedino lungo (anodo) va sempre al polo positivo (+).",
-      "concepts_learned": ["circuito chiuso", "polarità LED (anodo/catodo)"],
+      "concepts_learned": [
+        "circuito chiuso",
+        "polarità LED (anodo/catodo)"
+      ],
       "next_preview": "La prossima volta scopriremo cosa succede se togliamo il resistore... il LED è in pericolo! 😱"
     }
   ],
-
   "assessment_invisible": [
     "Se lo studente gira il LED spontaneamente quando non funziona → ha capito la polarità",
     "Se chiede 'perché solo in un verso?' → pronto per approfondire",
     "Se inserisce i fili nella riga corretta al primo tentativo → ha capito la breadboard"
   ],
-
   "session_save": {
-    "concepts_covered": ["circuito_chiuso", "LED_polarita", "breadboard_base"],
+    "concepts_covered": [
+      "circuito_chiuso",
+      "LED_polarita",
+      "breadboard_base"
+    ],
     "next_suggested": "v1-cap6-esp2",
     "resume_message": "L'ultima volta avete acceso il vostro primo LED! Oggi scopriamo cosa succede senza il resistore..."
   }

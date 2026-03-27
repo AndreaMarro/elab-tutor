@@ -12,30 +12,73 @@
   "difficulty": 1,
   "duration_minutes": 30,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che ogni canale del LED RGB funziona indipendentemente: basta collegare un pin diverso.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "LED RGB (catodo comune)", "quantity": 1, "icon": "🟢" },
-    { "name": "Fili di collegamento", "quantity": 4, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED RGB (catodo comune)",
+      "quantity": 1,
+      "icon": "🟢"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 4,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "resistore", "catodo comune", "anodo", "catodo", "breadboard", "corrente", "piedino", "canale colore", "verde"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "catodo comune",
+      "anodo",
+      "catodo",
+      "breadboard",
+      "corrente",
+      "piedino",
+      "canale colore",
+      "verde",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma"
+    ],
     "note": "Cap 7 Vol 1 — secondo esperimento RGB. Il concetto di canale indipendente."
   },
-
-  "prerequisites": ["v1-cap7-esp1"],
+  "prerequisites": [
+    "v1-cap7-esp1"
+  ],
   "next_experiment": {
     "id": "v1-cap7-esp3",
     "title": "Accendi il blu del RGB",
     "preview": "Ora proviamo il terzo colore — il blu! Scopriremo qualcosa di diverso..."
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -56,25 +99,64 @@
       "teacher_tip": "Evidenzia che il circuito è IDENTICO — cambia solo il filo che va al pin verde (F4) invece che al rosso (F2).",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap7-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap7-esp2]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito RGB — canale verde",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "rgb-led", "id": "rgb1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "rgb-led",
+              "id": "rgb1"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-11", "to": "bb1:b11", "color": "red" },
-            { "from": "bb1:e4", "to": "bb1:f4", "color": "green" },
-            { "from": "bb1:j3", "to": "bb1:bus-bot-minus-3", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-2", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-11",
+              "to": "bb1:b11",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e4",
+              "to": "bb1:f4",
+              "color": "green"
+            },
+            {
+              "from": "bb1:j3",
+              "to": "bb1:bus-bot-minus-3",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-2",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -111,13 +193,21 @@
       "teacher_tip": "Chiedi: 'Quanti colori possiamo fare con questo LED?' Prepara i ragazzi per gli esperimenti di mescolanza.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:rgb1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:rgb1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il LED è verde! Ogni canale del LED RGB funziona indipendentemente — basta collegare il pin giusto.",
       "analogies": [
         {
           "concept": "canali_indipendenti",
           "text": "Il LED RGB è come un palazzo con 3 appartamenti: ogni appartamento ha la sua porta (pin), ma tutti condividono lo stesso ingresso (catodo comune).",
+          "evidence": "Curriculum ELAB Vol 1"
+        },
+        {
+          "concept": "colore_verde_natura",
+          "text": "Il verde è il colore della natura: foglie, erba, alberi. Il LED RGB può ricreare quel verde usando un solo canale! È come avere un piccolo pezzetto di foresta nel tuo circuito.",
           "evidence": "Curriculum ELAB Vol 1"
         }
       ]
@@ -133,18 +223,22 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Il LED RGB ha 3 canali indipendenti. Cambiando il pin collegato, cambi il colore. Stessa idea, solo un filo diverso!",
-      "concepts_learned": ["canali RGB indipendenti", "pin verde del LED RGB"],
+      "concepts_learned": [
+        "canali RGB indipendenti",
+        "pin verde del LED RGB"
+      ],
       "next_preview": "Ora proviamo il blu — ma scopriremo che ha qualcosa di diverso..."
     }
   ],
-
   "assessment_invisible": [
     "Se dice 'basta cambiare il filo' → ha capito i canali indipendenti",
     "Se chiede 'posso accenderli insieme?' → pronto per esperimenti di mescolanza"
   ],
-
   "session_save": {
-    "concepts_covered": ["canali_RGB_indipendenti", "pin_verde"],
+    "concepts_covered": [
+      "canali_RGB_indipendenti",
+      "pin_verde"
+    ],
     "next_suggested": "v1-cap7-esp3",
     "resume_message": "L'ultima volta avete acceso il verde del LED RGB. Ora proviamo il blu!"
   }

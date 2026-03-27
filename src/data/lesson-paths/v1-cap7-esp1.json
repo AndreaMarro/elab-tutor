@@ -12,30 +12,86 @@
   "difficulty": 1,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che un LED RGB contiene 3 LED dentro un unico componente, e imparano a collegare un singolo canale (rosso) con il catodo comune.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "LED RGB (catodo comune)", "quantity": 1, "icon": "🔴" },
-    { "name": "Fili di collegamento", "quantity": 5, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED RGB (catodo comune)",
+      "quantity": 1,
+      "icon": "🔴"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 5,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "acceso", "spento", "corrente", "polo positivo", "polo negativo", "anodo", "catodo", "catodo comune", "breadboard", "piedino lungo", "piedino corto", "rosso", "verde", "blu", "resistore", "protezione"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "MOSFET", "Arduino", "codice", "programma", "digitale", "legge di Ohm", "PWM", "analogico"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "acceso",
+      "spento",
+      "corrente",
+      "polo positivo",
+      "polo negativo",
+      "anodo",
+      "catodo",
+      "catodo comune",
+      "breadboard",
+      "piedino lungo",
+      "piedino corto",
+      "rosso",
+      "verde",
+      "blu",
+      "resistore",
+      "protezione",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "MOSFET",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "legge di Ohm",
+      "PWM",
+      "analogico"
+    ],
     "note": "Cap 7 Vol 1 — primo esperimento con LED RGB. Si introduce 'catodo comune' e il concetto di 3 LED in 1. La parola 'resistore' è ora permessa (introdotta nel cap 6)."
   },
-
-  "prerequisites": ["v1-cap6-esp1", "v1-cap6-esp2"],
+  "prerequisites": [
+    "v1-cap6-esp1",
+    "v1-cap6-esp2"
+  ],
   "next_experiment": {
     "id": "v1-cap7-esp2",
     "title": "Accendi il verde del RGB",
     "preview": "Riusciamo ad accendere un colore diverso? Proviamo il verde!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -56,25 +112,64 @@
       "teacher_tip": "Usa il Passo Passo. Quando appare il LED RGB, fai notare i 4 piedini. Spiega: 'Il piedino più lungo è il catodo — va al negativo. Il primo piedino corto è il rosso.' Disegna lo schema sulla lavagna se serve.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap7-esp1]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap7-esp1]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito con LED RGB — solo canale rosso",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "rgb-led", "id": "rgb1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "rgb-led",
+              "id": "rgb1"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-9", "to": "bb1:b9", "color": "red" },
-            { "from": "bb1:e2", "to": "bb1:f2", "color": "red" },
-            { "from": "bb1:j3", "to": "bb1:bus-bot-minus-3", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-2", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-9",
+              "to": "bb1:b9",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e2",
+              "to": "bb1:f2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:j3",
+              "to": "bb1:bus-bot-minus-3",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-2",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -116,7 +211,10 @@
       "teacher_tip": "Evidenzia il LED RGB sul simulatore. Chiedi: 'Di che colore si accende? Perché proprio rosso?' Poi: 'Secondo voi, come facciamo ad accendere il verde?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:rgb1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:rgb1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il LED RGB si accende di rosso! Solo il canale rosso è collegato al circuito. Gli altri 2 piedini (verde e blu) sono liberi — non possono accendersi.",
       "analogies": [
@@ -143,19 +241,25 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Il LED RGB ha 3 LED dentro! Il piedino più lungo è il catodo comune — va al negativo. Oggi abbiamo acceso solo il rosso. Prossima volta: il verde!",
-      "concepts_learned": ["LED RGB = 3 LED in 1", "catodo comune (piedino più lungo)", "singolo canale colore"],
+      "concepts_learned": [
+        "LED RGB = 3 LED in 1",
+        "catodo comune (piedino più lungo)",
+        "singolo canale colore"
+      ],
       "next_preview": "La prossima volta accenderemo il verde — e poi proveremo a mescolare i colori come pittori! 🎨"
     }
   ],
-
   "assessment_invisible": [
     "Se identifica il piedino lungo come catodo senza aiuto → ha trasferito conoscenza dal cap 6",
     "Se chiede 'posso accendere anche gli altri colori?' → curiosità naturale, pronto per esp 2-3",
     "Se prova a mescolare colori spontaneamente → pronto per esp 4"
   ],
-
   "session_save": {
-    "concepts_covered": ["LED_RGB_struttura", "catodo_comune", "singolo_canale_colore"],
+    "concepts_covered": [
+      "LED_RGB_struttura",
+      "catodo_comune",
+      "singolo_canale_colore"
+    ],
     "next_suggested": "v1-cap7-esp2",
     "resume_message": "L'ultima volta avete acceso il rosso del LED RGB! Oggi proviamo il verde — e scopriamo come mescolare i colori."
   }

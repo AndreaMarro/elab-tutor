@@ -12,29 +12,74 @@
   "difficulty": 1,
   "duration_minutes": 40,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che collegare un LED direttamente alla batteria senza resistore lo brucia. Capiscono che serve qualcosa per limitare la corrente.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "LED blu", "quantity": 1, "icon": "💡" },
-    { "name": "Fili di collegamento", "quantity": 4, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "LED blu",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 4,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "batteria", "filo", "circuito", "acceso", "spento", "corrente", "polo positivo", "polo negativo", "anodo", "catodo", "breadboard", "piedino lungo", "piedino corto", "bruciare", "troppa corrente", "protezione"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "MOSFET", "Arduino", "codice", "programma", "digitale", "legge di Ohm"],
+    "allowed": [
+      "LED",
+      "batteria",
+      "filo",
+      "circuito",
+      "acceso",
+      "spento",
+      "corrente",
+      "polo positivo",
+      "polo negativo",
+      "anodo",
+      "catodo",
+      "breadboard",
+      "piedino lungo",
+      "piedino corto",
+      "bruciare",
+      "troppa corrente",
+      "protezione",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "MOSFET",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "legge di Ohm"
+    ],
     "note": "Cap 6 Vol 1, esperimento 2 — si introduce il concetto di 'troppa corrente' senza formule. La parola 'resistore' è permessa solo come anticipazione ('serve qualcosa che limiti')."
   },
-
-  "prerequisites": ["v1-cap6-esp1"],
+  "prerequisites": [
+    "v1-cap6-esp1"
+  ],
   "next_experiment": {
     "id": "v1-cap6-esp3",
     "title": "La resistenza cambia la luminosità",
     "preview": "E se mettiamo qualcosa che frena la corrente? Il LED cambia luminosità!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -55,24 +100,60 @@
       "teacher_tip": "Usa il Passo Passo. Quando appare il circuito senza resistore, chiedi: 'Vi sembra che manchi qualcosa rispetto alla volta scorsa?' Lascia che notino l'assenza del resistore.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap6-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap6-esp2]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito sulla breadboard (SENZA resistore!)",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "led", "id": "led1", "color": "blue" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "led",
+              "id": "led1",
+              "color": "blue"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:a2", "color": "red" },
-            { "from": "bb1:e2", "to": "bb1:f2", "color": "red" },
-            { "from": "bb1:j3", "to": "bb1:bus-bot-minus-3", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-1", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:a2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e2",
+              "to": "bb1:f2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:j3",
+              "to": "bb1:bus-bot-minus-3",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-1",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -83,7 +164,7 @@
       "duration_minutes": 10,
       "teacher_message": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi ragionino.",
       "teacher_tip": "Dopo aver fatto vedere che il LED lampeggia e si 'brucia' nel simulatore, mostra il LED bruciato reale. L'effetto WOW è garantito. Chiedi: 'Come potremmo proteggere il LED?'",
-      "provocative_question": "La batteria ha 9 volt ma il LED ne sopporta solo 2. Dove vanno i 7 volt in più? Cosa succede al LED?",
+      "provocative_question": "La batteria manda troppa energia al LED. Cosa succede quando la corrente è troppo forte per un componente così piccolo?",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
@@ -114,7 +195,10 @@
       "teacher_tip": "Evidenzia il LED sul simulatore. Chiedi: 'Vedete l'avviso? Il LED ha ricevuto troppa corrente.' Poi confronta con l'esperimento precedente: 'La volta scorsa il LED era protetto — da cosa?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il LED lampeggia e si brucia! Senza resistore, la corrente è troppo alta. 9V diretti su un LED da 2V = disastro!",
       "analogies": [
@@ -141,19 +225,24 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Il LED è fragile! Senza protezione, troppa corrente lo brucia. Serve qualcosa che limiti il flusso di corrente — come un rubinetto che non si apre troppo.",
-      "concepts_learned": ["corrente eccessiva brucia il LED", "necessità di protezione (resistore)"],
+      "concepts_learned": [
+        "corrente eccessiva brucia il LED",
+        "necessità di protezione (resistore)"
+      ],
       "next_preview": "La prossima volta scopriremo cosa cambia se usiamo resistenze diverse... il LED cambierà luminosità! 💡"
     }
   ],
-
   "assessment_invisible": [
     "Se dice 'serve qualcosa per limitare la corrente' → ha capito il concetto chiave",
     "Se propone 'qualcosa che rallenta la corrente' → pronto per Cap 7 (resistore)",
-    "Se chiede 'e se uso meno batteria?' → ha intuito il rapporto tensione/corrente"
+    "Se chiede 'e se uso meno batteria?' → ha intuito il rapporto energia/corrente"
   ],
-
   "session_save": {
-    "concepts_covered": ["corrente_eccessiva", "protezione_LED", "danno_senza_resistore"],
+    "concepts_covered": [
+      "corrente_eccessiva",
+      "protezione_LED",
+      "danno_senza_resistore"
+    ],
     "next_suggested": "v1-cap6-esp3",
     "resume_message": "L'ultima volta abbiamo visto che il LED si brucia senza protezione! Oggi scopriamo cosa succede con resistenze diverse..."
   }

@@ -12,30 +12,75 @@
   "difficulty": 1,
   "duration_minutes": 30,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che il LED blu ha bisogno di più energia per accendersi rispetto al rosso e al verde.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "LED RGB (catodo comune)", "quantity": 1, "icon": "🔵" },
-    { "name": "Fili di collegamento", "quantity": 4, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED RGB (catodo comune)",
+      "quantity": 1,
+      "icon": "🔵"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 4,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "resistore", "catodo comune", "anodo", "catodo", "breadboard", "corrente", "piedino", "canale colore", "blu", "energia"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "catodo comune",
+      "anodo",
+      "catodo",
+      "breadboard",
+      "corrente",
+      "piedino",
+      "canale colore",
+      "blu",
+      "energia",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma"
+    ],
     "note": "Cap 7 Vol 1 — terzo esperimento RGB. Si nota che il blu 'costa' più energia."
   },
-
-  "prerequisites": ["v1-cap7-esp1", "v1-cap7-esp2"],
+  "prerequisites": [
+    "v1-cap7-esp1",
+    "v1-cap7-esp2"
+  ],
   "next_experiment": {
     "id": "v1-cap7-esp4",
     "title": "Mescola 2 colori: il viola!",
     "preview": "Ora che sai accendere ogni colore... cosa succede se ne accendi DUE insieme?"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -56,25 +101,64 @@
       "teacher_tip": "Dopo aver montato, chiedi: 'Notate qualcosa di diverso rispetto al rosso?' Il blu potrebbe sembrare leggermente meno luminoso con lo stesso resistore.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap7-esp3]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap7-esp3]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito RGB — canale blu",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "rgb-led", "id": "rgb1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "rgb-led",
+              "id": "rgb1"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-12", "to": "bb1:b12", "color": "red" },
-            { "from": "bb1:e5", "to": "bb1:f5", "color": "blue" },
-            { "from": "bb1:j3", "to": "bb1:bus-bot-minus-3", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-2", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-12",
+              "to": "bb1:b12",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e5",
+              "to": "bb1:f5",
+              "color": "blue"
+            },
+            {
+              "from": "bb1:j3",
+              "to": "bb1:bus-bot-minus-3",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-2",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -84,7 +168,7 @@
       "icon": "❓",
       "duration_minutes": 5,
       "teacher_message": "Il blu ha bisogno di più energia per accendersi. Chiedi se notano differenze.",
-      "teacher_tip": "Il LED blu ha una 'porta' più alta da superare — serve più energia per farlo accendere. NON dire 'tensione forward'.",
+      "teacher_tip": "Il LED blu ha una 'porta' più alta da superare — serve più energia per farlo accendere. NON dire termini tecnici avanzati.",
       "provocative_question": "Il blu sembra diverso dal rosso e dal verde? Secondo voi perché?",
       "components_list": null,
       "class_hook": null,
@@ -111,13 +195,21 @@
       "teacher_tip": "Spiega: il blu ha bisogno di più energia. Come una porta più alta: serve più forza per aprirla.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:rgb1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:rgb1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il LED è blu! Nota: il blu ha bisogno di più energia per accendersi rispetto al rosso. Ogni colore ha la sua 'porta' da superare.",
       "analogies": [
         {
           "concept": "soglia_colori",
           "text": "Ogni colore del LED ha una porta di altezza diversa. Il rosso ha la porta più bassa, il blu la più alta. La corrente deve avere abbastanza spinta per superarla.",
+          "evidence": "Curriculum ELAB Vol 1"
+        },
+        {
+          "concept": "blu_energia",
+          "text": "Il blu richiede più energia del rosso e del verde — per questo il resistore da 100Ω è più piccolo. È come scalare una montagna più alta: servono più forze, ma il panorama (la luce blu brillante) è spettacolare!",
           "evidence": "Curriculum ELAB Vol 1"
         }
       ]
@@ -133,19 +225,23 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Il LED blu ha bisogno di più energia del rosso per accendersi. Ogni colore ha la sua 'soglia'. Ora conosciamo tutti e 3 i colori base!",
-      "concepts_learned": ["soglia energetica per colore", "pin blu del LED RGB"],
+      "concepts_learned": [
+        "soglia energetica per colore",
+        "pin blu del LED RGB"
+      ],
       "next_preview": "Ora il bello: cosa succede se accendiamo rosso E blu insieme? Si crea un colore nuovo!"
     }
   ],
-
   "assessment_invisible": [
     "Se nota la differenza tra rosso e blu → osservazione attiva",
     "Se chiede 'perché il blu è diverso?' → curiosità scientifica",
     "Se propone di accenderne due insieme → pronto per sintesi additiva"
   ],
-
   "session_save": {
-    "concepts_covered": ["soglia_energetica_colore", "pin_blu_RGB"],
+    "concepts_covered": [
+      "soglia_energetica_colore",
+      "pin_blu_RGB"
+    ],
     "next_suggested": "v1-cap7-esp4",
     "resume_message": "L'ultima volta avete acceso tutti e 3 i colori del LED RGB. Ora li mescoliamo!"
   }

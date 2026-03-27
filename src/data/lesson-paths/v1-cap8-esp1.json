@@ -12,31 +12,81 @@
   "difficulty": 1,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono il concetto di circuito aperto e chiuso: premendo il pulsante il LED si accende, rilasciandolo si spegne.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Pulsante (tact switch)", "quantity": 1, "icon": "🔘" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "LED blu", "quantity": 1, "icon": "💡" },
-    { "name": "Fili di collegamento", "quantity": 6, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Pulsante (tact switch)",
+      "quantity": 1,
+      "icon": "🔘"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED blu",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 6,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "resistore", "catodo comune", "breadboard", "corrente", "pulsante", "circuito aperto", "circuito chiuso", "premere", "rilasciare"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma", "digitale", "toggle", "latch"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "catodo comune",
+      "breadboard",
+      "corrente",
+      "pulsante",
+      "circuito aperto",
+      "circuito chiuso",
+      "premere",
+      "rilasciare",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "toggle",
+      "latch"
+    ],
     "note": "Cap 8 Vol 1 — primo esperimento con pulsante. Si introduce aperto/chiuso."
   },
-
-  "prerequisites": ["v1-cap6-esp1"],
+  "prerequisites": [
+    "v1-cap6-esp1"
+  ],
   "next_experiment": {
     "id": "v1-cap8-esp2",
     "title": "Cambia colore e luminosità",
     "preview": "Stesso circuito, ma con LED verde e resistore diverso. Come cambia?"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -57,28 +107,79 @@
       "teacher_tip": "Mostra prima il circuito SENZA pulsante (LED sempre acceso). Poi aggiungi il pulsante: 'Cosa pensate che succeda?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap8-esp1]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap8-esp1]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito LED + pulsante",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "push-button", "id": "btn1" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "led", "id": "led1", "color": "blue" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "push-button",
+              "id": "btn1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "led",
+              "id": "led1",
+              "color": "blue"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:a2", "color": "red" },
-            { "from": "bb1:e9", "to": "bb1:f9", "color": "orange" },
-            { "from": "bb1:f10", "to": "bb1:e10", "color": "yellow" },
-            { "from": "bb1:e10", "to": "bb1:e11", "color": "yellow" },
-            { "from": "bb1:j13", "to": "bb1:bus-bot-minus-13", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-2", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:a2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e9",
+              "to": "bb1:f9",
+              "color": "orange"
+            },
+            {
+              "from": "bb1:f10",
+              "to": "bb1:e10",
+              "color": "yellow"
+            },
+            {
+              "from": "bb1:e10",
+              "to": "bb1:e11",
+              "color": "yellow"
+            },
+            {
+              "from": "bb1:j13",
+              "to": "bb1:bus-bot-minus-13",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-2",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -120,7 +221,11 @@
       "teacher_tip": "Evidenzia il pulsante e il LED. Chiedi: 'Vedete? Premendo, il circuito si chiude e la corrente passa.'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:btn1]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Premi il pulsante: LED acceso! Rilascia: LED spento! Il pulsante apre e chiude il circuito — come un ponte levatoio per la corrente.",
       "analogies": [
@@ -147,19 +252,23 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Il pulsante apre e chiude il circuito. Premuto = circuito chiuso = LED acceso. Rilasciato = circuito aperto = LED spento. Come un ponte levatoio!",
-      "concepts_learned": ["circuito aperto e chiuso", "pulsante come interruttore"],
+      "concepts_learned": [
+        "circuito aperto e chiuso",
+        "pulsante come interruttore"
+      ],
       "next_preview": "La prossima volta proviamo con un LED diverso e un resistore diverso. Come cambia il circuito?"
     }
   ],
-
   "assessment_invisible": [
     "Se capisce che il LED si spegne rilasciando → ha capito circuito aperto/chiuso",
     "Se chiede 'posso fare che resta acceso senza tenere premuto?' → pronto per interruttore a scorrimento",
-    "Se prova a mettere due pulsanti → curiosità verso serie/parallelo"
+    "Se prova a mettere due pulsanti → curiosità verso combinazioni di controlli"
   ],
-
   "session_save": {
-    "concepts_covered": ["circuito_aperto_chiuso", "pulsante_interruttore"],
+    "concepts_covered": [
+      "circuito_aperto_chiuso",
+      "pulsante_interruttore"
+    ],
     "next_suggested": "v1-cap8-esp2",
     "resume_message": "L'ultima volta avete scoperto il pulsante! Ora proviamo con LED e resistori diversi."
   }

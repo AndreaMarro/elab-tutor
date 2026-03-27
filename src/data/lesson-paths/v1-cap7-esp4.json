@@ -12,30 +12,76 @@
   "difficulty": 2,
   "duration_minutes": 35,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono la sintesi additiva: rosso + blu = viola. Due canali del LED RGB possono essere accesi contemporaneamente.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Resistore 470Ω", "quantity": 2, "icon": "⚡" },
-    { "name": "LED RGB (catodo comune)", "quantity": 1, "icon": "🟣" },
-    { "name": "Fili di collegamento", "quantity": 6, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 2,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED RGB (catodo comune)",
+      "quantity": 1,
+      "icon": "🟣"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 6,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "resistore", "catodo comune", "breadboard", "corrente", "canale colore", "rosso", "blu", "viola", "mescolare", "colori"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma", "sintesi additiva"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "catodo comune",
+      "breadboard",
+      "corrente",
+      "canale colore",
+      "rosso",
+      "blu",
+      "viola",
+      "mescolare",
+      "colori",
+      "volt",
+      "sintesi additiva"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma"
+    ],
     "note": "Cap 7 Vol 1 — primo esperimento di mescolanza colori. NON usare 'sintesi additiva' — dire 'mescolare i colori della luce'."
   },
-
-  "prerequisites": ["v1-cap7-esp1", "v1-cap7-esp3"],
+  "prerequisites": [
+    "v1-cap7-esp1",
+    "v1-cap7-esp3"
+  ],
   "next_experiment": {
     "id": "v1-cap7-esp5",
     "title": "Tutti e 3: bianco!",
     "preview": "Se due colori fanno il viola, cosa succede con TUTTI E TRE insieme?"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -56,28 +102,79 @@
       "teacher_tip": "Evidenzia che sono come DUE circuiti separati che condividono la batteria e il catodo. Ogni colore ha la sua 'strada'.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap7-esp4]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap7-esp4]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito RGB — rosso + blu = viola",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 470 },
-            { "type": "resistor", "id": "r2", "value": 470 },
-            { "type": "rgb-led", "id": "rgb1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 470
+            },
+            {
+              "type": "resistor",
+              "id": "r2",
+              "value": 470
+            },
+            {
+              "type": "rgb-led",
+              "id": "rgb1"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-8", "to": "bb1:a8", "color": "red" },
-            { "from": "bb1:bus-top-plus-12", "to": "bb1:a12", "color": "red" },
-            { "from": "bb1:e2", "to": "bb1:f2", "color": "orange" },
-            { "from": "bb1:e6", "to": "bb1:f5", "color": "blue" },
-            { "from": "bb1:j3", "to": "bb1:bus-bot-minus-3", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-2", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-8",
+              "to": "bb1:a8",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-12",
+              "to": "bb1:a12",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e2",
+              "to": "bb1:f2",
+              "color": "orange"
+            },
+            {
+              "from": "bb1:e6",
+              "to": "bb1:f5",
+              "color": "blue"
+            },
+            {
+              "from": "bb1:j3",
+              "to": "bb1:bus-bot-minus-3",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-2",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -114,13 +211,21 @@
       "teacher_tip": "Momento wow! La luce si mescola in modo diverso dai colori a tempera. Con i pennarelli rosso+blu = marrone. Con la LUCE = viola!",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:rgb1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:rgb1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Rosso + Blu = VIOLA! I colori della luce si mescolano in modo diverso dalla pittura. Questa si chiama mescolanza della luce.",
       "analogies": [
         {
           "concept": "mescolanza_luce",
           "text": "Con i pennarelli rosso+blu fa marrone. Ma con la LUCE rosso+blu fa viola! La luce si mescola in modo diverso. Lo schermo del tuo telefono funziona proprio così.",
+          "evidence": "Curriculum ELAB Vol 1"
+        },
+        {
+          "concept": "pixel_schermo",
+          "text": "Lo schermo del telefono funziona esattamente così: ogni pixel ha un mini-LED rosso, verde e blu. Accendendone due insieme si creano nuovi colori. Il viola sullo schermo è rosso+blu, proprio come nel vostro circuito!",
           "evidence": "Curriculum ELAB Vol 1"
         }
       ]
@@ -136,19 +241,23 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Rosso + Blu = Viola! I colori della luce si mescolano in modo diverso dalla pittura. Il tuo schermo usa lo stesso trucco!",
-      "concepts_learned": ["mescolanza colori luce", "due canali RGB contemporanei"],
+      "concepts_learned": [
+        "mescolanza colori luce",
+        "due canali RGB contemporanei"
+      ],
       "next_preview": "E se accendessimo TUTTI E TRE i colori insieme? Che colore sarà? Bianco? Nero? Arcobaleno?"
     }
   ],
-
   "assessment_invisible": [
     "Se predice il viola → conoscenza pregressa sui colori",
     "Se è sorpreso → momento di scoperta autentica",
     "Se chiede 'e rosso+verde?' → curiosità per esplorare tutte le combinazioni"
   ],
-
   "session_save": {
-    "concepts_covered": ["mescolanza_luce_additiva", "viola_da_rosso_blu"],
+    "concepts_covered": [
+      "mescolanza_luce_additiva",
+      "viola_da_rosso_blu"
+    ],
     "next_suggested": "v1-cap7-esp5",
     "resume_message": "L'ultima volta avete mescolato rosso e blu per fare il viola! Ora proviamo TUTTI E TRE insieme..."
   }

@@ -12,31 +12,76 @@
   "difficulty": 1,
   "duration_minutes": 30,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi vedono che cambiando LED e resistore nello stesso circuito con pulsante, il comportamento cambia: LED verde + 220Ω = più luminoso.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Pulsante (tact switch)", "quantity": 1, "icon": "🔘" },
-    { "name": "Resistore 220Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "LED verde", "quantity": 1, "icon": "💡" },
-    { "name": "Fili di collegamento", "quantity": 6, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Pulsante (tact switch)",
+      "quantity": 1,
+      "icon": "🔘"
+    },
+    {
+      "name": "Resistore 220Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED verde",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 6,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "batteria", "filo", "circuito", "resistore", "breadboard", "corrente", "pulsante", "circuito aperto", "circuito chiuso", "luminosità", "più luminoso"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma"],
+    "allowed": [
+      "LED",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "breadboard",
+      "corrente",
+      "pulsante",
+      "circuito aperto",
+      "circuito chiuso",
+      "luminosità",
+      "più luminoso",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma"
+    ],
     "note": "Cap 8 Vol 1 — variazione del circuito con pulsante."
   },
-
-  "prerequisites": ["v1-cap8-esp1"],
+  "prerequisites": [
+    "v1-cap8-esp1"
+  ],
   "next_experiment": {
     "id": "v1-cap9-esp1",
-    "title": "Dimmer LED con potenziometro",
-    "preview": "E se potessi cambiare la luminosità GIRANDO una manopola? Scopriamo il potenziometro!"
+    "title": "Dimmer LED con manopola",
+    "preview": "E se potessi cambiare la luminosità GIRANDO una manopola? Scopriamo un nuovo componente!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -57,28 +102,79 @@
       "teacher_tip": "Evidenzia che l'architettura del circuito è la STESSA. Solo i componenti cambiano. Il pulsante funziona allo stesso modo.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap8-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap8-esp2]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito LED verde + pulsante + R 220Ω",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "push-button", "id": "btn1" },
-            { "type": "resistor", "id": "r1", "value": 220 },
-            { "type": "led", "id": "led1", "color": "green" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "push-button",
+              "id": "btn1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 220
+            },
+            {
+              "type": "led",
+              "id": "led1",
+              "color": "green"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:a2", "color": "red" },
-            { "from": "bb1:e9", "to": "bb1:f9", "color": "orange" },
-            { "from": "bb1:f10", "to": "bb1:e10", "color": "yellow" },
-            { "from": "bb1:e10", "to": "bb1:e11", "color": "yellow" },
-            { "from": "bb1:j13", "to": "bb1:bus-bot-minus-13", "color": "black" },
-            { "from": "bb1:bus-bot-minus-1", "to": "bb1:bus-top-minus-2", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:a2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:e9",
+              "to": "bb1:f9",
+              "color": "orange"
+            },
+            {
+              "from": "bb1:f10",
+              "to": "bb1:e10",
+              "color": "yellow"
+            },
+            {
+              "from": "bb1:e10",
+              "to": "bb1:e11",
+              "color": "yellow"
+            },
+            {
+              "from": "bb1:j13",
+              "to": "bb1:bus-bot-minus-13",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-bot-minus-1",
+              "to": "bb1:bus-top-minus-2",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -99,6 +195,11 @@
           "mistake": "Non ricorda la relazione resistenza/luminosità",
           "teacher_response": "Ricorda il capitolo 6: resistore più piccolo = più corrente = LED più luminoso!",
           "analogy": "Tubo più largo = più acqua"
+        },
+        {
+          "mistake": "Il pulsante non sembra funzionare",
+          "teacher_response": "Controlla che il pulsante sia posizionato a cavallo della scanalatura centrale della breadboard. I pin vanno uno sopra e uno sotto la scanalatura. Se sono sulla stessa metà, il pulsante è sempre collegato!",
+          "analogy": "Il pulsante è come un ponte levatoio: deve collegare DUE sponde diverse della breadboard, non restare su una sola sponda"
         }
       ]
     },
@@ -110,13 +211,21 @@
       "teacher_tip": "Momento di connessione tra capitoli: il concetto di resistenza dal cap 6 si applica anche qui con il pulsante.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "LED verde con 220Ω = più luminoso del blu con 470Ω! Il resistore più piccolo fa passare più corrente. La regola del capitolo 6 funziona sempre!",
       "analogies": [
         {
           "concept": "variazione_circuito",
           "text": "È come una ricetta: se cambi gli ingredienti (LED, resistore), il risultato cambia, anche se il metodo (circuito) è lo stesso.",
+          "evidence": "Curriculum ELAB Vol 1"
+        },
+        {
+          "concept": "menù_ristorante",
+          "text": "Ogni combinazione LED+resistore è come un piatto diverso al ristorante: stessi ingredienti base (batteria, pulsante, fili) ma cambiando il LED (colore) e il resistore (quantità di corrente) il risultato è completamente diverso!",
           "evidence": "Curriculum ELAB Vol 1"
         }
       ]
@@ -132,19 +241,23 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Stesso circuito, componenti diversi = risultato diverso. LED verde + resistore piccolo = più luminoso. La regola della resistenza funziona sempre!",
-      "concepts_learned": ["variazione componenti nello stesso circuito", "conferma relazione resistenza/luminosità"],
-      "next_preview": "E se potessi cambiare la luminosità girando una manopola? Scopriamo il potenziometro — un resistore con la rotella!"
+      "concepts_learned": [
+        "variazione componenti nello stesso circuito",
+        "conferma relazione resistenza/luminosità"
+      ],
+      "next_preview": "E se potessi cambiare la luminosità girando una manopola? Scopriamo un nuovo componente — un resistore con la rotella!"
     }
   ],
-
   "assessment_invisible": [
     "Se predice correttamente 'più luminoso' → ha interiorizzato la relazione resistenza/corrente",
     "Se collega al capitolo 6 → transfer di conoscenza tra capitoli"
   ],
-
   "session_save": {
-    "concepts_covered": ["variazione_circuito", "conferma_resistenza_luminosita"],
+    "concepts_covered": [
+      "variazione_circuito",
+      "conferma_resistenza_luminosita"
+    ],
     "next_suggested": "v1-cap9-esp1",
-    "resume_message": "L'ultima volta avete visto come cambiare LED e resistore cambia il risultato. Ora scopriamo il potenziometro!"
+    "resume_message": "L'ultima volta avete visto come cambiare LED e resistore cambia il risultato. Ora scopriamo un componente con la manopola!"
   }
 }

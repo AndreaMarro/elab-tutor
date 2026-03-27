@@ -12,33 +12,94 @@
   "difficulty": 2,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-
   "objective": "I ragazzi scoprono che resistori di valore diverso cambiano la luminosità di ogni canale RGB, creando sfumature di colore uniche.",
-
   "components_needed": [
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Pulsante (tact switch)", "quantity": 3, "icon": "🔘" },
-    { "name": "Resistore 220Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "Resistore 1kΩ", "quantity": 1, "icon": "⚡" },
-    { "name": "LED RGB (catodo comune)", "quantity": 1, "icon": "🎨" },
-    { "name": "Fili di collegamento", "quantity": 9, "icon": "🔌" }
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Pulsante (tact switch)",
+      "quantity": 3,
+      "icon": "🔘"
+    },
+    {
+      "name": "Resistore 220Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Resistore 1kΩ",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "LED RGB (catodo comune)",
+      "quantity": 1,
+      "icon": "🎨"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 9,
+      "icon": "🔌"
+    }
   ],
-
   "vocabulary": {
-    "allowed": ["LED", "LED RGB", "batteria", "filo", "circuito", "resistore", "catodo comune", "breadboard", "corrente", "pulsante", "circuito aperto", "circuito chiuso", "premere", "rilasciare", "anodo", "catodo", "luminosità"],
-    "forbidden": ["ohm", "tensione", "volt", "parallelo", "serie", "condensatore", "potenziometro", "Arduino", "codice", "programma", "digitale", "toggle", "latch"],
+    "allowed": [
+      "LED",
+      "LED RGB",
+      "batteria",
+      "filo",
+      "circuito",
+      "resistore",
+      "catodo comune",
+      "breadboard",
+      "corrente",
+      "pulsante",
+      "circuito aperto",
+      "circuito chiuso",
+      "premere",
+      "rilasciare",
+      "anodo",
+      "catodo",
+      "luminosità",
+      "volt"
+    ],
+    "forbidden": [
+      "ohm",
+      "tensione",
+      "parallelo",
+      "serie",
+      "condensatore",
+      "potenziometro",
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "toggle",
+      "latch"
+    ],
     "note": "Cap 8 Vol 1 — resistori diversi cambiano le proporzioni RGB."
   },
-
-  "prerequisites": ["v1-cap8-esp4"],
+  "prerequisites": [
+    "v1-cap8-esp4"
+  ],
   "next_experiment": {
     "id": "v1-cap9-esp1",
-    "title": "Dimmer LED con potenziometro",
-    "preview": "I pulsanti sono acceso/spento. E se potessi regolare la luminosità gradualmente? Il potenziometro!"
+    "title": "Dimmer LED con manopola",
+    "preview": "I pulsanti sono acceso/spento. E se potessi regolare la luminosità gradualmente? Un nuovo componente!"
   },
-
   "phases": [
     {
       "name": "PREPARA",
@@ -59,33 +120,101 @@
       "teacher_tip": "Mostra i 3 resistori prima di montare il circuito. Chiedi: 'Quale colore sarà il più luminoso? Quale il più fioco?'",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v1-cap8-esp5]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v1-cap8-esp5]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Monta il circuito RGB con resistori diversi",
         "button_label": "Monta il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "push-button", "id": "btn1" },
-            { "type": "push-button", "id": "btn2" },
-            { "type": "push-button", "id": "btn3" },
-            { "type": "resistor", "id": "r1", "value": 220 },
-            { "type": "resistor", "id": "r2", "value": 470 },
-            { "type": "resistor", "id": "r3", "value": 1000 },
-            { "type": "rgb-led", "id": "rgb1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "push-button",
+              "id": "btn1"
+            },
+            {
+              "type": "push-button",
+              "id": "btn2"
+            },
+            {
+              "type": "push-button",
+              "id": "btn3"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 220
+            },
+            {
+              "type": "resistor",
+              "id": "r2",
+              "value": 470
+            },
+            {
+              "type": "resistor",
+              "id": "r3",
+              "value": 1000
+            },
+            {
+              "type": "rgb-led",
+              "id": "rgb1"
+            }
           ],
           "wires": [
-            { "from": "bat1:positive", "to": "bb1:bus-top-plus-1", "color": "red" },
-            { "from": "bb1:bus-top-plus-2", "to": "bb1:a2", "color": "red" },
-            { "from": "bb1:bus-top-plus-6", "to": "bb1:a6", "color": "red" },
-            { "from": "bb1:bus-top-plus-10", "to": "bb1:a10", "color": "red" },
-            { "from": "bb1:j4", "to": "bb1:a16", "color": "orange" },
-            { "from": "bb1:j8", "to": "bb1:a18", "color": "green" },
-            { "from": "bb1:j12", "to": "bb1:a19", "color": "blue" },
-            { "from": "bb1:a24", "to": "bb1:bus-top-minus-24", "color": "black" },
-            { "from": "bb1:bus-top-minus-1", "to": "bat1:negative", "color": "black" }
+            {
+              "from": "bat1:positive",
+              "to": "bb1:bus-top-plus-1",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-2",
+              "to": "bb1:a2",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-6",
+              "to": "bb1:a6",
+              "color": "red"
+            },
+            {
+              "from": "bb1:bus-top-plus-10",
+              "to": "bb1:a10",
+              "color": "red"
+            },
+            {
+              "from": "bb1:j4",
+              "to": "bb1:a16",
+              "color": "orange"
+            },
+            {
+              "from": "bb1:j8",
+              "to": "bb1:a18",
+              "color": "green"
+            },
+            {
+              "from": "bb1:j12",
+              "to": "bb1:a19",
+              "color": "blue"
+            },
+            {
+              "from": "bb1:a24",
+              "to": "bb1:bus-top-minus-24",
+              "color": "black"
+            },
+            {
+              "from": "bb1:bus-top-minus-1",
+              "to": "bat1:negative",
+              "color": "black"
+            }
           ]
         }
       }
@@ -127,7 +256,12 @@
       "teacher_tip": "Evidenzia i resistori e chiedi di confrontare R+B di questo esperimento con R+B dell'esperimento 3: il viola è diverso, più rosso!",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:r1]", "[AZIONE:highlight:r2]", "[AZIONE:highlight:r3]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:r1]",
+        "[AZIONE:highlight:r2]",
+        "[AZIONE:highlight:r3]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il rosso (resistore piccolo) è il più luminoso, il blu (resistore grande) il più fioco. Le sfumature miste cambiano: il viola è più rosso!",
       "analogies": [
@@ -154,19 +288,23 @@
       "action_tags": [],
       "auto_action": null,
       "summary_for_class": "Resistori diversi = luminosità diverse per ogni colore. Resistore piccolo = tanta corrente = molto luminoso. Resistore grande = poca corrente = poco luminoso. Così si creano sfumature uniche!",
-      "concepts_learned": ["resistore regola luminosità", "sfumature con resistori diversi"],
-      "next_preview": "I pulsanti sono acceso o spento. E se esistesse un componente con una MANOPOLA per regolare gradualmente? Si chiama potenziometro!"
+      "concepts_learned": [
+        "resistore regola luminosità",
+        "sfumature con resistori diversi"
+      ],
+      "next_preview": "I pulsanti sono acceso o spento. E se esistesse un componente con una MANOPOLA per regolare gradualmente? Lo scoprirete nel prossimo capitolo!"
     }
   ],
-
   "assessment_invisible": [
     "Se dice 'resistore piccolo = più luminoso' → ha capito la relazione corrente-resistore",
     "Se nota che le sfumature cambiano rispetto a esp4 → osservazione accurata",
-    "Se chiede 'posso regolare senza cambiare resistore?' → pronto per il potenziometro"
+    "Se chiede 'posso regolare senza cambiare resistore?' → pronto per il capitolo della manopola"
   ],
-
   "session_save": {
-    "concepts_covered": ["resistore_regola_luminosita", "sfumature_resistori_diversi"],
+    "concepts_covered": [
+      "resistore_regola_luminosita",
+      "sfumature_resistori_diversi"
+    ],
     "next_suggested": "v1-cap9-esp1",
     "resume_message": "L'ultima volta avete scoperto che resistori diversi creano sfumature diverse. Ora scopriamo un componente che cambia resistenza da solo!"
   }
