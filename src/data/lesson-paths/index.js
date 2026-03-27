@@ -25,6 +25,10 @@ import v1Cap9Esp2 from './v1-cap9-esp2.json';
 import v1Cap9Esp3 from './v1-cap9-esp3.json';
 import v1Cap9Esp4 from './v1-cap9-esp4.json';
 import v1Cap9Esp5 from './v1-cap9-esp5.json';
+import v1Cap9Esp6 from './v1-cap9-esp6.json';
+import v1Cap9Esp7 from './v1-cap9-esp7.json';
+import v1Cap9Esp8 from './v1-cap9-esp8.json';
+import v1Cap9Esp9 from './v1-cap9-esp9.json';
 import v1Cap10Esp1 from './v1-cap10-esp1.json';
 
 // Registry percorsi lezione disponibili
@@ -48,6 +52,10 @@ const LESSON_PATHS = {
   'v1-cap9-esp3': v1Cap9Esp3,
   'v1-cap9-esp4': v1Cap9Esp4,
   'v1-cap9-esp5': v1Cap9Esp5,
+  'v1-cap9-esp6': v1Cap9Esp6,
+  'v1-cap9-esp7': v1Cap9Esp7,
+  'v1-cap9-esp8': v1Cap9Esp8,
+  'v1-cap9-esp9': v1Cap9Esp9,
   'v1-cap10-esp1': v1Cap10Esp1,
 };
 
