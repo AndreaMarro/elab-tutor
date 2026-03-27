@@ -146,6 +146,25 @@ H. **Distinguere base vs avanzato** — il livello avanzato (codice, blocchi, se
 
 ---
 
+## STATO VERIFICATO (audit fisico 27/03/2026)
+
+| Obiettivo | Stato | Evidenza |
+|-----------|-------|----------|
+| Insegnante spiega subito | ❌ NON DIMOSTRATO | Homepage rotta, menu con Dev/Admin, troppa densità |
+| Galileo invisibile | ⚠️ PROMETTENTE | Laterale, contestuale. Ma "Sono qui" invade |
+| Kit+volumi+software unico | ✅ SI PERCEPISCE | 67 esperimenti, 3 volumi, palette coerente |
+| Controllo vocale | ⚠️ NON TESTATO | Whisper integrato, bottone visibile, mai verificato |
+| Arduino/Breadboard perfetti | ✅ 8/10 | LED si accende, KCL funziona, SVG nitido |
+| Scratch impeccabile | ⚠️ 6/10 | Generatore esiste, blocchi non verificati live |
+| Penna lavagna fluida | ⚠️ NON TESTATO | Tab Lavagna esiste |
+| Piattaforma minimale | ❌ NO | 20+ elementi visibili contemporaneamente |
+| AI non clone ChatGPT | ✅ OK | "Sono UNLIM", zero identity leaks |
+| Linguaggio 10-14 anni | ⚠️ PARZIALE | Risposte troppo lunghe (534 char), ma tono OK |
+| GDPR | ❌ NON VERIFICATO | Dati su server USA, nessun DPIA |
+| Marketing tutte le scuole | ❌ ZERO | Nessuna landing, redirect rotto |
+
+---
+
 ## OBIETTIVI STRATEGICI
 
 ### Prodotto
