@@ -38,6 +38,16 @@ services:
         value: deepseek-reasoner
       - key: AI_API_KEY4
         sync: false  # Same DeepSeek API key, different model
+      # Provider 5: Mistral (France, EU — GDPR-safe, OpenAI-compatible API)
+      - key: AI_PROVIDER5
+        value: mistral
+      - key: AI_MODEL5
+        value: mistral-small-latest
+      - key: AI_API_KEY5
+        sync: false  # Get from console.mistral.ai → API Keys
+      # GDPR EU-Only mode (set to "true" for Italian school deployments)
+      - key: GDPR_EU_ONLY
+        value: "false"
       # CORS
       - key: CORS_ORIGINS
         value: https://elab-builder.vercel.app,https://www.elabtutor.school,https://elabtutor.school,https://elab.school,https://funny-pika-3d1029.netlify.app

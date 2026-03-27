@@ -309,8 +309,8 @@ const ControlBar = ({
   onComponentDelete,
   onComponentRotate,
   onShowProperties,
-  // Progressive disclosure (P0): 1=novizio, 2=esploratore, 3=costruttore
-  disclosureLevel = 1, // Principio Zero: default NOVIZIO
+  // Onboarding: guida rapida
+  onShowWelcome,
 }) => {
   const [mobileOverflowOpen, setMobileOverflowOpen] = useState(false);
 
@@ -388,15 +388,15 @@ const ControlBar = ({
         />
       </div>
 
-      {/* ── Phase 3: Circuit Status Chip ── */}
+      {/* ── Circuit Status Chip ── */}
       {circuitStatus && <CircuitStatusChip status={circuitStatus} />}
 
       <ToolbarSeparator />
 
-      {/* ── Group 2: Wire Mode (Level 2+) ── */}
-      {disclosureLevel >= 2 && onToggleWireMode && (
+      {/* ── Group 2: Wire Mode ── */}
+      {onToggleWireMode && (
         <>
-          <div className="toolbar-group toolbar-btn--secondary toolbar-disclosure-fade">
+          <div className="toolbar-group toolbar-btn--secondary">
             <ToolbarButton
               icon={<WireIcon />}
               label="Collega Fili"
@@ -411,31 +411,29 @@ const ControlBar = ({
         </>
       )}
 
-      {/* ── Group 3: Panel Toggles (Level 2+) ── */}
-      {disclosureLevel >= 2 && (
-        <div className="toolbar-group toolbar-btn--secondary toolbar-disclosure-fade">
-          {onTogglePalette && (
-            <ToolbarButton
-              icon={<PaletteIcon />}
-              label="Componenti"
-              tooltip={showPalette ? 'Nascondi componenti' : 'Mostra componenti'}
-              active={showPalette}
-              onClick={onTogglePalette}
-            />
-          )}
-          {onToggleCodeEditor && (
-            <ToolbarButton
-              icon={<CodeIcon />}
-              label="Editor"
-              tooltip={showCodeEditor ? 'Nascondi editor codice' : 'Mostra editor codice (Blocchi / C++)'}
-              active={showCodeEditor}
-              onClick={onToggleCodeEditor}
-            />
-          )}
-        </div>
-      )}
+      {/* ── Group 3: Panel Toggles ── */}
+      <div className="toolbar-group toolbar-btn--secondary">
+        {onTogglePalette && (
+          <ToolbarButton
+            icon={<PaletteIcon />}
+            label="Componenti"
+            tooltip={showPalette ? 'Nascondi componenti' : 'Mostra componenti'}
+            active={showPalette}
+            onClick={onTogglePalette}
+          />
+        )}
+        {onToggleCodeEditor && (
+          <ToolbarButton
+            icon={<CodeIcon />}
+            label="Editor"
+            tooltip={showCodeEditor ? 'Nascondi editor codice' : 'Mostra editor codice (Blocchi / C++)'}
+            active={showCodeEditor}
+            onClick={onToggleCodeEditor}
+          />
+        )}
+      </div>
 
-      {disclosureLevel >= 2 && <ToolbarSeparator className="toolbar-btn--secondary" />}
+      <ToolbarSeparator className="toolbar-btn--secondary" />
 
       {/* ── Group 4a: Lesson Path (Level 1 — always visible for teachers) ── */}
       {onToggleLessonPath && (
@@ -454,20 +452,18 @@ const ControlBar = ({
         </>
       )}
 
-      {/* ── Group 4b: Key Actions — Quiz (Level 2+) ── */}
-      {disclosureLevel >= 2 && (
-        <div className="toolbar-group toolbar-btn--secondary toolbar-disclosure-fade">
-          {onToggleQuiz && hasQuiz && (
-            <ToolbarButton
-              icon={<QuizIcon />}
-              label="Quiz"
-              tooltip="Quiz sull'esperimento"
-              active={showQuiz}
-              onClick={onToggleQuiz}
-            />
-          )}
-        </div>
-      )}
+      {/* ── Group 4b: Key Actions — Quiz ── */}
+      <div className="toolbar-group toolbar-btn--secondary">
+        {onToggleQuiz && hasQuiz && (
+          <ToolbarButton
+            icon={<QuizIcon />}
+            label="Quiz"
+            tooltip="Quiz sull'esperimento"
+            active={showQuiz}
+            onClick={onToggleQuiz}
+          />
+        )}
+      </div>
 
       {/* ── Group 5: Compile (AVR mode only) ── */}
       {onCompile && (
@@ -495,7 +491,7 @@ const ControlBar = ({
                     compileStatus === 'error' ? 'Errore' : 'Compila'}
               </span>
             </button>
-            {disclosureLevel >= 3 && onToggleBottomPanel && (
+            {onToggleBottomPanel && (
               <ToolbarButton
                 icon={<SerialIcon />}
                 label={showBottomPanel ? 'Nascondi' : 'Seriale'}
@@ -513,29 +509,29 @@ const ControlBar = ({
         mobileOverflowOpen={mobileOverflowOpen}
         setMobileOverflowOpen={setMobileOverflowOpen}
         items={[
-          /* ── Pannelli (L2+) ── */
-          disclosureLevel >= 2 && { type: 'separator', label: 'Pannelli' },
-          disclosureLevel >= 2 && onTogglePalette && { label: 'Componenti', checked: showPalette, action: onTogglePalette },
-          disclosureLevel >= 2 && onToggleCodeEditor && { label: 'Editor', checked: showCodeEditor, action: onToggleCodeEditor },
-          disclosureLevel >= 3 && onToggleBom && { label: 'Lista Pezzi', checked: showBom, action: onToggleBom },
-          disclosureLevel >= 2 && onToggleQuiz && hasQuiz && { label: 'Quiz', checked: showQuiz, action: onToggleQuiz },
-          /* ── Appunti (sempre visibili — essenziali per insegnanti) ── */
-          (onToggleNotes || onAddAnnotation || onToggleLessonPath) && { type: 'separator', label: 'Insegnante' },
+          /* ── Pannelli ── */
+          { type: 'separator', label: 'Pannelli' },
+          onTogglePalette && { label: 'Componenti', checked: showPalette, action: onTogglePalette },
+          onToggleCodeEditor && { label: 'Editor', checked: showCodeEditor, action: onToggleCodeEditor },
+          onToggleBom && { label: 'Lista Pezzi', checked: showBom, action: onToggleBom },
+          onToggleQuiz && hasQuiz && { label: 'Quiz', checked: showQuiz, action: onToggleQuiz },
+          /* ── Insegnante ── */
+          (onToggleNotes || onToggleLessonPath) && { type: 'separator', label: 'Insegnante' },
           onToggleLessonPath && { label: 'Percorso Lezione', checked: showLessonPath, action: onToggleLessonPath },
           onToggleNotes && { label: 'Appunti', checked: showNotes, action: onToggleNotes },
           onAddAnnotation && { label: 'Nota sul Circuito', action: onAddAnnotation },
-          /* ── Strumenti (L2+) ── */
-          disclosureLevel >= 2 && { type: 'separator', label: 'Strumenti' },
-          disclosureLevel >= 2 && onToggleWireMode && { label: 'Collega Fili', checked: wireMode, action: onToggleWireMode },
-          disclosureLevel >= 3 && onToggleBottomPanel && { label: 'Monitor Seriale', checked: showBottomPanel, action: onToggleBottomPanel },
-          disclosureLevel >= 3 && onExportPng && { label: 'Cattura Immagine', action: onExportPng },
-          disclosureLevel >= 3 && onGenerateReport && { label: isGeneratingReport ? 'Generazione Report...' : 'Report PDF', action: onGenerateReport, disabled: isGeneratingReport },
-          disclosureLevel >= 3 && onToggleWhiteboard && { label: 'Lavagna', checked: showWhiteboard, action: onToggleWhiteboard },
-          disclosureLevel >= 3 && onToggleElectronView && { label: 'Vista Elettroni', checked: electronViewEnabled, action: onToggleElectronView },
-          /* ── Aiuto (sempre visibile) ── */
+          /* ── Strumenti ── */
+          { type: 'separator', label: 'Strumenti' },
+          onToggleWireMode && { label: 'Collega Fili', checked: wireMode, action: onToggleWireMode },
+          onToggleBottomPanel && { label: 'Monitor Seriale', checked: showBottomPanel, action: onToggleBottomPanel },
+          onExportPng && { label: 'Cattura Immagine', action: onExportPng },
+          onGenerateReport && { label: isGeneratingReport ? 'Generazione Report...' : 'Report PDF', action: onGenerateReport, disabled: isGeneratingReport },
+          onToggleWhiteboard && { label: 'Lavagna', checked: showWhiteboard, action: onToggleWhiteboard },
+          onToggleElectronView && { label: 'Vista Elettroni', checked: electronViewEnabled, action: onToggleElectronView },
+          /* ── Aiuto ── */
           { type: 'separator', label: 'Aiuto' },
           experiment && onAskUNLIM && { label: isAskingUNLIM ? 'UNLIM sta pensando...' : 'Chiedi a UNLIM', action: onAskUNLIM, disabled: isAskingUNLIM },
-          onDiagnoseCircuit && { label: 'Diagnosi Circuito', action: onDiagnoseCircuit },
+          onDiagnoseCircuit && { label: 'Controlla Circuito', action: onDiagnoseCircuit },
           onGetHints && { label: 'Suggerimenti', action: onGetHints },
           experimentName && {
             label: 'Cerca su YouTube', action: () => {
@@ -543,16 +539,17 @@ const ControlBar = ({
               window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, '_blank', 'noopener');
             }
           },
-          disclosureLevel >= 2 && onToggleShortcuts && { label: 'Scorciatoie Tastiera', action: onToggleShortcuts },
-          /* ── Modifica (L3+) ── */
-          disclosureLevel >= 3 && { type: 'separator', label: 'Modifica' },
-          disclosureLevel >= 3 && onUndo && { label: `Annulla (Ctrl+Z)`, action: onUndo, disabled: !canUndo },
-          disclosureLevel >= 3 && onRedo && { label: `Ripeti (Ctrl+Y)`, action: onRedo, disabled: !canRedo },
-          /* ── File (L3+) ── */
-          disclosureLevel >= 3 && { type: 'separator', label: 'File' },
-          disclosureLevel >= 3 && onExportJSON && { label: 'Salva Circuito', action: onExportJSON },
-          disclosureLevel >= 3 && onImportJSON && { label: 'Carica Circuito', action: onImportJSON },
-          disclosureLevel >= 3 && onResetExperiment && { label: 'Ripristina Esperimento', action: onResetExperiment },
+          onToggleShortcuts && { label: 'Scorciatoie Tastiera', action: onToggleShortcuts },
+          onShowWelcome && { label: 'Guida Rapida', action: onShowWelcome },
+          /* ── Modifica ── */
+          { type: 'separator', label: 'Modifica' },
+          onUndo && { label: `Annulla (Ctrl+Z)`, action: onUndo, disabled: !canUndo },
+          onRedo && { label: `Ripeti (Ctrl+Y)`, action: onRedo, disabled: !canRedo },
+          /* ── File ── */
+          { type: 'separator', label: 'File' },
+          onExportJSON && { label: 'Salva Circuito', action: onExportJSON },
+          onImportJSON && { label: 'Carica Circuito', action: onImportJSON },
+          onResetExperiment && { label: 'Ripristina Esperimento', action: onResetExperiment },
         ].filter(Boolean)}
       />
 

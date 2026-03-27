@@ -24,6 +24,7 @@ const RegisterPage = lazy(() => import('./components/auth/RegisterPage'));
 const DataDeletion = lazy(() => import('./components/auth/DataDeletion'));
 const VetrinaSimulatore = lazy(() => import('./components/VetrinaSimulatore'));
 const ShowcasePage = lazy(() => import('./components/ShowcasePage'));
+const LandingPNRR = lazy(() => import('./components/LandingPNRR'));
 const Navbar = lazy(() => import('./components/social/Navbar'));
 
 function LoadingFallback() {
@@ -67,9 +68,17 @@ function SkipToContent() {
     );
 }
 
+function getPathnameRoute() {
+    if (typeof window === 'undefined') return null;
+    const p = window.location.pathname;
+    if (p === '/privacy') return 'privacy';
+    if (p === '/data-deletion') return 'data-deletion';
+    if (p.startsWith('/scuole')) return 'scuole';
+    return null;
+}
+
 function AppRouter() {
-    const isPrivacyPage = typeof window !== 'undefined' && window.location.pathname === '/privacy';
-    const isDataDeletionPage = typeof window !== 'undefined' && window.location.pathname === '/data-deletion';
+    const [pathnameRoute, setPathnameRoute] = useState(getPathnameRoute);
     const initialPage = getPageFromHash() || 'showcase';
     const [currentPage, setCurrentPage] = useState(initialPage);
     const { user, isAdmin, isDocente } = useAuth();
@@ -78,34 +87,44 @@ function AppRouter() {
 
     const navigate = useCallback((page) => {
         setCurrentPage(page);
+        setPathnameRoute(null);
         setMenuOpen(false);
         window.scrollTo(0, 0);
-        // Update hash to reflect current page (P0-6)
+        // Push full path to fix hybrid pathname/hash routing (C11)
+        // From /scuole/pnrr clicking "Prova" must reset pathname to /
         if (VALID_HASHES.includes(page)) {
-            window.history.replaceState(null, '', '#' + page);
+            window.history.pushState(null, '', '/#' + page);
         }
     }, []);
 
-    // Sync hash → page on hashchange (P0-6)
+    // Sync URL → state on hashchange and popstate (back/forward) (C11)
     useEffect(() => {
-        function onHashChange() {
-            const page = getPageFromHash();
-            if (page && page !== currentPage) {
-                setCurrentPage(page);
-                window.scrollTo(0, 0);
+        function syncFromUrl() {
+            const pRoute = getPathnameRoute();
+            setPathnameRoute(pRoute);
+            if (!pRoute) {
+                const page = getPageFromHash();
+                if (page && page !== currentPage) {
+                    setCurrentPage(page);
+                }
             }
+            window.scrollTo(0, 0);
         }
-        window.addEventListener('hashchange', onHashChange);
-        return () => window.removeEventListener('hashchange', onHashChange);
+        window.addEventListener('hashchange', syncFromUrl);
+        window.addEventListener('popstate', syncFromUrl);
+        return () => {
+            window.removeEventListener('hashchange', syncFromUrl);
+            window.removeEventListener('popstate', syncFromUrl);
+        };
     }, [currentPage]);
 
     // /privacy route — full-page privacy policy (no auth, no navbar)
-    if (isPrivacyPage) {
+    if (pathnameRoute === 'privacy') {
         return <PrivacyPolicy />;
     }
 
     // /data-deletion route — GDPR Art. 17 data deletion (no navbar)
-    if (isDataDeletionPage) {
+    if (pathnameRoute === 'data-deletion') {
         return (
             <Suspense fallback={<LoadingFallback />}>
                 <DataDeletion
@@ -113,6 +132,15 @@ function AppRouter() {
                     onDataDeleted={() => { window.location.href = '/'; }}
                     onCancel={() => { window.location.href = '/'; }}
                 />
+            </Suspense>
+        );
+    }
+
+    // /scuole/pnrr e /scuole — landing page PNRR e scuole (no auth, no navbar)
+    if (pathnameRoute === 'scuole') {
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <LandingPNRR onNavigate={navigate} />
             </Suspense>
         );
     }

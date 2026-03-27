@@ -1,23 +1,16 @@
 # Kimi Research — Cycle 11
-Topic: accuratezza simulatore circuiti educativo KCL KVL MNA errori comuni
-Date: 2026-03-26T02:53:52.557112
+Topic: competitor EdTech simulatori elettronica 2026 Tinkercad Wokwi Arduino
+Date: 2026-03-27T04:44:01.205111
 
-EDGE-CASE-1: Circuito con LED non funzionante
-TEST-SUGGERITO: Collegare un LED in parallelo con una resistenza e verificare se il simulatore mostra il corretto comportamento di illuminazione.
+COMPETITOR-1: Tinkercad Circuits — Forza: Gratis e facile da usare; Debolezza: Manca AI e pedagogia.
+COMPETITOR-2: Wokwi — Forza: Gratis; Debolezza: Manca pedagogia e integrazione con AI.
+COMPETITOR-3: Falstad — Forza: Varietà di simulatori; Debolezza: Interfaccia meno moderna e mancanza di AI.
+COMPETITOR-4: PhET — Forza: Riconosciuto e gratuito; Debolezza: Limitata personalizzazione e mancanza di AI.
+
+GAP-MERCATO: Tutti i competitor mancano di un'integrazione pedagogica avanzata e di un AI tutor, che sono elementi chiave per ELAB Tutor.
+
+OPPORTUNITA-ELAB: ELAB può differenziarsi offrendo un AI tutor e una pedagogia mirata, insieme a un kit fisico e una licenza accessibile, che non solo fornisce un simulatore ma un'esperienza educativa completa.
+
 SEVERITY: medium
 
-EDGE-CASE-2: Cortocircuito in un circuito con resistenze
-TEST-SUGGERITO: Creare un cortocircuito tra due nodi di tensione diversa e verificare se il simulatore identifica il cortocircuito e si arresta correttamente.
-SEVERITY: high
-
-EDGE-CASE-3: Circuito con componenti in parallelo
-TEST-SUGGERITO: Collegare resistenze in parallelo e verificare se il simulatore calcola correttamente la resistenza equivalente.
-SEVERITY: medium
-
-EDGE-CASE-4: Circuito con KCL/KVL non rispettate
-TEST-SUGGERITO: Creare un circuito dove le leggi di Kirchhoff non sono rispettate e verificare se il simulatore segnala l'errore.
-SEVERITY: high
-
-EDGE-CASE-5: Circuito con solver MNA non accurato
-TEST-SUGGERITO: Testare il solver MNA con circuiti complessi per verificare la precisione delle soluzioni trovate.
-SEVERITY: high
+Il contesto ciclo corrente mostra che ELAB Tutor ha già ottenuto punteggi elevati in diverse categorie, come la funzionalità del simulatore, l'integrazione AI, e la qualità del codice, indicando che è già ben posizionato per sfruttare i gap nel mercato. Tuttavia, la mancanza di competitor con una pedagogia e un AI tutor avanzati rappresenta un'opportunità significativa per ELAB Tutor per differenziarsi e fornire un'esperienza educativa completa alle scuole medie italiane.

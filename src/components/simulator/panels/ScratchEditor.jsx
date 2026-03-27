@@ -229,7 +229,7 @@ const ELAB_BLOCKLY_CSS = `
 /* Block text */
 .blocklyText {
   font-family: var(--font-sans, 'Open Sans', sans-serif) !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
   font-weight: 500 !important;
   fill: var(--color-text-inverse, #fff) !important;
 }

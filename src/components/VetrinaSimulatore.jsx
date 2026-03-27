@@ -277,7 +277,6 @@ export default function VetrinaSimulatore({ onNavigate }) {
             </div>
 
             {/* ══════════════════ VOLUMES ══════════════════ */}
-// {/* (c) Andrea Marro — 24/02/2026 — ELAB Tutor — Tutti i diritti riservati */}
             <div style={S.sectionInner}>
                 <div style={S.sectionHeader}>
                     <span style={S.sectionTag}>PERCORSO</span>
@@ -413,9 +412,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                             per l'insegnamento dell'elettronica.
                         </p>
                         <a
-                            href="https://funny-pika-3d1029.netlify.app/scuole"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href="/scuole/pnrr"
                             className="vetrina-schoolsBtn"
                             style={S.schoolsBtn}
                         >

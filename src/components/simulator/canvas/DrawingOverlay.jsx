@@ -238,8 +238,8 @@ export default function DrawingOverlay({
                                 title={color.label}
                                 aria-label={`Colore: ${color.label}`}
                                 style={{
-                                    width: 40,
-                                    height: 40,
+                                    width: 44,
+                                    height: 44,
                                     borderRadius: 8,
                                     border: currentColor === color.hex && !isEraser
                                         ? `2px solid ${color.hex}`

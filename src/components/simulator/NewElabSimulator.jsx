@@ -21,7 +21,6 @@ import React, {
 } from 'react';
 import SimulatorCanvas from './canvas/SimulatorCanvas';
 import DrawingOverlay from './canvas/DrawingOverlay';
-import { getAutoWireColor } from './canvas/WireRenderer';
 import ExperimentPicker from './panels/ExperimentPicker';
 import ComponentPalette from './panels/ComponentPalette';
 import ControlBar from './panels/ControlBar';
@@ -29,118 +28,19 @@ import SerialMonitor from './panels/SerialMonitor';
 import SerialPlotter from './panels/SerialPlotter';
 import CircuitSolver from './engine/CircuitSolver';
 import { findExperimentById, ALL_EXPERIMENTS } from '../../data/experiments-index';
-import { compileCode as apiCompileCode, sendChat as apiSendChat, preloadExperiment } from '../../services/api';
-import { registerSimulatorInstance, unregisterSimulatorInstance, emitSimulatorEvent } from '../../services/simulator-api';
+import { compileCode as apiCompileCode } from '../../services/api';
+import { emitSimulatorEvent } from '../../services/simulator-api';
 import { pushActivity } from '../../services/activityBuffer';
-import { sessionMetrics } from '../../services/sessionMetrics';
-import { sendAnalyticsEvent, EVENTS } from './api/AnalyticsWebhook'; /* Andrea Marro — 12/02/2026 */
+import { sendAnalyticsEvent, EVENTS } from './api/AnalyticsWebhook';
 import useUndoRedo from './hooks/useUndoRedo';
 import useCircuitStorage from './hooks/useCircuitStorage';
-import useDisclosureLevel from './hooks/useDisclosureLevel';
+import useMergedExperiment from './hooks/useMergedExperiment';
+import useSimulatorAPI from './hooks/useSimulatorAPI';
+import useExperimentLoader from './hooks/useExperimentLoader';
+import useCircuitHandlers from './hooks/useCircuitHandlers';
 import CodeEditorCM6 from './panels/CodeEditorCM6';
-// Lazy-loaded: Blockly (~750KB) caricato solo quando l'utente clicca "Blocchi"
+import ScratchCompileBar, { ScratchErrorBoundary } from './panels/ScratchCompileBar';
 const ScratchEditor = lazy(() => import('./panels/ScratchEditor'));
-
-// ErrorBoundary for ScratchEditor — graceful fallback on Blockly crash
-// S161.4: retryKey forces full React remount on retry (cleans orphaned Blockly DOM)
-class ScratchErrorBoundary extends React.Component {
-  constructor(props) { super(props); this.state = { hasError: false, retryKey: 0 }; }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch(err) { console.error('[ScratchErrorBoundary]', err); }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          height: '100%', gap: 12, padding: 24, background: 'var(--color-editor-active-bg)', color: 'var(--color-blockly-text)',
-          fontFamily: "var(--font-sans)", textAlign: 'center',
-        }}>
-          <span style={{ fontSize: 32 }}>⚠️</span>
-          <p style={{ fontSize: 14, margin: 0 }}>Errore nell'editor blocchi.</p>
-          <button
-            onClick={() => this.setState(prev => ({ hasError: false, retryKey: prev.retryKey + 1 }))}
-            style={{
-              padding: '8px 16px', borderRadius: 6, border: 'none', cursor: 'pointer',
-              background: 'var(--color-accent)', color: 'var(--color-text)', fontSize: 14, fontWeight: 600,
-            }}
-          >Riprova</button>
-          <p style={{ fontSize: 14, color: 'var(--color-muted)', margin: 0 }}>Oppure usa la tab "Arduino C++"</p>
-        </div>
-      );
-    }
-    return <React.Fragment key={this.state.retryKey}>{this.props.children}</React.Fragment>;
-  }
-}
-
-/* ─── S93: Compile bar for Scratch mode (no code visible) ─── */
-const ScratchCompileBar = React.memo(function ScratchCompileBar({
-  onCompile, compilationStatus, compilationErrors, compilationWarnings, compilationSize,
-}) {
-  const [showErrors, setShowErrors] = useState(false);
-  useEffect(() => { if (compilationErrors) setShowErrors(true); }, [compilationErrors]);
-
-  const statusColor = compilationStatus === 'success' ? 'var(--color-accent)'
-    : compilationStatus === 'error' ? 'var(--color-vol3)'
-    : compilationStatus === 'compiling' ? 'var(--color-status-compiling)' : 'var(--color-muted)';
-
-  const statusText = compilationStatus === 'success'
-    ? (compilationSize ? `\u2705 ${compilationSize.bytes}/${compilationSize.total} bytes (${compilationSize.percent}%)` : '\u2705 Compilazione OK')
-    : compilationStatus === 'error' ? '\u274C Errore'
-    : compilationStatus === 'compiling' ? '\u231B Compilazione...'
-    : 'Pronto';
-
-  return (
-    <div style={{
-      flexShrink: 0, borderTop: '1px solid var(--color-blockly-grid, #2a3040)',
-      background: 'var(--color-code-header, #181825)',
-    }}>
-      {/* Warning panel */}
-      {compilationWarnings && (
-        <div style={{ padding: 'var(--space-1-5) var(--space-2-5)', borderTop: '2px solid var(--color-warning-panel-border)', background: 'var(--color-warning-panel-bg)' }}>
-          <span style={{ color: 'var(--color-warning-panel-text)', fontWeight: 700, fontSize: 13 }}>{'\u26A0'} Avvisi</span>
-          <pre style={{ margin: 'var(--space-1) 0 0', fontSize: 12, color: 'var(--color-warning-panel-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: "var(--font-mono)" }}>
-            {compilationWarnings}
-          </pre>
-        </div>
-      )}
-      {/* Error panel */}
-      {showErrors && compilationErrors && (
-        <div style={{ padding: 'var(--space-1-5) var(--space-2-5)', borderTop: '2px solid var(--color-vol3)', background: 'var(--color-error-bg)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: 'var(--color-vol3)', fontWeight: 700, fontSize: 13 }}>{'\u274C'} Errori di compilazione</span>
-            <button
-              onClick={() => setShowErrors(false)}
-              style={{ background: 'none', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', fontSize: 16, padding: 0, minWidth: 56, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              aria-label="Chiudi pannello errori"
-            >{'\u2715'}</button>
-          </div>
-          <pre style={{ margin: 'var(--space-1) 0 0', fontSize: 12, color: 'var(--color-vol3)', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontFamily: "var(--font-mono)" }}>
-            {compilationErrors}
-          </pre>
-        </div>
-      )}
-      {/* Status + Compile button row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', padding: 'var(--space-1) var(--space-2-5)' }}>
-        <span style={{ flex: 1, fontSize: 14, color: statusColor, fontFamily: "var(--font-mono)" }}>
-          {statusText}
-        </span>
-        <button
-          onClick={onCompile}
-          disabled={compilationStatus === 'compiling'}
-          style={{
-            padding: '6px 16px', border: 'none', borderRadius: 4,
-            background: 'var(--color-accent)', color: 'var(--color-text-inverse)',
-            fontWeight: 700, fontSize: 14, cursor: 'pointer', minHeight: 44,
-            opacity: compilationStatus === 'compiling' ? 0.5 : 1,
-            fontFamily: "var(--font-sans)",
-          }}
-        >
-          {compilationStatus === 'compiling' ? '\u231B Compilazione...' : '\u25B6 Compila & Carica'}
-        </button>
-      </div>
-    </div>
-  );
-});
 
 import PotOverlay from './overlays/PotOverlay';
 import LdrOverlay from './overlays/LdrOverlay';
@@ -157,90 +57,19 @@ import WhiteboardOverlay from './panels/WhiteboardOverlay';
 import QuizPanel from './panels/QuizPanel';
 import RotateDeviceOverlay from './overlays/RotateDeviceOverlay';
 import Annotation from './components/Annotation';
-import { getComponent } from './components/registry';
-import { exportCanvasPng } from './utils/exportPng';
-import { inferParentFromPinAssignments } from './utils/parentChild';
-import { collectSessionData, captureCircuit, fetchAISummary } from '../../services/sessionReportService';
-import { generateSessionReportPDF } from '../report/SessionReportPDF';
 import { useSessionRecorder } from '../../context/SessionRecorderContext';
 import './ElabSimulator.css';
 import lyStyles from './layout.module.css';
 import { translateCompilationErrors } from './utils/errorTranslator';
-import { buildPinComponentMap, buildLCDPinMapping, createOnPinChangeHandler } from './utils/pinComponentMap';
-import { computeAutoPinAssignment, generateComponentId } from './utils/breadboardSnap';
+import { buildPinComponentMap } from './utils/pinComponentMap';
 import ConsentBanner from '../common/ConsentBanner';
 import logger from '../../utils/logger';
 
 /* ═══════════════════════════════════════════════════════════════════
-   HEX COMPILATION CACHE — Andrea Marro — 15/02/2026
-   Cache locale per evitare ricompilazione codice identico
+   ELAB Palette constants
    ═══════════════════════════════════════════════════════════════════ */
-const CACHE_KEY = 'elab_compile_cache_v1';
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 ore
-
-/**
- * Genera hash SHA256 semplificato del codice sorgente
- * @param {string} code — codice Arduino
- * @returns {Promise<string>} — hash esadecimale
- */
-async function hashCode(code) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(code);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-/**
- * Recupera HEX dalla cache se esiste e non è scaduto
- * @param {string} hash — hash del codice
- * @returns {{hex: string, size: number}|null}
- */
-function getCachedHex(hash) {
-  try {
-    const cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
-    const entry = cache[hash];
-    if (!entry) return null;
-
-    // Verifica TTL (24 ore)
-    if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
-      // Rimuovi entry scaduta
-      delete cache[hash];
-      localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-      return null;
-    }
-
-    return { hex: entry.hex, size: entry.size };
-  } catch (e) {
-    logger.warn('[ELAB Cache] Errore lettura cache:', e);
-    return null;
-  }
-}
-
-/**
- * Salva HEX nella cache
- * @param {string} hash — hash del codice
- * @param {string} hex — codice hex compilato
- * @param {number} size — dimensione in bytes
- */
-function setCachedHex(hash, hex, size) {
-  try {
-    const cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
-    cache[hash] = { hex, size, timestamp: Date.now() };
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-  } catch (e) {
-    logger.warn('[ELAB Cache] Errore scrittura cache:', e);
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   ELAB Palette constants (inline styles)
-   ═══════════════════════════════════════════════════════════════════ */
-const NAVY = 'var(--color-primary)';
 const LIME = 'var(--color-accent)';
-const VOL3_RED = 'var(--color-vol3)';
 const FONT_BODY = "var(--font-sans)";
-const FONT_CODE = "var(--font-mono)";
 
 /* Helpers extracted to utils/pinComponentMap.js and utils/breadboardSnap.js — Andrea Marro 12/02/2026 */
 
@@ -262,29 +91,25 @@ const NewElabSimulator = ({
   onGetHints,
   onSendToUNLIM,
   onSendImageToUNLIM,
-  // Session Report: refs from ElabTutorV4 for PDF generation
   messagesRef,
   quizResultsRef,
   sessionStartRef,
   circuitStateRef,
 }) => {
   // ─── UNLIM API highlight state (internal, merged with props) ───
-  /* Andrea Marro — 12/02/2026 */
   const [apiHighlightedComponents, setApiHighlightedComponents] = useState([]);
   const [apiHighlightedPins, setApiHighlightedPins] = useState([]);
-
-  // Defensive: keep highlight props/state always array (prevents runtime crash on null)
   const asArray = useCallback((v) => (Array.isArray(v) ? v : []), []);
-  // ─── Core state (original) ───
+
+  // ─── Core state ───
   const [currentExperiment, setCurrentExperiment] = useState(null);
-  const mergedExperimentRef = useRef(null); // Added mergedExperimentRef
+  const mergedExperimentRef = useRef(null);
   const [componentStates, setComponentStates] = useState({});
   const [isRunning, setIsRunning] = useState(false);
-  const [simulationAnnouncement, setSimulationAnnouncement] = useState(''); // S161.3: aria-live announcer
+  const [simulationAnnouncement, setSimulationAnnouncement] = useState('');
   const isRunningRef = useRef(false);
   useEffect(() => { isRunningRef.current = isRunning; }, [isRunning]);
   const [simulationTime, setSimulationTime] = useState(0);
-  // S100: localStorage persistence for sidebar preference
   const [showSidebar, setShowSidebar] = useState(() => {
     try { const v = localStorage.getItem('elab-sidebar-pref'); return v === null ? true : v === '1'; }
     catch { return true; }
@@ -296,343 +121,191 @@ const NewElabSimulator = ({
   const timeRef = useRef(0);
   const avrPollRef = useRef(null);
   const pinMapRef = useRef({});
-  const loadedExpIdRef = useRef(null); // Guard: prevent re-init loop
-  const compilingRef = useRef(false); // guard against multiple compilations
-  const statusTimersRef = useRef([]); // track setTimeout IDs for cleanup
-  const wireStartRef = useRef(null);  // wire mode: first pin selected
-  const probeConnectionsRef = useRef({}); // multimeter probe connections from canvas
-  const avrTxLenRef = useRef(0);      // TX LED: track serial buffer length
-  const avrTxTimerRef = useRef(null); // TX LED: auto-clear timer
-  // CoVe Fix #4: Sostituite variabili modulo con ref locale (evita permanent block)
+  const loadedExpIdRef = useRef(null);
+  const compilingRef = useRef(false);
+  const statusTimersRef = useRef([]);
+  const wireStartRef = useRef(null);
+  const probeConnectionsRef = useRef({});
   const avrSetupLockRef = useRef({ inProgress: false, expId: null });
 
-  // ─── NEW: Panel toggle state ───
+  // ─── Panel toggle state ───
   const [showPalette, setShowPalette] = useState(false);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
-  const [editorMode, setEditorMode] = useState('arduino'); // 'arduino' or 'scratch'
-  const [scratchFullscreen, setScratchFullscreen] = useState(false); // S96: fullscreen Blockly
+  const [editorMode, setEditorMode] = useState('arduino');
+  const [scratchFullscreen, setScratchFullscreen] = useState(false);
   const [scratchXml, setScratchXml] = useState('');
-  const [scratchGeneratedCode, setScratchGeneratedCode] = useState(''); // C++ from Blockly — never shown to user
+  const [scratchGeneratedCode, setScratchGeneratedCode] = useState('');
   const [wireMode, setWireMode] = useState(false);
-  const [bottomPanel, setBottomPanel] = useState('monitor'); // 'monitor' | 'plotter'
-  const [showBottomPanel, setShowBottomPanel] = useState(false); // collapsed by default
+  const [bottomPanel, setBottomPanel] = useState('monitor');
+  const [showBottomPanel, setShowBottomPanel] = useState(false);
   const [serialBaudRate, setSerialBaudRate] = useState(9600);
   const [serialTimestamps, setSerialTimestamps] = useState(false);
   const [baudMismatch, setBaudMismatch] = useState(false);
-  const [drawingEnabled, setDrawingEnabled] = useState(false); // Drawing layer toggle
+  const [drawingEnabled, setDrawingEnabled] = useState(false);
 
-  // Progressive disclosure: tracks user milestones for gradual UI complexity
-  const { level: disclosureLevel, recordMilestone, recordExperimentLoad } = useDisclosureLevel();
-  const prevDisclosureLevelRef = useRef(disclosureLevel);
-  const [disclosureToast, setDisclosureToast] = useState(null); // { text, exiting }
+  // ─── Onboarding: welcome card per primo accesso ───
+  const WELCOME_KEY = 'elab-sim-welcomed';
+  const [showWelcome, setShowWelcome] = useState(() => {
+    try { return !localStorage.getItem(WELCOME_KEY); } catch { return true; }
+  });
+  const dismissWelcome = useCallback(() => {
+    setShowWelcome(false);
+    try { localStorage.setItem(WELCOME_KEY, '1'); } catch {}
+  }, []);
 
-  // P0: Show toast when disclosure level increases
-  useEffect(() => {
-    const prev = prevDisclosureLevelRef.current;
-    prevDisclosureLevelRef.current = disclosureLevel;
-    if (disclosureLevel > prev && prev >= 1) {
-      const messages = {
-        2: 'Nuovi strumenti sbloccati: Fili, Componenti, Editor',
-        3: 'Nuovi strumenti: Monitor Arduino, Salva/Carica, Lavagna',
-      };
-      const text = messages[disclosureLevel];
-      if (!text) return;
-      setDisclosureToast({ text, exiting: false });
-      const exitTimer = setTimeout(() => setDisclosureToast(t => t ? { ...t, exiting: true } : null), 3000);
-      const removeTimer = setTimeout(() => setDisclosureToast(null), 3400);
-      return () => { clearTimeout(exitTimer); clearTimeout(removeTimer); };
-    }
-  }, [disclosureLevel]);
+  const recordMilestone = useCallback(() => {}, []);
 
-  // S100: Persist sidebar preference to localStorage
   useEffect(() => {
     try { localStorage.setItem('elab-sidebar-pref', showSidebar ? '1' : '0'); } catch {}
   }, [showSidebar]);
 
-  // S101: Swipe gesture detection for panel navigation (touch only)
+  // S101: Swipe gesture detection for panel navigation
+  const canvasContainerRef = useRef(null);
+  const editorPanelRef = useRef(null);
+  const sidebarRef = useRef(null);
+  const bottomPanelRef = useRef(null);
+
   useEffect(() => {
     const el = canvasContainerRef.current;
     if (!el) return;
-    let swipeStart = null; // { x, y, time }
-    const SWIPE_MIN_DIST = 50; // px minimum horizontal distance
-    const SWIPE_MAX_TIME = 400; // ms maximum duration
-    const EDGE_ZONE = 40; // px from right edge to trigger open-editor swipe
-
+    let swipeStart = null;
+    const SWIPE_MIN_DIST = 50, SWIPE_MAX_TIME = 400, EDGE_ZONE = 40;
     const onTouchStart = (e) => {
       if (e.touches.length !== 1) { swipeStart = null; return; }
-      const touch = e.touches[0];
-      swipeStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+      swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() };
     };
-
     const onTouchEnd = (e) => {
       if (!swipeStart || e.changedTouches.length < 1) return;
       const touch = e.changedTouches[0];
-      const dx = touch.clientX - swipeStart.x;
-      const dy = touch.clientY - swipeStart.y;
-      const dt = Date.now() - swipeStart.time;
-
-      // Only process if fast enough and more horizontal than vertical
-      if (dt > SWIPE_MAX_TIME || Math.abs(dx) < SWIPE_MIN_DIST || Math.abs(dy) > Math.abs(dx)) {
-        swipeStart = null;
-        return;
-      }
-
+      const dx = touch.clientX - swipeStart.x, dy = touch.clientY - swipeStart.y, dt = Date.now() - swipeStart.time;
+      if (dt > SWIPE_MAX_TIME || Math.abs(dx) < SWIPE_MIN_DIST || Math.abs(dy) > Math.abs(dx)) { swipeStart = null; return; }
       const rect = el.getBoundingClientRect();
-      const startFromRightEdge = rect.right - swipeStart.x;
-
-      if (dx < 0 && startFromRightEdge < EDGE_ZONE) {
-        // Swipe LEFT from right edge → open code editor (if AVR experiment)
-        if (currentExperiment?.simulationMode === 'avr' && !showCodeEditor) {
-          setShowCodeEditor(true);
-        }
+      if (dx < 0 && rect.right - swipeStart.x < EDGE_ZONE) {
+        if (currentExperiment?.simulationMode === 'avr' && !showCodeEditor) setShowCodeEditor(true);
       }
       swipeStart = null;
     };
-
     el.addEventListener('touchstart', onTouchStart, { passive: true });
     el.addEventListener('touchend', onTouchEnd, { passive: true });
-    return () => {
-      el.removeEventListener('touchstart', onTouchStart);
-      el.removeEventListener('touchend', onTouchEnd);
-    };
+    return () => { el.removeEventListener('touchstart', onTouchStart); el.removeEventListener('touchend', onTouchEnd); };
   }, [currentExperiment, showCodeEditor]);
 
-  // S101: Swipe right on editor panel left edge → close editor
   useEffect(() => {
     const el = editorPanelRef.current;
     if (!el || !showCodeEditor) return;
     let swipeStart = null;
-    const SWIPE_MIN_DIST = 50;
-    const SWIPE_MAX_TIME = 400;
-    const EDGE_ZONE = 40; // px from left edge of editor panel
-
     const onTouchStart = (e) => {
       if (e.touches.length !== 1) { swipeStart = null; return; }
-      const touch = e.touches[0];
       const rect = el.getBoundingClientRect();
-      if (touch.clientX - rect.left > EDGE_ZONE) { swipeStart = null; return; }
-      swipeStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+      if (e.touches[0].clientX - rect.left > 40) { swipeStart = null; return; }
+      swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() };
     };
-
     const onTouchEnd = (e) => {
       if (!swipeStart || e.changedTouches.length < 1) return;
-      const touch = e.changedTouches[0];
-      const dx = touch.clientX - swipeStart.x;
-      const dy = touch.clientY - swipeStart.y;
-      const dt = Date.now() - swipeStart.time;
-      if (dt > SWIPE_MAX_TIME || dx < SWIPE_MIN_DIST || Math.abs(dy) > Math.abs(dx)) {
-        swipeStart = null;
-        return;
-      }
-      // Swipe RIGHT from left edge → close editor
-      setShowCodeEditor(false);
-      swipeStart = null;
+      const dx = e.changedTouches[0].clientX - swipeStart.x, dy = e.changedTouches[0].clientY - swipeStart.y;
+      if (Date.now() - swipeStart.time > 400 || dx < 50 || Math.abs(dy) > Math.abs(dx)) { swipeStart = null; return; }
+      setShowCodeEditor(false); swipeStart = null;
     };
-
     el.addEventListener('touchstart', onTouchStart, { passive: true });
     el.addEventListener('touchend', onTouchEnd, { passive: true });
-    return () => {
-      el.removeEventListener('touchstart', onTouchStart);
-      el.removeEventListener('touchend', onTouchEnd);
-    };
+    return () => { el.removeEventListener('touchstart', onTouchStart); el.removeEventListener('touchend', onTouchEnd); };
   }, [showCodeEditor]);
 
-  // S101: Swipe down on sidebar → close sidebar (iPad portrait/landscape)
   useEffect(() => {
     const el = sidebarRef.current;
     if (!el || !showSidebar) return;
     let swipeStart = null;
-    const SWIPE_MIN_DIST = 60; // px vertical distance
-    const SWIPE_MAX_TIME = 400;
-
-    const onTouchStart = (e) => {
-      if (e.touches.length !== 1) { swipeStart = null; return; }
-      const touch = e.touches[0];
-      swipeStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-    };
-
+    const onTouchStart = (e) => { if (e.touches.length !== 1) { swipeStart = null; return; } swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() }; };
     const onTouchEnd = (e) => {
       if (!swipeStart || e.changedTouches.length < 1) return;
-      const touch = e.changedTouches[0];
-      const dx = touch.clientX - swipeStart.x;
-      const dy = touch.clientY - swipeStart.y;
-      const dt = Date.now() - swipeStart.time;
-      // Must be vertical (dy > dx) and downward, fast enough
-      if (dt > SWIPE_MAX_TIME || dy < SWIPE_MIN_DIST || Math.abs(dx) > Math.abs(dy)) {
-        swipeStart = null;
-        return;
-      }
-      // Swipe DOWN → close sidebar (only on iPad widths ≤1365px)
-      if (window.innerWidth <= 1365) {
-        setShowSidebar(false);
-      }
-      swipeStart = null;
+      const dy = e.changedTouches[0].clientY - swipeStart.y, dx = e.changedTouches[0].clientX - swipeStart.x;
+      if (Date.now() - swipeStart.time > 400 || dy < 60 || Math.abs(dx) > Math.abs(dy)) { swipeStart = null; return; }
+      if (window.innerWidth <= 1365) setShowSidebar(false); swipeStart = null;
     };
-
     el.addEventListener('touchstart', onTouchStart, { passive: true });
     el.addEventListener('touchend', onTouchEnd, { passive: true });
-    return () => {
-      el.removeEventListener('touchstart', onTouchStart);
-      el.removeEventListener('touchend', onTouchEnd);
-    };
+    return () => { el.removeEventListener('touchstart', onTouchStart); el.removeEventListener('touchend', onTouchEnd); };
   }, [showSidebar]);
 
-  // S101: Swipe up on collapsed bottom panel bar → expand serial monitor
   useEffect(() => {
     const el = bottomPanelRef.current;
-    if (!el || showBottomPanel) return; // only when collapsed
+    if (!el || showBottomPanel) return;
     let swipeStart = null;
-    const SWIPE_MIN_DIST = 30; // px — shorter threshold since the bar is small
-    const SWIPE_MAX_TIME = 400;
-
-    const onTouchStart = (e) => {
-      if (e.touches.length !== 1) { swipeStart = null; return; }
-      const touch = e.touches[0];
-      swipeStart = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-    };
-
+    const onTouchStart = (e) => { if (e.touches.length !== 1) { swipeStart = null; return; } swipeStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() }; };
     const onTouchEnd = (e) => {
       if (!swipeStart || e.changedTouches.length < 1) return;
-      const touch = e.changedTouches[0];
-      const dx = touch.clientX - swipeStart.x;
-      const dy = touch.clientY - swipeStart.y;
-      const dt = Date.now() - swipeStart.time;
-      // Must be vertical (|dy| > |dx|) and UPWARD (dy negative), fast enough
-      if (dt > SWIPE_MAX_TIME || dy > -SWIPE_MIN_DIST || Math.abs(dx) > Math.abs(dy)) {
-        swipeStart = null;
-        return;
-      }
-      // Swipe UP → expand bottom panel
-      setShowBottomPanel(true);
-      swipeStart = null;
+      const dy = e.changedTouches[0].clientY - swipeStart.y, dx = e.changedTouches[0].clientX - swipeStart.x;
+      if (Date.now() - swipeStart.time > 400 || dy > -30 || Math.abs(dx) > Math.abs(dy)) { swipeStart = null; return; }
+      setShowBottomPanel(true); swipeStart = null;
     };
-
     el.addEventListener('touchstart', onTouchStart, { passive: true });
     el.addEventListener('touchend', onTouchEnd, { passive: true });
-    return () => {
-      el.removeEventListener('touchstart', onTouchStart);
-      el.removeEventListener('touchend', onTouchEnd);
-    };
+    return () => { el.removeEventListener('touchstart', onTouchStart); el.removeEventListener('touchend', onTouchEnd); };
   }, [showBottomPanel]);
 
   // Helper: tracked setTimeout (auto-cleanup on unmount)
   const trackedTimeout = useCallback((fn, delay) => {
-    const id = setTimeout(() => {
-      statusTimersRef.current = statusTimersRef.current.filter(t => t !== id);
-      fn();
-    }, delay);
+    const id = setTimeout(() => { statusTimersRef.current = statusTimersRef.current.filter(t => t !== id); fn(); }, delay);
     statusTimersRef.current.push(id);
     return id;
   }, []);
+  useEffect(() => { return () => { statusTimersRef.current.forEach(id => clearTimeout(id)); statusTimersRef.current = []; }; }, []);
 
-  // Cleanup all tracked timeouts on unmount
-  useEffect(() => {
-    return () => {
-      statusTimersRef.current.forEach(id => clearTimeout(id));
-      statusTimersRef.current = [];
-    };
-  }, []);
-  /* ── Andrea Marro — 17/02/2026 ── ~riga 200 ── Stato e timer di status ── */
+  useEffect(() => { if (!wireMode) wireStartRef.current = null; }, [wireMode]);
 
-  // Reset wire start when wire mode is toggled off
-  useEffect(() => {
-    if (!wireMode) wireStartRef.current = null;
-  }, [wireMode]);
+  // ─── Component manipulation state ───
+  const [customLayout, setCustomLayout] = useState({});
+  const [customConnections, setCustomConnections] = useState([]);
+  const [customComponents, setCustomComponents] = useState([]);
+  const [customPinAssignments, setCustomPinAssignments] = useState({});
+  const [selectedWireIndex, setSelectedWireIndex] = useState(-1);
+  const [connectionOverrides, setConnectionOverrides] = useState({});
 
-  // Wire mode is NOT auto-enabled in sandbox — students drag components first, then connect manually
-
-  // ─── NEW: Component manipulation state ───
-  const [customLayout, setCustomLayout] = useState({});       // componentId -> { x, y }
-  const [customConnections, setCustomConnections] = useState([]);  // [{ from, to }]
-  const [customComponents, setCustomComponents] = useState([]);     // [{ id, type, value?, color? }]
-  const [customPinAssignments, setCustomPinAssignments] = useState({}); // "compId:pinName" -> "bbId:holeId"
-  const [selectedWireIndex, setSelectedWireIndex] = useState(-1);       // index of selected wire (-1 = none)
-  const [connectionOverrides, setConnectionOverrides] = useState({});   // connectionId -> newConnectionData (waypoints, color)
-
-  // ─── BUILD MODE: progressive assembly step tracking ───
-  // Andrea Marro — 17/02/2026
-  // When buildMode is active, buildStepIndex controls which components/wires are visible.
-  // -1 = empty board (only base: breadboard + battery/arduino)
-  // 0 = first buildStep visible, 1 = first two, etc.
+  // ─── BUILD MODE ───
   const [buildStepIndex, setBuildStepIndex] = useState(-1);
   const [showNotes, setShowNotes] = useState(false);
   const [selectedVolume, setSelectedVolume] = useState(1);
 
-  // ─── BUILD MODE: sound + step change handler ───
-  // Andrea Marro — 17/02/2026
   const buildStepSoundRef = useRef(null);
   const handleBuildStepChange = useCallback((newIndex) => {
     const prevIndex = buildStepIndex;
     setBuildStepIndex(newIndex);
-    // Play a short "click" sound when advancing (not when going back to intro)
     if (newIndex > prevIndex && newIndex >= 0) {
       try {
-        if (!buildStepSoundRef.current) {
-          // Generate a short "snap/click" sound using AudioContext
-          const ctx = new (window.AudioContext || window.webkitAudioContext)();
-          buildStepSoundRef.current = ctx;
-        }
+        if (!buildStepSoundRef.current) buildStepSoundRef.current = new (window.AudioContext || window.webkitAudioContext)();
         const ctx = buildStepSoundRef.current;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.1);
-      } catch { /* audio not available — silent */ }
+        const osc = ctx.createOscillator(); const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine'; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+      } catch {}
     }
-
-    // Auto-open editor + load progressive XML when entering a scratchStep
-    // S93: don't force editorMode — user chose their mode at transition
     const hwLen = currentExperiment?.buildSteps?.length || 0;
     const sSteps = currentExperiment?.scratchSteps;
     if (sSteps && newIndex >= hwLen) {
-      const scratchIdx = newIndex - hwLen;
-      const scratchStep = sSteps[scratchIdx];
-      if (scratchStep?.xml) {
-        setScratchXml(scratchStep.xml);
-        // Don't force setEditorMode — user already chose via Passo Passo buttons
-        setShowCodeEditor(true);
-      }
-    } else if (sSteps && newIndex < hwLen && prevIndex >= hwLen) {
-      // Going back from scratch to hardware — close editor
-      setShowCodeEditor(false);
-    }
+      const scratchStep = sSteps[newIndex - hwLen];
+      if (scratchStep?.xml) { setScratchXml(scratchStep.xml); setShowCodeEditor(true); }
+    } else if (sSteps && newIndex < hwLen && prevIndex >= hwLen) { setShowCodeEditor(false); }
   }, [buildStepIndex, currentExperiment]);
 
-  // ─── BUILD MODE: highlight newly-placed component at current step ───
-  // Andrea Marro — 17/02/2026
   const buildStepHighlightIds = useMemo(() => {
     if (!currentExperiment?.buildMode || buildStepIndex < 0) return [];
     const steps = currentExperiment.buildSteps || [];
     if (buildStepIndex >= steps.length) return [];
     const step = steps[buildStepIndex];
-    const ids = [];
-    if (step.componentId) ids.push(step.componentId);
-    return ids;
+    return step.componentId ? [step.componentId] : [];
   }, [currentExperiment, buildStepIndex]);
 
-  // ─── PASSO PASSO: sync Scratch workspace with buildStep scratchXml ───
   useEffect(() => {
     if (!currentExperiment?.buildMode || currentExperiment.buildMode !== 'guided') return;
     if (buildStepIndex < 0) return;
     const steps = currentExperiment.buildSteps || [];
-    // Walk backwards from current step to find the latest scratchXml checkpoint
     let latestScratchXml = null;
     for (let i = Math.min(buildStepIndex, steps.length - 1); i >= 0; i--) {
-      if (i < steps.length && steps[i].scratchXml) {
-        latestScratchXml = steps[i].scratchXml;
-        break;
-      }
+      if (i < steps.length && steps[i].scratchXml) { latestScratchXml = steps[i].scratchXml; break; }
     }
-    if (latestScratchXml) {
-      setScratchXml(latestScratchXml);
-    }
+    if (latestScratchXml) setScratchXml(latestScratchXml);
   }, [currentExperiment, buildStepIndex]);
 
   const mergedHighlightedComponents = useMemo(
@@ -644,312 +317,160 @@ const NewElabSimulator = ({
     [highlightedPins, apiHighlightedPins, asArray]
   );
 
-  // ─── Undo/Redo history ───
+  // ─── Undo/Redo ───
   const { pushSnapshot, undo: undoHistory, redo: redoHistory, resetHistory, canUndo, canRedo } = useUndoRedo();
-
-  // Helper: get current circuit state snapshot (for undo/redo)
-  // CoVe Fix #6: Deep clone per prevenire corruzione history
   const getCurrentSnapshot = useCallback(() => {
-    // Usa structuredClone se disponibile, altrimenti JSON fallback
-    const deepClone = (obj) => {
-      if (typeof structuredClone === 'function') {
-        return structuredClone(obj);
-      }
-      // Fallback per browser vecchi
-      return JSON.parse(JSON.stringify(obj));
-    };
-
-    return {
-      layout: deepClone(customLayout),
-      connections: deepClone(customConnections),
-      components: deepClone(customComponents),
-      pinAssignments: deepClone(customPinAssignments),
-      connectionOverrides: deepClone(connectionOverrides),
-    };
+    const deepClone = (obj) => typeof structuredClone === 'function' ? structuredClone(obj) : JSON.parse(JSON.stringify(obj));
+    return { layout: deepClone(customLayout), connections: deepClone(customConnections), components: deepClone(customComponents), pinAssignments: deepClone(customPinAssignments), connectionOverrides: deepClone(connectionOverrides) };
   }, [customLayout, customConnections, customComponents, customPinAssignments, connectionOverrides]);
 
-  // restoreSnapshot is defined after reSolve (forward reference)
   const restoreSnapshotRef = useRef(null);
-  // UNLIM Onnipotente: refs for undo snapshot in clearAll (mount-time API)
   const getCurrentSnapshotRef = useRef(getCurrentSnapshot);
   const pushSnapshotRef = useRef(pushSnapshot);
   getCurrentSnapshotRef.current = getCurrentSnapshot;
   pushSnapshotRef.current = pushSnapshot;
 
-  // ─── Save/Load (localStorage + JSON export/import) ───
+  // ─── Save/Load (localStorage) ───
   const storageRestoreState = useCallback((snapshot) => {
     if (!snapshot) return;
-    setCustomLayout(snapshot.layout || {});
-    setCustomConnections(snapshot.connections || []);
-    setCustomComponents(snapshot.components || []);
-    setCustomPinAssignments(snapshot.pinAssignments || {});
-    setConnectionOverrides(snapshot.connectionOverrides || {});
+    setCustomLayout(snapshot.layout || {}); setCustomConnections(snapshot.connections || []); setCustomComponents(snapshot.components || []);
+    setCustomPinAssignments(snapshot.pinAssignments || {}); setConnectionOverrides(snapshot.connectionOverrides || {});
   }, []);
+  const { loadFromStorage, clearSaved, exportJSON, importJSON } = useCircuitStorage(currentExperiment?.id || null, getCurrentSnapshot, storageRestoreState);
 
-  const { loadFromStorage, clearSaved, exportJSON, importJSON } = useCircuitStorage(
-    currentExperiment?.id || null,
-    getCurrentSnapshot,
-    storageRestoreState,
-  );
-
-  // ─── NEW: Code editor state ───
+  // ─── Code editor state ───
   const [editorCode, setEditorCode] = useState('');
-  const codeNeedsCompileRef = useRef(false); // true when code was edited but not yet compiled
-  const [compilationStatus, setCompilationStatus] = useState(null); // null|'compiling'|'success'|'error'
-  const [compilationErrors, setCompilationErrors] = useState(null); // string|null (gcc error text)
-  const [compilationWarnings, setCompilationWarnings] = useState(null); // string|null (gcc warnings)
-  const [compilationErrorLine, setCompilationErrorLine] = useState(null); // number|null
-  const [compilationSize, setCompilationSize] = useState(null); // { bytes, total, percent } | null
+  const codeNeedsCompileRef = useRef(false);
+  const [compilationStatus, setCompilationStatus] = useState(null);
+  const [compilationErrors, setCompilationErrors] = useState(null);
+  const [compilationWarnings, setCompilationWarnings] = useState(null);
+  const [compilationErrorLine, setCompilationErrorLine] = useState(null);
+  const [compilationSize, setCompilationSize] = useState(null);
 
-  /* ═══════════════════════════════════════════════════════════════
-     Compile Only — Solo verifica senza caricare l'hex
-     NOTE: definita qui per evitare TDZ (usata in shortcut hook)
-     ═══════════════════════════════════════════════════════════════ */
+  // ─── Compile Only (solo verifica) ───
   const handleCompileOnly = useCallback(async () => {
-    // S112: use refs to avoid stale closure (same pattern as S116 ScratchCompileBar)
     const codeToCompile = editorModeRef.current === 'scratch' ? scratchGeneratedCodeRef.current : editorCodeRef.current;
-    if (!codeToCompile) return;
-
-    // Guard: prevent multiple simultaneous compilations
-    if (compilingRef.current) {
-      return;
-    }
+    if (!codeToCompile || compilingRef.current) return;
     compilingRef.current = true;
     recordMilestone('compiledCode');
-
-    setCompilationStatus('compiling');
-    setCompilationErrors(null);
-    setCompilationWarnings(null);
-    setCompilationErrorLine(null);
-    setCompilationSize(null);
-
+    setCompilationStatus('compiling'); setCompilationErrors(null); setCompilationWarnings(null); setCompilationErrorLine(null); setCompilationSize(null);
     try {
       const result = await apiCompileCode(codeToCompile);
-
-      // Phase 5: record EVERY compilation (success AND failure) for Lab Notebook
       recordEvent('code_compiled', { success: !!result.success, errorCount: result.errors ? (typeof result.errors === 'string' ? result.errors.split('\n').filter(Boolean).length : 0) : 0 });
-
       if (result.success) {
-        // ✅ Compilation succeeded — solo verifica, non carica
-        setCompilationStatus('success');
-        codeNeedsCompileRef.current = false; // verificato — hex corrisponde
-
-        // Calculate binary size
+        setCompilationStatus('success'); codeNeedsCompileRef.current = false;
         const FLASH_TOTAL = 32256;
         const hexBytes = result.size || Math.floor((result.hex || '').replace(/[^0-9a-fA-F]/g, '').length / 2);
-        setCompilationSize({
-          bytes: hexBytes,
-          total: FLASH_TOTAL,
-          percent: Math.round((hexBytes / FLASH_TOTAL) * 100),
-        });
-
-        // Extract warnings
+        setCompilationSize({ bytes: hexBytes, total: FLASH_TOTAL, percent: Math.round((hexBytes / FLASH_TOTAL) * 100) });
         if (result.output) {
           const warnLines = result.output.split('\n').filter(l => /warning:/i.test(l));
-          if (warnLines.length > 0) {
-            setCompilationWarnings(translateCompilationErrors(warnLines.join('\n')));
-          }
+          if (warnLines.length > 0) setCompilationWarnings(translateCompilationErrors(warnLines.join('\n')));
         }
-
-        // Reset status after 5 seconds
         trackedTimeout(() => { setCompilationStatus(null); setCompilationWarnings(null); }, 5000);
       } else {
-        // ❌ Compilation failed
         setCompilationStatus('error');
         const fullText = result.errors || 'Errore di compilazione sconosciuto';
-        const lines = fullText.split('\n');
-        const errorLines = [];
-        const warnLines = [];
-        for (const line of lines) {
-          if (/warning:/i.test(line)) warnLines.push(line);
-          else errorLines.push(line);
-        }
+        const lines = fullText.split('\n'); const errorLines = [], warnLines = [];
+        for (const line of lines) { if (/warning:/i.test(line)) warnLines.push(line); else errorLines.push(line); }
         const rawErrors = errorLines.join('\n').trim() || fullText;
         setCompilationErrors(translateCompilationErrors(rawErrors));
         if (warnLines.length > 0) setCompilationWarnings(translateCompilationErrors(warnLines.join('\n')));
-
         try { sendAnalyticsEvent(EVENTS.ERROR, { type: 'compilation_failed', errors: rawErrors.slice(0, 200) }); } catch { }
-
         const lineMatch = fullText.match(/\.ino:(\d+):\d+:.*error/);
-        if (lineMatch) {
-          setCompilationErrorLine(parseInt(lineMatch[1]));
-        }
-
-        // Errors stay visible until user edits code or loads new experiment
+        if (lineMatch) setCompilationErrorLine(parseInt(lineMatch[1]));
       }
     } catch (err) {
       logger.error('[ELAB] Compilation error:', err);
       setCompilationStatus('error');
       setCompilationErrors('Non riesco a compilare il codice. Controlla la connessione internet e riprova!');
       try { sendAnalyticsEvent(EVENTS.ERROR, { type: 'compilation', message: err.message }); } catch { }
-    } finally {
-      compilingRef.current = false;
-    }
-  }, [trackedTimeout]); // S112: refs used instead of state — no stale closure
+    } finally { compilingRef.current = false; }
+  }, [trackedTimeout]);
 
-  // ─── Code Persistence: localStorage auto-save ───
+  // ─── Code Persistence ───
   const EDITOR_STORAGE_KEY = 'elab_editor_code';
   const autoSaveTimeoutRef = useRef(null);
-
-  // Auto-save to localStorage with 5-second debounce
   useEffect(() => {
     if (!currentExperiment?.id || !editorCode) return;
-
-    // Clear previous timeout
-    if (autoSaveTimeoutRef.current) {
-      clearTimeout(autoSaveTimeoutRef.current);
-    }
-
-    // Set new timeout for auto-save
+    if (autoSaveTimeoutRef.current) clearTimeout(autoSaveTimeoutRef.current);
     autoSaveTimeoutRef.current = setTimeout(() => {
-      try {
-        const key = `${EDITOR_STORAGE_KEY}-${currentExperiment.id}`;
-        localStorage.setItem(key, editorCode);
-      } catch (e) {
-        // localStorage full — silently fail
-        logger.warn('[ELAB] localStorage save failed:', e);
-      }
+      try { localStorage.setItem(`${EDITOR_STORAGE_KEY}-${currentExperiment.id}`, editorCode); } catch (e) { logger.warn('[ELAB] localStorage save failed:', e); }
     }, 5000);
-
-    return () => {
-      if (autoSaveTimeoutRef.current) {
-        clearTimeout(autoSaveTimeoutRef.current);
-      }
-    };
+    return () => { if (autoSaveTimeoutRef.current) clearTimeout(autoSaveTimeoutRef.current); };
   }, [editorCode, currentExperiment?.id]);
 
-  // Helper: load saved code from localStorage
   const loadSavedCode = useCallback((experimentId) => {
     if (!experimentId) return null;
-    try {
-      const key = `${EDITOR_STORAGE_KEY}-${experimentId}`;
-      return localStorage.getItem(key);
-    } catch {
-      return null;
-    }
+    try { return localStorage.getItem(`${EDITOR_STORAGE_KEY}-${experimentId}`); } catch { return null; }
   }, []);
-
-  /* ── Andrea Marro — 17/02/2026 ── ~riga 400 ── Helper functions e localStorage ── */
-  // Helper: clear saved code from localStorage
   const clearSavedCode = useCallback((experimentId) => {
     if (!experimentId) return;
-    try {
-      const key = `${EDITOR_STORAGE_KEY}-${experimentId}`;
-      localStorage.removeItem(key);
-    } catch {
-      // Ignore errors
-    }
+    try { localStorage.removeItem(`${EDITOR_STORAGE_KEY}-${experimentId}`); } catch {}
   }, []);
 
-  // ─── NEW: Overlay state (pot / LDR interaction) ───
-  const [potOverlay, setPotOverlay] = useState(null);   // { componentId, value }
-  const [ldrOverlay, setLdrOverlay] = useState(null);   // { componentId, value }
-  const [propsPanel, setPropsPanel] = useState(null);   // { componentId, type, value, color }
-  const [selectedComponentId, setSelectedComponentId] = useState(null); // Task 3: track selected component for ControlBar actions
-
+  // ─── Overlay/Panel state ───
+  const [potOverlay, setPotOverlay] = useState(null);
+  const [ldrOverlay, setLdrOverlay] = useState(null);
+  const [propsPanel, setPropsPanel] = useState(null);
+  const [selectedComponentId, setSelectedComponentId] = useState(null);
   const { recordEvent, recordSnapshot, getTimeline } = useSessionRecorder();
-
-  // ─── NEW: Experiment guide panel ───
-  const [showGuide, setShowGuide] = useState(true);     // Mostra pannello "Cosa Fare"
-
-  // ─── Sprint 3: BOM, Shortcuts, Annotations, Export ───
+  const [showGuide, setShowGuide] = useState(true);
   const [showBom, setShowBom] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [showLessonPath, setShowLessonPath] = useState(false);
-
-  // ─── Session Report: state + refs for PDF generation ───
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
-  const [pdfReady, setPdfReady] = useState(null); // { url, filename } — shown as download toast
+  const [pdfReady, setPdfReady] = useState(null);
   const codeContentRef = useRef(null);
   const compilationResultRef = useRef(null);
   useEffect(() => { codeContentRef.current = editorCode; }, [editorCode]);
   useEffect(() => { compilationResultRef.current = compilationStatus; }, [compilationStatus]);
-
-  // S104: Compilation snapshot ref — exposes full compilation state to __ELAB_API
   const compilationDetailsRef = useRef({ status: 'idle', errors: null, warnings: null, size: null });
-  useEffect(() => {
-    compilationDetailsRef.current = {
-      status: compilationStatus,
-      errors: compilationErrors,
-      warnings: compilationWarnings,
-      size: compilationSize,
-    };
-  }, [compilationStatus, compilationErrors, compilationWarnings, compilationSize]);
-
-  // Sprint 1 Context Mastery: Refs for serial output + selected component (for UNLIM)
+  useEffect(() => { compilationDetailsRef.current = { status: compilationStatus, errors: compilationErrors, warnings: compilationWarnings, size: compilationSize }; }, [compilationStatus, compilationErrors, compilationWarnings, compilationSize]);
   const serialOutputRef = useRef('');
   useEffect(() => { serialOutputRef.current = serialOutput; }, [serialOutput]);
   const selectedComponentIdRef = useRef(null);
   useEffect(() => { selectedComponentIdRef.current = selectedComponentId; }, [selectedComponentId]);
 
-  // ─── RIGHT-SIDE PANEL MUTUAL EXCLUSION ───
-  // Only one right-side panel (BOM, Notes, Quiz) can be open at a time.
-  // Opening one automatically closes the others to prevent overlap.
   const toggleRightPanel = useCallback((panel) => {
-    if (panel === 'bom') {
-      setShowBom(prev => { if (!prev) { setShowNotes(false); setShowQuiz(false); setShowLessonPath(false); } return !prev; });
-    } else if (panel === 'notes') {
-      setShowNotes(prev => { if (!prev) { setShowBom(false); setShowQuiz(false); setShowLessonPath(false); } return !prev; });
-    } else if (panel === 'quiz') {
-      setShowQuiz(prev => { if (!prev) { setShowBom(false); setShowNotes(false); setShowLessonPath(false); } return !prev; });
-    } else if (panel === 'lessonPath') {
-      setShowLessonPath(prev => { if (!prev) { setShowBom(false); setShowNotes(false); setShowQuiz(false); } return !prev; });
-    }
+    if (panel === 'bom') setShowBom(prev => { if (!prev) { setShowNotes(false); setShowQuiz(false); setShowLessonPath(false); } return !prev; });
+    else if (panel === 'notes') setShowNotes(prev => { if (!prev) { setShowBom(false); setShowQuiz(false); setShowLessonPath(false); } return !prev; });
+    else if (panel === 'quiz') setShowQuiz(prev => { if (!prev) { setShowBom(false); setShowNotes(false); setShowLessonPath(false); } return !prev; });
+    else if (panel === 'lessonPath') setShowLessonPath(prev => { if (!prev) { setShowBom(false); setShowNotes(false); setShowQuiz(false); } return !prev; });
   }, []);
 
-  // ── UNLIM ONNIPOTENTE: Listen for quiz trigger from UNLIM chat ──
   useEffect(() => {
     const handler = (e) => {
       const expId = e.detail?.experimentId;
-      if (currentExperiment?.quiz?.length > 0 && (!expId || expId === currentExperiment.id)) {
-        setShowQuiz(true);
-        setShowBom(false);
-        setShowNotes(false);
-      }
+      if (currentExperiment?.quiz?.length > 0 && (!expId || expId === currentExperiment.id)) { setShowQuiz(true); setShowBom(false); setShowNotes(false); }
     };
     window.addEventListener('unlim-quiz', handler);
     return () => window.removeEventListener('unlim-quiz', handler);
   }, [currentExperiment]);
 
-  const [annotations, setAnnotations] = useState([]);    // [{ id, x, y, text }]
+  const [annotations, setAnnotations] = useState([]);
   const [selectedAnnotation, setSelectedAnnotation] = useState(null);
-  const [exportToast, setExportToast] = useState(false); // shows "Foto salvata!" briefly
-  const [wireToast, setWireToast] = useState(null);      // shows wire-related feedback messages
-
-  // ─── Session 9: Whiteboard overlay — Andrea Marro 18/02/2026 ───
+  const [exportToast, setExportToast] = useState(false);
+  const [wireToast, setWireToast] = useState(null);
   const [showWhiteboard, setShowWhiteboard] = useState(false);
   const [electronViewEnabled, setElectronViewEnabled] = useState(false);
-
-  // ─── NEW: UNLIM AI state ───
   const [isAskingUNLIM, setIsAskingUNLIM] = useState(false);
-  const [unlimResponse, setUnlimResponse] = useState(null);  // { text, timestamp }
-  const [circuitWarning, setCircuitWarning] = useState(null); // { type, message } | null
+  const [unlimResponse, setUnlimResponse] = useState(null);
+  const [circuitWarning, setCircuitWarning] = useState(null);
   const [circuitStatus, setCircuitStatus] = useState({ status: 'idle', warnings: [], errors: [] });
-  // status: 'idle' | 'ok' | 'warning' | 'error'
-
-  // Refs per API circuit state (evitano dependency nei callback)
   const circuitStatusRef = useRef({ status: 'idle', warnings: [], errors: [] });
   const buildStepIndexRef = useRef(0);
-  const canUndoRef = useRef(false);  // S115-FIX: avoid stale closure in apiInstance
-  const canRedoRef = useRef(false);  // S115-FIX: avoid stale closure in apiInstance
-
-  // Sync refs con lo state corrispondente:
+  const canUndoRef = useRef(false);
+  const canRedoRef = useRef(false);
   useEffect(() => { circuitStatusRef.current = circuitStatus; }, [circuitStatus]);
   useEffect(() => { buildStepIndexRef.current = buildStepIndex; }, [buildStepIndex]);
-  useEffect(() => { canUndoRef.current = canUndo; }, [canUndo]);   // S115-FIX
-  useEffect(() => { canRedoRef.current = canRedo; }, [canRedo]);   // S115-FIX
+  useEffect(() => { canUndoRef.current = canUndo; }, [canUndo]);
+  useEffect(() => { canRedoRef.current = canRedo; }, [canRedo]);
 
-  const canvasContainerRef = useRef(null);
-  const editorPanelRef = useRef(null); // S101: for swipe-to-close gesture
-  const sidebarRef = useRef(null); // S101: for swipe-down-to-close gesture
-  const bottomPanelRef = useRef(null); // S101: for swipe-up-to-expand gesture
-
-  // ─── Ref for volume guard (stable access inside useCallback with [] deps) ───
   const userKitsRef = useRef(userKits);
   useEffect(() => { userKitsRef.current = userKits; }, [userKits]);
 
-  // ─── Callback refs for public API (stable references, updated after useCallback defs) ───
+  // ─── Callback refs for public API ───
   const handleSelectExperimentRef = useRef(null);
   const handlePlayRef = useRef(null);
   const handlePauseRef = useRef(null);
@@ -960,9 +481,9 @@ const NewElabSimulator = ({
   const handleWireDeleteRef = useRef(null);
   const handleComponentAddRef = useRef(null);
   const handleComponentDeleteRef = useRef(null);
-  const handleLayoutChangeRef = useRef(null); // UNLIM Onnipotente: moveComponent API
-  const handleBuildModeSwitchRef = useRef(null); // S115: UNLIM build mode control
-  const avrLoadingRef = useRef(false); // Synchronous guard for async AVR setup
+  const handleLayoutChangeRef = useRef(null);
+  const handleBuildModeSwitchRef = useRef(null);
+  const avrLoadingRef = useRef(false);
   const onCodeSelectRef = useRef(onCodeSelect);
   const onOpenSimulatorRef = useRef(onOpenSimulator);
   const onExperimentChangeRef = useRef(onExperimentChange);
@@ -970,1375 +491,120 @@ const NewElabSimulator = ({
   onOpenSimulatorRef.current = onOpenSimulator;
   onExperimentChangeRef.current = onExperimentChange;
 
-  /* ─────────────────────────────────────────────────
-     Merged experiment (useMemo)
-     Combines base experiment with user customisations
-     ───────────────────────────────────────────────── */
-  const mergedExperiment = useMemo(() => {
-    if (!currentExperiment) return null;
+  // ═══════════════════════════════════════════════════════════════
+  // EXTRACTED HOOKS
+  // ═══════════════════════════════════════════════════════════════
 
-    // Merge components (filtra quelli nascosti via hidden flag)
-    const baseComponents = currentExperiment.components || [];
-    const hiddenIds = new Set(
-      Object.entries(customLayout).filter(([_, v]) => v?.hidden).map(([k]) => k)
-    );
-    const mergedComponents = [...baseComponents, ...customComponents]
-      .filter(c => !hiddenIds.has(c.id));
+  const { mergedExperiment, breadboardActiveHoles, enrichedComponentStates } = useMergedExperiment({
+    currentExperiment, customComponents, customConnections, customLayout, customPinAssignments, connectionOverrides, buildStepIndex, componentStates,
+  });
 
-    // Merge connections (rimuovi connessioni a componenti nascosti)
-    // Merge connections (rimuovi connessioni a componenti nascosti)
-    // CoVe Fix: Assign stable IDs and apply overrides
-    const baseConnections = (currentExperiment.connections || []).map((c, i) => ({ ...c, id: c.id || `base-${i}` }));
-    // Custom connections should already have IDs from creation, but ensure fallback
-    const customConnsWithIds = customConnections.map((c, i) => ({ ...c, id: c.id || `custom-${i}-${Date.now()}` }));
-
-    const rawMergedConnections = [...baseConnections, ...customConnsWithIds]
-      .filter(conn => {
-        const fromId = conn.from.split(':')[0];
-        const toId = conn.to.split(':')[0];
-        return !hiddenIds.has(fromId) && !hiddenIds.has(toId);
-      });
-
-    // Apply overrides
-    const mergedConnections = rawMergedConnections.map(conn => {
-      const override = connectionOverrides[conn.id];
-      return override ? { ...conn, ...override } : conn;
-    }).filter(conn => !conn.hidden);
-
-    // Merge layout: base overridden by customLayout (escludi hidden entries)
-    const baseLayout = currentExperiment.layout || {};
-    const cleanLayout = {};
-    for (const [k, v] of Object.entries({ ...baseLayout, ...customLayout })) {
-      if (!v?.hidden) cleanLayout[k] = v;
-    }
-    const mergedLayout = cleanLayout;
-
-    // Merge pinAssignments: base + custom, remove entries for hidden components
-    // NOTE: customPinAssignments may contain null values as "disconnected" markers
-    // to override base pinAssignments when a component is dragged off the breadboard
-    const basePinAssignments = currentExperiment.pinAssignments || {};
-    const rawMerged = { ...basePinAssignments, ...customPinAssignments };
-    const mergedPinAssignments = {};
-    for (const [key, value] of Object.entries(rawMerged)) {
-      const compId = key.split(':')[0];
-      // Skip hidden/deleted components and null (disconnected) markers
-      if (hiddenIds.has(compId) || value === null || value === undefined) continue;
-      mergedPinAssignments[key] = value;
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // BUILD MODE: progressive assembly filtering
-    // Andrea Marro — 17/02/2026
-    //
-    // GUIDED mode (Passo Passo): filter by buildStepIndex.
-    // SANDBOX mode (Libero): show base components + all user-added.
-    // NULL/COMPLETE mode (Già Montato): show all.
-    // ═══════════════════════════════════════════════════════════════
-    const buildSteps = currentExperiment.buildSteps || [];
-    const BASE_TYPES = new Set(['breadboard-half', 'breadboard-full', 'battery9v', 'arduino-nano', 'nano-r4']);
-
-    // SANDBOX (Libero): base components + user-added custom components only
-    if (currentExperiment.buildMode === 'sandbox') {
-      const customIds = new Set(customComponents.map(c => c.id));
-      const visibleComponentIds = new Set();
-      for (const comp of mergedComponents) {
-        if (BASE_TYPES.has(comp.type) || customIds.has(comp.id)) visibleComponentIds.add(comp.id);
-      }
-      const filteredComponents = mergedComponents.filter(c => visibleComponentIds.has(c.id));
-      const filteredLayout = {};
-      for (const [k, v] of Object.entries(mergedLayout)) {
-        if (visibleComponentIds.has(k)) filteredLayout[k] = v;
-      }
-      const filteredPins = {};
-      for (const [key, value] of Object.entries(mergedPinAssignments)) {
-        const compId = key.split(':')[0];
-        if (visibleComponentIds.has(compId)) filteredPins[key] = value;
-      }
-      // In sandbox mode: no experiment-base wires — only user-added custom connections
-      const customConnIds = new Set(customConnections.map(c => c.id));
-      const filteredConnections = mergedConnections.filter(conn => customConnIds.has(conn.id));
-      return {
-        ...currentExperiment,
-        components: filteredComponents,
-        connections: filteredConnections,
-        layout: filteredLayout,
-        pinAssignments: filteredPins,
-      };
-    }
-
-    // GUIDED (Passo Passo): progressive filtering by buildStepIndex
-    const isBuildActive = currentExperiment.buildMode === 'guided' && buildSteps.length > 0 && buildStepIndex < buildSteps.length;
-
-    if (isBuildActive) {
-      // Collect visible componentIds and wire definitions from completed steps
-      const visibleComponentIds = new Set();
-      const visibleWires = []; // { from, to }
-
-      // Base components are always visible
-      for (const comp of mergedComponents) {
-        if (BASE_TYPES.has(comp.type)) visibleComponentIds.add(comp.id);
-      }
-
-      // Add components/wires from completed steps (0..buildStepIndex inclusive)
-      for (let i = 0; i <= buildStepIndex; i++) {
-        const s = buildSteps[i];
-        if (s.componentId) visibleComponentIds.add(s.componentId);
-        if (s.wireFrom && s.wireTo) visibleWires.push({ from: s.wireFrom, to: s.wireTo });
-      }
-
-      // Filter components
-      const filteredComponents = mergedComponents.filter(c => visibleComponentIds.has(c.id));
-
-      // Filter layout — only entries for visible components
-      const filteredLayout = {};
-      for (const [k, v] of Object.entries(mergedLayout)) {
-        if (visibleComponentIds.has(k)) filteredLayout[k] = v;
-      }
-
-      // Filter pinAssignments — only entries for visible components
-      const filteredPins = {};
-      for (const [key, value] of Object.entries(mergedPinAssignments)) {
-        const compId = key.split(':')[0];
-        if (visibleComponentIds.has(compId)) filteredPins[key] = value;
-      }
-
-      // Filter connections — only wires that match a visibleWire definition
-      // A wire matches if (from===wireFrom && to===wireTo) or (from===wireTo && to===wireFrom)
-      const filteredConnections = mergedConnections.filter(conn => {
-        return visibleWires.some(w =>
-          (conn.from === w.from && conn.to === w.to) ||
-          (conn.from === w.to && conn.to === w.from)
-        );
-      });
-
-      return {
-        ...currentExperiment,
-        components: filteredComponents,
-        connections: filteredConnections,
-        layout: filteredLayout,
-        pinAssignments: filteredPins,
-      };
-    }
-
-    return {
-      ...currentExperiment,
-      components: mergedComponents,
-      connections: mergedConnections,
-      layout: mergedLayout,
-      pinAssignments: mergedPinAssignments,
-    };
-  }, [currentExperiment, customComponents, customConnections, customLayout, customPinAssignments, connectionOverrides, buildStepIndex]);
-
-  /* ─────────────────────────────────────────────────
-     Compute active holes for breadboard highlighting
-     Holes occupied by component pins → 'component'
-     Holes used as wire endpoints → wire color
-     ───────────────────────────────────────────────── */
-  const breadboardActiveHoles = useMemo(() => {
-    if (!mergedExperiment) return {};
-    // Map: bbId -> { holeId: color }
-    const result = {};
-
-    // 1. Pin assignments: component pins plugged into breadboard holes
-    const pinAssignments = mergedExperiment.pinAssignments || {};
-    for (const [, bbRef] of Object.entries(pinAssignments)) {
-      const [bbId, holeId] = bbRef.split(':');
-      if (!bbId || !holeId) continue;
-      if (!result[bbId]) result[bbId] = {};
-      result[bbId][holeId] = 'var(--color-accent)'; // green = component inserted
-    }
-
-    // 2. Wire connections: endpoints that are breadboard holes
-    const connections = mergedExperiment.connections || [];
-    const bbIds = new Set(
-      (mergedExperiment.components || [])
-        .filter(c => c.type === 'breadboard-half' || c.type === 'breadboard-full')
-        .map(c => c.id)
-    );
-
-    for (const conn of connections) {
-      const wireColor = conn.color || 'gray';
-      // Map wire color names to hex for hole highlighting
-      const colorMap = {
-        red: '#E53935', black: '#333', blue: '#1E88E5', green: '#43A047',
-        yellow: '#FDD835', orange: '#FB8C00', white: '#CCC', gray: '#888',
-        purple: '#8E24AA', brown: '#6D4C41',
-      };
-      const holeColor = colorMap[wireColor] || wireColor;
-
-      for (const pinRef of [conn.from, conn.to]) {
-        const [compId, pinId] = pinRef.split(':');
-        if (bbIds.has(compId) && pinId) {
-          if (!result[compId]) result[compId] = {};
-          // Don't overwrite component pins (green takes priority)
-          if (!result[compId][pinId]) {
-            result[compId][pinId] = holeColor;
-          }
-        }
-      }
-    }
-
-    return result;
-  }, [mergedExperiment]);
-
-  /* ─────────────────────────────────────────────────
-     Enriched component states: merge activeHoles into breadboard state
-     ───────────────────────────────────────────────── */
-  const enrichedComponentStates = useMemo(() => {
-    if (!mergedExperiment) return componentStates;
-
-    const bbIds = (mergedExperiment.components || [])
-      .filter(c => c.type === 'breadboard-half' || c.type === 'breadboard-full')
-      .map(c => c.id);
-
-    if (bbIds.length === 0) return componentStates;
-
-    const enriched = { ...componentStates };
-    for (const bbId of bbIds) {
-      const holes = breadboardActiveHoles[bbId] || {};
-      enriched[bbId] = {
-        ...(componentStates[bbId] || {}),
-        activeHoles: holes,
-      };
-    }
-    return enriched;
-  }, [componentStates, mergedExperiment, breadboardActiveHoles]);
-
-  /* ─────────────────────────────────────────────────
-     Re-solve helper: reloads solver with merged experiment
-     ───────────────────────────────────────────────── */
+  // ─── Re-solve helper ───
   const reSolve = useCallback(() => {
     if (!mergedExperiment) return;
-
-    if (mergedExperiment.simulationMode === 'avr') {
-      // AVR mode: rebuild pin map only
-      pinMapRef.current = buildPinComponentMap(mergedExperiment);
-    } else if (solverRef.current) {
-      // Circuit mode: reload solver with state preservation
-      solverRef.current.loadExperiment(mergedExperiment, { preserveState: true });
-      setComponentStates(solverRef.current.getState());
-    }
+    if (mergedExperiment.simulationMode === 'avr') { pinMapRef.current = buildPinComponentMap(mergedExperiment); }
+    else if (solverRef.current) { solverRef.current.loadExperiment(mergedExperiment, { preserveState: true }); setComponentStates(solverRef.current.getState()); }
   }, [mergedExperiment]);
-  /* ── Andrea Marro — 17/02/2026 ── ~riga 600 ── Solver e circuit state ── */
 
-  /* ─────────────────────────────────────────────────
-     Auto re-solve when mergedExperiment changes
-     (catches custom component/connection/pin additions)
-     ───────────────────────────────────────────────── */
   useEffect(() => {
     if (!mergedExperiment) return;
-
-    if (mergedExperiment.simulationMode === 'avr') {
-      // AVR mode: rebuild pin map so polling picks up topology changes
-      pinMapRef.current = buildPinComponentMap(mergedExperiment);
-      return;
-    }
-
+    if (mergedExperiment.simulationMode === 'avr') { pinMapRef.current = buildPinComponentMap(mergedExperiment); return; }
     if (!solverRef.current) return;
-    // Circuit mode: reload solver preserving capacitor charge, time, etc.
     solverRef.current.loadExperiment(mergedExperiment, { preserveState: true });
-    if (isRunning) {
-      setComponentStates(solverRef.current.getState());
-    }
+    if (isRunning) setComponentStates(solverRef.current.getState());
   }, [mergedExperiment, isRunning]);
 
-  /* ─────────────────────────────────────────────────
-     Undo/Redo: restoreSnapshot + keyboard shortcuts
-     ───────────────────────────────────────────────── */
+  // ─── Undo/Redo: restoreSnapshot + keyboard shortcuts ───
   const restoreSnapshot = useCallback((snapshot) => {
     if (!snapshot) return;
-    setCustomLayout(snapshot.layout);
-    setCustomConnections(snapshot.connections);
-    setCustomComponents(snapshot.components);
-    setCustomPinAssignments(snapshot.pinAssignments);
-    // useEffect on mergedExperiment handles re-solve automatically
+    setCustomLayout(snapshot.layout); setCustomConnections(snapshot.connections); setCustomComponents(snapshot.components); setCustomPinAssignments(snapshot.pinAssignments);
   }, []);
-
-  // Keep ref up to date for keyboard handler
   restoreSnapshotRef.current = restoreSnapshot;
 
-  // Undo/Redo button callbacks (for ControlBar UI buttons)
   const handleUndoBtn = useCallback(() => {
     const snapshot = undoHistory(getCurrentSnapshot());
     if (snapshot) { restoreSnapshotRef.current(snapshot); pushActivity('undo'); recordMilestone('usedUndo'); }
   }, [undoHistory, getCurrentSnapshot, recordMilestone]);
-
   const handleRedoBtn = useCallback(() => {
     const snapshot = redoHistory(getCurrentSnapshot());
     if (snapshot) { restoreSnapshotRef.current(snapshot); pushActivity('redo'); }
   }, [redoHistory, getCurrentSnapshot]);
 
-  // Keyboard shortcuts: Ctrl+Z (undo), Ctrl+Y / Ctrl+Shift+Z (redo)
-  useEffect(() => {
-    const handleUndoRedoKey = (e) => {
-      // Don't intercept when typing in input/textarea
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      // Don't intercept when CodeMirror editor is focused
-      if (e.target.closest && e.target.closest('.cm-editor')) return;
-
-      const platform = (typeof navigator !== 'undefined' && navigator.platform) ? navigator.platform : '';
-      const isMac = platform.toUpperCase().indexOf('MAC') >= 0;
-      const mod = isMac ? e.metaKey : e.ctrlKey;
-
-      if (mod && e.key === 'z' && !e.shiftKey) {
-        // Undo
-        e.preventDefault();
-        const snapshot = undoHistory(getCurrentSnapshot());
-        if (snapshot) restoreSnapshotRef.current(snapshot);
-      } else if ((mod && e.key === 'y') || (mod && e.key === 'z' && e.shiftKey)) {
-        // Redo
-        e.preventDefault();
-        const snapshot = redoHistory(getCurrentSnapshot());
-        if (snapshot) restoreSnapshotRef.current(snapshot);
-      } else if (e.key === ' ' && !mod) {
-        // Space = Play/Pause toggle
-        e.preventDefault();
-        if (isRunningRef.current) {
-          if (handlePauseRef.current) handlePauseRef.current();
-        } else {
-          if (handlePlayRef.current) handlePlayRef.current();
-        }
-      } else if (e.key === 'Escape') {
-        // Escape = exit Scratch fullscreen first, then wire mode
-        if (scratchFullscreen) {
-          setScratchFullscreen(false);
-          return;
-        }
-        setWireMode(false);
-        setSelectedComponent(null);
-        setSelectedWireIndex(-1);
-      } else if (e.key === 'Backspace' || e.key === 'Delete') {
-        // Tinkercad realism: Delete selected object
-        if (selectedComponentRef.current) {
-          e.preventDefault();
-          if (handleComponentDeleteRef.current) handleComponentDeleteRef.current(selectedComponentRef.current);
-        } else if (selectedWireIndexRef.current >= 0) {
-          e.preventDefault();
-          if (handleWireDeleteRef.current) handleWireDeleteRef.current(selectedWireIndexRef.current);
-        }
-      } else if (mod && e.key === '/') {
-        // Ctrl+/ = toggle shortcuts panel
-        e.preventDefault();
-        setShowShortcuts(prev => !prev);
-      } else if (mod && (e.key === 'b' || e.key === 'B')) {
-        // Ctrl+B = compile code
-        e.preventDefault();
-        if (currentExperiment?.simulationMode === 'avr' && handleCompileOnly) {
-          handleCompileOnly();
-        }
-      }
-    };
-    window.addEventListener('keydown', handleUndoRedoKey);
-    return () => window.removeEventListener('keydown', handleUndoRedoKey);
-  }, [undoHistory, redoHistory, getCurrentSnapshot, currentExperiment, handleCompileOnly]);
-
-  /* ─────────────────────────────────────────────────
-     Initialize CircuitSolver
-     ───────────────────────────────────────────────── */
-  useEffect(() => {
-    solverRef.current = new CircuitSolver();
-
-    // Phase 3: cycle-scoped accumulators — onWarning pushes here,
-    // onStateChange reads and resolves the final status in one setState.
-    // This avoids the queueMicrotask race where async reset overwrites warnings.
-    let cycleWarnings = [];
-    let cycleErrors = [];
-
-    solverRef.current.onStateChange = (state) => {
-      setComponentStates(state);
-      timeRef.current = solverRef.current.time;
-      setSimulationTime(solverRef.current.time);
-
-      // Phase 3: resolve circuit status from THIS solve cycle's accumulated issues
-      if (cycleErrors.length > 0) {
-        setCircuitStatus({ status: 'error', warnings: cycleWarnings, errors: cycleErrors });
-      } else if (cycleWarnings.length > 0) {
-        setCircuitStatus({ status: 'warning', warnings: cycleWarnings, errors: [] });
-      } else {
-        setCircuitStatus(prev => prev.status === 'idle' ? prev : { status: 'ok', warnings: [], errors: [] });
-      }
-      // Reset for next solve cycle
-      cycleWarnings = [];
-      cycleErrors = [];
-    };
-    solverRef.current.onWarning = (type, message) => {
-      // S72 FIX: Skip duplicate warnings to prevent flicker (solver fires every cycle)
-      setCircuitWarning(prev => {
-        if (prev && prev.type === type && prev.message === message) return prev;
-        return { type, message };
-      });
-      // S99: Short circuit warnings stay visible until resolved (no auto-dismiss)
-      // Other warnings auto-dismiss after 5s
-      if (type !== 'short-circuit') {
-        trackedTimeout(() => setCircuitWarning(null), 5000);
-      }
-
-      // Phase 3: accumulate into cycle-scoped arrays (resolved in onStateChange)
-      if (type === 'short-circuit') {
-        if (!cycleErrors.includes(message)) cycleErrors.push(message);
-        // S99: Auto-pause on short circuit — stop simulation to protect components
-        if (handlePauseRef.current) handlePauseRef.current();
-      } else {
-        if (!cycleWarnings.includes(message)) cycleWarnings.push(message);
-      }
-    };
-
-    return () => {
-      if (solverRef.current) solverRef.current.destroy();
-      if (avrRef.current) avrRef.current.destroy();
-      if (avrPollRef.current) clearInterval(avrPollRef.current);
-    };
-  }, []);
-
-  /* ─────────────────────────────────────────────────
-     Refs for public API (avoids re-registering on every state change)
-     ───────────────────────────────────────────────── */
+  // Refs for state sync
   const currentExperimentRef = useRef(currentExperiment);
   const componentStatesRef = useRef(componentStates);
   const editorCodeRef = useRef(editorCode);
-  // Keep refs in sync for interval loops
   useEffect(() => { currentExperimentRef.current = currentExperiment; }, [currentExperiment]);
   useEffect(() => { mergedExperimentRef.current = mergedExperiment; }, [mergedExperiment]);
   useEffect(() => { componentStatesRef.current = componentStates; }, [componentStates]);
   useEffect(() => { editorCodeRef.current = editorCode; }, [editorCode]);
   const scratchGeneratedCodeRef = useRef(scratchGeneratedCode);
   useEffect(() => { scratchGeneratedCodeRef.current = scratchGeneratedCode; }, [scratchGeneratedCode]);
-  const editorModeRef = useRef(editorMode); // S93: for getEditorCode API
+  const editorModeRef = useRef(editorMode);
   useEffect(() => { editorModeRef.current = editorMode; }, [editorMode]);
-  const showCodeEditorRef = useRef(showCodeEditor); // S116: for isEditorVisible API
+  const showCodeEditorRef = useRef(showCodeEditor);
   useEffect(() => { showCodeEditorRef.current = showCodeEditor; }, [showCodeEditor]);
 
-  // ─── SIMON SOUNDS: Web Audio for LED state changes ───
-  const simonAudioRef = useRef({ ctx: null, oscillators: {} });
-  const simonPrevStatesRef = useRef({});
-  useEffect(() => {
-    if (currentExperiment?.id !== 'v3-extra-simon' || !isRunning) {
-      // Stop all sounds when not running or not Simon
-      const audio = simonAudioRef.current;
-      Object.values(audio.oscillators).forEach(o => { try { o.stop(); } catch {} });
-      audio.oscillators = {};
-      simonPrevStatesRef.current = {};
-      return;
-    }
-    // Simon LED→frequency mapping (classic Simon tones)
-    const SIMON_LEDS = {
-      led1: { pin: 9,  freq: 262 },  // Rosso → Do (C4)
-      led2: { pin: 10, freq: 330 },  // Verde → Mi (E4)
-      led3: { pin: 11, freq: 392 },  // Blu   → Sol (G4)
-      led4: { pin: 12, freq: 523 },  // Giallo → Do (C5)
-    };
-    const audio = simonAudioRef.current;
-    if (!audio.ctx) {
-      try { audio.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { return; }
-    }
-    // S112: Resume AudioContext if suspended (browser autoplay policy)
-    if (audio.ctx.state === 'suspended') {
-      audio.ctx.resume().catch(() => {});
-    }
-    const prevStates = simonPrevStatesRef.current;
-    for (const [ledId, cfg] of Object.entries(SIMON_LEDS)) {
-      const ledState = componentStates[ledId];
-      const isOn = ledState?.on === true || (ledState?.brightness > 0);
-      const wasOn = prevStates[ledId] || false;
-      if (isOn && !wasOn) {
-        // LED turned ON → start tone
-        try {
-          const osc = audio.ctx.createOscillator();
-          const gain = audio.ctx.createGain();
-          osc.type = 'square';
-          osc.frequency.value = cfg.freq;
-          gain.gain.value = 0.08;
-          osc.connect(gain).connect(audio.ctx.destination);
-          osc.start();
-          audio.oscillators[ledId] = osc;
-        } catch {}
-      } else if (!isOn && wasOn) {
-        // LED turned OFF → stop tone
-        try { audio.oscillators[ledId]?.stop(); } catch {}
-        delete audio.oscillators[ledId];
-      }
-      prevStates[ledId] = isOn;
-    }
-    simonPrevStatesRef.current = prevStates;
-  }, [componentStates, currentExperiment, isRunning]);
+  // ─── Keyboard shortcuts ───
+  const selectedComponentRef = useRef(null);
+  const selectedWireIndexRef = useRef(-1);
+  const [selectedComponent, setSelectedComponent] = useState(null);
+  useEffect(() => { selectedComponentRef.current = selectedComponent; }, [selectedComponent]);
+  useEffect(() => { selectedWireIndexRef.current = selectedWireIndex; }, [selectedWireIndex]);
 
-  // Cleanup Simon audio on unmount
   useEffect(() => {
-    return () => {
-      const audio = simonAudioRef.current;
-      Object.values(audio.oscillators).forEach(o => { try { o.stop(); } catch {} });
-      if (audio.ctx?.state !== 'closed') { try { audio.ctx?.close(); } catch {} }
+    const handleUndoRedoKey = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.target.closest && e.target.closest('.cm-editor')) return;
+      const isMac = ((typeof navigator !== 'undefined' && navigator.platform) || '').toUpperCase().indexOf('MAC') >= 0;
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+      if (mod && e.key === 'z' && !e.shiftKey) { e.preventDefault(); const s = undoHistory(getCurrentSnapshot()); if (s) restoreSnapshotRef.current(s); }
+      else if ((mod && e.key === 'y') || (mod && e.key === 'z' && e.shiftKey)) { e.preventDefault(); const s = redoHistory(getCurrentSnapshot()); if (s) restoreSnapshotRef.current(s); }
+      else if (e.key === ' ' && !mod) { e.preventDefault(); if (isRunningRef.current) { handlePauseRef.current?.(); } else { handlePlayRef.current?.(); } }
+      else if (e.key === 'Escape') { if (scratchFullscreen) { setScratchFullscreen(false); return; } setWireMode(false); setSelectedComponent(null); setSelectedWireIndex(-1); }
+      else if (e.key === 'Backspace' || e.key === 'Delete') { if (selectedComponentRef.current) { e.preventDefault(); handleComponentDeleteRef.current?.(selectedComponentRef.current); } else if (selectedWireIndexRef.current >= 0) { e.preventDefault(); handleWireDeleteRef.current?.(selectedWireIndexRef.current); } }
+      else if (mod && e.key === '/') { e.preventDefault(); setShowShortcuts(prev => !prev); }
+      else if (mod && (e.key === 'b' || e.key === 'B')) { e.preventDefault(); if (currentExperiment?.simulationMode === 'avr' && handleCompileOnly) handleCompileOnly(); }
     };
+    window.addEventListener('keydown', handleUndoRedoKey);
+    return () => window.removeEventListener('keydown', handleUndoRedoKey);
+  }, [undoHistory, redoHistory, getCurrentSnapshot, currentExperiment, handleCompileOnly]);
+
+  // ─── Initialize CircuitSolver ───
+  useEffect(() => {
+    solverRef.current = new CircuitSolver();
+    let cycleWarnings = [], cycleErrors = [];
+    solverRef.current.onStateChange = (state) => {
+      setComponentStates(state); timeRef.current = solverRef.current.time; setSimulationTime(solverRef.current.time);
+      if (cycleErrors.length > 0) setCircuitStatus({ status: 'error', warnings: cycleWarnings, errors: cycleErrors });
+      else if (cycleWarnings.length > 0) setCircuitStatus({ status: 'warning', warnings: cycleWarnings, errors: [] });
+      else setCircuitStatus(prev => prev.status === 'idle' ? prev : { status: 'ok', warnings: [], errors: [] });
+      cycleWarnings = []; cycleErrors = [];
+    };
+    solverRef.current.onWarning = (type, message) => {
+      setCircuitWarning(prev => (prev && prev.type === type && prev.message === message) ? prev : { type, message });
+      if (type !== 'short-circuit') trackedTimeout(() => setCircuitWarning(null), 5000);
+      if (type === 'short-circuit') { if (!cycleErrors.includes(message)) cycleErrors.push(message); if (handlePauseRef.current) handlePauseRef.current(); }
+      else { if (!cycleWarnings.includes(message)) cycleWarnings.push(message); }
+    };
+    return () => { if (solverRef.current) solverRef.current.destroy(); if (avrRef.current) avrRef.current.destroy(); if (avrPollRef.current) clearInterval(avrPollRef.current); };
   }, []);
 
-  // Phase 7: Structured AI context API
-  const buildStructuredState = useCallback(() => {
-    const exp = mergedExperimentRef.current || currentExperimentRef.current;
-    if (!exp) return null;
+  // ─── Experiment Loader Hook ───
+  const { handleSelectExperiment, startAVRPolling, avrTxLenRef } = useExperimentLoader({
+    solverRef, avrRef, avrPollRef, pinMapRef, loadedExpIdRef, avrSetupLockRef, avrLoadingRef, isRunningRef, userKitsRef, codeNeedsCompileRef,
+    editorCodeRef, editorModeRef, scratchGeneratedCodeRef, currentExperimentRef, mergedExperimentRef, onCodeSelectRef, onOpenSimulatorRef, onExperimentChangeRef,
+    setCurrentExperiment, setComponentStates, setIsRunning, setSimulationTime, setSerialOutput, setAvrReady,
+    setCustomLayout, setCustomConnections, setCustomComponents, setCustomPinAssignments, setConnectionOverrides,
+    setPotOverlay, setLdrOverlay, setEditorCode, setEditorMode, setScratchXml, setScratchGeneratedCode,
+    setShowCodeEditor, setShowSidebar, setShowGuide, setShowBom, setShowQuiz, setShowLessonPath, setShowNotes, setShowBottomPanel,
+    setBuildStepIndex, setSelectedVolume, setAnnotations, setSelectedAnnotation,
+    setCompilationStatus, setCompilationErrors, setCompilationWarnings, setCompilationErrorLine, setCompilationSize, setCircuitStatus,
+    resetHistory, loadFromStorage, loadSavedCode, trackedTimeout, recordEvent,
+    mergedExperiment, componentStates, currentExperiment, isRunning,
+  });
 
-    const states = componentStatesRef.current || {};
-    const comps = exp.components || [];
-    const conns = exp.connections || [];
-
-    // Measurements from solver
-    let voltages = {};
-    let currents = {};
-    try {
-      if (solverRef.current) {
-        voltages = solverRef.current.getNodeVoltages?.() || {};
-        currents = solverRef.current.getComponentCurrents?.() || {};
-      }
-    } catch { /* solver may not be ready */ }
-
-    // Per-component measurements
-    const measurements = {};
-    comps.forEach(c => {
-      const v = voltages[c.id];
-      const i = currents[c.id];
-      if (v !== undefined || i !== undefined) {
-        measurements[c.id] = {};
-        if (v !== undefined) measurements[c.id].voltage = v;
-        if (i !== undefined) measurements[c.id].current = i;
-      }
-    });
-
-    return {
-      experiment: {
-        id: exp.id || null,
-        title: exp.title || null,
-        chapter: exp.chapter || null,
-      },
-      components: comps.map(c => ({
-        id: c.id,
-        type: c.type,
-        state: states[c.id] || {},
-        position: exp.layout?.[c.id] || null,
-        parentId: exp.layout?.[c.id]?.parentId || null,
-      })),
-      connections: conns.map(conn => ({
-        from: conn.from,
-        to: conn.to,
-        color: conn.color || 'auto',
-      })),
-      measurements,
-      status: circuitStatusRef.current?.status || 'idle',
-      warnings: circuitStatusRef.current?.warnings || [],
-      errors: circuitStatusRef.current?.errors || [],
-      isSimulating: isRunningRef.current || false,
-      buildMode: !exp.buildMode ? 'mounted' : exp.buildMode === 'guided' ? 'guided' : 'explore',
-      buildStepIndex: buildStepIndexRef.current ?? null,
-      buildStepTotal: exp.buildSteps?.length || null,
-      arduinoCode: editorCodeRef.current || null,
-    };
-  }, []);
-
-  /* ─────────────────────────────────────────────────
-     UNLIM PERVASIVO: Bridge circuit state → parent (ElabTutorV4)
-     Serializes component states + connections into concise text
-     for UNLIM to "see" the student's circuit.
-     Debounced at 400ms for responsive AI feedback.
-     Andrea Marro — 24/02/2026
-     ───────────────────────────────────────────────── */
-  const circuitBridgeTimerRef = useRef(null);
-  useEffect(() => {
-    if (!onCircuitStateChange || !mergedExperiment) return;
-
-    // Debounce: only fire 400ms after last change
-    clearTimeout(circuitBridgeTimerRef.current);
-    circuitBridgeTimerRef.current = setTimeout(() => {
-      const exp = mergedExperiment;
-      const states = componentStates;
-      const conns = exp.connections || [];
-      const comps = exp.components || [];
-
-      // 1. Component states summary
-      const compSummary = comps.map(c => {
-        const s = states[c.id] || {};
-        const parts = [c.id + ' (' + c.type + ')'];
-        // LED
-        if (c.type === 'led' || c.type === 'rgb-led') {
-          const on = s.brightness > 0 || s.glowing;
-          parts.push(on ? 'ACCESO' : 'spento');
-          if (s.burned) parts.push('BRUCIATO!');
-          if (s.current) parts.push(Math.round(s.current * 1000) / 1000 + 'mA');
-        }
-        // Resistor
-        if (c.type === 'resistor' && (s.resistance || c.state?.resistance)) {
-          parts.push((s.resistance || c.state?.resistance) + 'Ω');
-        }
-        // Buzzer
-        if (c.type === 'buzzer-piezo') {
-          parts.push(s.on ? 'suona' : 'silenzioso');
-        }
-        // Motor
-        if (c.type === 'motor-dc') {
-          parts.push(s.spinning ? 'gira' : 'fermo');
-        }
-        // Potentiometer
-        if (c.type === 'potentiometer') {
-          parts.push('posizione: ' + Math.round((s.position || 0.5) * 100) + '%');
-        }
-        // Push button
-        if (c.type === 'push-button') {
-          parts.push(s.pressed ? 'PREMUTO' : 'rilasciato');
-        }
-        // Photoresistor / LDR
-        if (c.type === 'photo-resistor') {
-          parts.push('luce: ' + Math.round((s.lightLevel || 0.5) * 100) + '%');
-        }
-        // Battery
-        if (c.type === 'battery9v') {
-          parts.push((s.voltage || 9) + 'V');
-        }
-        // Capacitor
-        if (c.type === 'capacitor') {
-          parts.push(s.charging ? 'caricando' : s.charged ? 'carico' : 'scarico');
-        }
-        return parts.join(' — ');
-      }).join('\n');
-
-      // 2. Connection list (concise)
-      const connSummary = conns.map((conn, i) => {
-        const col = conn.color || 'auto';
-        return `${conn.from} → ${conn.to} (${col})`;
-      }).join('\n');
-
-      // 3. Circuit health from solver (S99: enhanced with diagnostics)
-      let healthSummary = '';
-      if (solverRef.current) {
-        try {
-          // S99: Include smart diagnostics
-          const diag = solverRef.current.getDiagnostics?.() || {};
-          if (diag.shortCircuit) {
-            healthSummary += '🔴 CORTOCIRCUITO RILEVATO — simulazione in pausa\n';
-          }
-          // Check for burned components
-          const burned = comps.filter(c => (states[c.id] || {}).burned);
-          if (burned.length > 0) {
-            healthSummary += '⚠️ COMPONENTI BRUCIATI: ' + burned.map(c => c.id).join(', ') + '\n';
-          }
-          // S99: Overload warnings (pre-burn)
-          if (diag.overloadWarnings?.length > 0) {
-            healthSummary += '⚠️ SOVRACCARICO: ' + diag.overloadWarnings.map(w => w.message).join('; ') + '\n';
-          }
-          // Check for high current (potential short circuit)
-          const highCurrent = comps.filter(c => {
-            const s = states[c.id] || {};
-            return s.current && s.current > 50; // >50mA suspicious
-          });
-          if (highCurrent.length > 0) {
-            healthSummary += '⚠️ CORRENTE ALTA: ' + highCurrent.map(c => c.id + '=' + Math.round((states[c.id]?.current || 0)) + 'mA').join(', ') + '\n';
-          }
-          // S99: Disconnected pins
-          if (diag.disconnectedPins?.length > 0) {
-            const discPins = diag.disconnectedPins.slice(0, 10); // limit to first 10
-            healthSummary += 'ℹ️ PIN SCOLLEGATI: ' + discPins.map(d => `${d.compId}:${d.pinName}`).join(', ') + '\n';
-          }
-          // Check for LEDs with no current (probably disconnected)
-          const deadLeds = comps.filter(c =>
-            (c.type === 'led' || c.type === 'rgb-led') &&
-            !(states[c.id]?.brightness > 0) && !(states[c.id]?.glowing)
-          );
-          if (deadLeds.length > 0) {
-            healthSummary += 'ℹ️ LED spenti (possibile errore di collegamento): ' + deadLeds.map(c => c.id).join(', ') + '\n';
-          }
-        } catch { /* solver may not be ready */ }
-      }
-
-      // 4. Build mode context
-      const buildCtx = !currentExperiment?.buildMode
-        ? 'Già Montato (circuito completo visibile)'
-        : currentExperiment.buildMode === 'guided'
-          ? `Passo Passo — step ${buildStepIndex + 1}/${exp.buildSteps?.length || '?'}`
-          : 'Esplora Libero (canvas vuoto, studente costruisce da zero)';
-
-      // 5. Assemble full circuit context
-      const circuitContext = [
-        `[STATO CIRCUITO — aggiornamento live]`,
-        `Esperimento: "${exp.title || exp.id}" — ${exp.chapter || ''}`,
-        `Modalità: ${buildCtx}`,
-        ``,
-        `Componenti (${comps.length}):`,
-        compSummary,
-        ``,
-        `Connessioni (${conns.length} fili):`,
-        connSummary,
-        healthSummary ? `\n${healthSummary}` : '',
-      ].filter(Boolean).join('\n');
-
-      // S99: Sanitize — limit total size to prevent token waste in AI calls
-      const MAX_CONTEXT_CHARS = 3000;
-      const sanitizedText = circuitContext.length > MAX_CONTEXT_CHARS
-        ? circuitContext.slice(0, MAX_CONTEXT_CHARS) + '\n... [troncato per dimensione]'
-        : circuitContext;
-
-      onCircuitStateChange({
-        structured: buildStructuredState(),
-        text: sanitizedText,
-      });
-    }, 400);
-
-    return () => clearTimeout(circuitBridgeTimerRef.current);
-  }, [componentStates, mergedExperiment, currentExperiment, buildStepIndex, onCircuitStateChange, buildStructuredState]);
-
-  /* ─────────────────────────────────────────────────
-     UNLIM PERVASIVO: Proactive event detection
-     Detects critical circuit events and notifies parent
-     so UNLIM can intervene WITHOUT the student asking.
-     Each event type fires only ONCE per session to avoid spam.
-     Andrea Marro — 24/02/2026
-     ───────────────────────────────────────────────── */
-  const firedEventsRef = useRef(new Set());
-  useEffect(() => {
-    if (!onCircuitEvent || !mergedExperiment) return;
-    const comps = mergedExperiment.components || [];
-    const states = componentStates;
-
-    // Reset fired events when experiment changes
-    // (handled by separate effect below)
-
-    // EVENT: LED burned
-    comps.forEach(c => {
-      if ((c.type === 'led' || c.type === 'rgb-led') && states[c.id]?.burned) {
-        const key = `burned-${c.id}`;
-        if (!firedEventsRef.current.has(key)) {
-          firedEventsRef.current.add(key);
-          onCircuitEvent({
-            type: 'led-burned',
-            componentId: c.id,
-            message: `⚡ Oh no! Il LED "${c.id}" si è bruciato! Probabilmente manca un resistore o il suo valore è troppo basso. Vuoi che UNLIM ti spieghi cosa è successo?`
-          });
-        }
-      }
-    });
-
-    // EVENT: High current warning (>30mA on any component)
-    comps.forEach(c => {
-      const s = states[c.id] || {};
-      if (s.current && s.current > 30 && (c.type === 'led' || c.type === 'rgb-led')) {
-        const key = `highcurrent-${c.id}`;
-        if (!firedEventsRef.current.has(key)) {
-          firedEventsRef.current.add(key);
-          onCircuitEvent({
-            type: 'high-current',
-            componentId: c.id,
-            message: `⚠️ Attenzione: il LED "${c.id}" sta ricevendo ${Math.round(s.current)}mA — è troppo! Rischia di bruciarsi. Prova ad aggiungere un resistore o aumentarne il valore.`
-          });
-        }
-      }
-    });
-
-    // NOTE: Removed "circuit-working" congratulatory event (UNLIM parla SOLO se interpellato
-    // o per errori). Manteniamo solo led-burned e high-current come guida errori.
-
-  }, [componentStates, mergedExperiment, onCircuitEvent]);
-
-  // Reset proactive events when experiment changes
-  useEffect(() => {
-    firedEventsRef.current = new Set();
-  }, [currentExperiment?.id]);
-
-  /* ─────────────────────────────────────────────────
-     Register public API for MCP/AI integration
-     (runs once on mount, uses refs for live data)
-     ───────────────────────────────────────────────── */
-  useEffect(() => {
-    const apiInstance = {
-      selectExperiment: (exp) => handleSelectExperimentRef.current?.(exp),
-      getCurrentExperiment: () => currentExperimentRef.current,
-      play: () => handlePlayRef.current?.(),
-      pause: () => handlePauseRef.current?.(),
-      reset: () => handleResetRef.current?.(),
-      getComponentStates: () => componentStatesRef.current,
-      interact: (id, action, value) => {
-        // String actions: route to solver (circuit mode) or handleComponentClick (AVR mode)
-        if (typeof action === 'string' && ['setLightLevel', 'setPosition', 'touchGate', 'releaseGate', 'press', 'release', 'toggle'].includes(action)) {
-          if (solverRef.current) solverRef.current.interact(id, action, value);
-          // Also route press/release through handleComponentClick for AVR button handling
-          if (action === 'press' || action === 'release') {
-            handleComponentClickRef.current?.(id, action);
-          }
-          // Route setPosition/setLightLevel to AVR analog input
-          if ((action === 'setPosition' || action === 'setLightLevel') && avrRef.current && typeof value === 'number') {
-            const pinEntry = Object.entries(pinMapRef.current).find(
-              ([, m]) => m.compId === id || m.directCompId === id
-            );
-            if (pinEntry) {
-              const pin = parseInt(pinEntry[0]);
-              avrRef.current.setInputPin(pin, Math.round(value * 1023));
-            }
-          }
-          return;
-        }
-        handleComponentClickRef.current?.(id, action);
-      },
-      addWire: (from, to) => handleConnectionAddRef.current?.(from, to),
-      removeWire: (index) => handleWireDeleteRef.current?.(index),
-      addComponent: (type, pos) => handleComponentAddRef.current?.(type, pos),
-      removeComponent: (id) => handleComponentDeleteRef.current?.(id),
-      getEditorCode: () => editorModeRef?.current === 'scratch' ? scratchGeneratedCodeRef.current : editorCodeRef.current, // S93: mode-aware
-      setEditorCode: (code) => { setEditorCode(code); codeNeedsCompileRef.current = true; }, // S116: mark dirty
-      /* Andrea Marro — 12/02/2026 — UNLIM API bridge */
-      setHighlightedComponents: (ids) => setApiHighlightedComponents(Array.isArray(ids) ? ids : (ids ? [ids] : [])),
-      setHighlightedPins: (refs) => setApiHighlightedPins(Array.isArray(refs) ? refs : (refs ? [refs] : [])),
-      serialWrite: (text) => { if (avrRef.current) avrRef.current.serialWrite?.(text); },
-      /* ── UNLIM ONNIPOTENTE: Extended API for full breadboard manipulation ── */
-      moveComponent: (id, x, y) => {
-        handleLayoutChangeRef.current?.(id, { x: parseInt(x), y: parseInt(y) }, true);
-      },
-      clearAll: () => {
-        // Save undo snapshot before clearing
-        const snap = getCurrentSnapshotRef.current?.();
-        if (snap) pushSnapshotRef.current?.(snap);
-        pushActivity('clearall', currentExperimentRef.current?.id || '');
-        setCustomComponents([]);
-        setCustomConnections([]);
-        setCustomLayout({});
-        setCustomPinAssignments({});
-        setConnectionOverrides({});
-      },
-      getComponentPositions: () => {
-        const exp = mergedExperimentRef.current || currentExperimentRef.current;
-        if (!exp) return {};
-        const positions = {};
-        (exp.components || []).forEach(c => {
-          const pos = exp.layout?.[c.id] || {};
-          positions[c.id] = { x: pos.x || 0, y: pos.y || 0, type: c.type };
-        });
-        return positions;
-      },
-      getLayout: () => {
-        const exp = mergedExperimentRef.current || currentExperimentRef.current;
-        return {
-          components: exp?.components || [],
-          connections: exp?.connections || [],
-          layout: exp?.layout || {},
-          pinAssignments: exp?.pinAssignments || {},
-        };
-      },
-      getCircuitState: () => buildStructuredState(),
-      // S104: Full compilation snapshot for UNLIM context
-      getCompilationSnapshot: () => compilationDetailsRef.current,
-      // S76: Scratch Universale — editor control for UNLIM action tags
-      showEditor: () => setShowCodeEditor(true),
-      hideEditor: () => setShowCodeEditor(false),
-      setEditorMode: (mode) => { if (mode === 'scratch' || mode === 'arduino') { setEditorMode(mode); pushActivity('editor_switch', mode); } },
-      getEditorMode: () => editorModeRef.current, // S93: use ref to avoid stale closure
-      isEditorVisible: () => showCodeEditorRef.current, // S116: ref avoids stale closure
-      loadScratchWorkspace: (xml) => { setScratchXml(xml); setEditorMode('scratch'); setShowCodeEditor(true); },
-      // S115: UNLIM Onnipotente v2 — extended API surface
-      undo: () => {
-        const snapshot = undoHistory(getCurrentSnapshot());
-        if (snapshot) restoreSnapshotRef.current?.(snapshot);
-      },
-      redo: () => {
-        const snapshot = redoHistory(getCurrentSnapshot());
-        if (snapshot) restoreSnapshotRef.current?.(snapshot);
-      },
-      canUndo: () => canUndoRef.current,   // S115-FIX: ref avoids stale closure
-      canRedo: () => canRedoRef.current,   // S115-FIX: ref avoids stale closure
-      highlightPin: (refs) => setApiHighlightedPins(Array.isArray(refs) ? refs : (refs ? [refs] : [])),
-      setBuildMode: (mode) => handleBuildModeSwitchRef.current?.(mode),
-      getBuildMode: () => currentExperimentRef.current?.buildMode || false,
-      nextStep: () => {
-        const steps = currentExperimentRef.current?.buildSteps || [];
-        setBuildStepIndex(prev => {
-          const next = steps.length > 0 ? Math.min(prev + 1, steps.length - 1) : prev;
-          if (next !== prev) pushActivity('build_step_next', `step ${next + 1}/${steps.length}`);
-          return next;
-        });
-      },
-      prevStep: () => setBuildStepIndex(prev => {
-        const next = Math.max(-1, prev - 1);
-        if (next !== prev) pushActivity('build_step_prev', `step ${next + 1}`);
-        return next;
-      }),
-      getBuildStepIndex: () => buildStepIndexRef.current,
-      showBom: () => setShowBom(true),
-      hideBom: () => setShowBom(false),
-      showLessonPath: () => { setShowLessonPath(true); setShowBom(false); setShowNotes(false); setShowQuiz(false); },
-      hideLessonPath: () => setShowLessonPath(false),
-      showSerialMonitor: () => { setShowCodeEditor(true); setBottomPanel('monitor'); },
-      hideSerialMonitor: () => { setShowCodeEditor(false); }, // S115-FIX: actually hides editor panel
-      isSimulating: () => isRunningRef.current || false,
-      getSimulationStatus: () => isRunningRef.current ? 'running' : 'stopped',
-      // Sprint 1 Context Mastery: expose selected component + serial output for UNLIM
-      getSelectedComponent: () => {
-        const id = selectedComponentIdRef.current;
-        if (!id) return null;
-        const circuit = buildStructuredState();
-        const comp = circuit?.components?.find(c => c.id === id);
-        return comp ? { id: comp.id, type: comp.type, state: comp.state || {} } : { id };
-      },
-      getSerialOutput: () => {
-        const text = serialOutputRef.current || '';
-        if (!text) return null;
-        const lines = text.split('\n').filter(Boolean);
-        return { lastLines: lines.slice(-10), lineCount: lines.length };
-      },
-      // S115: Code control — UNLIM può scrivere/leggere codice Arduino
-      appendEditorCode: (code) => { setEditorCode(prev => (prev || '') + '\n' + code); codeNeedsCompileRef.current = true; }, // S116: mark dirty
-      resetEditorCode: () => {
-        const orig = currentExperimentRef.current?.code || '';
-        setEditorCode(orig);
-      },
-      getExperimentOriginalCode: () => currentExperimentRef.current?.code || '',
-      // S115: Scratch fullscreen control for UNLIM action tags
-      setScratchFullscreen: (v) => { setScratchFullscreen(!!v); if (v) { setEditorMode('scratch'); setShowCodeEditor(true); } },
-      // S116: Full compile+load via handleCompile (updates UI state, loads hex into AVR)
-      compileAndLoad: async (code) => {
-        if (handleCompileRef.current) {
-          return await handleCompileRef.current(code);
-        }
-        return null;
-      },
-    };
-    registerSimulatorInstance(apiInstance);
-    return () => unregisterSimulatorInstance();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  /* ─────────────────────────────────────────────────
-     Load initial experiment if provided
-     ───────────────────────────────────────────────── */
-  useEffect(() => {
-    if (initialExperimentId) {
-      const exp = findExperimentById(initialExperimentId);
-      if (exp) handleSelectExperiment(exp);
-      onInitialExperimentConsumed?.();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialExperimentId]);
-
-  /* ─────────────────────────────────────────────────
-     Select experiment
-     ───────────────────────────────────────────────── */
-  const handleSelectExperiment = useCallback(async (experiment) => {
-    // Antigravity: infer parentId from pinAssignments for pre-built experiments
-    if (experiment.pinAssignments && experiment.layout) {
-      const parentMap = inferParentFromPinAssignments(experiment.pinAssignments);
-      for (const [compId, bbId] of Object.entries(parentMap)) {
-        if (experiment.layout[compId] && !experiment.layout[compId].parentId) {
-          experiment.layout[compId] = {
-            ...experiment.layout[compId],
-            parentId: bbId
-          };
-        }
-      }
-    }
-
-    // Volume bypass guard: verify user has access to the experiment's volume
-    // Extracts volume number from experiment ID (e.g. "v1-cap6-esp1" → 1)
-    // Uses ref for stable callback ([] deps pattern) — Andrea Marro — 21/02/2026
-    const kits = userKitsRef.current;
-    if (kits !== null && experiment.id) {
-      const volMatch = experiment.id.match(/^v(\d)/);
-      if (volMatch) {
-        const volNum = parseInt(volMatch[1], 10);
-        const kitName = `Volume ${volNum}`;
-        if (!kits.includes(kitName)) {
-          return; // silently reject — user shouldn't see this experiment anyway
-        }
-      }
-    }
-
-    // Ref-level guard: prevents re-entry during async AVR setup (Fix #4)
-    if (experiment.simulationMode === 'avr' && avrSetupLockRef.current.inProgress && experiment.id === avrSetupLockRef.current.expId) {
-      return;
-    }
-    // Instance-level guard: don't re-init if same experiment is already loaded and AVR/solver is live
-    // Also skip if avrLoadingRef is true (async setup in progress, avrRef not yet assigned)
-    /* ── Andrea Marro — 17/02/2026 ── ~riga 800 ── AVR/Circuit engine loading ── */
-    if (experiment.id === loadedExpIdRef.current && (avrRef.current || solverRef.current || avrLoadingRef.current)) {
-      return;
-    }
-    loadedExpIdRef.current = experiment.id;
-    // Progressive disclosure: record experiment load milestone
-    recordExperimentLoad(experiment.id);
-    // Preload hints in background (fire-and-forget) — popola cache nanobot L0
-    preloadExperiment(experiment.id);
-    if (experiment.simulationMode === 'avr') {
-      avrSetupLockRef.current.inProgress = true;
-      avrSetupLockRef.current.expId = experiment.id;
-      avrLoadingRef.current = true;
-    }
-
-    // Stop everything first
-    if (solverRef.current) {
-      solverRef.current.pause();
-      solverRef.current.reset(); // Full reset for new experiment
-    }
-    if (avrRef.current) { avrRef.current.pause(); avrRef.current.destroy(); avrRef.current = null; }
-    if (avrPollRef.current) { clearInterval(avrPollRef.current); avrPollRef.current = null; }
-
-    setCircuitStatus({ status: 'idle', warnings: [], errors: [] });
-    setCurrentExperiment(experiment);
-    pushActivity('experiment_loaded', `${experiment.id} "${experiment.title || experiment.name || ''}"`.trim());
-    sessionMetrics.trackExperimentLoad(experiment.id);
-    recordEvent('experiment_loaded', { experimentId: experiment.id, experimentName: experiment.name || experiment.id });
-    if (onExperimentChangeRef.current) onExperimentChangeRef.current(experiment);
-    setIsRunning(false);
-    setSimulationTime(0);
-    setSerialOutput('');
-    setAvrReady(false);
-
-    // Reset custom overlays + undo history
-    setCustomLayout({});
-    setCustomConnections([]);
-    setCustomComponents([]);
-    setCustomPinAssignments({});
-    setPotOverlay(null);
-    setLdrOverlay(null);
-    resetHistory();
-    // Sprint 3 resets
-    setAnnotations([]);
-    setSelectedAnnotation(null);
-    setShowBom(false);
-    setShowQuiz(false);
-    setShowLessonPath(false);
-    // Build mode: start from empty board (-1) when guided/sandbox, show all when complete
-    // Andrea Marro — 20/02/2026
-    setBuildStepIndex(
-      experiment.buildMode === 'guided' ? -1
-        : experiment.buildMode === 'sandbox' ? -1
-          : Infinity
-    );
-    // Detect volume number from experiment ID prefix (v1-..., v2-..., v3-...)
-    const volNum = experiment.id.startsWith('v3-') ? 3 : experiment.id.startsWith('v2-') ? 2 : 1;
-    setSelectedVolume(volNum);
-    setShowNotes(false);
-
-    // Restore persisted custom circuit state if available (safe fallback to defaults)
-    loadFromStorage(experiment.id);
-
-    // Set editor code + auto-show for AVR experiments
-    // Load from localStorage if exists, otherwise use experiment default
-    const savedCode = loadSavedCode(experiment.id);
-    // S76: Provide default empty sketch for circuit-only experiments (Scratch Universale)
-    const DEFAULT_SKETCH = 'void setup() {\n  // Il tuo codice di configurazione\n}\n\nvoid loop() {\n  // Il tuo codice principale\n}\n';
-    const actualCode = savedCode || experiment.code || DEFAULT_SKETCH;
-    setEditorCode(actualCode);
-    // S81: Scratch tab available for ALL AVR experiments (not just those with pre-built scratchXml)
-    const isAvr = experiment.simulationMode === 'avr';
-    const hasScratchXml = !!experiment.scratchXml;
-    const savedScratch = isAvr ? localStorage.getItem(`elab_scratch_${experiment.id}`) : null;
-    setScratchXml(savedScratch || experiment.scratchXml || '');
-    // S93: Load scratch generated code from localStorage (invisible to user)
-    setScratchGeneratedCode(isAvr ? localStorage.getItem(`elab_scratch_code_${experiment.id}`) || '' : '');
-    // Default to scratch mode for ALL AVR experiments (Scratch Universale S81);
-    // only fallback to arduino if NOT avr mode
-    setEditorMode(isAvr ? 'scratch' : 'arduino');
-    // Se il codice salvato in localStorage è diverso dall'originale dell'esperimento,
-    // l'hex pre-compilato NON corrisponde — serve ricompilare prima di avviare
-    const originalCode = (experiment.code || '').trim();
-    codeNeedsCompileRef.current = actualCode.trim() !== originalCode;
-    setCompilationStatus(null);
-    setCompilationErrors(null);    // S92: Clear stale errors on experiment switch
-    setCompilationWarnings(null);  // S92: Clear stale warnings on experiment switch
-    setCompilationErrorLine(null); // S92: Clear stale error line on experiment switch
-    // S76: Code editor available for ALL experiments (Scratch Universale)
-    // Auto-OPEN only for AVR experiments with code; for circuit-only, user opens manually
-    const isAvrWithCode = isAvr && !!experiment.code;
-    setShowCodeEditor(isAvrWithCode);
-    // S92: Always collapse sidebar on experiment load to maximize breadboard space
-    setShowSidebar(false);
-    // Auto-show experiment guide
-    setShowGuide(true);
-
-    // Build pin -> component map for AVR experiments
-    pinMapRef.current = buildPinComponentMap(experiment);
-
-    if (experiment.simulationMode === 'avr') {
-      // AVR mode -- lazy load AVRBridge + auto-compile code
-      try {
-        const { default: AVRBridge } = await import('./engine/AVRBridge');
-        const bridge = new AVRBridge();
-
-        bridge.onSerialOutput = (char) => {
-          setSerialOutput(prev => {
-            const next = prev + char;
-            return next.length > 4000 ? next.slice(-3000) : next;
-          });
-          /* Andrea Marro — 12/02/2026 — Emit serial output event */
-          try { emitSimulatorEvent('serialOutput', { char }); } catch { }
-        };
-
-        // Set onPinChange callback — uses shared helper to avoid duplication
-        bridge.onPinChange = createOnPinChangeHandler(bridge, setComponentStates, pinMapRef);
-
-        let loaded = false;
-
-        if (experiment.hexFile) {
-          // Pre-compiled hex file available
-          const hexUrl = experiment.hexFile.startsWith('/') ? experiment.hexFile : `/hex/${experiment.hexFile}`;
-          loaded = await bridge.loadHex(hexUrl);
-        } else if (experiment.code) {
-          // BUG FIX: No hex file — auto-compile the Arduino code
-          setCompilationStatus('compiling');
-          try {
-            const result = await apiCompileCode(experiment.code);
-            if (result.success && result.hex) {
-              loaded = await bridge.loadHexFromString(result.hex);
-              setCompilationStatus('success');
-              trackedTimeout(() => setCompilationStatus(null), 3000);
-            } else {
-              setCompilationStatus('error');
-              setCompilationErrors(result.errors || 'Errore di compilazione');
-              // Errors stay visible until user edits code or loads new experiment
-            }
-          } catch (compileErr) {
-            logger.warn('[ELAB] Errore compilazione:', compileErr.message);
-            setCompilationStatus('error');
-            setCompilationErrors('Non riesco a compilare il codice. Controlla la connessione internet e riprova!');
-          }
-        }
-
-        if (loaded) {
-          avrRef.current = bridge;
-          setAvrReady(true);
-          // Auto-show serial monitor panel for AVR experiments (skip on short viewports — iPad landscape)
-          if (window.innerHeight > 820) setShowBottomPanel(true);
-
-          // Configure LCD pins if experiment has an LCD component
-          const lcdMapping = buildLCDPinMapping(experiment);
-          if (lcdMapping && bridge.configureLCDPins) {
-            bridge.configureLCDPins(lcdMapping);
-          }
-
-          const pinStates = bridge.getPinStates();
-          // Let CircuitSolver handle the first render state, but inject AVR initial pins over it.
-          if (solverRef.current) {
-            solverRef.current.loadExperiment(experiment);
-            const solverStates = solverRef.current.getState();
-            setComponentStates({ ...solverStates, _pins: pinStates });
-          } else {
-            setComponentStates(prev => ({ ...prev, _pins: pinStates }));
-          }
-        } else {
-          // If AVR failed to load, still load CircuitSolver as fallback
-          if (solverRef.current) {
-            solverRef.current.loadExperiment(experiment);
-            setComponentStates(solverRef.current.getState());
-          }
-        }
-      } catch (err) {
-        logger.error('[ELAB] AVRBridge load error:', err.message);
-      } finally {
-        avrLoadingRef.current = false;
-        avrSetupLockRef.current.inProgress = false;
-      }
-    } else {
-      // Circuit mode (Vol1/Vol2 — battery experiments)
-      avrLoadingRef.current = false;
-      avrSetupLockRef.current.inProgress = false;
-      if (solverRef.current) {
-        // ALWAYS load the experiment into CircuitSolver!
-        solverRef.current.loadExperiment(experiment);
-        setComponentStates(solverRef.current.getState());
-        // AUTO-START: battery experiments run immediately (no Play needed).
-        // This enables time-stepping for capacitor charge/discharge, MOSFET
-        // gate decay, and other transient behaviors.
-        solverRef.current.start();
-        setIsRunning(true);
-      }
-    }
-
-    // Pass code to tutor if Arduino experiment
-    if (experiment.code && onCodeSelectRef.current) {
-      onCodeSelectRef.current(experiment.code);
-    }
-
-    if (onOpenSimulatorRef.current) {
-      onOpenSimulatorRef.current(experiment.id);
-    }
-
-    /* Andrea Marro — 12/02/2026 — Analytics + Events */
-    try { sendAnalyticsEvent(EVENTS.EXPERIMENT_LOADED, { experimentId: experiment.id, title: experiment.title, mode: experiment.simulationMode }); } catch { }
-    try { emitSimulatorEvent('experimentChange', { experimentId: experiment.id, title: experiment.title, mode: experiment.simulationMode }); } catch { }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Stable — uses refs for parent callbacks to avoid recreation on prop changes
-
-  /* ─────────────────────────────────────────────────
-     AVR pin polling loop
-     NOTE: Usa setInterval invece di requestAnimationFrame perché RAF
-           non funziona quando il tab è hidden (Chrome tab groups, overlay)
-     ───────────────────────────────────────────────── */
-  const startAVRPolling = useCallback(() => {
-    if (!avrRef.current || !mergedExperiment) return;
-
-    // Stop previous polling if any
-    if (avrPollRef.current) {
-      clearInterval(avrPollRef.current);
-      avrPollRef.current = null;
-    }
-
-    avrPollRef.current = setInterval(() => {
-      if (!avrRef.current || !avrRef.current.running) return;
-
-      const pinStates = avrRef.current.getPinStates();
-      const newStates = {};
-
-      const pinMap = pinMapRef.current;
-
-      // 🚨 MNA SIMULATION BRIDGE 🚨
-      // We no longer manually map LED, Motor, Buzzer states from pins here.
-      // CircuitSolver processes all standard passive/active components natively via MNA.
-      // We only manually inject states for complex digital modules (Servo, LCD)
-      // that are not solved electrically.
-
-      /* ── Andrea Marro — 17/02/2026 ── ~riga 1000 ── AVR polling e servo/LCD ── */
-      // Servo angle state from PWM duty cycles
-      if (avrRef.current.getAllServoAngles) {
-        const servoAngles = avrRef.current.getAllServoAngles();
-        if (servoAngles) {
-          Object.entries(pinMap).forEach(([pinNum, mapping]) => {
-            if (mapping.compType === 'servo' && servoAngles[pinNum] !== undefined) {
-              newStates[mapping.compId] = {
-                angle: servoAngles[pinNum],
-                active: true,
-              };
-            }
-          });
-        }
-      }
-
-      // LCD 16x2 state from HD44780 emulation
-      if (avrRef.current.getLCDState) {
-        const lcdState = avrRef.current.getLCDState();
-        if (lcdState) {
-          // Find LCD component(s) in experiment
-          const comps = mergedExperiment?.components || [];
-          comps.forEach(comp => {
-            if (comp.type === 'lcd16x2') {
-              newStates[comp.id] = {
-                text: lcdState.text,
-                cursorPos: lcdState.cursorPos,
-                cursorVisible: lcdState.cursorVisible,
-                displayOn: lcdState.displayOn,
-                backlight: lcdState.backlight,
-              };
-            }
-          });
-        }
-      }
-
-      newStates._pins = pinStates;
-      newStates._avrRunning = true;
-
-      // TX/RX LED pulse: check if serial activity happened since last poll
-      const currentSerial = avrRef.current.serialBuffer;
-      if (currentSerial.length > (avrTxLenRef.current || 0)) {
-        newStates._txActive = true;
-        avrTxLenRef.current = currentSerial.length;
-        // Auto-clear TX LED after 80ms
-        if (avrTxTimerRef.current) clearTimeout(avrTxTimerRef.current);
-        avrTxTimerRef.current = setTimeout(() => {
-          setComponentStates(prev => ({ ...prev, _txActive: false }));
-        }, 80);
-      }
-
-      // Simulation time from CPU cycles (16MHz clock → seconds)
-      if (avrRef.current.cpu) {
-        const cycles = Number(avrRef.current.cpu.cycles);
-        setSimulationTime(cycles / 16000000);
-      }
-
-      setComponentStates(prev => {
-        // Prepare merged React state
-        const nextPins = { ...(prev._pins || {}), ...pinStates };
-        newStates._pins = nextPins;
-        const merged = { ...prev, ...newStates };
-
-        // 🚨 PUSH TO MNA SOLVER 🚨
-        if (solverRef.current) {
-          const nano = solverRef.current.components.get('nano1') || solverRef.current.components.get('nano0');
-          // Find the Arduino component heuristically if ID changes
-          let targetNano = null;
-          solverRef.current.components.forEach((c) => {
-            if (c.type === 'nano-r4') targetNano = c;
-          });
-
-          if (targetNano) {
-            targetNano.state = targetNano.state || {};
-            targetNano.state.pinStates = nextPins;
-            // Preserves pinModes computed via onPinChange
-            targetNano.state.pinModes = nextPins._modes || {};
-          }
-
-          // Step solver forward
-          solverRef.current.solve(0.050); // 50ms tick from polling interval
-
-          // Feed physical voltages back into Arduino Inputs!
-          if (targetNano) {
-            for (let i = 0; i <= 13; i++) {
-              const mode = targetNano.state.pinModes[i];
-              if (mode === 2 || mode === 3) {
-                const v = solverRef.current.getNodeVoltage(`${targetNano.id}:D${i}`);
-                if (v !== null) avrRef.current.setInputPin(i, v > 2.5 ? 1 : 0);
-              }
-            }
-            for (let a = 0; a <= 7; a++) {
-              const v = solverRef.current.getNodeVoltage(`${targetNano.id}:A${a}`);
-              if (v !== null) avrRef.current.setAnalogValue(a, (v / 5.0) * 1023);
-            }
-          }
-
-          // Pull resulting electro-physical states back to React layer
-          const solverStates = solverRef.current.getState();
-          for (const id in solverStates) {
-            if (id === '_pins' || id === '_avrRunning' || id === '_txActive') continue;
-            // Merge solver physics state under direct digital overrides (LCD/Servo)
-            merged[id] = { ...solverStates[id], ...(newStates[id] || {}) };
-          }
-        }
-
-        return merged;
-      });
-    }, 50); // Poll at ~20fps — fast enough for visual updates
-  }, [mergedExperiment]);
-
-  /* ─────────────────────────────────────────────────
-     Play / Pause / Reset
-     ───────────────────────────────────────────────── */
-  const handlePlay = useCallback(async () => {
-    if (!currentExperiment) return;
-    // CoVe Fix #3: Previeni avvio durante compilazione (race condition)
-    if (compilingRef.current) {
-      return;
-    }
-    // CoVe Fix #4: Previeni avvio se ci sono errori di compilazione
-    if (compilationStatus === 'error') {
-      return;
-    }
-    // CoVe Fix #5: Auto-compile se il codice è stato modificato (AVR mode)
-    if (currentExperiment.simulationMode === 'avr' && codeNeedsCompileRef.current && handleCompileRef.current) {
-      // Il codice è stato modificato → compila prima di avviare
-      // S112: use refs to avoid stale closure
-      const codeToCompile = editorModeRef.current === 'scratch' ? scratchGeneratedCodeRef.current : editorCodeRef.current;
-      await handleCompileRef.current(codeToCompile);
-      // Se codeNeedsCompileRef è ancora true, la compilazione è fallita
-      // (handleCompile lo resetta a false solo su successo)
-      if (codeNeedsCompileRef.current) {
-        return; // Compilazione fallita — non avviare
-      }
-      // Dopo compile+load, il bridge è pronto — prosegui con start
-    }
-    if (currentExperiment.simulationMode === 'avr' && avrRef.current) {
-      avrRef.current.start();
-      startAVRPolling();
-    } else if (currentExperiment.simulationMode === 'avr' && !avrRef.current) {
-    } else if (currentExperiment.simulationMode !== 'avr' && solverRef.current) {
-      solverRef.current.start();
-    }
-    setIsRunning(true);
-    pushActivity('play', currentExperiment?.id || '');
-    setSimulationAnnouncement('Simulazione avviata'); // S161.3
-    recordEvent('simulation_started');
-    /* Andrea Marro — 12/02/2026 — Analytics + Events */
-    try { sendAnalyticsEvent(EVENTS.SIMULATION_STARTED, { experimentId: currentExperiment?.id, mode: currentExperiment?.simulationMode }); } catch { }
-    try { emitSimulatorEvent('stateChange', { state: 'playing', experimentId: currentExperiment?.id }); } catch { }
-  }, [currentExperiment, startAVRPolling, editorCode, editorMode, compilationStatus]);
-
+  // ─── Pause handler (needed by circuit handlers) ───
   const handlePause = useCallback(() => {
     if (avrRef.current) avrRef.current.pause();
     if (solverRef.current) solverRef.current.pause();
@@ -2346,985 +612,51 @@ const NewElabSimulator = ({
     if (avrPollRef.current) { clearInterval(avrPollRef.current); avrPollRef.current = null; }
     setIsRunning(false);
     pushActivity('pause');
-    setSimulationAnnouncement('Simulazione in pausa'); // S161.3
+    setSimulationAnnouncement('Simulazione in pausa');
     recordEvent('simulation_stopped');
-    /* Andrea Marro — 12/02/2026 — Analytics + Events */
     try { sendAnalyticsEvent(EVENTS.SIMULATION_PAUSED); } catch { }
     try { emitSimulatorEvent('stateChange', { state: 'paused' }); } catch { }
   }, []);
 
-  const handleReset = useCallback(() => {
-    handlePause();
-    pushActivity('reset', currentExperiment?.id || '');
-    setSimulationAnnouncement('Simulazione resettata'); // S161.3: overrides "in pausa" from handlePause
-    avrTxLenRef.current = 0;
-    if (currentExperiment) {
-      // Full reset: clear custom components, localStorage, and re-solve from original
-      clearSaved();
-      clearSavedCode(currentExperiment.id);
-      setCustomLayout({});
-      setCustomConnections([]);
-      setCustomComponents([]);
-      setCustomPinAssignments({});
-      setConnectionOverrides({});
-      setPotOverlay(null);
-      setLdrOverlay(null);
-      setAnnotations([]);
-      setSelectedAnnotation(null);
-      // Reset build mode
-      setBuildStepIndex(
-        currentExperiment.buildMode === 'guided' ? -1
-          : currentExperiment.buildMode === 'sandbox' ? -1
-            : Infinity
-      );
-      // Reset code to original
-      const originalCode = currentExperiment.code || '';
-      setEditorCode(originalCode);
-      codeNeedsCompileRef.current = false;
-      setCompilationStatus(null);
-      setCompilationErrors(null);   // S116: clear stale errors
-      setCompilationWarnings(null); // S116: clear stale warnings
-      setCompilationSize(null);     // S116: clear stale size
-      // S116: Reset Scratch state for mode independence
-      setScratchXml(currentExperiment.scratchXml || '');
-      setScratchGeneratedCode('');
-      // S116: Clear persisted Scratch workspace
-      if (currentExperiment.id) {
-        localStorage.removeItem(`elab_scratch_${currentExperiment.id}`);
-        localStorage.removeItem(`elab_scratch_code_${currentExperiment.id}`);
-      }
+  // ─── Circuit Handlers Hook ───
+  const handlers = useCircuitHandlers({
+    currentExperiment, mergedExperiment, componentStates, buildStepIndex,
+    solverRef, avrRef, avrPollRef, pinMapRef, loadedExpIdRef, avrSetupLockRef, avrLoadingRef, compilingRef, codeNeedsCompileRef,
+    editorCodeRef, editorModeRef, scratchGeneratedCodeRef, isRunningRef, handleCompileRef, handlePauseRef, canvasContainerRef, avrTxLenRef,
+    pushSnapshot, getCurrentSnapshot,
+    setCurrentExperiment, setComponentStates, setIsRunning, setSimulationTime, setSerialOutput, setAvrReady,
+    setCustomLayout, setCustomConnections, setCustomComponents, setCustomPinAssignments, setConnectionOverrides,
+    setPotOverlay, setLdrOverlay, setPropsPanel, setEditorCode, setEditorMode, setScratchXml, setScratchGeneratedCode,
+    setShowCodeEditor, setShowSidebar, setShowBottomPanel, setShowPalette, setBuildStepIndex,
+    setAnnotations, setSelectedAnnotation, setSelectedWireIndex, setWireMode,
+    setCompilationStatus, setCompilationErrors, setCompilationWarnings, setCompilationErrorLine, setCompilationSize,
+    setExportToast, setShowBom, setShowQuiz, setSimulationAnnouncement, setPdfReady, setIsGeneratingReport,
+    setIsAskingUNLIM, setUnlimResponse,
+    compilationStatus, isAskingUNLIM, isGeneratingReport, potOverlay, ldrOverlay, pdfReady,
+    customConnections, customComponents, connectionOverrides,
+    startAVRPolling, handlePause, clearSaved, clearSavedCode, trackedTimeout, recordEvent, recordMilestone, getTimeline,
+    messagesRef, quizResultsRef, sessionStartRef, codeContentRef, compilationResultRef,
+    onExperimentChangeRef,
+  });
 
-      if (currentExperiment.simulationMode === 'avr' && avrRef.current) {
-        avrRef.current.reset();
-        setSerialOutput('');
-        setComponentStates({ _pins: avrRef.current.getPinStates() });
-      } else if (solverRef.current) {
-        solverRef.current.loadExperiment(currentExperiment);
-        setComponentStates(solverRef.current.getState());
-        // AUTO-START: battery experiments restart immediately after reset
-        solverRef.current.start();
-        setIsRunning(true);
-      }
-    }
-    setSimulationTime(0);
-    /* Andrea Marro — 12/02/2026 — Analytics + Events */
-    try { sendAnalyticsEvent(EVENTS.SIMULATION_RESET, { experimentId: currentExperiment?.id }); } catch { }
-    try { emitSimulatorEvent('stateChange', { state: 'reset', experimentId: currentExperiment?.id }); } catch { }
-  }, [currentExperiment, handlePause, clearSaved, clearSavedCode]);
+  const {
+    handlePlay, handleReset, handleBuildModeSwitch, handleBack, handleComponentClick,
+    handlePotValueChange, handleLdrValueChange, handlePropChange, handleComponentValueChange,
+    handleSerialInput, handleAskUNLIM, handleLayoutChange, handleConnectionAdd, handleWireUpdate,
+    handleWireClick, handleWireDelete, handleComponentAdd, handleComponentDelete,
+    handleResetExperiment, handleCompile, handleCanvasDragOver, handleExportPng,
+    handleQuizComplete, handleGenerateReport, handleDownloadPdf,
+    handleAnnotationAdd, handleAnnotationTextChange, handleAnnotationDelete,
+    handleAnnotationSelect, handleAnnotationPositionChange,
+  } = handlers;
 
-  /* ─────────────────────────────────────────────────
-     Switch Build Mode in-place (Già Montato ↔ Passo Passo ↔ Libero)
-     Cambia modalità senza ricaricare l'esperimento — Andrea Marro 21/02/2026
-     ───────────────────────────────────────────────── */
-  const handleBuildModeSwitch = useCallback((newMode) => {
-    if (!currentExperiment) return;
-    // 'complete' = false (no buildMode), 'guided' = 'guided', 'sandbox' = 'sandbox'
-    const effectiveMode = newMode === 'complete' ? false : newMode;
-    if (currentExperiment.buildMode === effectiveMode) return; // noop
-
-    // Update currentExperiment immutably
-    setCurrentExperiment(prev => ({ ...prev, buildMode: effectiveMode }));
-
-    // Reset custom state for clean mode switch
-    clearSaved();
-    setCustomLayout({});
-    setCustomConnections([]);
-    setCustomComponents([]);
-    setCustomPinAssignments({});
-    setConnectionOverrides({});
-    setWireMode(false); // always reset wire mode on mode switch
-    setSelectedWireIndex(-1);
-
-    // Reset build step index based on new mode
-    setBuildStepIndex(
-      effectiveMode === 'guided' ? -1
-        : effectiveMode === 'sandbox' ? -1
-          : Infinity
-    );
-
-    // Re-solve circuit from original experiment data
-    if (solverRef.current && currentExperiment.simulationMode === 'circuit') {
-      const refreshed = { ...currentExperiment, buildMode: effectiveMode };
-      solverRef.current.loadExperiment(refreshed);
-      setComponentStates(solverRef.current.getState());
-      // AUTO-START: battery experiments restart after mode switch
-      solverRef.current.start();
-      setIsRunning(true);
-    }
-  }, [currentExperiment, clearSaved]);
-
-  /* ─────────────────────────────────────────────────
-     Back to experiment list
-     ───────────────────────────────────────────────── */
-  const handleBack = useCallback(() => {
-    handlePause();
-    if (avrRef.current) { avrRef.current.destroy(); avrRef.current = null; }
-    avrLoadingRef.current = false;
-    avrSetupLockRef.current.inProgress = false;
-    avrSetupLockRef.current.expId = null;
-    loadedExpIdRef.current = null;
-    setCurrentExperiment(null);
-    if (onExperimentChangeRef.current) onExperimentChangeRef.current(null);
-    setComponentStates({});
-    setShowSidebar(true);
-    setSerialOutput('');
-    setAvrReady(false);
-    pinMapRef.current = {};
-    // Reset custom state
-    setCustomLayout({});
-    setCustomConnections([]);
-    setCustomComponents([]);
-    setCustomPinAssignments({});
-    setEditorCode('');
-    setCompilationStatus(null);
-    setPotOverlay(null);
-    setLdrOverlay(null);
-    setShowPalette(false);
-    setShowCodeEditor(false);
-    setWireMode(false);
-    // Sprint 3 resets
-    setShowBom(false);
-    setShowQuiz(false);
-    setAnnotations([]);
-    setSelectedAnnotation(null);
-  }, [handlePause]);
-
-  /* ─────────────────────────────────────────────────
-     Component interaction (ENHANCED with pot/LDR overlays)
-     ───────────────────────────────────────────────── */
-  // FIX P0-2: Accept optional 'action' param for push-button press/release
-  const handleComponentClick = useCallback((componentId, action) => {
-    if (!mergedExperiment) return;
-
-    const comp = mergedExperiment.components.find(c => c.id === componentId);
-    if (!comp) return;
-
-    /* Andrea Marro — 12/02/2026 — Analytics + Events */
-    try { sendAnalyticsEvent(EVENTS.COMPONENT_INTERACTED, { componentId, type: comp.type, action: action || 'click' }); } catch { }
-    try { emitSimulatorEvent('componentInteract', { componentId, type: comp.type, action: action || 'click' }); } catch { }
-
-    // FIX P0-2: Push-button with explicit press/release action from SimulatorCanvas
-    if (comp.type === 'push-button' && (action === 'press' || action === 'release')) {
-      // S112: Update visual state for button depression feedback
-      setComponentStates(prev => ({ ...prev, [componentId]: { ...prev[componentId], pressed: action === 'press' } }));
-      if (mergedExperiment.simulationMode === 'circuit' && solverRef.current) {
-        solverRef.current.interact(componentId, action);
-      }
-      if (mergedExperiment.simulationMode === 'avr' && avrRef.current) {
-        const pinEntry = Object.entries(pinMapRef.current).find(
-          ([, m]) => m.compId === componentId || m.directCompId === componentId
-        );
-        if (pinEntry) {
-          const pin = parseInt(pinEntry[0]);
-          avrRef.current.setInputPin(pin, action === 'press' ? 0 : 1);
-        }
-        // S112: Also route through solver so CircuitSolver updates its state
-        if (solverRef.current) {
-          solverRef.current.interact(componentId, action);
-        }
-      }
-      /* ── Andrea Marro — 17/02/2026 ── ~riga 1200 ── Input handling e interazioni ── */
-      return;
-    }
-
-    // Potentiometer interaction: show circular knob overlay
-    if (comp.type === 'potentiometer') {
-      const currentState = componentStates[componentId];
-      const currentValue = currentState?.position ?? 0.5;
-      setPotOverlay({ componentId, value: currentValue });
-      return;
-    }
-
-    // Photo-resistor / Phototransistor interaction: show light level slider overlay
-    if (comp.type === 'photo-resistor' || comp.type === 'phototransistor') {
-      const currentState = componentStates[componentId];
-      const currentValue = currentState?.lightLevel ?? 0.5;
-      setLdrOverlay({ componentId, value: currentValue });
-      return;
-    }
-
-    // Multimeter: cycle mode V → Ω → A → V
-    if (comp.type === 'multimeter' && action === 'cycle-mode') {
-      const currentMode = componentStates[componentId]?.mode || 'voltage';
-      const modes = ['voltage', 'resistance', 'current'];
-      const nextIdx = (modes.indexOf(currentMode) + 1) % modes.length;
-      const nextMode = modes[nextIdx];
-      setComponentStates(prev => ({
-        ...prev,
-        [componentId]: { ...prev[componentId], mode: nextMode },
-      }));
-      // If solver is running, update it too
-      if (solverRef.current) {
-        solverRef.current.interact(componentId, 'set-mode', nextMode);
-      }
-      return;
-    }
-
-    // Editable components: open properties panel
-    const editableTypes = ['resistor', 'capacitor', 'led', 'battery9v'];
-    if (editableTypes.includes(comp.type) && !action) {
-      setPropsPanel({ id: componentId, type: comp.type, value: comp.value, color: comp.color });
-      return;
-    }
-
-    // All component interactions natively delegate to the physical simulator!
-    if (solverRef.current) {
-      switch (comp.type) {
-        case 'push-button':
-          // Fallback: if no explicit action, toggle press/release (legacy)
-          solverRef.current.interact(componentId, 'press');
-          setTimeout(() => solverRef.current.interact(componentId, 'release'), 200);
-          break;
-        case 'reed-switch':
-          solverRef.current.interact(componentId, 'toggle');
-          break;
-        case 'mosfet-n':
-          // Toggle gate touch (for floating gate experiments)
-          if (componentStates[componentId]?.gateTouched) {
-            solverRef.current.interact(componentId, 'releaseGate');
-          } else {
-            solverRef.current.interact(componentId, 'touchGate');
-          }
-          break;
-      }
-    }
-  }, [mergedExperiment, componentStates]);
-
-  // ─── Keep callback refs in sync (for public API) ───
+  // ─── Keep callback refs in sync ───
   useEffect(() => { handleSelectExperimentRef.current = handleSelectExperiment; }, [handleSelectExperiment]);
   useEffect(() => { handlePlayRef.current = handlePlay; }, [handlePlay]);
   useEffect(() => { handlePauseRef.current = handlePause; }, [handlePause]);
   useEffect(() => { handleResetRef.current = handleReset; }, [handleReset]);
   useEffect(() => { handleComponentClickRef.current = handleComponentClick; }, [handleComponentClick]);
-  // handleCompileRef sync is below, after handleCompile is defined
-
-  /* ─────────────────────────────────────────────────
-     Pot overlay value change
-     ───────────────────────────────────────────────── */
-  const handlePotValueChange = useCallback((newValue) => {
-    if (!potOverlay) return;
-    setPotOverlay(prev => prev ? { ...prev, value: newValue } : null);
-
-    const cid = potOverlay.componentId;
-
-    // Update component state for visual feedback
-    setComponentStates(prev => ({
-      ...prev,
-      [cid]: { ...(prev[cid] || {}), position: newValue },
-    }));
-
-    // If circuit solver, interact with the component
-    if (solverRef.current && mergedExperiment?.simulationMode === 'circuit') {
-      solverRef.current.interact(cid, 'setPosition', newValue);
-    }
-
-    // If AVR mode, update analog input
-    if (avrRef.current && mergedExperiment?.simulationMode === 'avr') {
-      const pinEntry = Object.entries(pinMapRef.current).find(
-        ([, m]) => m.compId === cid || m.directCompId === cid
-      );
-      if (pinEntry) {
-        const pin = parseInt(pinEntry[0]);
-        // Analog value 0-1023
-        avrRef.current.setInputPin(pin, Math.round(newValue * 1023));
-      }
-    }
-  }, [potOverlay, mergedExperiment]);
-
-  /* ─────────────────────────────────────────────────
-     LDR overlay value change
-     ───────────────────────────────────────────────── */
-  const handleLdrValueChange = useCallback((newValue) => {
-    if (!ldrOverlay) return;
-    setLdrOverlay(prev => prev ? { ...prev, value: newValue } : null);
-
-    const cid = ldrOverlay.componentId;
-
-    setComponentStates(prev => ({
-      ...prev,
-      [cid]: { ...(prev[cid] || {}), lightLevel: newValue },
-    }));
-
-    if (solverRef.current && mergedExperiment?.simulationMode === 'circuit') {
-      solverRef.current.interact(cid, 'setLightLevel', newValue);
-    }
-
-    if (avrRef.current && mergedExperiment?.simulationMode === 'avr') {
-      const pinEntry = Object.entries(pinMapRef.current).find(
-        ([, m]) => m.compId === cid || m.directCompId === cid
-      );
-      if (pinEntry) {
-        const pin = parseInt(pinEntry[0]);
-        // LDR: high light = low resistance = high voltage (inverted)
-        avrRef.current.setInputPin(pin, Math.round(newValue * 1023));
-      }
-    }
-  }, [ldrOverlay, mergedExperiment]);
-
-  /* ─────────────────────────────────────────────────
-     Properties panel value change
-     ───────────────────────────────────────────────── */
-  const handlePropChange = useCallback((compId, field, newValue) => {
-    if (!mergedExperiment) return;
-
-    // Handle wire color change
-    if (propsPanel?.type === 'wire') {
-      if (field === 'color') {
-        handleWireUpdate(compId, { color: newValue });
-        setPropsPanel(prev => prev ? { ...prev, color: newValue } : null);
-        pushSnapshot(getCurrentSnapshot());
-      }
-      return;
-    }
-
-    pushSnapshot(getCurrentSnapshot()); // Save for undo
-
-    // Update the component in custom components or base experiment
-    if (field === 'value') {
-      setCustomComponents(prev => {
-        const existing = prev.find(c => c.id === compId);
-        if (existing) {
-          return prev.map(c => c.id === compId ? { ...c, value: newValue } : c);
-        }
-        // If it's a base experiment component, add it as custom with the new value
-        const base = mergedExperiment.components.find(c => c.id === compId);
-        if (base) return [...prev, { ...base, value: newValue }];
-        return prev;
-      });
-    } else if (field === 'color') {
-      setCustomComponents(prev => {
-        const existing = prev.find(c => c.id === compId);
-        if (existing) {
-          return prev.map(c => c.id === compId ? { ...c, color: newValue } : c);
-        }
-        const base = mergedExperiment.components.find(c => c.id === compId);
-        if (base) return [...prev, { ...base, color: newValue }];
-        return prev;
-      });
-    }
-
-    // Update properties panel state
-    setPropsPanel(prev => prev ? { ...prev, [field]: newValue } : null);
-
-    // useEffect on mergedExperiment handles re-solve automatically
-  }, [mergedExperiment]);
-
-  /* ─────────────────────────────────────────────────
-     FIX P0-5: Direct SVG knob rotation for potentiometer
-     Called from SimulatorCanvas during knob drag
-     ───────────────────────────────────────────────── */
-  /* ── Andrea Marro — 17/02/2026 ── ~riga 1400 ── Component value e drag handlers ── */
-  const handleComponentValueChange = useCallback((componentId, newValue) => {
-    if (!mergedExperiment) return;
-    const comp = mergedExperiment.components.find(c => c.id === componentId);
-    if (!comp) return;
-    recordMilestone('changedComponent');
-
-    if (comp.type === 'potentiometer') {
-      // Update visual state
-      setComponentStates(prev => ({
-        ...prev,
-        [componentId]: { ...(prev[componentId] || {}), position: newValue },
-      }));
-      // Update pot overlay if open
-      setPotOverlay(prev => prev && prev.componentId === componentId
-        ? { ...prev, value: newValue } : prev);
-      // Update circuit solver
-      if (solverRef.current && mergedExperiment.simulationMode === 'circuit') {
-        solverRef.current.interact(componentId, 'setPosition', newValue);
-      }
-      // Update AVR analog input
-      if (avrRef.current && mergedExperiment.simulationMode === 'avr') {
-        const pinEntry = Object.entries(pinMapRef.current).find(
-          ([, m]) => m.compId === componentId || m.directCompId === componentId
-        );
-        if (pinEntry) {
-          const pin = parseInt(pinEntry[0]);
-          avrRef.current.setInputPin(pin, Math.round(newValue * 1023));
-        }
-      }
-    }
-  }, [mergedExperiment, recordMilestone]);
-
-  /* ─────────────────────────────────────────────────
-     Serial input from SerialMonitor
-     ───────────────────────────────────────────────── */
-  const handleSerialInput = useCallback((text) => {
-    if (avrRef.current) {
-      avrRef.current.serialWrite(text);
-      // RX LED pulse
-      setComponentStates(prev => ({ ...prev, _rxActive: true }));
-      setTimeout(() => {
-        setComponentStates(prev => ({ ...prev, _rxActive: false }));
-      }, 80);
-    }
-  }, []);
-
-  /* ═══════════════════════════════════════════════════════════════
-     NEW: "Chiedi a UNLIM" handler — captures SVG screenshot + unlimPrompt
-     ═══════════════════════════════════════════════════════════════ */
-  const handleAskUNLIM = useCallback(async () => {
-    if (!mergedExperiment || isAskingUNLIM) return;
-
-    setIsAskingUNLIM(true);
-    // Show a "connecting" panel immediately so user knows something is happening
-    setUnlimResponse({ text: '⏳ UNLIM sta analizzando l\'esperimento... Potrebbe richiedere fino a 30 secondi.', timestamp: Date.now(), loading: true });
-
-    try {
-      // 1. Build circuit state context for UNLIM
-      const ledStates = (mergedExperiment.components || [])
-        .filter(c => c.type === 'led' || c.type === 'rgb-led')
-        .map(c => {
-          const state = componentStates[c.id] || {};
-          const isOn = state.brightness > 0 || state.glowing;
-          return `${c.id}: ${isOn ? 'ACCESO' : 'spento'}`;
-        }).join(', ');
-      const buildModeText = !currentExperiment?.buildMode
-        ? 'Già Montato (circuito completo)'
-        : currentExperiment.buildMode === 'guided'
-          ? `Passo Passo (step ${buildStepIndex + 1} di ${mergedExperiment.buildSteps?.length || '?'})`
-          : 'Esplora Libero (canvas libero)';
-
-      // 2. Build the prompt from unlimPrompt field or generate a default (BEFORE screenshot for speed)
-      const unlimPrompt = mergedExperiment.unlimPrompt ||
-        `Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento "${mergedExperiment.title}". ` +
-        `Descrizione: ${mergedExperiment.desc || 'N/A'}. ` +
-        `Concetti chiave: ${mergedExperiment.concept || 'N/A'}. ` +
-        `Modalità: ${buildModeText}. ` +
-        (ledStates ? `LED nel circuito: ${ledStates}. ` : '') +
-        `Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.`;
-
-      // 2. Capture SVG canvas as image (optional — don't block on failure)
-      let imageBase64 = null;
-      const svgEl = canvasContainerRef.current?.querySelector('svg');
-      if (svgEl) {
-        try {
-          const svgData = new XMLSerializer().serializeToString(svgEl);
-          const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-          const url = URL.createObjectURL(svgBlob);
-
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          const img = new Image();
-
-          await new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-            img.src = url;
-          });
-
-          // Ridurre dimensione per velocizzare invio (max 600px lato lungo)
-          const maxDim = 600;
-          const scale = Math.min(maxDim / (img.width || 800), maxDim / (img.height || 600), 1);
-          canvas.width = Math.round((img.width || 800) * scale);
-          canvas.height = Math.round((img.height || 600) * scale);
-          ctx.fillStyle = '#FAFAF7';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          imageBase64 = canvas.toDataURL('image/png').split(',')[1];
-          URL.revokeObjectURL(url);
-        } catch (screenshotErr) {
-          logger.warn('[ELAB] Screenshot capture failed:', screenshotErr.message);
-          // Continue without image — UNLIM can still explain from the text prompt
-        }
-      }
-
-      // 3. Send to UNLIM API (text-only if screenshot failed, with image otherwise)
-      const images = imageBase64 ? [{ base64: imageBase64, mimeType: 'image/png' }] : [];
-      const result = await apiSendChat(unlimPrompt, images);
-
-      if (result.success) {
-        setUnlimResponse({ text: result.response, timestamp: Date.now() });
-      } else {
-        // Show a clear error with the actual message
-        const errorText = result.response || '❌ UNLIM non è disponibile al momento.';
-        setUnlimResponse({ text: errorText + '\n\nPuoi comunque leggere la guida dell\'esperimento nel pannello a destra.', timestamp: Date.now() });
-      }
-    } catch (err) {
-      logger.error('[ELAB] Ask UNLIM error:', err);
-      const msg = err?.message?.includes('abort') || err?.message?.includes('timeout')
-        ? 'UNLIM ci sta mettendo troppo. Il servizio potrebbe essere temporaneamente non disponibile.'
-        : 'Errore di connessione con UNLIM.';
-      setUnlimResponse({ text: msg + '\n\nPuoi comunque leggere la guida dell\'esperimento nel pannello a destra.', timestamp: Date.now() });
-    } finally {
-      setIsAskingUNLIM(false);
-    }
-  }, [mergedExperiment, isAskingUNLIM, componentStates, currentExperiment, buildStepIndex]);
-
-  /* ═══════════════════════════════════════════════════════════════
-     Layout change handler (drag-drop moves)
-     FIX: Recomputes pinAssignments for ALL components (not just
-     user-added ones) to prevent "ghost connections" where a moved
-     component's circuit topology stays at its old position.
-     ═══════════════════════════════════════════════════════════════ */
-  // Ref to guard against pushing multiple undo snapshots during a single drag.
-  // Reset on mouseup (drag end) so the next drag gets a fresh snapshot.
-  const dragSnapshotPushedRef = useRef(false);
-  useEffect(() => {
-    const resetDragSnapshot = () => { dragSnapshotPushedRef.current = false; };
-    window.addEventListener('mouseup', resetDragSnapshot);
-    return () => window.removeEventListener('mouseup', resetDragSnapshot);
-  }, []);
-
-  const handleLayoutChange = useCallback((componentId, newPos, isFinal = true) => {
-    // Push undo snapshot only once per drag (not on every mouse-move frame)
-    if (!dragSnapshotPushedRef.current) {
-      pushSnapshot(getCurrentSnapshot());
-      dragSnapshotPushedRef.current = true;
-      recordMilestone('draggedComponent');
-    }
-
-    // Recompute pinAssignments for ANY dragged component (base OR user-added)
-    const comp = mergedExperiment
-      ? (mergedExperiment.components || []).find(c => c.id === componentId)
-      : null;
-    const containerTypes = ['breadboard-half', 'breadboard-full', 'nano-r4'];
-    const noSnapTypes = [...containerTypes, 'battery9v', 'multimeter'];
-    const isContainer = comp && containerTypes.includes(comp.type);
-
-    if (isContainer && mergedExperiment) {
-      // ─── CASCADE MOVE: breadboard/nano drags its children ───
-      // Collect child IDs using BOTH parentId tracking AND geometric fallback.
-      // parentId is the primary source (set when component snaps to breadboard).
-      // Geometric fallback catches components placed by experiments without parentId.
-      const childIds = new Set();
-      const registered = getComponent(comp.type);
-      const dims = registered?.boardDimensions;
-      const bbW = dims?.width || 256;
-      const bbH = dims?.height || 165;
-
-      for (const c of (mergedExperiment.components || [])) {
-        if (c.id === componentId) continue;
-        const cLayout = mergedExperiment.layout?.[c.id];
-        if (!cLayout) continue;
-        // Skip other containers UNLESS they are children of the dragged component
-        // (e.g., dragging breadboard should cascade its child nano-r4)
-        if (containerTypes.includes(c.type) && cLayout.parentId !== componentId) continue;
-        // Primary: parentId match
-        if (cLayout.parentId === componentId) {
-          childIds.add(c.id);
-          continue;
-        }
-        // Fallback: geometric bounding box (for experiment-placed components without parentId)
-        const bbPos = mergedExperiment.layout?.[componentId] || { x: 0, y: 0 };
-        const MARGIN = 15;
-        if (cLayout.x >= bbPos.x - MARGIN && cLayout.x <= bbPos.x + bbW + MARGIN &&
-          cLayout.y >= bbPos.y - MARGIN && cLayout.y <= bbPos.y + bbH + MARGIN) {
-          childIds.add(c.id);
-        }
-      }
-
-      // Reverse cascade: if the dragged container has a parentId, also drag its
-      // parent and all siblings (e.g., dragging nano1 → cascade bb1 + all components on bb1)
-      const myLayout = mergedExperiment.layout?.[componentId];
-      if (myLayout?.parentId) {
-        const parentId = myLayout.parentId;
-        childIds.add(parentId);
-        for (const c of (mergedExperiment.components || [])) {
-          if (c.id === componentId || childIds.has(c.id)) continue;
-          const cL = mergedExperiment.layout?.[c.id];
-          if (cL?.parentId === parentId) childIds.add(c.id);
-        }
-      }
-
-      // Single setCustomLayout: compute dx/dy INSIDE functional update to avoid stale state
-      setCustomLayout(prev => {
-        // Get the LATEST container position from prev (custom) or base experiment
-        const basePos = currentExperiment?.layout?.[componentId] || { x: 0, y: 0 };
-        const oldPos = prev[componentId]
-          ? { x: prev[componentId].x ?? basePos.x, y: prev[componentId].y ?? basePos.y }
-          : basePos;
-        const dx = newPos.x - oldPos.x;
-        const dy = newPos.y - oldPos.y;
-
-        const posUpdate = { x: newPos.x, y: newPos.y };
-        if (newPos.rotation !== undefined) posUpdate.rotation = newPos.rotation;
-        const next = { ...prev, [componentId]: { ...prev[componentId], ...posUpdate } };
-
-        if (dx !== 0 || dy !== 0) {
-          for (const childId of childIds) {
-            const baseChildPos = currentExperiment?.layout?.[childId] || { x: 0, y: 0 };
-            const childX = prev[childId]?.x ?? baseChildPos.x;
-            const childY = prev[childId]?.y ?? baseChildPos.y;
-            next[childId] = {
-              ...prev[childId],
-              x: childX + dx,
-              y: childY + dy,
-              parentId: prev[childId]?.parentId ?? baseChildPos.parentId ?? componentId,
-            };
-          }
-        }
-        return next;
-      });
-    } else {
-      // Regular update: just move the single component (preserve rotation + parentId)
-      setCustomLayout(prev => {
-        const posUpdate = { x: newPos.x, y: newPos.y };
-        if (newPos.rotation !== undefined) posUpdate.rotation = newPos.rotation;
-        // S114: Preserve parentId so customLayout doesn't lose parent-child relationship
-        if (newPos.parentId !== undefined) posUpdate.parentId = newPos.parentId;
-        return { ...prev, [componentId]: { ...prev[componentId], ...posUpdate } };
-      });
-    }
-    /* ── Andrea Marro — 17/02/2026 ── ~riga 1600 ── Layout e posizionamento ── */
-
-    if (!isFinal) {
-      // ─── DRAGGING: Force disconnect to simulate open circuit ───
-      // Only for regular components that would snap (not containers/battery)
-      if (mergedExperiment && comp && !isContainer && !noSnapTypes.includes(comp.type)) {
-        setCustomPinAssignments(prev => {
-          const next = { ...prev };
-          const prefix = `${componentId}:`;
-          let changed = false;
-          // Clear existing custom assignments
-          for (const key of Object.keys(next)) {
-            if (key.startsWith(prefix)) { delete next[key]; changed = true; }
-          }
-          // Override base assignments with null to ensure disconnection
-          const basePins = currentExperiment?.pinAssignments || {};
-          for (const key of Object.keys(basePins)) {
-            if (key.startsWith(prefix)) { next[key] = null; changed = true; }
-          }
-          return changed ? next : prev;
-        });
-      }
-    } else if (mergedExperiment && comp && !isContainer && !noSnapTypes.includes(comp.type)) {
-      // ─── DROP (Final): Snap to breadboard + recompute pinAssignments ───
-
-      // SNAP-BACK: If dropped near original position, restore original state
-      // This ensures "move and put back" always reconnects the circuit.
-      const originalPos = currentExperiment?.layout?.[componentId];
-      const SNAP_BACK_THRESHOLD = 3; // Must be < holePitch/2 (7.5/2=3.75) so adjacent-hole moves work
-      if (originalPos && Math.hypot(newPos.x - originalPos.x, newPos.y - originalPos.y) < SNAP_BACK_THRESHOLD) {
-        // Restore original position (remove custom override)
-        setCustomLayout(prev => {
-          const next = { ...prev };
-          delete next[componentId];
-          return next;
-        });
-        // Restore original pinAssignments (remove custom overrides)
-        setCustomPinAssignments(prev => {
-          const next = { ...prev };
-          const prefix = `${componentId}:`;
-          for (const key of Object.keys(next)) {
-            if (key.startsWith(prefix)) delete next[key];
-          }
-          return next;
-        });
-      } else {
-        // Auto-snap to nearest breadboard hole
-        const breadboards = (mergedExperiment.components || []).filter(
-          c => c.type === 'breadboard-half' || c.type === 'breadboard-full'
-        );
-        let snapped = false;
-        let newPinAssignments = null;
-        for (const bb of breadboards) {
-          const bbPos = mergedExperiment.layout?.[bb.id] || { x: 0, y: 0 };
-          const result = computeAutoPinAssignment(componentId, comp.type, newPos.x, newPos.y, bb.id, bbPos, bb.type);
-          if (result) {
-            newPinAssignments = result.pinAssignments;
-            setCustomLayout(prev => ({
-              ...prev,
-              [componentId]: {
-                ...prev[componentId],
-                x: result.componentX,
-                y: result.componentY,
-                parentId: bb.id,
-              }
-            }));
-            setCustomPinAssignments(prev => {
-              const next = { ...prev };
-              for (const key of Object.keys(next)) {
-                if (key.startsWith(`${componentId}:`)) delete next[key];
-              }
-              return { ...next, ...result.pinAssignments };
-            });
-            snapped = true;
-            break;
-          }
-        }
-
-
-
-        if (!snapped) {
-          // S114: Remove parentId when component is dropped outside breadboard
-          setCustomLayout(prev => {
-            const entry = prev[componentId];
-            if (entry?.parentId) {
-              const next = { ...prev, [componentId]: { ...entry } };
-              delete next[componentId].parentId;
-              return next;
-            }
-            return prev;
-          });
-          setCustomPinAssignments(prev => {
-            const next = { ...prev };
-            for (const key of Object.keys(next)) {
-              if (key.startsWith(`${componentId}:`)) next[key] = null;
-            }
-            const basePins = currentExperiment?.pinAssignments || {};
-            for (const key of Object.keys(basePins)) {
-              if (key.startsWith(`${componentId}:`)) next[key] = null;
-            }
-            return next;
-          });
-        }
-      }
-    }
-
-    // useEffect on mergedExperiment handles re-solve automatically
-  }, [mergedExperiment, currentExperiment, pushSnapshot, getCurrentSnapshot]);
-
-  /* ═══════════════════════════════════════════════════════════════
-     NEW: Connection add handler — with auto wire coloring
-     ═══════════════════════════════════════════════════════════════ */
-  const handleConnectionAdd = useCallback((fromPinRef, toPinRef) => {
-    pushSnapshot(getCurrentSnapshot()); // Save for undo
-    const color = getAutoWireColor(fromPinRef, toPinRef);
-    const newConn = { from: fromPinRef, to: toPinRef, color, id: `conn-${Date.now()}-${Math.random().toString(36).substr(2, 5)}` };
-    pushActivity('wire_added', `${fromPinRef}→${toPinRef}`);
-    setCustomConnections(prev => [...prev, newConn]);
-    recordMilestone('connectedWire');
-    /* Andrea Marro — 12/02/2026 — Events */
-    try { emitSimulatorEvent('circuitChange', { action: 'wireAdded', from: fromPinRef, to: toPinRef }); } catch { }
-  }, [pushSnapshot, getCurrentSnapshot, recordMilestone]);
-
-  // Handle wire update (waypoints, color, etc.)
-  const handleWireUpdate = useCallback((wireIndex, newConnectionData) => {
-    if (!mergedExperiment) return;
-    const conn = mergedExperiment.connections[wireIndex];
-    if (conn && conn.id) {
-      // Debounce snapshot? For drag operations, maybe we shouldn't snapshot every move.
-      // But handleWireUpdate is called on mouseMove in SimulatorCanvas...
-      // Wait, SimulatorCanvas calls onWireUpdate continuously during drag?
-      // YES. We should NOT snapshot on every update if it's high frequency.
-      // However, updating React state (setConnectionOverrides) on every frame is OK for rendering,
-      // but strictly we should probably separate "preview" from "commit".
-      // For now, let's just update state. Undo snapshot should be handled by 'drag start' or 'drag end' logic
-      // which we don't strictly have here.
-      // SimulatorCanvas handles the interaction. Ideally it calls a "final" update on drop.
-      // But it calls onWireUpdate during move.
-      // We'll rely on SimulatorCanvas not being too spammy or just accepting it.
-      // Actually, we WON'T pushSnapshot here to avoid flooding history during drag.
-      // We should rely on a separate "commit" or just assume the user will snapshot manually?
-      // NO. SimulatorCanvas should probably have onWireUpdateEnd?
-      // For now, to keep it simple and responsive: just update state.
-
-      setConnectionOverrides(prev => ({
-        ...prev,
-        [conn.id]: newConnectionData
-      }));
-    }
-  }, [mergedExperiment]);
-
-  /* ═══════════════════════════════════════════════════════════════
-     Wire selection and deletion
-     ═══════════════════════════════════════════════════════════════ */
-  const handleWireClick = useCallback((wireIndex) => {
-    // Toggle: if clicking the same wire, deselect
-    setSelectedWireIndex(prev => {
-      const isDeselect = prev === wireIndex;
-      if (isDeselect) {
-        setPropsPanel(null);
-        return -1;
-      }
-      return wireIndex;
-    });
-
-    // Opening properties panel asynchronously using a functional state update 
-    // to reliably get the current connection color without adding mergedExperiment to the deps array.
-    setPropsPanel(prevPanel => {
-      if (prevPanel?.type === 'wire' && prevPanel.id === wireIndex) return null; // already deselected by setSelectedWireIndex
-      // This is slightly tricky without mergedExperiment in scope, but we can read from connectionOverrides or customConnections.
-      // We'll rely on a separate useEffect to sync the propsPanel color if we just open it.
-      return { id: wireIndex, type: 'wire', color: 'green' }; // Default color, will be updated by a sync effect or we assume 'green'
-    });
-  }, []);
-
-  const handleWireDelete = useCallback((wireIndex) => {
-    if (!mergedExperiment) return;
-    const allConns = mergedExperiment.connections || [];
-    const conn = allConns[wireIndex];
-    if (!conn) return;
-    pushActivity('wire_removed', `${conn.from}→${conn.to}`);
-
-    // Find and remove from customConnections (user-added wires)
-    // The wire index refers to the merged array: baseConnections + customConnections
-    const baseCount = (currentExperiment?.connections || []).length;
-    let isCustom = false;
-    let customIndex = -1;
-
-    // determine if `conn` is custom by checking its ID in customConnections
-    customIndex = customConnections.findIndex(c => c.id === conn.id);
-    if (customIndex !== -1) {
-      isCustom = true;
-    } else {
-      // Fallback index checking
-      customIndex = wireIndex - baseCount;
-      if (customIndex >= 0 && customIndex < customConnections.length) {
-        isCustom = true;
-      }
-    }
-
-    pushSnapshot(getCurrentSnapshot()); // Save for undo
-
-    if (isCustom) {
-      // Cleanup overrides for this ID
-      const connId = conn.id;
-      if (connId && connectionOverrides[connId]) {
-        setConnectionOverrides(prev => {
-          const next = { ...prev };
-          delete next[connId];
-          return next;
-        });
-      }
-
-      setCustomConnections(prev => prev.filter((_, i) => i !== customIndex));
-    } else {
-      // Base experiment wire — mark as hidden via override
-      if (conn.id) {
-        setConnectionOverrides(prev => ({
-          ...prev,
-          [conn.id]: { hidden: true }
-        }));
-      }
-    }
-
-    setSelectedWireIndex(-1);
-    /* Andrea Marro — 12/02/2026 — Events */
-    try { emitSimulatorEvent('circuitChange', { action: 'wireRemoved', wireIndex }); } catch { }
-  }, [mergedExperiment, currentExperiment, customConnections, connectionOverrides, pushSnapshot, getCurrentSnapshot]);
-
-  /* ═══════════════════════════════════════════════════════════════
-     NEW: Component add handler — with auto-pinAssignment on breadboard
-     ═══════════════════════════════════════════════════════════════ */
-  const handleComponentAdd = useCallback((type, position) => {
-    pushSnapshot(getCurrentSnapshot()); // Save for undo
-    const id = generateComponentId(type);
-    const newComp = { id, type };
-
-    // Assign sensible defaults for common types
-    if (type === 'resistor') newComp.value = 1000;
-    if (type === 'led') newComp.color = 'red';
-    if (type === 'capacitor') newComp.value = 100e-6;
-
-    // ─── Auto-pin assignment: detect if dropped on a breadboard ───
-    const dropX = position?.x ?? 200;
-    const dropY = position?.y ?? 150;
-    const noSnapTypes = ['breadboard-half', 'breadboard-full', 'battery9v', 'nano-r4', 'multimeter'];
-
-    let finalX = dropX;
-    let finalY = dropY;
-    let newPinAssignments = {};
-    let snappedBbId = null; // S109: Track which breadboard the component snapped to
-
-    if (!noSnapTypes.includes(type) && mergedExperiment) {
-      const breadboards = (mergedExperiment.components || []).filter(
-        c => c.type === 'breadboard-half' || c.type === 'breadboard-full'
-      );
-
-      for (const bb of breadboards) {
-        const bbPos = mergedExperiment.layout?.[bb.id] || { x: 0, y: 0 };
-        const result = computeAutoPinAssignment(id, type, dropX, dropY, bb.id, bbPos, bb.type);
-        if (result) {
-          finalX = result.componentX;
-          finalY = result.componentY;
-          newPinAssignments = result.pinAssignments;
-          snappedBbId = bb.id;
-          break;
-        }
-      }
-    }
-
-    pushActivity('component_added', `${type} (${id})`);
-    setCustomComponents(prev => [...prev, newComp]);
-    setCustomLayout(prev => ({
-      ...prev,
-      [id]: {
-        x: finalX,
-        y: finalY,
-        ...(snappedBbId ? { parentId: snappedBbId } : {}), // S109: Antigravity — palette-dropped components follow breadboard
-      },
-    }));
-
-    // Merge new pin assignments
-    if (Object.keys(newPinAssignments).length > 0) {
-      setCustomPinAssignments(prev => ({ ...prev, ...newPinAssignments }));
-    }
-
-    // useEffect on mergedExperiment handles re-solve automatically
-
-    return id;
-  }, [mergedExperiment, pushSnapshot, getCurrentSnapshot]);
-  /* ── Andrea Marro — 17/02/2026 ── ~riga 1800 ── Undo/Redo e snapshot ── */
-
-  /* ═══════════════════════════════════════════════════════════════
-     NEW: Component delete handler (user-added only)
-     ═══════════════════════════════════════════════════════════════ */
-  const handleComponentDelete = useCallback((componentId) => {
-    pushSnapshot(getCurrentSnapshot()); // Save for undo
-    pushActivity('component_removed', componentId);
-    // Rimuovi componenti user-added
-    const isUserAdded = customComponents.some(c => c.id === componentId);
-    if (isUserAdded) {
-      setCustomComponents(prev => prev.filter(c => c.id !== componentId));
-    }
-
-    // Per componenti base: nascondili via customLayout con flag hidden
-    if (!isUserAdded && currentExperiment) {
-      // Nascondi il componente (non lo eliminiamo dall'esperimento base)
-      setCustomLayout(prev => ({
-        ...prev,
-        [componentId]: { ...(prev[componentId] || {}), hidden: true },
-      }));
-    }
-
-    // Remove related custom connections
-    setCustomConnections(prev =>
-      prev.filter(conn => {
-        const fromId = conn.from.split(':')[0];
-        const toId = conn.to.split(':')[0];
-        return fromId !== componentId && toId !== componentId;
-      })
-    );
-
-    // Remove custom layout entry (solo per user-added)
-    if (isUserAdded) {
-      setCustomLayout(prev => {
-        const next = { ...prev };
-        delete next[componentId];
-        return next;
-      });
-    }
-
-    // Remove pin assignments for this component
-    setCustomPinAssignments(prev => {
-      const next = { ...prev };
-      for (const key of Object.keys(next)) {
-        if (key.startsWith(`${componentId}:`) || next[key].startsWith(`${componentId}:`)) delete next[key];
-      }
-      return next;
-    });
-
-    // Make children orphans if this was a breadboard / parent
-    setCustomLayout(prev => {
-      let changed = false;
-      const next = { ...prev };
-      for (const key of Object.keys(next)) {
-        if (next[key]?.parentId === componentId) {
-          next[key] = { ...next[key] };
-          delete next[key].parentId;
-          changed = true;
-        }
-      }
-      return changed ? next : prev;
-    });
-
-    // useEffect on mergedExperiment handles re-solve automatically
-  }, [customComponents, currentExperiment, pushSnapshot, getCurrentSnapshot]);
-
-  // Keep callback refs in sync for physical layout commands
+  useEffect(() => { handleCompileRef.current = handleCompile; }, [handleCompile]);
   useEffect(() => { handleConnectionAddRef.current = handleConnectionAdd; }, [handleConnectionAdd]);
   useEffect(() => { handleWireDeleteRef.current = handleWireDelete; }, [handleWireDelete]);
   useEffect(() => { handleComponentAddRef.current = handleComponentAdd; }, [handleComponentAdd]);
@@ -3332,385 +664,29 @@ const NewElabSimulator = ({
   useEffect(() => { handleLayoutChangeRef.current = handleLayoutChange; }, [handleLayoutChange]);
   useEffect(() => { handleBuildModeSwitchRef.current = handleBuildModeSwitch; }, [handleBuildModeSwitch]);
 
-  /* ═══════════════════════════════════════════════════════════════
-     NEW: Reset experiment to original state
-     ═══════════════════════════════════════════════════════════════ */
-  const handleResetExperiment = useCallback(() => {
-    if (!currentExperiment) return;
-    pushSnapshot(getCurrentSnapshot()); // Save for undo
-    clearSaved(); // Remove localStorage circuit state
-    clearSavedCode(currentExperiment.id); // Remove localStorage code
-    localStorage.removeItem(`elab_scratch_${currentExperiment.id}`); // Remove scratch XML
-    localStorage.removeItem(`elab_scratch_code_${currentExperiment.id}`); // S93: Remove scratch generated code
-    setCustomLayout({});
-    setCustomConnections([]);
-    setCustomComponents([]);
-    setCustomPinAssignments({});
-    setScratchXml('');
-    setScratchGeneratedCode(''); // S93: Clear shadow scratch code
-    setConnectionOverrides({});
-    setPotOverlay(null);
-    setLdrOverlay(null);
-    setAnnotations([]);
-    setSelectedAnnotation(null);
-    // Reset build mode to default for this experiment
-    setBuildStepIndex(
-      currentExperiment.buildMode === 'guided' ? -1
-        : currentExperiment.buildMode === 'sandbox' ? -1
-          : Infinity
-    );
-    // Reset editor code to experiment default
-    const originalCode = currentExperiment.code || '';
-    setEditorCode(originalCode);
-    codeNeedsCompileRef.current = false;
-    setCompilationStatus(null);
-    // Re-solve circuit from original experiment data
-    if (solverRef.current && currentExperiment.simulationMode === 'circuit') {
-      solverRef.current.loadExperiment(currentExperiment);
-      setComponentStates(solverRef.current.getState());
-      // AUTO-START: battery experiments restart after code reset
-      solverRef.current.start();
-      setIsRunning(true);
-    }
-    // useEffect on mergedExperiment handles re-solve automatically
-  }, [currentExperiment, pushSnapshot, getCurrentSnapshot, clearSaved, clearSavedCode]);
+  // ─── Simulator API Hook ───
+  useSimulatorAPI({
+    currentExperimentRef, mergedExperimentRef, componentStatesRef, editorCodeRef, editorModeRef, scratchGeneratedCodeRef, showCodeEditorRef,
+    circuitStatusRef, buildStepIndexRef, canUndoRef, canRedoRef, selectedComponentIdRef, serialOutputRef, compilationDetailsRef, isRunningRef,
+    solverRef, avrRef, pinMapRef,
+    handleSelectExperimentRef, handlePlayRef, handlePauseRef, handleResetRef, handleCompileRef, handleComponentClickRef,
+    handleConnectionAddRef, handleWireDeleteRef, handleComponentAddRef, handleComponentDeleteRef, handleLayoutChangeRef, handleBuildModeSwitchRef,
+    getCurrentSnapshotRef, pushSnapshotRef, undoHistory, redoHistory, getCurrentSnapshot, restoreSnapshotRef,
+    setApiHighlightedComponents, setApiHighlightedPins, setEditorCode, setEditorMode, setScratchXml, setScratchFullscreen,
+    setShowCodeEditor, setShowBom, setShowLessonPath, setShowNotes, setShowQuiz, setBottomPanel, setShowBottomPanel, setBuildStepIndex,
+    setCustomComponents, setCustomConnections, setCustomLayout, setCustomPinAssignments, setConnectionOverrides,
+    codeNeedsCompileRef,
+    onCircuitStateChange, onCircuitEvent, mergedExperiment, currentExperiment, componentStates, buildStepIndex,
+  });
 
-  /* ═══════════════════════════════════════════════════════════════
-     NEW: Arduino compilation handler (REAL — via backend + arduino-cli)
-     Compila E carica l'hex nell'emulatore
-     ═══════════════════════════════════════════════════════════════ */
-  const handleCompile = useCallback(async (code) => {
-    // Guard: prevent multiple simultaneous compilations
-    if (compilingRef.current) {
-      return;
-    }
-    compilingRef.current = true;
-
-    setCompilationStatus('compiling');
-    setCompilationErrors(null);
-    setCompilationWarnings(null);
-    setCompilationErrorLine(null);
-    setCompilationSize(null);
-
-    try {
-      // Step 1: Calcola hash del codice sorgente
-      const codeHash = await hashCode(code);
-
-      // Step 2: Controlla cache
-      const cached = getCachedHex(codeHash);
-      let result;
-
-      if (cached) {
-        // ✅ Cache hit — usa HEX salvato
-        result = { success: true, hex: cached.hex, size: cached.size, output: null };
-      } else {
-        // ❌ Cache miss — chiama API di compilazione
-        result = await apiCompileCode(code);
-
-        // Salva in cache se compilazione OK
-        if (result.success && result.hex) {
-          const hexBytes = result.size || Math.floor(result.hex.replace(/[^0-9a-fA-F]/g, '').length / 2);
-          setCachedHex(codeHash, result.hex, hexBytes);
-        }
-      }
-
-      if (result.success && result.hex) {
-        // ✅ Compilation succeeded — load hex into AVR emulator
-        setCompilationStatus('success');
-        codeNeedsCompileRef.current = false; // hex ora corrisponde al codice
-        // Auto-show serial panel on successful compile & run (skip on short viewports — iPad landscape)
-        if (window.innerHeight > 820) setShowBottomPanel(true);
-
-        // Calculate binary size from hex or API response
-        const FLASH_TOTAL = 32256; // ATmega328p usable flash
-        const hexBytes = result.size || Math.floor(result.hex.replace(/[^0-9a-fA-F]/g, '').length / 2);
-        setCompilationSize({
-          bytes: hexBytes,
-          total: FLASH_TOTAL,
-          percent: Math.round((hexBytes / FLASH_TOTAL) * 100),
-        });
-
-        if (avrRef.current) {
-          // Stop current execution
-          avrRef.current.pause();
-          if (avrPollRef.current) {
-            clearInterval(avrPollRef.current);
-            avrPollRef.current = null;
-          }
-          setIsRunning(false);
-
-          // Load compiled hex into emulator
-          const loaded = await avrRef.current.loadHexFromString(result.hex);
-          if (loaded) {
-            setSerialOutput('');
-            // Re-configure LCD pins after hex reload (bridge may have reset)
-            const lcdMapping = buildLCDPinMapping(mergedExperiment || currentExperiment);
-            if (lcdMapping && avrRef.current.configureLCDPins) {
-              avrRef.current.configureLCDPins(lcdMapping);
-            }
-            setComponentStates({ _pins: avrRef.current.getPinStates() });
-          } else {
-          }
-        } else if (currentExperiment?.simulationMode === 'avr') {
-          // AVR bridge not yet loaded — lazy load and initialize
-          try {
-            const { default: AVRBridge } = await import('./engine/AVRBridge');
-            const bridge = new AVRBridge();
-
-            bridge.onSerialOutput = (char) => {
-              setSerialOutput(prev => {
-                const next = prev + char;
-                return next.length > 4000 ? next.slice(-3000) : next;
-              });
-              /* Andrea Marro — 12/02/2026 — Emit serial output event */
-              try { emitSimulatorEvent('serialOutput', { char }); } catch { }
-            };
-
-            // Set onPinChange callback — uses shared helper to avoid duplication
-            bridge.onPinChange = createOnPinChangeHandler(bridge, setComponentStates, pinMapRef);
-
-            const loaded = await bridge.loadHexFromString(result.hex);
-            if (loaded) {
-              avrRef.current = bridge;
-              setAvrReady(true);
-              setSerialOutput('');
-
-              // Configure LCD pins if experiment has an LCD component
-              const lcdMapping = buildLCDPinMapping(mergedExperiment || currentExperiment);
-              if (lcdMapping && bridge.configureLCDPins) {
-                bridge.configureLCDPins(lcdMapping);
-              }
-
-              setComponentStates({ _pins: bridge.getPinStates() });
-            }
-          } catch (err) {
-            logger.warn('[ELAB] AVRBridge lazy-load failed:', err.message);
-          }
-        }
-
-        pushActivity('compile_success', `${hexBytes}/${FLASH_TOTAL}B`);
-        sessionMetrics.trackCompilation(true);
-        // Extract warnings from compiler output (even on success)
-        if (result.output) {
-          const warnLines = result.output.split('\n').filter(l => /warning:/i.test(l));
-          if (warnLines.length > 0) {
-            setCompilationWarnings(translateCompilationErrors(warnLines.join('\n')));
-          }
-        }
-
-        // Reset status after 5 seconds
-        trackedTimeout(() => { setCompilationStatus(null); setCompilationWarnings(null); }, 5000);
-
-      } else {
-        /* ── Andrea Marro — 17/02/2026 ── ~riga 2000 ── Compilazione e error parsing ── */
-        // ❌ Compilation failed — separate errors from warnings
-        setCompilationStatus('error');
-        const fullText = result.errors || 'Errore di compilazione sconosciuto';
-        const lines = fullText.split('\n');
-        const errorLines = [];
-        const warnLines = [];
-        for (const line of lines) {
-          if (/warning:/i.test(line)) warnLines.push(line);
-          else errorLines.push(line);
-        }
-        const rawErrors = errorLines.join('\n').trim() || fullText;
-        pushActivity('compile_error', rawErrors.slice(0, 120));
-        sessionMetrics.trackCompilation(false);
-        setCompilationErrors(translateCompilationErrors(rawErrors));
-        if (warnLines.length > 0) setCompilationWarnings(translateCompilationErrors(warnLines.join('\n')));
-        /* Andrea Marro — 12/02/2026 — Analytics */
-        try { sendAnalyticsEvent(EVENTS.ERROR, { type: 'compilation_failed', errors: rawErrors.slice(0, 200) }); } catch { }
-
-        // Try to extract line number from gcc error (format: "sketch.ino:12:5: error: ...")
-        const lineMatch = fullText.match(/\.ino:(\d+):\d+:.*error/);
-        if (lineMatch) {
-          setCompilationErrorLine(parseInt(lineMatch[1]));
-        }
-
-        // Errors stay visible until user edits code or loads new experiment
-      }
-    } catch (err) {
-      logger.error('[ELAB] Compilation error:', err);
-      setCompilationStatus('error');
-      setCompilationErrors('Non riesco a compilare il codice. Controlla la connessione internet e riprova!');
-      /* Andrea Marro — 12/02/2026 — Analytics */
-      try { sendAnalyticsEvent(EVENTS.ERROR, { type: 'compilation', message: err.message }); } catch { }
-      trackedTimeout(() => {
-        setCompilationStatus(null);
-        setCompilationErrors(null);
-      }, 10000);
-    } finally {
-      compilingRef.current = false;
-    }
-  }, [currentExperiment, mergedExperiment]);
-
-  // ─── Keep handleCompileRef in sync (used by handlePlay for auto-compile) ───
-  useEffect(() => { handleCompileRef.current = handleCompile; }, [handleCompile]);
-
-  /* ─────────────────────────────────────────────────
-     Canvas drag-over: allows drop on the wrapper div.
-     Actual drop is handled by SimulatorCanvas (onComponentAdd).
-     ───────────────────────────────────────────────── */
-  const handleCanvasDragOver = useCallback((e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
-  }, []);
-
-  /* ─────────────────────────────────────────────────
-     Sprint 3: Export PNG handler
-     ───────────────────────────────────────────────── */
-  const handleExportPng = useCallback(async () => {
-    if (!canvasContainerRef.current) return;
-    const ok = await exportCanvasPng(canvasContainerRef.current, currentExperiment?.id);
-    if (ok) {
-      setExportToast(true);
-      trackedTimeout(() => setExportToast(false), 2500);
-    }
-  }, [currentExperiment, trackedTimeout]);
-
-  /* ─────────────────────────────────────────────────
-     Quiz complete callback — stores results for PDF report
-     ───────────────────────────────────────────────── */
-  const handleQuizComplete = useCallback((results) => {
-    if (quizResultsRef) {
-      quizResultsRef.current = results;
-    }
-  }, [quizResultsRef]);
-
-  /* ─────────────────────────────────────────────────
-     Session Report PDF handler
-     ───────────────────────────────────────────────── */
-  const handleGenerateReport = useCallback(async () => {
-    if (isGeneratingReport || !currentExperiment) return;
-    setIsGeneratingReport(true);
-    recordEvent('report_generated');
-    try {
-      // 1. Capture screenshot
-      const screenshot = await captureCircuit(canvasContainerRef);
-
-      // 2. Collect session data
-      const stepsTotal = currentExperiment?.buildSteps?.length || 0;
-      const sessionData = collectSessionData({
-        messages: messagesRef?.current || [],
-        activeExperiment: currentExperiment,
-        quizResults: quizResultsRef?.current || null,
-        codeContent: codeContentRef.current || null,
-        compilationResult: compilationResultRef.current || null,
-        sessionStartTime: sessionStartRef?.current || Date.now(),
-        buildStepIndex,
-        buildStepsTotal: stepsTotal,
-        isCircuitComplete: stepsTotal > 0
-          ? buildStepIndex >= stepsTotal - 1
-          : !currentExperiment?.buildMode,
-      });
-
-      // 3. Fetch AI summary (with fallback)
-      const aiSummary = await fetchAISummary(sessionData);
-
-      // Phase 6: collect timeline from SessionRecorder + measurements from solver
-      const timeline = getTimeline();
-      const measurements = solverRef.current ? {
-        voltages: solverRef.current.getNodeVoltages(),
-        currents: solverRef.current.getComponentCurrents(),
-      } : { voltages: {}, currents: {} };
-
-      // 4. Generate PDF blob (does NOT auto-download — Chrome blocks after async user gesture expiry)
-      const result = await generateSessionReportPDF(sessionData, screenshot, aiSummary, timeline, measurements);
-      if (result?.blob) {
-        const url = URL.createObjectURL(result.blob);
-        setPdfReady({ url, filename: result.filename });
-      }
-    } catch (err) {
-      logger.error('Report generation failed:', err);
-    } finally {
-      setIsGeneratingReport(false);
-    }
-  }, [currentExperiment, isGeneratingReport, buildStepIndex, getTimeline]);
-
-  /** Download the ready PDF — called from a fresh user gesture (button click) */
-  const handleDownloadPdf = useCallback(() => {
-    if (!pdfReady) return;
-    const a = document.createElement('a');
-    a.href = pdfReady.url;
-    a.download = pdfReady.filename;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    // Clean up after short delay
-    setTimeout(() => {
-      URL.revokeObjectURL(pdfReady.url);
-      setPdfReady(null);
-    }, 2000);
-  }, [pdfReady]);
-
-  /* ─────────────────────────────────────────────────
-     Sprint 3: Annotation handlers
-     ───────────────────────────────────────────────── */
-  // Andrea Marro — 18/02/2026 — Annotation localStorage persistence
-  const saveAnnotations = useCallback((newAnnotations) => {
-    if (!currentExperiment?.id) return;
-    try {
-      localStorage.setItem(`elab_notes_${currentExperiment.id}`, JSON.stringify(newAnnotations));
-    } catch { /* quota exceeded */ }
-  }, [currentExperiment?.id]);
-
-  // Load annotations from localStorage when experiment changes
+  // ─── Load initial experiment ───
   useEffect(() => {
-    if (!currentExperiment?.id) return;
-    try {
-      const saved = localStorage.getItem(`elab_notes_${currentExperiment.id}`);
-      if (saved) setAnnotations(JSON.parse(saved));
-    } catch { /* corrupted data */ }
-  }, [currentExperiment?.id]);
+    if (initialExperimentId) { const exp = findExperimentById(initialExperimentId); if (exp) handleSelectExperiment(exp); onInitialExperimentConsumed?.(); }
+  }, [initialExperimentId]);
 
-  const handleAnnotationAdd = useCallback(() => {
-    const id = `note-${Date.now()}`;
-    const vb = canvasContainerRef.current?.querySelector('svg')?.viewBox?.baseVal;
-    const cx = (vb?.x || 0) + (vb?.width || 400) / 2;
-    const cy = (vb?.y || 0) + (vb?.height || 300) / 2;
-    setAnnotations(prev => {
-      const next = [...prev, { id, x: cx - 80, y: cy - 24, text: 'Nota...' }];
-      saveAnnotations(next);
-      return next;
-    });
-    setSelectedAnnotation(id);
-  }, [saveAnnotations]);
-
-  const handleAnnotationTextChange = useCallback((noteId, newText) => {
-    setAnnotations(prev => {
-      const next = prev.map(a => a.id === noteId ? { ...a, text: newText } : a);
-      saveAnnotations(next);
-      return next;
-    });
-  }, [saveAnnotations]);
-
-  const handleAnnotationDelete = useCallback((noteId) => {
-    setAnnotations(prev => {
-      const next = prev.filter(a => a.id !== noteId);
-      saveAnnotations(next);
-      return next;
-    });
-    setSelectedAnnotation(null);
-  }, [saveAnnotations]);
-
-  const handleAnnotationSelect = useCallback((noteId) => {
-    setSelectedAnnotation(prev => prev === noteId ? null : noteId);
-  }, []);
-
-  const handleAnnotationPositionChange = useCallback((noteId, newX, newY) => {
-    setAnnotations(prev => {
-      const next = prev.map(a => a.id === noteId ? { ...a, x: newX, y: newY } : a);
-      saveAnnotations(next);
-      return next;
-    });
-  }, [saveAnnotations]);
-
-  /* ─────────────────────────────────────────────────
-     Derived flags
-     ───────────────────────────────────────────────── */
+  // ─── Derived flags ───
   const isAvrMode = currentExperiment?.simulationMode === 'avr';
-  const leftPanelMode = showPalette ? 'palette' : 'picker'; // which left panel to show
+  const leftPanelMode = showPalette ? 'palette' : 'picker';
 
   /* ═══════════════════════════════════════════════════════════════
      RENDER
@@ -3775,92 +751,33 @@ const NewElabSimulator = ({
           onComponentDelete={currentExperiment ? handleComponentDelete : undefined}
           onComponentRotate={currentExperiment ? (compId) => {
             const pos = mergedExperiment?.layout?.[compId] || { x: 0, y: 0, rotation: 0 };
-            const newRot = ((pos.rotation || 0) + 90) % 360;
-            handleLayoutChange(compId, { ...pos, rotation: newRot });
+            handleLayoutChange(compId, { ...pos, rotation: ((pos.rotation || 0) + 90) % 360 });
           } : undefined}
-          onShowProperties={currentExperiment ? (compId) => {
-            handleComponentClick(compId);
-          } : undefined}
-          disclosureLevel={disclosureLevel}
+          onShowProperties={currentExperiment ? (compId) => { handleComponentClick(compId); } : undefined}
+          onShowWelcome={() => setShowWelcome(true)}
         />
       </div>
 
-      {/* ──── Progressive Disclosure Toast ──── */}
-      {disclosureToast && (
-        <div className={`disclosure-toast${disclosureToast.exiting ? ' disclosure-toast--exit' : ''}`}>
-          <span>🔓</span>
-          <span>{disclosureToast.text}</span>
-        </div>
-      )}
-
-      {/* ──── PDF Ready Toast — fresh user gesture triggers download ──── */}
+      {/* PDF Ready Toast */}
       {pdfReady && (
-        <div style={{
-          position: 'absolute', top: 56, left: '50%', transform: 'translateX(-50%)',
-          zIndex: 1000, display: 'flex', alignItems: 'center', gap: 10,
-          background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', padding: '10px 18px',
-          borderRadius: 10, boxShadow: '0 4px 20px rgba(0,0,0,.25)',
-          fontFamily: "var(--font-sans)", fontSize: 14,
-        }}>
+        <div style={{ position: 'absolute', top: 56, left: '50%', transform: 'translateX(-50%)', zIndex: 1000, display: 'flex', alignItems: 'center', gap: 10, background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', padding: '10px 18px', borderRadius: 10, boxShadow: '0 4px 20px rgba(0,0,0,.25)', fontFamily: "var(--font-sans)", fontSize: 14 }}>
           <span>📄 Report PDF pronto!</span>
-          <button
-            onClick={handleDownloadPdf}
-            style={{
-              background: 'var(--color-accent, #7CB342)', color: 'var(--color-text-inverse, #fff)', border: 'none', borderRadius: 6,
-              padding: '6px 16px', fontWeight: 700, cursor: 'pointer', fontSize: 14,
-            }}
-          >
-            ⬇ Scarica
-          </button>
-          <button
-            onClick={() => { if (pdfReady.url) URL.revokeObjectURL(pdfReady.url); setPdfReady(null); }}
-            style={{
-              background: 'transparent', color: '#fff9', border: 'none',
-              cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px',
-            }}
-            aria-label="Chiudi"
-          >
-            ✕
-          </button>
+          <button onClick={handleDownloadPdf} style={{ background: 'var(--color-accent, #7CB342)', color: 'var(--color-text-inverse, #fff)', border: 'none', borderRadius: 6, padding: '6px 16px', fontWeight: 700, cursor: 'pointer', fontSize: 14 }}>⬇ Scarica</button>
+          <button onClick={() => { if (pdfReady.url) URL.revokeObjectURL(pdfReady.url); setPdfReady(null); }} style={{ background: 'transparent', color: '#fff9', border: 'none', cursor: 'pointer', fontSize: 18, lineHeight: 1, padding: '2px 6px' }} aria-label="Chiudi">✕</button>
         </div>
       )}
 
-      {/* ──── BUILD MODE SWITCHER (inline, visibile solo con esperimento attivo con buildSteps) ──── */}
+      {/* BUILD MODE SWITCHER */}
       {currentExperiment && currentExperiment.buildSteps && currentExperiment.buildSteps.length > 0 && (
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: 0, padding: '4px 12px', background: 'var(--color-bg-secondary, #F7F8FA)',
-          borderBottom: '1px solid var(--color-border, #E5E5E5)',
-        }}>
-          <div style={{
-            display: 'flex', gap: 0, background: 'var(--color-bg-tertiary, #ECECF0)', borderRadius: 8, padding: 2,
-          }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '4px 12px', background: 'var(--color-bg-secondary, #F7F8FA)', borderBottom: '1px solid var(--color-border, #E5E5E5)' }}>
+          <div style={{ display: 'flex', gap: 0, background: 'var(--color-bg-tertiary, #ECECF0)', borderRadius: 8, padding: 2 }}>
             {[
               { key: 'complete', label: 'Già Montato', color: 'var(--color-primary, #1E4D8C)' },
               { key: 'guided', label: 'Passo Passo', color: 'var(--color-accent, #7CB342)' },
               { key: 'sandbox', label: 'Libero', color: 'var(--color-primary, #1E4D8C)' },
             ].map(m => {
-              const isActive = (m.key === 'complete' && !currentExperiment.buildMode) ||
-                currentExperiment.buildMode === m.key;
-              return (
-                <button
-                  key={m.key}
-                  onClick={() => handleBuildModeSwitch(m.key)}
-                  style={{
-                    border: 'none', borderRadius: 6, padding: '6px 14px',
-                    fontSize: 14, fontWeight: isActive ? 700 : 500,
-                    fontFamily: "var(--font-sans)",
-                    background: isActive ? m.color : 'transparent',
-                    color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-gray-400, #666)',
-                    cursor: 'pointer', transition: 'all 150ms',
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    minHeight: 44,
-                  }}
-                >
-                  {isActive && <span style={{ fontSize: 14 }}>✅</span>}
-                  {m.label}
-                </button>
-              );
+              const isActive = (m.key === 'complete' && !currentExperiment.buildMode) || currentExperiment.buildMode === m.key;
+              return (<button key={m.key} onClick={() => handleBuildModeSwitch(m.key)} style={{ border: 'none', borderRadius: 6, padding: '6px 14px', fontSize: 14, fontWeight: isActive ? 700 : 500, fontFamily: "var(--font-sans)", background: isActive ? m.color : 'transparent', color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-gray-400, #666)', cursor: 'pointer', transition: 'all 150ms', display: 'flex', alignItems: 'center', gap: 4, minHeight: 44 }}>{isActive && <span style={{ fontSize: 14 }}>✅</span>}{m.label}</button>);
             })}
           </div>
         </div>
@@ -3868,672 +785,168 @@ const NewElabSimulator = ({
 
       {/* ──── MAIN LAYOUT ──── */}
       <div className="elab-simulator__layout">
-
-        {/* ──── LEFT SIDEBAR ──── */}
+        {/* LEFT SIDEBAR */}
         {showSidebar && (
           <div ref={sidebarRef} className="elab-simulator__sidebar">
-            {/* BUG FIX: Keep ExperimentPicker always mounted (hidden when palette open) to preserve navigation state */}
             {leftPanelMode === 'palette' && currentExperiment && (
-              <ComponentPalette
-                wireMode={wireMode}
-                onWireModeToggle={() => setWireMode(prev => !prev)}
-                volumeFilter={selectedVolume}
-                style={{ height: '100%', border: 'none', borderRadius: 0 }}
-              />
+              <ComponentPalette wireMode={wireMode} onWireModeToggle={() => setWireMode(prev => !prev)} volumeFilter={selectedVolume} style={{ height: '100%', border: 'none', borderRadius: 0 }} />
             )}
             <div style={{ display: leftPanelMode === 'palette' && currentExperiment ? 'none' : 'block', height: '100%' }}>
-              <ExperimentPicker
-                onSelectExperiment={(exp) => {
-                  handleSelectExperiment(exp);
-                  if (window.innerWidth <= 1365) setShowSidebar(false); // S84: auto-collapse on ALL iPad sizes (portrait+landscape)
-                }}
-                currentExperimentId={currentExperiment?.id}
-                userKits={userKits}
-              />
+              <ExperimentPicker onSelectExperiment={(exp) => { handleSelectExperiment(exp); if (window.innerWidth <= 1365) setShowSidebar(false); }} currentExperimentId={currentExperiment?.id} userKits={userKits} />
             </div>
           </div>
         )}
 
-        {/* ──── CENTER: Canvas ──── */}
+        {/* CENTER: Canvas */}
         <div className="elab-simulator__main">
-          {/* S79: Gentle landscape prompt for touch devices in portrait */}
           <RotateDeviceOverlay />
           {currentExperiment ? (
             <>
-              {/* Canvas SVG with drop support */}
-              <div
-                ref={canvasContainerRef}
-                style={{ flex: 1, position: 'relative', minHeight: 0, overflow: 'hidden' }}
-                onDragOver={handleCanvasDragOver}
-              >
+              <div ref={canvasContainerRef} style={{ flex: 1, position: 'relative', minHeight: 0, overflow: 'hidden' }} onDragOver={handleCanvasDragOver}>
                 <SimulatorCanvas
-                  experiment={mergedExperiment}
-                  componentStates={enrichedComponentStates}
-                  highlightedComponents={mergedHighlightedComponents}
-                  highlightedPins={mergedHighlightedPins}
-                  onComponentClick={handleComponentClick}
-                  onComponentValueChange={handleComponentValueChange}
-                  onPinClick={wireMode ? (pinRef) => {
-                    // Pin clicks in wire mode are handled by the canvas's internal wire state
-                    // and forwarded via onConnectionAdd. This is a fallback for PinOverlay clicks.
-                    if (!wireStartRef.current) {
-                      wireStartRef.current = pinRef;
-                    } else {
-                      if (pinRef !== wireStartRef.current) {
-                        handleConnectionAdd(wireStartRef.current, pinRef);
-                      }
-                      wireStartRef.current = null;
-                    }
-                  } : undefined}
-                  // ── Andrea Marro — 17/02/2026 ── ~riga 2200 ── JSX render principale ──
-                  onConnectionAdd={handleConnectionAdd}
-                  onLayoutChange={handleLayoutChange}
-                  onComponentAdd={handleComponentAdd}
-                  onComponentDelete={handleComponentDelete}
-                  selectedWireIndex={selectedWireIndex}
-                  onWireClick={handleWireClick}
-                  onWireDelete={handleWireDelete}
-                  onWireUpdate={handleWireUpdate}
-                  wireMode={wireMode}
-                  onWireModeChange={(val) => setWireMode(typeof val === 'boolean' ? val : !wireMode)}
-                  onProbeConnectionChange={(conns) => {
-                    probeConnectionsRef.current = conns;
-                    // Re-solve with updated probe positions
-                    if (solverRef.current && mergedExperiment) {
-                      solverRef.current.setProbeConnections(conns);
-                      solverRef.current.solve();
-                      setComponentStates(prev => ({ ...prev, ...solverRef.current.getState() }));
-                    }
-                  }}
-                  annotations={annotations}
-                  selectedAnnotation={selectedAnnotation}
-                  onAnnotationSelect={handleAnnotationSelect}
-                  onAnnotationTextChange={handleAnnotationTextChange}
-                  onAnnotationDelete={handleAnnotationDelete}
-                  onAnnotationPositionChange={handleAnnotationPositionChange}
+                  experiment={mergedExperiment} componentStates={enrichedComponentStates}
+                  highlightedComponents={mergedHighlightedComponents} highlightedPins={mergedHighlightedPins}
+                  onComponentClick={handleComponentClick} onComponentValueChange={handleComponentValueChange}
+                  onPinClick={wireMode ? (pinRef) => { if (!wireStartRef.current) { wireStartRef.current = pinRef; } else { if (pinRef !== wireStartRef.current) handleConnectionAdd(wireStartRef.current, pinRef); wireStartRef.current = null; } } : undefined}
+                  onConnectionAdd={handleConnectionAdd} onLayoutChange={handleLayoutChange}
+                  onComponentAdd={handleComponentAdd} onComponentDelete={handleComponentDelete}
+                  selectedWireIndex={selectedWireIndex} onWireClick={handleWireClick} onWireDelete={handleWireDelete} onWireUpdate={handleWireUpdate}
+                  wireMode={wireMode} onWireModeChange={(val) => setWireMode(typeof val === 'boolean' ? val : !wireMode)}
+                  onProbeConnectionChange={(conns) => { probeConnectionsRef.current = conns; if (solverRef.current && mergedExperiment) { solverRef.current.setProbeConnections(conns); solverRef.current.solve(); setComponentStates(prev => ({ ...prev, ...solverRef.current.getState() })); } }}
+                  annotations={annotations} selectedAnnotation={selectedAnnotation}
+                  onAnnotationSelect={handleAnnotationSelect} onAnnotationTextChange={handleAnnotationTextChange}
+                  onAnnotationDelete={handleAnnotationDelete} onAnnotationPositionChange={handleAnnotationPositionChange}
                   onSendToUNLIM={onSendToUNLIM}
-                  buildValidation={currentExperiment?.buildMode === 'guided' ? {
-                    currentStep: buildStepIndex,
-                    buildSteps: currentExperiment?.buildSteps || [],
-                  } : null}
-                  onBuildValidationResult={(result) => {
-                    if (result.valid) {
-                      handleBuildStepChange(result.stepIndex + 1);
-                    }
-                  }}
-                  snapToGrid={currentExperiment?.buildMode === 'sandbox'}
-                  onSelectionChange={setSelectedComponentId}
-                  electronViewEnabled={electronViewEnabled}
-                  className="elab-simulator__canvas"
-                  style={{ flex: 1 }}
+                  buildValidation={currentExperiment?.buildMode === 'guided' ? { currentStep: buildStepIndex, buildSteps: currentExperiment?.buildSteps || [] } : null}
+                  onBuildValidationResult={(result) => { if (result.valid) handleBuildStepChange(result.stepIndex + 1); }}
+                  snapToGrid={currentExperiment?.buildMode === 'sandbox'} onSelectionChange={setSelectedComponentId}
+                  electronViewEnabled={electronViewEnabled} className="elab-simulator__canvas" style={{ flex: 1 }}
                 />
-
-                {/* Whiteboard overlay — Andrea Marro 18/02/2026 */}
-                <WhiteboardOverlay
-                  active={showWhiteboard}
-                  experimentId={currentExperiment?.id}
-                  onClose={() => setShowWhiteboard(false)}
-                  onSendToUNLIM={onSendImageToUNLIM ? (dataUrl) => {
-                    setShowWhiteboard(false);
-                    onSendImageToUNLIM(dataUrl, 'Analizza questo disegno dalla lavagna e dimmi cosa rappresenta. Se è uno schema elettrico, controlla se è corretto.');
-                  } : undefined}
-                />
-
-                {/* Drawing/Annotation overlay — Andrea Marro 13/03/2026 */}
-                <DrawingOverlay
-                  drawingEnabled={drawingEnabled}
-                  canvasWidth={canvasContainerRef.current?.offsetWidth || 800}
-                  canvasHeight={canvasContainerRef.current?.offsetHeight || 600}
-                  onPathsChange={(paths) => {
-                    // Paths persist in DrawingOverlay state; callback available for future logging
-                  }}
-                />
-
-                {/* S161.3: Visually-hidden simulation state announcer for screen readers */}
-                <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
-                  {simulationAnnouncement}
-                </div>
-
-                {/* Short-circuit warning overlay */}
-                {circuitWarning && (
-                  <div role="alert" aria-live="assertive" style={{
-                    position: 'absolute',
-                    top: 10,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--color-vol3, #E54B3D)',
-                    color: 'var(--color-text, #1A1A2E)',
-                    padding: '8px 20px',
-                    borderRadius: 8,
-                    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    boxShadow: '0 4px 16px rgba(229,75,61,0.4)',
-                    zIndex: 100,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    animation: 'pulse 0.6s ease-in-out infinite alternate',
-                  }}>
-                    <span style={{ fontSize: 20 }}>{'⚠️'}</span>
-                    <span>{circuitWarning.message}</span>
-                  </div>
-                )}
-
-                {/* Experiment Guide Panel — "Cosa Fare" (complete + sandbox modes; guided uses ComponentDrawer) */}
-                {showGuide && currentExperiment && (!currentExperiment.buildMode || currentExperiment.buildMode === 'sandbox') && (
-                  <ExperimentGuide
-                    experiment={currentExperiment}
-                    buildMode={currentExperiment.buildMode || 'complete'}
-                    onClose={() => setShowGuide(false)}
-                    onSendToUNLIM={onSendToUNLIM}
-                  />
-                )}
-
-                {/* BOM Panel */}
-                {showBom && currentExperiment && (
-                  <BomPanel
-                    experiment={mergedExperiment}
-                    onClose={() => setShowBom(false)}
-                  />
-                )}
-
-                {/* Lesson Path Panel — Percorso Lezione per insegnanti */}
-                {showLessonPath && currentExperiment && (
-                  <LessonPathPanel
-                    experiment={currentExperiment}
-                    allExperiments={ALL_EXPERIMENTS}
-                    onClose={() => setShowLessonPath(false)}
-                    onSendToUNLIM={onSendToUNLIM}
-                    onLoadExperiment={(id) => {
-                      const exp = findExperimentById(id);
-                      if (exp) handleExperimentSelect(exp);
-                    }}
-                  />
-                )}
-
-                {/* Quiz Panel */}
-                {showQuiz && currentExperiment?.quiz?.length > 0 && (
-                  <QuizPanel
-                    experiment={currentExperiment}
-                    onClose={() => setShowQuiz(false)}
-                    onSendToUNLIM={onSendToUNLIM}
-                    onQuizComplete={handleQuizComplete}
-                  />
-                )}
-
-                {/* Export toast */}
-                {exportToast && (
-                  <div role="status" aria-live="polite" style={{
-                    position: 'absolute',
-                    bottom: 50,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--color-accent, #7CB342)',
-                    color: 'var(--color-text-inverse, #fff)',
-                    padding: '8px 20px',
-                    borderRadius: 8,
-                    fontFamily: "var(--font-display)",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    boxShadow: '0 4px 12px rgba(124,179,66,0.35)',
-                    zIndex: 100,
-                    pointerEvents: 'none',
-                  }}>
-                    Foto salvata!
-                  </div>
-                )}
-
-                {/* Wire deletion feedback toast */}
-                {wireToast && (
-                  <div role="status" aria-live="polite" style={{
-                    position: 'absolute',
-                    bottom: 50,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    background: 'var(--color-vol2, #E8941C)',
-                    color: 'var(--color-text, #1A1A2E)',
-                    padding: '8px 20px',
-                    borderRadius: 8,
-                    fontFamily: "var(--font-display, 'Oswald', sans-serif)",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    boxShadow: '0 4px 12px rgba(232,148,28,0.35)',
-                    zIndex: 100,
-                    pointerEvents: 'none',
-                  }}>
-                    {wireToast}
-                  </div>
-                )}
-
-
-
-                {/* Wire mode indicator */}
-                {wireMode && (
-                  <div className={lyStyles.wireModeIndicator} role="status" aria-live="polite">
-                    <span style={{ fontSize: 14 }}>&#x1F50C;</span>
-                    <span>Collegamento fili attivo</span>
-                    {wireStartRef.current && (
-                      <span style={{ color: 'var(--color-vol2, #E8941C)' }}>
-                        Da: {wireStartRef.current} — clicca il pin destinazione
-                      </span>
-                    )}
-                  </div>
-                )}
-
-                {/* ──── COMPONENT DRAWER: Monta tu! / Sandbox ──── */}
+                <WhiteboardOverlay active={showWhiteboard} experimentId={currentExperiment?.id} onClose={() => setShowWhiteboard(false)} onSendToUNLIM={onSendImageToUNLIM ? (dataUrl) => { setShowWhiteboard(false); onSendImageToUNLIM(dataUrl, 'Analizza questo disegno dalla lavagna e dimmi cosa rappresenta. Se è uno schema elettrico, controlla se è corretto.'); } : undefined} />
+                <DrawingOverlay drawingEnabled={drawingEnabled} canvasWidth={canvasContainerRef.current?.offsetWidth || 800} canvasHeight={canvasContainerRef.current?.offsetHeight || 600} onPathsChange={() => {}} />
+                <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">{simulationAnnouncement}</div>
+                {circuitWarning && (<div role="alert" aria-live="assertive" style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-vol3, #E54B3D)', color: 'var(--color-text, #1A1A2E)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display, 'Oswald', sans-serif)", fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 4px 16px rgba(229,75,61,0.4)', zIndex: 100, display: 'flex', alignItems: 'center', gap: 8, animation: 'pulse 0.6s ease-in-out infinite alternate' }}><span style={{ fontSize: 20 }}>{'⚠️'}</span><span>{circuitWarning.message}</span></div>)}
+                {showGuide && currentExperiment && (!currentExperiment.buildMode || currentExperiment.buildMode === 'sandbox') && (<ExperimentGuide experiment={currentExperiment} buildMode={currentExperiment.buildMode || 'complete'} onClose={() => setShowGuide(false)} onSendToUNLIM={onSendToUNLIM} />)}
+                {showBom && currentExperiment && (<BomPanel experiment={mergedExperiment} onClose={() => setShowBom(false)} />)}
+                {showLessonPath && currentExperiment && (<LessonPathPanel experiment={currentExperiment} allExperiments={ALL_EXPERIMENTS} onClose={() => setShowLessonPath(false)} onSendToUNLIM={onSendToUNLIM} onLoadExperiment={(id) => { const exp = findExperimentById(id); if (exp) handleSelectExperiment(exp); }} />)}
+                {showQuiz && currentExperiment?.quiz?.length > 0 && (<QuizPanel experiment={currentExperiment} onClose={() => setShowQuiz(false)} onSendToUNLIM={onSendToUNLIM} onQuizComplete={handleQuizComplete} />)}
+                {exportToast && (<div role="status" aria-live="polite" style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent, #7CB342)', color: 'var(--color-text-inverse, #fff)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 700, boxShadow: '0 4px 12px rgba(124,179,66,0.35)', zIndex: 100, pointerEvents: 'none' }}>Foto salvata!</div>)}
+                {wireToast && (<div role="status" aria-live="polite" style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-vol2, #E8941C)', color: 'var(--color-text, #1A1A2E)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display, 'Oswald', sans-serif)", fontSize: 14, fontWeight: 700, boxShadow: '0 4px 12px rgba(232,148,28,0.35)', zIndex: 100, pointerEvents: 'none' }}>{wireToast}</div>)}
+                {wireMode && (<div className={lyStyles.wireModeIndicator} role="status" aria-live="polite"><span style={{ fontSize: 14 }}>&#x1F50C;</span><span>Collegamento fili attivo</span>{wireStartRef.current && (<span style={{ color: 'var(--color-vol2, #E8941C)' }}>Da: {wireStartRef.current} — clicca il pin destinazione</span>)}</div>)}
                 {currentExperiment && (currentExperiment.buildMode === 'guided' || currentExperiment.buildMode === 'sandbox') && (
-                  <ComponentDrawer
-                    mode={currentExperiment.buildMode}
-                    experiment={currentExperiment}
-                    currentStep={buildStepIndex}
-                    onStepChange={handleBuildStepChange}
-                    volumeNumber={selectedVolume}
-                    onStartScratchPhase={(chosenMode) => {
-                      // S93: Open editor in user-chosen mode (Blocchi or Codice)
-                      setShowCodeEditor(true);
-                      setEditorMode(chosenMode || 'scratch');
-                    }}
-                    onCompileAndPlay={() => {
-                      // S86: Compile and auto-play from completion card
-                      if (handleCompileOnly) handleCompileOnly();
-                    }}
+                  <ComponentDrawer mode={currentExperiment.buildMode} experiment={currentExperiment} currentStep={buildStepIndex} onStepChange={handleBuildStepChange} volumeNumber={selectedVolume}
+                    onStartScratchPhase={(chosenMode) => { setShowCodeEditor(true); setEditorMode(chosenMode || 'scratch'); }}
+                    onCompileAndPlay={() => { if (handleCompileOnly) handleCompileOnly(); }}
                   />
                 )}
-
-                {/* ──── NOTES PANEL ──── */}
-                <NotesPanel
-                  experimentId={currentExperiment?.id}
-                  visible={showNotes}
-                  onClose={() => setShowNotes(false)}
-                />
+                <NotesPanel experimentId={currentExperiment?.id} visible={showNotes} onClose={() => setShowNotes(false)} />
               </div>
 
-              {/* ──── BOTTOM PANEL: Serial Monitor / Plotter (AVR mode) ──── */}
-              {/* S79: Always-visible collapsible drawer with 40px tab handle */}
+              {/* BOTTOM PANEL: Serial Monitor / Plotter */}
               {isAvrMode && (
-                <div ref={bottomPanelRef} className="elab-simulator__bottom-panel" style={{
-                  display: 'flex', flexDirection: 'column',
-                  overflow: 'hidden',
-                  transition: 'max-height 200ms ease',
-                  maxHeight: showBottomPanel ? 'min(220px, 30dvh)' : 40,
-                  flexShrink: 0,
-                }}>
-                  {/* S79: Collapsed tab handle — always visible 40px bar */}
-                  {!showBottomPanel && (
-                    <button
-                      onClick={() => setShowBottomPanel(true)}
-                      style={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                        height: 44, minHeight: 44,
-                        background: 'var(--color-code-header, #181825)',
-                        border: 'none', borderTop: '1px solid var(--color-code-border, #313244)',
-                        cursor: 'pointer', width: '100%',
-                        fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600,
-                        color: 'var(--color-text-gray-300, #888)',
-                      }}
-                      title="Apri Monitor Seriale"
-                    >
-                      <span style={{ fontSize: 14 }}>{'\u25B2'}</span>
-                      <span>Monitor Seriale</span>
-                      {isRunning && (
-                        <span style={{
-                          width: 8, height: 8, borderRadius: '50%',
-                          background: LIME, boxShadow: '0 0 6px rgba(124,179,66,0.5)',
-                          flexShrink: 0,
-                        }} />
-                      )}
-                    </button>
-                  )}
-
-                  {/* Expanded content */}
-                  {showBottomPanel && (
-                    <>
-                      {/* Tab toggle: Monitor | Plotter + Collapse button */}
-                      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-editor-border, #2D3748)', flexShrink: 0 }}>
-                        <button
-                          onClick={() => setBottomPanel('monitor')}
-                          style={{
-                            flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer',
-                            fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600,
-                            background: bottomPanel === 'monitor' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)',
-                            color: bottomPanel === 'monitor' ? LIME : 'var(--color-text-gray-400, #666)',
-                            borderBottom: bottomPanel === 'monitor' ? `2px solid ${LIME}` : '2px solid transparent',
-                            minHeight: 'var(--touch-min, 56px)',
-                          }}
-                        >
-                          Monitor
-                        </button>
-                        <button
-                          onClick={() => setBottomPanel('plotter')}
-                          style={{
-                            flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer',
-                            fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600,
-                            background: bottomPanel === 'plotter' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)',
-                            color: bottomPanel === 'plotter' ? 'var(--color-tab-plotter, #3498DB)' : 'var(--color-text-gray-400, #666)',
-                            borderBottom: bottomPanel === 'plotter' ? '2px solid var(--color-tab-plotter, #3498DB)' : '2px solid transparent',
-                            minHeight: 'var(--touch-min, 56px)',
-                          }}
-                        >
-                          Plotter
-                        </button>
-                        <button
-                          onClick={() => setShowBottomPanel(false)}
-                          title="Chiudi pannello (Monitor/Plotter)"
-                          aria-label="Chiudi pannello seriale"
-                          style={{
-                            padding: '4px 10px', border: 'none', cursor: 'pointer',
-                            background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-300, #888)', fontSize: 16,
-                            borderBottom: '2px solid transparent',
-                            minHeight: 'var(--touch-min, 56px)', minWidth: 56,
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            transition: 'color 150ms, background 150ms',
-                          }}
-                          onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }}
-                          onPointerLeave={e => { e.currentTarget.style.color = '#888'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}
-                        >
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg>
-                        </button>
-                      </div>
-                      <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
-                        {bottomPanel === 'monitor' ? (
-                          <SerialMonitor
-                            serialOutput={serialOutput}
-                            onSerialInput={handleSerialInput}
-                            onClear={() => setSerialOutput('')}
-                            isRunning={isRunning}
-                            onBaudRateChange={(baud) => {
-                              setSerialBaudRate(baud);
-                              if (avrRef.current) {
-                                const sketchBaud = avrRef.current.getConfiguredBaudRate();
-                                setBaudMismatch(sketchBaud !== null && sketchBaud !== baud);
-                              }
-                            }}
-                            baudMismatch={baudMismatch}
-                            showTimestamps={serialTimestamps}
-                            onToggleTimestamps={() => setSerialTimestamps(prev => !prev)}
-                            onSendToUNLIM={onSendToUNLIM}
-                          />
-                        ) : (
-                          <SerialPlotter
-                            serialOutput={serialOutput}
-                            isRunning={isRunning}
-                            onClear={() => setSerialOutput('')}
-                          />
-                        )}
-                      </div>
-                    </>
-                  )}
+                <div ref={bottomPanelRef} className="elab-simulator__bottom-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', transition: 'max-height 200ms ease', maxHeight: showBottomPanel ? 'min(220px, 30dvh)' : 40, flexShrink: 0 }}>
+                  {!showBottomPanel && (<button onClick={() => setShowBottomPanel(true)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44, minHeight: 44, background: 'var(--color-code-header, #181825)', border: 'none', borderTop: '1px solid var(--color-code-border, #313244)', cursor: 'pointer', width: '100%', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, color: 'var(--color-text-gray-300, #888)' }} title="Apri Monitor Seriale"><span style={{ fontSize: 14 }}>{'\u25B2'}</span><span>Monitor Seriale</span>{isRunning && (<span style={{ width: 8, height: 8, borderRadius: '50%', background: LIME, boxShadow: '0 0 6px rgba(124,179,66,0.5)', flexShrink: 0 }} />)}</button>)}
+                  {showBottomPanel && (<>
+                    <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-editor-border, #2D3748)', flexShrink: 0 }}>
+                      <button onClick={() => setBottomPanel('monitor')} style={{ flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, background: bottomPanel === 'monitor' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: bottomPanel === 'monitor' ? LIME : 'var(--color-text-gray-400, #666)', borderBottom: bottomPanel === 'monitor' ? `2px solid ${LIME}` : '2px solid transparent', minHeight: 'var(--touch-min, 56px)' }}>Monitor</button>
+                      <button onClick={() => setBottomPanel('plotter')} style={{ flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, background: bottomPanel === 'plotter' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: bottomPanel === 'plotter' ? 'var(--color-tab-plotter, #3498DB)' : 'var(--color-text-gray-400, #666)', borderBottom: bottomPanel === 'plotter' ? '2px solid var(--color-tab-plotter, #3498DB)' : '2px solid transparent', minHeight: 'var(--touch-min, 56px)' }}>Plotter</button>
+                      <button onClick={() => setShowBottomPanel(false)} title="Chiudi pannello (Monitor/Plotter)" aria-label="Chiudi pannello seriale" style={{ padding: '4px 10px', border: 'none', cursor: 'pointer', background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-300, #888)', fontSize: 16, borderBottom: '2px solid transparent', minHeight: 'var(--touch-min, 56px)', minWidth: 56, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'color 150ms, background 150ms' }} onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }} onPointerLeave={e => { e.currentTarget.style.color = '#888'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg></button>
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
+                      {bottomPanel === 'monitor' ? (<SerialMonitor serialOutput={serialOutput} onSerialInput={handleSerialInput} onClear={() => setSerialOutput('')} isRunning={isRunning} onBaudRateChange={(baud) => { setSerialBaudRate(baud); if (avrRef.current) { const sketchBaud = avrRef.current.getConfiguredBaudRate(); setBaudMismatch(sketchBaud !== null && sketchBaud !== baud); } }} baudMismatch={baudMismatch} showTimestamps={serialTimestamps} onToggleTimestamps={() => setSerialTimestamps(prev => !prev)} onSendToUNLIM={onSendToUNLIM} />) : (<SerialPlotter serialOutput={serialOutput} isRunning={isRunning} onClear={() => setSerialOutput('')} />)}
+                    </div>
+                  </>)}
                 </div>
               )}
             </>
           ) : (
             <div className="elab-simulator__placeholder">
-              <span className="elab-simulator__placeholder-icon">&#x26A1;</span>
-              <span className="elab-simulator__placeholder-text">
-                ELAB Simulator
-              </span>
-              <span style={{ fontSize: 14, color: 'var(--color-text-gray-100, #AAA)' }}>
-                Seleziona un esperimento dalla sidebar
-              </span>
-              {!showSidebar && (
-                <button
-                  onClick={() => setShowSidebar(true)}
-                  style={{
-                    marginTop: 12, padding: '6px 16px', border: `1px solid ${LIME}`,
-                    borderRadius: 6, background: 'transparent', color: LIME,
-                    cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14,
-                  }}
-                >
-                  Mostra Esperimenti
-                </button>
+              {showWelcome ? (
+                <div className="sim-welcome">
+                  <div className="sim-welcome__header">
+                    <span className="sim-welcome__icon">&#x26A1;</span>
+                    <h2 className="sim-welcome__title">Benvenuto nel Simulatore!</h2>
+                    <p className="sim-welcome__subtitle">Iniziare è facilissimo. Segui questi 3 passi:</p>
+                  </div>
+                  <div className="sim-welcome__steps">
+                    <button className="sim-welcome__step" onClick={() => { if (!showSidebar) setShowSidebar(true); }}>
+                      <span className="sim-welcome__step-num">1</span>
+                      <span className="sim-welcome__step-icon">&#x1F4D6;</span>
+                      <span className="sim-welcome__step-text">
+                        <strong>Scegli un esperimento</strong>
+                        <span>Dalla lista a sinistra, tocca un esperimento</span>
+                      </span>
+                    </button>
+                    <button className="sim-welcome__step" onClick={() => { if (!showSidebar) setShowSidebar(true); }}>
+                      <span className="sim-welcome__step-num">2</span>
+                      <span className="sim-welcome__step-icon">&#x1F50D;</span>
+                      <span className="sim-welcome__step-text">
+                        <strong>Guarda il circuito</strong>
+                        <span>Qui al centro apparirà il circuito da esplorare</span>
+                      </span>
+                    </button>
+                    <button className="sim-welcome__step" disabled style={{ opacity: 0.7 }}>
+                      <span className="sim-welcome__step-num">3</span>
+                      <span className="sim-welcome__step-icon">&#x1F916;</span>
+                      <span className="sim-welcome__step-text">
+                        <strong>Chiedi aiuto a UNLIM</strong>
+                        <span>Il bottone in alto a destra spiega tutto</span>
+                      </span>
+                    </button>
+                  </div>
+                  <button className="sim-welcome__dismiss" onClick={dismissWelcome}>Ho capito, iniziamo!</button>
+                </div>
+              ) : (
+                <>
+                  <span className="elab-simulator__placeholder-icon">&#x26A1;</span>
+                  <span className="elab-simulator__placeholder-text">ELAB Simulator</span>
+                  <span style={{ fontSize: 14, color: 'var(--color-text-gray-100, #AAA)' }}>Seleziona un esperimento dalla sidebar</span>
+                  {!showSidebar && (<button onClick={() => setShowSidebar(true)} style={{ marginTop: 12, padding: '6px 16px', border: `1px solid ${LIME}`, borderRadius: 6, background: 'transparent', color: LIME, cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14 }}>Mostra Esperimenti</button>)}
+                </>
               )}
             </div>
           )}
 
-          {/* Watermark rimosso su richiesta utente */}
-
-          {/* S100: Edge toggle — open code editor when closed */}
           {!showCodeEditor && currentExperiment && currentExperiment.simulationMode === 'avr' && (
-            <button
-              onClick={() => setShowCodeEditor(true)}
-              aria-label="Apri editor codice"
-              style={{
-                position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)',
-                zIndex: 30, width: 24, height: 64, border: 'none', borderRadius: '6px 0 0 6px',
-                background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: 'var(--shadow-md)', fontSize: 14, padding: 0,
-                transition: 'opacity var(--transition-base)',
-              }}
-              title="Apri Editor"
-            >
-              ‹
-            </button>
+            <button onClick={() => setShowCodeEditor(true)} aria-label="Apri editor codice" style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 30, width: 24, height: 64, border: 'none', borderRadius: '6px 0 0 6px', background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-md)', fontSize: 14, padding: 0, transition: 'opacity var(--transition-base)' }} title="Apri Editor">‹</button>
           )}
         </div>
 
-        {/* ──── RIGHT PANEL: Code Editor (Arduino / Scratch toggle) ──── */}
+        {/* RIGHT PANEL: Code Editor */}
         {showCodeEditor && currentExperiment && (
-          <div
-            ref={editorPanelRef}
-            className={`${lyStyles.codeEditorPanel} ${editorMode === 'scratch' ? (scratchFullscreen ? lyStyles.codeEditorPanelScratchFullscreen : lyStyles.codeEditorPanelScratch) : ''}`}
-          >
-            {/* Toggle Arduino / Scratch + Close */}
-            <div style={{
-              display: 'flex', gap: 0, borderBottom: '1px solid var(--color-blockly-grid, #2a3040)',
-              background: 'var(--color-editor-bg, #161B22)', flexShrink: 0,
-            }}>
-              {/* S100+S91: Close editor panel button — clear X icon, hover feedback */}
-              <button
-                onClick={() => setShowCodeEditor(false)}
-                aria-label="Chiudi editor"
-                title="Chiudi editor (torna al circuito)"
-                style={{
-                  width: 44, minHeight: 44, border: 'none', cursor: 'pointer', padding: 0,
-                  background: 'var(--color-editor-bg, #161B22)',
-                  color: 'var(--color-text-gray-400, #666)', fontSize: 16,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                  transition: 'color 150ms, background 150ms',
-                }}
-                onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }}
-                onPointerLeave={e => { e.currentTarget.style.color = '#666'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg>
-              </button>
-              <button
-                onClick={() => { setEditorMode('arduino'); setScratchFullscreen(false); }}
-                style={{
-                  flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44,
-                  fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600,
-                  background: editorMode === 'arduino' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)',
-                  color: editorMode === 'arduino' ? 'var(--color-accent, #7CB342)' : 'var(--color-text-gray-400, #666)',
-                  borderBottom: editorMode === 'arduino' ? '2px solid var(--color-accent, #7CB342)' : '2px solid transparent',
-                }}
-              >
-                {'</>  Arduino C++'}
-              </button>
-              {/* S81: Blocchi tab for ALL AVR experiments (not just those with scratchXml) */}
-              {currentExperiment?.simulationMode === 'avr' && (
-                <button
-                  onClick={() => setEditorMode('scratch')}
-                  style={{
-                    flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44,
-                    fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600,
-                    background: editorMode === 'scratch' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)',
-                    color: editorMode === 'scratch' ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-text-gray-400, #666)',
-                    borderBottom: editorMode === 'scratch' ? '2px solid var(--color-tab-scratch, #E67E22)' : '2px solid transparent',
-                  }}
-                >
-                  {'🧩  Blocchi'}
-                </button>
-              )}
-              {/* S96: Fullscreen toggle — only in Scratch mode */}
-              {editorMode === 'scratch' && (
-                <button
-                  onClick={() => setScratchFullscreen(f => !f)}
-                  title={scratchFullscreen ? 'Esci da schermo intero (Esc)' : 'Schermo intero'}
-                  aria-label={scratchFullscreen ? 'Esci da schermo intero' : 'Schermo intero'}
-                  style={{
-                    padding: scratchFullscreen ? '7px 16px' : '7px 12px', border: 'none', cursor: 'pointer', minHeight: 44, minWidth: 56,
-                    fontFamily: "var(--font-sans)", fontSize: scratchFullscreen ? 14 : 18, fontWeight: scratchFullscreen ? 600 : 400,
-                    background: scratchFullscreen ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-editor-bg, #161B22)',
-                    color: scratchFullscreen ? '#fff' : 'var(--color-text-gray-400, #666)',
-                    borderLeft: scratchFullscreen ? 'none' : '1px solid var(--color-blockly-grid, #2a3040)',
-                    borderRadius: scratchFullscreen ? '6px' : 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                  }}
-                >
-                  {scratchFullscreen ? (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10 2h4v4M6 14H2v-4M14 2L9.5 6.5M2 14l4.5-4.5"/></svg>
-                      Esci
-                    </>
-                  ) : (
-                    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 6V2h4M14 10v4h-4M2 2l4.5 4.5M14 14L9.5 9.5"/></svg>
-                  )}
-                </button>
-              )}
+          <div ref={editorPanelRef} className={`${lyStyles.codeEditorPanel} ${editorMode === 'scratch' ? (scratchFullscreen ? lyStyles.codeEditorPanelScratchFullscreen : lyStyles.codeEditorPanelScratch) : ''}`}>
+            <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-blockly-grid, #2a3040)', background: 'var(--color-editor-bg, #161B22)', flexShrink: 0 }}>
+              <button onClick={() => setShowCodeEditor(false)} aria-label="Chiudi editor" title="Chiudi editor (torna al circuito)" style={{ width: 44, minHeight: 44, border: 'none', cursor: 'pointer', padding: 0, background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-400, #666)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'color 150ms, background 150ms' }} onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }} onPointerLeave={e => { e.currentTarget.style.color = '#666'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg></button>
+              <button onClick={() => { setEditorMode('arduino'); setScratchFullscreen(false); }} style={{ flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, background: editorMode === 'arduino' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: editorMode === 'arduino' ? 'var(--color-accent, #7CB342)' : 'var(--color-text-gray-400, #666)', borderBottom: editorMode === 'arduino' ? '2px solid var(--color-accent, #7CB342)' : '2px solid transparent' }}>{'</>  Arduino C++'}</button>
+              {currentExperiment?.simulationMode === 'avr' && (<button onClick={() => setEditorMode('scratch')} style={{ flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, background: editorMode === 'scratch' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: editorMode === 'scratch' ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-text-gray-400, #666)', borderBottom: editorMode === 'scratch' ? '2px solid var(--color-tab-scratch, #E67E22)' : '2px solid transparent' }}>{'🧩  Blocchi'}</button>)}
+              {editorMode === 'scratch' && (<button onClick={() => setScratchFullscreen(f => !f)} title={scratchFullscreen ? 'Esci da schermo intero (Esc)' : 'Schermo intero'} aria-label={scratchFullscreen ? 'Esci da schermo intero' : 'Schermo intero'} style={{ padding: scratchFullscreen ? '7px 16px' : '7px 12px', border: 'none', cursor: 'pointer', minHeight: 44, minWidth: 56, fontFamily: "var(--font-sans)", fontSize: scratchFullscreen ? 14 : 18, fontWeight: scratchFullscreen ? 600 : 400, background: scratchFullscreen ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-editor-bg, #161B22)', color: scratchFullscreen ? '#fff' : 'var(--color-text-gray-400, #666)', borderLeft: scratchFullscreen ? 'none' : '1px solid var(--color-blockly-grid, #2a3040)', borderRadius: scratchFullscreen ? '6px' : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>{scratchFullscreen ? (<><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10 2h4v4M6 14H2v-4M14 2L9.5 6.5M2 14l4.5-4.5"/></svg>Esci</>) : (<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 6V2h4M14 10v4h-4M2 2l4.5 4.5M14 14L9.5 9.5"/></svg>)}</button>)}
             </div>
-
-            {/* S115: Floating exit button for Scratch fullscreen */}
-            {scratchFullscreen && editorMode === 'scratch' && (
-              <button
-                onClick={() => setScratchFullscreen(false)}
-                style={{
-                  position: 'fixed', top: 16, right: 16, zIndex: 950,
-                  padding: '8px 18px', border: 'none', cursor: 'pointer', minHeight: 44,
-                  background: 'var(--color-tab-scratch, #E67E22)', color: '#fff',
-                  borderRadius: 10, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700,
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', gap: 8,
-                  transition: 'transform 0.15s ease',
-                }}
-                onPointerEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                onPointerLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                aria-label="Esci da schermo intero"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10 2h4v4M6 14H2v-4M14 2L9.5 6.5M2 14l4.5-4.5"/></svg>
-                Esci da Schermo Intero
-              </button>
-            )}
-
+            {scratchFullscreen && editorMode === 'scratch' && (<button onClick={() => setScratchFullscreen(false)} style={{ position: 'fixed', top: 16, right: 16, zIndex: 950, padding: '8px 18px', border: 'none', cursor: 'pointer', minHeight: 44, background: 'var(--color-tab-scratch, #E67E22)', color: '#fff', borderRadius: 10, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, boxShadow: '0 4px 16px rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', gap: 8, transition: 'transform 0.15s ease' }} onPointerEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onPointerLeave={e => e.currentTarget.style.transform = 'scale(1)'} aria-label="Esci da schermo intero"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10 2h4v4M6 14H2v-4M14 2L9.5 6.5M2 14l4.5-4.5"/></svg>Esci da Schermo Intero</button>)}
             {editorMode === 'arduino' ? (
-              <CodeEditorCM6
-                code={editorCode}
-                onChange={(code) => {
-                  setEditorCode(code);
-                  codeNeedsCompileRef.current = true;
-                  // Clear persistent compilation errors when user starts editing
-                  if (compilationStatus === 'error') {
-                    setCompilationStatus(null);
-                    setCompilationErrors(null);
-                    setCompilationWarnings(null);
-                    setCompilationErrorLine(null);
-                  }
-                }}
-                onCompile={handleCompile}
-                compilationStatus={compilationStatus}
-                compilationErrors={compilationErrors}
-                compilationWarnings={compilationWarnings}
-                compilationErrorLine={compilationErrorLine}
-                compilationSize={compilationSize}
-                readOnly={false}
-                onExplainCode={onSendToUNLIM ? (currentCode) => {
-                  const snippet = currentCode?.length > 800 ? currentCode.slice(0, 800) + '\n// ...(troncato)' : currentCode;
-                  onSendToUNLIM(`Spiegami questo codice Arduino riga per riga:\n\`\`\`\n${snippet || '(vuoto)'}\n\`\`\``);
-                } : undefined}
-              />
+              <CodeEditorCM6 code={editorCode} onChange={(code) => { setEditorCode(code); codeNeedsCompileRef.current = true; if (compilationStatus === 'error') { setCompilationStatus(null); setCompilationErrors(null); setCompilationWarnings(null); setCompilationErrorLine(null); } }} onCompile={handleCompile} compilationStatus={compilationStatus} compilationErrors={compilationErrors} compilationWarnings={compilationWarnings} compilationErrorLine={compilationErrorLine} compilationSize={compilationSize} readOnly={false} onExplainCode={onSendToUNLIM ? (currentCode) => { const snippet = currentCode?.length > 800 ? currentCode.slice(0, 800) + '\n// ...(troncato)' : currentCode; onSendToUNLIM(`Spiegami questo codice Arduino riga per riga:\n\`\`\`\n${snippet || '(vuoto)'}\n\`\`\``); } : undefined} />
             ) : (
-              /* S93: Scratch mode — ONLY Blockly workspace (full size), no code preview */
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
                 <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
                   <ScratchErrorBoundary>
-                    <Suspense fallback={
-                      <div style={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        height: '100%', color: 'var(--color-accent, #7CB342)', fontFamily: "var(--font-sans)",
-                        fontSize: 14, gap: 8, background: 'var(--color-editor-active-bg, #1E2530)',
-                      }}>
-                        <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⚙️</span>
-                        Caricamento editor blocchi…
-                      </div>
-                    }>
-                      <ScratchEditor
-                        initialCode={scratchXml}
-                        onChange={(xml, generatedCode) => {
-                          setScratchXml(xml);
-                          // S93: write to SEPARATE state — never overwrite user's Arduino code
-                          setScratchGeneratedCode(generatedCode);
-                          codeNeedsCompileRef.current = true;
-                          if (currentExperiment?.id) {
-                            localStorage.setItem(`elab_scratch_${currentExperiment.id}`, xml);
-                            // S93: Persist generated code for reload (invisible to user)
-                            if (generatedCode) localStorage.setItem(`elab_scratch_code_${currentExperiment.id}`, generatedCode);
-                          }
-                        }}
-                      />
+                    <Suspense fallback={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--color-accent, #7CB342)', fontFamily: "var(--font-sans)", fontSize: 14, gap: 8, background: 'var(--color-editor-active-bg, #1E2530)' }}><span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⚙️</span>Caricamento editor blocchi…</div>}>
+                      <ScratchEditor initialCode={scratchXml} onChange={(xml, generatedCode) => { setScratchXml(xml); setScratchGeneratedCode(generatedCode); codeNeedsCompileRef.current = true; if (currentExperiment?.id) { localStorage.setItem(`elab_scratch_${currentExperiment.id}`, xml); if (generatedCode) localStorage.setItem(`elab_scratch_code_${currentExperiment.id}`, generatedCode); } }} />
                     </Suspense>
                   </ScratchErrorBoundary>
                 </div>
-                {/* S93: Compile bar for Scratch mode */}
-                <ScratchCompileBar
-                  onCompile={() => handleCompile(scratchGeneratedCodeRef.current)} // S116: ref avoids stale closure
-                  compilationStatus={compilationStatus}
-                  compilationErrors={compilationErrors}
-                  compilationWarnings={compilationWarnings}
-                  compilationSize={compilationSize}
-                />
+                <ScratchCompileBar onCompile={() => handleCompile(scratchGeneratedCodeRef.current)} compilationStatus={compilationStatus} compilationErrors={compilationErrors} compilationWarnings={compilationWarnings} compilationSize={compilationSize} />
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* ═══ UNLIM RESPONSE PANEL ═══ */}
-      <UNLIMResponsePanel
-        response={unlimResponse}
-        isAsking={isAskingUNLIM}
-        onAskAgain={handleAskUNLIM}
-        onClose={() => setUnlimResponse(null)}
-      />
-
-      {/* ═══ OVERLAY: Potentiometer ═══ */}
-      {potOverlay && (
-        <PotOverlay
-          value={potOverlay.value}
-          onValueChange={handlePotValueChange}
-          onClose={() => setPotOverlay(null)}
-        />
-      )}
-
-      {/* ═══ OVERLAY: LDR / Photo-Resistor ═══ */}
-      {ldrOverlay && (
-        <LdrOverlay
-          value={ldrOverlay.value}
-          onValueChange={handleLdrValueChange}
-          onClose={() => setLdrOverlay(null)}
-        />
-      )}
-
-      {/* ═══ OVERLAY: Component Properties Panel ═══ */}
-      {propsPanel && (
-        <PropertiesPanel
-          comp={propsPanel}
-          onValueChange={handlePropChange}
-          onClose={() => setPropsPanel(null)}
-        />
-      )}
-
-      {/* ═══ Sprint 3: Shortcuts Modal ═══ */}
-      {showShortcuts && (
-        <ShortcutsPanel onClose={() => setShowShortcuts(false)} />
-      )}
-
-      {/* ═══ GDPR: Analytics Consent Banner ═══ */}
+      {/* OVERLAYS */}
+      <UNLIMResponsePanel response={unlimResponse} isAsking={isAskingUNLIM} onAskAgain={handleAskUNLIM} onClose={() => setUnlimResponse(null)} />
+      {potOverlay && (<PotOverlay value={potOverlay.value} onValueChange={handlePotValueChange} onClose={() => setPotOverlay(null)} />)}
+      {ldrOverlay && (<LdrOverlay value={ldrOverlay.value} onValueChange={handleLdrValueChange} onClose={() => setLdrOverlay(null)} />)}
+      {propsPanel && (<PropertiesPanel comp={propsPanel} onValueChange={handlePropChange} onClose={() => setPropsPanel(null)} />)}
+      {showShortcuts && (<ShortcutsPanel onClose={() => setShowShortcuts(false)} />)}
       <ConsentBanner />
-
     </div>
   );
 };

@@ -102,6 +102,7 @@ const DraggableChip = React.memo(function DraggableChip({ type, label, icon }) {
 
   return (
     <div
+      className="elab-sandbox-chip"
       draggable="true"
       onDragStart={handleDragStart}
       onDragEnd={() => { window.__elabDragType = null; setDragging(false); }}
@@ -285,11 +286,11 @@ const ComponentDrawer = ({
         : styles.collapsedBadge;
       return (
         <div style={badgeStyle} onClick={() => setCollapsed(false)}>
-          <span style={{ fontSize: 14 }}>{'\u{1F527}'}</span>
+          <span style={{ fontSize: 16 }}>{'\u{1F527}'}</span>
           <span style={styles.collapsedBadgeText}>
             {isIntro ? 'Inizia' : isComplete ? 'Fatto!' : `${currentStep + 1}/${allSteps.length}`}
           </span>
-          <span style={{ fontSize: 14, color: 'var(--color-text-gray-300, #888)' }}>{'\u{25BC}'}</span>
+          <span style={{ fontSize: 16, color: 'var(--color-text-gray-300, #888)' }}>{'\u{25BC}'}</span>
         </div>
       );
     }
@@ -420,7 +421,7 @@ const ComponentDrawer = ({
                         label={SHORT_LABELS[step.componentType] || step.componentType}
                         icon={STEP_ICONS[step.componentType] || '\u{1F9E9}'}
                       />
-                      <span style={{ fontSize: 12, color: 'var(--color-text-gray-400, #666)', fontFamily: 'var(--font-sans)', fontWeight: 600, letterSpacing: '0.3px' }}>trascina</span>
+                      <span style={{ fontSize: 16, color: 'var(--color-text-gray-400, #666)', fontFamily: 'var(--font-sans)', fontWeight: 600, letterSpacing: '0.3px' }}>trascina</span>
                     </div>
                   ) : (
                     <span style={{ fontSize: 20, flexShrink: 0 }}>{stepIcon}</span>
@@ -557,7 +558,7 @@ const styles = {
   },
 
   floatingHeaderTitle: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
     color: 'var(--color-primary, #1E4D8C)',
@@ -590,7 +591,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: 6,
-    padding: '6px 14px',
+    padding: '8px 16px',
     background: 'var(--color-bg, #FFFFFF)',
     borderRadius: 'var(--radius-full, 9999px)',
     boxShadow: 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06)), 0 0 0 1px var(--color-border, #E5E5EA)',
@@ -601,7 +602,7 @@ const styles = {
   },
 
   collapsedBadgeText: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
     color: 'var(--color-primary, #1E4D8C)',
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
@@ -665,7 +666,7 @@ const styles = {
   },
 
   headerTitle: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
     color: 'var(--color-text, #1A1A2E)',
@@ -675,7 +676,7 @@ const styles = {
   },
 
   collapsedTitle: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 600,
     color: 'var(--color-text-gray-400, #666)',
   },
@@ -704,7 +705,7 @@ const styles = {
   },
 
   stepCounter: {
-    fontSize: '13px',
+    fontSize: '16px',
     fontWeight: 700,
     color: 'var(--color-primary, #1E4D8C)',
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
@@ -725,7 +726,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: 8,
-    fontSize: '15px',
+    fontSize: '16px',
     color: 'var(--color-text, #1A1A2E)',
     lineHeight: 1.5,
   },
@@ -737,14 +738,14 @@ const styles = {
   },
 
   stepText: {
-    fontSize: '15px',
+    fontSize: '16px',
     lineHeight: 1.5,
     color: 'var(--color-text, #1A1A2E)',
     fontWeight: 500,
   },
 
   hint: {
-    fontSize: '14px',
+    fontSize: '16px',
     color: 'var(--color-text-gray-600, #444)',
     fontStyle: 'normal',
     lineHeight: 1.45,
@@ -756,7 +757,7 @@ const styles = {
   },
 
   scratchHint: {
-    fontSize: '14px',
+    fontSize: '16px',
     color: 'var(--color-primary, #1E4D8C)',
     fontStyle: 'normal',
     lineHeight: 1.45,
@@ -769,7 +770,7 @@ const styles = {
 
   /* S86: Scratch step explanation (educational insight) */
   scratchExplanation: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     color: 'var(--color-text-gray-600, #444)',
     lineHeight: 1.45,
     padding: '4px 8px',
@@ -792,7 +793,7 @@ const styles = {
     flexWrap: 'wrap',
   },
   completionTitle: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
     color: 'var(--color-success, #16A34A)',
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
@@ -800,7 +801,7 @@ const styles = {
     letterSpacing: '0.5px',
   },
   completionSubtitle: {
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     color: 'var(--color-text-gray-600, #444)',
     lineHeight: 1.45,
     marginTop: 2,
@@ -811,7 +812,7 @@ const styles = {
     color: 'var(--color-text-inverse, #fff)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
     fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
     cursor: 'pointer',
@@ -838,7 +839,7 @@ const styles = {
     borderRadius: 'var(--radius-md, 8px)',
     background: 'var(--color-bg, #fff)',
     color: 'var(--color-text-gray-500, #555)',
-    fontSize: 'var(--font-size-sm, 14px)',
+    fontSize: 'var(--font-size-sm, 16px)',
     fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
     cursor: 'pointer',
     textAlign: 'center',
@@ -869,8 +870,9 @@ const styles = {
   sandboxChip: {
     display: 'flex',
     alignItems: 'center',
-    gap: 5,
-    padding: '5px 10px',
+    gap: 6,
+    padding: '8px 14px',
+    minHeight: 56,
     background: 'var(--color-bg-secondary)',
     border: '1px solid var(--color-border)',
     borderRadius: 20,
@@ -881,13 +883,13 @@ const styles = {
   },
 
   chipIcon: {
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 1,
     flexShrink: 0,
   },
 
   chipLabel: {
-    fontSize: 14,
+    fontSize: 16,
     color: 'var(--color-text-gray-700)',
     fontWeight: 600,
     lineHeight: 1,

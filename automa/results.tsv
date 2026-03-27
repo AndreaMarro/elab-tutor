@@ -8,3 +8,19 @@ d897c66	0.9745	IMPROVE	discard	C43: browser-check-fix + galileo-breve-didattico
 83bea86	0.9445	IMPROVE	keep	Fase 0.3: Chat UNLIM minimizzata per default, eliminare Sono qui
 83bea86	0.9415	IMPROVE	keep	Fase 0.2: Nascondere Dev/Dashboard/Admin dal menu per utenti normali
 d463400	0.9415	IMPROVE	keep	Fase 0.4: Eliminare toggle Modalità Guida OFF
+da5c5cd	0.9430	IMPROVE	keep	Catastrofe Onboarding - eliminato redirect Netlify, VetrinaSimulatore renderizza
+pending	0.9430	IMPROVE	keep	C7: galileo-breve-didattico — max 3 frasi, esempio quotidiano obbligatorio, domanda alla classe obbligatoria
+08ef503	0.9430	IMPROVE	keep	galileo-breve-didattico
+pending	0.9430	IMPROVE	keep	C8: GDPR-COMPLIANCE.md — gap analysis 6 gap (2 blocker), piano rimedio 3 fasi, 11 fonti verificate
+08ef503	0.9445	IMPROVE	keep	gdpr-reale-scuole
+08ef503	0.9415	IMPROVE	keep	Landing page /scuole/pnrr con info bandi PNRR Scuola 4.0 e guida acquisto MePA
+08ef503	0.9415	IMPROVE	keep	Fix routing ibrido pathname/hash — deep link rotti
+08ef503	0.9430	IMPROVE	keep	Fix commento JS // renderizzato come testo visibile nella landing page VetrinaSi
+08ef503	0.9460	IMPROVE	keep	unknown
+08ef503	0.9415	IMPROVE	keep	ridurre-densita-cognitiva
+08ef503	0.9415	IMPROVE	keep	Fix Onboarding: Rimuovere Progressive Disclosure di default
+08ef503	0.9445	IMPROVE	keep	Split NewElabSimulator.jsx — sotto 2000 LOC
+08ef503	0.9445	IMPROVE	keep	Welcome card onboarding nel placeholder simulatore — 3 passi (Scegli/Guarda/Chie
+08ef503	0.9460	IMPROVE	keep	Mistral GDPR-safe fallback provider + EU-only mode
+08ef503	0.9415	IMPROVE	keep	GAP-6 fix: pseudonymizeUserId btoa→SHA-256 + GDPR-COMPLIANCE.md aggiornato
+08ef503	0.9415	IMPROVE	keep	Landing PNRR: 2 errori fattuali corretti (D.M. 218/2022, 750M non 1.1B), pivot t

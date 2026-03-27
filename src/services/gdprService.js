@@ -379,14 +379,17 @@ function minimizeData(data, allowedFields) {
 }
 
 /**
- * Pseudonimizza ID utente
+ * Pseudonimizza ID utente con SHA-256 (irreversibile)
  * @param {string} userId
- * @returns {string}
+ * @returns {Promise<string>} Hash hex troncato a 16 caratteri
  */
-function pseudonymizeUserId(userId) {
-    // Crea un hash dello userId per pseudonimizzazione
-    // In produzione, usare un sistema di mapping sicuro
-    return btoa(userId).substring(0, 16);
+async function pseudonymizeUserId(userId) {
+    const salt = 'elab-tutor-2026';
+    const data = new TextEncoder().encode(salt + userId);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex.substring(0, 16);
 }
 
 /**
@@ -396,10 +399,10 @@ function pseudonymizeUserId(userId) {
  * @returns {boolean}
  */
 function isDataExpired(date, maxDays = 730) { // 2 anni default
+// © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati
     const dataDate = new Date(date);
     const expiryDate = new Date(dataDate.getTime() + (maxDays * 24 * 60 * 60 * 1000));
     return new Date() > expiryDate;
-// © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati
 }
 
 // ============================================

@@ -35,7 +35,7 @@
   background: var(--color-wire-mode-bg, rgba(255, 243, 224, 0.95));
   border: 1px solid var(--color-vol2, #E8941C);
   border-radius: var(--radius-md, 8px);
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   color: var(--color-wire-mode-text, #E65100);
   font-weight: var(--font-weight-semibold, 600);
@@ -116,7 +116,7 @@
 
 .unlimBody {
   padding: var(--space-4, 16px) var(--space-5, 20px);
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   color: var(--color-text, #333);
   line-height: var(--line-height-relaxed, 1.6);
   overflow: auto;
@@ -140,7 +140,7 @@
   color: var(--color-accent, #7CB342);
   cursor: pointer;
   padding: var(--space-2, 8px) 14px;
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-weight: var(--font-weight-semibold, 600);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   min-height: var(--touch-min, 56px);
@@ -194,7 +194,7 @@
   }
 
   .wireModeIndicator {
-    font-size: 14px;
+    font-size: 16px;
     padding: 4px 10px;
     gap: 6px;
     top: 4px;
@@ -217,11 +217,11 @@
 
   .unlimBody {
     padding: 16px 16px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .unlimHeaderTitle {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 /* ═══════════════════════════════════════════════════════════════
@@ -244,7 +244,7 @@
   }
 
   .wireModeIndicator {
-    font-size: 14px;
+    font-size: 16px;
     padding: 5px 12px;
   }
 

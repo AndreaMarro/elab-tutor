@@ -1,5 +1,5 @@
 {
-  "updated": "2026-03-27T03:19:06.262685",
+  "updated": "2026-03-27T09:48:20.788636",
   "session": "S117",
   "scores": {
     "_WARNING": "INFLATED MANUAL SCORES BELOW \u2014 NOT FROM evaluate.py. Use composite_v3 as ground truth.",
@@ -47,7 +47,7 @@
   },
   "build": {
     "status": "fail",
-    "last_check": "2026-03-27T03:19:06.262682"
+    "last_check": "2026-03-27T09:48:20.788631"
   },
   "bugs": {
     "p1": [
@@ -69,13 +69,13 @@
   },
   "loop": {
     "status": "running",
-    "cycles_today": 6,
-    "last_cycle": "2026-03-27T03:19:06.262661",
+    "cycles_today": 23,
+    "last_cycle": "2026-03-27T09:48:20.788616",
     "tasks_completed_today": 3,
     "last_date": "2026-03-27",
-    "last_elapsed_s": 377,
-    "self_exam_last_run": "2026-03-27T03:04:01.231532",
-    "self_exam_last_cycle": 5
+    "last_elapsed_s": 224,
+    "self_exam_last_run": "2026-03-27T08:43:23.186350",
+    "self_exam_last_cycle": 20
   },
   "budget": {
     "monthly_limit_eur": 50,

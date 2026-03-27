@@ -2,7 +2,7 @@ I want to IMPROVE ELAB Tutor so that teachers can teach electronics better.
 
 ## IDENTITA
 Sei ELAB-TUTOR-ORCHESTRATOR-WORKER. Italiano. Project: /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder
-Modo: IMPROVE | Ciclo: 6
+Modo: IMPROVE | Ciclo: 23
 Non dichiarare progresso senza evidenza verificabile.
 
 ## PRINCIPIO ZERO — EMPATIA OBBLIGATORIA
@@ -219,21 +219,31 @@ CICLO 1h:
 
 ### 1. results.tsv
 commit	composite	mode	status	description
-commit	composite	mode	status	description
-450d17a	0.8872	BASELINE	keep	First real evaluation — build=1.0 tags=0.9 gulp=0.8 identity=1.0 content=1.0 ipad=0.68 lighthouse=0.62
-740dbdc	0.9730	IMPROVE	discard	unknown
-d897c66	0.9745	IMPROVE	discard	C43: browser-check-fix + galileo-breve-didattico
-4a98017	0.9580	IMPROVE	keep	Progressive disclosure — CSS fade + toast sblocco + changedComponent milestone
-489dd39	0.9655	IMPROVE	keep	Fix Galileo loadexp tag — tutor.yml riga 6 bloccava [AZIONE:loadexp] anche per r
 7f5e5f9	0.4500	IMPROVE	keep	Font self-hosted: rimosso Google Fonts CDN da index.html e src/index.css, attiva
 83bea86	0.9445	IMPROVE	keep	Fase 0.3: Chat UNLIM minimizzata per default, eliminare Sono qui
 83bea86	0.9415	IMPROVE	keep	Fase 0.2: Nascondere Dev/Dashboard/Admin dal menu per utenti normali
 d463400	0.9415	IMPROVE	keep	Fase 0.4: Eliminare toggle Modalità Guida OFF
+da5c5cd	0.9430	IMPROVE	keep	Catastrofe Onboarding - eliminato redirect Netlify, VetrinaSimulatore renderizza
+pending	0.9430	IMPROVE	keep	C7: galileo-breve-didattico — max 3 frasi, esempio quotidiano obbligatorio, domanda alla classe obbligatoria
+08ef503	0.9430	IMPROVE	keep	galileo-breve-didattico
+pending	0.9430	IMPROVE	keep	C8: GDPR-COMPLIANCE.md — gap analysis 6 gap (2 blocker), piano rimedio 3 fasi, 11 fonti verificate
+08ef503	0.9445	IMPROVE	keep	gdpr-reale-scuole
+08ef503	0.9415	IMPROVE	keep	Landing page /scuole/pnrr con info bandi PNRR Scuola 4.0 e guida acquisto MePA
+08ef503	0.9415	IMPROVE	keep	Fix routing ibrido pathname/hash — deep link rotti
+08ef503	0.9430	IMPROVE	keep	Fix commento JS // renderizzato come testo visibile nella landing page VetrinaSi
+08ef503	0.9460	IMPROVE	keep	unknown
+08ef503	0.9415	IMPROVE	keep	ridurre-densita-cognitiva
+08ef503	0.9415	IMPROVE	keep	Fix Onboarding: Rimuovere Progressive Disclosure di default
+08ef503	0.9445	IMPROVE	keep	Split NewElabSimulator.jsx — sotto 2000 LOC
+08ef503	0.9445	IMPROVE	keep	Welcome card onboarding nel placeholder simulatore — 3 passi (Scegli/Guarda/Chie
+08ef503	0.9460	IMPROVE	keep	Mistral GDPR-safe fallback provider + EU-only mode
+08ef503	0.9415	IMPROVE	keep	GAP-6 fix: pseudonymizeUserId btoa→SHA-256 + GDPR-COMPLIANCE.md aggiornato
+08ef503	0.9415	IMPROVE	keep	Landing PNRR: 2 errori fattuali corretti (D.M. 218/2022, 750M non 1.1B), pivot t
 
 ### 2. Ultimo ciclo
 {
-  "cycle": 5,
-  "timestamp": "2026-03-27T03:05:23.654469",
+  "cycle": 9,
+  "timestamp": "2026-03-27T04:23:12.345707",
   "date": "2026-03-27",
   "mode": "IMPROVE",
   "checks": [
@@ -241,22 +251,20 @@ d463400	0.9415	IMPROVE	keep	Fase 0.4: Eliminare toggle Modalità Guida OFF
       "name": "health",
       "status": "pass",
       "detail": "{\"nanobot\": \"ok\", \"vercel\": \"ok\", \"brain\": \"ok\"}",
-      "time_ms": 1150
+      "time_ms": 319
     },
     {
       "name": "build",
-      "status": "pass",
-      "detail": "Build OK in 20.50s",
-      "time_ms": 23463
+      "status": "fail",
+      "detail": "[Errno 2] No such file or directory: 'npm'",
+      "time_ms": 2
     },
     {
       "name": "galileo",
       "status": "pass",
       "detail": "9/10 pass | FAIL: carica esperimento 1: missing expected [[AZIONE:loadexp]]",
-      "time_ms": 159648
-    },
-    {
-      "na
+      "time_ms": 163019
+   
 
 ### 3. Handoff
 # Session Handoff — S119 → S120 (23/03/2026)
@@ -272,6 +280,7 @@ d463400	0.9415	IMPROVE	keep	Fase 0.4: Eliminare toggle Modalità Guida OFF
 6. **P2: Utility CSS** — 15 classi utility nel design-sys
 
 ### 4. Git log
+08ef503 fix: Automa C5-C6 Fase 0 + orchestratore MASTER-PLAN nel contesto + adversarial 03:05
 da5c5cd fix: Automa Fase 0.4 — toggle Modalità Guida eliminato + orchestratore legge MASTER-PLAN + ELAB-COMPLETE-CONTEXT
 d4f9c42 research: analisi percorsi lezione PhET + Tinkercad + Arduino CTC GO (197 righe, fonti verificate)
 6ab6e20 feat: template percorso lezione JSON generato da Gemini CLI — v1-cap6-esp1 (il LED)
@@ -281,7 +290,6 @@ c8b6a0a docs: UNLIM Brain design doc approvato — 2 settimane, 2 modalità, 8 c
 83bea86 feat: MASTER-PLAN sistematico (Fasi 0-4) + 5 task P0 Fase 0 + CONTEXT-PROTOCOL aggiornato
 68630f7 docs: PRODUCT-VISION + UNLIM-BRAIN-DESIGN aggiornati con risultati audit fisico reale
 c2e3668 feat: PRODUCT-VISION + UNLIM-BRAIN-DESIGN + PATH fix + context protocol completo
-cb0bef2 feat: PATH fix (npm/node), CONTEXT-PROTOCOL.md, project-history in worker, shared-results layer 11
 
 ### 5. Knowledge
   - kimi-research-cycle-59
@@ -301,21 +309,21 @@ cb0bef2 feat: PATH fix (npm/node), CONTEXT-PROTOCOL.md, project-history in worke
   - research-orchestration-advanced
 
 ### 6. AI feedback
-[2026-03-26 12:31] [DeepSeek score] SCORE:8 MOTIVO:Spiegazione chiara, adatta all'età, corretta e incoraggiante, ma leggermente incompleta.
-[2026-03-26 12:31] [Kimi review] ELAB Tutor è un'ottima piattaforma EdTech che offre una vasta gamma di esperimenti e strumenti di simulazione. I punteggi sono in generale molto alti, con l'integrazione AI e la qualità del codice che raggiungono il massimo. Tuttavia, ci sono aree in cui è possibile migliorare:
-
-1. **Simulatore iPad
-[2026-03-26 16:26] [DeepSeek score] SCORE:9 MOTIVO:Spiegazione chiara con metafore adatte all'età (lampadina speciale, freno), tecnicamente corretta senza termini complessi, tono entusiasta che incoraggia la sperimentazione pratica.
-[2026-03-26 16:26] [Gemini market] [ERROR] Gemini: HTTP 503
-[2026-03-26 20:20] [DeepSeek score] SCORE:9 MOTIVO:Spiegazione chiara con analogia appropriata, passaggi pratici per la breadboard, incoraggiante con invito all'azione e simulatore, tecnicamente corretta includendo la resistenza.
-[2026-03-26 20:20] [Kimi review] ELAB Tutor è un'ottima piattaforma EdTech che offre una vasta gamma di esperimenti e strumenti di simulazione, come il simulatore KVL/KCL+AVR e l'integrazione di AI Galileo. La sua alta punteggio generale (9.2) e la qualità del codice (9.8) dimostrano la sua affidabilità e precisione. Tuttavia, ci s
-[2026-03-27 03:00] [DeepSeek score] SCORE:7 MOTIVO:Termini tecnici (anodo/catodo) un po' complessi, ma spiegati con pin lungo/corto. Corretta e con azione utile. Poteva essere più incoraggiante e gioiosa.
 [2026-03-27 03:00] [Kimi review] Il problema più grave che impedisce la vendita alle scuole è l'alta licenza annuale di €500-1000, che può essere proibitiva per scuole con budget limitati. Suggerisco di offrire una licenza "Basic" a un prezzo più accessibile, come €100-200/anno, e una licenza "Premium" a €500-1000/anno con funziona
+[2026-03-27 04:28] [DeepSeek score] SCORE:9 MOTIVO:Spiega concetti complessi in modo chiaro e coinvolgente con analogie adatte a bambini (es. lampadina). Copre correttamente polarità e sicurezza (resistenza). Il tono è incoraggiante e invita all'azione.
+[2026-03-27 04:29] [Gemini market] [GEMINI-CLI-TIMEOUT]
+[2026-03-27 06:31] [DeepSeek score] SCORE:9 MOTIVO:Spiegazione chiara con metafore (gambe), avviso di sicurezza importante, collega alla lezione in corso, linguaggio adatto e incoraggia a sperimentare.
+[2026-03-27 06:32] [Kimi review] Il problema più grave che impedisce la vendita alle scuole è l'alta licenza annuale di €500-1000, che può essere proibitiva per scuole con budget limitati. Suggerisco di offrire una licenza "Basic" a un prezzo più accessibile, come €100-200/anno, e una licenza "Premium" a €500-1000/anno con funziona
+[2026-03-27 06:35] [DeepSeek score] SCORE:8
+MOTIVO:Spiegazione chiara e coinvolgente con linguaggio adatto all'età, ma la risposta è incompleta (interrotta a metà frase).
+[2026-03-27 06:35] [Kimi review] Il problema più grave che impedisce la vendita alle scuole è l'alta licenza annuale di €500-1000, che può essere proibitiva per scuole con budget limitati. Suggerisco di offrire una licenza "Basic" a un prezzo più accessibile, come €100-200/anno, e una licenza "Premium" a €500-1000/anno con funziona
+[2026-03-27 08:41] [DeepSeek score] SCORE:7 MOTIVO:Spiegazione chiara, adatta all'età e incoraggiante, ma incompleta (si interrompe a metà frase).
+[2026-03-27 08:42] [Gemini market] [GEMINI-CLI-TIMEOUT]
 
 ### 7. Score composito
 {
-  "composite": 0.943,
-  "timestamp": "2026-03-27T03:03:44.295143"
+  "composite": 0.946,
+  "timestamp": "2026-03-27T09:08:23.066772"
 }
 
 ### 8. Context DB
@@ -346,41 +354,25 @@ Viene iniettato nel prompt dell'agente ad ogni ciclo.
 
 
 ### 10. Ricerca Parallela (Kimi K2.5)
-  [OK] Cycle 3 — ai_tutoring (severity=medium): PRINCIPIO-1: Un AI tutor per bambini che imparano elettronica deve essere un supporto educativo che facilita l'apprendimento attraverso l'interazione 
-  [OK] Cycle 4 — lim_classroom (severity=medium): FLUSSO-LEZIONE: 
-1. Introduzione e obiettivi della lezione da parte del docente.
-2. Presentazione di ELAB Tutor e spiegazione del simulatore da parte 
-  [OK] Cycle 5 — circuit_accuracy (severity=?): Gli errori più comuni nei simulatori di circuiti educativi includono:
-
-1. **Inaccuratezza nel solver**: Gli algoritmi di risoluzione come KCL, KVL e M
-  [OK] Cycle 6 — pnrr_bandi (severity=high): BANDO-1: PNRR Scuola 4.0 - Software Didattico STEM
-
-REQUISITI: 
-- Software didattico STEM per scuole medie italiane (10-14 anni).
-- Integrazione di si
-  [OK] Cycle 6 — pnrr_bandi (severity=high): BANDO-1: PNRR Scuola 4.0 - Sviluppo software didattico STEM per scuole medie italiane.
-
-REQUISITI: 
-1. Software didattico STEM che integri simulatore 
+  [OK] Cycle 20 — pedagogy (severity=medium): INSIGHT-1: L'integrazione di un AI tutor in un simulatore di circuiti può essere un vantaggio competitivo, ma è fondamentale che sia progettato in mod
+  [OK] Cycle 21 — competitor (severity=medium): COMPETITOR-1: Tinkercad Circuits — Forza: Gratis e facile da usare; Debolezza: Manca AI e pedagogia specifica.
+COMPETITOR-2: Wokwi — Forza: Gratis; De
+  [OK] Cycle 22 — ux_children (severity=high): BEST-PRACTICE-1: Touch Target
+- Dimensioni dei touch target adeguatamente grandi per facilitare l'interazione con i bambini, generalmente non inferior
+  [OK] Cycle 22 — ux_children (severity=high): BEST-PRACTICE-1: Touch Target
+- Dimensioni ampie per i bambini: i touch target dovrebbero essere di almeno 7-10 mm per facilitare l'interazione sui di
+  [OK] Cycle 23 — ai_tutoring (severity=medium): PRINCIPIO-1: Un AI tutor per bambini che imparano elettronica deve essere un supporto educativo che facilita l'apprendimento e l'interazione con il ma
 AZIONI URGENTI:
-  [medium] lim_classroom: FLUSSO-LEZIONE: 
-1. Introduzione e obiettivi della lezione da parte del docente.
-2. Presentazione di ELAB Tutor e spiega
-  [high] pnrr_bandi: BANDO-1: PNRR Scuola 4.0 - Software Didattico STEM
-
-REQUISITI: 
-- Software didattico STEM per scuole medie italiane (10-
-  [high] pnrr_bandi: BANDO-1: PNRR Scuola 4.0 - Sviluppo software didattico STEM per scuole medie italiane.
-
-REQUISITI: 
-1. Software didattic
+  [high] ux_children: BEST-PRACTICE-1: Touch Target
+- Dimensioni ampie per i bambini: i touch target dovrebbero essere di almeno 7-10 mm per f
+  [medium] ai_tutoring: PRINCIPIO-1: Un AI tutor per bambini che imparano elettronica deve essere un supporto educativo che facilita l'apprendim
 
 ## CHECK RESULTS
   PASS health: {"nanobot": "ok", "vercel": "ok", "brain": "ok"}
   FAIL build: [Errno 2] No such file or directory: 'npm'
   PASS galileo: 9/10 pass | FAIL: carica esperimento 1: missing expected [[AZIONE:loadexp]]
   PASS content: 62 experiments found
-  PASS gulpease: avg=76 min=74 (target ≥60) [3 samples]
+  PASS gulpease: avg=78 min=72 (target ≥60) [3 samples]
   WARN browser: Playwright not available
   WARN ipad: Test error: [Errno 2] No such file or directory: 'node'
 

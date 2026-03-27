@@ -1,38 +1,28 @@
 # Kimi Research — Cycle 14
-Topic: UX design bambini 8-12 anni interfaccia educativa touch tablet
-Date: 2026-03-26T03:44:18.958715
+Topic: LIM lavagna interattiva aula tecnologia scuola media lezione tipo
+Date: 2026-03-27T05:53:52.761758
 
-BEST-PRACTICE-1: Touch Target
-L'area di ogni elemento interattivo deve essere ampia e facile da raggiungere per i bambini, che tendono a avere movimenti meno precisi. Le dimensioni consigliate sono di almeno 7-10 mm di diametro.
+FLUSSO-LEZIONE: 
+1. Introduzione e obiettivi della lezione da parte del docente.
+2. Presentazione di ELAB Tutor e spiegazione del simulatore da parte del docente.
+3. Divisone dei gruppi di studenti e assegnazione di compiti.
+4. Utilizzo di ELAB Tutor per simulare circuiti e svolgere esperimenti.
+5. Discussione dei risultati e confronto tra i gruppi.
+6. Rassegna dei concetti e verifiche di comprensione.
+7. Conclusione e pianificazione delle prossime lezioni.
 
-APPLICAZIONE-ELAB: Nel simulatore di circuiti elettronici, assicurati che i pulsanti, i controlli e gli elementi interattivi siano di dimensioni adeguate e ben posizionati per evitare sovrapposizioni.
+VINCOLI-LIM:
+- Il docente deve poter utilizzare ELAB Tutor senza formazione specifica.
+- La licenza di ELAB Tutor deve essere gestibile e accessibile per le scuole.
+- La piattaforma deve essere compatibile con i dispositivi utilizzati dalle scuole italiane.
+- La privacy dei dati dei minori deve essere rispettata e i dati non devono essere trasferiti verso server statunitensi.
 
-SEVERITY: medium
-
-BEST-PRACTICE-2: Font e Colori
-Utilizzare caratteri leggibili e di grandi dimensioni (ad esempio, 16-20 pt). I colori dovrebbero essere contrastanti e facili da distinguere, evitando combinazioni che possano causare confusione o malore visivo.
-
-APPLICAZIONE-ELAB: Scegli caratteri di facile lettura come Arial o Helvetica e utilizza colori contrastanti per evidenziare i controlli importanti e i feedback.
-
-SEVERITY: high
-
-BEST-PRACTICE-3: Feedback
-I bambini apprendono meglio quando ricevono feedback immediato. Assicurati che ogni azione sia accompagnata da un segnale visivo, auditivo o di altro tipo che confermi l'azione o fornisce suggerimenti.
-
-APPLICAZIONE-ELAB: Nel simulatore, fornire un feedback visivo quando i circuiti sono corretti o errati, e un suono di conferma quando un componente viene posizionato correttamente.
-
-SEVERITY: high
-
-BEST-PRACTICE-4: Gamification
-Incorporate elementi di gioco, come livelli, punti e ricompense, per stimolare l'interesse e il coinvolgimento dei bambini.
-
-APPLICAZIONE-ELAB: Crea livelli progressivi nel simulatore con obiettivi chiari e ricompense visive per i progressi e i successi.
+REQUISITI-ELAB:
+- Interfaccia utente intuitiva e facile da navigare.
+- Integrazione con la pedagogia delle scuole italiane.
+- Supporto per la creazione e la simulazione di circuiti.
+- Funzionalità di AI per assistere gli studenti e il docente.
+- Compatibilità con dispositivi mobili e desktop.
+- Protezione dei dati in conformità con il GDPR.
 
 SEVERITY: medium
-
-BEST-PRACTICE-5: Attenzione e Carico Cognitivo
-Evita di sovraccaricare i bambini con troppe informazioni contemporaneamente. Mantieni l'interfaccia semplice e focalizzata sulle attività principali.
-
-APPLICAZIONE-ELAB: Nel simulatore, presentare solo i componenti e le informazioni essenziali per il livello corrente, evitando di mostrare troppi dettagli o opzioni.
-
-SEVERITY: high

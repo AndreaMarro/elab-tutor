@@ -520,8 +520,8 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
               style={{
                 ...codeEditorStyles.fontSizeBtn,
                 marginLeft: 6,
-                fontSize: 12,
-                padding: '2px 10px',
+                fontSize: 14,
+                padding: '4px 12px',
                 color: 'var(--color-accent, #7CB342)',
                 borderColor: 'var(--color-accent, #7CB342)',
               }}

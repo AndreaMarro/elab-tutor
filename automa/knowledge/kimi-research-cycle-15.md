@@ -1,13 +1,27 @@
 # Kimi Research — Cycle 15
-Topic: AI tutoring adattivo per STEM education scaffolding ZPD
-Date: 2026-03-25T13:24:44.013561
+Topic: accuratezza simulatore circuiti educativo KCL KVL MNA errori comuni
+Date: 2026-03-27T06:29:51.331992
 
-PRINCIPIO-1: Galileo dovrebbe adottare il principio di scaffolding, offrendo ai bambini supporto adeguato per affrontare compiti complessi, in modo che possano sviluppare autonomamente le proprie capacità.
+Gli errori più comuni nei simulatori di circuiti educativi includono:
 
-ERRORE-COMUNE: Ai bambini viene spesso presentata informazione troppo avanzata o troppo semplice, che non stimola né il loro sviluppo cognitivo né la loro motivazione.
+1. **Inaccuratezza nel solver**: Gli algoritmi di risoluzione come KCL, KVL e MNA devono essere accurati per simulare il comportamento dei circuiti in modo realistico.
+   - EDGE-CASE-1: Circuiti con componenti non lineari come diodi o transistor.
+   - TEST-SUGGERITO: Simulare circuiti con diodi e transistor per verificare la risposta del solver ai cambiamenti di tensione e corrente.
+   - SEVERITY: high
 
-RACCOMANDAZIONE-GALILEO: Galileo dovrebbe identificare il livello di competenza di ogni bambino e fornire supporto personalizzato all'interno della ZPD (zona prossima allo sviluppo di Vygotsky), utilizzando il metodo socratico per stimolare la riflessione e il pensiero critico. Il feedback formativo dovrebbe essere costante e positivo, per incoraggiare l'apprendimento e la crescita.
+2. **Modellazione LED non accurata**: La modellazione dei LED deve riflettere correttamente la loro caratteristica di emissione di luce in funzione della corrente.
+   - EDGE-CASE-2: LED sottoposti a tensioni diverse dal loro valore di inizio dell'illuminazione.
+   - TEST-SUGGERITO: Testare la risposta del simulatore con LED a tensioni sopra e sotto il valore di inizio dell'illuminazione.
+   - SEVERITY: medium
 
-SEVERITY: medium
+3. **Problemi con componenti in parallelo**: La simulazione deve gestire correttamente i componenti in parallelo, mantenendo la corretta distribuzione di corrente e tensione.
+   - EDGE-CASE-3: Circuiti con resistori in parallelo con tensioni di alimentazione variabili.
+   - TEST-SUGGERITO: Verificare la distribuzione di corrente e tensione tra resistori in parallelo con tensioni di alimentazione che variano.
+   - SEVERITY: medium
 
-Il contesto ciclo corrente mostra che Galileo ha raggiunto livelli elevati di sicurezza, integrazione con AI, qualità del codice e accessibilità. Tuttavia, c'è margine di miglioramento nella conformità con i dispositivi iPad e nelle prestazioni del sito, che potrebbero influenzare l'esperienza di apprendimento dei bambini. Galileo dovrebbe continuare a monitorare e ottimizzare queste aree per garantire un'esperienza di apprendimento inclusiva e efficace.
+4. **Rilevamento di cortocircuiti**: Il simulatore deve rilevare e gestire correttamente i cortocircuiti, evitando la simulazione di circuiti non fisicamente realizzabili.
+   - EDGE-CASE-4: Circuiti con componenti che causano un cortocircuito, come due poli di una batteria connessi direttamente.
+   - TEST-SUGGERITO: Simulare circuiti con componenti che causano cortocircuiti e verificare la risposta del simulatore.
+   - SEVERITY: high
+
+Il contesto ciclo corrente mostra che il simulatore ha ottenuto punteggi elevati in diverse categorie, ma è importante continuare a monitorare e migliorare la precisione e l'accuratezza del simulatore, specialmente nei casi limite menzionati sopra.

@@ -4,7 +4,8 @@ Multi-UNLIM: Orchestrator + 4 Specialists (Circuit/Code/Tutor/Vision)
 4-Layer Intelligence: Cache → Smart Router → Parallel Racing → Quality Boost
 Two AI entities: UNLIM (tutor, multi-specialist) + ELAB Assistant (public site)
 Persistent JSON sessions, profanity filter, 2-level learning (individual + collective).
-Supports DeepSeek, Google Gemini, Groq, and OpenAI-compatible providers.
+Supports DeepSeek, Google Gemini, Groq, Mistral, and OpenAI-compatible providers.
+GDPR EU-Only mode (GDPR_EU_ONLY=true): routes ALL traffic through EU providers only (Mistral).
 (c) Andrea Marro — 28/02/2026
 """
 
@@ -447,6 +448,21 @@ _ESSENTIAL_ORIGINS = [
 _env_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
 CORS_ORIGINS = list(dict.fromkeys(_env_origins + _ESSENTIAL_ORIGINS))  # dedup, preserve order
 
+# ─── GDPR EU-Only Mode ────────────────────────────────────────
+# When GDPR_EU_ONLY=true, ONLY EU-resident providers are used.
+# Required for Italian school sales (PNRR Scuola 4.0, Art. 44-49 GDPR).
+# EU providers: Mistral (France). Non-EU: DeepSeek (China), Groq (US),
+# Google/Gemini (US), OpenAI (US), Kimi/Moonshot (China).
+EU_PROVIDERS = {"mistral"}
+GDPR_EU_ONLY = os.getenv("GDPR_EU_ONLY", "false").lower() in ("true", "1", "yes")
+
+if GDPR_EU_ONLY:
+    _pre_filter = len(AI_PROVIDERS)
+    AI_PROVIDERS = [p for p in AI_PROVIDERS if p["provider"] in EU_PROVIDERS]
+    print(f"[UNLIM] GDPR EU-ONLY mode: filtered {_pre_filter} → {len(AI_PROVIDERS)} providers (EU only)")
+    if not AI_PROVIDERS:
+        print("[UNLIM] CRITICAL: GDPR_EU_ONLY=true but no EU providers configured! Add MISTRAL_API_KEY.")
+
 # Tuning
 MAX_TOKENS = 1500
 TEMPERATURE = 0.7
@@ -723,13 +739,13 @@ def get_racing_providers(qtype: str) -> list:
     Vision routing in race_providers() handles tiered vision selection separately."""
     routing = {
         "navigation": [],                                                # Static response, no AI
-        "factual":    ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek + Groq + Kimi
-        "circuit":    ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek reasoning + Groq speed
-        "code":       ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek code + Groq speed
-        "teacher":    ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek pedagogia + Groq
-        "game":       ["deepseek", "groq", "kimi", "moonshot"],          # Multi-way racing
-        "creative":   ["deepseek", "groq", "kimi", "moonshot"],          # DeepSeek creatività + Groq
-        "general":    ["deepseek", "groq", "kimi", "moonshot"],          # All text providers
+        "factual":    ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # DeepSeek + Groq + Mistral + Kimi
+        "circuit":    ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # DeepSeek reasoning + Groq speed + Mistral EU
+        "code":       ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # DeepSeek code + Groq speed + Mistral EU
+        "teacher":    ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # DeepSeek pedagogia + Groq + Mistral EU
+        "game":       ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # Multi-way racing
+        "creative":   ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # DeepSeek creatività + Groq + Mistral EU
+        "general":    ["deepseek", "groq", "mistral", "kimi", "moonshot"],  # All text providers
     }
     preferred = routing.get(qtype, routing["general"])
     matched = [p for p in AI_PROVIDERS if p["provider"] in preferred]
@@ -742,6 +758,7 @@ def get_provider_url(provider: str, model: str) -> str:
     urls = {
         "deepseek": "https://api.deepseek.com/v1/chat/completions",
         "groq": "https://api.groq.com/openai/v1/chat/completions",
+        "mistral": "https://api.mistral.ai/v1/chat/completions",
         "openai": f"{AI_BASE_URL or 'https://api.openai.com/v1'}/chat/completions",
         "google": f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
         "gemini": f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
@@ -2480,6 +2497,30 @@ async def health():
         "multi_galileo": len(SPECIALIST_PROMPTS) > 0,
         "reasoner": REASONER_PROVIDER["model"] if REASONER_PROVIDER else None,
         "v5_routing": True,
+    }
+
+
+@app.get("/gdpr-status")
+async def gdpr_status():
+    """GDPR data residency status. Schools can verify EU-only compliance."""
+    provider_residency = {
+        "mistral": "EU", "deepseek": "CN", "groq": "US",
+        "google": "US", "gemini": "US", "openai": "US",
+        "kimi": "CN", "moonshot": "CN",
+    }
+    active = [
+        {"provider": p["provider"], "model": p["model"],
+         "residency": provider_residency.get(p["provider"], "unknown")}
+        for p in AI_PROVIDERS
+    ]
+    all_eu = all(pr["residency"] == "EU" for pr in active)
+    return {
+        "gdpr_eu_only": GDPR_EU_ONLY,
+        "compliant": all_eu,
+        "providers": active,
+        "eu_providers": [p for p in active if p["residency"] == "EU"],
+        "non_eu_providers": [p for p in active if p["residency"] != "EU"],
+        "recommendation": None if all_eu else "Set GDPR_EU_ONLY=true and configure Mistral API key for full EU compliance",
     }
 
 

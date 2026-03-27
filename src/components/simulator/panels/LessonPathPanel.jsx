@@ -13,6 +13,7 @@
  */
 
 import React from 'react';
+import { getCurriculum } from '../../../data/curriculumData';
 
 /* ─── Component type → Italian display name ─── */
 const COMP_NAMES = {
@@ -181,12 +182,15 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
 
   if (!experiment) return null;
 
+  const curriculum = getCurriculum(experiment.id);
   const materials = buildMaterialList(experiment.components);
   const nextExp = findNextExperiment(experiment.id, allExperiments);
   const chapterNum = getChapterNum(experiment.id);
   const starterQuestion = generateStarterQuestion(experiment);
-  const commonMistakes = generateCommonMistakes(experiment);
+  const fallbackMistakes = generateCommonMistakes(experiment);
   const prereqText = getPrerequisiteText(experiment.id);
+  const hasCurriculum = !!curriculum;
+  const mistakes = hasCurriculum ? curriculum.commonMistakes : fallbackMistakes;
 
   /* ─── Build phase content ─── */
   const phases = [
@@ -195,6 +199,12 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       <p style={S.phaseText}>
         <strong>Oggi facciamo:</strong> {experiment.title || experiment.desc}
       </p>
+      {hasCurriculum && (
+        <div style={S.curatedBox}>
+          <span style={S.curatedIcon}>📋</span>
+          <span>{curriculum.teacherBriefing.beforeClass}</span>
+        </div>
+      )}
       {materials.length > 0 && (
         <>
           <p style={S.phaseLabel}>Materiale per ogni gruppo:</p>
@@ -222,9 +232,14 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       <p style={S.phaseText}>
         Dì alla classe: <em>"Guardate lo schermo: questo è il circuito di oggi."</em>
       </p>
-      {experiment.desc && (
+      {hasCurriculum ? (
+        <div style={S.curatedBox}>
+          <span style={S.curatedIcon}>🎯</span>
+          <span>{curriculum.teacherBriefing.duringClass}</span>
+        </div>
+      ) : experiment.desc ? (
         <p style={S.phaseNote}>{experiment.desc}</p>
-      )}
+      ) : null}
     </div>,
 
     // Phase 3: CHIEDI ALLA CLASSE
@@ -239,6 +254,12 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       <p style={S.phaseHint}>
         Aspetta le risposte. Non correggere subito — lascia che ragionino.
       </p>
+      {hasCurriculum && curriculum.teacherBriefing.commonQuestion && (
+        <div style={S.teacherTipBox}>
+          <span style={S.teacherTipLabel}>Se ti chiedono di più:</span>
+          <span>{curriculum.teacherBriefing.commonQuestion}</span>
+        </div>
+      )}
     </div>,
 
     // Phase 4: FAI OSSERVARE
@@ -248,7 +269,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       )}
       <p style={S.phaseLabel}>Errori tipici e come reagire:</p>
       <ul style={S.errorList}>
-        {commonMistakes.map((m, i) => (
+        {mistakes.map((m, i) => (
           <li key={i} style={S.errorItem}>
             <strong>{m.error}</strong> → {m.response}
           </li>
@@ -257,7 +278,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       </ul>
     </div>,
 
-    // Phase 5: USA GALILEO SE SERVE
+    // Phase 5: USA GALILEO + ANALOGIE
     <div key="p5" style={S.phaseContent}>
       <p style={S.phaseText}>
         Se uno studente fa una domanda difficile:
@@ -270,6 +291,19 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
         Non devi sapere tutto. Usare UNLIM davanti alla classe è un modello positivo:
         mostra che chiedere aiuto è intelligente, non una debolezza.
       </p>
+      {hasCurriculum && curriculum.analogies?.length > 0 && (
+        <>
+          <p style={S.phaseLabel}>Analogie pronte per spiegare:</p>
+          <ul style={S.analogyList}>
+            {curriculum.analogies.map((a, i) => (
+              <li key={i} style={S.analogyItem}>
+                <strong>{a.concept}</strong>
+                <p style={S.analogyText}>{a.text}</p>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>,
 
     // Phase 6: CONCLUDI
@@ -278,6 +312,16 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
         <p style={S.phaseText}>
           <strong>Oggi abbiamo imparato:</strong> {experiment.concept}
         </p>
+      )}
+      {hasCurriculum && curriculum.assessment?.length > 0 && (
+        <>
+          <p style={S.phaseLabel}>Come capire se hanno capito:</p>
+          <ul style={S.assessmentList}>
+            {curriculum.assessment.map((a, i) => (
+              <li key={i} style={S.assessmentItem}>{a}</li>
+            ))}
+          </ul>
+        </>
       )}
       {nextExp && (
         <div style={S.nextExpBox}>
@@ -316,7 +360,8 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       {/* Experiment title */}
       <div style={S.expTitle}>
         <span>{experiment.icon || '●'}</span>
-        <span>{experiment.title}</span>
+        <span style={{ flex: 1 }}>{experiment.title}</span>
+        {hasCurriculum && <span style={S.curatedBadge}>Preparato da Galileo</span>}
       </div>
 
       {/* 6 Phases — accordion */}
@@ -423,7 +468,7 @@ const S = {
     alignItems: 'center',
     gap: 8,
     padding: '10px 14px',
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: 600,
     color: 'var(--color-text, #1A1A2E)',
     borderBottom: '1px solid var(--color-border, #F0F0F0)',
@@ -448,7 +493,7 @@ const S = {
     border: 'none',
     background: 'transparent',
     cursor: 'pointer',
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
     color: 'var(--color-text-gray-700, #333)',
     textAlign: 'left',
@@ -468,7 +513,7 @@ const S = {
     borderRadius: '50%',
     background: 'var(--color-primary, #1E4D8C)',
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 700,
     flexShrink: 0,
   },
@@ -478,39 +523,39 @@ const S = {
   phaseName: {
     flex: 1,
     fontWeight: 700,
-    fontSize: 12,
+    fontSize: 14,
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
   },
 
   phaseDuration: {
-    fontSize: 11,
+    fontSize: 15,
     color: 'var(--color-text-secondary, #6B7280)',
     flexShrink: 0,
   },
 
   phaseChevron: {
-    fontSize: 12,
+    fontSize: 14,
     color: 'var(--color-text-secondary, #6B7280)',
     flexShrink: 0,
   },
 
   phaseContent: {
     padding: '8px 14px 14px',
-    fontSize: 13,
+    fontSize: 15,
     lineHeight: 1.6,
   },
 
   phaseText: {
     margin: '0 0 8px',
-    fontSize: 13,
+    fontSize: 15,
     lineHeight: 1.6,
     color: 'var(--color-text-gray-600, #444)',
   },
 
   phaseLabel: {
     margin: '8px 0 4px',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 700,
     color: 'var(--color-primary, #1E4D8C)',
     textTransform: 'uppercase',
@@ -519,14 +564,14 @@ const S = {
 
   phaseNote: {
     margin: '4px 0 0',
-    fontSize: 12,
+    fontSize: 14,
     color: 'var(--color-text-secondary, #6B7280)',
     fontStyle: 'italic',
   },
 
   phaseHint: {
     margin: '8px 0 0',
-    fontSize: 12,
+    fontSize: 14,
     color: 'var(--color-text-secondary, #6B7280)',
     fontStyle: 'italic',
     lineHeight: 1.5,
@@ -534,7 +579,7 @@ const S = {
 
   prereq: {
     margin: '8px 0 0',
-    fontSize: 12,
+    fontSize: 14,
     color: 'var(--color-vol2, #E8941C)',
     fontWeight: 500,
     padding: '6px 10px',
@@ -552,7 +597,7 @@ const S = {
   },
 
   materialItem: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'var(--color-text-gray-600, #444)',
     display: 'flex',
     alignItems: 'center',
@@ -602,7 +647,7 @@ const S = {
   },
 
   errorItem: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'var(--color-text-gray-600, #444)',
     lineHeight: 1.5,
     paddingLeft: 8,
@@ -618,7 +663,7 @@ const S = {
     borderRadius: 8,
     border: '1px solid #C8E6C9',
     margin: '8px 0',
-    fontSize: 13,
+    fontSize: 15,
     lineHeight: 1.5,
   },
 
@@ -637,12 +682,103 @@ const S = {
     borderRadius: 6,
     background: 'transparent',
     color: 'var(--color-success, #16A34A)',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
     marginTop: 4,
     minHeight: 56,
+  },
+
+  curatedBadge: {
+    fontSize: 11,
+    fontWeight: 600,
+    color: '#16A34A',
+    background: '#DCFCE7',
+    padding: '2px 8px',
+    borderRadius: 10,
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
+  },
+
+  curatedBox: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 8,
+    padding: '10px 12px',
+    background: '#FFF8E1',
+    borderRadius: 8,
+    border: '1px solid #FFE082',
+    margin: '8px 0',
+    fontSize: 14,
+    lineHeight: 1.5,
+    color: 'var(--color-text-gray-700, #333)',
+  },
+
+  curatedIcon: { fontSize: 15, flexShrink: 0, lineHeight: 1.5 },
+
+  teacherTipBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+    padding: '10px 12px',
+    background: '#F3E5F5',
+    borderRadius: 8,
+    border: '1px solid #CE93D8',
+    margin: '8px 0',
+    fontSize: 14,
+    lineHeight: 1.5,
+  },
+
+  teacherTipLabel: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: '#7B1FA2',
+    textTransform: 'uppercase',
+    letterSpacing: '0.3px',
+  },
+
+  analogyList: {
+    margin: '4px 0 0',
+    padding: 0,
+    listStyle: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  },
+
+  analogyItem: {
+    padding: '8px 10px',
+    background: '#E8F5E9',
+    borderRadius: 8,
+    border: '1px solid #C8E6C9',
+    fontSize: 14,
+    lineHeight: 1.5,
+  },
+
+  analogyText: {
+    margin: '4px 0 0',
+    fontSize: 14,
+    color: 'var(--color-text-gray-600, #444)',
+    fontStyle: 'italic',
+    lineHeight: 1.5,
+  },
+
+  assessmentList: {
+    margin: '4px 0 0',
+    padding: 0,
+    listStyle: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+  },
+
+  assessmentItem: {
+    fontSize: 14,
+    color: 'var(--color-text-gray-600, #444)',
+    lineHeight: 1.5,
+    paddingLeft: 8,
+    borderLeft: '2px solid #16A34A',
   },
 
   unlimBtn: {
@@ -656,7 +792,7 @@ const S = {
     borderRadius: 8,
     background: 'transparent',
     color: 'var(--color-primary, #1E4D8C)',
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: 600,
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
     cursor: 'pointer',

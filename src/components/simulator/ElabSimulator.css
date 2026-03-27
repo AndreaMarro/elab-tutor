@@ -85,7 +85,7 @@
   max-height: 200px;
   overflow-y: auto;
   font-family: var(--font-mono, 'Fira Code', monospace);
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   padding: var(--space-2, 8px) var(--space-3, 12px);
   flex-shrink: 0;
 }
@@ -107,11 +107,139 @@
 }
 
 .elab-simulator__placeholder-text {
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-family: var(--font-display, 'Oswald', sans-serif);
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--color-text-tertiary, #BBB);
+}
+
+/* ─── Welcome Card (onboarding primo accesso) ─── */
+.sim-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 440px;
+  width: 90%;
+  animation: sim-welcome-fade 0.4s ease;
+}
+
+@keyframes sim-welcome-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sim-welcome__header {
+  text-align: center;
+}
+
+.sim-welcome__icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.sim-welcome__title {
+  margin: 0;
+  font-size: 22px;
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  color: var(--color-primary, #1E4D8C);
+  font-weight: 700;
+}
+
+.sim-welcome__subtitle {
+  margin: 6px 0 0;
+  font-size: 16px;
+  color: var(--color-text-secondary, #666);
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+}
+
+.sim-welcome__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.sim-welcome__step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--color-sim-border, #E8E4DB);
+  background: var(--color-bg, #fff);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  text-align: left;
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+}
+
+.sim-welcome__step:hover:not(:disabled) {
+  border-color: var(--color-accent, #7CB342);
+  box-shadow: 0 2px 12px rgba(124, 179, 66, 0.15);
+  transform: translateY(-1px);
+}
+
+.sim-welcome__step:disabled {
+  cursor: default;
+}
+
+.sim-welcome__step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--color-primary, #1E4D8C);
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
+  font-family: var(--font-display, 'Oswald', sans-serif);
+}
+
+.sim-welcome__step-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.sim-welcome__step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sim-welcome__step-text strong {
+  font-size: 16px;
+  color: var(--color-text, #333);
+}
+
+.sim-welcome__step-text span {
+  font-size: 16px;
+  color: var(--color-text-secondary, #888);
+}
+
+.sim-welcome__dismiss {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-accent, #7CB342);
+  color: #fff;
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  min-height: var(--touch-min, 56px);
+}
+
+.sim-welcome__dismiss:hover {
+  background: var(--color-accent-dark, #689F38);
+  transform: scale(1.02);
 }
 
 /* Watermark ELAB */
@@ -119,7 +247,7 @@
   position: absolute;
   bottom: 4px;
   left: 8px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-sim-scrollbar, #D4C9B0);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   pointer-events: none;
@@ -159,7 +287,7 @@
   }
 
   .elab-simulator__sidebar .experiment-search {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   /* S84: Hide secondary toolbar labels on iPad landscape to save space */
@@ -198,7 +326,6 @@
     max-height: 140px;
     border-right: none;
     border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
-/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
     min-width: 0;
     resize: none;
     overflow-y: auto;
@@ -218,11 +345,12 @@
 
   .elab-simulator__bottom-panel {
     max-height: min(160px, 20dvh);
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .toolbar-btn {
-    min-height: 48px;
+    min-height: var(--touch-min, 56px);
+    min-width: var(--touch-min, 56px);
     padding: 8px 10px;
   }
 
@@ -271,6 +399,7 @@
     max-height: min(120px, 20dvh);
   }
 }
+/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 /* ─── Mobile: Hamburger + overflow visible, secondary hidden ─── */
 @media (max-width: 599px) {
@@ -345,11 +474,14 @@
   border: none;
   background: transparent;
   text-align: left;
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   color: var(--color-text, #333);
   cursor: pointer;
   white-space: nowrap;
+  min-height: var(--touch-min, 56px);
+  display: flex;
+  align-items: center;
 }
 
 @media (hover: hover) {
@@ -399,7 +531,6 @@
   width: 100%;
   height: 100%;
 }
-/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 /* ═══════════════════════════════════════════════════════════════ */
 /* MODERN TOOLBAR — VS Code / Figma inspired                      */
@@ -413,7 +544,7 @@
   background: var(--color-bg, #FFFFFF);
   border-bottom: 1px solid var(--color-border, #E5E5EA);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
-  min-height: 52px;
+  min-height: var(--touch-min, 56px);
   flex-shrink: 0;
   flex-wrap: nowrap;
   overflow-x: auto; /* S62: safety net — scrollable if toolbar overflows */
@@ -469,10 +600,11 @@
   gap: 6px;
   padding: 6px 12px;
   border-radius: var(--radius-sm, 6px);
+/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   border: 1px solid transparent;
   background: transparent;
   color: var(--color-text-secondary, #6B6B80);
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
@@ -502,7 +634,7 @@
 
 /* Label text */
 .toolbar-btn__label {
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   letter-spacing: 0.01em;
 }
 
@@ -600,7 +732,6 @@
 
 .toolbar-btn--warning:active:not(:disabled) {
   background: var(--color-btn-active-warning, #FDDCB5);
-/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   color: var(--color-btn-warning, #C2410C);
   transform: scale(0.95);
 }
@@ -670,6 +801,7 @@
   background: var(--color-accent-light, #E8F5E9);
   color: var(--color-accent, #7CB342);
   border-color: rgba(85, 139, 47, 0.2);
+/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 }
 
 @media (hover: hover) {
@@ -801,7 +933,6 @@
     opacity: 0.8;
   }
 
-/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   50% {
     transform: scale(1.02);
     opacity: 1.0;
@@ -846,7 +977,7 @@
 
 .toolbar-btn__label--unlim {
   font-family: var(--font-display, 'Oswald', sans-serif);
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
 }
 
 /* ─── Spinner animation ─── */
@@ -871,12 +1002,13 @@
   gap: 1px;
   text-align: center;
   min-width: 0;
-  font-size: var(--font-size-sm, 14px);
+/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
+  font-size: var(--font-size-sm, 16px);
   /* allow text truncation */
 }
 
 .toolbar-info__title {
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-weight: var(--font-weight-semibold, 600);
   color: var(--color-text, #1A1A2E);
   white-space: nowrap;
@@ -886,7 +1018,7 @@
 }
 
 .toolbar-info__meta {
-  font-size: var(--font-size-xs, 14px);
+  font-size: var(--font-size-xs, 16px);
   color: var(--color-text-tertiary, #6B6B78);
   letter-spacing: 0.02em;
 }
@@ -896,7 +1028,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font-size: var(--font-size-xs, 14px);
+  font-size: var(--font-size-xs, 16px);
   font-family: var(--font-mono, 'Fira Code', monospace);
   color: var(--color-text-tertiary, #6B6B78);
   padding: 4px 10px;
@@ -906,52 +1038,7 @@
   letter-spacing: 0.05em;
 }
 
-/* ─── Progressive Disclosure: fade-in animation ─── */
-/* P0: Bottoni sbloccati appaiono con fade+slide per non spaventare l'insegnante */
-@keyframes disclosure-fade-in {
-  from { opacity: 0; transform: translateY(-4px) scale(0.95); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.toolbar-disclosure-fade {
-  animation: disclosure-fade-in 0.4s ease-out both;
-}
-
-/* Toast sblocco nuove funzionalità */
-@keyframes disclosure-toast-in {
-  from { opacity: 0; transform: translateY(-12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes disclosure-toast-out {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-8px); }
-}
-
-.disclosure-toast {
-  position: absolute;
-  top: 52px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text-inverse, #fff);
-  background: var(--color-primary, #1E4D8C);
-  box-shadow: 0 4px 20px rgba(0,0,0,.2);
-  animation: disclosure-toast-in 0.35s ease-out;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.disclosure-toast--exit {
-  animation: disclosure-toast-out 0.3s ease-in forwards;
-}
+/* Progressive disclosure rimosso — tutti gli strumenti sempre visibili */
 
 /* ─── Responsive: Progressive label hiding ─── */
 
@@ -1002,7 +1089,6 @@
   }
 }
 
-/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 /* ─── BUG FIX: Button hover/active/focus states for non-toolbar buttons ─── */
 @media (hover: hover) {
   .elab-simulator button:not(.toolbar-btn):hover {
@@ -1035,6 +1121,14 @@
 /* © Andrea Marro — 04/03/2026                                     */
 /* ═══════════════════════════════════════════════════════════════ */
 
+/* --- Sandbox chip: :active feedback for iPad/touch (children need instant feedback) --- */
+.elab-sandbox-chip:active {
+  transform: scale(0.93) !important;
+  filter: brightness(0.92);
+  box-shadow: var(--shadow-md) !important;
+  transition: transform var(--transition-fast), filter var(--transition-fast), box-shadow var(--transition-fast);
+}
+
 /* --- Zoom/wire overlay buttons: :active feedback (scoped to avoid toolbar conflicts) --- */
 .elab-simulator-canvas button:not(.toolbar-btn):not(.elab-ctx-item-html):active {
   transform: scale(0.9);
@@ -1052,7 +1146,7 @@
   padding: var(--space-1, 4px) 10px;
   border-radius: var(--radius-sm, 6px);
   font-family: var(--font-mono, 'Fira Code', monospace);
-  font-size: var(--font-size-sm, 14px);
+  font-size: var(--font-size-sm, 16px);
   font-weight: var(--font-weight-semibold, 600);
   white-space: nowrap;
   box-shadow: var(--shadow-md, 0 2px 8px rgba(0, 0, 0, 0.25));
@@ -1080,8 +1174,8 @@
 
 .elab-pin-tooltip__detail {
   color: var(--color-pin-detail);
-  font-size: var(--font-size-sm, 14px);
-  /* S76: bumped from 13px to 14px for WCAG */
+  font-size: var(--font-size-sm, 16px);
+  /* S76: bumped to 16px for LIM/children readability */
   font-weight: var(--font-weight-normal, 400);
 }
 
@@ -1109,6 +1203,7 @@
   margin-top: 0;
   animation: elab-pin-tooltip-in-below 120ms ease-out forwards;
 }
+/* © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 .elab-pin-tooltip--below::after {
   bottom: auto;
   top: -5px;

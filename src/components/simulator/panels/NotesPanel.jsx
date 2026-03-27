@@ -219,7 +219,7 @@ const styles = {
     borderRadius: 6,
     border: '1px solid transparent',
     cursor: 'pointer',
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
     color: 'var(--color-text-gray-600, #374151)',
     display: 'flex',

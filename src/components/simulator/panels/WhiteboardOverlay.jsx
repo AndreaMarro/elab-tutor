@@ -788,16 +788,19 @@ export default function WhiteboardOverlay({
           <button key={c} onClick={() => { setColor(c); if (tool === 'eraser') setTool('pencil'); }}
             title={c} aria-label={`Colore ${c}`}
             style={{
-              width: '20px', height: '20px', borderRadius: '50%', background: c,
-              cursor: 'pointer', padding: 0, flexShrink: 0,
+              width: '36px', height: '36px', borderRadius: '50%', background: c,
+              cursor: 'pointer', padding: 0, flexShrink: 0, minWidth: '44px', minHeight: '44px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              backgroundClip: 'content-box', boxSizing: 'border-box', paddingInline: '4px', paddingBlock: '4px',
               border: color === c ? '2px solid var(--color-text-gray-700, #333)' : c === '#FFFFFF' ? '1px solid var(--color-border, #ccc)' : '2px solid transparent',
               boxShadow: color === c ? '0 0 0 2px #fff, 0 0 0 3px var(--color-text-gray-700, #333)' : 'none',
             }}
           />
         ))}
         <label title="Colore personalizzato" style={{
-          width: '20px', height: '20px', borderRadius: '50%', cursor: 'pointer',
+          width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer',
           background: 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)',
+          minWidth: '44px', minHeight: '44px', boxSizing: 'border-box', padding: '4px', backgroundClip: 'content-box',
           border: !COLORS_PRESET.includes(color) ? '2px solid var(--color-text-gray-700, #333)' : '2px solid transparent',
           boxShadow: !COLORS_PRESET.includes(color) ? '0 0 0 2px #fff, 0 0 0 3px var(--color-text-gray-700, #333)' : 'none',
           display: 'flex', alignItems: 'center', justifyContent: 'center',

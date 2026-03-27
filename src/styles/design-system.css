@@ -49,9 +49,9 @@
   --font-heading: 'Oswald', -apple-system, sans-serif;
   --font-display: 'Oswald', 'Arial Narrow', Arial, sans-serif;
   --font-mono: 'Fira Code', 'SF Mono', 'Consolas', monospace;
-  --font-size-xs: 14px;
-  --font-size-sm: 14px;
-  --font-size-base: 15px;
+  --font-size-xs: 16px;
+  --font-size-sm: 16px;
+  --font-size-base: 16px;
   --font-size-md: 16px;
   --font-size-lg: 18px;
   --font-size-xl: 24px;

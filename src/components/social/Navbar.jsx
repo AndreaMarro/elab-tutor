@@ -32,7 +32,7 @@ export default function Navbar({ currentPage, onNavigate }) {
         { id: 'dashboard', label: 'I Miei Progressi', auth: true, studentOnly: true },
         { id: 'teacher', label: 'Area Docente', docente: true },
         { id: 'admin', label: 'Admin', admin: true },
-        { id: 'scuole', label: 'Per le Scuole', always: true, external: 'https://funny-pika-3d1029.netlify.app/scuole' },
+        { id: 'scuole', label: 'Per le Scuole', always: true, external: '/scuole/pnrr' },
     ];
 
     // Close dropdown when tapping outside

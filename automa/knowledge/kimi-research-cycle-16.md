@@ -1,11 +1,18 @@
 # Kimi Research — Cycle 16
-Topic: LIM lavagna interattiva aula tecnologia scuola media lezione tipo
-Date: 2026-03-26T04:20:51.589231
+Topic: PNRR Scuola 4.0 bandi attivi simulatore didattico requisiti
+Date: 2026-03-27T07:03:34.396334
 
-FLUSSO-LEZIONE: Iniziamo con una breve presentazione dal docente, seguita da un'introduzione ai concetti chiave. Gli studenti lavorano poi in piccoli gruppi, utilizzando LIM per sperimentare e applicare i concetti. Il docente si muove tra i gruppi per assistere e fornire feedback. Alla fine, ci sono discussioni di gruppo e una riassunzione.
+BANDO-1: PNRR Scuola 4.0 - Sviluppo di software educativo STEM per scuole secondarie italiane.
 
-VINCOLI-LIM: La LIM deve essere facile da navigare, avere interfacce intuitive e supportare l'utilizzo collaborativo. Deve anche essere compatibile con i dispositivi usati dagli studenti e avere una connessione stabile a Internet.
+REQUISITI: 
+1. Software didattico STEM che integri simulatore circuiti educativo e AI tutor.
+2. Supporto per studenti tra 10-14 anni e facilità di utilizzo per insegnanti inesperti.
+3. Kit fisico incluso nel prezzo e licenza annuale tra €500-1000.
+4. Compliance con GDPR, con elaborazione dati solo all'interno dell'UE.
 
-REQUISITI-ELAB: ELAB Tutor deve essere integrato con LIM, avere un'interfaccia utente chiara e facile da usare, supportare l'interazione docente-studenti e fornire feedback immediato. Deve anche essere accessibile su diversi dispositivi e avere una buona performance.
+AZIONE-ELAB: 
+1. Presentare proposta dettagliata di ELAB UNLIM, includendo simulatore circuiti, AI tutor e kit fisico.
+2. Dimostrarne l'efficacia nell'insegnamento di concetti STEM in scuole secondarie.
+3. Garantire la conformità con i requisiti tecnici e normativi, inclusa la protezione dei dati personali.
 
-SEVERITY: medium
+SEVERITY: high
