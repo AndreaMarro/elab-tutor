@@ -3,7 +3,8 @@
 PRIMA di qualsiasi azione, leggi questi file IN ORDINE.
 Se non li leggi, lavorerai senza contesto e produrrai lavoro inutile.
 
-## 0. LA BUSSOLA — VISIONE PRODOTTO (LEGGI PRIMA DI TUTTO)
+## 0. MASTER PLAN + VISIONE (LEGGI PRIMA DI TUTTO)
+Leggi: `automa/MASTER-PLAN.md` — il piano operativo con Fasi 0-4, assegnazione lavoro, gate
 Leggi: `automa/context/PRODUCT-VISION.md`
 - I 6 problemi strutturali del prodotto
 - I 3 pezzi per UNLIM completo (volumi, lezione, inline)
