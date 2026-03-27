@@ -1,118 +1,196 @@
-# PROMPT PROSSIMA SESSIONE — Copia TUTTO qui sotto in una nuova sessione Claude Code
+# SESSIONE GIORNO 3 — UNLIM Mode
 
 ```
 cd "VOLUME 3/PRODOTTO/elab-builder"
 
 SEI ELAB-TUTOR-LOOP-MASTER. Giorno 3 del piano 2 settimane per UNLIM Mode.
 
-## TASK
-Continua dal Giorno 2 (27/03/2026). InputBar→Galileo connesso. LessonPathPanel ricco.
-Ora: deploy nanobot brevità, verificare "Monta circuito" end-to-end, generare percorsi lezione,
-progress bar sopra simulatore, UNLIM proattivo.
+## STATO VERIFICATO (27/03/2026 ore 12:00)
+- Build: ✅ PASSA (24s)
+- Deploy: ✅ HTTP 200 su elabtutor.school
+- Git: pulito, 0 uncommitted, ultimo commit 0251c20
+- Nanobot: ✅ v5.5.0 (ma STALE — /gdpr-status mancante, risposte >60 parole)
+- Brain V13: ✅ 2 modelli su VPS 72.60.129.50:11434
+- Score: 0.946 (composite v3 — quasi saturo, inutile come metrica UX)
+- Automa: IN PAUSA (decisione consapevole — produce infra, non UNLIM)
+- Lesson paths: 1/67 (solo v1-cap6-esp1.json — IL TEMPLATE PERFETTO)
+- Componenti UNLIM: 5 file JSX (connessi ma MAI testati end-to-end)
 
-Prima leggi SOLO i file nella sezione CONTEXT FILES.
-Poi verifica stato (build, deploy, nanobot, automa).
-Poi lavora sugli obiettivi del Giorno 3.
-Massima onestà. Usa superpowers.
-
-## CONTEXT FILES — LEGGI PRIMA DI TUTTO (in ordine)
-
-### A. Handoff e stato
-1. automa/SESSION-HANDOFF-20260327-G2.md — cosa è stato fatto nel Giorno 2
-2. automa/MASTER-PLAN.md — piano 2 settimane con Fasi 0-4
-
-### B. Componenti UNLIM (Giorno 1+2)
-3. src/components/unlim/UnlimWrapper.jsx — wrapper con handleSend→sendChat()
-4. src/components/simulator/panels/LessonPathPanel.jsx — RichLessonPath + fallback
-5. src/data/lesson-paths/v1-cap6-esp1.json — template JSON perfetto
-6. src/data/lesson-paths/index.js — registry percorsi
-
-### C. API e servizi
-7. src/services/api.js — sendChat(), riga 517
-8. nanobot/server.py — /gdpr-status, brevità (DA DEPLOYARE su Render)
-
-### D. Contesto immutabile
-9. automa/context/PRODUCT-VISION.md
-10. automa/context/UNLIM-BRAIN-DESIGN.md
-
-## OBIETTIVI GIORNO 3
-
-### 1. Deploy nanobot su Render (P0)
-- cd nanobot && git push render main
-- Verificare /health, /gdpr-status
-- Test 3 domande brevità: risposte <60 parole
-- Se serve, modificare prompts/shared-optimized.yml per forzare brevità
-
-### 2. Verificare "Monta il circuito" end-to-end (P0)
-- **BUG FIXATO G2**: ora usa `loadExperiment(experimentId)` invece di broken addComponent
-- L'esperimento v1-cap6-esp1 GIÀ definisce componenti+layout+wires in experiments-vol1.js
-- Aprire simulatore → aprire LessonPathPanel → fase MOSTRA → click bottone
-- Verificare nel browser che l'esperimento si carichi correttamente
-- Se l'esperimento è già caricato, il bottone è un noop (corretto)
-
-### 3. Generare 2-3 percorsi lezione (P1)
-- v1-cap6-esp2.json (LED senza resistore)
-- v1-cap7-esp1.json (Resistore protegge il LED)
-- Copiare struttura da v1-cap6-esp1.json, adattare contenuto
-- Aggiungere import in index.js
-- Build DEVE passare
-
-### 4. Progress bar 5-step sopra il simulatore (P1)
-- Componente React: barra orizzontale sotto toolbar
-- ● PREPARA ○ MOSTRA ○ CHIEDI ○ OSSERVA ○ CONCLUDI
-- Sincronizzata con LessonPathPanel
-- Visibile solo in UNLIM Mode quando c'è un percorso lezione
-
-### 5. UNLIM proattivo al caricamento (P1)
-- Quando si apre un esperimento con percorso lezione
-- Mostra automaticamente "Oggi facciamo: [titolo]" + class_hook
-- Già parzialmente implementato in UnlimWrapper (useEffect con class_hook)
-- Testare e affinare
-
-## BUGS GIÀ FIXATI (Giorno 1-2 — NON rifare)
-- [x] Memory leak UnlimOverlay — FIXATO
-- [x] Stale closure UnlimWrapper — FIXATO
-- [x] Touch target 56px — FIXATO
-- [x] Font input 24px — FIXATO
-- [x] Switch position top:52px — FIXATO
-- [x] <style> in <button> — FIXATO
-- [x] handleSend placeholder → sendChat() — FIXATO
-- [x] LessonPathPanel → RichLessonPath — FIXATO
-- [x] "Monta il circuito" → loadExperiment() — FIXATO (era addComponent broken)
-- [x] Failed queue svuotata (6→0 task)
-- [x] 25 research generici archiviati da pending
-
-## CONTESTO BUSINESS
+## CONTESTO CRITICO — NON SALTARE
 - Giovanni Fagherazzi = ex Global Sales Director di ARDUINO
-- Omaric Elettronica = filiera hardware Arduino
-- PNRR deadline 30/06/2026
+- Omaric Elettronica = filiera hardware Arduino (Strambino/TO)
+- PNRR deadline 30/06/2026 — 95 giorni
 - Teacher Dashboard MVP OBBLIGATORIA per vendere
-- Il prodotto deve essere all'altezza di chi ha gestito vendite globali Arduino
+- Nessun competitor ha AI dentro il simulatore. UNLIM sarebbe il PRIMO.
+- Andrea è l'UNICO sviluppatore. La reputazione dipende da questo.
+
+## COSA ESISTE GIÀ (NON RIFARE)
+### Componenti UNLIM (Giorno 1-2)
+- `src/components/unlim/UnlimWrapper.jsx` — wrapper con handleSend→sendChat(), AbortController, experimentContext
+- `src/components/unlim/UnlimMascot.jsx` — mascotte con stati idle/active/speaking
+- `src/components/unlim/UnlimOverlay.jsx` — messaggi contestuali con fade, coda, posizioni
+- `src/components/unlim/UnlimInputBar.jsx` — barra input testo + mic + invio (font 24px LIM)
+- `src/components/unlim/UnlimModeSwitch.jsx` — toggle UNLIM/Classic con localStorage
+- `src/data/lesson-paths/v1-cap6-esp1.json` — TEMPLATE PERFETTO (5 fasi, vocabolario, analogie, intent)
+- `src/data/lesson-paths/index.js` — registry getLessonPath(), hasLessonPath()
+
+### LessonPathPanel (connesso)
+- `src/components/simulator/panels/LessonPathPanel.jsx` — 668 LOC
+- RichLessonPath: renderizza 5 fasi se JSON ricco esiste, fallback generico altrimenti
+- "Monta il circuito per me" → usa loadExperiment(id) (FIX G2, non più addComponent broken)
+- Progress bar visiva: 📋→🔧→❓→👀→✅
+
+### API e servizi
+- `src/services/api.js` — sendChat() con fallback chain: local→nanobot→webhook
+- `src/services/simulator-api.js` — __ELAB_API con 20+ metodi (loadExperiment, addComponent, addWire, play, etc.)
+- `nanobot/server.py` — 18 endpoints, 5 providers, Mistral EU configurato
+
+### Prodotto esistente (intatto)
+- Simulatore: CircuitSolver MNA/KCL + AVRBridge + 21 componenti SVG
+- 67 esperimenti (3 volumi: 38+18+11)
+- 4 giochi didattici
+- Scratch/Blockly + compilatore Arduino
+- TeacherDashboard (1774 LOC, esiste ma per docenti, non per dirigenti)
+- Auth + License + Landing PNRR
+
+### Fix UX già applicati (Fase 0 — NON RIFARE)
+- [x] Dashboard/Admin nascosto (solo isDocente/isAdmin)
+- [x] Chat minimizzata + "Sono qui" eliminato
+- [x] Google Fonts self-hosted (GDPR)
+- [x] Toggle Modalità Guida eliminato (guida = il prodotto)
+- [x] Redirect homepage eliminato
+
+## BUGS NOTI DA SESSIONI PRECEDENTI
+- [x] Monta il circuito: addComponent broken → FIXATO con loadExperiment (G2)
+- [x] Race condition mascotState bloccato su 'speaking' → FIXATO (G1)
+- [x] Memory leak setTimeout in UnlimOverlay → FIXATO (G1)
+- [x] Stale closure lessonPath in handleSend → FIXATO (G1)
+- [x] __ELAB_API retry 800ms se non pronto al mount → FIXATO (G1)
+- [x] isLoading non passato a InputBar → FIXATO (G1)
+- [ ] Nanobot STALE su Render — /gdpr-status mancante, risposte >60 parole
+- [ ] Lime #7CB342 su bianco: contrasto 2.50:1 (WCAG AA richiede 4.5:1)
+- [ ] 461 bottoni senza aria-label
+- [ ] 1856 inline styles (0 design system)
+- [ ] Bundle ElabTutorV4 = 1107 KB (sopra 1000 KB warning)
+- [ ] bus-top naming in JSON da verificare vs breadboardSnap.js pin IDs
+
+## QUALITY AUDIT NUMERI (G2 — verificati)
+| Metrica | Valore | Target |
+|---------|--------|--------|
+| Font < 14px | 64 (23 critici) | 0 |
+| Touch < 44px | 6 minHeight | 0 |
+| console.log | 20 | 0 |
+| Inline styles | 1856 | < 100 |
+| CSS module imports | 4 | > 50 |
+| Buttons senza aria | 461 | 0 |
+| Lime/bianco contrasto | 2.50:1 | 4.5:1 |
+| Navy/bianco contrasto | 8.42:1 | 4.5:1 ✅ |
+| LOC totali | 89,754 | — |
+| File JSX/JS | 193 | — |
+| Componenti React | 126 | — |
+
+## OBIETTIVI GIORNO 3 — CODICE, NON DOCUMENTI
+
+### P0: Generare 2 percorsi lezione aggiuntivi
+- **v1-cap6-esp2.json** "LED senza resistore" — usa v1-cap6-esp1.json come template
+- **v1-cap7-esp1.json** "Il resistore protegge il LED"
+- Verificare vocabolario contro curriculum YAML (forbidden/allowed per capitolo)
+- Verificare che LessonPathPanel li renderizzi (import in index.js)
+- Da 1 a 3 percorsi = valida il pattern per l'automa
+
+### P0: Test end-to-end nel browser
+- Usare Claude Preview (MCP) per testare il sito live
+- UNLIM switch → mascotte → input → overlay risposta
+- Caricare v1-cap6-esp1 → LessonPathPanel mostra 5 fasi ricche
+- "Monta il circuito per me" → esperimento si carica
+- Screenshot + annotazioni su cosa funziona/non funziona
+
+### P1: Fix contrasto Lime su bianco
+- Lime #7CB342 su bianco = 2.50:1 → FAIL WCAG AA
+- Opzione A: scurire Lime a ~#5A8A2A (contrast 4.5:1+)
+- Opzione B: usare Lime solo su sfondo scuro, mai su bianco
+- Verificare TUTTI gli usi di #7CB342 su sfondo chiaro
+
+### P1: Deploy nanobot su Render
+- Il nanobot live non ha /gdpr-status (404)
+- Serve push al repo elab-galileo-nanobot separato
+- Verificare: /health, /gdpr-status, test 3 domande brevità (≤60 parole)
+
+### P2: Generare altri 2-4 percorsi lezione (se tempo)
+- v1-cap7-esp2, v1-cap7-esp3, v1-cap8-esp1, v1-cap8-esp2
+- L'obiettivo è avere 5-7 percorsi per validare il pattern completo
+
+## FILE DA LEGGERE (in ordine di priorità)
+
+### A. Componenti da testare/modificare
+1. src/components/unlim/UnlimWrapper.jsx
+2. src/components/unlim/UnlimOverlay.jsx
+3. src/components/unlim/UnlimMascot.jsx
+4. src/components/unlim/UnlimInputBar.jsx
+5. src/components/unlim/UnlimModeSwitch.jsx
+6. src/components/simulator/panels/LessonPathPanel.jsx
+7. src/data/lesson-paths/v1-cap6-esp1.json — IL TEMPLATE
+8. src/data/lesson-paths/index.js
+
+### B. API e dati
+9. src/services/api.js (riga 517: sendChat)
+10. src/services/simulator-api.js (loadExperiment, addComponent)
+11. src/data/experiments-vol1.js (v1-cap6-esp1, v1-cap6-esp2, v1-cap7-esp1)
+12. src/data/curriculumData.js (vocabolario per capitolo)
+
+### C. Contesto immutabile
+13. automa/context/PRODUCT-VISION.md
+14. automa/context/UNLIM-BRAIN-DESIGN.md
+15. automa/context/teacher-principles.md
+16. automa/context/volume-path.md
+
+### D. Handoff
+17. automa/SESSION-HANDOFF-20260327-G2.md
+18. automa/RESOCONTO-SESSIONE-27MARZO-G1.md
+
+## REGOLE
+1. CODICE PRIMA DI DOCUMENTI — ogni sessione deve produrre file .jsx/.json/.js
+2. Non toccare CircuitSolver, AVRBridge, evaluate.py, checks.py
+3. Build DEVE passare dopo ogni modifica
+4. Deploy Vercel dopo ogni gruppo di fix significativo
+5. Test: "La Prof.ssa Rossi lo capirebbe in 5 secondi?"
+6. Giovanni Fagherazzi è l'ex Global Sales Director di Arduino — il prodotto deve essere all'altezza
+7. PNRR deadline 30/06/2026 — ogni giorno conta
+8. NON rileggere i 43 file del G1 — il resoconto è completo
+9. MASSIMA ONESTÀ — se qualcosa non funziona, dillo
+10. Committi e pusha spesso
+
+## ANTI-PATTERN DA EVITARE
+- ❌ Spendere >30min su audit/analisi senza scrivere codice
+- ❌ Lanciare agenti di ricerca prima di aver implementato qualcosa
+- ❌ Riscrivere componenti che funzionano già
+- ❌ Promettere cose non verificate
+- ❌ "Un altro audit prima di iniziare"
+
+## PIANO
+1. Leggi handoff G2 + template v1-cap6-esp1.json (15 min)
+2. Leggi experiments-vol1.js per v1-cap6-esp2 e v1-cap7-esp1 (10 min)
+3. Genera v1-cap6-esp2.json + v1-cap7-esp1.json (1h)
+4. Aggiorna index.js con i nuovi percorsi
+5. Build + verifica
+6. Test nel browser (Claude Preview se disponibile)
+7. Fix contrasto Lime se serve
+8. Deploy Vercel
+9. CoV finale
+10. Scrivi SESSION-HANDOFF per G4
+
+## OUTPUT ATTESO
+- 2-3 percorsi lezione nuovi (JSON)
+- Test end-to-end documentato (cosa funziona, cosa no)
+- Fix contrasto Lime (se impatta WCAG)
+- Deploy aggiornato
+- SESSION-HANDOFF per G4
 
 ## REFERENCE
 - Build: `export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH" && npm run build`
-- Deploy Vercel: `npx vercel --prod --yes`
+- Deploy: `npx vercel --prod --yes`
 - Sito: https://www.elabtutor.school
 - Nanobot: https://elab-galileo.onrender.com/health
-- Nanobot repo: `cd nanobot && git push render main`
-- Score: 0.946 (composite)
-- Test: "La Prof.ssa Rossi lo capirebbe in 5 secondi?"
-
-## RULES
-1. Leggi SESSION-HANDOFF-G2 prima di tutto
-2. Non toccare CircuitSolver, AVRBridge, evaluate.py, checks.py
-3. Build DEVE passare dopo ogni modifica
-4. Massima onestà
-5. Committi e pusha spesso
-6. Il test è: "La Prof.ssa Rossi lo capirebbe in 5 secondi?"
-7. Deploy Vercel dopo ogni gruppo di fix significativo
-
-## OUTPUT
-Alla fine della sessione:
-- Nanobot deployato con brevità (risposte <60 parole)
-- "Monta il circuito" verificato end-to-end
-- 2-3 percorsi lezione generati
-- Progress bar 5-step visibile (se tempo)
-- Tutto committato e pushato
-- SESSION-HANDOFF scritto per Giorno 4
+- Brain: http://72.60.129.50:11434
+- Palette: Navy #1E4D8C, Lime #7CB342
 ```
