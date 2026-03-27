@@ -5,7 +5,7 @@
  * © Andrea Marro — 27/03/2026
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 const DEFAULT_DURATION = 6000; // ms prima che il messaggio sfumi
 
@@ -46,6 +46,15 @@ export function useOverlayMessages() {
 function OverlayMessage({ message, onDismiss }) {
   const [visible, setVisible] = useState(false);
   const [fading, setFading] = useState(false);
+  const dismissedRef = useRef(false);
+  const clickTimerRef = useRef(null);
+
+  // P0-2 fix: safe dismiss che previene doppia chiamata
+  const safeDismiss = useCallback(() => {
+    if (dismissedRef.current) return;
+    dismissedRef.current = true;
+    onDismiss(message.id);
+  }, [onDismiss, message.id]);
 
   useEffect(() => {
     // Fade in
@@ -55,15 +64,16 @@ function OverlayMessage({ message, onDismiss }) {
     let innerDismiss;
     const fadeTimer = setTimeout(() => {
       setFading(true);
-      innerDismiss = setTimeout(() => onDismiss(message.id), 400);
+      innerDismiss = setTimeout(safeDismiss, 400);
     }, message.duration);
 
     return () => {
       clearTimeout(showTimer);
       clearTimeout(fadeTimer);
       clearTimeout(innerDismiss);
+      clearTimeout(clickTimerRef.current);
     };
-  }, [message.id, message.duration, onDismiss]);
+  }, [message.id, message.duration, safeDismiss]);
 
   const positionStyles = {
     'top-center': { top: '80px', left: '50%', transform: 'translateX(-50%)' },
@@ -86,7 +96,7 @@ function OverlayMessage({ message, onDismiss }) {
       aria-live="polite"
       onClick={() => {
         setFading(true);
-        setTimeout(() => onDismiss(message.id), 300);
+        clickTimerRef.current = setTimeout(safeDismiss, 300);
       }}
       style={{
         position: 'absolute',

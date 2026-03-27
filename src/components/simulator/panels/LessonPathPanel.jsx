@@ -190,7 +190,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
           title={phase.name}
         >
           <span style={expandedPhase === i ? RS.progressDotActive : RS.progressDot}>
-            {expandedPhase > i ? '✓' : phase.icon}
+            {phase.icon}
           </span>
           <span style={RS.progressLabel}>{phase.name}</span>
         </button>

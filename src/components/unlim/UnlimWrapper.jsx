@@ -24,27 +24,47 @@ export default function UnlimWrapper({ children }) {
   const { isUnlim, toggleMode } = useUnlimMode();
   const { messages, showMessage, dismissMessage } = useOverlayMessages();
   const [mascotState, setMascotState] = useState('idle'); // idle, active, speaking
+  const [isLoading, setIsLoading] = useState(false);
   const [inputBarVisible, setInputBarVisible] = useState(false);
   const [currentExperimentId, setCurrentExperimentId] = useState(null);
 
   // Auto-rileva l'esperimento corrente dall'evento del simulatore
+  // P1-2 fix: retry se __ELAB_API non è pronto al mount
   useEffect(() => {
-    const api = window.__ELAB_API;
+    function trySubscribe() {
+      const api = window.__ELAB_API;
+      if (!api?.on) return false;
+      api.on('experimentChange', handleExpChange);
+      return true;
+    }
     function handleExpChange(data) {
       if (data?.experimentId) setCurrentExperimentId(data.experimentId);
     }
-    if (api?.on) api.on('experimentChange', handleExpChange);
-    return () => { if (api?.off) api.off('experimentChange', handleExpChange); };
+    if (!trySubscribe()) {
+      const retryTimer = setTimeout(trySubscribe, 800);
+      return () => {
+        clearTimeout(retryTimer);
+        const api = window.__ELAB_API;
+        if (api?.off) api.off('experimentChange', handleExpChange);
+      };
+    }
+    return () => {
+      const api = window.__ELAB_API;
+      if (api?.off) api.off('experimentChange', handleExpChange);
+    };
   }, []);
 
   // Carica il percorso lezione per l'esperimento corrente
   const lessonPath = currentExperimentId ? getLessonPath(currentExperimentId) : null;
 
-  // Quando l'utente clicca sulla mascotte
+  // P0-1 fix: abort richiesta in corso quando si chiude la barra input
+  const abortRef = useRef(null);
   const handleMascotClick = useCallback(() => {
     if (inputBarVisible) {
       setInputBarVisible(false);
       setMascotState('idle');
+      if (abortRef.current) abortRef.current.abort();
+      setIsLoading(false);
     } else {
       setInputBarVisible(true);
       setMascotState('active');
@@ -52,24 +72,26 @@ export default function UnlimWrapper({ children }) {
   }, [inputBarVisible]);
 
   // Quando l'utente invia un messaggio dalla barra input → Galileo API
-  const abortRef = useRef(null);
+  // P1-1 fix: ricalcola lessonPath dentro il callback (no stale closure)
+  // P1-5 fix: gestisce isLoading per disabilitare input durante richiesta
   const handleSend = useCallback(async (text) => {
     setMascotState('speaking');
-    // Abort precedente richiesta se ancora in corso
+    setIsLoading(true);
     if (abortRef.current) abortRef.current.abort();
     const controller = new AbortController();
     abortRef.current = controller;
+
+    const path = currentExperimentId ? getLessonPath(currentExperimentId) : null;
 
     try {
       const result = await sendChat(text, [], {
         signal: controller.signal,
         experimentId: currentExperimentId || undefined,
-        experimentContext: lessonPath
-          ? `Esperimento: ${lessonPath.title} (${lessonPath.experiment_id}). Obiettivo: ${lessonPath.objective || ''}`
+        experimentContext: path
+          ? `Esperimento: ${path.title} (${path.experiment_id}). Obiettivo: ${path.objective || ''}`
           : undefined,
       });
 
-      // Se abortato nel frattempo, non mostrare
       if (controller.signal.aborted) return;
 
       if (result?.success && result.response) {
@@ -96,9 +118,12 @@ export default function UnlimWrapper({ children }) {
         duration: 4000,
       });
     } finally {
-      if (!controller.signal.aborted) setMascotState('active');
+      if (!controller.signal.aborted) {
+        setMascotState('active');
+        setIsLoading(false);
+      }
     }
-  }, [showMessage, currentExperimentId, lessonPath]);
+  }, [showMessage, currentExperimentId]);
   // Cleanup abort controller on unmount
   useEffect(() => () => { if (abortRef.current) abortRef.current.abort(); }, []);
 
@@ -166,6 +191,7 @@ export default function UnlimWrapper({ children }) {
       {inputBarVisible && (
         <UnlimInputBar
           onSend={handleSend}
+          isLoading={isLoading}
           placeholder={lessonPath
             ? `Chiedi qualcosa su "${lessonPath.title}"...`
             : 'Chiedi qualcosa a UNLIM...'}
