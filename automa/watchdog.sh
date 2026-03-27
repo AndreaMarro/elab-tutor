@@ -8,6 +8,9 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 HEARTBEAT="$DIR/state/heartbeat"
 LOG="$DIR/logs/watchdog-$(date +%Y%m%d).log"
 
+# PATH per npm/node/gemini
+export PATH="/opt/homebrew/bin:/usr/local/bin:/Users/andreamarro/.npm-global/bin:$PATH"
+
 log() { echo "[$(date +%H:%M:%S)] $1" >> "$LOG"; }
 
 # HALT check
@@ -25,17 +28,17 @@ else
     DIFF=99999
 fi
 
-# If heartbeat older than 3 hours (10800s), restart
-if [ "$DIFF" -gt 10800 ]; then
+# If heartbeat older than 30 min (1800s), restart
+if [ "$DIFF" -gt 1800 ]; then
     log "Dispatcher stale (${DIFF}s since heartbeat). Restarting..."
 
     # Kill old orchestrator
     pkill -f "orchestrator.py" 2>/dev/null
     sleep 2
 
-    # Restart
+    # Restart with all fixes
     cd "$DIR/.."
-    nohup python3 automa/orchestrator.py --loop >> "$DIR/logs/orchestrator-$(date +%Y%m%d).log" 2>&1 &
+    PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 nohup python3 -Bu automa/orchestrator.py --loop >> "$DIR/logs/orchestrator-$(date +%Y%m%d).log" 2>&1 &
     log "Orchestrator restarted (PID: $!)"
 else
     log "Orchestrator alive (heartbeat ${DIFF}s ago)"
