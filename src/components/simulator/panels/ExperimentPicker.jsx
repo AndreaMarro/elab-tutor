@@ -10,7 +10,7 @@ import React, { useState, useMemo } from 'react';
 import { VOLUMES, getExperimentsByVolume, getChaptersForVolume } from '../../../data/experiments-index';
 
 const VOL_COLORS = {
-  1: 'var(--color-vol1, #7CB342)',
+  1: 'var(--color-vol1, #558B2F)',
   2: 'var(--color-vol2, #E8941C)',
   3: 'var(--color-vol3, #E54B3D)',
 };

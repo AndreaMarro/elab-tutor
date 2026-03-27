@@ -16,7 +16,7 @@ import { useConfirmModal } from '../common/ConfirmModal';
 const C = {
     navy: '#1E4D8C',
     navyDark: '#152a5c',
-    lime: '#7CB342',
+    lime: '#558B2F',
     limeDark: '#7da93d',
     limeLight: '#BBD789',
     limeSoft: '#E8F4D9',
@@ -77,39 +77,39 @@ const IconSeedDormant = ({ size = 18 }) => (
     </svg>
 );
 const IconSeed = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
         <ellipse cx="10" cy="14" rx="4" ry="3" fill="#D7CCC8" stroke="#8D6E63" />
-        <path d="M10 14 Q10 11 10 9" stroke="#7CB342" />
-        <path d="M10 10 Q12 8 13 9" stroke="#7CB342" />
+        <path d="M10 14 Q10 11 10 9" stroke="#558B2F" />
+        <path d="M10 10 Q12 8 13 9" stroke="#558B2F" />
         <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
     </svg>
 );
 const IconSprout = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
-        <line x1="10" y1="17" x2="10" y2="8" stroke="#7CB342" />
-        <path d="M10 10 Q7 7 5 8" stroke="#7CB342" fill="none" />
-        <path d="M10 8 Q13 5 15 6" stroke="#7CB342" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
+        <line x1="10" y1="17" x2="10" y2="8" stroke="#558B2F" />
+        <path d="M10 10 Q7 7 5 8" stroke="#558B2F" fill="none" />
+        <path d="M10 8 Q13 5 15 6" stroke="#558B2F" fill="none" />
         <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
     </svg>
 );
 const IconBush = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
         <line x1="10" y1="17" x2="10" y2="10" stroke="#6D4C41" />
-        <circle cx="10" cy="7" r="5" fill="#A5D6A7" stroke="#7CB342" />
-        <circle cx="7" cy="9" r="3" fill="#81C784" stroke="#7CB342" />
-        <circle cx="13" cy="9" r="3" fill="#81C784" stroke="#7CB342" />
+        <circle cx="10" cy="7" r="5" fill="#A5D6A7" stroke="#558B2F" />
+        <circle cx="7" cy="9" r="3" fill="#81C784" stroke="#558B2F" />
+        <circle cx="13" cy="9" r="3" fill="#81C784" stroke="#558B2F" />
         <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
     </svg>
 );
 const IconPine = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
         <rect x="9" y="15" width="2" height="3" fill="#6D4C41" stroke="#6D4C41" />
         <polygon points="10,2 4,10 7,10 3,15 17,15 13,10 16,10" fill="#66BB6A" stroke="#43A047" />
         <line x1="4" y1="18" x2="16" y2="18" stroke="#8D6E63" />
     </svg>
 );
 const IconOak = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
         <rect x="9" y="14" width="2" height="4" fill="#5D4037" stroke="#5D4037" />
         <circle cx="10" cy="8" r="6" fill="#66BB6A" stroke="#43A047" />
         <circle cx="6" cy="10" r="3.5" fill="#81C784" stroke="#43A047" />
@@ -146,11 +146,11 @@ const IconBloccato = ({ size = 16 }) => (
     </svg>
 );
 const IconFelice = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
-        <circle cx="10" cy="10" r="8" stroke="#7CB342" />
-        <circle cx="7" cy="8" r="1" fill="#7CB342" stroke="none" />
-        <circle cx="13" cy="8" r="1" fill="#7CB342" stroke="none" />
-        <path d="M6 12 Q10 16 14 12" stroke="#7CB342" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
+        <circle cx="10" cy="10" r="8" stroke="#558B2F" />
+        <circle cx="7" cy="8" r="1" fill="#558B2F" stroke="none" />
+        <circle cx="13" cy="8" r="1" fill="#558B2F" stroke="none" />
+        <path d="M6 12 Q10 16 14 12" stroke="#558B2F" fill="none" />
     </svg>
 );
 const IconFrustrato = ({ size = 16 }) => (
@@ -208,7 +208,7 @@ const IconReview = ({ size = 16 }) => (
 
 // Status icons
 const IconCheck = ({ size = 14, color }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: color || '#7CB342', display: 'inline-block', verticalAlign: 'middle' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" style={{ color: color || '#558B2F', display: 'inline-block', verticalAlign: 'middle' }}>
         <circle cx="10" cy="10" r="8" stroke="currentColor" />
         <polyline points="6 10 9 13 14 7" stroke="currentColor" />
     </svg>
@@ -264,11 +264,11 @@ const MOOD_EMOJI = {
 
 const MOOD_COLORS = {
     energico: '#F5A623', concentrato: '#1E4D8C', confuso: '#9333EA', bloccato: '#E53935',
-    felice: '#7CB342', frustrato: '#EF4444', curioso: '#00B4D8', creativo: '#EC4899',
+    felice: '#558B2F', frustrato: '#EF4444', curioso: '#00B4D8', creativo: '#EC4899',
 };
 
 // Avatar color from name hash (deterministic)
-const AVATAR_COLORS = ['#1E4D8C', '#7CB342', '#E8941C', '#E54B3D', '#9333EA', '#00B4D8', '#EC4899', '#6D4C41'];
+const AVATAR_COLORS = ['#1E4D8C', '#558B2F', '#E8941C', '#E54B3D', '#9333EA', '#00B4D8', '#EC4899', '#6D4C41'];
 function getAvatarColor(name) {
     let hash = 0;
     for (let i = 0; i < (name || '').length; i++) hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
@@ -1527,8 +1527,8 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
                     {cls.volumes?.map(v => (
                         <span key={v} style={{
                             fontSize: 14, padding: '2px 8px', borderRadius: 6,
-                            background: v === 'Volume 1' ? '#7CB34222' : v === 'Volume 2' ? '#E8941C22' : '#E54B3D22',
-                            color: v === 'Volume 1' ? '#7CB342' : v === 'Volume 2' ? '#E8941C' : '#E54B3D',
+                            background: v === 'Volume 1' ? '#558B2F22' : v === 'Volume 2' ? '#E8941C22' : '#E54B3D22',
+                            color: v === 'Volume 1' ? '#558B2F' : v === 'Volume 2' ? '#E8941C' : '#E54B3D',
                             fontWeight: 600,
                         }}>
                             {v}
@@ -1536,8 +1536,8 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
                     ))}
                     <span style={{
                         fontSize: 14, padding: '2px 8px', borderRadius: 6,
-                        background: cls.active ? '#7CB34222' : '#E5393522',
-                        color: cls.active ? '#7CB342' : '#E53935',
+                        background: cls.active ? '#558B2F22' : '#E5393522',
+                        color: cls.active ? '#558B2F' : '#E53935',
                         fontWeight: 600,
                     }}>
                         {cls.active ? 'Attiva' : 'Disattivata'}

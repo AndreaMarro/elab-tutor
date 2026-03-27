@@ -173,7 +173,7 @@ const styles = {
   privacyLink: {
     background: 'none',
     border: 'none',
-    color: '#7CB342',
+    color: '#558B2F',
     textDecoration: 'underline',
     cursor: 'pointer',
     fontSize: '14px',
@@ -200,7 +200,7 @@ const styles = {
     padding: '10px 24px',
     border: 'none',
     borderRadius: '8px',
-    backgroundColor: '#7CB342',
+    backgroundColor: '#558B2F',
     color: '#1A1A2E',
     fontWeight: 600,
     fontSize: '14px',

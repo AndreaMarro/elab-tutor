@@ -161,7 +161,7 @@
 .topbar-subtitle {
   font-family: var(--font-display);
   font-size: 14px;
-  color: var(--color-accent, #7CB342);
+  color: var(--color-accent, #558B2F);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;

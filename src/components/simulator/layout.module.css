@@ -62,7 +62,7 @@
 
 .unlimPanel {
   background: var(--color-sim-bg, #FAFAF7);
-  border: 2px solid var(--color-accent, #7CB342);
+  border: 2px solid var(--color-accent, #558B2F);
   border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow-xl, 0 12px 48px rgba(0, 0, 0, 0.2));
   width: 100%;
@@ -134,10 +134,10 @@
 }
 
 .unlimRetryBtn {
-  border: 1px solid var(--color-accent, #7CB342);
+  border: 1px solid var(--color-accent, #558B2F);
   border-radius: var(--radius-md, 8px);
   background: var(--color-bg, #fff);
-  color: var(--color-accent, #7CB342);
+  color: var(--color-accent, #558B2F);
   cursor: pointer;
   padding: var(--space-2, 8px) 14px;
   font-size: var(--font-size-sm, 16px);

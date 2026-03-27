@@ -99,7 +99,7 @@ export default function ManualTab({
                             {/* S112: Download progress bar */}
                             {volumeProgress !== null && volumeProgress !== undefined && (
                                 <div style={{ width: '60%', maxWidth: 300, margin: '12px auto', background: '#e0e0e0', borderRadius: 6, height: 8, overflow: 'hidden' }}>
-                                    <div style={{ width: `${volumeProgress}%`, height: '100%', background: volumeProgress < 90 ? '#1E4D8C' : '#7CB342', borderRadius: 6, transition: 'width 0.3s ease, background 0.3s ease' }} />
+                                    <div style={{ width: `${volumeProgress}%`, height: '100%', background: volumeProgress < 90 ? '#1E4D8C' : '#558B2F', borderRadius: 6, transition: 'width 0.3s ease, background 0.3s ease' }} />
                                 </div>
                             )}
                             <p>{volumeProgress !== null && volumeProgress < 90

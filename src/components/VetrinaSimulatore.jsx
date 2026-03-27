@@ -19,7 +19,7 @@ const STATS = [
 
 const VOLUMES = [
     {
-        num: 1, color: '#7CB342', gradient: 'linear-gradient(135deg, #7CB342 0%, #9CCC65 100%)',
+        num: 1, color: '#558B2F', gradient: 'linear-gradient(135deg, #558B2F 0%, #9CCC65 100%)',
         title: 'Basi', experiments: 38,
         desc: 'LED, resistori, condensatori, pulsanti — dal primo circuito alle basi solide',
         chapters: '11 capitoli',
@@ -39,10 +39,10 @@ const VOLUMES = [
 ];
 
 const FEATURES = [
-    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: '#7CB342' },
+    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: '#558B2F' },
     { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: '#E8941C' },
     { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: '#1E4D8C' },
-    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#7CB342' },
+    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#558B2F' },
     { icon: '\uD83E\uDD16', title: 'UNLIM AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
     { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: '#E8941C' },
 ];
@@ -505,7 +505,7 @@ const S = {
         lineHeight: '1.1',
     },
     heroTitleAccent: {
-        background: 'linear-gradient(135deg, #7CB342, #AED581)',
+        background: 'linear-gradient(135deg, #558B2F, #AED581)',
         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
     },
@@ -573,7 +573,7 @@ const S = {
         height: '3px', background: 'rgba(255,255,255,0.15)', zIndex: 3,
     },
     showcaseProgressFill: {
-        height: '100%', background: '#7CB342',
+        height: '100%', background: '#558B2F',
         transition: 'width 0.05s linear', borderRadius: '0 2px 2px 0',
     },
     showcaseOverlay: {
@@ -728,7 +728,7 @@ const S = {
     },
     activationGradientTop: {
         height: '4px',
-        background: 'linear-gradient(90deg, #7CB342, #1E4D8C, #E8941C, #E54B3D)',
+        background: 'linear-gradient(90deg, #558B2F, #1E4D8C, #E8941C, #E54B3D)',
     },
     activationContent: {
         padding: '36px 32px', textAlign: 'center',
@@ -759,7 +759,7 @@ const S = {
     },
     activateBtn: {
         padding: '14px 32px', border: 'none', borderRadius: '12px',
-        background: 'linear-gradient(135deg, #7CB342, #6AA033)',
+        background: 'linear-gradient(135deg, #558B2F, #6AA033)',
         color: '#1A1A2E', fontSize: '16px', fontWeight: '700',
         cursor: 'pointer', letterSpacing: '0.3px',
         transition: 'transform 0.2s, box-shadow 0.2s',

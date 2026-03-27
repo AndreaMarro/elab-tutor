@@ -363,7 +363,7 @@ const S = {
   },
 
   sendBtn: {
-    background: 'var(--color-accent, #7CB342)',
+    background: 'var(--color-accent, #558B2F)',
     border: 'none',
     borderRadius: 8,
     color: 'var(--color-text-inverse, white)',

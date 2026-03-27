@@ -473,10 +473,10 @@ const ComponentDrawer = ({
                       style={{
                         ...styles.navBtn,
                         flex: 1,
-                        background: 'var(--color-accent, #7CB342)',
+                        background: 'var(--color-accent, #558B2F)',
                         color: 'var(--color-text-inverse)',
                         fontWeight: 700,
-                        borderColor: 'var(--color-accent, #7CB342)',
+                        borderColor: 'var(--color-accent, #558B2F)',
                       }}
                     >
                       {'</>'} Codice
@@ -776,7 +776,7 @@ const styles = {
     padding: '4px 8px',
     background: 'var(--color-accent-light, #E8F5E9)',
     borderRadius: 'var(--radius-sm, 6px)',
-    borderLeft: '3px solid var(--color-accent, #7CB342)',
+    borderLeft: '3px solid var(--color-accent, #558B2F)',
     marginTop: 4,
   },
 
@@ -808,7 +808,7 @@ const styles = {
   },
   compilePlayBtn: {
     padding: '8px 16px',
-    background: 'var(--color-accent, #7CB342)',
+    background: 'var(--color-accent, #558B2F)',
     color: 'var(--color-text-inverse, #fff)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',

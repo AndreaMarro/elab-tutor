@@ -310,7 +310,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
           <p style={S.phaseLabel}>Analogie per spiegare:</p>
           <ul style={S.errorList}>
             {phase.analogies.map((a, i) => (
-              <li key={i} style={{ ...S.errorItem, borderLeftColor: '#7CB342' }}>
+              <li key={i} style={{ ...S.errorItem, borderLeftColor: '#558B2F' }}>
                 <strong>{a.concept.replace(/_/g, ' ')}</strong>
                 <p style={{ margin: '2px 0 0', fontSize: 14 }}>{a.text}</p>
                 {a.evidence && <em style={{ fontSize: 12, color: '#999' }}>({a.evidence})</em>}
@@ -470,7 +470,7 @@ const RS = {
     fontSize: 10,
     fontWeight: 700,
     color: '#fff',
-    background: '#7CB342',
+    background: '#558B2F',
     padding: '2px 8px',
     borderRadius: 10,
     textTransform: 'uppercase',

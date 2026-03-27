@@ -54,7 +54,7 @@ export default function UnlimModeSwitch({ isUnlim, onToggle }) {
         gap: '8px',
         padding: '8px 16px',
         border: '2px solid',
-        borderColor: isUnlim ? 'var(--color-accent, #7CB342)' : 'var(--color-border, #E5E5EA)',
+        borderColor: isUnlim ? 'var(--color-accent, #558B2F)' : 'var(--color-border, #E5E5EA)',
         borderRadius: 'var(--radius-full, 9999px)',
         background: isUnlim
           ? 'var(--color-accent-light, #E8F5E9)'
@@ -76,7 +76,7 @@ export default function UnlimModeSwitch({ isUnlim, onToggle }) {
         width: '36px',
         height: '20px',
         borderRadius: '10px',
-        background: isUnlim ? 'var(--color-accent, #7CB342)' : '#ccc',
+        background: isUnlim ? 'var(--color-accent, #558B2F)' : '#ccc',
         position: 'relative',
         transition: 'background 0.2s ease',
       }}>

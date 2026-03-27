@@ -11,7 +11,7 @@ const EXPERIMENTS_VOL1 = {
   title: "Volume 1 - Le Basi",
   subtitle: "Circuiti fondamentali con LED, pulsanti e sensori",
   icon: "\u{1F4D7}",
-  color: "#7CB342",
+  color: "#558B2F",
   experiments: [
     // ═══════════════════════════════════════════════════
     // CAPITOLO 6 — Cos'è il diodo LED? (3 esperimenti)

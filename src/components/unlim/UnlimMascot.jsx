@@ -38,7 +38,7 @@ export default function UnlimMascot({ state = 'idle', onClick }) {
           borderRadius: '50%',
           border: 'none',
           background: isActive
-            ? 'linear-gradient(135deg, #7CB342, #558B2F)'
+            ? 'linear-gradient(135deg, #558B2F, #558B2F)'
             : 'linear-gradient(135deg, #1E4D8C, #163A6B)',
           cursor: 'pointer',
           display: 'flex',

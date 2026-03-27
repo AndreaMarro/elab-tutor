@@ -4,7 +4,7 @@
 import React from 'react';
 
 const NAVY = '#1E4D8C';
-const LIME = '#7CB342';
+const LIME = '#558B2F';
 const BG_LIGHT = '#F7F7F8';
 const TEXT = '#1A1A2E';
 const TEXT_SECONDARY = '#6B6B80';

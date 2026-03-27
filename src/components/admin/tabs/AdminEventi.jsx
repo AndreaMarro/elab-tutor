@@ -13,7 +13,7 @@ import logger from '../../../utils/logger';
 // ============================================
 const COLORS = {
     primary: '#1E4D8C',
-    success: '#7CB342',
+    success: '#558B2F',
     warning: '#F59E0B',
     danger: '#EF4444',
     info: '#06B6D4',

@@ -9,7 +9,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const COLORS = [
   { id: 'navy', color: '#1E4D8C', label: 'Blu' },
-  { id: 'lime', color: '#7CB342', label: 'Verde' },
+  { id: 'lime', color: '#558B2F', label: 'Verde' },
   { id: 'red', color: '#E54B3D', label: 'Rosso' },
   { id: 'black', color: '#1A1A2E', label: 'Nero' },
 ];

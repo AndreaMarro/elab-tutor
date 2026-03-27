@@ -255,15 +255,15 @@ export default function ReverseEngineeringLab({ onOpenSimulator, logSession, onS
             return (
               <g key={point.id} onClick={() => !isRevealed && revealPoint(point.id)} style={{ cursor: isRevealed ? 'default' : 'pointer' }}>
                 <circle cx={point.x} cy={point.y} r={isRevealed ? 6 : 4}
-                  fill={isRevealed ? '#7CB342' : '#64748B'}
-                  stroke={isRevealed ? '#7CB342' : '#64748B'}
+                  fill={isRevealed ? '#558B2F' : '#64748B'}
+                  stroke={isRevealed ? '#558B2F' : '#64748B'}
                   strokeWidth="1.5"
                 />
                 {isRevealed && (
-                  <circle cx={point.x} cy={point.y} r="8" fill="none" stroke="#7CB342" strokeWidth="0.5" opacity="0.5" />
+                  <circle cx={point.x} cy={point.y} r="8" fill="none" stroke="#558B2F" strokeWidth="0.5" opacity="0.5" />
                 )}
                 <text x={point.x} y={point.y - 8} textAnchor="middle"
-                  fill={isRevealed ? '#7CB342' : '#64748B'} fontSize="4" fontFamily="monospace"
+                  fill={isRevealed ? '#558B2F' : '#64748B'} fontSize="4" fontFamily="monospace"
                 >
                   {point.label.split(' ')[0]}
                 </text>
@@ -272,11 +272,11 @@ export default function ReverseEngineeringLab({ onOpenSimulator, logSession, onS
           })}
           {/* Mystery component */}
           <rect x="38" y="38" width="24" height="24" rx="3"
-            fill="none" stroke={showSolution ? '#7CB342' : '#ea580c'}
+            fill="none" stroke={showSolution ? '#558B2F' : '#ea580c'}
             strokeWidth="1.5" strokeDasharray={showSolution ? 'none' : '3,2'}
           />
           <text x="50" y="53" textAnchor="middle"
-            fill={showSolution ? '#7CB342' : '#ea580c'} fontSize="6" fontWeight="bold"
+            fill={showSolution ? '#558B2F' : '#ea580c'} fontSize="6" fontWeight="bold"
           >
             {showSolution ? '✓' : '?'}
           </text>

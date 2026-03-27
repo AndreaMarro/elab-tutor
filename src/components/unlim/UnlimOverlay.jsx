@@ -84,7 +84,7 @@ function OverlayMessage({ message, onDismiss }) {
   const typeColors = {
     info: { bg: 'rgba(30, 77, 140, 0.95)', border: '#1E4D8C' },
     success: { bg: 'rgba(22, 163, 74, 0.95)', border: '#16A34A' },
-    hint: { bg: 'rgba(124, 179, 66, 0.95)', border: '#7CB342' },
+    hint: { bg: 'rgba(124, 179, 66, 0.95)', border: '#558B2F' },
     question: { bg: 'rgba(234, 88, 12, 0.95)', border: '#EA580C' },
   };
 

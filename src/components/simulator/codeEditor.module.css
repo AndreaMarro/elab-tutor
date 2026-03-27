@@ -75,7 +75,7 @@
   padding: 10px 0;
   border: none;
   border-radius: var(--radius-md, 10px);
-  background: var(--color-accent, #7CB342);
+  background: var(--color-accent, #558B2F);
   color: var(--color-text-inverse, #fff);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: var(--font-size-sm, 14px);

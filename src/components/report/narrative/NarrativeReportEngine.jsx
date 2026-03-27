@@ -21,7 +21,7 @@ let P = null;
 // Colori fedeli ai volumi ELAB
 const ELAB_COLORS = {
   navy: '#1E4D8C',
-  lime: '#7CB342',      // Volume 1
+  lime: '#558B2F',      // Volume 1
   orange: '#E8941C',    // Volume 2
   red: '#E54B3C',       // Volume 3
   white: '#FFFFFF',

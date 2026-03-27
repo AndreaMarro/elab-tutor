@@ -58,7 +58,7 @@ export const htmlToPages = async (html, fileName) => {
             <style>
                 body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; margin: 0;
                        line-height: 1.6; color: #333; max-width: 800px; font-size: 14px; }
-                h1 { color: #1E4D8C; border-bottom: 2px solid #7CB342; padding-bottom: 8px; }
+                h1 { color: #1E4D8C; border-bottom: 2px solid #558B2F; padding-bottom: 8px; }
                 h2 { color: #1E4D8C; }
                 h3 { color: #2d5aa0; }
                 table { border-collapse: collapse; width: 100%; margin: 12px 0; }
@@ -67,7 +67,7 @@ export const htmlToPages = async (html, fileName) => {
                 img { max-width: 100%; height: auto; }
                 code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
                 pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
-                blockquote { border-left: 3px solid #7CB342; margin: 12px 0; padding: 8px 16px; background: #f9fdf5; }
+                blockquote { border-left: 3px solid #558B2F; margin: 12px 0; padding: 8px 16px; background: #f9fdf5; }
                 .page-header { font-size: 11px; color: #999; margin-bottom: 16px; }
             </style>
         </head><body>
@@ -195,7 +195,7 @@ export const pptxToPages = async (arrayBuffer) => {
         ctx.fillRect(0, 0, 1280, 720);
 
         // Numero slide
-        ctx.fillStyle = '#7CB342';
+        ctx.fillStyle = '#558B2F';
         ctx.fillRect(0, 0, 1280, 4);
         ctx.fillStyle = '#999';
 // © Andrea Marro — 27/03/2026 — ELAB Tutor — Tutti i diritti riservati

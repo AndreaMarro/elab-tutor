@@ -18,7 +18,7 @@ export default function TutorTopBar({
     sessionLogLength,
 }) {
     const volumeLabels = { 1: 'Vol.1', 2: 'Vol.2', 3: 'Vol.3' };
-    const volumeColors = { 1: '#7CB342', 2: '#E8941C', 3: '#E54B3D' };
+    const volumeColors = { 1: '#558B2F', 2: '#E8941C', 3: '#E54B3D' };
 
     return (
         <header className="tutor-topbar">

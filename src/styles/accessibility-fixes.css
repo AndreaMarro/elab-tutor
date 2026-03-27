@@ -119,8 +119,8 @@ textarea:focus-visible,
 /* Ensure focus is visible on dark backgrounds */
 .code-editor button:focus-visible,
 .dark-theme button:focus-visible {
-  outline-color: #7CB342 !important;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 0 4px #7CB342 !important;
+  outline-color: #558B2F !important;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 0 4px #558B2F !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════ */

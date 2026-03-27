@@ -325,7 +325,7 @@ const topBarStyles = {
         position: 'relative',
     },
     brand: {
-        color: '#7CB342',
+        color: '#558B2F',
         fontSize: '14px',
         fontWeight: '700',
         cursor: 'pointer',
@@ -351,7 +351,7 @@ const topBarStyles = {
     linkGreen: {
         background: 'rgba(145,191,69,0.2)',
         border: 'none',
-        color: '#7CB342',
+        color: '#558B2F',
         fontSize: '14px',
         cursor: 'pointer',
         padding: '8px 12px',
@@ -427,7 +427,7 @@ const topBarStyles = {
     mobileLinkGreen: {
         background: 'rgba(145,191,69,0.2)',
         border: 'none',
-        color: '#7CB342',
+        color: '#558B2F',
         fontSize: '14px',
         cursor: 'pointer',
         padding: '12px 16px',

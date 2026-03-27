@@ -12,7 +12,7 @@ import './scratchBlocks';
 // ─────────────────────────────────────────────────────────────────────────
 
 // ─── ELAB Custom Theme ───────────────────────────────────────
-// Palette: Navy #1E4D8C, Lime #7CB342, Bg #1E2530, Grid #2a3040
+// Palette: Navy #1E4D8C, Lime #558B2F, Bg #1E2530, Grid #2a3040
 const ELAB_THEME = Blockly.Theme.defineTheme('elab', {
     name: 'elab',
     base: Blockly.Themes.Classic,
@@ -55,9 +55,9 @@ const ELAB_THEME = Blockly.Theme.defineTheme('elab', {
         flyoutOpacity: 0.95,
         scrollbarColour: '#3A4050',
         scrollbarOpacity: 0.6,
-        insertionMarkerColour: '#7CB342',
+        insertionMarkerColour: '#558B2F',
         insertionMarkerOpacity: 0.4,
-        cursorColour: '#7CB342',
+        cursorColour: '#558B2F',
     },
     fontStyle: {
         family: "'Open Sans', 'Helvetica Neue', sans-serif",
@@ -248,7 +248,7 @@ const ELAB_BLOCKLY_CSS = `
   font-size: 14px !important;
   background: var(--color-blockly-input-bg, #0D1117) !important;
   color: var(--color-blockly-text, #C9D1D9) !important;
-  border: 1px solid var(--color-accent, #7CB342) !important;
+  border: 1px solid var(--color-accent, #558B2F) !important;
   border-radius: 4px !important;
   padding: 4px 6px !important;
   min-height: 32px !important;
@@ -289,13 +289,13 @@ const ELAB_BLOCKLY_CSS = `
 
 /* Connection highlight — wider for touch precision */
 .blocklyHighlightedConnectionPath {
-  stroke: var(--color-accent, #7CB342) !important;
+  stroke: var(--color-accent, #558B2F) !important;
   stroke-width: 4px !important;
 }
 
 /* Selected block glow */
 .blocklySelected > .blocklyPath {
-  stroke: var(--color-accent, #7CB342) !important;
+  stroke: var(--color-accent, #558B2F) !important;
   stroke-width: 3px !important;
 }
 

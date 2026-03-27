@@ -7,10 +7,14 @@
 
 // Import statici per i percorsi già pronti
 import v1Cap6Esp1 from './v1-cap6-esp1.json';
+import v1Cap6Esp2 from './v1-cap6-esp2.json';
+import v1Cap7Esp1 from './v1-cap7-esp1.json';
 
 // Registry percorsi lezione disponibili
 const LESSON_PATHS = {
   'v1-cap6-esp1': v1Cap6Esp1,
+  'v1-cap6-esp2': v1Cap6Esp2,
+  'v1-cap7-esp1': v1Cap7Esp1,
 };
 
 /**

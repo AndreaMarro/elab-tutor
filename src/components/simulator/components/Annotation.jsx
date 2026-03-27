@@ -150,9 +150,9 @@ const Annotation = ({
         height={noteHeight}
         rx="3"
         fill="#FFF9C4"
-        stroke={isSelected ? 'var(--color-accent, #7CB342)' : '#E6DB74'}
+        stroke={isSelected ? 'var(--color-accent, #558B2F)' : '#E6DB74'}
         strokeWidth={isSelected ? 1.5 : 0.8}
-        style={isSelected ? { filter: 'drop-shadow(0 0 3px var(--color-accent, #7CB342))' } : undefined}
+        style={isSelected ? { filter: 'drop-shadow(0 0 3px var(--color-accent, #558B2F))' } : undefined}
       />
       {/* Top fold line */}
       <line

@@ -199,7 +199,7 @@ const CircuitStatusChip = ({ status }) => {
   if (!status || status.status === 'idle') return null;
 
   const config = {
-    ok: { icon: '✓', label: 'Circuito OK', bg: 'var(--color-accent-light, #E8F5E9)', color: 'var(--color-success, #2E7D32)', border: 'var(--color-accent, #7CB342)' },
+    ok: { icon: '✓', label: 'Circuito OK', bg: 'var(--color-accent-light, #E8F5E9)', color: 'var(--color-success, #2E7D32)', border: 'var(--color-accent, #558B2F)' },
     warning: { icon: '⚠', label: `${status.warnings.length} avviso${status.warnings.length > 1 ? 'i' : ''}`, bg: 'var(--color-warning-light, #FFF8E1)', color: 'var(--color-warning-dark, #E65100)', border: 'var(--color-warning, #FFB300)' },
     error: { icon: '✗', label: `${status.errors.length} errore${status.errors.length > 1 ? 'i' : ''}`, bg: 'var(--color-danger-light, #FFEBEE)', color: 'var(--color-danger, #C62828)', border: 'var(--color-vol3, #E54B3D)' },
   };
