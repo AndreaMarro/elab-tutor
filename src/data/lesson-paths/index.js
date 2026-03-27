@@ -17,6 +17,9 @@ import v1Cap7Esp5 from './v1-cap7-esp5.json';
 import v1Cap7Esp6 from './v1-cap7-esp6.json';
 import v1Cap8Esp1 from './v1-cap8-esp1.json';
 import v1Cap8Esp2 from './v1-cap8-esp2.json';
+import v1Cap8Esp3 from './v1-cap8-esp3.json';
+import v1Cap8Esp4 from './v1-cap8-esp4.json';
+import v1Cap8Esp5 from './v1-cap8-esp5.json';
 import v1Cap9Esp1 from './v1-cap9-esp1.json';
 import v1Cap10Esp1 from './v1-cap10-esp1.json';
 
@@ -33,6 +36,9 @@ const LESSON_PATHS = {
   'v1-cap7-esp6': v1Cap7Esp6,
   'v1-cap8-esp1': v1Cap8Esp1,
   'v1-cap8-esp2': v1Cap8Esp2,
+  'v1-cap8-esp3': v1Cap8Esp3,
+  'v1-cap8-esp4': v1Cap8Esp4,
+  'v1-cap8-esp5': v1Cap8Esp5,
   'v1-cap9-esp1': v1Cap9Esp1,
   'v1-cap10-esp1': v1Cap10Esp1,
 };
