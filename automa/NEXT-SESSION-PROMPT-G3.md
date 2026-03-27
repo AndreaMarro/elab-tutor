@@ -44,10 +44,11 @@ Massima onestà. Usa superpowers.
 - Se serve, modificare prompts/shared-optimized.yml per forzare brevità
 
 ### 2. Verificare "Monta il circuito" end-to-end (P0)
-- Aprire v1-cap6-esp1 nel simulatore
-- Aprire LessonPathPanel → fase MOSTRA → click "Monta il circuito per me"
-- Verificare che __ELAB_API.addComponent e addWire esistano e funzionino
-- Se non esistono, implementarli
+- **BUG FIXATO G2**: ora usa `loadExperiment(experimentId)` invece di broken addComponent
+- L'esperimento v1-cap6-esp1 GIÀ definisce componenti+layout+wires in experiments-vol1.js
+- Aprire simulatore → aprire LessonPathPanel → fase MOSTRA → click bottone
+- Verificare nel browser che l'esperimento si carichi correttamente
+- Se l'esperimento è già caricato, il bottone è un noop (corretto)
 
 ### 3. Generare 2-3 percorsi lezione (P1)
 - v1-cap6-esp2.json (LED senza resistore)
@@ -77,6 +78,9 @@ Massima onestà. Usa superpowers.
 - [x] <style> in <button> — FIXATO
 - [x] handleSend placeholder → sendChat() — FIXATO
 - [x] LessonPathPanel → RichLessonPath — FIXATO
+- [x] "Monta il circuito" → loadExperiment() — FIXATO (era addComponent broken)
+- [x] Failed queue svuotata (6→0 task)
+- [x] 25 research generici archiviati da pending
 
 ## CONTESTO BUSINESS
 - Giovanni Fagherazzi = ex Global Sales Director di ARDUINO

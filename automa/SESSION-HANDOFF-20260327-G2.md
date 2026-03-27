@@ -27,11 +27,12 @@
 - Obiettivo dell'esperimento visibile in alto
 - Prossimo esperimento con preview e bottone carica
 
-### 3. "Monta il circuito per me" (P1) — incluso nel RichLessonPath
+### 3. "Monta il circuito per me" (P1) — FIX CRITICO
 - Bottone nella fase MOSTRA, stile prominent (navy gradient, 56px minHeight)
-- Legge `build_circuit.intent` dal JSON
-- Chiama `__ELAB_API.addComponent()` e `addWire()` per ogni componente/filo
-- **Nota**: dipende dall'implementazione di addComponent/addWire in __ELAB_API — da verificare end-to-end
+- **BUG FIXATO**: il vecchio codice chiamava `addComponent(type, comp)` dove `comp` era l'oggetto JSON intero (`{type, id, value}`) invece di `{x, y}` — tutti i componenti sarebbero finiti impilati a (200, 150)
+- **NUOVO**: usa `__ELAB_API.loadExperiment(experimentId)` — l'esperimento v1-cap6-esp1 GIÀ definisce componenti, layout, pinAssignments e wires in experiments-vol1.js
+- Se l'esperimento è già caricato, il bottone è un noop (evita doppio caricamento)
+- Per esperimenti FUTURI senza definizione preesistente, si potrà ripristinare il pattern addComponent con coordinate corrette
 
 ### 4. Queue automa pulita + task percorsi lezione
 - 28 task research generici archiviati in `automa/queue/archived-research/`
@@ -55,7 +56,7 @@
 | Deploy Vercel | ✅ Produzione | HTTP 200 |
 | InputBar → Galileo | ✅ Connesso | sendChat() via AbortController |
 | LessonPathPanel | ✅ Connesso | RichLessonPath per JSON, fallback per generici |
-| Monta circuito | ✅ Bottone presente | Dipende da __ELAB_API.addComponent |
+| Monta circuito | ✅ Fixato | loadExperiment() invece di broken addComponent |
 | Nanobot Render | ⚠️ NON AGGIORNATO | v5.5.0 live, /gdpr-status mancante, risposte lunghe |
 | Queue automa | ✅ Pulita | 20 task (7 nuovi percorsi lezione) |
 | Automa | ❌ MORTO | Non rilanciato |
@@ -66,7 +67,7 @@
 
 1. **Deploy nanobot su Render** — le modifiche brevità + /gdpr-status sono nel server.py locale ma non pushate al repo `elab-galileo-nanobot`. Richiede `git push render main`. Rischio: modifica servizio live.
 2. **Automa non rilanciato** — serve check manuale
-3. **Test end-to-end "Monta il circuito"** — bottone presente ma `addComponent`/`addWire` da verificare nella __ELAB_API reale
+3. **Test end-to-end "Monta il circuito"** — bottone fixato (usa loadExperiment), da verificare nel browser che carichi effettivamente l'esperimento
 4. **Teacher Dashboard MVP** — non iniziata (Fase 4)
 5. **Risposte nanobot ancora lunghe** — 85 parole vs target <60 (serve deploy brevità)
 

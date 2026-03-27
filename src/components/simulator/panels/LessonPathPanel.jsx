@@ -264,24 +264,26 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
     }
 
     // "Monta il circuito per me" (fase MOSTRA)
-    if (phase.build_circuit?.intent) {
+    // L'esperimento definisce già componenti, layout, pinAssignments e wires.
+    // Il bottone carica l'esperimento nel simulatore via loadExperiment()
+    // invece di duplicare componenti via addComponent (che stackerebbe tutto a 200,150).
+    if (phase.build_circuit) {
+      const experimentId = path.experiment_id;
       content.push(
         <button
           key="build"
           onClick={() => {
             const api = window.__ELAB_API;
             if (!api) return;
-            const intent = phase.build_circuit.intent;
-            // Piazza componenti e fili via __ELAB_API
-            if (intent.components) {
-              for (const comp of intent.components) {
-                if (api.addComponent) api.addComponent(comp.type, comp);
-              }
+            // Se l'esperimento è già caricato, non ricaricare
+            const current = api.getCurrentExperiment?.();
+            if (current?.id === experimentId) {
+              // Already loaded — noop, o potremmo triggerare il Passo Passo
+              return;
             }
-            if (intent.wires) {
-              for (const wire of intent.wires) {
-                if (api.addWire) api.addWire(wire.from, wire.to, wire.color);
-              }
+            // Carica l'esperimento nel simulatore (componenti + wires + layout)
+            if (api.loadExperiment) {
+              api.loadExperiment(experimentId);
             }
           }}
           style={RS.buildBtn}
