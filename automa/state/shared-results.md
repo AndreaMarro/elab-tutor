@@ -196,3 +196,11 @@ Formato: ## [nome-task] YYYY-MM-DD HH:MM → risultati strutturati
 - Cicli 45-46 max_turns: scope troppo ampio
 - P1-001 stuck 94h: richiede infrastruttura mancante
 - Orchestrator vivo ma no_measurement ripetuti: verificare write permissions
+
+## [competitor-research] 2026-03-27 14:30 — Percorsi lezione competitor
+- **PhET**: Modello 5E (Engage→Explore→Explain→Elaborate→Evaluate), 4-5 step, 45-50 min. Simulatore = sandbox puro, tutta la struttura viene da worksheet PDF dell'insegnante. Forte inquiry-based. No gestione classe integrata.
+- **Tinkercad**: Workshop format (Setup→Intro→Tutorial guidato→Esplorazione libera→Share), 4-5 step, 45-60 min. Ha Classrooms integrato, Starters pre-fatti, feedback conseguenze (LED brucia senza resistore). Corso completo 4 fasi (34 lezioni). Google Classroom add-on.
+- **Arduino CTC GO**: 20 sessioni da 45-50 min in 3 fasi: 8 lezioni pratiche → 6 progetti guidati → 6 progetti autonomi (24h totali). Kit fisico + LMS digitale. Gruppi da 3, fino 24 studenti. Training webinar per insegnanti. No valutazione propria.
+- **Best practice**: (1) Progressione universale Guidato→Semi-guidato→Autonomo, (2) Sessioni 45-50 min, (3) Insegnante non deve essere esperto, (4) Feedback immediato simulatore, (5) Starters/template pre-fatti, (6) Screenshot come "consegna", (7) Gruppi 2-3 studenti
+- **Cosa ELAB puo prendere**: (1) Struttura 5 step per sessione, (2) Starters/circuiti template, (3) Progressione 3 fasi come CTC GO, (4) Gestione classe integrata, (5) Galileo AI come guida DENTRO il simulatore (nessun competitor ce l'ha), (6) Passo Passo vocale (unico), (7) Collegamento Volume fisico ↔ lezione digitale (unico), (8) Report AI automatico per insegnante
+- **File completo**: `automa/knowledge/competitor-lesson-structures.md`
