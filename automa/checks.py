@@ -70,12 +70,14 @@ def check_health() -> dict:
 def check_build() -> dict:
     """Run npm run build and check for errors."""
     try:
+        npm_bin = "/usr/local/bin/npm"
         result = subprocess.run(
-            ["npm", "run", "build"],
+            [npm_bin, "run", "build"],
             cwd=str(PROJECT_ROOT),
             capture_output=True,
             text=True,
             timeout=120,
+            env={**os.environ, "PATH": _EXTRA + ":" + os.environ.get("PATH", "")},
         )
         if result.returncode == 0:
             # Extract build time from output
