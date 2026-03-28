@@ -36,10 +36,21 @@ if [ "$DIFF" -gt 1800 ]; then
     pkill -f "orchestrator.py" 2>/dev/null
     sleep 2
 
-    # Restart with all fixes
+    # Restart — separate stdout and stderr for debugging
     cd "$DIR/.."
-    PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 nohup python3 -Bu automa/orchestrator.py --loop >> "$DIR/logs/orchestrator-$(date +%Y%m%d).log" 2>&1 &
-    log "Orchestrator restarted (PID: $!)"
+    PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 nohup python3 -Bu automa/orchestrator.py --loop \
+        >> "$DIR/logs/orchestrator-$(date +%Y%m%d).log" \
+        2>> "$DIR/logs/orchestrator-$(date +%Y%m%d)-err.log" &
+    NEW_PID=$!
+    log "Orchestrator restarted (PID: $NEW_PID)"
+
+    # Verify it's actually running after 5 seconds
+    sleep 5
+    if kill -0 $NEW_PID 2>/dev/null; then
+        log "  Confirmed alive (PID $NEW_PID)"
+    else
+        log "  DEAD ON ARRIVAL (PID $NEW_PID) — check err log"
+    fi
 else
     log "Orchestrator alive (heartbeat ${DIFF}s ago)"
 fi

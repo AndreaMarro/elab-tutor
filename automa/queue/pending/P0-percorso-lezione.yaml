@@ -25,3 +25,5 @@ failed_at: "2026-03-26T21:37:50.591824"
 error: max_turns_reached
 retry: 2
 requeued_at: "2026-03-27T01:05:06.123827"
+rescued_at: "2026-03-28T19:07:48.718824"
+rescue_reason: stale active (114492s)

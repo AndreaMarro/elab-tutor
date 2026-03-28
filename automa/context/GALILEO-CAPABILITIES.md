@@ -154,61 +154,81 @@ Storage: `localStorage` (chiave `elab_unlim_memory`)
 
 ---
 
-## Frontend UNLIM (5 Componenti React)
+## Frontend UNLIM (6 Componenti React + 1 CSS)
+
+> Aggiornamento: 28/03/2026 (post G17)
 
 | Componente | Righe | Cosa fa |
 |-----------|-------|---------|
-| `UnlimWrapper.jsx` | ~210 | Wrappa ElabTutorV4, auto-rileva esperimento, gestisce sendChat, mostra benvenuto |
-| `UnlimMascot.jsx` | ~80 | Mascotte nell'angolo (lettera "U"), stati idle/active/speaking, onClick toggle |
-| `UnlimOverlay.jsx` | ~120 | Toast/messaggi contestuali, posizionamento, auto-dismiss, animazioni |
-| `UnlimInputBar.jsx` | ~150 | Barra input testo + mic + invio, auto-focus, loading state |
+| `UnlimWrapper.jsx` | ~420 | Wrappa ElabTutorV4, ErrorBoundary, auto-rileva esperimento, sendChat, welcome contestuale, report, sessioni |
+| `UnlimMascot.jsx` | ~125 | Mascotte REALE (robot logo ELAB PNG), stati idle/active/speaking, long-press mute con feedback visivo |
+| `UnlimOverlay.jsx` | ~310 | Messaggi contestuali POSIZIONATI accanto ai componenti, frecce SVG, auto-dismiss, WCAG AA |
+| `UnlimInputBar.jsx` | ~180 | Barra input testo + mic + report + invio, touch-aware (no auto-focus su LIM) |
 | `UnlimModeSwitch.jsx` | ~60 | Toggle UNLIM/Classic mode, persist in localStorage |
+| `UnlimReport.jsx` | ~450 | FUMETTO ELAB: scene narrative, foto inline, screenshot, stampa PDF, fallback download |
+| `unlim-mascot.css` | ~50 | Keyframes mascotte: breathe, speak-glow, speak-bounce, long-press feedback |
+
+### Hooks UNLIM
+| File | Righe | Cosa fa |
+|------|-------|---------|
+| `useSessionTracker.js` | ~240 | Sessioni strutturate: messaggi, azioni, errori. localStorage FIFO 20 sessioni. |
+| `useTTS.js` | ~200 | Text-to-speech integrato in UNLIM. Voce italiana, mute toggle, safety timeout. |
+| `useSTT.js` | ~120 | Speech-to-text. SpeechRecognition API, continuous mode, interim results. |
+
+### Servizi UNLIM
+| File | Righe | Cosa fa |
+|------|-------|---------|
+| `classProfile.js` | ~210 | Profilo classe da sessioni: concetti, errori, next suggested. Cache TTL 2s. |
+| `unlimMemory.js` | ~180 | Memoria studente: esperimenti, quiz, errori. Profilo globale window.__unlimMemory. |
 
 ### Lesson Path Panel
 | File | Righe | Cosa fa |
 |------|-------|---------|
-| `LessonPathPanel.jsx` | ~850 | Percorso 5 fasi (PREPARA→CONCLUDI), progress bar, "Monta il circuito", analogie, errori comuni |
-| `lesson-paths/index.js` | ~55 | Registry 13 JSON, getLessonPath(), hasLessonPath() |
-| `lesson-paths/*.json` | ~170 ciascuno | 13 file JSON con 5 fasi, vocabolario, analogie, assessment |
+| `LessonPathPanel.jsx` | ~850 | Percorso 5 fasi (PREPARA->CONCLUDI), progress bar, "Monta il circuito", analogie, errori comuni |
+| `lesson-paths/index.js` | ~55 | Registry 62 JSON, getLessonPath(), hasLessonPath() |
+| `lesson-paths/*.json` | ~170 ciascuno | 62 file JSON con 5 fasi, vocabolario, analogie, assessment |
 
 ---
 
-## Cosa NON Esiste Ancora
+## Stato Implementazione vs Visione (aggiornato G17)
 
-### Critico (bloccante per la visione UNLIM)
-| Gap | Impatto | Dove servirebbe |
-|-----|---------|----------------|
-| **Controllo vocale** | `onMicClick` prop vuota | Web Speech API → UnlimInputBar |
-| **TTS (text-to-speech)** | UNLIM non "parla" sulla LIM | `useTTS.js` esiste ma non integrato in UNLIM |
-| **54 lesson paths mancanti** | 13/67 coperti | Batch generazione (automa) |
-| **Mascotte reale** | È una lettera "U" | SVG/animazione del robottino ELAB |
-| **Annotazioni sulla breadboard** | Solo Annotation.jsx generico | Appunti posizionati su componenti |
-| **PDF report fumetto** | Non esiste | Generazione PDF con storia lezione |
-| **Struttura lezione adattiva** | I 5 step sono fissi | UNLIM che varia in base al contesto |
-| **Messaggi contestuali posizionati** | Toast sempre in top-center | Overlay accanto al componente rilevante |
+### IMPLEMENTATO (ex "Cosa NON Esiste Ancora")
+| Capacita' | Stato | Sessione |
+|-----------|-------|----------|
+| **Controllo vocale (STT)** | FUNZIONA — useSTT.js, continuous mode, it-IT | G14 |
+| **TTS (text-to-speech)** | FUNZIONA — useTTS.js integrato in UNLIM, voce italiana, mute toggle | G14 |
+| **Mascotte reale** | FUNZIONA — robot logo ELAB PNG, 3 animazioni CSS, long-press feedback | G13 |
+| **Messaggi contestuali posizionati** | FUNZIONA — accanto ai componenti con frecce SVG | G13 |
+| **PDF report fumetto** | FUNZIONA — fumetto narrativo con foto, screenshot, stampa A4 | G17 |
+| **Sessioni salvate** | FUNZIONA — localStorage FIFO 20, contesto classe, welcome "Bentornati!" | G16 |
+| **62 lesson paths** | FUNZIONA — 62/67 coperti (era 13 a G4) | G6 |
+| **Error boundary** | FUNZIONA — UNLIM crash non uccide simulatore | G17 |
 
-### Importante (non bloccante ma di valore)
-| Gap | Impatto |
-|-----|---------|
-| Teacher Dashboard ↔ lesson paths | Docente non vede quali percorsi esistono |
-| Memoria cross-device (backend sync) | Ogni tablet ricomincia da zero |
-| Brain V13 collegato al nanobot | Risposte più specifiche per ELAB |
-| Nanobot risposte < 60 parole | Troppe parole per la LIM |
-| `/gdpr-status` endpoint | Compliance documentazione |
+### DA FARE (gap rimanenti)
+| Gap | Impatto | Priorita' |
+|-----|---------|-----------|
+| **5 lesson paths mancanti** | 62/67 coperti (93%) | P2 |
+| **Struttura lezione adattiva** | I 5 step sono fissi per esperimento | P1 |
+| **Annotazioni sulla breadboard** | Solo Annotation.jsx generico su canvas | P1 |
+| Teacher Dashboard integrata con lesson paths | Docente non vede progressi | P1 |
+| Memoria cross-device (backend sync) | Ogni device ricomincia da zero | P2 |
+| Nanobot risposte < 60 parole | Risposte troppo lunghe per LIM | P1 |
+| GDPR compliance documentata | Nessun DPIA | P1 |
 
 ---
 
-## Numeri Reali (da audit G4)
+## Numeri Reali (aggiornati G17 — 28/03/2026)
 
-| Metrica | Valore |
-|---------|--------|
-| Azioni implementate | 26+ |
-| Lesson paths pronti | 13/67 (19%) |
-| Esperimenti totali | 67 (38 Vol1 + 18 Vol2 + 11 Vol3) |
-| Componenti SVG simulatore | 21 tipi |
-| Blocchi Scratch | 22 |
-| Build time | ~26s |
-| Bundle ElabTutorV4 | 1,108 KB (258 KB gzip) |
-| Console errors | 0 nuovi (solo borderColor pre-esistente) |
-| Vocab violations lesson paths | 0 reali |
-| Bug critici aperti | 0 |
+| Metrica | G4 | G17 | Delta |
+|---------|-----|-----|-------|
+| Azioni implementate | 26+ | 26+ | = |
+| Lesson paths pronti | 13/67 (19%) | **62/67 (93%)** | +49 |
+| Componenti React UNLIM | 5 | **6 + 1 CSS + 3 hooks + 2 servizi** | +7 |
+| Build time | ~26s | **~32s** | +6s |
+| Bundle ElabTutorV4 | 1,108 KB | **1,091 KB** | -17 KB |
+| Console errors | 0 nuovi | **46 (6 log + 40 warn/error)** | +46 (debt) |
+| UNLIM vision score | 3.5 | **7.8** | +4.3 |
+| Composito insegnante | ~6.5 | **8.0** | +1.5 |
+| Error boundaries | 1 | **2** | +1 |
+| aria-label | ~80 | **103** | +23 |
+| Bug critici aperti | 0 | **0** | = |

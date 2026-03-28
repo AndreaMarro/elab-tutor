@@ -1878,3 +1878,33 @@ Scholar: 'Socratic questioning AI tutor' -> 5 papers
   - [2025] Resurrecting Socrates in the Age of AI: A Study Protocol for Evaluating a Socrat
   - [2025] NotebookLM as a Socratic physics tutor: Design and preliminary observations of a
   - [2026] AI Tutor Comparison: Google Guided Learning and ChatGPT Study Mode
+
+## Cycle 1 - Scratch to Arduino C++ block programming
+DeepSeek: **Problemi per ELAB Tutor:**
+1.  **Gap astrattivo:** Gli studenti abituati a blocchi visivi (Scratch) faticano a tradurre logica in sintassi testuale C++ (punti e virgola, parentesi), portando a errori di compilazione e frustrazione.
+2.  **Debug su hardware:** L'isolamento di errori nel codice C++ che controlla sensori/attuatori reali (Arduino) è complesso, poiché richiede competenze di troublesho
+
+## Cycle 1 - Scratch to Arduino C++ block programming
+DeepSeek: **Problema 1: Astrattezza del testo.** Studenti abituati a blocchi visivi e immediati faticano a comprendere la sintassi testuale di C++ (punti e virgola, parentesi graffe), portando a frequenti errori di compilazione.
+
+**Problema 2: Salto concettuale.** La programmazione a blocchi nasconde la struttura logica del codice (es. `setup` e `loop` di Arduino). Il passaggio richiede di apprendere questi
+
+## Cycle 2 - AI tutoring scaffolding real-time
+Kimi: Il tema 'AI tutoring scaffolding real-time' si riferisce all'uso dell'intelligenza artificiale per supportare gli studenti in modo personalizzato e in tempo reale. Ecco 3 tendenze, 1 idea e 1 rischio in questo campo:
+
+1. Personalizzazione: L'AI può analizzare i progressi degli studenti e adattare il materiale di apprendimento in base alle loro esigenze individuali. Questa personalizzazione miglior
+DeepSeek: ELAB Tutor, an AI system providing real-time scaffolding, faces two key problems. First, real-time assessment of student understanding is prone to errors, leading to mismatched support—either too simplistic or overly challenging. Second, students may become overly dependent on AI hints, hindering the development of independent problem-solving skills.
+
+A solution is an adaptive algorithm that conti
+
+## Cycle 3 - circuit simulation browser WebAssembly
+DeepSeek: **Problema 1 (Accessibilità/Performance):** Le simulazioni di circuiti basate su JavaScript puro nel browser sono spesso lente e limitate nella complessità, impedendo esperimenti realistici e frustrando gli studenti.
+
+**Problema 2 (Interattività/Feedback):** Fornire un feedback in tempo reale e visivamente accurato (ad esempio, visualizzazione di tensioni/correnti, comportamento di componenti non 
+
+## Cycle 1 - Scratch to Arduino C++ block programming
+DeepSeek: **Problema 1: Astrazione della Sintassi**
+Gli studenti abituati ai blocchi visivi di Scratch possono trovare la sintassi testuale del C++ (punti e virgola, parentesi graffe) astratta e frustrante, portando a frequenti errori di compilazione e perdita di motivazione.
+
+**Problema 2: Transizione al Codice Manuale**
+La mancanza di comandi predefiniti per l'hardware (come `digitalWrite()`) richiede di 

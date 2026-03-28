@@ -143,6 +143,28 @@ def create_task(task_id: str, priority: str, title: str, description: str, tags:
     return filename
 
 
+def rescue_stale_active(max_age_seconds: int = 3600) -> int:
+    """Move active tasks older than max_age_seconds back to pending.
+    This prevents tasks from being permanently stuck when the orchestrator crashes."""
+    _ensure_dirs()
+    active_dir = QUEUE_ROOT / "active"
+    pending_dir = QUEUE_ROOT / "pending"
+    rescued = 0
+    now = time.time()
+    for f in active_dir.glob("*.yaml"):
+        file_age = now - f.stat().st_mtime
+        if file_age > max_age_seconds:
+            data = _parse_yaml_simple(f.read_text())
+            data["rescued_at"] = datetime.now().isoformat()
+            data["rescue_reason"] = f"stale active ({int(file_age)}s)"
+            dest = pending_dir / f.name
+            if not dest.exists():
+                _write_yaml_simple(data, dest)
+            f.unlink()
+            rescued += 1
+    return rescued
+
+
 def stats() -> dict:
     """Get queue statistics."""
     _ensure_dirs()

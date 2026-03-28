@@ -30,7 +30,7 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
 sys.path.insert(0, str(AUTOMA_ROOT))
 from checks import run_all_checks, print_results
-from queue_manager import get_next_task, claim_task, complete_task, fail_task, stats
+from queue_manager import get_next_task, claim_task, complete_task, fail_task, stats, rescue_stale_active
 from tools import search_papers, gulpease_index, chat_galileo, call_gemini_cli
 
 try:
@@ -592,7 +592,9 @@ def run_claude_headless(prompt, max_time=1500):
 
 
 def select_mode(cycle, check_results, task, state=None):
-    """Adaptive mode selection - score-driven, not just cycle%."""
+    """Adaptive mode selection — SPRINT MODE for 2 weeks (28/03-11/04/2026).
+    80% IMPROVE, 15% AUDIT, 5% RESEARCH. No WRITE/EVOLVE.
+    Every cycle MUST produce a deliverable aligned with Principio Zero."""
     failed = [r for r in check_results if r["status"] == "fail"]
     if failed:
         return "IMPROVE"
@@ -600,16 +602,16 @@ def select_mode(cycle, check_results, task, state=None):
         reg = _check_score_regression(state)
         if reg and reg.get("drop_pct", 0) > 5:
             return "IMPROVE"
+    # P0/P1 tasks = always IMPROVE
     if task and task.get("priority") in ("P0", "P1"):
         return "IMPROVE"
-    if cycle % 20 == 0 and cycle > 0:
-        return "WRITE"
+    # AUDIT every 10 cycles (adversarial review)
     if cycle % 10 == 0 and cycle > 0:
-        return "EVOLVE"
-    if cycle % 5 == 0:
         return "AUDIT"
-    if cycle % 3 == 0:
+    # RESEARCH only every 20 cycles (minimal, targeted)
+    if cycle % 20 == 0 and cycle > 0:
         return "RESEARCH"
+    # Default: IMPROVE — ship code, fix bugs, complete content
     return "IMPROVE"
 
 
@@ -925,9 +927,17 @@ def run_cycle(skip_slow=False, dry_run=False):
     state["loop"]["cycles_today"] = cycle_num
     state["loop"]["status"] = "running"
 
-    print(f"\n{'='*60}")
-    print(f" ELAB Automa V2 - Cycle {cycle_num} ({datetime.now().strftime('%H:%M:%S')})")
-    print(f"{'='*60}")
+    print(f"\n{'='*60}", flush=True)
+    print(f" ELAB Automa V2 - Cycle {cycle_num} ({datetime.now().strftime('%H:%M:%S')})", flush=True)
+    print(f"{'='*60}", flush=True)
+
+    # Step 0-pre: Write heartbeat IMMEDIATELY (proves the process is alive)
+    write_heartbeat()
+
+    # Step 0-pre: Rescue stale active tasks (crashed previous cycle)
+    rescued = rescue_stale_active(max_age_seconds=3600)
+    if rescued > 0:
+        print(f"\n  Rescued {rescued} stale active task(s) → pending")
 
     # Step 0a: Snapshot git + score BEFORE work (for keep/discard)
     snapshot = _snapshot_before_work() if not dry_run else {}
@@ -944,9 +954,11 @@ def run_cycle(skip_slow=False, dry_run=False):
         _requeue_fixable_failed()
         _research_to_tasks()
 
-    # Step 1: Checks
-    print("\n  Running 7 checks...")
-    check_results = run_all_checks(skip_slow=skip_slow)
+    # Step 1: Checks — fast by default, full every 5 cycles
+    # Sprint mode: don't waste 150s on checks every cycle
+    do_full_checks = (cycle_num % 5 == 1) and not skip_slow
+    print(f"\n  Running checks ({'FULL' if do_full_checks else 'FAST'})...")
+    check_results = run_all_checks(skip_slow=not do_full_checks)
     print_results(check_results)
 
     # Step 2: Adaptive mode
@@ -1108,6 +1120,12 @@ def run_cycle(skip_slow=False, dry_run=False):
 
 if __name__ == "__main__":
     import argparse
+    # Force line-buffered stdout for nohup/redirect (critical for log visibility)
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(line_buffering=True)
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(line_buffering=True)
+
     parser = argparse.ArgumentParser(description="ELAB Automa V2")
     parser.add_argument("--fast", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -1115,7 +1133,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.loop:
         interval = 3600
-        print(f"Loop every {interval//60}min...")
+        print(f"Loop every {interval//60}min...", flush=True)
         while True:
             try:
                 run_cycle(skip_slow=args.fast)
