@@ -1,8 +1,8 @@
-// © Andrea Marro — 15/02/2026
+// © Andrea Marro — 29/03/2026
 /**
  * ELAB — Informativa Privacy Completa (GDPR-K + COPPA)
- * 
- * Versione: 2.0 (Full Compliance Minori)
+ *
+ * Versione: 3.0 (Dati reali, provider reali, storage reale da analisi codice)
  * 
  * Conformità:
  * - GDPR Regolamento UE 2016/679
@@ -35,22 +35,21 @@
 
 import React, { useState } from 'react';
 
-const LAST_UPDATED = '15/02/2026';
-const VERSION = '2.0';
+const LAST_UPDATED = '29/03/2026';
+const VERSION = '3.0';
 
-// Dati titolare (da aggiornare con dati reali)
 const DATA_CONTROLLER = {
   name: 'Andrea Marro',
   tradeName: 'ELAB STEM',
-  address: '[Indirizzo legale da inserire]',
+  partner: 'Omaric Elettronica S.r.l. (Strambino, TO)',
   email: 'privacy@elab-stem.com',
-  vatNumber: '[P.IVA da inserire]',
+  pec: 'PEC in fase di attivazione',
 };
 
 const DPO = {
-  name: 'Andrea Marro (Responsabile Privacy)',
+  name: 'Andrea Marro',
   email: 'privacy@elab-stem.com',
-  address: '[Indirizzo DPO da inserire]',
+  note: 'Ai sensi dell\'Art. 37 GDPR, in qualit\u00e0 di piccola impresa il titolare del trattamento funge anche da referente privacy.',
 };
 
 export default function PrivacyPolicy({ onClose }) {
@@ -131,19 +130,21 @@ export default function PrivacyPolicy({ onClose }) {
           <div style={styles.infoBox}>
             <h3 style={styles.h3}>Titolare del Trattamento</h3>
             <p style={styles.text}><strong>{DATA_CONTROLLER.name}</strong></p>
-            <p style={styles.text}>Insegna commerciale: {DATA_CONTROLLER.tradeName}</p>
-            <p style={styles.text}>Indirizzo: {DATA_CONTROLLER.address}</p>
+            <p style={styles.text}>Nome commerciale: {DATA_CONTROLLER.tradeName}</p>
+            <p style={styles.text}>Partner hardware: {DATA_CONTROLLER.partner}</p>
             <p style={styles.text}>Email: <a href={`mailto:${DATA_CONTROLLER.email}`} style={styles.link}>{DATA_CONTROLLER.email}</a></p>
-            <p style={styles.text}>P.IVA: {DATA_CONTROLLER.vatNumber}</p>
+            <p style={styles.text}>PEC: {DATA_CONTROLLER.pec}</p>
           </div>
 
           <div style={styles.infoBoxHighlight}>
-            <h3 style={styles.h3}>Responsabile della Protezione Dati (DPO)</h3>
+            <h3 style={styles.h3}>Referente Privacy / DPO</h3>
             <p style={styles.text}><strong>{DPO.name}</strong></p>
-            <p style={styles.text}>Indirizzo: {DPO.address}</p>
             <p style={styles.text}>Email: <a href={`mailto:${DPO.email}`} style={styles.link}>{DPO.email}</a></p>
             <p style={styles.textSmall}>
-              Il DPO è contattabile per qualsiasi questione relativa al trattamento 
+              {DPO.note}
+            </p>
+            <p style={styles.textSmall}>
+              Il referente privacy è contattabile per qualsiasi questione relativa al trattamento
               dei dati personali e per l'esercizio dei diritti previsti dal GDPR.
             </p>
           </div>
@@ -160,86 +161,143 @@ export default function PrivacyPolicy({ onClose }) {
             <thead>
               <tr>
                 <th style={styles.th}>Categoria</th>
-                <th style={styles.th}>Dati</th>
+                <th style={styles.th}>Dati specifici</th>
                 <th style={styles.th}>Base legale</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style={styles.td}>Registrazione</td>
-                <td style={styles.td}>Nome, email, password (hash), ruolo</td>
+                <td style={styles.td}>Registrazione account</td>
+                <td style={styles.td}>Nome, cognome, email, password (hash server-side con bcrypt), ruolo (studente/docente), tipo utente (famiglia/scuola)</td>
                 <td style={styles.td}>Art. 6(1)(b) — Esecuzione contratto</td>
               </tr>
               <tr>
-                <td style={styles.td}>Profilo opzionale</td>
-                <td style={styles.td}>Scuola, città, avatar, bio</td>
+                <td style={styles.td}>Gestione classi</td>
+                <td style={styles.td}>Username studente, nome classe, codice classe (6 caratteri)</td>
+                <td style={styles.td}>Art. 6(1)(b) — Esecuzione contratto</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>Chat AI (UNLIM/Galileo)</td>
+                <td style={styles.td}>Testo dei messaggi, immagini allegate (base64), ID esperimento corrente, stato del circuito, contesto simulatore</td>
                 <td style={styles.td}>Art. 6(1)(a) — Consenso</td>
               </tr>
               <tr>
                 <td style={styles.td}>Consenso parentale</td>
-                <td style={styles.td}>Email genitore, nome, relazione</td>
+                <td style={styles.td}>Email genitore, nome genitore, nome minore, eta, metodo di consenso</td>
                 <td style={styles.td}>Art. 8 GDPR + COPPA</td>
               </tr>
               <tr>
-                <td style={styles.td}>Chat AI (UNLIM)</td>
-                <td style={styles.td}>Testo domande e risposte</td>
-                <td style={styles.td}>Art. 6(1)(a) — Consenso</td>
+                <td style={styles.td}>Licenza e kit</td>
+                <td style={styles.td}>Codice licenza, kit attivati, scadenza licenza</td>
+                <td style={styles.td}>Art. 6(1)(b) — Esecuzione contratto</td>
               </tr>
             </tbody>
           </table></div>
 
-          <h3 style={styles.h3}>2.2 Dati Raccolti Automaticamente</h3>
+          <h3 style={styles.h3}>2.2 Dati Raccolti Automaticamente (localStorage/sessionStorage)</h3>
           <div style={styles.tableWrap}><table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Categoria</th>
-                <th style={styles.th}>Dati</th>
+                <th style={styles.th}>Chiave</th>
+                <th style={styles.th}>Contenuto</th>
+                <th style={styles.th}>Storage</th>
                 <th style={styles.th}>Scopo</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style={styles.td}>Tecnici</td>
-                <td style={styles.td}>Session ID, tipo browser, OS</td>
-                <td style={styles.td}>Funzionamento sicuro app</td>
+                <td style={styles.td}>elab_device_id</td>
+                <td style={styles.td}>UUID dispositivo (crypto.randomUUID)</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Identificazione pseudonimizzata per tracciamento progressi</td>
               </tr>
               <tr>
-                <td style={styles.td}>Analytics (anonimi)</td>
-                <td style={styles.td}>Esperimento caricato, interazioni</td>
-                <td style={styles.td}>Miglioramento piattaforma</td>
+                <td style={styles.td}>elab_student_name</td>
+                <td style={styles.td}>Nome studente (opzionale)</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Visualizzazione nella Teacher Dashboard</td>
               </tr>
               <tr>
-                <td style={styles.td}>Progressi</td>
-                <td style={styles.td}>Esperimenti completati, tempo</td>
-                <td style={styles.td}>Personalizzazione percorso</td>
+                <td style={styles.td}>elab_auth_token</td>
+                <td style={styles.td}>Token HMAC autenticazione</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Mantenimento sessione login</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab_tutor_session</td>
+                <td style={styles.td}>ID sessione tutor AI</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Continuita conversazione AI</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab_gdpr_consent</td>
+                <td style={styles.td}>Stato consenso, timestamp, eta</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Registro consenso GDPR</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab-sim-session</td>
+                <td style={styles.td}>ID sessione simulatore</td>
+                <td style={styles.td}>sessionStorage</td>
+                <td style={styles.td}>Raggruppamento eventi analytics</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab_user_age</td>
+                <td style={styles.td}>Eta utente dichiarata</td>
+                <td style={styles.td}>sessionStorage</td>
+                <td style={styles.td}>Determinazione soglia consenso parentale</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab_auth_ratelimit</td>
+                <td style={styles.td}>Tentativi login, timestamp lockout</td>
+                <td style={styles.td}>sessionStorage</td>
+                <td style={styles.td}>Protezione brute-force (max 5 tentativi, lockout 15 min)</td>
               </tr>
             </tbody>
           </table></div>
 
-          <h3 style={styles.h3}>2.3 Dati Sensibili (Categorie Particolari - Art. 9 GDPR)</h3>
+          <h3 style={styles.h3}>2.3 Dati Inviati ai Servizi AI</h3>
           <div style={styles.warningBox}>
             <p style={styles.text}>
-              <strong>Stati emotivi (confusioneLog):</strong> Con il consenso esplicito 
-              dell'utente (o del genitore per minori), raccogliamo informazioni sullo stato 
-              emotivo durante l'apprendimento (es. "confuso", "entusiasta", "frustrato").
+              Quando utilizzi il tutor AI Galileo/UNLIM, i seguenti dati vengono inviati
+              ai provider AI (Anthropic Claude o Google Gemini) tramite i nostri server proxy:
             </p>
             <ul style={styles.list}>
-              <li>Dati cifrati con <strong>AES-256-GCM</strong></li>
-              <li>Non condivisi con terze parti</li>
-              <li>Utilizzati solo per migliorare l'esperienza educativa</li>
-              <li>Cancellabili in qualsiasi momento</li>
+              <li>Testo del messaggio digitato</li>
+              <li>ID sessione tutor (pseudonimizzato)</li>
+              <li>ID esperimento corrente</li>
+              <li>Stato del circuito (componenti, connessioni, valori)</li>
+              <li>Contesto simulatore (pannello aperto, modalita)</li>
+              <li>Immagini allegate (base64, se inviate dall'utente)</li>
             </ul>
+            <p style={styles.textSmall}>
+              Non vengono mai inviati ai provider AI: nome reale, email, password, dati di registrazione o altri dati identificativi diretti.
+            </p>
           </div>
 
-          <h3 style={styles.h3}>2.4 Dati NON Raccolti</h3>
+          <h3 style={styles.h3}>2.4 Analytics (solo con consenso)</h3>
+          <p style={styles.text}>
+            Se accetti gli analytics nel banner di consenso, vengono raccolti 9 tipi di eventi anonimizzati:
+          </p>
+          <ul style={styles.list}>
+            <li style={styles.listItem}>experiment_loaded, simulation_started, simulation_paused, simulation_reset</li>
+            <li style={styles.listItem}>component_interacted, code_viewed, serial_used</li>
+            <li style={styles.listItem}>volume_selected, simulator_error</li>
+          </ul>
+          <p style={styles.textSmall}>
+            Ogni evento contiene solo: tipo evento, timestamp, session ID (anonimo). Nessun dato identificativo personale.
+            Gli analytics sono inviati via fire-and-forget (navigator.sendBeacon) e non bloccano l'interfaccia.
+          </p>
+
+          <h3 style={styles.h3}>2.5 Dati NON Raccolti</h3>
           <ul style={styles.list}>
             <li style={styles.listItem}>Coordinate bancarie o dati di pagamento</li>
             <li style={styles.listItem}>Geolocalizzazione precisa</li>
-            <li style={styles.listItem}>Foto, video, audio (senza consenso esplicito)</li>
             <li style={styles.listItem}>Identificatori persistenti per advertising</li>
             <li style={styles.listItem}>Profilazione comportamentale commerciale</li>
             <li style={styles.listItem}>Dati biometrici</li>
             <li style={styles.listItem}>Dati sanitari</li>
+            <li style={styles.listItem}>Cookie di terze parti</li>
           </ul>
         </Section>
 
@@ -250,28 +308,29 @@ export default function PrivacyPolicy({ onClose }) {
           summary="Perché possiamo trattare i tuoi dati"
         >
           <p style={styles.text}>
-            Il trattamento dei dati personali si basa su:
+            Il trattamento dei dati personali si basa sulle seguenti basi giuridiche:
           </p>
           <ol style={styles.orderedList}>
             <li style={styles.listItem}>
-              <strong>Art. 6(1)(b) GDPR</strong> — Esecuzione di misure precontrattuali 
-              (registrazione) o contrattuali (fornitura servizio)
+              <strong>Art. 6(1)(b) GDPR</strong> — Esecuzione di misure precontrattuali
+              (registrazione) o contrattuali (fornitura servizio educativo, gestione licenze, gestione classi)
             </li>
             <li style={styles.listItem}>
-              <strong>Art. 6(1)(a) GDPR</strong> — Consenso dell'interessato 
-              (dati opzionali, analytics, stati emotivi)
+              <strong>Art. 6(1)(a) GDPR</strong> — Consenso dell'interessato
+              (interazione con il tutor AI, analytics anonimizzati, invio immagini)
             </li>
             <li style={styles.listItem}>
-              <strong>Art. 6(1)(f) GDPR</strong> — Legittimo interesse 
-              (sicurezza, prevenzione frodi)
+              <strong>Art. 6(1)(f) GDPR</strong> — Legittimo interesse
+              (sicurezza, rate limiting, prevenzione abusi, pseudonimizzazione)
             </li>
             <li style={styles.listItem}>
-              <strong>Art. 8 GDPR</strong> — Per minori di 16 anni, consenso del 
-              titolare della responsabilità genitoriale
+              <strong>Art. 8 GDPR</strong> — Per minori di 14 anni (soglia italiana,
+              come stabilito dal D.Lgs. 101/2018 art. 2-quinquies), il consenso deve essere
+              prestato dal titolare della responsabilita genitoriale
             </li>
             <li style={styles.listItem}>
-              <strong>COPPA (USA)</strong> — Per minori di 13 anni, verificato 
-              consenso parentale
+              <strong>COPPA (USA)</strong> — Per minori di 13 anni, consenso parentale
+              verificato con metodo documentabile
             </li>
           </ol>
         </Section>
@@ -334,28 +393,78 @@ export default function PrivacyPolicy({ onClose }) {
           title="5. Destinatari dei Dati"
           summary="Chi può accedere ai tuoi dati"
         >
-          <p style={styles.text}>I dati personali possono essere accessibili a:</p>
+          <p style={styles.text}>I dati personali possono essere comunicati esclusivamente ai seguenti destinatari, ciascuno per le finalita indicate:</p>
+
+          <div style={styles.tableWrap}><table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.th}>Fornitore</th>
+                <th style={styles.th}>Servizio</th>
+                <th style={styles.th}>Dati trattati</th>
+                <th style={styles.th}>Server</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={styles.td}><strong>Vercel Inc.</strong></td>
+                <td style={styles.td}>Hosting frontend (elab-builder.vercel.app)</td>
+                <td style={styles.td}>File statici, log di accesso</td>
+                <td style={styles.td}>US/EU (Edge Network)</td>
+              </tr>
+              <tr>
+                <td style={styles.td}><strong>Anthropic PBC</strong></td>
+                <td style={styles.td}>AI tutor (Claude) via webhook n8n</td>
+                <td style={styles.td}>Testo messaggi, contesto circuito, immagini</td>
+                <td style={styles.td}>US (DPA disponibile)</td>
+              </tr>
+              <tr>
+                <td style={styles.td}><strong>Google LLC</strong></td>
+                <td style={styles.td}>AI tutor (Gemini) via nanobot proxy</td>
+                <td style={styles.td}>Testo messaggi, contesto circuito</td>
+                <td style={styles.td}>US/EU</td>
+              </tr>
+              <tr>
+                <td style={styles.td}><strong>Hostinger International</strong></td>
+                <td style={styles.td}>Hosting webhook n8n (analytics, GDPR, chat)</td>
+                <td style={styles.td}>Messaggi chat, eventi analytics, richieste GDPR</td>
+                <td style={styles.td}>EU (Lituania)</td>
+              </tr>
+              <tr>
+                <td style={styles.td}><strong>Render Services Inc.</strong></td>
+                <td style={styles.td}>Hosting nanobot server (elab-galileo.onrender.com)</td>
+                <td style={styles.td}>Messaggi chat, contesto sessione</td>
+                <td style={styles.td}>US</td>
+              </tr>
+              <tr>
+                <td style={styles.td}><strong>Arduino S.r.l.</strong></td>
+                <td style={styles.td}>Compilazione codice Arduino (arduino-cli remoto)</td>
+                <td style={styles.td}>Solo codice sorgente C++ (nessun dato personale)</td>
+                <td style={styles.td}>EU</td>
+              </tr>
+              <tr>
+                <td style={styles.td}><strong>Ollama (locale)</strong></td>
+                <td style={styles.td}>AI locale (quando disponibile)</td>
+                <td style={styles.td}>Messaggi chat — processati interamente sul dispositivo</td>
+                <td style={styles.td}>Locale (zero dati esterni)</td>
+              </tr>
+            </tbody>
+          </table></div>
+
           <ul style={styles.list}>
             <li style={styles.listItem}>
-              <strong>Personale autorizzato ELAB:</strong> Admin e docenti (solo dati necessari)
+              <strong>Personale autorizzato ELAB:</strong> Solo il titolare (Andrea Marro) ha accesso amministrativo
             </li>
             <li style={styles.listItem}>
-              <strong>Fornitori di servizi tecnici:</strong>
-              <ul style={styles.sublist}>
-                <li>Vercel (hosting)</li>
-                <li>Backend server (workflow automation)</li>
-                <li>Anthropic (AI UNLIM - solo testo query)</li>
-                <li>SendGrid/Mailgun (invio email)</li>
-              </ul>
+              <strong>Docenti:</strong> Accesso limitato ai dati dei propri studenti (progressi, nome utente) tramite la Teacher Dashboard
             </li>
             <li style={styles.listItem}>
-              <strong>Autorità competenti:</strong> Solo su richiesta legittima
+              <strong>Autorita competenti:</strong> Solo su richiesta legittima documentata
             </li>
           </ul>
 
-          <p style={styles.text}>
-            Tutti i fornitori sono stati selezionati per la loro conformità GDPR 
-            e hanno sottoscritto accordi di trattamento dati (DPA).
+          <p style={styles.textSmall}>
+            Tutti i fornitori cloud sono stati selezionati per la loro conformita GDPR.
+            Non vengono mai ceduti dati personali a terzi per finalita di marketing o profilazione.
           </p>
         </Section>
 
@@ -366,21 +475,35 @@ export default function PrivacyPolicy({ onClose }) {
           summary="Trasferimento dati fuori dall'UE"
         >
           <p style={styles.text}>
-            Alcuni fornitori (es. Anthropic per AI, SendGrid) possono trasferire dati 
-            verso paesi extra-UE (USA). In tal caso:
+            I seguenti fornitori possono trasferire dati verso gli Stati Uniti:
           </p>
           <ul style={styles.list}>
             <li style={styles.listItem}>
-              I trasferimenti avvengono solo verso paesi con decisione di adeguatezza 
-              della Commissione UE, oppure
+              <strong>Anthropic (Claude AI)</strong> — Testo messaggi e contesto circuito. Trasferimento basato
+              sul EU-US Data Privacy Framework e Standard Contractual Clauses (SCC).
             </li>
             <li style={styles.listItem}>
-              Sono implementate garanzie appropriate (Standard Contractual Clauses - SCC)
+              <strong>Render</strong> — Server nanobot (elab-galileo.onrender.com). Testo messaggi e session ID.
+              Trasferimento protetto da SCC.
             </li>
             <li style={styles.listItem}>
-              Dati minimi trasferiti (solo testo query, mai dati identificativi diretti)
+              <strong>Vercel</strong> — Hosting frontend con Edge Network EU/US. Solo file statici e log di accesso.
+              Trasferimento protetto da SCC e EU-US Data Privacy Framework.
+            </li>
+            <li style={styles.listItem}>
+              <strong>Google (Gemini)</strong> — Testo messaggi via nanobot proxy. Trasferimento basato
+              sul EU-US Data Privacy Framework.
             </li>
           </ul>
+          <div style={styles.highlightBox}>
+            <strong>Principio di minimizzazione:</strong> Ai provider AI vengono inviati esclusivamente
+            il testo del messaggio, il contesto del circuito e un session ID pseudonimizzato.
+            Non vengono mai trasferiti nome reale, email, password o altri dati identificativi diretti.
+          </div>
+          <p style={styles.text}>
+            Il fornitore <strong>Hostinger</strong> (webhook n8n) opera su server in Unione Europea (Lituania),
+            pertanto non si configura trasferimento extra-UE per tali dati.
+          </p>
         </Section>
 
         {/* 7. Periodo Conservazione */}
@@ -399,36 +522,48 @@ export default function PrivacyPolicy({ onClose }) {
             </thead>
             <tbody>
               <tr>
-                <td style={styles.td}>Dati account attivo</td>
-                <td style={styles.td}>Durata account + 2 anni</td>
-                <td style={styles.td}>Esecuzione contratto</td>
+                <td style={styles.td}>localStorage (device ID, token, consenso, progressi)</td>
+                <td style={styles.td}>Fino a cancellazione manuale del browser o richiesta dell'utente</td>
+                <td style={styles.td}>Interamente sul dispositivo dell'utente</td>
               </tr>
               <tr>
-                <td style={styles.td}>Dati account cancellato</td>
+                <td style={styles.td}>sessionStorage (session ID, rate limiting, eta)</td>
+                <td style={styles.td}>Durata sessione browser (cancellato alla chiusura tab)</td>
+                <td style={styles.td}>Interamente sul dispositivo dell'utente</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>Dati account server (profilo, classi, licenze)</td>
+                <td style={styles.td}>Durata account + 2 anni (maxDays: 730)</td>
+                <td style={styles.td}>Esecuzione contratto + obblighi legali</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>Analytics server (eventi anonimizzati)</td>
+                <td style={styles.td}>1 anno</td>
+                <td style={styles.td}>Miglioramento servizio educativo</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>Sessioni chat AI</td>
                 <td style={styles.td}>30 giorni</td>
-                <td style={styles.td}>Obblighi legali + backup</td>
-              </tr>
-              <tr>
-                <td style={styles.td}>Log tecnici</td>
-                <td style={styles.td}>90 giorni</td>
-                <td style={styles.td}>Sicurezza e debugging</td>
+                <td style={styles.td}>Continuita conversazione tutor</td>
               </tr>
               <tr>
                 <td style={styles.td}>Consenso parentale</td>
                 <td style={styles.td}>Fino ai 18 anni del minore</td>
-                <td style={styles.td}>Obbligo legale COPPA/GDPR</td>
+                <td style={styles.td}>Obbligo legale Art. 8 GDPR + COPPA</td>
               </tr>
               <tr>
-                <td style={styles.td}>Chat AI</td>
-                <td style={styles.td}>30 giorni</td>
-                <td style={styles.td}>Miglioramento servizio</td>
+                <td style={styles.td}>Dati post-cancellazione account</td>
+                <td style={styles.td}>30 giorni, poi eliminazione definitiva</td>
+                <td style={styles.td}>Obblighi legali + periodo di sicurezza</td>
               </tr>
             </tbody>
           </table></div>
 
           <p style={styles.text}>
-            Trascorso il periodo di conservazione, i dati sono cancellati in modo 
-            sicuro (sovrascrittura o distruzione fisica).
+            Trascorso il periodo di conservazione, i dati server sono cancellati automaticamente
+            tramite policy di retention (isDataExpired). I dati locali (localStorage/sessionStorage) possono essere
+            eliminati dall'utente in qualsiasi momento tramite la funzione "Elimina dati" o cancellando
+            i dati del browser.
           </p>
         </Section>
 
@@ -528,19 +663,20 @@ export default function PrivacyPolicy({ onClose }) {
             <h3 style={styles.childTitle}>Per i Genitori e Tutori</h3>
             
             <div style={styles.infoBox}>
-              <h4 style={styles.h3}>Verifica Età e Consenso</h4>
+              <h4 style={styles.h3}>Verifica Eta e Consenso</h4>
+              <p style={styles.textSmall}>
+                L'Italia ha fissato a 14 anni la soglia per il consenso autonomo al trattamento dei dati
+                personali (D.Lgs. 101/2018, art. 2-quinquies). ELAB Tutor applica questa soglia.
+              </p>
               <ul style={styles.list}>
                 <li style={styles.listItem}>
-                  <strong>16-17 anni:</strong> Consenso standard (l'utente può dare consenso autonomamente)
+                  <strong>14-17 anni:</strong> Consenso autonomo dello studente
                 </li>
                 <li style={styles.listItem}>
-                  <strong>13-15 anni:</strong> Richiesto consenso parentale (email di conferma)
+                  <strong>8-13 anni:</strong> Richiesto consenso parentale verificato (conforme Art. 8 GDPR e COPPA per utenti USA)
                 </li>
                 <li style={styles.listItem}>
-                  <strong>8-12 anni:</strong> Richiesto consenso parentale verificato (COPPA compliant)
-                </li>
-                <li style={styles.listItem}>
-                  <strong>Sotto i 8 anni:</strong> Registrazione non consentita
+                  <strong>Sotto gli 8 anni:</strong> Registrazione non consentita
                 </li>
               </ul>
             </div>
@@ -625,72 +761,103 @@ export default function PrivacyPolicy({ onClose }) {
           title="10. Cookie e Tecnologie Simili"
           summary="Uso dei cookie"
         >
-          <h3 style={styles.h3}>10.1 Cookie Tecnici (Necessari)</h3>
-          <p style={styles.text}>
-            Questi cookie sono essenziali per il funzionamento del sito e non possono 
-            essere disattivati:
-          </p>
+          <div style={styles.infoBox}>
+            <p style={styles.text}>
+              <strong>Nota tecnica:</strong> ELAB Tutor non utilizza cookie HTTP tradizionali.
+              I dati locali sono conservati tramite le API Web Storage del browser (localStorage e sessionStorage),
+              che sono soggette a regolamentazione analoga ai cookie ai sensi della Direttiva ePrivacy 2002/58/CE
+              (recepita in Italia dal D.Lgs. 69/2012).
+            </p>
+          </div>
+
+          <h3 style={styles.h3}>10.1 Storage Tecnici (Necessari — nessun consenso richiesto)</h3>
           <div style={styles.tableWrap}><table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Cookie</th>
+                <th style={styles.th}>Chiave</th>
                 <th style={styles.th}>Scopo</th>
+                <th style={styles.th}>Tipo</th>
                 <th style={styles.th}>Durata</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style={styles.td}>elab_session</td>
-                <td style={styles.td}>Mantenimento sessione login</td>
-                <td style={styles.td}>Sessione</td>
+                <td style={styles.td}>elab_auth_token</td>
+                <td style={styles.td}>Mantenimento sessione login (HMAC token)</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Fino a logout o scadenza token</td>
               </tr>
               <tr>
-                <td style={styles.td}>elab_consent</td>
-                <td style={styles.td}>Memorizzare scelta cookie</td>
-                <td style={styles.td}>1 anno</td>
+                <td style={styles.td}>elab_gdpr_consent</td>
+                <td style={styles.td}>Registro scelta consenso privacy</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Persistente</td>
               </tr>
               <tr>
-                <td style={styles.td}>elab_license</td>
-                <td style={styles.td}>Verifica licenza scuola</td>
-                <td style={styles.td}>Sessione</td>
+                <td style={styles.td}>elab_device_id</td>
+                <td style={styles.td}>Identificazione pseudonimizzata dispositivo</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Persistente</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab_tutor_session</td>
+                <td style={styles.td}>Continuita sessione tutor AI</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Persistente</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab_auth_ratelimit</td>
+                <td style={styles.td}>Protezione brute-force login</td>
+                <td style={styles.td}>sessionStorage</td>
+                <td style={styles.td}>Sessione browser</td>
               </tr>
             </tbody>
           </table></div>
 
-          <h3 style={styles.h3}>10.2 Cookie Analitici (Consenso Richiesto)</h3>
+          <h3 style={styles.h3}>10.2 Storage Analitici (solo con consenso esplicito)</h3>
           <p style={styles.text}>
-            Attivati solo dopo consenso esplicito:
+            Attivati solo dopo consenso esplicito nel banner:
           </p>
           <div style={styles.tableWrap}><table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Cookie</th>
+                <th style={styles.th}>Chiave</th>
                 <th style={styles.th}>Scopo</th>
+                <th style={styles.th}>Tipo</th>
                 <th style={styles.th}>Durata</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style={styles.td}>elab_analytics</td>
-                <td style={styles.td}>Statistiche utilizzo anonime</td>
-                <td style={styles.td}>1 anno</td>
+                <td style={styles.td}>elab_consent_v2</td>
+                <td style={styles.td}>Stato consenso analytics (accepted/rejected)</td>
+                <td style={styles.td}>localStorage</td>
+                <td style={styles.td}>Persistente</td>
+              </tr>
+              <tr>
+                <td style={styles.td}>elab-sim-session</td>
+                <td style={styles.td}>Session ID per raggruppamento eventi analytics</td>
+                <td style={styles.td}>sessionStorage</td>
+                <td style={styles.td}>Sessione browser</td>
               </tr>
             </tbody>
           </table></div>
 
           <div style={styles.highlightBox}>
-            <strong>Cookie che NON usiamo:</strong>
+            <strong>Cosa NON utilizziamo:</strong>
             <ul style={styles.list}>
-              <li>Cookie di profilazione pubblicitaria</li>
-              <li>Cookie di terze parti per tracking</li>
+              <li>Cookie HTTP di profilazione pubblicitaria</li>
+              <li>Cookie o tracker di terze parti (Google Analytics, Facebook Pixel, ecc.)</li>
               <li>Cookie social media</li>
+              <li>Fingerprinting del browser</li>
             </ul>
           </div>
 
-          <h3 style={styles.h3}>10.3 Gestione Cookie</h3>
+          <h3 style={styles.h3}>10.3 Gestione Storage</h3>
           <p style={styles.text}>
-            Puoi modificare le tue preferenze cookie in qualsiasi momento cliccando 
-            sul link "Gestisci Cookie" nel footer.
+            Puoi eliminare tutti i dati locali di ELAB in qualsiasi momento dalla pagina
+            {' '}<a href="/data-deletion" style={styles.link}>Eliminazione Dati</a>{' '}
+            oppure cancellando i dati del sito nelle impostazioni del browser.
           </p>
         </Section>
 
@@ -707,48 +874,49 @@ export default function PrivacyPolicy({ onClose }) {
           <div style={styles.securityGrid}>
             <div style={styles.securityItem}>
               <span style={styles.securityIcon}>{'\u2022'}</span>
-              <h4 style={styles.h4}>Cifratura</h4>
-              <p style={styles.securityText}>AES-256-GCM per dati sensibili, TLS 1.3 per trasmissioni</p>
+              <h4 style={styles.h4}>HTTPS obbligatorio</h4>
+              <p style={styles.securityText}>Tutte le comunicazioni avvengono su HTTPS/TLS. Nessun dato trasmesso in chiaro.</p>
             </div>
-            
+
             <div style={styles.securityItem}>
               <span style={styles.securityIcon}>{'\u2022'}</span>
-              <h4 style={styles.h4}>Autenticazione</h4>
-              <p style={styles.securityText}>JWT con scadenza breve, refresh token rotanti</p>
+              <h4 style={styles.h4}>Autenticazione HMAC</h4>
+              <p style={styles.securityText}>Token HMAC con scadenza, refresh automatico, password hash bcrypt server-side</p>
             </div>
-            
+
             <div style={styles.securityItem}>
               <span style={styles.securityIcon}>{'\u2022'}</span>
-              <h4 style={styles.h4}>Accesso</h4>
-              <p style={styles.securityText}>Controllo accessi basato su ruoli (RBAC)</p>
+              <h4 style={styles.h4}>Consent Gating</h4>
+              <p style={styles.securityText}>Analytics e dati opzionali inviati solo dopo consenso esplicito verificato</p>
             </div>
-            
+
             <div style={styles.securityItem}>
               <span style={styles.securityIcon}>{'\u2022'}</span>
-              <h4 style={styles.h4}>Monitoraggio</h4>
-              <p style={styles.securityText}>Log di sicurezza e rilevamento anomalie</p>
+              <h4 style={styles.h4}>Pseudonimizzazione</h4>
+              <p style={styles.securityText}>User ID pseudonimizzati con SHA-256 + salt (irreversibile, troncato a 16 caratteri)</p>
             </div>
-            
+
             <div style={styles.securityItem}>
               <span style={styles.securityIcon}>{'\u2022'}</span>
-              <h4 style={styles.h4}>Backup</h4>
-              <p style={styles.securityText}>Backup cifrati con crittografia a riposo</p>
+              <h4 style={styles.h4}>Rate Limiting</h4>
+              <p style={styles.securityText}>Max 5 tentativi login, lockout 15 minuti. Protezione brute-force client e server-side.</p>
             </div>
-            
+
             <div style={styles.securityItem}>
               <span style={styles.securityIcon}>{'\u2022'}</span>
-              <h4 style={styles.h4}>Audit</h4>
-              <p style={styles.securityText}>Penetration testing periodico e code review</p>
+              <h4 style={styles.h4}>AI Safety Filter</h4>
+              <p style={styles.securityText}>Filtro contenuti AI con validazione input/output per protezione minori</p>
             </div>
           </div>
 
           <div style={styles.certifications}>
-            <h4 style={styles.h3}>Standard e Compliance</h4>
+            <h4 style={styles.h3}>Conformita normativa</h4>
             <ul style={styles.list}>
-              <li style={styles.listItem}>✓ GDPR (Regolamento UE 2016/679)</li>
-              <li style={styles.listItem}>✓ COPPA (USA 15 U.S.C. § 6501)</li>
-              <li style={styles.listItem}>✓ Codice Privacy Italiano (D.Lgs. 196/2003)</li>
-              <li style={styles.listItem}>✓ Linee Guida GDPR Educativi (Garante Privacy IT)</li>
+              <li style={styles.listItem}>GDPR — Regolamento UE 2016/679</li>
+              <li style={styles.listItem}>Codice Privacy Italiano — D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018</li>
+              <li style={styles.listItem}>Art. 8 GDPR — Protezione dati minori, soglia italiana 14 anni</li>
+              <li style={styles.listItem}>COPPA — Children's Online Privacy Protection Act (15 U.S.C. 6501, per utenti USA)</li>
+              <li style={styles.listItem}>Direttiva ePrivacy 2002/58/CE — Tecnologie di tracciamento (localStorage/sessionStorage)</li>
             </ul>
           </div>
         </Section>
@@ -798,9 +966,9 @@ export default function PrivacyPolicy({ onClose }) {
             <h3 style={styles.h3}>Contatti Privacy</h3>
             <div style={styles.contactBox}>
               <p style={styles.contactText}>
-                <strong>DPO — Responsabile Protezione Dati</strong><br />
+                <strong>Referente Privacy — {DPO.name}</strong><br />
                 Email: <a href={`mailto:${DPO.email}`} style={styles.link}>{DPO.email}</a><br />
-                Indirizzo: {DPO.address}
+                PEC: {DATA_CONTROLLER.pec}
               </p>
             </div>
           </div>
