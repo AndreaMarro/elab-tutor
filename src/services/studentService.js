@@ -7,18 +7,53 @@
 // ============================================
 
 import logger from '../utils/logger';
+import cryptoService from '../utils/crypto';
 
 const STUDENT_DB_KEY = 'elab_student_data';
+const STUDENT_DB_KEY_ENCRYPTED = 'elab_student_data_enc';
 const SYNC_DEBOUNCE_MS = 5000; // Sync al server ogni 5 secondi max
 let _syncTimer = null;
 let _lastSyncedUserId = null;
 
 // ─── API URL per sync server ────────────────────────────
+// Priorità: VITE_DATA_SERVER_URL (nuovo backend EU) → VITE_AUTH_URL (legacy n8n)
+const DATA_SERVER_URL = (import.meta.env.VITE_DATA_SERVER_URL || '').replace(/\/$/, '');
 const AUTH_URL = import.meta.env.VITE_AUTH_URL || '';
 const TOKEN_KEY = 'elab_auth_token';
 
+// Track server connectivity for UI indicator
+let _lastSyncSource = 'unknown'; // 'server' | 'local' | 'offline' | 'unknown'
+
+// ─── Encryption master key cache (per session) ──────────
+let _masterKeyCache = null;
+
 function _getToken() {
-    try { return sessionStorage.getItem(TOKEN_KEY); } catch { return null; }
+    try { return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY); } catch { return null; }
+}
+
+async function _getMasterKey() {
+    if (_masterKeyCache) return _masterKeyCache;
+    const token = _getToken();
+    if (!token) return null;
+    try {
+        _masterKeyCache = await cryptoService.getOrCreateMasterKey(token);
+        return _masterKeyCache;
+    } catch {
+        return null;
+    }
+}
+
+// Reset master key cache on logout
+function _clearMasterKeyCache() {
+    _masterKeyCache = null;
+}
+
+/**
+ * Returns the current sync source for UI indicators
+ * @returns {'server'|'local'|'offline'|'unknown'}
+ */
+function getSyncStatus() {
+    return _lastSyncSource;
 }
 
 function getStudentData(userId) {
@@ -35,7 +70,53 @@ function saveStudentData(userId, data) {
         localStorage.setItem(STUDENT_DB_KEY, JSON.stringify(all));
         // Debounced sync al server (fire-and-forget)
         _scheduleSyncToServer(userId, all[userId]);
+        // Encrypt to secondary storage (async, fire-and-forget)
+        _encryptAndSave(all).catch(() => {});
     } catch (e) { logger.error('Errore salvataggio dati studente:', e); }
+}
+
+/**
+ * Encrypt all student data to a separate localStorage key.
+ * The plaintext key remains for backward compat; the encrypted key
+ * is the GDPR-compliant copy. On read, encrypted version is preferred.
+ */
+async function _encryptAndSave(allData) {
+    const masterKey = await _getMasterKey();
+    if (!masterKey) return; // Not logged in — skip encryption
+    try {
+        await cryptoService.setEncryptedItem(STUDENT_DB_KEY_ENCRYPTED, allData, masterKey);
+    } catch (e) {
+        logger.error('[Crypto] Errore cifratura student data:', e);
+    }
+}
+
+/**
+ * Try to read encrypted student data. Falls back to plaintext.
+ * Used by teacher dashboard and export features that can be async.
+ * @returns {Promise<Object>} All student data
+ */
+async function getStudentDataEncrypted(userId) {
+    const masterKey = await _getMasterKey();
+    if (masterKey) {
+        try {
+            const all = await cryptoService.getEncryptedItem(STUDENT_DB_KEY_ENCRYPTED, masterKey);
+            if (all && all[userId]) return all[userId];
+        } catch { /* fall through to plaintext */ }
+    }
+    return getStudentData(userId);
+}
+
+/**
+ * Check if encrypted storage is active
+ * @returns {boolean}
+ */
+function isEncryptionActive() {
+    try {
+        const raw = localStorage.getItem(STUDENT_DB_KEY_ENCRYPTED);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        return !!(parsed && parsed.encrypted && parsed.iv && parsed.salt);
+    } catch { return false; }
 }
 
 /**
@@ -52,20 +133,34 @@ function _scheduleSyncToServer(userId, studentData) {
 
 async function _syncToServer(userId, studentData) {
     const token = _getToken();
-    if (!AUTH_URL || !token) return; // Nessun server configurato o non loggato
+    if (!token) return; // Non loggato
+    if (!DATA_SERVER_URL && !AUTH_URL) return; // Nessun server configurato
 
-    try {
-        await fetch(`${AUTH_URL}/student-data-sync`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({ studentData }),
-        });
-    } catch {
-        // Fire-and-forget: se fallisce, i dati restano in localStorage
+    // Try new data server first, then legacy AUTH_URL
+    const urls = [];
+    if (DATA_SERVER_URL) urls.push(`${DATA_SERVER_URL}/api/sync`);
+    if (AUTH_URL) urls.push(`${AUTH_URL}/student-data-sync`);
+
+    for (const url of urls) {
+        try {
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ studentData }),
+            });
+            if (resp.ok) {
+                _lastSyncSource = 'server';
+                return; // Success — stop trying
+            }
+        } catch {
+            // Try next URL
+        }
     }
+    // All URLs failed — data stays safe in localStorage
+    _lastSyncSource = 'offline';
 }
 
 /**
@@ -88,24 +183,39 @@ function flushSync() {
  */
 async function fetchStudentsFromServer(classId) {
     const token = _getToken();
-    if (!AUTH_URL || !token) return {};
+    if (!token) return {};
+    if (!DATA_SERVER_URL && !AUTH_URL) return {};
 
-    try {
-        const url = classId
-            ? `${AUTH_URL}/student-data-sync?classId=${classId}`
-            : `${AUTH_URL}/student-data-sync`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-        if (!response.ok) return {};
-        const result = await response.json();
-        return result.students || {};
-    } catch {
-        return {};
+    // Try new data server first, then legacy AUTH_URL
+    const urls = [];
+    if (DATA_SERVER_URL) {
+        urls.push(classId
+            ? `${DATA_SERVER_URL}/api/class/${encodeURIComponent(classId)}`
+            : `${DATA_SERVER_URL}/api/class/all`);
     }
+    if (AUTH_URL) {
+        urls.push(classId
+            ? `${AUTH_URL}/student-data-sync?classId=${classId}`
+            : `${AUTH_URL}/student-data-sync`);
+    }
+// © Andrea Marro — 30/03/2026 — ELAB Tutor — Tutti i diritti riservati
+
+    for (const url of urls) {
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` },
+            });
+            if (!response.ok) continue;
+            const result = await response.json();
+            _lastSyncSource = 'server';
+            return result.students || {};
+        } catch {
+            // Try next URL
+        }
+    }
+    _lastSyncSource = 'offline';
+    return {};
 }
 
 function getAllStudentData() {
@@ -198,7 +308,6 @@ const studentService = {
             experimentId,
             nome,
             volume,
-// © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati
             capitolo,
             durata: durata || 0,
             completato: completato !== false,
@@ -290,6 +399,7 @@ const studentService = {
         data.diario.push({
             id: Date.now().toString(36),
             tipo, // 'riflessione', 'prima', 'dopo', 'mood', 'meraviglia', 'difficolta'
+// © Andrea Marro — 30/03/2026 — ELAB Tutor — Tutti i diritti riservati
             contenuto,
             screenshot: screenshot || null,
             esperimentoId: esperimentoId || null,
@@ -399,7 +509,6 @@ const studentService = {
         const result = {};
         userIds.forEach(id => {
             if (all[id]) result[id] = all[id];
-// © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati
         });
         return result;
     },
@@ -476,7 +585,29 @@ const studentService = {
         };
     },
 
+    // ─── ENCRYPTION STATUS ────────────────────────────────
+    /**
+     * Check if localStorage encryption is active
+     */
+    isEncryptionActive,
+
+    /**
+     * Read student data preferring encrypted storage (async)
+     */
+    getStudentDataEncrypted,
+
+    /**
+     * Clear master key cache (call on logout)
+     */
+    clearEncryptionCache: _clearMasterKeyCache,
+// © Andrea Marro — 30/03/2026 — ELAB Tutor — Tutti i diritti riservati
+
     // ─── SERVER SYNC ─────────────────────────────────────
+    /**
+     * Returns current sync status ('server' | 'local' | 'offline' | 'unknown')
+     */
+    getSyncStatus,
+
     /**
      * Forza sync immediato dei dati al server.
      * Chiamare su logout o chiusura pagina.

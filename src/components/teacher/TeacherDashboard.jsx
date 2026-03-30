@@ -12,7 +12,9 @@ import studentService from '../../services/studentService';
 import { adminService, usersLookup } from '../../services/userService';
 import { createClass, listClasses, removeStudent, updateClassGames } from '../../services/authService';
 import { useConfirmModal } from '../common/ConfirmModal';
+import { showToast } from '../common/Toast';
 import LESSON_PATHS from '../../data/lesson-paths/index';
+import css from './TeacherDashboard.module.css';
 // Colori ELAB ufficiali
 const C = {
     navy: '#1E4D8C',
@@ -314,75 +316,6 @@ function getWeatherForConcept(allData, concettoId) {
     return { icon: 'PN', label: 'Poco nuvoloso' };
 }
 
-// ─── DATI DEMO (quando non ci sono studenti reali) ──────────────
-const DEMO_USERS = [
-    { id: 'demo-1', nome: 'Marco Rossi', email: 'marco@demo.elab', ruolo: 'user', stato: 'attivo', scuola: 'IC Leonardo da Vinci' },
-    { id: 'demo-2', nome: 'Sofia Bianchi', email: 'sofia@demo.elab', ruolo: 'user', stato: 'attivo', scuola: 'IC Leonardo da Vinci' },
-    { id: 'demo-3', nome: 'Luca Ferrari', email: 'luca@demo.elab', ruolo: 'user', stato: 'attivo', scuola: 'IC Leonardo da Vinci' },
-    { id: 'demo-4', nome: 'Giulia Esposito', email: 'giulia@demo.elab', ruolo: 'user', stato: 'attivo', scuola: 'IC UNLIM Galilei' },
-    { id: 'demo-5', nome: 'Alessandro Russo', email: 'ale@demo.elab', ruolo: 'user', stato: 'attivo', scuola: 'IC UNLIM Galilei' },
-    { id: 'demo-6', nome: 'Emma Colombo', email: 'emma@demo.elab', ruolo: 'user', stato: 'attivo', scuola: 'IC UNLIM Galilei' },
-];
-
-const now = Date.now();
-const day = 86400000;
-
-function makeDemoStudentData() {
-    const data = {};
-    const moods = ['energico', 'concentrato', 'confuso', 'felice', 'curioso', 'creativo'];
-    const concettiPool = [
-        { id: 'ohm', nome: 'Legge di Ohm' }, { id: 'led', nome: 'LED e Resistenze' },
-        { id: 'pwm', nome: 'PWM e Dimming' }, { id: 'serial', nome: 'Comunicazione Seriale' },
-        { id: 'adc', nome: 'Conversione Analogico-Digitale' }, { id: 'pot', nome: 'Potenziometro' },
-    ];
-    const expIds = ['cap1-led-semplice', 'cap2-resistenza-serie', 'cap3-potenziometro', 'cap4-buzzer', 'cap5-fotoresistenza', 'cap6-pulsante', 'cap7-led-rgb', 'cap8-servo', 'cap9-motor-dc', 'cap10-lcd'];
-
-    DEMO_USERS.forEach((u, idx) => {
-        const numExp = 3 + idx * 2;
-        const tempo = 1200 + idx * 800;
-        data[u.id] = {
-            userId: u.id,
-            esperimenti: expIds.slice(0, numExp).map((eid, i) => ({
-                experimentId: eid, completato: i < numExp - 1,
-                timestamp: new Date(now - (numExp - i) * day).toISOString(), durata: 180 + i * 60,
-            })),
-            tempoTotale: tempo,
-            sessioni: Array.from({ length: 3 + idx }, (_, i) => ({
-                inizio: new Date(now - (5 - i) * day).toISOString(),
-                fine: new Date(now - (5 - i) * day + 1800000).toISOString(),
-                durata: 1800 + i * 300,
-            })),
-            concetti: concettiPool.slice(0, 2 + idx).map((c, i) => ({
-                ...c, contatore: 2 + i, primaVisita: new Date(now - 10 * day).toISOString(),
-                ultimaVisita: new Date(now - i * day).toISOString(),
-            })),
-            diario: [{ testo: 'Ho imparato come funziona un LED!', timestamp: new Date(now - 3 * day).toISOString() }],
-            confusione: idx > 2 ? [{ concettoId: 'pwm', livello: 6 + idx, timestamp: new Date(now - 2 * day).toISOString() }] : [],
-            meraviglie: idx % 2 === 0 ? [{ domanda: 'Perché il LED si accende solo in un verso?', timestamp: new Date(now - day).toISOString() }] : [],
-            difficolta: [],
-            moods: [{ mood: moods[idx % moods.length], nota: '', timestamp: new Date(now - day * 0.5).toISOString() }],
-            stats: { giorniConsecutivi: 1 + idx, ultimoGiornoAttivo: new Date(now - day).toISOString(), esperimentiTotali: numExp, mediaConfusione: 3 + idx * 0.5, meraviglieTotali: idx % 2 === 0 ? 1 : 0, tempoMedioSessione: 600 + idx * 200 },
-            creato: new Date(now - 15 * day).toISOString(),
-            ultimoSalvataggio: new Date(now - day).toISOString(),
-        };
-    });
-    return data;
-}
-
-function makeDemoClassReport() {
-    return {
-        totaleStudenti: 6,
-        concettiConfusione: { pwm: { totale: 22, conteggio: 3 }, adc: { totale: 8, conteggio: 2 } },
-        esperimentiCount: { 'cap1-led-semplice': 6, 'cap2-resistenza-serie': 5, 'cap3-potenziometro': 4, 'cap4-buzzer': 3, 'cap5-fotoresistenza': 2 },
-        attivitaRecente: DEMO_USERS.map((u, i) => ({ userId: u.id, sessioni: 2 + i, tempoSettimana: 1800 + i * 600, esperimentiSettimana: 1 + i })),
-        inattivi: ['demo-1'],
-        moodCount: { energico: 1, concentrato: 1, confuso: 1, felice: 1, curioso: 1, creativo: 1 },
-        tempoMedioTotale: 3400,
-        mediaEsperimenti: 8,
-    };
-}
-
-// © Andrea Marro — 20/02/2026
 // ─── VOLUME DETECTION ────────────────────────────────────
 // Experiment IDs: cap1-..cap10 = Vol1, cap11-..cap20 = Vol2 (future), cap21+ = Vol3 (future)
 // Vol3 experiments have IDs starting with "v3-" or "cap-v3-"
@@ -435,12 +368,13 @@ function exportStudentsCSV(users, allData, classReport, formatTempo) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    showToast(`CSV esportato: ${users.length} studenti`, 'success');
 }
 
 export default function TeacherDashboard({ onNavigate }) {
     const { user, isDocente, isAdmin } = useAuth();
     const { confirm: confirmModal, ConfirmDialog } = useConfirmModal();
-    const [activeTab, setActiveTab] = useState('giardino');
+    const [activeTab, setActiveTab] = useState('progressi');
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [nudgeText, setNudgeText] = useState('');
     const [nudgesSent, setNudgesSent] = useState([]);
@@ -563,14 +497,17 @@ export default function TeacherDashboard({ onNavigate }) {
     }
 
     const tabs = [
-        { id: 'giardino', label: 'Il Giardino' },
-        { id: 'meteo', label: 'Meteo Classe' },
-        { id: 'attivita', label: 'Attività' },
-        { id: 'studente', label: 'Dettaglio Studente' },
-        { id: 'nudge', label: 'Nudge' },
-        { id: 'documenti', label: 'Documentazione' },
-        { id: 'pnrr', label: 'Progresso PNRR' },
-        { id: 'classi', label: 'Le mie classi' },
+        { id: 'progressi', label: 'Progressi', title: 'Griglia esperimenti per studente' },
+        { id: 'giardino', label: 'Il Giardino', title: 'Visualizzazione a piantine degli studenti' },
+        { id: 'meteo', label: 'Meteo Classe', title: 'Stato emotivo e difficoltà della classe' },
+        { id: 'attivita', label: 'Attività', title: 'Attività recenti degli studenti' },
+        { id: 'report', label: 'Report', title: 'Statistiche aggregate e export CSV' },
+        { id: 'studente', label: 'Dettaglio Studente', title: 'Scheda individuale dello studente' },
+        { id: 'nudge', label: 'Nudge', title: 'Invia messaggi motivazionali' },
+        { id: 'documenti', label: 'Documentazione', title: 'Guide e materiali didattici' },
+        { id: 'pnrr', label: 'Progresso PNRR', title: 'Monitoraggio obiettivi PNRR' },
+        { id: 'classi', label: 'Le mie classi', title: 'Gestione classi e studenti' },
+        ...(user?.ruolo === 'admin' ? [{ id: 'audit', label: 'Audit GDPR', title: 'Log accessi e operazioni (solo admin)' }] : []),
     ];
 
     const handleSendNudge = () => {
@@ -629,10 +566,10 @@ export default function TeacherDashboard({ onNavigate }) {
                     </div>
                 </div>
             )}
-            {dataSource === 'local' && (
+            {dataSource === 'server' && (
                 <div style={{
-                    background: 'linear-gradient(90deg, #3B82F622 0%, #3B82F611 100%)',
-                    border: '1px solid #3B82F644',
+                    background: 'linear-gradient(90deg, #4A7A2522 0%, #4A7A2511 100%)',
+                    border: '1px solid #4A7A2544',
                     borderRadius: 8,
                     padding: '8px 16px',
                     margin: '0 20px 12px',
@@ -640,10 +577,27 @@ export default function TeacherDashboard({ onNavigate }) {
                     alignItems: 'center',
                     gap: 8,
                     fontSize: 14,
-                    color: '#1E40AF',
+                    color: '#2E7D32',
                 }}>
-                    <span style={{ fontSize: 14, fontWeight: 700 }}></span>
-                    <span><strong>Dati locali</strong> — Il server non è raggiungibile. I dati sono salvati sul tuo dispositivo.</span>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4A7A25', display: 'inline-block', flexShrink: 0 }} />
+                    <span><strong>Dati dal server</strong> — Sincronizzazione attiva con il backend EU.{studentService.isEncryptionActive() ? ' Dati locali cifrati.' : ''}</span>
+                </div>
+            )}
+            {dataSource === 'local' && (
+                <div style={{
+                    background: 'linear-gradient(90deg, #F5A62322 0%, #F5A62311 100%)',
+                    border: '1px solid #F5A62344',
+                    borderRadius: 8,
+                    padding: '8px 16px',
+                    margin: '0 20px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    fontSize: 14,
+                    color: '#E65100',
+                }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#F5A623', display: 'inline-block', flexShrink: 0 }} />
+                    <span><strong>Dati locali (offline)</strong> — Il server non è raggiungibile. I dati sono salvati sul tuo dispositivo.</span>
                 </div>
             )}
 
@@ -655,6 +609,7 @@ export default function TeacherDashboard({ onNavigate }) {
                         role="tab"
                         aria-selected={activeTab === tab.id}
                         aria-controls={`tabpanel-${tab.id}`}
+                        title={tab.title}
                         onClick={() => setActiveTab(tab.id)}
                         style={{
                             ...styles.tab,
@@ -669,6 +624,14 @@ export default function TeacherDashboard({ onNavigate }) {
 
             {/* Content */}
             <div style={styles.content} role="tabpanel" id={`tabpanel-${activeTab}`}>
+                {activeTab === 'progressi' && (
+                    <ProgressiTab
+                        users={filteredUsers}
+                        allData={allStudentData}
+                        onSelectStudent={(id) => { setSelectedStudent(id); setActiveTab('studente'); }}
+                        formatTempo={formatTempo}
+                    />
+                )}
                 {activeTab === 'giardino' && (
                     <GiardinoTab
                         users={filteredUsers}
@@ -692,6 +655,14 @@ export default function TeacherDashboard({ onNavigate }) {
                         formatTempo={formatTempo}
                         volumeFilter={volumeFilter}
                         setVolumeFilter={setVolumeFilter}
+                    />
+                )}
+                {activeTab === 'report' && (
+                    <ReportTab
+                        users={filteredUsers}
+                        allData={allStudentData}
+                        classReport={classReport}
+                        formatTempo={formatTempo}
                     />
                 )}
                 {activeTab === 'studente' && (
@@ -731,6 +702,9 @@ export default function TeacherDashboard({ onNavigate }) {
                 )}
                 {activeTab === 'classi' && (
                     <ClassiTab />
+                )}
+                {activeTab === 'audit' && (
+                    <AuditTab />
                 )}
             </div>
         </div>
@@ -1085,7 +1059,7 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
 
                     {studentData ? (
                         <>
-                            {/* Stats */}
+                            {/* Stats - enhanced G28 */}
                             <div style={styles.statGrid}>
                                 <div style={styles.statCard}>
                                     <div style={{ ...styles.statValue, color: C.lime }}>{studentData.stats?.esperimentiTotali || 0}</div>
@@ -1096,12 +1070,66 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                                     <div style={styles.statLabel}>Tempo totale</div>
                                 </div>
                                 <div style={styles.statCard}>
+                                    <div style={{ ...styles.statValue, color: C.navy }}>{studentData.sessioni?.filter(s => s.fine).length || 0}</div>
+                                    <div style={styles.statLabel}>Sessioni</div>
+                                </div>
+                                <div style={styles.statCard}>
                                     <div style={{ ...styles.statValue, color: C.orange }}>{studentData.concetti?.length || 0}</div>
                                     <div style={styles.statLabel}>Concetti</div>
                                 </div>
-                                <div style={styles.statCard}>
-                                    <div style={{ ...styles.statValue, color: C.navy }}>{studentData.meraviglie?.length || 0}</div>
-                                    <div style={styles.statLabel}>Meraviglie</div>
+                            </div>
+
+                            {/* Session detail panel - G28 */}
+                            <div style={styles.section}>
+                                <h3 style={styles.sectionTitle}>Riepilogo Attività</h3>
+                                <div className={css.activityGrid}>
+                                    <div className={css.activityCardNavy}>
+                                        <div className={css.activityCardLabel}>Ultimo accesso</div>
+                                        <div className={css.activityCardValue} style={{ color: C.navy }}>
+                                            {studentData.ultimoSalvataggio
+                                                ? new Date(studentData.ultimoSalvataggio).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                                                : 'Mai'
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className={css.activityCardLime}>
+                                        <div className={css.activityCardLabel}>Giorni consecutivi</div>
+                                        <div className={css.activityCardValue} style={{ color: C.lime }}>
+                                            {studentData.stats?.giorniConsecutivi || 0} giorni
+                                        </div>
+                                    </div>
+                                    <div className={css.activityCardOrange}>
+                                        <div className={css.activityCardLabel}>Errori compilazione</div>
+                                        <div className={css.activityCardValue} style={{ color: C.orange }}>
+                                            {(() => {
+                                                let errors = 0;
+                                                (studentData.sessioni || []).forEach(s => {
+                                                    (s.attivita || []).forEach(a => {
+                                                        if (a.tipo === 'compilazione' && a.dettaglio?.startsWith('Errore:')) errors++;
+                                                    });
+                                                });
+                                                return errors;
+                                            })()}
+                                        </div>
+                                    </div>
+                                    <div className={css.activityCardCyan}>
+                                        <div className={css.activityCardLabel}>Punteggi giochi</div>
+                                        <div className={css.activityCardValue} style={{ color: C.cyan }}>
+                                            {(() => {
+                                                const gameResults = [];
+                                                (studentData.sessioni || []).forEach(s => {
+                                                    (s.attivita || []).forEach(a => {
+                                                        if (a.tipo === 'gioco' && a.dettaglio) {
+                                                            const m = a.dettaglio.match(/(\d+)\/(\d+)/);
+                                                            if (m) gameResults.push(parseInt(m[1]) / parseInt(m[2]));
+                                                        }
+                                                    });
+                                                });
+                                                if (gameResults.length === 0) return '—';
+                                                return Math.round(gameResults.reduce((s, v) => s + v, 0) / gameResults.length * 100) + '%';
+                                            })()}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1109,7 +1137,7 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                             {studentData.moods?.length > 0 && (
                                 <div style={styles.section}>
                                     <h3 style={styles.sectionTitle}>Mood recenti</h3>
-                                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                                    <div className={css.moodChips}>
                                         {studentData.moods.slice(-10).map((m, i) => (
                                             <span key={i} style={{
                                                 ...styles.weatherChip,
@@ -1127,7 +1155,7 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                                 <div style={styles.section}>
                                     <h3 style={styles.sectionTitle}>Le sue meraviglie</h3>
                                     {studentData.meraviglie.slice(-10).reverse().map(m => (
-                                        <div key={m.id} style={{ padding: '8px 0', borderBottom: `1px solid ${C.border}` }}>
+                                        <div key={m.id} className={css.detailRow}>
                                             <span style={{ color: m.risolta ? C.lime : C.orange, marginRight: 8 }}>
                                                 {m.risolta ? <IconCheck color={C.lime} /> : <IconQuestion color={C.orange} />}
                                             </span>
@@ -1141,17 +1169,17 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                             {studentData.diario?.length > 0 && (
                                 <div style={styles.section}>
                                     <h3 style={styles.sectionTitle}>Dal suo diario (osservazione silenziosa)</h3>
-                                    <p style={{ color: C.textMuted, fontSize: 14, marginBottom: 12, fontStyle: 'italic' }}>
+                                    <p className={css.diaryNote}>
                                         Leggere senza commentare, a meno che non sia invitato. — Montessori
                                     </p>
                                     {studentData.diario.slice(-5).reverse().map(e => (
-                                        <div key={e.id} style={{ padding: '10px 0', borderBottom: `1px solid ${C.border}` }}>
-                                            <span style={{ fontSize: 14, color: C.textMuted }}>
+                                        <div key={e.id} className={css.diaryEntry}>
+                                            <span className={css.diaryDate}>
                                                 {new Date(e.timestamp).toLocaleDateString('it-IT', {
                                                     day: 'numeric', month: 'long'
                                                 })}
                                             </span>
-                                            <p style={{ margin: '4px 0 0', fontSize: 14, lineHeight: 1.5 }}>{e.contenuto}</p>
+                                            <p className={css.diaryContent}>{e.contenuto}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -1162,7 +1190,7 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                                 <div style={styles.section}>
                                     <h3 style={styles.sectionTitle}>Difficoltà segnalate</h3>
                                     {studentData.difficolta.slice(-5).reverse().map(d => (
-                                        <div key={d.id} style={{ padding: '8px 0', borderBottom: `1px solid ${C.border}` }}>
+                                        <div key={d.id} className={css.detailRow}>
                                             <span style={{ color: d.risolta ? C.lime : C.red, marginRight: 8 }}>
                                                 {d.risolta ? <IconCheck color={C.lime} /> : <IconAlert color={C.red} />}
                                             </span>
@@ -1173,8 +1201,8 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                             )}
                         </>
                     ) : (
-                        <div style={{ ...styles.section, textAlign: 'center', padding: 30 }}>
-                            <p style={{ color: C.textMuted }}>Questo studente non ha ancora iniziato ad usare il tutor.</p>
+                        <div style={styles.section} className={css.studentEmptyState}>
+                            <p className={css.textMuted}>Questo studente non ha ancora iniziato ad usare il tutor.</p>
                         </div>
                     )}
                 </>
@@ -2024,6 +2052,512 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
     );
 }
 
+// ─── PROGRESSI CLASSE (Task 1 G28) ──────────────────────
+function getExperimentStatus(studentData, experimentId) {
+    if (!studentData?.esperimenti) return 'none';
+    const matches = studentData.esperimenti.filter(e => e.experimentId === experimentId);
+    if (matches.length === 0) return 'none';
+    const completed = matches.some(e => e.completato && e.durata > 30);
+    if (completed) return 'completed';
+    return 'partial';
+}
+
+const STATUS_COLORS = {
+    completed: '#4A7A25',
+    partial: '#E8941C',
+    none: '#E2E8F0',
+};
+const STATUS_BG = {
+    completed: 'rgba(74,122,37,0.15)',
+    partial: 'rgba(232,148,28,0.15)',
+    none: 'transparent',
+};
+
+function ProgressiTab({ users, allData, onSelectStudent, formatTempo }) {
+    const [selectedVol, setSelectedVol] = useState('tutti');
+
+    const visibleExps = selectedVol === 'tutti' ? CURRICULUM : CURRICULUM_BY_VOL[parseInt(selectedVol)] || [];
+
+    // Compute class-level totals
+    const classStats = useMemo(() => {
+        let totalCompleted = 0;
+        let totalCells = 0;
+        users.forEach(u => {
+            const sd = allData[u.id];
+            visibleExps.forEach(exp => {
+                totalCells++;
+                if (getExperimentStatus(sd, exp.id) === 'completed') totalCompleted++;
+            });
+        });
+        return { totalCompleted, totalCells };
+    }, [users, allData, visibleExps]);
+
+    const pctClass = classStats.totalCells > 0
+        ? Math.round(classStats.totalCompleted / classStats.totalCells * 100)
+        : 0;
+
+    // Group experiments by chapter for header
+    const chapters = useMemo(() => {
+        const chaps = [];
+        let current = null;
+        visibleExps.forEach(exp => {
+            const key = `v${exp.volume}-cap${exp.chapter}`;
+            if (!current || current.key !== key) {
+                current = { key, volume: exp.volume, chapter: exp.chapter, count: 0 };
+                chaps.push(current);
+            }
+            current.count++;
+        });
+        return chaps;
+    }, [visibleExps]);
+
+    return (
+        <div>
+            {/* Class progress bar */}
+            <div style={styles.section}>
+                <div className={css.progressiHeader}>
+                    <div>
+                        <h3 style={{ ...styles.sectionTitle, margin: 0 }}>Progressi della Classe</h3>
+                        <p className={css.progressiSubtitle}>
+                            Ogni riga è uno studente, ogni colonna un esperimento. Verde = completato, giallo = parziale, grigio = non fatto.
+                        </p>
+                    </div>
+                    <select
+                        value={selectedVol}
+                        onChange={e => setSelectedVol(e.target.value)}
+                        aria-label="Filtra per volume"
+                        style={{ ...styles.select, width: 'auto', minWidth: 160 }}
+                    >
+                        <option value="tutti">Tutti i volumi ({CURRICULUM.length})</option>
+                        <option value="1">Volume 1 ({CURRICULUM_BY_VOL[1].length})</option>
+                        <option value="2">Volume 2 ({CURRICULUM_BY_VOL[2].length})</option>
+                        <option value="3">Volume 3 ({CURRICULUM_BY_VOL[3].length})</option>
+                    </select>
+                </div>
+
+                {/* Class progress bar */}
+                <div className={css.progressBarWrap}>
+                    <div className={css.progressBarHeader}>
+                        <span className={css.progressBarLabel}>
+                            {classStats.totalCompleted}/{classStats.totalCells} esperimenti completati ({pctClass}%)
+                        </span>
+                    </div>
+                    <div className={css.progressBarTrack}>
+                        <div className={css.progressBarFill} style={{ width: `${pctClass}%` }} />
+                    </div>
+                </div>
+
+                {users.length === 0 ? (
+                    <p className={css.emptyMessage}>
+                        Nessun dato studente disponibile. I dati appariranno quando gli studenti useranno il simulatore.
+                    </p>
+                ) : (
+                    <div className={css.gridScrollContainer}>
+                        <table style={{ ...styles.table, fontSize: 14, borderCollapse: 'separate', borderSpacing: 0 }}>
+                            <thead>
+                                {/* Chapter group headers */}
+                                <tr>
+                                    <th className={css.stickyCornerTh} style={styles.th} />
+                                    {chapters.map(ch => (
+                                        <th
+                                            key={ch.key}
+                                            colSpan={ch.count}
+                                            className={css.chapterTh}
+                                            style={{
+                                                ...styles.th,
+                                                color: VOL_COLORS[ch.volume],
+                                                borderLeft: `2px solid ${VOL_COLORS[ch.volume]}`,
+                                            }}
+                                        >
+                                            Cap.{ch.chapter}
+                                        </th>
+                                    ))}
+                                </tr>
+                                {/* Experiment number headers */}
+                                <tr>
+                                    <th className={css.stickyStudentTh} style={styles.th}>
+                                        Studente
+                                    </th>
+                                    {visibleExps.map((exp, idx) => {
+                                        const isChapStart = idx === 0 || visibleExps[idx - 1].chapter !== exp.chapter || visibleExps[idx - 1].volume !== exp.volume;
+                                        const espNum = exp.id.match(/esp(\d+)/)?.[1] || exp.id.split('-').pop();
+                                        return (
+                                            <th key={exp.id} className={css.expTh} style={{
+                                                ...styles.th,
+                                                borderLeft: isChapStart ? `2px solid ${VOL_COLORS[exp.volume]}` : `1px solid ${C.border}`,
+                                                color: C.textMuted,
+                                            }} title={`${exp.title} (Cap ${exp.chapter})`}>
+                                                {espNum}
+                                            </th>
+                                        );
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map((u, i) => {
+                                    const sd = allData[u.id];
+                                    return (
+                                        <tr key={u.id} className={i % 2 === 0 ? css.trEven : undefined}>
+                                            <td
+                                                className={css.studentNameTd}
+                                                style={{
+                                                    ...styles.td,
+                                                    background: i % 2 === 0 ? '#F8FAFC' : C.white,
+                                                }}
+                                                onClick={() => onSelectStudent(u.id)}
+                                                title={`Clicca per i dettagli di ${u.nome}`}
+                                            >
+                                                {u.nome?.split(' ').map((w, wi) => wi === 0 ? w : w[0] + '.').join(' ') || 'Studente'}
+                                            </td>
+                                            {visibleExps.map((exp, idx) => {
+                                                const status = getExperimentStatus(sd, exp.id);
+                                                const isChapStart = idx === 0 || visibleExps[idx - 1].chapter !== exp.chapter || visibleExps[idx - 1].volume !== exp.volume;
+                                                return (
+                                                    <td key={exp.id} className={css.cellTd} style={{
+                                                        ...styles.td,
+                                                        borderLeft: isChapStart ? `2px solid ${VOL_COLORS[exp.volume]}` : `1px solid ${C.border}`,
+                                                        background: STATUS_BG[status],
+                                                    }} title={
+                                                        status === 'completed' ? `${u.nome}: ${exp.title} — Completato` :
+                                                        status === 'partial' ? `${u.nome}: ${exp.title} — Parziale` :
+                                                        `${u.nome}: ${exp.title} — Non fatto`
+                                                    }>
+                                                        <span className={css.statusDot} style={{ background: STATUS_COLORS[status] }} />
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+
+                {/* Legend */}
+                <div className={css.legend}>
+                    <span><span className={css.legendDot} style={{ background: STATUS_COLORS.completed }} /> Completato</span>
+                    <span><span className={css.legendDot} style={{ background: STATUS_COLORS.partial }} /> Parziale</span>
+                    <span><span className={css.legendDot} style={{ background: STATUS_COLORS.none }} /> Non fatto</span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ─── REPORT CLASSE (Task 3 G28) ─────────────────────────
+function getCompilationErrors(allData) {
+    const errors = {};
+    Object.values(allData).forEach(sd => {
+        (sd.sessioni || []).forEach(sess => {
+            (sess.attivita || []).forEach(att => {
+                if (att.tipo === 'compilazione' && att.dettaglio?.startsWith('Errore:')) {
+                    const msg = att.dettaglio.replace('Errore: ', '').trim();
+                    const key = msg.slice(0, 80);
+                    errors[key] = (errors[key] || 0) + 1;
+                }
+            });
+        });
+    });
+    return Object.entries(errors).sort((a, b) => b[1] - a[1]).slice(0, 5);
+}
+
+function getExperimentDurations(allData) {
+    const durations = {};
+    const counts = {};
+    Object.values(allData).forEach(sd => {
+        (sd.esperimenti || []).forEach(exp => {
+            if (exp.durata > 0) {
+                durations[exp.experimentId] = (durations[exp.experimentId] || 0) + exp.durata;
+                counts[exp.experimentId] = (counts[exp.experimentId] || 0) + 1;
+            }
+        });
+    });
+    return Object.entries(durations).map(([id, total]) => ({
+        id,
+        avg: Math.round(total / (counts[id] || 1)),
+        count: counts[id] || 0,
+    })).sort((a, b) => b.avg - a.avg);
+}
+
+function getClassWeatherIcon(pct) {
+    if (pct >= 70) return { icon: 'S', label: 'Sole — Classe in ottima forma' };
+    if (pct >= 50) return { icon: 'PN', label: 'Poco nuvoloso — Buon ritmo' };
+    if (pct >= 30) return { icon: 'N', label: 'Nuvoloso — Serve attenzione' };
+    if (pct >= 10) return { icon: 'P', label: 'Pioggia — Molti studenti indietro' };
+    return { icon: 'T', label: 'Tempesta — La classe ha bisogno di aiuto' };
+}
+
+function getSkippedExperiments(allData, users) {
+    const attemptCount = {};
+    CURRICULUM.forEach(exp => { attemptCount[exp.id] = 0; });
+    Object.values(allData).forEach(sd => {
+        (sd.esperimenti || []).forEach(exp => {
+            if (exp.experimentId in attemptCount) {
+                attemptCount[exp.experimentId]++;
+            }
+        });
+    });
+    return Object.entries(attemptCount)
+        .filter(([_, count]) => count === 0 || count < users.length * 0.3)
+        .sort((a, b) => a[1] - b[1])
+        .slice(0, 5)
+        .map(([id, count]) => {
+            const exp = CURRICULUM.find(e => e.id === id);
+            return { id, title: exp?.title || id, count };
+        });
+}
+
+function getGameScores(allData) {
+    const scores = {};
+    Object.values(allData).forEach(sd => {
+        (sd.sessioni || []).forEach(sess => {
+            (sess.attivita || []).forEach(att => {
+                if (att.tipo === 'gioco' && att.dettaglio) {
+                    const match = att.dettaglio.match(/^(.+?):\s*(\d+)\/(\d+)/);
+                    if (match) {
+                        const gameId = match[1];
+                        const score = parseInt(match[2]);
+                        const max = parseInt(match[3]);
+                        if (!scores[gameId]) scores[gameId] = { total: 0, count: 0, max };
+                        scores[gameId].total += score;
+                        scores[gameId].count++;
+                    }
+                }
+            });
+        });
+    });
+    return scores;
+}
+
+function exportReportCSV(users, allData, formatTempo) {
+    const bom = '\uFEFF';
+    const headers = ['Nome Studente', 'Esperimenti Completati', 'Tempo Totale', 'Ultimo Accesso', 'Punteggio Medio Giochi'];
+    const rows = users.map(u => {
+        const sd = allData[u.id];
+        const completati = sd?.stats?.esperimentiTotali || 0;
+        const tempo = formatTempo(sd?.tempoTotale || 0);
+        const ultimoAccesso = sd?.ultimoSalvataggio
+            ? new Date(sd.ultimoSalvataggio).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+            : 'Mai';
+        // Game scores average
+        let gameAvg = '—';
+        const gameActivities = [];
+        (sd?.sessioni || []).forEach(sess => {
+            (sess.attivita || []).forEach(att => {
+                if (att.tipo === 'gioco' && att.dettaglio) {
+                    const match = att.dettaglio.match(/(\d+)\/(\d+)/);
+                    if (match) gameActivities.push(parseInt(match[1]) / parseInt(match[2]));
+                }
+            });
+        });
+        if (gameActivities.length > 0) {
+            gameAvg = Math.round(gameActivities.reduce((s, v) => s + v, 0) / gameActivities.length * 100) + '%';
+        }
+        return [
+            `"${(u.nome || '').replace(/"/g, '""')}"`,
+            completati,
+            tempo,
+            ultimoAccesso,
+            gameAvg,
+        ];
+    });
+    const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+    const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `elab-report-classe-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Report classe esportato', 'success');
+}
+
+function ReportTab({ users, allData, classReport, formatTempo }) {
+    // Top 5 most completed experiments
+    const topCompleted = useMemo(() => {
+        const counts = {};
+        Object.values(allData).forEach(sd => {
+            (sd.esperimenti || []).filter(e => e.completato).forEach(e => {
+                counts[e.experimentId] = (counts[e.experimentId] || 0) + 1;
+            });
+        });
+        return Object.entries(counts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([id, count]) => {
+                const exp = CURRICULUM.find(e => e.id === id);
+                return { id, title: exp?.title || id, count };
+            });
+    }, [allData]);
+
+    // Top 5 skipped experiments
+    const topSkipped = useMemo(() => getSkippedExperiments(allData, users), [allData, users]);
+
+    // Top compilation errors
+    const topErrors = useMemo(() => getCompilationErrors(allData), [allData]);
+
+    // Avg time per experiment
+    const expDurations = useMemo(() => getExperimentDurations(allData), [allData]);
+
+    // Class weather
+    const classPct = useMemo(() => {
+        if (users.length === 0) return 0;
+        let total = 0;
+        users.forEach(u => {
+            const sd = allData[u.id];
+            const completed = getStudentCompletedSet(sd);
+            total += (completed.size / (CURRICULUM.length || 1));
+        });
+        return Math.round(total / users.length * 100);
+    }, [users, allData]);
+    const weather = getClassWeatherIcon(classPct);
+
+    const maxCompleted = topCompleted.length > 0 ? topCompleted[0].count : 1;
+
+    const isEmpty = users.length === 0 || Object.keys(allData).length === 0;
+
+    return (
+        <div>
+            {isEmpty ? (
+                <div style={styles.section} className={css.reportEmptySection}>
+                    <p className={css.reportEmptyTitle}>
+                        Nessun dato ancora.
+                    </p>
+                    <p className={css.reportEmptySubtitle}>
+                        Gli studenti devono usare il simulatore. Ogni esperimento aperto e compilazione viene tracciata automaticamente.
+                    </p>
+                </div>
+            ) : (
+                <>
+                    {/* Meteo Classe */}
+                    <div style={styles.section} className={css.meteoRow}>
+                        <span style={{ fontSize: 48 }}>{WEATHER_ICONS[weather.icon] ? WEATHER_ICONS[weather.icon](48) : weather.icon}</span>
+                        <div>
+                            <h3 style={{ ...styles.sectionTitle, margin: '0 0 4px' }}>Meteo Classe</h3>
+                            <p className={css.meteoLabel}>{weather.label}</p>
+                            <p className={css.meteoValue}>
+                                {classPct}% completamento medio
+                            </p>
+                            <p style={{ fontSize: 12, color: '#94A3B8', margin: '4px 0 0' }}>
+                                Sole = classe concentrata · Nuvola = qualche difficoltà · Tempesta = molti blocchi
+                            </p>
+                        </div>
+                        <div className={css.exportBtnWrap}>
+                            <button
+                                onClick={() => exportReportCSV(users, allData, formatTempo)}
+                                style={{
+                                    ...styles.primaryBtn, marginTop: 0,
+                                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                                    background: C.navy,
+                                }}
+                            >
+                                Esporta CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Top 5 completed */}
+                    <div style={styles.section}>
+                        <h3 style={styles.sectionTitle}>Top 5 Esperimenti Più Completati</h3>
+                        {topCompleted.length === 0 ? (
+                            <p className={css.textMuted}>Nessun esperimento completato ancora.</p>
+                        ) : topCompleted.map(exp => (
+                            <div key={exp.id} className={css.expRow}>
+                                <div className={css.expInfo}>
+                                    <div className={css.expTitle}>{exp.title}</div>
+                                    <div className={css.expId}>{exp.id}</div>
+                                </div>
+                                <div className={css.miniBarTrack}>
+                                    <div className={css.miniBarFillGreen} style={{ width: `${Math.round(exp.count / maxCompleted * 100)}%` }} />
+                                </div>
+                                <span className={css.expCount} style={{ color: C.lime }}>
+                                    {exp.count}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Top 5 skipped */}
+                    <div style={styles.section}>
+                        <h3 style={{ ...styles.sectionTitle, color: C.red }}>Top 5 Esperimenti Più Saltati</h3>
+                        {topSkipped.length === 0 ? (
+                            <p className={css.textMuted}>Tutti gli esperimenti sono stati provati!</p>
+                        ) : topSkipped.map(exp => (
+                            <div key={exp.id} className={css.expRow}>
+                                <div className={css.expInfo}>
+                                    <div className={css.expTitle}>{exp.title}</div>
+                                    <div className={css.expId}>{exp.id}</div>
+                                </div>
+                                <div className={css.miniBarTrack}>
+                                    <div className={css.miniBarFillRed} style={{ width: `${Math.max(5, 100 - Math.round(exp.count / (users.length || 1) * 100))}%` }} />
+                                </div>
+                                <span className={css.expCountWide} style={{ color: C.red }}>
+                                    {exp.count}/{users.length}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Top compilation errors */}
+                    <div style={styles.section}>
+                        <h3 style={styles.sectionTitle}>Errori di Compilazione Comuni</h3>
+                        {topErrors.length === 0 ? (
+                            <p className={css.textMuted}>Nessun errore di compilazione registrato.</p>
+                        ) : topErrors.map(([msg, count], i) => (
+                            <div key={i} className={css.errorRow}>
+                                <span className={css.errorBadge}>
+                                    {count}
+                                </span>
+                                <code className={css.errorCode}>
+                                    {msg}
+                                </code>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Avg time per experiment */}
+                    <div style={styles.section}>
+                        <h3 style={styles.sectionTitle}>Tempo Medio per Esperimento</h3>
+                        {expDurations.length === 0 ? (
+                            <p className={css.textMuted}>Nessun dato disponibile.</p>
+                        ) : (
+                            <div style={{ overflowX: 'auto' }}>
+                                <table style={styles.table}>
+                                    <thead>
+                                        <tr>
+                                            <th style={styles.th}>Esperimento</th>
+                                            <th style={{ ...styles.th, width: 100 }}>Tempo medio</th>
+                                            <th style={{ ...styles.th, width: 80 }}>Tentativi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {expDurations.slice(0, 10).map((exp, i) => {
+                                            const cur = CURRICULUM.find(e => e.id === exp.id);
+                                            return (
+                                                <tr key={exp.id} className={i % 2 === 0 ? css.trEven : undefined}>
+                                                    <td style={styles.td}>
+                                                        <div className={css.durationTableTd}>{cur?.title || exp.id}</div>
+                                                        <div className={css.durationTableId}>{exp.id}</div>
+                                                    </td>
+                                                    <td style={{ ...styles.td, fontWeight: 600, color: C.navy }}>{formatTempo(exp.avg)}</td>
+                                                    <td style={{ ...styles.td, color: C.textMuted }}>{exp.count}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
+        </div>
+    );
+}
+
 // SVG print icon
 const IconPrint = ({ size = 16 }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -2031,7 +2565,152 @@ const IconPrint = ({ size = 16 }) => (
     </svg>
 );
 
-// © Andrea Marro — 20/02/2026
+// ─── AUDIT GDPR TAB (solo admin) ──────────────────────
+function AuditTab() {
+    const [userId, setUserId] = useState('');
+    const [logs, setLogs] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const DATA_SERVER = (import.meta.env.VITE_DATA_SERVER_URL || '').replace(/\/$/, '');
+    const TOKEN_KEY_LOCAL = 'elab_auth_token';
+
+    const fetchAuditLog = useCallback(async () => {
+        if (!userId.trim()) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const token = localStorage.getItem(TOKEN_KEY_LOCAL) || sessionStorage.getItem(TOKEN_KEY_LOCAL);
+            if (!DATA_SERVER || !token) {
+                setError('Server dati non configurato o non autenticato');
+                return;
+            }
+            const resp = await fetch(`${DATA_SERVER}/api/audit/${encodeURIComponent(userId.trim())}`, {
+                headers: { 'Authorization': `Bearer ${token}` },
+            });
+            if (!resp.ok) {
+                const body = await resp.json().catch(() => ({}));
+                throw new Error(body.error || `HTTP ${resp.status}`);
+            }
+            const data = await resp.json();
+            setLogs(data.logs || []);
+        } catch (e) {
+            setError(e.message);
+            setLogs([]);
+        } finally {
+            setLoading(false);
+        }
+    }, [userId, DATA_SERVER]);
+
+    return (
+        <div>
+            <div style={{ background: C.white, borderRadius: 12, padding: 20, border: `1px solid ${C.border}`, marginBottom: 16 }}>
+                <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 700, color: C.navy, fontFamily: 'Oswald, sans-serif' }}>
+                    Audit Log GDPR
+                </h3>
+                <p style={{ color: C.textMuted, fontSize: 14, marginBottom: 16 }}>
+                    Registro accessi e operazioni per conformità GDPR Art.30. Cerca per userId.
+                </p>
+                <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+                    <input
+                        type="text"
+                        value={userId}
+                        onChange={e => setUserId(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && fetchAuditLog()}
+                        placeholder="Inserisci userId..."
+                        style={{ flex: 1, padding: '10px 14px', border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 14, outline: 'none' }}
+                    />
+                    <button
+                        onClick={fetchAuditLog}
+                        disabled={loading || !userId.trim()}
+                        style={{ padding: '10px 20px', background: C.navy, color: C.white, border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer', opacity: loading ? 0.6 : 1 }}
+                    >
+                        {loading ? 'Caricamento...' : 'Cerca'}
+                    </button>
+                </div>
+                {error && (
+                    <div style={{ padding: '8px 12px', background: '#FFF3F3', border: '1px solid #E53935', borderRadius: 8, color: '#C62828', fontSize: 14, marginBottom: 12 }}>
+                        {error}
+                    </div>
+                )}
+                {logs.length > 0 && (
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                            <thead>
+                                <tr style={{ background: '#F0F4F8', textAlign: 'left' }}>
+                                    <th style={{ padding: '8px 10px', borderBottom: `2px solid ${C.border}`, fontWeight: 600 }}>Timestamp</th>
+                                    <th style={{ padding: '8px 10px', borderBottom: `2px solid ${C.border}`, fontWeight: 600 }}>Azione</th>
+                                    <th style={{ padding: '8px 10px', borderBottom: `2px solid ${C.border}`, fontWeight: 600 }}>Endpoint</th>
+                                    <th style={{ padding: '8px 10px', borderBottom: `2px solid ${C.border}`, fontWeight: 600 }}>IP</th>
+                                    <th style={{ padding: '8px 10px', borderBottom: `2px solid ${C.border}`, fontWeight: 600 }}>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {logs.map((log, i) => (
+                                    <tr key={log.id || i} style={{ borderBottom: `1px solid ${C.border}` }}>
+                                        <td style={{ padding: '6px 10px', whiteSpace: 'nowrap' }}>{log.timestamp ? new Date(log.timestamp + 'Z').toLocaleString('it-IT') : '-'}</td>
+                                        <td style={{ padding: '6px 10px' }}>
+                                            <span style={{
+                                                display: 'inline-block', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 600,
+                                                background: log.action?.includes('delete') ? '#FFEBEE' : log.action?.includes('gdpr') ? '#FFF3E0' : '#E8F5E9',
+                                                color: log.action?.includes('delete') ? '#C62828' : log.action?.includes('gdpr') ? '#E65100' : '#2E7D32',
+                                            }}>
+                                                {log.action}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 12 }}>{log.endpoint}</td>
+                                        <td style={{ padding: '6px 10px', fontFamily: 'monospace', fontSize: 12 }}>{log.ip || '-'}</td>
+                                        <td style={{ padding: '6px 10px', textAlign: 'center' }}>
+                                            <span style={{
+                                                display: 'inline-block', width: 8, height: 8, borderRadius: '50%',
+                                                background: log.status_code < 400 ? '#4CAF50' : log.status_code < 500 ? '#F5A623' : '#E53935',
+                                            }} title={`HTTP ${log.status_code}`} />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <p style={{ color: C.textMuted, fontSize: 12, marginTop: 8 }}>
+                            Mostrati {logs.length} record (ultimi 100 per utente).
+                        </p>
+                    </div>
+                )}
+                {logs.length === 0 && !loading && !error && userId.trim() && (
+                    <p style={{ color: C.textMuted, fontSize: 14, textAlign: 'center', padding: 20 }}>
+                        Nessun log trovato per questo utente.
+                    </p>
+                )}
+            </div>
+            <div style={{ background: C.white, borderRadius: 12, padding: 20, border: `1px solid ${C.border}` }}>
+                <h3 style={{ margin: '0 0 12px', fontSize: 16, fontWeight: 700, color: C.navy, fontFamily: 'Oswald, sans-serif' }}>
+                    Stato Sicurezza
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+                    <div style={{ padding: 12, borderRadius: 8, background: '#E8F5E9', border: '1px solid #C8E6C9' }}>
+                        <strong style={{ color: '#2E7D32', fontSize: 13 }}>Cifratura localStorage</strong>
+                        <p style={{ margin: '4px 0 0', fontSize: 13, color: '#1B5E20' }}>
+                            {studentService.isEncryptionActive() ? 'Attiva (AES-256-GCM)' : 'Non attiva'}
+                        </p>
+                    </div>
+                    <div style={{ padding: 12, borderRadius: 8, background: DATA_SERVER ? '#E8F5E9' : '#FFF3E0', border: `1px solid ${DATA_SERVER ? '#C8E6C9' : '#FFE0B2'}` }}>
+                        <strong style={{ color: DATA_SERVER ? '#2E7D32' : '#E65100', fontSize: 13 }}>Server Dati EU</strong>
+                        <p style={{ margin: '4px 0 0', fontSize: 13, color: DATA_SERVER ? '#1B5E20' : '#BF360C' }}>
+                            {DATA_SERVER ? 'Configurato' : 'Non configurato'}
+                        </p>
+                    </div>
+                    <div style={{ padding: 12, borderRadius: 8, background: '#E8F5E9', border: '1px solid #C8E6C9' }}>
+                        <strong style={{ color: '#2E7D32', fontSize: 13 }}>Audit Logging</strong>
+                        <p style={{ margin: '4px 0 0', fontSize: 13, color: '#1B5E20' }}>Attivo (ogni richiesta API)</p>
+                    </div>
+                    <div style={{ padding: 12, borderRadius: 8, background: '#E8F5E9', border: '1px solid #C8E6C9' }}>
+                        <strong style={{ color: '#2E7D32', fontSize: 13 }}>Data Retention</strong>
+                        <p style={{ margin: '4px 0 0', fontSize: 13, color: '#1B5E20' }}>730 giorni (auto-cleanup)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 // ─── STILI ─────────────────────────────────────────────
 const styles = {
