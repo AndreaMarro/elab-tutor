@@ -12,6 +12,7 @@ import RetractablePanel from './RetractablePanel';
 import GalileoAdapter from './GalileoAdapter';
 import VideoFloat from './VideoFloat';
 import ExperimentPicker from './ExperimentPicker';
+import { deriveState, computePanelActions, STATES } from './LavagnaStateManager';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -111,6 +112,10 @@ export default function LavagnaShell() {
   const [totalSteps, setTotalSteps] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [lavagnaState, setLavagnaState] = useState(STATES.CLEAN);
+  const [hasExperiment, setHasExperiment] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const manualOverridesRef = useRef({});
   const apiReadyRef = useRef(false);
 
   // Poll for __ELAB_API availability (simulator may mount async)
@@ -134,6 +139,31 @@ export default function LavagnaShell() {
       }
     }, 500);
     return () => clearInterval(check);
+  }, []);
+
+  // ── State machine: auto-manage panels ──
+  useEffect(() => {
+    const newState = deriveState({ hasExperiment, isPlaying, isEditing });
+    if (newState !== lavagnaState) {
+      setLavagnaState(newState);
+      const panels = computePanelActions(newState,
+        { leftPanel: leftPanelOpen, bottomPanel: bottomPanelOpen, galileo: galileoOpen, toolbar: true },
+        manualOverridesRef.current
+      );
+      setLeftPanelOpen(panels.leftPanel);
+      setBottomPanelOpen(panels.bottomPanel);
+      setGalileoOpen(panels.galileo);
+    }
+  }, [hasExperiment, isPlaying, isEditing, lavagnaState, leftPanelOpen, bottomPanelOpen, galileoOpen]);
+
+  // Track manual overrides when user explicitly toggles a panel
+  const toggleLeftPanel = useCallback(() => {
+    manualOverridesRef.current.leftPanel = true;
+    setLeftPanelOpen(p => !p);
+  }, []);
+  const toggleBottomPanel = useCallback(() => {
+    manualOverridesRef.current.bottomPanel = true;
+    setBottomPanelOpen(p => !p);
   }, []);
 
   // ── Toolbar actions via __ELAB_API ──
@@ -184,6 +214,9 @@ export default function LavagnaShell() {
       api.loadExperiment(exp.id);
     }
     setExperimentName(exp.title || exp.id);
+    setHasExperiment(true);
+    // Reset manual overrides when loading new experiment
+    manualOverridesRef.current = {};
   }, []);
 
   // ── Galileo toggle (also from header) ──
@@ -224,7 +257,7 @@ export default function LavagnaShell() {
           id="lavagna-left"
           direction="left"
           open={leftPanelOpen}
-          onToggle={() => setLeftPanelOpen(p => !p)}
+          onToggle={toggleLeftPanel}
           defaultSize={180}
           minSize={140}
           maxSize={280}
@@ -271,7 +304,7 @@ export default function LavagnaShell() {
           id="lavagna-bottom"
           direction="bottom"
           open={bottomPanelOpen}
-          onToggle={() => setBottomPanelOpen(p => !p)}
+          onToggle={toggleBottomPanel}
           defaultSize={200}
           minSize={100}
           maxSize={400}
