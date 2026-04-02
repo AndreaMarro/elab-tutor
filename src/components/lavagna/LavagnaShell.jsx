@@ -117,6 +117,14 @@ export default function LavagnaShell() {
   const [totalSteps, setTotalSteps] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  // Principio Zero: auto-open picker on first visit if no experiment loaded
+  useEffect(() => {
+    if (!hasExperiment && !pickerOpen) {
+      const timer = setTimeout(() => setPickerOpen(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []); // Only on mount
   const [lavagnaState, setLavagnaState] = useState(STATES.CLEAN);
   const [hasExperiment, setHasExperiment] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
