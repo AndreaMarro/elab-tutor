@@ -94,6 +94,14 @@
   font-weight: 500;
 }
 
+/* ── Hide simulator's internal welcome/placeholder when in Lavagna (Principio Zero) ── */
+.canvas :global(.elab-simulator__placeholder) {
+  display: none !important;
+}
+.canvas :global(.sim-welcome) {
+  display: none !important;
+}
+
 /* ── Dashboard view ── */
 .dashboardView {
   flex: 1;
