@@ -1,0 +1,172 @@
+/* AppHeader — barra top 48px glassmorphism per Lavagna ELAB */
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 8px;
+  background: rgba(30, 77, 140, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  gap: 4px;
+  user-select: none;
+}
+
+/* Left section */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.brand {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 1px;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+/* Center section */
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 12px;
+  min-width: 0;
+}
+
+.experimentName {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 150ms ease;
+  max-width: 300px;
+}
+
+.experimentName:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Progress dots */
+.progressDots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 300ms ease, transform 300ms ease;
+}
+
+.dotCompleted {
+  background: #4A7A25;
+  transform: scale(1.1);
+}
+
+.dotCurrent {
+  background: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+/* Right section */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Buttons */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 150ms ease, color 150ms ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+}
+
+.btnPlay {
+  background: #4A7A25;
+  color: #fff;
+  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+}
+
+.btnPlay:hover {
+  background: rgba(74, 122, 37, 0.85);
+}
+
+.btnActive {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+/* LIM / small screens: hide text, keep icons */
+@media (max-width: 1024px) {
+  .experimentName {
+    max-width: 180px;
+    font-size: 13px;
+  }
+  .brand {
+    font-size: 16px;
+  }
+  .progressDots {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .center {
+    flex: 1;
+    min-width: 0;
+  }
+  .experimentName {
+    max-width: none;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .progressDots {
+    display: none;
+  }
+}
