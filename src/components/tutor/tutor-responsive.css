@@ -64,6 +64,8 @@
   position: relative;
   min-width: 0;
   /* Prevent content from overflowing flex */
+  /* G38: Volume accent — colored top border matching the active volume */
+  border-top: 3px solid var(--volume-accent, transparent);
 }
 
 .tutor-fullscreen-exit {
@@ -152,7 +154,7 @@
 }
 
 .topbar-title {
-  font-family: var(--font-display);
+  font-family: var(--font-display, Oswald, sans-serif);
   font-size: 1.05rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -160,7 +162,7 @@
 }
 
 .topbar-subtitle {
-  font-family: var(--font-display);
+  font-family: var(--font-display, Oswald, sans-serif);
   font-size: 15px;
   color: rgba(255, 255, 255, 0.85);
   font-weight: 700;
@@ -175,12 +177,15 @@
 }
 
 .topbar-volume-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 10px;
+  font-family: var(--font-display, Oswald, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
   color: white;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .topbar-right {
@@ -193,12 +198,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+/* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   gap: 6px;
   padding: 6px 10px;
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.12);
-/* © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -394,12 +399,12 @@
 /* ═══════════════════════════════════════════════
    CHAT OVERLAY — Floating Panel
    ═══════════════════════════════════════════════ */
+/* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 .chat-overlay {
   position: fixed;
   z-index: 300;
   background: var(--color-bg);
-/* © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   border-radius: 16px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
   display: flex;
@@ -595,12 +600,12 @@
 }
 
 .chat-msg.assistant .chat-bubble {
+/* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   background: var(--color-bg-cool);
   color: var(--color-code-bg);
   border-bottom-left-radius: 4px;
 }
 
-/* © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati */
 .chat-msg.error .chat-bubble {
   border-left: 3px solid var(--color-error-red);
   background: rgba(239, 68, 68, 0.05);
@@ -796,12 +801,12 @@
 .chat-confusion-input-row button:disabled {
   opacity: 0.4;
 }
+/* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 /* Quick Actions */
 .chat-quick-actions {
   display: flex;
   gap: 6px;
-/* © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati */
   padding: 8px 14px;
   overflow-x: auto;
   border-top: 1px solid var(--color-bg-subtle);
@@ -997,12 +1002,12 @@
   /* TopBar compact */
   .tutor-topbar {
     padding: 0 10px;
+/* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     height: var(--tutor-topbar-height);
   }
 
   .topbar-mascot {
     width: 28px;
-/* © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati */
     height: 28px;
   }
 
@@ -1198,12 +1203,12 @@
 /* ═══════════════════════════════════════════════════════════════
    S91: iPad 10th Gen Specific (810px viewport, pointer: coarse)
    Touch-optimized: larger targets, no hover dependencies,
-   Apple Pencil USB-C compatible (precise + coarse pointer)
+/* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+   Apple Pencil USB C compatible with precise and coarse pointer
    ═══════════════════════════════════════════════════════════════ */
 @media (pointer: coarse) and (min-width: 768px) and (max-width: 1023px) {
   /* Ensure sidebar toggle button is always visible on iPad */
   .topbar-sidebar-toggle {
-/* © Andrea Marro — 29/03/2026 — ELAB Tutor — Tutti i diritti riservati */
     display: flex !important;
   }
 
