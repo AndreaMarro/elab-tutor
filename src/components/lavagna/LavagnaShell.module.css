@@ -20,6 +20,10 @@
   flex: 1;
   position: relative;
   overflow: hidden;
+  /* Dot pattern — subtle workspace feel (like Excalidraw/Figma) */
+  background-color: #F8FAFB;
+  background-image: radial-gradient(circle, #d4d8dc 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
 }
 
 .loading {

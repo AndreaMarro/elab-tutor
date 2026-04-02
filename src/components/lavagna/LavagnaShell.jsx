@@ -14,6 +14,8 @@ import GalileoAdapter from './GalileoAdapter';
 import VideoFloat from './VideoFloat';
 import ExperimentPicker from './ExperimentPicker';
 import { deriveState, computePanelActions, STATES } from './LavagnaStateManager';
+import MascotPresence from './MascotPresence';
+import UnlimBar from './UnlimBar';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -354,6 +356,25 @@ export default function LavagnaShell() {
           </div>
         </RetractablePanel>
       )}
+
+      {/* Mascotte ELAB — sempre visibile */}
+      <MascotPresence
+        onClick={() => setGalileoOpen(true)}
+        mascotSrc="/assets/mascot/logo-senza-sfondo.png"
+      />
+
+      {/* UNLIM Bar — input sempre visibile in basso */}
+      <UnlimBar
+        onSend={(msg) => {
+          setGalileoOpen(true);
+          // Forward message to UNLIM via API
+          const api = typeof window !== 'undefined' && window.__ELAB_API;
+          if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+        }}
+        onMicClick={() => setGalileoOpen(true)}
+        onExpandChat={() => setGalileoOpen(true)}
+        mascotSrc="/assets/mascot/logo-senza-sfondo.png"
+      />
 
       {/* Experiment Picker Modal */}
       <ExperimentPicker
