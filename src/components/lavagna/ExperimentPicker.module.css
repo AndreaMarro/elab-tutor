@@ -20,7 +20,7 @@
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 12px 48px rgba(30, 77, 140, 0.25);
+  box-shadow: 0 16px 64px rgba(30, 77, 140, 0.2), 0 4px 16px rgba(0, 0, 0, 0.08);
   animation: pickerSlideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
@@ -175,21 +175,22 @@
 .card {
   background: #fff;
   border: 1px solid var(--color-border, #E2E8F0);
-  border-radius: 10px;
-  padding: 12px 14px;
+  border-radius: 12px;
+  padding: 14px 16px;
   cursor: pointer;
   text-align: left;
-  transition: all 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 48px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-family: var(--font-sans, 'Open Sans', sans-serif);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .card:hover {
   border-color: var(--color-primary, #1E4D8C);
-  box-shadow: 0 2px 12px rgba(30, 77, 140, 0.1);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(30, 77, 140, 0.12);
+  transform: translateY(-2px);
 }
 .card:focus-visible {
   outline: 3px solid var(--color-accent, #4A7A25);
@@ -197,8 +198,8 @@
 }
 
 .cardTop {
-  display: flex;
 /* © Andrea Marro — 02/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
