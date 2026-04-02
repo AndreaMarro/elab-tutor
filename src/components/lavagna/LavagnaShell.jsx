@@ -140,7 +140,11 @@ export default function LavagnaShell() {
 
         // Listen for experiment changes
         api.on?.('experimentChange', (data) => {
-          if (data?.title) setExperimentName(data.title);
+          if (data?.title) {
+            setExperimentName(data.title);
+            setHasExperiment(true);
+            setPickerOpen(false); // Close picker when experiment loads (from any source)
+          }
           if (data?.totalSteps != null) setTotalSteps(data.totalSteps);
           if (data?.currentStep != null) setCurrentStep(data.currentStep);
         });
