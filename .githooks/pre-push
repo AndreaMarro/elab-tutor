@@ -1,0 +1,27 @@
+#!/bin/bash
+# ELAB pre-push hook — blocca push su main senza build
+# Installare: git config core.hooksPath .githooks
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$BRANCH" = "main" ]; then
+  echo ""
+  echo "=== ELAB QUALITY GATE ==="
+  echo "Push su main rilevato. Verifico build..."
+  echo ""
+
+  # Build (include type checking implicito)
+  echo "[1/1] Running build..."
+  npm run build 2>&1 | tail -5
+  if [ $? -ne 0 ]; then
+    echo ""
+    echo "BLOCCATO: il build fallisce. Fixa prima di pushare su main."
+    echo ""
+    exit 1
+  fi
+
+  echo ""
+  echo "QUALITY GATE SUPERATO — push consentito."
+  echo ""
+fi

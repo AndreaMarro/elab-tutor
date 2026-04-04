@@ -144,6 +144,15 @@ git push --force-with-lease
 
 Usa `--force-with-lease` (non `--force`) — protegge da sovrascritture accidentali.
 
+## Setup anti-regressione
+
+Dopo aver clonato il repo, attiva il quality gate:
+```bash
+git config core.hooksPath .githooks
+```
+
+Questo attiva un hook pre-push che **blocca** il push su `main` se i test o il build falliscono.
+Non si puo' bypassare senza `--no-verify` (che non va MAI usato).
+
 ## Contatti
 - **Andrea Marro** — lead developer, review obbligatoria per merge su main
-- Comunicazione: [da definire — Slack/WhatsApp/email]

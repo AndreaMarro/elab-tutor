@@ -1,4 +1,4 @@
-# Onboarding — Benvenuta nel progetto ELAB
+# Onboarding — Benvenuta Tea nel progetto ELAB
 
 ## Cos'è ELAB
 ELAB è un tutor educativo per elettronica e Arduino, pensato per bambini 8-12 anni.
@@ -30,6 +30,12 @@ Apri http://localhost:5173
 npm run test:ci    # Deve passare (~1001 test)
 npm run build      # Deve completare senza errori
 ```
+
+### 5. Attiva il quality gate anti-regressione
+```bash
+git config core.hooksPath .githooks
+```
+Questo blocca automaticamente i push su `main` se test o build falliscono.
 
 ### 5. Installa Claude Code (opzionale ma consigliato)
 ```bash
