@@ -1,7 +1,7 @@
 # Onboarding — Benvenuta Tea nel progetto ELAB
 
 ## Cos'è ELAB
-ELAB è un tutor educativo per elettronica e Arduino, pensato per bambini 8-12 anni.
+ELAB è un tutor educativo per elettronica e Arduino, pensato per bambini 8-14 anni.
 Include un simulatore di circuiti proprietario, un tutor AI ("Galileo"), 62 esperimenti in 3 volumi, e giochi didattici.
 
 **Live**: https://elab-builder.vercel.app
@@ -10,8 +10,8 @@ Include un simulatore di circuiti proprietario, un tutor AI ("Galileo"), 62 espe
 
 ### 1. Clona il repository
 ```bash
-git clone https://github.com/AndreaMarro/elab-tutor.git
-cd elab-tutor
+git clone https://github.com/AndreaMarro/elabtutor.git
+cd elabtutor
 ```
 
 ### 2. Installa dipendenze
@@ -60,7 +60,7 @@ Claude Code leggerà automaticamente il file `CLAUDE.md` nella root del progetto
 src/
 ├── components/
 │   ├── simulator/          ← Simulatore di circuiti (CORE)
-│   │   ├── engine/         ← CircuitSolver, AVRBridge, SimulationManager
+│   │   ├── engine/         ← CircuitSolver, AVRBridge, PlacementEngine
 │   │   ├── canvas/         ← SVG canvas, wire routing
 │   │   ├── components/     ← Componenti SVG (LED, resistore, etc.)
 │   │   ├── panels/         ← Pannelli laterali (code editor, properties)
@@ -110,12 +110,12 @@ git push -u origin feature/mia-cosa
 3. **Mai emoji nei componenti** — usa `ElabIcons.jsx`
 4. **Mai aggiungere npm packages** senza OK di Andrea
 5. **Sempre** `npm run build` prima di pushare
-6. **Target**: bambini 8-12 — testi semplici, bottoni grandi, feedback chiaro
+6. **Target**: bambini 8-14 — testi semplici, bottoni grandi, feedback chiaro
 
 ## File da NON toccare senza coordinamento
 - `engine/CircuitSolver.js` — cuore del solver
 - `engine/AVRBridge.js` — bridge CPU emulation
-- `engine/SimulationManager.js` — orchestratore
+- `engine/PlacementEngine.js` — posizionamento componenti
 - `canvas/SimulatorCanvas.jsx` — canvas SVG principale
 - `vite.config.js` — configurazione build
 - `package.json` — dipendenze

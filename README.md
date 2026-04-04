@@ -82,7 +82,7 @@ src/
 | Volume | Esperimenti | Tipo | Colore |
 |--------|------------|------|--------|
 | Vol. 1 | 38 | Circuiti passivi (LED, resistori, parallelo/serie) | Lime #4A7A25 |
-| Vol. 2 | 18 | Condensatori, transistor, RC, scarica esponenziale | Orange #E8941C |
+| Vol. 2 | 27 | Condensatori, transistor, RC, scarica esponenziale | Orange #E8941C |
 | Vol. 3 | 27 | Arduino (digitalWrite, analogRead, PWM, Servo, LCD) | Red #E54B3D |
 
 ## Palette colori

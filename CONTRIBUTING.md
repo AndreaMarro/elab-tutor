@@ -78,7 +78,7 @@ Questi file sono critici e una modifica sbagliata causa regressioni a cascata:
 |------|--------|
 | `src/components/simulator/engine/CircuitSolver.js` | Cuore del solver, 1700+ righe, algoritmo MNA/KCL |
 | `src/components/simulator/engine/AVRBridge.js` | Bridge CPU emulation, timing critico |
-| `src/components/simulator/engine/SimulationManager.js` | Orchestratore, tocca tutto |
+| `src/components/simulator/engine/PlacementEngine.js` | Posizionamento componenti |
 | `src/components/simulator/canvas/SimulatorCanvas.jsx` | Canvas SVG principale, 1300+ righe |
 | `src/components/simulator/api/simulator-api.js` | API globale `__ELAB_API` |
 | `src/components/simulator/utils/pinComponentMap.js` | Mapping pin, Union-Find |
@@ -112,7 +112,7 @@ npm run build
 - **Font minimo 13px** per testi, 10px per label secondarie
 - **Touch target minimo 44x44px** per bottoni
 - **Palette ELAB**: Navy #1E4D8C, Lime #4A7A25, Orange #E8941C, Red #E54B3D
-- **Target**: bambini 8-12 anni — interfaccia chiara, feedback visivo forte
+- **Target**: bambini 8-14 anni — interfaccia chiara, feedback visivo forte
 - **WCAG AA**: contrasto minimo 4.5:1 per testo, 3:1 per elementi grafici
 - **No emoji nei componenti UI** — usa SVG (vedi `ElabIcons.jsx`)
 
@@ -151,7 +151,8 @@ Dopo aver clonato il repo, attiva il quality gate:
 git config core.hooksPath .githooks
 ```
 
-Questo attiva un hook pre-push che **blocca** il push su `main` se i test o il build falliscono.
+Questo attiva un hook pre-push che **blocca** il push su `main` se il build fallisce.
+Ricordati di eseguire anche `npm run test:ci` prima di pushare.
 Non si puo' bypassare senza `--no-verify` (che non va MAI usato).
 
 ## Contatti

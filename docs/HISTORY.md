@@ -20,13 +20,13 @@ ELAB e' un prodotto educativo per insegnare elettronica e Arduino nelle scuole i
 
 Il cuore e' un simulatore di circuiti che funziona interamente nel browser:
 
-1. **CircuitSolver** (~1700 righe) — risolve circuiti DC con MNA/KCL (Modified Nodal Analysis / Kirchhoff's Current Law). Gestisce resistori, LED, condensatori, transistor, paralleli, serie.
+1. **CircuitSolver** (~2500 righe) — risolve circuiti DC con MNA/KCL (Modified Nodal Analysis / Kirchhoff's Current Law). Gestisce resistori, LED, condensatori, transistor, paralleli, serie.
 
-2. **AVRBridge** (~1050 righe) — ponte tra il CircuitSolver e l'emulatore CPU avr8js. Gestisce GPIO, ADC, PWM, USART, timer. Permette di eseguire codice Arduino compilato (HEX) nel browser.
+2. **AVRBridge** (~1240 righe) — ponte tra il CircuitSolver e l'emulatore CPU avr8js. Gestisce GPIO, ADC, PWM, USART, timer. Permette di eseguire codice Arduino compilato (HEX) nel browser.
 
-3. **SimulationManager** (~300 righe) — orchestratore che decide se usare solo il CircuitSolver (Vol1/Vol2) o anche l'AVRBridge (Vol3).
+3. **PlacementEngine** (~200 righe) — posizionamento automatico componenti. L'orchestrazione Vol1/Vol2 vs Vol3 AVR e' in NewElabSimulator.jsx (~1020 righe).
 
-4. **SimulatorCanvas** (~1400 righe) — canvas SVG con zoom/pan/drag, 21 componenti SVG renderizzati, wire bezier routing, selezione multipla, copy/paste.
+4. **SimulatorCanvas** (~3150 righe) — canvas SVG con zoom/pan/drag, 21 componenti SVG renderizzati, wire bezier routing, selezione multipla, copy/paste.
 
 5. **Compilatore** — il codice Arduino (C++) viene inviato a un server esterno (n8n su Hostinger) che usa arduino-cli per compilare in HEX. Il HEX viene poi eseguito da avr8js nel browser. Per molti esperimenti, il HEX e' pre-compilato per velocita'.
 
@@ -38,15 +38,15 @@ Il cuore e' un simulatore di circuiti che funziona interamente nel browser:
 - Sprint 3: Polish — BOM panel, annotations, export PNG, shortcuts, code splitting, deploy Vercel
 
 ### Fase 2: Contenuti (Feb 2026)
-- 62 esperimenti creati e validati (38 Vol1 + 18 Vol2 + 6 Vol3 iniziali)
-- 62 lesson paths JSON con obiettivi, step, concetti, suggerimenti
+- 92 esperimenti creati e validati (38 Vol1 + 27 Vol2 + 27 Vol3)
+- Lesson paths JSON con obiettivi, step, concetti, suggerimenti
 - 4 giochi didattici con scoring
 - Auth server-side con bcrypt + HMAC-SHA256
 - Gestionale ERP (admin, fatture, ordini)
 
 ### Fase 3: UNLIM — Il tutor AI (Mar 2026)
 UNLIM e' il nome del sistema AI di tutoring. Include:
-- Chat con Galileo (mascotte robot) via Nanobot su Supabase Edge Functions
+- Chat con Galileo (mascotte robot) via Nanobot su Render (https://elab-galileo.onrender.com)
 - Messaggi contestuali posizionati accanto ai componenti
 - Voice TTS/STT (parla e ascolta)
 - 24 comandi vocali ("aggiungi LED", "pulisci", "compila")
@@ -96,7 +96,7 @@ UNLIM e' il nome del sistema AI di tutoring. Include:
 | Servizio | URL | Scopo |
 |----------|-----|-------|
 | Vercel | elabtutor.school | Frontend produzione |
-| Supabase | euqpdueopmlllqjmqnyb.supabase.co | DB + Edge Functions |
+| Supabase | vxvqalmxqtezvgiboxyv.supabase.co | DB + Edge Functions |
 | Hostinger/n8n | n8n.srv1022317.hstgr.cloud | Compilatore Arduino |
 | VPS Ollama | 72.60.129.50:11434 | Brain V13 (routing AI locale) |
 
@@ -104,14 +104,15 @@ UNLIM e' il nome del sistema AI di tutoring. Include:
 
 | File | Righe | Perche' |
 |------|-------|---------|
-| engine/CircuitSolver.js | ~1700 | Cuore del solver, algoritmo MNA/KCL |
-| engine/AVRBridge.js | ~1050 | Bridge CPU emulation, timing critico |
-| engine/SimulationManager.js | ~300 | Orchestratore, tocca tutto |
-| canvas/SimulatorCanvas.jsx | ~1400 | Canvas SVG principale |
-| services/api.js | ~1100 | Tutte le chiamate API, routing, retry |
-| services/simulator-api.js | ~130 | API globale __ELAB_API |
-| utils/pinComponentMap.js | ~260 | Mapping pin Union-Find |
-| vite.config.js | ~90 | Build config, chunk splitting |
+| engine/CircuitSolver.js | 2486 | Cuore del solver, algoritmo MNA/KCL |
+| engine/AVRBridge.js | 1242 | Bridge CPU emulation, timing critico |
+| engine/PlacementEngine.js | ~200 | Posizionamento automatico componenti |
+| canvas/SimulatorCanvas.jsx | 3149 | Canvas SVG principale |
+| NewElabSimulator.jsx | 1022 | Shell simulatore, orchestrazione |
+| services/api.js | 1040 | Tutte le chiamate API, routing, retry |
+| services/simulator-api.js | 755 | API globale __ELAB_API |
+| utils/pinComponentMap.js | 399 | Mapping pin Union-Find |
+| vite.config.js | 293 | Build config, chunk splitting, obfuscation |
 
 ## Pin mapping ATmega328p (regola immutabile)
 
