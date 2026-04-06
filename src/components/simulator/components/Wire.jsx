@@ -137,7 +137,7 @@ registerComponent('wire', {
   defaultState: Wire.defaultState,
   category: 'wire',
   label: 'Filo',
-  icon: '\u{1F517}',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

@@ -2,7 +2,15 @@ import { cleanAndTruncate } from '../../src/utils/truncateResponse';
 import { describe, it, expect } from 'vitest';
 
 describe('cleanAndTruncate', () => {
-  it('tronca a 80 parole', () => {
+  it('tronca a 60 parole (default)', () => {
+    const long = Array(100).fill('parola').join(' ');
+    const result = cleanAndTruncate(long);
+    const wordCount = result.replace('…', '').trim().split(/\s+/).length;
+    expect(wordCount).toBeLessThanOrEqual(60);
+    expect(result.endsWith('…')).toBe(true);
+  });
+
+  it('tronca a 80 parole (custom)', () => {
     const long = Array(100).fill('parola').join(' ');
     const result = cleanAndTruncate(long, 80);
     const wordCount = result.replace('…', '').trim().split(/\s+/).length;

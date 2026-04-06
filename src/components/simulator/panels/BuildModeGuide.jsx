@@ -16,19 +16,55 @@
  *   onClose: () => void
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import ovStyles from '../overlays.module.css';
 
 // Simple step number used instead of emoji per component type
 const STEP_ICONS = {};
+
+/**
+ * Adaptive pacing logic for Percorso mode.
+ * Tracks error count per step window and returns a hint detail level:
+ *   'detailed' — slow down, show more hints (errors > 2 in last 3 steps)
+ *   'normal'   — default pacing
+ *   'brief'    — speed up, abbreviated hints (0 errors in last 5 steps)
+ */
+function useAdaptivePacing() {
+  const errorLog = useRef([]); // array of { step, hadError }
+
+  const recordStepResult = useCallback((stepIndex, hadError) => {
+    errorLog.current = [...errorLog.current.filter(e => e.step !== stepIndex), { step: stepIndex, hadError }];
+  }, []);
+
+  const getHintLevel = useCallback((currentStepIndex) => {
+    const log = errorLog.current;
+    if (log.length === 0) return 'normal';
+
+    // Check last 3 steps for errors > 2
+    const last3 = log.filter(e => e.step > currentStepIndex - 3 && e.step <= currentStepIndex);
+    const recentErrors = last3.filter(e => e.hadError).length;
+    if (recentErrors > 2) return 'detailed';
+
+    // Check last 5 steps for 0 errors
+    const last5 = log.filter(e => e.step > currentStepIndex - 5 && e.step <= currentStepIndex);
+    if (last5.length >= 5 && last5.every(e => !e.hadError)) return 'brief';
+
+    return 'normal';
+  }, []);
+
+  return { recordStepResult, getHintLevel };
+}
 
 const BuildModeGuide = React.memo(function BuildModeGuide({
   experiment,
   currentStep = -1,
   onStepChange,
   onClose,
+  onBuildError, // optional: parent signals a build error for current step
 }) {
   const [expanded, setExpanded] = useState(true);
+  const { recordStepResult, getHintLevel } = useAdaptivePacing();
+  const [stepErrors, setStepErrors] = useState({}); // stepIndex -> error count
 
   if (!experiment) return null;
   const buildSteps = experiment.buildSteps || [];
@@ -54,11 +90,35 @@ const BuildModeGuide = React.memo(function BuildModeGuide({
     ? (STEP_ICONS[step.componentType] || '\u2022')
     : null;
 
+  // Adaptive pacing: determine hint level for current step
+  const hintLevel = getHintLevel(currentStep);
+
+  // Record error for current step (called by parent via onBuildError prop or internally)
+  const recordError = useCallback(() => {
+    if (currentStep >= 0) {
+      const newCount = (stepErrors[currentStep] || 0) + 1;
+      setStepErrors(prev => ({ ...prev, [currentStep]: newCount }));
+      recordStepResult(currentStep, true);
+    }
+  }, [currentStep, stepErrors, recordStepResult]);
+
+  // Expose recordError via effect when onBuildError changes
+  React.useEffect(() => {
+    if (onBuildError) {
+      recordError();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onBuildError]);
+
   // Navigation handlers — delegate to parent
   const handlePrev = () => {
     if (onStepChange) onStepChange(Math.max(-1, currentStep - 1));
   };
   const handleNext = () => {
+    // Record successful step completion (no error on this step if advancing)
+    if (currentStep >= 0 && !stepErrors[currentStep]) {
+      recordStepResult(currentStep, false);
+    }
     if (onStepChange) onStepChange(Math.min(buildSteps.length - 1, currentStep + 1));
   };
 
@@ -81,12 +141,14 @@ const BuildModeGuide = React.memo(function BuildModeGuide({
         <div style={{ ...progressBarFill, width: `${progressPct}%` }} />
       </div>
 
-      {/* Step counter */}
+      {/* Step counter with adaptive pacing indicator */}
       <div style={stepCounterStyle}>
         {isIntro
           ? 'Pronti a montare!'
           : `Passo ${currentStep + 1} di ${buildSteps.length}`
         }
+        {!isIntro && hintLevel === 'detailed' && <span style={{ fontSize: 13, color: 'var(--color-vol2-text, #B47714)', marginLeft: 6 }}>(dettagliato)</span>}
+        {!isIntro && hintLevel === 'brief' && <span style={{ fontSize: 13, color: 'var(--color-accent)', marginLeft: 6 }}>(veloce)</span>}
       </div>
 
       {/* Current step content — key forces re-mount for fade-in animation */}
@@ -109,15 +171,31 @@ const BuildModeGuide = React.memo(function BuildModeGuide({
               <span style={{ fontSize: 22 }}>{stepIcon}</span>
               <span style={stepTextStyle}>{step.text}</span>
             </div>
-            {step.hint && (
+            {/* Adaptive hints: 'detailed' shows all hints + extra encouragement,
+                'brief' hides hints unless pinHint, 'normal' shows hint + pinHint */}
+            {hintLevel === 'detailed' && (
+              <div style={encouragementStyle}>
+                Vai piano, nessuna fretta! Leggi bene ogni passaggio.
+              </div>
+            )}
+            {step.hint && hintLevel !== 'brief' && (
               <div style={hintStyle}>
                 {step.hint}
               </div>
             )}
-            {/* Breadboard pin hint: show pin locations if available */}
             {step.pinHint && (
               <div style={pinHintStyle}>
                 {step.pinHint}
+              </div>
+            )}
+            {hintLevel === 'detailed' && step.detailedHint && (
+              <div style={hintStyle}>
+                {step.detailedHint}
+              </div>
+            )}
+            {hintLevel === 'brief' && (
+              <div style={{ fontSize: 13, color: 'var(--color-accent)', fontStyle: 'italic', padding: '2px 8px' }}>
+                Ottimo ritmo! Continua cosi.
               </div>
             )}
           </>
@@ -209,6 +287,18 @@ const hintStyle = {
   background: 'var(--color-warning-light, #FFF9C4)',
   borderRadius: 6,
   marginTop: 4,
+};
+
+const encouragementStyle = {
+  fontSize: 14,
+  color: 'var(--color-accent, #4A7A25)',
+  fontWeight: 600,
+  lineHeight: 1.4,
+  padding: '6px 8px',
+  background: 'rgba(124,179,66,0.12)',
+  borderRadius: 6,
+  marginBottom: 4,
+  textAlign: 'center',
 };
 
 const pinHintStyle = {

@@ -1,0 +1,148 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-05",
+    "source": "curriculum YAML + experiments-vol2.js"
+  },
+  "experiment_id": "v2-cap3-esp1",
+  "volume": 2,
+  "chapter": 3,
+  "title": "Controlliamo la carica della batteria",
+  "chapter_title": "Il Multimetro",
+  "difficulty": 1,
+  "duration_minutes": 35,
+  "target_age": "10-14 anni",
+  "objective": "I ragazzi imparano a usare il multimetro in modalita voltmetro per misurare la tensione di una batteria 9V.",
+  "components_needed": [
+    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
+    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+  ],
+  "vocabulary": {
+    "allowed": [
+      "multimetro", "voltmetro", "tensione", "volt", "batteria",
+      "puntale rosso", "puntale nero", "polo positivo", "polo negativo",
+      "display", "scala", "carica", "scarica", "misura"
+    ],
+    "forbidden": [
+      "amperometro", "corrente", "ohm", "resistenza", "serie",
+      "parallelo", "condensatore", "Arduino", "codice", "programma"
+    ],
+    "note": "Cap 3 Vol 2 — primo incontro con il multimetro. Si misura solo tensione."
+  },
+  "prerequisites": ["circuito_chiuso", "LED_polarita"],
+  "next_experiment": {
+    "id": "v2-cap3-esp2",
+    "title": "Diario di misurazione della pila",
+    "preview": "La prossima volta terremo un diario: misuriamo la batteria ogni giorno per vedere quanto dura!"
+  },
+  "phases": [
+    {
+      "name": "PREPARA",
+      "icon": "📋",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi i ragazzi imparano a usare il multimetro per misurare quanti volt ha una batteria.",
+      "teacher_tip": "Mostra il multimetro fisico prima del simulatore. Fai notare i puntali rosso (+) e nero (-).",
+      "components_list": "Ti servono: 1 batteria 9V con clip, 1 multimetro.",
+      "class_hook": "Avete mai guardato quanta carica ha il vostro telefono? Oggi impariamo a fare la stessa cosa con una batteria!",
+      "action_tags": [],
+      "auto_action": null
+    },
+    {
+      "name": "MOSTRA",
+      "icon": "🔧",
+      "duration_minutes": 8,
+      "teacher_message": "Mostra il circuito sulla LIM. Il multimetro appare collegato alla batteria.",
+      "teacher_tip": "Fai vedere come si seleziona la scala DCV sul multimetro. Spiega che il puntale rosso va sempre al polo +.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp1]"],
+      "auto_action": "load_experiment",
+      "build_circuit": {
+        "description": "Collega il multimetro alla batteria",
+        "button_label": "Monta il circuito per me",
+        "intent": {
+          "components": [
+            { "type": "battery9v", "id": "bat1" },
+            { "type": "multimeter", "id": "mm1" }
+          ],
+          "wires": [
+            { "from": "bat1:positive", "to": "mm1:probe-red", "color": "red" },
+            { "from": "bat1:negative", "to": "mm1:probe-black", "color": "black" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CHIEDI",
+      "icon": "❓",
+      "duration_minutes": 8,
+      "teacher_message": "Domanda provocatoria: se la batteria dice 9V sulla confezione, leggera proprio 9V?",
+      "teacher_tip": "Lascia che discutano. Molti penseranno che legge esattamente 9V. In realta spesso legge un po' di piu o di meno.",
+      "provocative_question": "Secondo voi, il multimetro leggera esattamente 9.00 Volt? O un numero diverso?",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "common_mistakes": [
+        {
+          "mistake": "Puntali invertiti (rosso al negativo)",
+          "teacher_response": "Il display mostra un valore negativo. Chiedi: cosa significa quel meno?",
+          "analogy": null
+        },
+        {
+          "mistake": "Scala sbagliata sul multimetro",
+          "teacher_response": "Mostra che cambiando scala si legge meglio. Come scegliere la lente giusta.",
+          "analogy": null
+        }
+      ]
+    },
+    {
+      "name": "OSSERVA",
+      "icon": "👀",
+      "duration_minutes": 8,
+      "teacher_message": "Premi Play e osserva il display del multimetro. Legge circa 9V!",
+      "teacher_tip": "Fai notare che il numero non e esattamente 9.00. Una batteria nuova puo leggere 9.4-9.6V.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:play]"],
+      "auto_action": "play_and_highlight",
+      "observation_prompt": "Guardate il display del multimetro! Legge un numero vicino a 9V. E esattamente 9.00?",
+      "analogies": [
+        {
+          "concept": "tensione_batteria",
+          "text": "La tensione e come la pressione dell'acqua in un tubo. Piu alta e la pressione, piu forte esce l'acqua.",
+          "evidence": "Analogia idraulica classica"
+        },
+        {
+          "concept": "multimetro_strumento",
+          "text": "Il multimetro e come un termometro per l'elettricita: non cambia niente, legge e basta.",
+          "evidence": "Pedagogia STEM"
+        }
+      ]
+    },
+    {
+      "name": "CONCLUDI",
+      "icon": "✅",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi abbiamo imparato a usare il multimetro come voltmetro: puntale rosso al +, nero al -, e leggiamo la tensione.",
+      "teacher_tip": "Chiedi a un ragazzo di ripetere la procedura a voce. Chi spiega impara meglio!",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "summary_for_class": "Il multimetro misura la tensione senza cambiare nulla nel circuito. Puntale rosso al +, nero al -!",
+      "concepts_learned": ["multimetro_base", "tensione_batteria", "puntali_polarita"],
+      "next_preview": "La prossima volta terremo un diario: misureremo la batteria ogni giorno per vedere come si scarica!"
+    }
+  ],
+  "assessment_invisible": [
+    "Se lo studente collega i puntali correttamente al primo tentativo -> ha capito la polarita",
+    "Se nota che il valore non e esattamente 9V -> spirito critico attivo",
+    "Se chiede 'perche non e 9?' -> pronto per approfondire"
+  ],
+  "session_save": {
+    "concepts_covered": ["multimetro_base", "tensione_batteria", "puntali_polarita"],
+    "next_suggested": "v2-cap3-esp2",
+    "resume_message": "L'ultima volta avete misurato la tensione della batteria con il multimetro! Oggi teniamo un diario..."
+  }
+}

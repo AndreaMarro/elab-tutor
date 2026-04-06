@@ -4,15 +4,15 @@
     "generated": "2026-03-27",
     "source": "curriculum YAML + experiments-vol3.js"
   },
-  "experiment_id": "v3-cap7-mini",
+  "experiment_id": "v3-cap8-esp5",
   "volume": 3,
-  "chapter": 7,
-  "title": "2 LED + Pulsante (toggle)",
-  "chapter_title": "I pin di input",
-  "difficulty": 2,
+  "chapter": 8,
+  "title": "Pot + 3 LED + Serial",
+  "chapter_title": "Comunicazione seriale",
+  "difficulty": 3,
   "duration_minutes": 50,
   "target_age": "10-14 anni",
-  "objective": "Imparare a leggere un pulsante con Arduino usando il pin di INPUT_PULLUP! Ogni volta che premi il pulsante, i due LED si scambiano: se il verde era acceso si spegne e si accende il rosso, e viceversa. Il codice usa variabili di stato e il debounce per evitare i rimbalzi meccanici del pulsante.",
+  "objective": "Controllare 3 LED con le soglie di un potenziometro e monitorare tutto via Serial Monitor. Progetto finale del Volume 3!",
   "components_needed": [
     {
       "name": "Arduino Nano R4 (breakout wing)",
@@ -83,9 +83,9 @@
     "v3-cap6-semaforo"
   ],
   "next_experiment": {
-    "id": "v3-cap8-serial",
-    "title": "analogRead + Serial Monitor",
-    "preview": "Nel capitolo 8 usiamo i pin analogici per leggere valori 0-1023 da un potenziometro e vederli sul Serial Monitor!"
+    "id": "v3-extra-lcd-hello",
+    "title": "LCD Hello World",
+    "preview": "Prossimo: scriveremo il primo messaggio su un display LCD!"
   },
   "phases": [
     {
@@ -210,7 +210,7 @@
       "duration_minutes": 10,
       "teacher_message": "All'avvio il LED verde è acceso e il rosso è spento. Il codice usa una variabile chiamata 'statoVerde' per ricordare quale LED è acceso. Perché è necessaria una variabile? Arduino non sa già cosa è acceso?",
       "teacher_tip": "Spiega che il loop() riparte da zero ogni ciclo — non ricorda cosa è successo al ciclo precedente! La variabile 'statoVerde' è come un foglio su cui Arduino appunta ogni volta lo stato attuale. Chiedi: 'Cosa succede se tolgo la variabile? Arduino sa ancora quale LED era acceso?'",
-      "provocative_question": "Se il programma non avesse la variabile 'statoVerde', cosa succederebbe quando premi il pulsante? Il toggle funzionerebbe ancora?",
+      "provocative_question": "Con un solo potenziometro possiamo controllare 3 LED diversi. Come? Con le soglie: se il valore è basso accendi solo il verde, medio il giallo, alto il rosso!",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
@@ -246,14 +246,14 @@
       "observation_prompt": "Verde acceso, rosso spento. Premi il pulsante: si scambiano! Premi ancora: si scambiano di nuovo. La variabile 'statoVerde' ricorda quale LED è acceso tra una pressione e l'altra.",
       "analogies": [
         {
-          "concept": "toggle_switch",
-          "text": "Il pulsante toggle è come l'interruttore della luce di casa: una pressione accende, un'altra spegne. Non devi tenerlo premuto — ogni click cambia lo stato per sempre, fino al prossimo click.",
-          "evidence": "Curriculum ELAB Vol 3 Cap 7"
+          "concept": "soglie",
+          "text": "Le soglie del potenziometro sono come i semafori del traffico: verde sotto 300, giallo tra 300 e 700, rosso sopra 700.",
+          "evidence": "Analogia stradale"
         },
         {
-          "concept": "variabile_memoria",
-          "text": "La variabile 'statoVerde' è come un post-it appiccicato al frigorifero: Arduino ci scrive sopra 'verde acceso' o 'verde spento' e lo ricorda anche al ciclo successivo del loop. Senza il post-it, dimentica tutto ogni giro!",
-          "evidence": "Curriculum ELAB Vol 3 Cap 7"
+          "concept": "serial_debug",
+          "text": "Il Serial Monitor è come la scatola nera di un aereo: registra tutto quello che succede, così se qualcosa non funziona puoi capire perché.",
+          "evidence": "Analogia ingegneristica"
         }
       ]
     },
@@ -291,7 +291,7 @@
       "debounce",
       "variabili_stato"
     ],
-    "next_suggested": "v3-cap8-serial",
+    "next_suggested": "v3-extra-lcd-hello",
     "resume_message": "Avete imparato i pin di INPUT con il toggle pulsante! Prossimo passo: i pin analogici e il Serial Monitor."
   }
 }

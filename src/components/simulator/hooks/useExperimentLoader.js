@@ -154,6 +154,10 @@ export default function useExperimentLoader({
      Select experiment
      ───────────────────────────────────────────────── */
   const handleSelectExperiment = useCallback(async (experiment) => {
+    // Default buildMode: 'guided' (Passo Passo) for ALL experiments
+    if (!experiment.buildMode) {
+      experiment = { ...experiment, buildMode: 'guided' };
+    }
     // Antigravity: infer parentId from pinAssignments
     if (experiment.pinAssignments && experiment.layout) {
       const parentMap = inferParentFromPinAssignments(experiment.pinAssignments);
@@ -194,11 +198,11 @@ export default function useExperimentLoader({
 
     setCircuitStatus({ status: 'idle', warnings: [], errors: [] });
     setCurrentExperiment(experiment);
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
     pushActivity('experiment_loaded', `${experiment.id} "${experiment.title || experiment.name || ''}"`.trim());
     sessionMetrics.trackExperimentLoad(experiment.id);
     recordEvent('experiment_loaded', { experimentId: experiment.id, experimentName: experiment.name || experiment.id });
     if (onExperimentChangeRef.current) onExperimentChangeRef.current(experiment);
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
     setIsRunning(false);
     setSimulationTime(0);
     setSerialOutput('');
@@ -219,11 +223,8 @@ export default function useExperimentLoader({
     // Principio Zero: il percorso lezione è la PRIMA cosa che il docente vede
     // Si apre automaticamente se l'esperimento ha un lesson path
     setShowLessonPath(hasLessonPath(experiment.id));
-    setBuildStepIndex(
-      experiment.buildMode === 'guided' ? -1
-        : experiment.buildMode === 'sandbox' ? -1
-          : Infinity
-    );
+    // 'complete' mode (Già Montato): all steps visible; others start from -1
+    setBuildStepIndex(experiment.buildMode === 'complete' ? Infinity : -1);
     const volNum = experiment.id.startsWith('v3-') ? 3 : experiment.id.startsWith('v2-') ? 2 : 1;
     setSelectedVolume(volNum);
     setShowNotes(false);
@@ -398,8 +399,8 @@ export default function useExperimentLoader({
       newStates._avrRunning = true;
 
       // TX/RX LED pulse
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
       const currentSerial = avrRef.current.serialBuffer;
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
       if (currentSerial.length > (avrTxLenRef.current || 0)) {
         newStates._txActive = true;
         avrTxLenRef.current = currentSerial.length;

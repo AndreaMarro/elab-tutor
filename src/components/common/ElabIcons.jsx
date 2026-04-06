@@ -341,3 +341,179 @@ export function FlaskIcon(props) {
     </Icon>
   );
 }
+
+export function FootprintsIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16" />
+      <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20" />
+      <path d="M2 17h6" /><path d="M16 21h6" />
+    </Icon>
+  );
+}
+
+export function RouteIcon(props) {
+  return (
+    <Icon {...props}>
+      <circle cx="6" cy="19" r="3" /><circle cx="18" cy="5" r="3" />
+      <path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H12" />
+    </Icon>
+  );
+}
+
+// ─── Component-type icons for simulator step guides ───
+
+export function ResistorIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M2 12h4l1.5-4 3 8 3-8 3 8 1.5-4h4" />
+    </Icon>
+  );
+}
+
+export function LedIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M9 18h6" /><path d="M10 22h4" />
+      <path d="M12 2a6 6 0 0 0-6 6c0 3.5 2.5 6 6 10 3.5-4 6-6.5 6-10a6 6 0 0 0-6-6z" />
+    </Icon>
+  );
+}
+
+export function ButtonIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="4" y="8" width="16" height="8" rx="2" />
+      <path d="M8 8V6a4 4 0 0 1 8 0v2" />
+    </Icon>
+  );
+}
+
+export function BuzzerIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+    </Icon>
+  );
+}
+
+export function CapacitorIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M2 12h7M15 12h7" />
+      <path d="M9 6v12M15 6v12" />
+    </Icon>
+  );
+}
+
+export function MotorIcon(props) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 8v8M8 12h8" />
+      <text x="12" y="14" textAnchor="middle" fontSize="6" fill="currentColor" stroke="none" fontWeight="700">M</text>
+    </Icon>
+  );
+}
+
+export function PotentiometerIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M2 12h4l1.5-4 3 8 3-8 3 8 1.5-4h4" />
+      <path d="M12 2l-2 6h4l-2-6z" fill="currentColor" stroke="none" />
+    </Icon>
+  );
+}
+
+export function PhotoresistorIcon(props) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="12" r="6" />
+      <path d="M4 4l3 3M4 20l3-3M20 4l-3 3M20 20l-3-3" />
+    </Icon>
+  );
+}
+
+export function DiodeIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M2 12h6M16 12h6" />
+      <polygon points="8,6 16,12 8,18" fill="none" stroke="currentColor" />
+      <path d="M16 6v12" />
+    </Icon>
+  );
+}
+
+export function ServoIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="4" y="8" width="12" height="10" rx="1" />
+      <circle cx="10" cy="6" r="2" />
+      <path d="M10 4h8" />
+    </Icon>
+  );
+}
+
+export function LcdIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="2" y="6" width="20" height="12" rx="2" />
+      <path d="M6 10h12M6 14h8" />
+    </Icon>
+  );
+}
+
+export function WireIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M4 12c2-4 6 4 8 0s6 4 8 0" />
+    </Icon>
+  );
+}
+
+export function BatteryIcon(props) {
+  return (
+    <Icon {...props}>
+      <rect x="4" y="6" width="14" height="12" rx="2" />
+      <path d="M18 10h2v4h-2" />
+      <path d="M8 10v4M11 10v4" />
+    </Icon>
+  );
+}
+
+export function MosfetIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M10 4v16" />
+      <path d="M14 8v2h6M14 14v2h6M14 11h4" />
+      <path d="M6 12h4" />
+    </Icon>
+  );
+}
+
+export function RgbLedIcon(props) {
+  return (
+    <Icon {...props}>
+      <circle cx="10" cy="10" r="4" opacity="0.6" />
+      <circle cx="14" cy="10" r="4" opacity="0.6" />
+      <circle cx="12" cy="14" r="4" opacity="0.6" />
+    </Icon>
+  );
+}
+
+export function MagnetIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M6 4h4v10a2 2 0 1 0 4 0V4h4v10a6 6 0 1 1-12 0V4z" />
+    </Icon>
+  );
+}
+
+export function PuzzleIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.611a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877L2.704 13.55A2.403 2.403 0 0 1 2 11.845c0-.617.236-1.234.706-1.704L4.317 8.53a.979.979 0 0 1 .837-.276c.47.07.802.48.968.925a2.501 2.501 0 1 0 3.214-3.214c-.446-.166-.855-.497-.925-.968a.98.98 0 0 1 .276-.837l1.611-1.611a2.404 2.404 0 0 1 3.408 0l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02z" />
+    </Icon>
+  );
+}

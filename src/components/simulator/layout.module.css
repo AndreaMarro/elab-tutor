@@ -177,10 +177,10 @@
   box-shadow: 0 16px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(230,126,34,0.3);
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Mobile Portrait (0-599px)
    Stack everything vertically, bottom sheet for panels
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (max-width: 599px) {
   .codeEditorPanel {
@@ -198,7 +198,7 @@
     padding: 4px 10px;
     gap: 6px;
     top: 4px;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   }
 
   .unlimBackdrop {
@@ -224,9 +224,9 @@
     font-size: 16px;
   }
 }
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Mobile Landscape (600-767px) — Slightly wider but still compact
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 600px) and (max-width: 767px) {
   /* S79: Proportional width for mobile landscape */
@@ -253,10 +253,10 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — iPad Portrait (768-1023px)
    S77: code editor as slide-over panel from right
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 768px) and (max-width: 1023px) {
   /* S79/S100: iPad portrait slide-over — proportional width + slide-in animation */
@@ -287,10 +287,10 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — iPad Landscape (1024-1365px)
    S77: narrower editor, canvas ≥70%
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 1024px) and (max-width: 1365px) {
   /* S79: iPad landscape — keep canvas ≥60%, editor proportional */
@@ -306,12 +306,17 @@
     min-width: 320px;
     max-width: 48%;
   }
+
+  /* LIM: constrain UNLIM panel so it does not cover too much canvas */
+  .unlimPanel {
+    max-width: 480px;
+  }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Wide (1440px+)
    Generous spacing
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 1440px) {
   /* S79: Wide screens — generous but capped at 40% */
@@ -325,6 +330,11 @@
     width: clamp(500px, 42vw, 750px);
     max-width: 55%;
   }
+}
+
+/* ─── LIM compact ─── */
+@media (max-width: 1100px) and (min-height: 680px) {
+  .codeEditorPanel { width: clamp(200px, 25vw, 320px); }
 }
 
 /* ─── Animations ───────────────────────────────────────────── */

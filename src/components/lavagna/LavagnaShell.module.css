@@ -170,6 +170,81 @@
   }
 }
 
+/* ----
+   LIM (1024x768) — Lavagna Interattiva Multimediale
+   Compact sidebar, touch-friendly toolbar, reduced headers
+   ---- */
+@media (max-width: 1024px) and (min-height: 700px) {
+  .shell {
+    --lav-margin: 0;
+  }
+  .canvas {
+    background-size: 16px 16px; /* Tighter dot grid */
+  }
+  .body {
+    gap: 0;
+  }
+  /* Compact sidebar: 140px max to give canvas maximum space */
+  .quickComponents {
+    padding: 8px 6px;
+    max-width: 140px;
+  }
+  .panelTitle {
+    font-size: 13px;
+    padding: 0 2px 6px;
+    margin-bottom: 6px;
+  }
+  .componentBtn {
+    min-height: 48px; /* Touch target: 48px on LIM */
+    padding: 4px 6px;
+    gap: 6px;
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+    font-size: 13px;
+    border-radius: 8px;
+  }
+  .componentLabel {
+    font-size: 13px;
+  }
+  /* Reduce header sizes by 2px */
+  .loading {
+    font-size: 16px;
+  }
+}
+
+/* ── LIM (1024x768) — non-portrait, wider than iPad ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .shell {
+    --lav-margin: 0;
+  }
+  .canvas {
+    background-size: 16px 16px;
+  }
+  .body {
+    gap: 0;
+  }
+}
+
+/* ----
+   iPad (max-width: 768px) — touch-first layout
+   Portrait: stack vertically, sidebar becomes hidden
+   ---- */
+@media (max-width: 768px) {
+  .shell {
+    --lav-margin: 0;
+  }
+  .canvas {
+    background-size: 14px 14px;
+  }
+  .dashboardView {
+    padding: 0;
+  }
+  /* All buttons must be 48x48 minimum for touch */
+  .componentBtn {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
 /* iPad portrait (768x1024) — hide left panel entirely to give max space to circuit */
 @media (max-width: 768px) and (orientation: portrait) {
   .quickComponents {
@@ -178,4 +253,39 @@
   .hideOnPortrait {
     display: none !important;
   }
+  /* Vertical stacking: canvas takes full width, bottom areas stack below */
+  .body {
+    flex-direction: column;
+  }
+  .canvas {
+    margin-left: 0 !important; /* Override inline marginLeft from JS */
+  }
+}
+
+/* ── PC (>1024) — standard layout with sidebar space ── */
+@media (min-width: 1025px) {
+  .canvas {
+    background-size: 20px 20px;
+  }
+  .dashboardView {
+    padding: 0 16px;
+  }
+}
+
+/* ─── LIM 1024×768 ─── */
+@media (max-width: 1100px) {
+  .sidebar { max-width: 140px; }
+  .header { font-size: 14px; }
+  .headerTitle { font-size: 15px; }
+}
+
+/* ─── iPad Portrait ─── */
+@media (max-width: 810px) {
+  .sidebar { max-width: 120px; min-width: 100px; }
+  .mainArea { min-width: 0; }
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 600px) {
+  .sidebar { display: none; }
 }

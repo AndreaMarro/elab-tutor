@@ -1,21 +1,74 @@
-# PDR V2 — ELAB Tutor: Livello Successivo (Parity + Perfection)
+# PDR V3 — ELAB Tutor: Parita Definitiva Kit/Volumi/App
 
-> Versione: 2.0 | Data: 04/04/2026
-> Prerequisito: Sessione PDR 04/04 completata (11 iter, score ~7.5)
+> Versione: 3.0 | Data: 05/04/2026
+> Prerequisito: Post-PDR Session 2 completata (27 bug fixati totali, 1430/1430 test, deploy LIVE)
 > Durata: Ralph Loop max 100 iterazioni
-> Obiettivo: Score composito >= 8.5/10 con 95% benchmark PASS con EVIDENZA
+> Obiettivo: Score composito >= 8.5/10 con 95/100 benchmark PASS con EVIDENZA screenshot
 
 ---
 
-## PRINCIPI IMMUTABILI (violazione = REVERT immediato)
+## META-CONTESTO FONDAMENTALE
 
-1. **PRINCIPIO ZERO**: Solo il docente usa ELAB Tutor davanti alla classe sulla LIM. Gli studenti guardano. Ogni scelta UX serve il docente che spiega.
-2. **ZERO REGRESSIONI**: `npx vitest run` + `npm run build` DOPO OGNI singolo fix. Se falliscono, REVERT immediato.
+**Cos'e ELAB**: Un UNICO prodotto — Kit fisico + 3 Volumi stampati + Tutor digitale. L'estetica del tutor DEVE richiamare i volumi. Se sembra "progetto di studente" = FALLIMENTO. Se sembra "prodotto venduto a scuole" = SUCCESSO.
+
+**IL DOCENTE E INESPERTO**: Il docente che usa ELAB non e un tecnico. Non sa programmare, non sa di elettronica. UNLIM deve essere un SUPPORTO INVISIBILE che lo guida senza farlo sentire incapace. L'interfaccia deve essere cosi intuitiva che un docente di lettere puo usarla.
+
+**UNLIM = supporto invisibile**: NON un chatbot. Una guida contestuale che anticipa i bisogni del docente. Suggerisce senza invadere. Prepara le lezioni dal contesto precedente + curriculum volumi. Il docente parla alla LIM e UNLIM esegue silenziosamente.
+
+**La Lavagna e il concetto centrale**: 95% workspace, 5% chrome. Pannelli flottanti. NON un sito web con pagine.
+
+**Target bambini 8-14**: Linguaggio SEMPRE per loro. Touch first 48px. LIM 1024x768.
+
+**Score attuale onesto**: 6.9-7.5/10. I self-score precedenti erano inflati di ~2 punti. NON credere ai self-score.
+
+---
+
+## 8 PRINCIPI IMMUTABILI (violazione = REVERT immediato)
+
+1. **PRINCIPIO ZERO**: Solo il docente usa ELAB davanti alla classe. Ogni scelta UX serve il docente INESPERTO che spiega.
+2. **ZERO REGRESSIONI**: `npx vitest run` + `npm run build` DOPO OGNI singolo fix. Se falliscono, REVERT.
 3. **ENGINE INTOCCABILE**: MAI modificare CircuitSolver.js, AVRBridge.js, SimulationManager.js, avrWorker.js.
-4. **ZERO DEMO/MOCK**: Tutto deve funzionare con dati reali. Mai dati finti.
-5. **ONESTA BRUTALE**: Mai auto-assegnare score >7 senza evidenza runtime. Ogni score deve avere PROVA (screenshot/console/curl).
-6. **PARITA VOLUMI**: Gli esperimenti nell'app devono essere IDENTICI ai libri fisici. No frammenti, no duplicati, no inventati.
+4. **ZERO DEMO/MOCK**: Tutto con dati reali. Mai dati finti.
+5. **ONESTA BRUTALE**: Mai score >7 senza screenshot/log come prova. Anti-inflazione attiva.
+6. **PARITA VOLUMI**: Esperimenti app = IDENTICI ai libri fisici. No frammenti, no duplicati.
 7. **COV OBBLIGATORIA**: Chain of Verification dopo OGNI ciclo. Quality audit ogni 5 cicli.
+8. **UNLIM INVISIBILE**: UNLIM non deve MAI richiedere competenze tecniche al docente. Deve funzionare come un assistente che capisce dal contesto.
+
+---
+
+## TUTTI I BUG APERTI (20, prioritizzati)
+
+### P0 — Bloccanti
+| # | Bug | File/Area |
+|---|-----|-----------|
+| 1 | 21/27 esperimenti Vol3 senza buildSteps | experiments-vol3.js |
+| 2 | Scratch: solo 10/92 esperimenti hanno scratchXml | experiments-vol*.js |
+| 3 | PercorsoPanel non si apre come FloatingWindow separata | LavagnaShell.jsx |
+| 4 | Esperimenti frammentati vs libri (91 app vs ~88 libri) | experiments-vol*.js |
+| 5 | UNLIM backend non emette sempre tag AZIONE/INTENT | nanobot/post-processing |
+| 6 | Lavagna non salva pagine, non cambia pagina | LavagnaShell.jsx |
+| 7 | Impossibile scaricare il fumetto (report PDF) | UnlimReport.jsx |
+
+### P1 — Importanti
+| # | Bug | File/Area |
+|---|-----|-----------|
+| 8 | Barra componenti visibile in Libero (deve sparire) | LavagnaShell.jsx |
+| 9 | Pannelli inline non ridimensionabili | FloatingWindow.jsx |
+| 10 | Touch difficile su iPad (drag impreciso) | SimulatorCanvas.jsx |
+| 11 | Lesson path con testi mancanti | lesson-paths/*.json |
+| 12 | Dashboard #teacher richiede login | TeacherDashboard.jsx |
+| 13 | Nomi studenti = UUID troncati | TeacherDashboard.jsx |
+| 14 | Tabella classes vuota su Supabase | SQL |
+| 15 | Giochi ancora presenti — ELIMINARE | 4 componenti giochi |
+
+### P2 — Miglioramenti
+| # | Bug | File/Area |
+|---|-----|-----------|
+| 16 | Hooks order violation (dev-only) | NewElabSimulator.jsx |
+| 17 | Nanobot 500 su circuitState complesso | nanobot |
+| 18 | CSP unsafe-inline | index.html |
+| 19 | Lavagna non carica documenti esterni | Non implementato |
+| 20 | Supabase 401 quando class_key null | supabaseSync.js |
 
 ---
 
@@ -103,7 +156,28 @@ npm run build
 
 ---
 
-## FASE 2 — SIMULATORE PERFETTO (Debug sistematico, ~20 iterazioni)
+## FASE 2 — ELIMINA GIOCHI + FIX FUMETTO (~5 iterazioni)
+
+### 2.1 Elimina i 4 giochi didattici
+Andrea li vuole ELIMINATI. Rimuovi COMPLETAMENTE:
+- Circuit Detective (CircuitDetective.jsx)
+- POE / Predict Observe Explain (PredictObserveExplain.jsx)
+- Reverse Engineering Lab (ReverseEngineeringLab.jsx)
+- Circuit Review (CircuitReview.jsx)
+Rimuovi componenti, route, import, riferimenti. Zero dead code.
+
+### 2.2 Fix download fumetto
+Il report fumetto (UnlimReport.jsx / SessionReportPDF.jsx) non si scarica come PDF.
+1. Apri report nell'app → clicca "Scarica PDF" → DEVE scaricare
+2. Se fallisce: root cause + fix
+3. Il PDF deve essere A4, leggibile, con pannelli fumetto
+
+### CoV: vitest + build
+
+---
+
+## FASE 3 — SIMULATORE PERFETTO (Debug sistematico, ~20 iterazioni)
+### NOTA: rinumerata da Fase 2 originale
 
 ### 2.1 Test OGNI esperimento con Control Chrome
 Per OGNI esperimento (tutti e 3 i volumi):
@@ -238,38 +312,127 @@ La Modalita Progetto e il cuore pedagogico:
 DOPO OGNI ciclo di fix, misura con EVIDENZA RUNTIME (screenshot/console/curl).
 Target: media >= 8.5/10 con ZERO dimensioni < 5.
 
-### A. SIMULATORE (15)
-1-15: Caricamento, compilazione, play/stop, drag, snap, fili, undo, zoom, 15 componenti, LED, pot, LDR, Serial Monitor
+### A. SIMULATORE CORE (15)
+1. Tutti gli esperimenti caricano senza crash
+2. Tutti i Vol3 con codice compilano
+3. Play/Stop funziona su tutti
+4. Drag → snap a buco breadboard piu vicino
+5. Sposta componente → fili seguono
+6. Filo tra due pin → contatto elettrico verificabile
+7. Filo sbagliato → circuito NON funziona
+8. Rimuovi filo → circuito aggiornato
+9. Undo/Redo 10x → stato perfetto
+10. Zoom → layout coerente, nulla sparisce
+11. 15 componenti → nessun rallentamento
+12. LED acceso → colore corretto
+13. Potenziometro → overlay rotazione funzionante
+14. LDR → slider luce funzionante
+15. Serial Monitor → output Arduino corretto
 
-### B. SCRATCH (10)
-16-25: Categorie, drag blocco, Blink compila, C++ generato, blocchi sbagliati, switch Arduino/Scratch, fullscreen, italiano, palette ELAB
+### B. SCRATCH/BLOCKLY (10)
+16. 12 categorie visibili e funzionanti
+17. Drag blocco da palette → inserimento workspace
+18. Blink compila da Scratch (accendi D13, attendi, spegni, attendi)
+19. C++ generato → sintatticamente corretto
+20. Scratch → HEX → simulazione funziona
+21. Blocchi sbagliati → errore chiaro, NO crash
+22. Switch Arduino↔Scratch preserva stato
+23. Scratch fullscreen funziona
+24. Categorie italiano kid-friendly
+25. Palette colori ELAB (Navy/Lime/Orange/Red)
 
-### C. COMPILATORE (5)
-26-30: Corretto compila, errore tradotto, warning separati, riga evidenziata, retry
+### C. COMPILATORE C++ (5)
+26. Codice corretto → OK + flash size mostrata
+27. Errore sintattico → tradotto italiano bambino-friendly
+28. Warning → separato da errori
+29. Errore con riga → evidenziazione nell'editor
+30. Retry dopo errore → funziona senza reload
 
-### D. UNLIM (15)
-31-45: Monta LED, aggiungi/rimuovi, pulisci, monta semaforo, compila, mostra Scratch, Serial, capitolo, Legge Ohm, memoria, lezione, < 30s, 3 comandi sequenza, input vuoto
+### D. UNLIM AI (15)
+31. "Monta il LED" → componenti appaiono (INTENT eseguito)
+32. "Aggiungi buzzer" → buzzer appare
+33. "Rimuovi buzzer" → scompare
+34. "Pulisci tutto" → canvas vuoto
+35. "Monta semaforo" → circuito caricato
+36. "Compila" → compilazione avviata
+37. "Mostra Scratch" → tab attiva
+38. "Apri Serial Monitor" → aperto
+39. "Vai capitolo 7" → picker aperto
+40. "Spiega Ohm" → analogia kid-friendly
+41. "Cosa abbiamo fatto?" → memoria cross-sessione
+42. "Prepara lezione" → lesson prep RAG
+43. Risposta < 30s (incluso cold start Render)
+44. 3 comandi rapidi → tutti eseguiti senza crash
+45. Input vuoto o vago → risposta garbata no crash
 
 ### E. PERCORSO / MONTA TU (10)
-46-55: FloatingWindow, 5 fasi, font 16px, non sovrappone, nascondibile, allargabile, step-by-step, feedback colori, no crash senza path
+46. PercorsoPanel = FloatingWindow (drag, resize, minimize)
+47. 5 fasi visibili (Introduzione/Monta/Programma/Esperimenta/Rifletti)
+48. Font >= 16px
+49. NON sovrappone canvas
+50. Nascondibile con 1 click
+51. Allargabile con drag handle
+52. Step-by-step con componente evidenziato
+53. Step completato → prossimo illuminato
+54. Feedback verde (ok) / arancione (errore) — MAI rosso
+55. Senza lesson-path → no crash
 
-### F. DATI (10)
-56-65: Numero uguale libri, titoli identici, componenti, schema, codice, steps, quiz, difficolta, concept, lesson path
+### F. ESPERIMENTI / DATI (10)
+56. Numero esperimenti corrisponde ai libri (Vol1:~37 Vol2:~25 Vol3:~26)
+57. Titoli IDENTICI ai libri fisici
+58. Componenti IDENTICI ai libri
+59. Schema circuitale IDENTICO
+60. Codice Arduino (Vol3) IDENTICO ai libri
+61. BuildSteps presenti per TUTTI i Vol3
+62. Quiz presente per ogni esperimento
+63. Difficolta (1-5) assegnata
+64. Concept graph presente
+65. Lesson path JSON presente
 
 ### G. UX LAVAGNA (10)
-66-75: Header, toolbar, select, filo, elimina, undo/redo, component bar, picker, 3 modalita, mascotte click
+66. AppHeader glassmorphism con nome esperimento visibile
+67. FloatingToolbar 7 icone funzionanti
+68. Select tool → seleziona componente
+69. Filo tool → disegna filo tra 2 pin
+70. Elimina tool → cancella componente
+71. Annulla/Ripeti sincronizzato con simulatore
+72. Barra componenti NASCOSTA in Libero
+73. Experiment Picker ricerca + filtro volume
+74. 3 modalita (Gia Montato/Passo Passo/Libero) switch senza crash
+75. UNLIM mascotte cliccabile → apre chat
 
 ### H. RESPONSIVE (10)
-76-85: LIM overflow, LIM font, LIM toolbar, iPad touch, iPad swipe, iPad drag, PC auto-fit, PC sidebar, nessun taglio, rotazione
+76. LIM 1024x768: ZERO overflow
+77. LIM: font >= 14px su TUTTI gli elementi
+78. LIM: toolbar e sidebar accessibili
+79. iPad 768x1024: touch targets >= 44px
+80. iPad: swipe sidebar funzionante
+81. iPad: drag componenti col dito
+82. PC 1920x1080: canvas auto-fit centrato
+83. PC: sidebar aperta di default
+84. Nessun elemento tagliato a nessuna risoluzione
+85. Rotazione iPad landscape↔portrait → adatta
 
 ### I. PERFORMANCE (5)
-86-90: Build < 60s, bundle < 3000 KiB, precache >= 30, FCP < 3s, no chunk > 2MB
+86. Build < 60 secondi
+87. Bundle precache < 3000 KiB
+88. Precache entries >= 30
+89. First Contentful Paint < 3s
+90. Nessun chunk > 2MB
 
-### J. SICUREZZA (5)
-91-95: Consent, localStorage, API keys, RLS, GDPR
+### J. SICUREZZA / GDPR (5)
+91. Consent banner al primo accesso
+92. Dati in localStorage non esposti in URL
+93. API keys solo in .env (non nel codice)
+94. Supabase RLS attivo
+95. No dati personali a terzi senza consenso
 
-### K. INTEGRITA (5)
-96-100: vitest 1430+, build pass, HTTP 200, nanobot health, solo file intenzionali
+### K. INTEGRITA / ANTI-REGRESSIONE (5)
+96. npx vitest run → 1430+ PASS
+97. npm run build → PASS
+98. curl https://www.elabtutor.school → HTTP 200
+99. curl nanobot /health → status:ok
+100. git diff → SOLO file intenzionalmente modificati
 
 ---
 

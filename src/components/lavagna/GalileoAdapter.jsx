@@ -44,10 +44,10 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
 
   if (!path?.phases?.length) {
     return (
-      <div style={{ padding: 24, textAlign: 'center', color: '#737373', fontFamily: "'Open Sans', sans-serif" }}>
-        <p style={{ fontSize: 16, fontWeight: 600, color: '#1E4D8C', marginBottom: 8 }}>Percorso non disponibile</p>
+      <div style={{ padding: 24, textAlign: 'center', color: 'var(--color-text-secondary, #737373)', fontFamily: "var(--font-sans, 'Open Sans', sans-serif)" }}>
+        <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--color-navy, #1E4D8C)', marginBottom: 8 }}>Percorso non disponibile</p>
         <p style={{ fontSize: 15 }}>Questo esperimento non ha un percorso lezione dettagliato.</p>
-        <button onClick={() => onAskUNLIM?.('Prepara una lezione per questo esperimento')} style={{ marginTop: 16, padding: '12px 20px', border: '2px solid #4A7A25', borderRadius: 12, background: 'rgba(74,122,37,0.08)', color: '#4A7A25', fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+        <button onClick={() => onAskUNLIM?.('Prepara una lezione per questo esperimento')} style={{ marginTop: 16, padding: '12px 20px', border: '2px solid var(--color-lime, #4A7A25)', borderRadius: 12, background: 'rgba(74,122,37,0.08)', color: 'var(--color-lime, #4A7A25)', fontFamily: "var(--font-heading, 'Oswald', sans-serif)", fontSize: 14, fontWeight: 600, cursor: 'pointer', minHeight: 44 }}>
           Chiedi a UNLIM di preparare la lezione
         </button>
       </div>
@@ -78,7 +78,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
       boxShadow: `0 4px 20px ${colors.accent}10`,
     },
     phaseLabel: {
-      fontFamily: "'Oswald', sans-serif", fontSize: 12, fontWeight: 600,
+      fontFamily: "'Oswald', sans-serif", fontSize: 13, fontWeight: 600,
       color: colors.accent, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 6,
       display: 'flex', alignItems: 'center', gap: 8,
     },
@@ -87,13 +87,13 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
       color: colors.accent, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10,
     },
     phaseIcon: { fontSize: 28 },
-    message: { fontSize: 17, lineHeight: 1.7, color: '#1A1A2E', fontFamily: "'Open Sans', sans-serif", marginBottom: 14 },
+    message: { fontSize: 17, lineHeight: 1.7, color: 'var(--color-text, #1A1A2E)', fontFamily: "var(--font-sans, 'Open Sans', sans-serif)", marginBottom: 14 },
     tip: {
       background: 'rgba(255,255,255,0.7)', borderRadius: 12, padding: '12px 14px', marginBottom: 12,
-      border: '1px dashed ' + colors.accent + '30', fontSize: 15, lineHeight: 1.6, color: '#555',
+      border: '1px dashed ' + colors.accent + '30', fontSize: 15, lineHeight: 1.6, color: 'var(--color-text-secondary, #555)',
     },
-    tipLabel: { fontFamily: "'Oswald', sans-serif", fontSize: 12, fontWeight: 600, color: colors.accent, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 4 },
-    extra: { fontSize: 15, lineHeight: 1.6, color: '#444', marginTop: 10, fontStyle: 'italic' },
+    tipLabel: { fontFamily: "'Oswald', sans-serif", fontSize: 13, fontWeight: 600, color: colors.accent, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 4 },
+    extra: { fontSize: 15, lineHeight: 1.6, color: 'var(--color-text-secondary, #444)', marginTop: 10, fontStyle: 'italic' },
     nav: { display: 'flex', gap: 10, padding: '10px 0 4px', flexShrink: 0 },
     navBtn: (primary) => ({
       flex: 1, padding: '14px 16px', border: primary ? 'none' : `2px solid ${colors.accent}40`, borderRadius: 14,
@@ -131,7 +131,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
             <span>{phase.duration_minutes} min</span>
           </div>
           <div style={PS.phaseName}>
-            <span style={PS.phaseIcon}>{phase.icon || '📋'}</span>
+            <span style={PS.phaseIcon}>{phase.icon || '\u25B6'}</span>
             <span>{phase.name}</span>
           </div>
           {/* Adaptive context banner — only on first phase */}
@@ -213,7 +213,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
       boxShadow: '0 4px 20px rgba(30, 77, 140, 0.08), 0 1px 3px rgba(0,0,0,0.04)',
     },
     stepLabel: {
-      fontFamily: "'Oswald', sans-serif", fontSize: 12, fontWeight: 600,
+      fontFamily: "'Oswald', sans-serif", fontSize: 13, fontWeight: 600,
       color: '#4A7A25', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 14,
       display: 'flex', alignItems: 'center', gap: 8,
     },
@@ -270,7 +270,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     // Intro page
     content = (
       <div style={GS.content}>
-        <div style={GS.title}>{experiment.icon || '💡'} {experiment.title}</div>
+        <div style={GS.title}>{experiment.icon || '\u25CF'} {experiment.title}</div>
         {desc && <div style={GS.desc}>{desc}</div>}
         {!desc && <div style={GS.desc}>Pronto a iniziare? Premi Avanti per il primo passo.</div>}
       </div>
@@ -332,10 +332,34 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
   );
 }
 
-export default function GalileoAdapter({ visible, onClose, onSpeakingChange, activeTab: initialTab = 'chat' }) {
+export default function GalileoAdapter({ visible, onClose, onSpeakingChange, activeTab: initialTab = 'chat', sessionTracker, experiment: propExperiment }) {
   const chat = useGalileoChat();
   const [activeTab, setActiveTab] = useState(initialTab); // 'chat' | 'percorso' | 'guida'
-  const [currentExperiment, setCurrentExperiment] = useState(null);
+
+  // Wrap handleSend to track messages for the fumetto report
+  const trackedHandleSend = useCallback((text) => {
+    if (sessionTracker && text) {
+      sessionTracker.recordMessage('user', text);
+    }
+    chat.handleSend(text);
+  }, [chat, sessionTracker]);
+
+  // Track AI responses when messages change
+  const prevMsgCountRef = useRef(0);
+  useEffect(() => {
+    if (!sessionTracker || !chat.messages?.length) return;
+    const newMsgs = chat.messages.slice(prevMsgCountRef.current);
+    for (const msg of newMsgs) {
+      if (msg.role === 'assistant' && msg.text) {
+        sessionTracker.recordMessage('assistant', msg.text);
+      }
+    }
+    prevMsgCountRef.current = chat.messages.length;
+  }, [chat.messages?.length, sessionTracker]);
+  const [currentExperiment, setCurrentExperiment] = useState(propExperiment || null);
+
+  // Sync experiment from parent prop (LavagnaShell passes currentExperiment)
+  useEffect(() => { if (propExperiment?.id) setCurrentExperiment(propExperiment); }, [propExperiment]);
 
   // Sync initial tab when prop changes (e.g. Percorso button in header)
   useEffect(() => { if (visible) setActiveTab(initialTab); }, [initialTab, visible]);
@@ -567,7 +591,7 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
               messages={chat.messages}
               input={chat.input}
               onInputChange={chat.setInput}
-              onSend={chat.handleSend}
+              onSend={trackedHandleSend}
               isLoading={chat.isLoading}
               onRetry={chat.handleRetry}
               quickActions={chat.quickActions}

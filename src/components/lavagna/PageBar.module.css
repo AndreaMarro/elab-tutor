@@ -1,0 +1,295 @@
+/* PageBar — Page navigation for ELAB Lavagna */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--color-border, #E2E8F0);
+  font-family: 'Open Sans', sans-serif;
+  min-height: 40px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+/* ── Navigation buttons ── */
+.navBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border: 1px solid var(--color-border, #E2E8F0);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-primary, #1E4D8C);
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms;
+}
+
+.navBtn:hover:not(:disabled) {
+  background: rgba(30, 77, 140, 0.06);
+  border-color: rgba(30, 77, 140, 0.25);
+}
+
+.navBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.navBtn:focus-visible {
+  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline-offset: -1px;
+}
+
+/* ── Page tabs scrollable ── */
+.pages {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  flex: 1;
+  padding: 2px 0;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pages::-webkit-scrollbar {
+  height: 3px;
+}
+
+.pages::-webkit-scrollbar-thumb {
+  background: rgba(30, 77, 140, 0.2);
+  border-radius: 3px;
+}
+
+.pageTab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 44px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border, #E2E8F0);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-primary, #1E4D8C);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms, box-shadow 150ms;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pageTab:hover {
+  background: rgba(30, 77, 140, 0.04);
+  border-color: rgba(30, 77, 140, 0.2);
+}
+
+.pageTab.active {
+  background: var(--color-primary, #1E4D8C);
+  color: #fff;
+  border-color: var(--color-primary, #1E4D8C);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(30, 77, 140, 0.25);
+}
+
+.pageTab:focus-visible {
+  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline-offset: 2px;
+}
+
+.pageNum {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Dot indicating page has content */
+.dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent, #4A7A25);
+  flex-shrink: 0;
+}
+
+.active .dot {
+  background: #BBD789;
+}
+
+/* Delete button inside active tab */
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 0;
+  margin-left: 2px;
+  transition: background 150ms, color 150ms;
+}
+
+.deleteBtn:hover {
+  background: rgba(229, 57, 53, 0.3);
+  color: #fff;
+}
+
+/* ── Add button ── */
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px dashed rgba(30, 77, 140, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-primary, #1E4D8C);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.addBtn:hover:not(:disabled) {
+  background: rgba(30, 77, 140, 0.04);
+  border-color: rgba(30, 77, 140, 0.5);
+}
+
+.addBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.addBtn:focus-visible {
+  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline-offset: -1px;
+}
+
+.addLabel {
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* ── Counter ── */
+.counter {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  color: var(--color-text-muted, #64748B);
+  white-space: nowrap;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+
+/* ---- */
+/* ── Responsive: LIM 1024x768 ── */
+/* ---- */
+@media (max-width: 1024px) and (min-height: 700px) {
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+  .bar {
+    padding: 3px 8px;
+    gap: 4px;
+    min-height: 44px; /* Touch target */
+    /* z-index lower than FloatingToolbar (950) to layer correctly */
+    z-index: 5;
+  }
+
+  .navBtn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .pageTab {
+    min-width: 48px;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .addBtn {
+    height: 40px;
+    padding: 0 10px;
+  }
+
+  .addLabel {
+    display: none; /* Hide text label on compact screens */
+  }
+
+  .pageNum {
+    font-size: 13px;
+  }
+
+  .counter {
+    font-size: 13px;
+  }
+}
+
+/* Generic small-width fallback */
+@media (max-width: 1024px) {
+  .bar {
+    min-height: 44px;
+  }
+  .addLabel {
+    display: none;
+  }
+}
+
+/* ── Responsive: iPad (max-width: 768px) ── */
+@media (max-width: 768px) {
+  .bar {
+    padding: 3px 6px;
+    gap: 3px;
+    z-index: 5;
+  }
+
+  .pageTab {
+    min-width: 48px;
+    height: 48px; /* 48px touch target */
+    padding: 0 8px;
+  }
+
+  .navBtn {
+    width: 48px;
+    height: 48px; /* 48px touch target */
+    min-width: 48px;
+  }
+
+  .addBtn {
+    height: 48px; /* 48px touch target */
+  }
+
+  .addLabel {
+    display: none;
+  }
+
+  .counter {
+    display: none; /* Save space on small screens */
+  }
+
+  .deleteBtn {
+    display: none; /* Prevent accidental deletion on touch */
+  }
+}
+
+/* ── Touch devices ── */
+@media (pointer: coarse) {
+  .navBtn,
+  .pageTab,
+  .addBtn {
+    min-height: 48px;
+  }
+}

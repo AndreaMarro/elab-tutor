@@ -948,7 +948,7 @@ registerComponent('nano-r4', {
   defaultState: NanoR4Board.defaultState,
   category: 'board',
   label: 'ELAB NanoBreakout V1.1 GP',
-  icon: '\uD83D\uDCDF',
+  icon: '',
   boardDimensions: NanoR4Board.boardDimensions,
   volumeAvailableFrom: 3,
 });

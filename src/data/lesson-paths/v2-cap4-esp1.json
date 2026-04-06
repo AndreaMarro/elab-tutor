@@ -1,0 +1,146 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-05",
+    "source": "curriculum YAML + experiments-vol2.js"
+  },
+  "experiment_id": "v2-cap4-esp1",
+  "volume": 2,
+  "chapter": 4,
+  "title": "Due resistori in parallelo",
+  "chapter_title": "Approfondiamo le Resistenze",
+  "difficulty": 2,
+  "duration_minutes": 40,
+  "target_age": "10-14 anni",
+  "objective": "I ragazzi mettono due resistori da 1kOhm in parallelo e scoprono che la resistenza totale e la meta.",
+  "components_needed": [
+    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
+    { "name": "Resistore 1k Ohm", "quantity": 2, "icon": "⚡" },
+    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+  ],
+  "vocabulary": {
+    "allowed": [
+      "resistore", "resistenza", "parallelo", "ohm", "kilo-ohm",
+      "multimetro", "ohmmetro", "breadboard", "meta",
+      "collegamento", "nodo", "formula"
+    ],
+    "forbidden": [
+      "condensatore", "induttore", "MOSFET", "transistor",
+      "Arduino", "codice", "programma", "digitale"
+    ],
+    "note": "Cap 4 Vol 2 — primo collegamento in parallelo. Focus sulla regola 'la meta'."
+  },
+  "prerequisites": ["ohmmetro", "multimetro_base"],
+  "next_experiment": {
+    "id": "v2-cap4-esp2",
+    "title": "Tre resistori in serie",
+    "preview": "La prossima volta mettiamo tre resistori in fila: le resistenze si SOMMANO!"
+  },
+  "phases": [
+    {
+      "name": "PREPARA",
+      "icon": "📋",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi mettiamo due resistori uguali in parallelo. Il risultato e sorprendente!",
+      "teacher_tip": "Disegna due strade parallele: se ci sono due strade, il traffico si divide. La resistenza al passaggio diminuisce!",
+      "components_list": "Ti servono: 1 breadboard, 2 resistori da 1kOhm, 1 multimetro.",
+      "class_hook": "Se avete due porte per uscire dalla classe invece di una, e piu facile o piu difficile uscire?",
+      "action_tags": [],
+      "auto_action": null
+    },
+    {
+      "name": "MOSTRA",
+      "icon": "🔧",
+      "duration_minutes": 10,
+      "teacher_message": "Due resistori da 1kOhm sulla breadboard, collegati in parallelo. Il multimetro misura ai capi.",
+      "teacher_tip": "Mostra che in parallelo i due resistori condividono gli STESSI due nodi (punti di connessione).",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:loadexp:v2-cap4-esp1]"],
+      "auto_action": "load_experiment",
+      "build_circuit": {
+        "description": "Monta due resistori in parallelo con multimetro",
+        "button_label": "Monta il circuito per me",
+        "intent": {
+          "components": [
+            { "type": "breadboard-half", "id": "bb1" },
+            { "type": "resistor", "id": "r1", "value": 1000 },
+            { "type": "resistor", "id": "r2", "value": 1000 },
+            { "type": "multimeter", "id": "mm1" }
+          ],
+          "wires": [
+            { "from": "bb1:a1", "to": "mm1:probe-red", "color": "red" },
+            { "from": "bb1:a10", "to": "mm1:probe-black", "color": "black" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CHIEDI",
+      "icon": "❓",
+      "duration_minutes": 8,
+      "teacher_message": "Ogni resistore e 1000 Ohm. In parallelo, quanto sara il totale? Di piu, di meno, o uguale?",
+      "teacher_tip": "Molti penseranno che si sommano (2000 Ohm). La sorpresa: e la META!",
+      "provocative_question": "Due resistori da 1000 Ohm in parallelo. Secondo voi il risultato e 2000 Ohm, 1000 Ohm, o 500 Ohm?",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "common_mistakes": [
+        {
+          "mistake": "Pensare che le resistenze si sommano in parallelo",
+          "teacher_response": "In parallelo la corrente ha PIU strade. E come aprire una seconda porta: si esce piu facilmente!",
+          "analogy": "Due porte = meta della difficolta a uscire"
+        },
+        {
+          "mistake": "Collegare i resistori in serie invece che in parallelo",
+          "teacher_response": "In parallelo devono toccare gli STESSI due punti. Controlla i nodi sulla breadboard.",
+          "analogy": null
+        }
+      ]
+    },
+    {
+      "name": "OSSERVA",
+      "icon": "👀",
+      "duration_minutes": 10,
+      "teacher_message": "Premi Play e leggi. Il multimetro mostra circa 500 Ohm!",
+      "teacher_tip": "La formula: 1/Rtot = 1/R1 + 1/R2. Con due uguali: Rtot = R/2. Semplice!",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:play]"],
+      "auto_action": "play_and_highlight",
+      "observation_prompt": "Il display mostra circa 500 Ohm! Due resistori da 1000 in parallelo danno la meta. Sorprendente!",
+      "analogies": [
+        {
+          "concept": "parallelo_porte",
+          "text": "Due porte per uscire dalla stanza: la folla si divide e ognuno aspetta la meta del tempo. Meno resistenza!",
+          "evidence": "Analogia idraulica — due tubi paralleli"
+        }
+      ]
+    },
+    {
+      "name": "CONCLUDI",
+      "icon": "✅",
+      "duration_minutes": 5,
+      "teacher_message": "In parallelo la resistenza totale DIMINUISCE. Con due uguali, e esattamente la meta!",
+      "teacher_tip": "Regola pratica: due resistori uguali in parallelo = meta di uno solo. Facile da ricordare!",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "summary_for_class": "In parallelo la resistenza diminuisce! Con due resistori uguali, il totale e la meta di uno solo.",
+      "concepts_learned": ["resistori_parallelo", "resistenza_diminuisce", "formula_parallelo"],
+      "next_preview": "La prossima volta mettiamo tre resistori IN SERIE: le resistenze si sommano!"
+    }
+  ],
+  "assessment_invisible": [
+    "Se lo studente prevede 'meno di 1000' -> intuizione sul parallelo corretta",
+    "Se collega correttamente i nodi in parallelo -> comprende la topologia",
+    "Se chiede 'e con resistori diversi?' -> pronto per la formula completa"
+  ],
+  "session_save": {
+    "concepts_covered": ["resistori_parallelo", "resistenza_diminuisce", "formula_parallelo"],
+    "next_suggested": "v2-cap4-esp2",
+    "resume_message": "L'ultima volta avete scoperto che in parallelo la resistenza si dimezza! Oggi proviamo la serie..."
+  }
+}

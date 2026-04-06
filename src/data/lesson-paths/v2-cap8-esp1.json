@@ -62,7 +62,7 @@
       "potenziometro",
       "multimetro",
       "carica",
-      "impedenza",
+      "impedenza (resistenza al passaggio della corrente)",
       "flottante",
       "elettricità statica",
       "massa"
@@ -199,7 +199,7 @@
         },
         {
           "mistake": "Pensare che il MOSFET si controlli con la corrente come un pulsante",
-          "teacher_response": "Il MOSFET si controlla con la TENSIONE al Gate, non con la corrente! Il Gate ha un'impedenza altissima: quasi nessuna corrente entra nel Gate. Basta la tensione!",
+          "teacher_response": "Il MOSFET si controlla con la TENSIONE al Gate, non con la corrente! Il Gate ha una resistenza al passaggio della corrente altissima: quasi nessuna corrente entra nel Gate. Basta la tensione!",
           "analogy": null
         }
       ]

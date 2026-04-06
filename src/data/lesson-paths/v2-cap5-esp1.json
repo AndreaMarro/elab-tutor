@@ -1,0 +1,145 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-05",
+    "source": "curriculum YAML + experiments-vol2.js"
+  },
+  "experiment_id": "v2-cap5-esp1",
+  "volume": 2,
+  "chapter": 5,
+  "title": "Batterie in serie (piu spinta!)",
+  "chapter_title": "Approfondiamo le Batterie",
+  "difficulty": 1,
+  "duration_minutes": 35,
+  "target_age": "10-14 anni",
+  "objective": "I ragazzi collegano due batterie in serie e scoprono che le tensioni si sommano.",
+  "components_needed": [
+    { "name": "Batteria 9V con clip", "quantity": 2, "icon": "🔋" },
+    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+  ],
+  "vocabulary": {
+    "allowed": [
+      "batteria", "serie", "tensione", "volt", "somma",
+      "polo positivo", "polo negativo", "collegamento",
+      "multimetro", "voltmetro", "totale"
+    ],
+    "forbidden": [
+      "parallelo", "corrente", "amperometro", "ohm",
+      "condensatore", "Arduino", "codice", "programma"
+    ],
+    "note": "Cap 5 Vol 2 — batterie in serie. Concetto semplice e intuitivo."
+  },
+  "prerequisites": ["tensione_batteria", "multimetro_base"],
+  "next_experiment": {
+    "id": "v2-cap5-esp2",
+    "title": "Batterie in antiserie",
+    "preview": "La prossima volta colleghiamo le batterie AL CONTRARIO: le tensioni si sottraggono!"
+  },
+  "phases": [
+    {
+      "name": "PREPARA",
+      "icon": "📋",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi colleghiamo due batterie da 9V in serie. Le tensioni si sommano!",
+      "teacher_tip": "Chiedi: come sono messe le pile nella torcia? Una dopo l'altra = in serie!",
+      "components_list": "Ti servono: 2 batterie 9V con clip, 1 multimetro.",
+      "class_hook": "La vostra torcia ha piu pile dentro. Perche non ne basta una sola?",
+      "action_tags": [],
+      "auto_action": null
+    },
+    {
+      "name": "MOSTRA",
+      "icon": "🔧",
+      "duration_minutes": 8,
+      "teacher_message": "Due batterie collegate in serie: il negativo della prima al positivo della seconda.",
+      "teacher_tip": "Mostra il verso: + della prima -> filo -> - della seconda -> ... Il multimetro misura dal primo + all'ultimo -.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:loadexp:v2-cap5-esp1]"],
+      "auto_action": "load_experiment",
+      "build_circuit": {
+        "description": "Collega due batterie in serie con multimetro",
+        "button_label": "Monta il circuito per me",
+        "intent": {
+          "components": [
+            { "type": "battery9v", "id": "bat1" },
+            { "type": "battery9v", "id": "bat2" },
+            { "type": "multimeter", "id": "mm1" }
+          ],
+          "wires": [
+            { "from": "bat1:negative", "to": "bat2:positive", "color": "orange" },
+            { "from": "bat1:positive", "to": "mm1:probe-red", "color": "red" },
+            { "from": "bat2:negative", "to": "mm1:probe-black", "color": "black" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CHIEDI",
+      "icon": "❓",
+      "duration_minutes": 7,
+      "teacher_message": "Due batterie da 9V in serie. Quanto leggera il multimetro?",
+      "teacher_tip": "Questa volta quasi tutti indovineranno: 18V! E intuitivo dopo il partitore.",
+      "provocative_question": "Due pile da 9 Volt collegate in serie. Il multimetro leggera 9V, 18V, o 4.5V?",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "common_mistakes": [
+        {
+          "mistake": "Collegare il negativo al negativo (non e serie!)",
+          "teacher_response": "In serie il negativo della prima va al positivo della seconda. Come vagoni di un treno!",
+          "analogy": null
+        },
+        {
+          "mistake": "Pensare che la tensione resta 9V",
+          "teacher_response": "Pensa alle pile della torcia: due pile da 1.5V danno 3V. Si sommano!",
+          "analogy": null
+        }
+      ]
+    },
+    {
+      "name": "OSSERVA",
+      "icon": "👀",
+      "duration_minutes": 8,
+      "teacher_message": "Premi Play. Il multimetro mostra circa 18V!",
+      "teacher_tip": "9V + 9V = 18V. In serie le tensioni si sommano, come i gradini di una scala.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:play]"],
+      "auto_action": "play_and_highlight",
+      "observation_prompt": "18 Volt! Due batterie da 9V in serie danno il doppio della tensione. Le pile della torcia funzionano cosi!",
+      "analogies": [
+        {
+          "concept": "batterie_serie",
+          "text": "Due pompe d'acqua in fila: l'acqua esce con il doppio della pressione! Le batterie in serie sommano le tensioni.",
+          "evidence": "Analogia idraulica — pompe in serie"
+        }
+      ]
+    },
+    {
+      "name": "CONCLUDI",
+      "icon": "✅",
+      "duration_minutes": 5,
+      "teacher_message": "Batterie in serie: le tensioni si SOMMANO. Cosi funzionano le pile nelle torce e nei telecomandi!",
+      "teacher_tip": "Collega al mondo reale: 4 pile AA da 1.5V in serie = 6V. I ragazzi possono verificare a casa!",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "summary_for_class": "In serie le tensioni si sommano: 9V + 9V = 18V! Cosi funzionano le pile nella torcia.",
+      "concepts_learned": ["batterie_serie", "somma_tensioni"],
+      "next_preview": "La prossima volta colleghiamo le batterie AL CONTRARIO! Cosa succede? Le tensioni si sottraggono!"
+    }
+  ],
+  "assessment_invisible": [
+    "Se lo studente prevede 18V -> comprende la serie di batterie",
+    "Se collega correttamente negativo-positivo -> capisce il verso",
+    "Se chiede 'con 3 batterie?' -> generalizzazione spontanea"
+  ],
+  "session_save": {
+    "concepts_covered": ["batterie_serie", "somma_tensioni"],
+    "next_suggested": "v2-cap5-esp2",
+    "resume_message": "L'ultima volta avete collegato due batterie in serie per ottenere 18V! Oggi le giriamo al contrario..."
+  }
+}

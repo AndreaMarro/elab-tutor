@@ -37,7 +37,7 @@
 .micBtn {
   composes: circleBtn;
   background: var(--color-bg-tertiary, #ECECF1);
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary, #5A5A6B);
 }
 
 .micBtnActive {
@@ -75,7 +75,7 @@
 .reportBtn {
   composes: circleBtn;
   background: var(--color-bg-tertiary, #ECECF1);
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary, #5A5A6B);
 }
 
 .reportBtn:disabled {

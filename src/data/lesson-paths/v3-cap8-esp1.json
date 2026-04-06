@@ -14,15 +14,50 @@
   "target_age": "10-14 anni",
   "objective": "Scoprire la comunicazione seriale: Arduino puo mandare messaggi al computer! Con Serial.begin apriamo il canale di comunicazione e con Serial.println nel setup stampiamo un messaggio una sola volta. E il primo passo per il debug e l'interazione con il PC.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Cavo USB", "quantity": 1, "icon": "cable" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Cavo USB",
+      "quantity": 1,
+      "icon": "cable"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "Serial", "println", "begin", "baud", "rate", "monitor", "seriale", "comunicazione", "setup", "messaggio", "testo", "stringa", "USB", "9600"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "I2C", "SPI"],
+    "allowed": [
+      "Arduino",
+      "Serial",
+      "println",
+      "begin",
+      "baud",
+      "rate",
+      "monitor",
+      "seriale",
+      "comunicazione",
+      "setup",
+      "messaggio",
+      "testo",
+      "stringa",
+      "USB",
+      "9600"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "I2C",
+      "SPI"
+    ],
     "note": "Cap 8 Vol 3 — Serial.begin, Serial.println, baud rate, Serial Monitor. Solo nel setup."
   },
-  "prerequisites": ["v3-cap7-esp8"],
+  "prerequisites": [
+    "v3-cap7-esp8"
+  ],
   "next_experiment": {
     "id": "v3-cap8-esp2",
     "title": "Serial.println in loop",
@@ -45,7 +80,9 @@
       "duration_minutes": 10,
       "teacher_message": "Non serve nessun circuito! Solo Arduino e il cavo USB. Il codice ha due righe nel setup: Serial.begin(9600) apre la comunicazione a velocita 9600 baud, e Serial.println scrive il messaggio. Tutto nel setup, quindi il messaggio appare una sola volta.",
       "teacher_tip": "Spiega il baud rate con una analogia: e la velocita della conversazione. Se Arduino parla a 9600 baud e il monitor ascolta a 9600, si capiscono. Se le velocita sono diverse, vedrai caratteri strani (come parlare italiano a qualcuno che ascolta in francese). 9600 e lo standard per principianti.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap8-esp1]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap8-esp1]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -64,9 +101,23 @@
       "duration_minutes": 10,
       "teacher_message": "Premi Play e apri il Serial Monitor! Vedete il messaggio che appare una sola volta. Arduino lo ha scritto nel setup e poi non ha piu nulla da dire. Provate a premere il pulsante Reset nel simulatore: il messaggio riappare perche il setup si riesegue!",
       "teacher_tip": "Il pulsante Reset e una scoperta importante: resetta Arduino ed esegue di nuovo il setup. E come riavviare il programma. Se il messaggio non appare, verifica che il baud rate del monitor sia 9600. Fai notare che dopo il messaggio, Arduino non fa nulla: il loop e vuoto.",
-      "action_tags": ["[AZIONE:play]"],
+      "action_tags": [
+        "[AZIONE:play]"
+      ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Sul Serial Monitor appare una sola riga di testo. Dopo di che, niente. Arduino ha eseguito il setup e ora gira nel loop vuoto senza fare nulla. Premendo Reset il messaggio riappare."
+      "observation_prompt": "Sul Serial Monitor appare una sola riga di testo. Dopo di che, niente. Arduino ha eseguito il setup e ora gira nel loop vuoto senza fare nulla. Premendo Reset il messaggio riappare.",
+      "analogies": [
+        {
+          "concept": "comunicazione_seriale",
+          "text": "La comunicazione seriale è come mandare messaggi su WhatsApp: Arduino scrive, il computer legge. Un messaggio alla volta, in fila.",
+          "evidence": "Analogia digitale"
+        },
+        {
+          "concept": "serial_monitor",
+          "text": "Il Serial Monitor è come una finestra segreta che ti permette di spiare cosa pensa Arduino: vedi i numeri e le parole che manda.",
+          "evidence": "Analogia quotidiana"
+        }
+      ]
     },
     {
       "name": "CONCLUDI",
@@ -85,7 +136,13 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["Serial_begin", "Serial_println", "baud_rate_9600", "Serial_Monitor", "messaggio_singolo"],
+    "concepts_covered": [
+      "Serial_begin",
+      "Serial_println",
+      "baud_rate_9600",
+      "Serial_Monitor",
+      "messaggio_singolo"
+    ],
     "next_suggested": "v3-cap8-esp2",
     "resume_message": "Avete fatto parlare Arduino col Serial Monitor! Prossimo: println nel loop con contatore."
   }

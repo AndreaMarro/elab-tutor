@@ -41,7 +41,7 @@ const UNLIMResponsePanel = React.memo(function UNLIMResponsePanel({
             </div>
           </div>
           {!response.loading && (
-            <button onClick={onClose} style={S.closeBtn}>
+            <button onClick={onClose} style={S.closeBtn} aria-label="Chiudi">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>

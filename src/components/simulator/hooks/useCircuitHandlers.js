@@ -169,11 +169,7 @@ export default function useCircuitHandlers({
       setLdrOverlay(null);
       setAnnotations([]);
       setSelectedAnnotation(null);
-      setBuildStepIndex(
-        currentExperiment.buildMode === 'guided' ? -1
-          : currentExperiment.buildMode === 'sandbox' ? -1
-            : Infinity
-      );
+      setBuildStepIndex(-1);
       const originalCode = currentExperiment.code || '';
       setEditorCode(originalCode);
       codeNeedsCompileRef.current = false;
@@ -198,18 +194,19 @@ export default function useCircuitHandlers({
         setIsRunning(true);
       }
     }
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
     setSimulationTime(0);
     try { sendAnalyticsEvent(EVENTS.SIMULATION_RESET, { experimentId: currentExperiment?.id }); } catch { }
     try { emitSimulatorEvent('stateChange', { state: 'reset', experimentId: currentExperiment?.id }); } catch { }
   }, [currentExperiment, handlePauseFn, clearSaved, clearSavedCode]);
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
   /* ─────────────────────────────────────────────────
      Switch Build Mode
      ───────────────────────────────────────────────── */
   const handleBuildModeSwitch = useCallback((newMode) => {
     if (!currentExperiment) return;
-    const effectiveMode = newMode === 'complete' ? false : newMode;
+    // 'complete' (Già Montato), 'guided' (Passo Passo), 'sandbox' (Percorso)
+    const effectiveMode = (newMode === 'complete' || newMode === 'guided' || newMode === 'sandbox') ? newMode : 'guided';
     if (currentExperiment.buildMode === effectiveMode) return;
     setCurrentExperiment(prev => ({ ...prev, buildMode: effectiveMode }));
     clearSaved();
@@ -220,11 +217,8 @@ export default function useCircuitHandlers({
     setConnectionOverrides({});
     setWireMode(false);
     setSelectedWireIndex(-1);
-    setBuildStepIndex(
-      effectiveMode === 'guided' ? -1
-        : effectiveMode === 'sandbox' ? -1
-          : Infinity
-    );
+    // 'complete' mode: all steps visible (Infinity), others start from -1
+    setBuildStepIndex(effectiveMode === 'complete' ? Infinity : -1);
     if (solverRef.current && currentExperiment.simulationMode === 'circuit') {
       const refreshed = { ...currentExperiment, buildMode: effectiveMode };
       solverRef.current.loadExperiment(refreshed);
@@ -399,13 +393,13 @@ export default function useCircuitHandlers({
   }, [pushSnapshot, getCurrentSnapshot]);
 
   const handleComponentValueChange = useCallback((componentId, newValue) => {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
     setComponentStates(prev => ({ ...prev, [componentId]: { ...(prev[componentId] || {}), ...newValue } }));
     if (solverRef.current) {
       for (const [key, val] of Object.entries(newValue)) {
         solverRef.current.interact(componentId, `set${key.charAt(0).toUpperCase() + key.slice(1)}`, val);
       }
     }
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
   }, []);
 
   /* ─────────────────────────────────────────────────
@@ -434,11 +428,9 @@ export default function useCircuitHandlers({
           const isOn = state.brightness > 0 || state.glowing;
           return `${c.id}: ${isOn ? 'ACCESO' : 'spento'}`;
         }).join(', ');
-      const buildModeText = !currentExperiment?.buildMode
-        ? 'Già Montato (circuito completo)'
-        : currentExperiment.buildMode === 'guided'
+      const buildModeText = currentExperiment?.buildMode === 'guided'
           ? `Passo Passo (step ${buildStepIndex + 1} di ${mergedExperiment.buildSteps?.length || '?'})`
-          : 'Esplora Libero (canvas libero)';
+          : 'Percorso (canvas libero)';
 
       const unlimPrompt = mergedExperiment.unlimPrompt ||
         `Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento "${mergedExperiment.title}". ` +
@@ -600,7 +592,6 @@ export default function useCircuitHandlers({
           return changed ? next : prev;
         });
       }
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
     } else if (mergedExperiment && comp && !isContainer && !noSnapTypes.includes(comp.type)) {
       const originalPos = currentExperiment?.layout?.[componentId];
       const SNAP_BACK_THRESHOLD = 3;
@@ -609,6 +600,7 @@ export default function useCircuitHandlers({
         setCustomPinAssignments(prev => {
           const next = { ...prev };
           const prefix = `${componentId}:`;
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
           for (const key of Object.keys(next)) { if (key.startsWith(prefix)) delete next[key]; }
           return next;
         });
@@ -801,7 +793,6 @@ export default function useCircuitHandlers({
   /* ═══════════════════════════════════════════════════════════════
      Reset experiment to original state
      ═══════════════════════════════════════════════════════════════ */
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
   const handleResetExperiment = useCallback(() => {
     if (!currentExperiment) return;
     pushSnapshot(getCurrentSnapshot());
@@ -810,6 +801,7 @@ export default function useCircuitHandlers({
     localStorage.removeItem(`elab_scratch_${currentExperiment.id}`);
     localStorage.removeItem(`elab_scratch_code_${currentExperiment.id}`);
     setCustomLayout({});
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
     setCustomConnections([]);
     setCustomComponents([]);
     setCustomPinAssignments({});
@@ -962,7 +954,7 @@ export default function useCircuitHandlers({
         sessionStartTime: sessionStartRef?.current || Date.now(),
         buildStepIndex,
         buildStepsTotal: stepsTotal,
-        isCircuitComplete: stepsTotal > 0 ? buildStepIndex >= stepsTotal - 1 : !currentExperiment?.buildMode,
+        isCircuitComplete: stepsTotal > 0 ? buildStepIndex >= stepsTotal - 1 : false,
       });
       const aiSummary = await fetchAISummary(sessionData);
       const timeline = getTimeline();
@@ -1002,7 +994,6 @@ export default function useCircuitHandlers({
     try { localStorage.setItem(`elab_notes_${currentExperiment.id}`, JSON.stringify(newAnnotations)); } catch { }
   }, [currentExperiment?.id]);
 
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
   useEffect(() => {
     if (!currentExperiment?.id) return;
     try {
@@ -1011,6 +1002,7 @@ export default function useCircuitHandlers({
     } catch { }
   }, [currentExperiment?.id]);
 
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
   const handleAnnotationAdd = useCallback(() => {
     const id = `note-${Date.now()}`;
     const vb = canvasContainerRef.current?.querySelector('svg')?.viewBox?.baseVal;

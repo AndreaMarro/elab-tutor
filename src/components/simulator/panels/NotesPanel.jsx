@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { BookIcon, CloseIcon } from '../../../components/common/ElabIcons';
 
 const COLORS = [
   { id: 'navy', color: '#1E4D8C', label: 'Blu' },
@@ -66,9 +67,9 @@ const NotesPanel = ({ experimentId, visible, onClose }) => {
     <div style={styles.panel}>
       {/* Header */}
       <div style={styles.header}>
-        <span style={styles.headerIcon}>{'\u{1F4DD}'}</span>
+        <BookIcon size={18} color="var(--color-primary, #1E4D8C)" />
         <span style={styles.headerTitle}>Appunti</span>
-        <button onClick={onClose} style={styles.closeBtn}>{'\u{2715}'}</button>
+        <button onClick={onClose} style={styles.closeBtn} aria-label="Chiudi appunti"><CloseIcon size={14} color="currentColor" /></button>
       </div>
 
       {/* Toolbar: color + weight */}

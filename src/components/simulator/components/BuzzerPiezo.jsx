@@ -134,7 +134,7 @@ registerComponent('buzzer-piezo', {
   defaultState: BuzzerPiezo.defaultState,
   category: 'output',
   label: 'Cicalino Piezo',
-  icon: '\u{1F50A}',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

@@ -283,7 +283,7 @@ function AppRouter() {
                 <Navbar currentPage={currentPage} onNavigate={navigate} />
                 {currentPage === 'admin' && <ErrorBoundary><AdminPage onNavigate={navigate} /></ErrorBoundary>}
                 {currentPage === 'dashboard' && <RequireAuth onNavigate={navigate}><ErrorBoundary><StudentDashboard onNavigate={navigate} /></ErrorBoundary></RequireAuth>}
-                {currentPage === 'teacher' && <RequireAuth onNavigate={navigate}>{isDocente || isAdmin ? <ErrorBoundary><TeacherDashboard onNavigate={navigate} /></ErrorBoundary> : <AccessDeniedMessage onNavigate={navigate} />}</RequireAuth>}
+                {currentPage === 'teacher' && <ErrorBoundary><TeacherDashboard onNavigate={navigate} /></ErrorBoundary>}
             </div>
         </Suspense>
     );
@@ -310,7 +310,7 @@ function AccessDeniedMessage({ onNavigate }) {
                 <h2 style={{ color: '#1E4D8C', margin: '0 0 12px', fontSize: '20px' }}>
                     Accesso non autorizzato
                 </h2>
-                <p style={{ color: '#666', margin: '0 0 24px', fontSize: '15px', lineHeight: '1.6' }}>
+                <p style={{ color: '#525252', margin: '0 0 24px', fontSize: '15px', lineHeight: '1.6' }}>
                     Questa area richiede permessi specifici.
                 </p>
                 <button

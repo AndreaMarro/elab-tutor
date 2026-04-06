@@ -14,19 +14,69 @@
   "target_age": "10-14 anni",
   "objective": "Scoprire la resistenza di pullup interna di Arduino. Con INPUT_PULLUP non serve un resistore esterno per il pulsante. Il pin legge HIGH di default e LOW quando premiamo. Logica invertita!",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "breadboard" },
-    { "name": "Pulsante (push button)", "quantity": 1, "icon": "button" },
-    { "name": "LED rosso", "quantity": 1, "icon": "led" },
-    { "name": "Resistore 470ohm", "quantity": 1, "icon": "resistor" },
-    { "name": "Fili di collegamento", "quantity": 5, "icon": "wire" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "breadboard"
+    },
+    {
+      "name": "Pulsante (push button)",
+      "quantity": 1,
+      "icon": "button"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "led"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 1,
+      "icon": "resistor"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 5,
+      "icon": "wire"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "INPUT_PULLUP", "pulsante", "digitalRead", "LED", "resistore", "breadboard", "codice", "programma", "GND", "HIGH", "LOW", "pullup", "resistenza interna"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "analogico"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "INPUT_PULLUP",
+      "pulsante",
+      "digitalRead",
+      "LED",
+      "resistore",
+      "breadboard",
+      "codice",
+      "programma",
+      "GND",
+      "HIGH",
+      "LOW",
+      "pullup",
+      "resistenza interna"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "analogico"
+    ],
     "note": "Cap 7 Vol 3 — INPUT_PULLUP, resistenza interna, logica invertita."
   },
-  "prerequisites": ["v3-cap7-esp2"],
+  "prerequisites": [
+    "v3-cap7-esp2"
+  ],
   "next_experiment": {
     "id": "v3-cap7-esp4",
     "title": "PWM: luminosita variabile",
@@ -49,7 +99,9 @@
       "duration_minutes": 10,
       "teacher_message": "Il circuito e quasi uguale al precedente, ma il pulsante va da un pin di Arduino direttamente a GND, senza resistore esterno. Con pinMode(pin, INPUT_PULLUP) Arduino attiva la resistenza interna da 20k ohm. Il pin legge HIGH quando rilasciato, LOW quando premuto.",
       "teacher_tip": "Disegna alla lavagna il circuito equivalente: pin --- [R interna 20k] --- 5V e pin --- [pulsante] --- GND. Quando il pulsante e aperto, la resistenza tira il pin verso 5V (HIGH). Quando e chiuso, la corrente va a GND (LOW). La logica e invertita rispetto all'intuizione.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap7-esp3]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap7-esp3]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -68,9 +120,24 @@
       "duration_minutes": 10,
       "teacher_message": "Premi Play! Il LED si comporta come prima, ma il circuito e piu semplice. Notate: non c'e piu il resistore esterno per il pulsante. Arduino fa tutto da solo con INPUT_PULLUP. Premete e rilasciate il pulsante.",
       "teacher_tip": "Fai confrontare mentalmente i due circuiti: quello precedente (resistore esterno) e questo (INPUT_PULLUP). Il risultato e lo stesso, ma il circuito e piu pulito. Nella pratica, quasi tutti usano INPUT_PULLUP per i pulsanti perche e piu comodo e affidabile.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:btn1]"
+      ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Il LED si accende e si spegne come prima, ma il circuito ha un componente in meno. Il pulsante va direttamente dal pin a GND. La resistenza interna INPUT_PULLUP fa il lavoro del resistore esterno."
+      "observation_prompt": "Il LED si accende e si spegne come prima, ma il circuito ha un componente in meno. Il pulsante va direttamente dal pin a GND. La resistenza interna INPUT_PULLUP fa il lavoro del resistore esterno.",
+      "analogies": [
+        {
+          "concept": "pullup_resistor",
+          "text": "INPUT_PULLUP è come un elastico che tiene il pulsante su: finché non premi, il pin resta HIGH. Quando premi, lo tiri giù a LOW.",
+          "evidence": "Analogia fisica"
+        },
+        {
+          "concept": "resistenza_interna",
+          "text": "La resistenza di pull-up interna è come una molla nella porta: la tiene chiusa finché non la spingi.",
+          "evidence": "Analogia quotidiana"
+        }
+      ]
     },
     {
       "name": "CONCLUDI",
@@ -89,7 +156,12 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["INPUT_PULLUP", "resistenza_pullup_interna", "logica_invertita", "pulsante_senza_resistore"],
+    "concepts_covered": [
+      "INPUT_PULLUP",
+      "resistenza_pullup_interna",
+      "logica_invertita",
+      "pulsante_senza_resistore"
+    ],
     "next_suggested": "v3-cap7-esp4",
     "resume_message": "Avete scoperto INPUT_PULLUP e la logica invertita! Prossimo: PWM e luminosita variabile."
   }

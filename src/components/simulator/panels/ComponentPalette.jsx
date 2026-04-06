@@ -6,6 +6,18 @@
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
+import { ResistorIcon, LedIcon, ButtonIcon, BuzzerIcon, CapacitorIcon, MotorIcon, PotentiometerIcon, PhotoresistorIcon, DiodeIcon, ServoIcon, LcdIcon, WireIcon, BatteryIcon, MosfetIcon, RgbLedIcon, MagnetIcon, PuzzleIcon, CircuitIcon } from '../../common/ElabIcons';
+
+const TYPE_TO_ICON = {
+  resistor: ResistorIcon, led: LedIcon, 'push-button': ButtonIcon, 'rgb-led': RgbLedIcon,
+  'buzzer-piezo': BuzzerIcon, capacitor: CapacitorIcon, 'motor-dc': MotorIcon,
+  potentiometer: PotentiometerIcon, 'photo-resistor': PhotoresistorIcon,
+  phototransistor: PhotoresistorIcon, 'reed-switch': MagnetIcon, 'mosfet-n': MosfetIcon,
+  diode: DiodeIcon, servo: ServoIcon, lcd16x2: LcdIcon, wire: WireIcon,
+  battery9v: BatteryIcon, 'breadboard-half': CircuitIcon, 'breadboard': CircuitIcon,
+  'nano-r4': CircuitIcon, 'nano-breakout': CircuitIcon, switch: ButtonIcon,
+  multimeter: CircuitIcon,
+};
 import { getAllComponents } from '../components/registry';
 
 // ---------------------------------------------------------------------------
@@ -65,7 +77,7 @@ const ComponentCard = React.memo(function ComponentCard({ type, label, icon }) {
       }}
       title={`Trascina "${label}" sul canvas`}
     >
-      <span style={S.cardIcon}>{icon || '\u2022'}</span>
+      <span style={S.cardIcon}>{(() => { const Ic = TYPE_TO_ICON[type]; return Ic ? <Ic size={20} color="var(--color-primary, #1E4D8C)" /> : (icon || '\u2022'); })()}</span>
       <span style={S.cardLabel}>{label}</span>
     </div>
   );

@@ -101,7 +101,7 @@ registerComponent('rgb-led', {
   defaultState: RgbLed.defaultState,
   category: 'output',
   label: 'LED RGB',
-  icon: '\u{1F308}',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

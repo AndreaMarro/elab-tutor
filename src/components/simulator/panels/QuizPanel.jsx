@@ -74,7 +74,7 @@ const QuizPanel = React.memo(function QuizPanel({ experiment, onClose, onSendToU
         <div style={S.header}>
           <span style={S.headerIcon}>{'+'}</span>
           <span style={S.headerTitle}>Quiz Completato!</span>
-          <button onClick={onClose} style={S.headerBtn} title="Chiudi">
+          <button onClick={onClose} style={S.headerBtn} title="Chiudi" aria-label="Chiudi">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
@@ -111,7 +111,7 @@ const QuizPanel = React.memo(function QuizPanel({ experiment, onClose, onSendToU
       <div style={S.header}>
         <span style={S.headerIcon}>{'Q'}</span>
         <span style={S.headerTitle}>Quiz — {currentQ + 1}/{quiz.length}</span>
-        <button onClick={onClose} style={S.headerBtn} title="Chiudi">
+        <button onClick={onClose} style={S.headerBtn} title="Chiudi" aria-label="Chiudi">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>

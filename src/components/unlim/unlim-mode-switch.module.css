@@ -9,7 +9,7 @@
   border: 2px solid var(--color-border, #E5E5EA);
   border-radius: var(--radius-full, 9999px);
   background: var(--color-bg, #FFFFFF);
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary, #5A5A6B);
   cursor: pointer;
   font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans);
@@ -31,7 +31,7 @@
   width: 36px;
   height: 20px;
   border-radius: 10px;
-  background: #999;
+  background: #737373;
   position: relative;
   transition: background 0.2s ease;
 }

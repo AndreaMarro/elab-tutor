@@ -434,7 +434,7 @@ registerComponent('breadboard-full', {
   defaultState: BreadboardFull.defaultState,
   category: 'passive',
   label: 'Breadboard (Full)',
-  icon: '\u{1F4CB}',
+  icon: '',
   boardDimensions: BreadboardFull.boardDimensions,
   getInternalConnections: BreadboardFull.getInternalConnections,
   getHolePosition: BreadboardFull.getHolePosition,

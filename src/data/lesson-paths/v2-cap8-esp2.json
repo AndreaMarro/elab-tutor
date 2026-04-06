@@ -12,7 +12,7 @@
   "difficulty": 2,
   "duration_minutes": 30,
   "target_age": "10-14 anni",
-  "objective": "Scoprire che il Gate del MOSFET ha un'impedenza altissima: basta la carica elettrostatica del corpo umano per accenderlo! Con il Gate flottante (scollegato), toccare il pin con il dito trasferisce abbastanza carica per superare la soglia Vth.",
+  "objective": "Scoprire che il Gate del MOSFET ha una resistenza al passaggio della corrente altissima: basta la carica elettrostatica del corpo umano per accenderlo! Con il Gate flottante (scollegato), toccare il pin con il dito trasferisce abbastanza carica per superare la soglia Vth.",
   "components_needed": [
     {
       "name": "Breadboard mezza (half-size)",
@@ -62,7 +62,7 @@
       "potenziometro",
       "multimetro",
       "carica",
-      "impedenza",
+      "impedenza (resistenza al passaggio della corrente)",
       "flottante",
       "elettricità statica"
     ],
@@ -77,7 +77,7 @@
       "diodo",
       "fototransistor"
     ],
-    "note": "Cap 8 Vol 2 — Gate flottante, carica elettrostatica del corpo, impedenza altissima del Gate."
+    "note": "Cap 8 Vol 2 — Gate flottante, carica elettrostatica del corpo, resistenza al passaggio della corrente altissima del Gate."
   },
   "prerequisites": [
     "v2-cap8-esp1"
@@ -187,8 +187,8 @@
           "analogy": "Una porta lasciata aperta sbatte al vento: per avere controllo, bisogna tenerla chiusa o aperta di proposito"
         },
         {
-          "mistake": "Confondere l'impedenza del Gate con la corrente",
-          "teacher_response": "Impedenza alta significa che quasi nessuna corrente entra nel Gate. Ma la tensione si accumula comunque, come una bottiglia che si riempie goccia a goccia: poche cariche bastano per alzare la tensione!",
+          "mistake": "Confondere la resistenza al passaggio della corrente del Gate con la corrente",
+          "teacher_response": "Il Gate blocca quasi tutta la corrente, come una porta chiusa. Ma la tensione si accumula comunque, come una bottiglia che si riempie goccia a goccia: poche cariche bastano per alzare la tensione!",
           "analogy": null
         }
       ]
@@ -197,8 +197,8 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Nel simulatore: clicca sul pin Gate del MOSFET per simulare il tocco del dito. Il LED si accende! Questo è il potere dell'impedenza altissima del Gate.",
-      "teacher_tip": "Fai notare la magia: 'La carica statica del corpo è sufficiente per superare Vth! Il Gate ha un'impedenza così alta che anche pochissime cariche elettrostatiche alzano la tensione sopra la soglia.' Nella realtà, strofina i piedi sul tappeto prima di toccare.",
+      "teacher_message": "Nel simulatore: clicca sul pin Gate del MOSFET per simulare il tocco del dito. Il LED si accende! Questo è il potere della resistenza al passaggio della corrente altissima del Gate.",
+      "teacher_tip": "Fai notare la magia: 'La carica statica del corpo è sufficiente per superare Vth! Il Gate ha una resistenza al passaggio della corrente così alta che anche pochissime cariche elettrostatiche alzano la tensione sopra la soglia.' Nella realtà, strofina i piedi sul tappeto prima di toccare.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -207,7 +207,7 @@
         "[AZIONE:highlight:led1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Toccare il Gate con il dito trasferisce carica elettrostatica sufficiente per attivare il MOSFET! Il Gate ha impedenza altissima: bastano pochissime cariche per alzare la tensione sopra Vth (~2V).",
+      "observation_prompt": "Toccare il Gate con il dito trasferisce carica elettrostatica sufficiente per attivare il MOSFET! Il Gate ha una resistenza al passaggio della corrente altissima: bastano pochissime cariche per alzare la tensione sopra Vth (~2V).",
       "analogies": [
         {
           "concept": "porta_leggerissima",
@@ -216,7 +216,7 @@
         },
         {
           "concept": "bottiglia_carica",
-          "text": "L'impedenza altissima del Gate è come una bottiglia con il collo strettissimo: quasi nessuna corrente entra, ma le cariche che entrano si accumulano e alzano la tensione. Poche cariche = tensione alta = MOSFET acceso!",
+          "text": "La resistenza al passaggio della corrente altissima del Gate è come una bottiglia con il collo strettissimo: quasi nessuna corrente entra, ma le cariche che entrano si accumulano e alzano la tensione. Poche cariche = tensione alta = MOSFET acceso!",
           "evidence": "experiments-vol2.js concept v2-cap8-esp2"
         }
       ]
@@ -225,16 +225,16 @@
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 5,
-      "teacher_message": "Il Gate del MOSFET ha un'impedenza altissima: basta la carica elettrostatica del corpo per attivarlo! Questo è meraviglioso ma anche pericoloso: i MOSFET si possono danneggiare con l'elettricità statica se non protetti.",
+      "teacher_message": "Il Gate del MOSFET ha una resistenza al passaggio della corrente altissima: basta la carica elettrostatica del corpo per attivarlo! Questo è meraviglioso ma anche pericoloso: i MOSFET si possono danneggiare con l'elettricità statica se non protetti.",
       "teacher_tip": "Collega il concetto al prossimo esperimento: 'Nel prossimo esperimento useremo un potenziometro per controllare con precisione la tensione al Gate. Troveremo esattamente Vth, la soglia di attivazione!'",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Il Gate flottante del MOSFET è attivato dalla carica elettrostatica del corpo! L'impedenza altissima del Gate significa che pochissime cariche bastano per alzare la tensione sopra Vth. Sempre collegare il Gate a un punto preciso del circuito per avere controllo!",
+      "summary_for_class": "Il Gate flottante del MOSFET è attivato dalla carica elettrostatica del corpo! La resistenza al passaggio della corrente altissima del Gate significa che pochissime cariche bastano per alzare la tensione sopra Vth. Sempre collegare il Gate a un punto preciso del circuito per avere controllo!",
       "concepts_learned": [
         "Gate flottante e comportamento imprevedibile",
-        "impedenza altissima del Gate MOSFET",
+        "resistenza al passaggio della corrente altissima del Gate MOSFET",
         "carica elettrostatica del corpo",
         "perché il Gate va sempre collegato"
       ],
@@ -242,14 +242,14 @@
     }
   ],
   "assessment_invisible": [
-    "Se spiega cos'è l'impedenza altissima → comprensione approfondita",
+    "Se spiega cos'è la resistenza al passaggio della corrente altissima → comprensione approfondita",
     "Se capisce perché il Gate va sempre collegato → applicazione pratica",
     "Se collega l'elettricità statica quotidiana al fenomeno → trasferimento del sapere"
   ],
   "session_save": {
     "concepts_covered": [
       "Gate_flottante",
-      "impedenza_altissima",
+      "resistenza_passaggio_corrente_altissima",
       "carica_elettrostatica",
       "MOSFET_sensibile"
     ],

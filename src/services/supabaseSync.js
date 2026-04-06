@@ -52,9 +52,10 @@ function addToQueue(table, data, operation = 'insert') {
 export async function saveSession(session) {
   if (!session) return { success: false, error: 'No session data' };
 
+  const classKey = _getCurrentClassKey();
   const row = {
     student_id: _getCurrentUserId(),
-    class_key: _getCurrentClassKey(),
+    class_key: classKey || null,
     experiment_id: session.experimentId || null,
     session_type: session.experimentId === 'lobby' ? 'lobby' : 'experiment',
     started_at: session.startTime || new Date().toISOString(),
@@ -88,6 +89,7 @@ export async function saveSession(session) {
 
 /**
  * Carica sessioni da Supabase per una classe (o per lo studente corrente).
+ * Supporta query per classId (via class_students) o class_code diretto.
  * @param {string} [classId] — ID classe (per docente). Se omesso, carica sessioni studente corrente.
  * @param {string} [experimentId] — filtro opzionale per esperimento
  * @returns {Promise<Array>}
@@ -101,14 +103,19 @@ export async function loadSessions(classId, experimentId) {
     let query = supabase.from('student_sessions').select('*');
 
     if (classId) {
-      // Docente: carica sessioni degli studenti nella classe
-      const { data: students } = await supabase
-        .from('class_students')
-        .select('student_id')
-        .eq('class_id', classId);
-      const studentIds = (students || []).map(s => s.student_id);
-      if (studentIds.length === 0) return [];
-      query = query.in('student_id', studentIds);
+      // Docente: prova class_key, poi fallback a class_students join
+      const classKey = _getCurrentClassKey();
+      if (classKey) {
+        query = query.eq('class_key', classKey);
+      } else {
+        const { data: students } = await supabase
+          .from('class_students')
+          .select('student_id')
+          .eq('class_id', classId);
+        const studentIds = (students || []).map(s => s.student_id);
+        if (studentIds.length === 0) return [];
+        query = query.in('student_id', studentIds);
+      }
     } else {
       // Studente: carica le proprie sessioni
       const userId = _getCurrentUserId();
@@ -191,6 +198,7 @@ export async function loadProgress(studentId) {
     if (error) throw error;
     return data || [];
   } catch (err) {
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
     logger.warn('[Sync] loadProgress failed, using localStorage:', err.message);
     return _loadProgressFromLocalStorage(studentId);
   }
@@ -198,7 +206,6 @@ export async function loadProgress(studentId) {
 
 /**
  * Salva un report di confusione.
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * @param {object} report — {studentId, experimentId, conceptId, level, context}
  */
 export async function saveConfusionReport(report) {
@@ -392,6 +399,7 @@ export async function markNudgeRead(nudgeId) {
 
 // Cache Supabase user ID on auth state change (avoids async in sync function)
 let _cachedSupabaseUserId = null;
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 if (isSupabaseConfigured() && supabase?.auth) {
   supabase.auth.getSession().then(({ data }) => {
     _cachedSupabaseUserId = data?.session?.user?.id || null;
@@ -399,7 +407,6 @@ if (isSupabaseConfigured() && supabase?.auth) {
   supabase.auth.onAuthStateChange((_event, session) => {
     _cachedSupabaseUserId = session?.user?.id || null;
   });
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
 }
 
 function _getCurrentUserId() {
@@ -414,11 +421,26 @@ function _getCurrentUserId() {
         return payload.userId || payload.sub || null;
       } catch { /* invalid token */ }
     }
-    // Fallback: anonymous session ID
-    return localStorage.getItem('elab_tutor_session') || null;
+    // Fallback: stable anonymous UUID (persisted in localStorage)
+    return _getOrCreateAnonUuid();
   } catch {
     return null;
   }
+}
+
+/**
+ * Genera o recupera un UUID v4 stabile per utenti anonimi.
+ * Persiste in localStorage per mantenere identita cross-session.
+ */
+function _getOrCreateAnonUuid() {
+  const key = 'elab_anon_uuid';
+  let uuid = localStorage.getItem(key);
+  if (uuid && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid)) {
+    return uuid;
+  }
+  uuid = crypto.randomUUID();
+  localStorage.setItem(key, uuid);
+  return uuid;
 }
 
 /**

@@ -143,7 +143,7 @@ export default function useSimulatorAPI({
       warnings: circuitStatusRef.current?.warnings || [],
       errors: circuitStatusRef.current?.errors || [],
       isSimulating: isRunningRef.current || false,
-      buildMode: !exp.buildMode ? 'mounted' : exp.buildMode === 'guided' ? 'guided' : 'explore',
+      buildMode: exp.buildMode === 'complete' ? 'mounted' : exp.buildMode === 'guided' ? 'guided' : exp.buildMode === 'sandbox' ? 'explore' : 'guided',
       buildStepIndex: buildStepIndexRef.current ?? null,
       buildStepTotal: exp.buildSteps?.length || null,
       arduinoCode: editorCodeRef.current || null,
@@ -198,7 +198,7 @@ export default function useSimulatorAPI({
       if (solverRef.current) {
         try {
           const diag = solverRef.current.getDiagnostics?.() || {};
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
           if (diag.shortCircuit) healthSummary += 'CORTOCIRCUITO RILEVATO — simulazione in pausa\n';
           const burned = comps.filter(c => (states[c.id] || {}).burned);
           if (burned.length > 0) healthSummary += 'COMPONENTI BRUCIATI: ' + burned.map(c => c.id).join(', ') + '\n';
@@ -218,11 +218,11 @@ export default function useSimulatorAPI({
       }
 
       // 4. Build mode context
-      const buildCtx = !currentExperiment?.buildMode
-        ? 'Già Montato (circuito completo visibile)'
-        : currentExperiment.buildMode === 'guided'
+      const buildCtx = currentExperiment?.buildMode === 'complete'
+          ? 'Già Montato — circuito pre-assemblato, osserva e sperimenta'
+          : currentExperiment?.buildMode === 'guided'
           ? `Passo Passo — step ${buildStepIndex + 1}/${exp.buildSteps?.length || '?'}`
-          : 'Esplora Libero (canvas vuoto, studente costruisce da zero)';
+          : 'Percorso (canvas libero, studente costruisce da zero)';
 
       // 5. Assemble full circuit context
       const circuitContext = [
@@ -391,15 +391,15 @@ export default function useSimulatorAPI({
       setBuildMode: (mode) => handleBuildModeSwitchRef.current?.(mode),
       getBuildMode: () => {
         const mode = currentExperimentRef.current?.buildMode;
-        if (mode === false || mode === undefined || mode === null) return 'complete';
-        return mode; // 'guided' or 'sandbox'
+        if (!mode) return 'guided';
+        return mode; // 'complete', 'guided', or 'sandbox'
       },
       nextStep: () => {
         const steps = currentExperimentRef.current?.buildSteps || [];
         setBuildStepIndex(prev => {
           const next = steps.length > 0 ? Math.min(prev + 1, steps.length - 1) : prev;
           if (next !== prev) pushActivity('build_step_next', `step ${next + 1}/${steps.length}`);
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
           return next;
         });
       },

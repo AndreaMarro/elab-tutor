@@ -1,0 +1,143 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-05",
+    "source": "curriculum YAML + experiments-vol2.js"
+  },
+  "experiment_id": "v2-cap3-esp2",
+  "volume": 2,
+  "chapter": 3,
+  "title": "Diario di misurazione della pila",
+  "chapter_title": "Il Multimetro",
+  "difficulty": 1,
+  "duration_minutes": 30,
+  "target_age": "10-14 anni",
+  "objective": "I ragazzi misurano la batteria nel tempo e scoprono che si scarica. Introducono il concetto di dato e osservazione ripetuta.",
+  "components_needed": [
+    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
+    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+  ],
+  "vocabulary": {
+    "allowed": [
+      "multimetro", "voltmetro", "tensione", "volt", "batteria",
+      "scarica", "carica", "misura", "dato", "tabella",
+      "grafico", "tempo", "giorno", "variazione"
+    ],
+    "forbidden": [
+      "amperometro", "corrente", "ohm", "resistenza",
+      "condensatore", "Arduino", "codice", "programma"
+    ],
+    "note": "Cap 3 Vol 2 — esperimento longitudinale, focus su metodo scientifico."
+  },
+  "prerequisites": ["multimetro_base", "tensione_batteria"],
+  "next_experiment": {
+    "id": "v2-cap3-esp3",
+    "title": "Misuriamo una resistenza",
+    "preview": "La prossima volta il multimetro misura qualcosa di diverso: una resistenza!"
+  },
+  "phases": [
+    {
+      "name": "PREPARA",
+      "icon": "📋",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi i ragazzi ripetono la misura della batteria e capiscono che i dati cambiano nel tempo.",
+      "teacher_tip": "Se possibile, porta una batteria usata e una nuova per confrontare le letture.",
+      "components_list": "Ti servono: 1 batteria 9V, 1 multimetro, un foglio per annotare.",
+      "class_hook": "Vi ricordate il valore che abbiamo letto l'ultima volta? Secondo voi sara uguale oggi?",
+      "action_tags": [],
+      "auto_action": null
+    },
+    {
+      "name": "MOSTRA",
+      "icon": "🔧",
+      "duration_minutes": 7,
+      "teacher_message": "Riprendi il circuito della volta scorsa. Il multimetro e pronto per una nuova misura.",
+      "teacher_tip": "Mostra una tabella semplice sul quaderno: Data | Volt. Ogni lezione aggiungono una riga.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp2]"],
+      "auto_action": "load_experiment",
+      "build_circuit": {
+        "description": "Collega il multimetro alla batteria",
+        "button_label": "Monta il circuito per me",
+        "intent": {
+          "components": [
+            { "type": "battery9v", "id": "bat1" },
+            { "type": "multimeter", "id": "mm1" }
+          ],
+          "wires": [
+            { "from": "bat1:positive", "to": "mm1:probe-red", "color": "red" },
+            { "from": "bat1:negative", "to": "mm1:probe-black", "color": "black" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CHIEDI",
+      "icon": "❓",
+      "duration_minutes": 7,
+      "teacher_message": "Se usiamo la batteria per accendere un LED tutto il giorno, quanto scende la tensione?",
+      "teacher_tip": "Non dare numeri precisi. Lascia che ipotizzino. Alcuni penseranno che non cambia mai.",
+      "provocative_question": "Se accendiamo un LED per un'ora intera, la batteria si scarica un po'. Quanto pensate che scenda il voltaggio?",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "common_mistakes": [
+        {
+          "mistake": "Pensare che la batteria dura per sempre",
+          "teacher_response": "Chiedi: il telefono dura per sempre senza caricarlo?",
+          "analogy": null
+        },
+        {
+          "mistake": "Non annotare il valore",
+          "teacher_response": "Senza i numeri non possiamo confrontare! Il dato va sempre scritto.",
+          "analogy": null
+        }
+      ]
+    },
+    {
+      "name": "OSSERVA",
+      "icon": "👀",
+      "duration_minutes": 7,
+      "teacher_message": "Premi Play, leggi il valore e confrontalo con la misura precedente.",
+      "teacher_tip": "Se il valore e cambiato, chiedi perche. Se non e cambiato, spiega che nel simulatore non si scarica, ma nella realta si.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:play]"],
+      "auto_action": "play_and_highlight",
+      "observation_prompt": "Leggete il valore e scrivetelo nella tabella. E uguale alla volta scorsa?",
+      "analogies": [
+        {
+          "concept": "scarica_batteria",
+          "text": "La batteria e come una bottiglia d'acqua: ogni volta che bevi, ce n'e un po' meno. La tensione scende piano piano.",
+          "evidence": "Analogia idraulica"
+        }
+      ]
+    },
+    {
+      "name": "CONCLUDI",
+      "icon": "✅",
+      "duration_minutes": 4,
+      "teacher_message": "Raccogliere dati nel tempo e il metodo scientifico! La batteria si scarica e il voltaggio scende.",
+      "teacher_tip": "Se avete 3+ misure, disegnate un mini-grafico sulla lavagna. I ragazzi vedono la tendenza.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "summary_for_class": "Misurare piu volte ci mostra come cambia la batteria nel tempo. Questo e il metodo scientifico!",
+      "concepts_learned": ["misura_ripetuta", "scarica_batteria", "metodo_scientifico"],
+      "next_preview": "La prossima volta il multimetro misura qualcosa di nuovo: una resistenza! Scopriamo se le bande colorate dicono la verita."
+    }
+  ],
+  "assessment_invisible": [
+    "Se lo studente annota il valore senza che glielo si chieda -> metodo scientifico interiorizzato",
+    "Se confronta spontaneamente con la misura precedente -> pensiero critico",
+    "Se chiede 'quanto dura una batteria?' -> curiosita attiva"
+  ],
+  "session_save": {
+    "concepts_covered": ["misura_ripetuta", "scarica_batteria", "metodo_scientifico"],
+    "next_suggested": "v2-cap3-esp3",
+    "resume_message": "L'ultima volta avete tenuto un diario della batteria! Oggi il multimetro misura qualcosa di diverso..."
+  }
+}

@@ -101,7 +101,7 @@ registerComponent('diode', {
   defaultState: Diode.defaultState,
   category: 'passive',
   label: 'Diodo',
-  icon: '\u{25B6}',
+  icon: '',
   volumeAvailableFrom: 2,
 });
 

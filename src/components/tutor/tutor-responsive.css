@@ -1,4 +1,4 @@
-/* ============================================
+/* ----
    ELAB Tutor — Responsive Layout System (UI-5)
    Styles for TutorLayout, TutorTopBar, TutorSidebar,
    ChatOverlay, MobileBottomTabs
@@ -11,7 +11,7 @@
      Wide:              1440px+
 
    (c) Andrea Marro — 13/02/2026
-   ============================================ */
+   ---- */
 
 /* ─────────────────────────────────────────────
    CSS Custom Properties for Responsive
@@ -25,9 +25,9 @@
   --tutor-transition: 250ms ease;
 }
 
-/* ═══════════════════════════════════════════════
+/* ----
    TUTOR LAYOUT — Main Grid Container
-   ═══════════════════════════════════════════════ */
+   ---- */
 
 .tutor-layout {
   display: grid;
@@ -90,9 +90,9 @@
   background: rgba(30, 77, 140, 1);
 }
 
-/* ═══════════════════════════════════════════════
+/* ----
    TOP BAR
-   ═══════════════════════════════════════════════ */
+   ---- */
 
 .tutor-topbar {
   display: flex;
@@ -198,7 +198,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   gap: 6px;
   padding: 6px 10px;
   background: rgba(255, 255, 255, 0.1);
@@ -249,9 +249,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════════
+/* ----
    SIDEBAR — Desktop (full + collapsed)
-   ═══════════════════════════════════════════════ */
+   ---- */
 
 .tutor-sidebar {
   display: flex;
@@ -396,10 +396,10 @@
   border-color: var(--color-border-medium);
 }
 
-/* ═══════════════════════════════════════════════
+/* ----
    CHAT OVERLAY — Floating Panel
-   ═══════════════════════════════════════════════ */
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+   ---- */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 .chat-overlay {
   position: fixed;
@@ -600,7 +600,7 @@
 }
 
 .chat-msg.assistant .chat-bubble {
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   background: var(--color-bg-cool);
   color: var(--color-code-bg);
   border-bottom-left-radius: 4px;
@@ -801,7 +801,7 @@
 .chat-confusion-input-row button:disabled {
   opacity: 0.4;
 }
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 /* Quick Actions */
 .chat-quick-actions {
@@ -917,9 +917,9 @@
   cursor: not-allowed;
 }
 
-/* ═══════════════════════════════════════════════
+/* ----
    MOBILE BOTTOM TABS — iOS-style tab bar
-   ═══════════════════════════════════════════════ */
+   ---- */
 
 .tutor-mobile-tabs {
   position: fixed;
@@ -974,10 +974,10 @@
   line-height: 1.2;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Mobile Portrait (0-599px)
    Full-width layout, bottom tabs, bottom-sheet chat
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (max-width: 599px) {
   :root {
@@ -1002,7 +1002,7 @@
   /* TopBar compact */
   .tutor-topbar {
     padding: 0 10px;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     height: var(--tutor-topbar-height);
   }
 
@@ -1075,9 +1075,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Mobile Landscape (600-767px)
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 600px) and (max-width: 767px) {
   .tutor-body {
@@ -1101,10 +1101,10 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Tablet (768-1023px)
    Collapsed sidebar (icons only), hover to reveal
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 768px) and (max-width: 1023px) {
   :root {
@@ -1200,12 +1200,12 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    S91: iPad 10th Gen Specific (810px viewport, pointer: coarse)
    Touch-optimized: larger targets, no hover dependencies,
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
    Apple Pencil USB C compatible with precise and coarse pointer
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 @media (pointer: coarse) and (min-width: 768px) and (max-width: 1023px) {
   /* Ensure sidebar toggle button is always visible on iPad */
   .topbar-sidebar-toggle {
@@ -1238,10 +1238,10 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Desktop (1024-1439px)
    Full sidebar, normal layout
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 1024px) {
   .tutor-mobile-tabs {
@@ -1249,10 +1249,10 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    RESPONSIVE — Wide (1440px+)
    Generous spacing, wider chat
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 @media (min-width: 1440px) {
   :root {
@@ -1273,9 +1273,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    FOCUS & ACCESSIBILITY
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 
 .tutor-topbar button:focus-visible,
 .tutor-sidebar button:focus-visible,
@@ -1321,11 +1321,11 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ----
    LIM — Lavagne Interattive Multimediali
    Touch screen grandi (tipicamente 1920x1080), usati a distanza 2-3m.
    Aumenta font e touch target per leggibilità a distanza.
-   ═══════════════════════════════════════════════════════════════ */
+   ---- */
 @media (pointer: coarse) and (min-width: 1024px) {
   .tutor-layout {
     font-size: 18px;

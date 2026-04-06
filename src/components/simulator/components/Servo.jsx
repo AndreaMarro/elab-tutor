@@ -93,7 +93,7 @@ registerComponent('servo', {
   defaultState: Servo.defaultState,
   category: 'actuators',
   label: 'Servo',
-  icon: '\u{1F504}',
+  icon: '',
   volumeAvailableFrom: 3,
 });
 

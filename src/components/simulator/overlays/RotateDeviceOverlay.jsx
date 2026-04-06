@@ -98,7 +98,7 @@ const styles = {
   subtitle: {
     fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
     fontSize: 'var(--font-size-base, 15px)',
-    color: 'var(--color-text-secondary, #6B6B80)',
+    color: 'var(--color-text-secondary, #5A5A6B)',
     lineHeight: 1.5,
     margin: '0 0 20px',
   },
@@ -106,7 +106,7 @@ const styles = {
     fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
     fontSize: 'var(--font-size-sm, 14px)',
     fontWeight: 600,
-    color: 'var(--color-text-secondary, #6B6B80)',
+    color: 'var(--color-text-secondary, #5A5A6B)',
     background: 'transparent',
     border: '1px solid var(--color-border, #E5E5EA)',
     borderRadius: 'var(--radius-sm, 6px)',

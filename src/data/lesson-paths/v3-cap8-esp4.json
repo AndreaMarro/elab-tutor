@@ -4,15 +4,15 @@
     "generated": "2026-03-27",
     "source": "curriculum YAML + experiments-vol3.js"
   },
-  "experiment_id": "v3-cap8-serial",
+  "experiment_id": "v3-cap8-esp4",
   "volume": 3,
   "chapter": 8,
-  "title": "analogRead + Serial Monitor",
-  "chapter_title": "I pin analogici",
+  "title": "Serial Plotter con 2 pot",
+  "chapter_title": "Comunicazione seriale",
   "difficulty": 2,
   "duration_minutes": 45,
   "target_age": "10-14 anni",
-  "objective": "Scoprire i pin analogici di Arduino! Un potenziometro collegato al pin A0 produce valori da 0 a 1023 (non più solo 0 e 1). Il Serial Monitor mostra questi valori in tempo reale mentre giriamo la manopola. Impariamo cos'è un ADC (convertitore analogico-digitale) e come Arduino trasforma una tensione in un numero.",
+  "objective": "Usare il Serial Plotter per visualizzare graficamente i valori letti da 2 potenziometri in tempo reale.",
   "components_needed": [
     {
       "name": "Arduino Nano R4 (breakout wing)",
@@ -67,9 +67,9 @@
     "v3-cap7-mini"
   ],
   "next_experiment": {
-    "id": "v3-extra-lcd-hello",
-    "title": "LCD Hello World",
-    "preview": "Nell'Extra scoprirete come scrivere messaggi su un display LCD 16x2!"
+    "id": "v3-cap8-esp5",
+    "title": "Pot + 3 LED + Serial",
+    "preview": "Prossimo: controlliamo 3 LED con un potenziometro e monitoriamo i valori!"
   },
   "phases": [
     {
@@ -150,7 +150,7 @@
       "duration_minutes": 8,
       "teacher_message": "Il potenziometro è collegato e il codice è pronto. Prima di vedere i valori sul Serial Monitor, ragioniamo: se giro la manopola esattamente a metà, che valore ci aspettiamo? E se aggiungo un delay(200) nel loop, a cosa serve?",
       "teacher_tip": "Guida: 'Metà corsa = metà tensione (2.5V) = metà del range 0-1023 = circa 512. Il delay(200) evita di stampare migliaia di valori al secondo che non si potrebbero leggere.' Queste domande preparano i ragazzi a capire cosa vedranno.",
-      "provocative_question": "Se il codice non avesse il delay(200), cosa succederebbe sul Serial Monitor? Riuscireste a leggere i valori? Provate a immaginare...",
+      "provocative_question": "Se muovete entrambi i potenziometri contemporaneamente, cosa vedrete nel grafico? Due linee che si incrociano?",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
@@ -184,14 +184,14 @@
       "observation_prompt": "Il Serial Monitor mostra numeri che cambiano continuamente: 0 con la manopola tutta a sinistra, 1023 tutta a destra, valori intermedi in mezzo. Ogni 200ms arriva un nuovo valore. Gira lentamente: i numeri aumentano o diminuiscono in modo fluido!",
       "analogies": [
         {
-          "concept": "ADC_conversione",
-          "text": "L'ADC di Arduino è come un termometro digitale: trasforma qualcosa di continuo (la temperatura, o in questo caso la tensione) in un numero. Come un termometro che dice '36.7°' invece di mostrare solo il mercurio che sale, Arduino trasforma la posizione della manopola in un numero preciso!",
-          "evidence": "Curriculum ELAB Vol 3 Cap 8"
+          "concept": "serial_plotter",
+          "text": "Il Serial Plotter è come un elettrocardiogramma: disegna le onde dei valori in tempo reale, così vedi subito cosa succede.",
+          "evidence": "Analogia medica"
         },
         {
-          "concept": "serial_monitor",
-          "text": "Il Serial Monitor è come una finestra magica sul cervello di Arduino: lui calcola i valori in silenzio, e ogni 200ms ci manda un messaggio con l'aggiornamento. È come ricevere un SMS ogni secondo che dice 'valore attuale: 523'!",
-          "evidence": "Curriculum ELAB Vol 3 Cap 8"
+          "concept": "due_canali",
+          "text": "Due potenziometri nel Plotter sono come due strumenti in un mixer audio: ogni manopola controlla una linea diversa.",
+          "evidence": "Analogia musicale"
         }
       ]
     },
@@ -230,7 +230,7 @@
       "Serial_begin",
       "Serial_println"
     ],
-    "next_suggested": "v3-extra-lcd-hello",
+    "next_suggested": "v3-cap8-esp5",
     "resume_message": "Avete scoperto i pin analogici e il Serial Monitor! Prossimo passo: il display LCD."
   }
 }

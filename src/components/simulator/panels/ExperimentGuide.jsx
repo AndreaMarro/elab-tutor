@@ -11,13 +11,14 @@
  */
 
 import React from 'react';
+import { getExperimentIcon } from '../../../utils/experimentIcon';
 
 const ExperimentGuide = React.memo(function ExperimentGuide({ experiment, buildMode, onClose, onSendToUNLIM }) {
   // S84: Auto-collapse on iPad/tablet (all breakpoints ≤1365px) to maximize canvas space
   const isTabletOrSmaller = typeof window !== 'undefined' && window.innerWidth <= 1365;
   const [expanded, setExpanded] = React.useState(!isTabletOrSmaller);
   if (!experiment) return null;
-  // S112: In "Già Montato" (complete) mode, hide wiring steps — circuit is pre-assembled
+  // In "Già Montato" (complete) mode, hide individual wiring steps — circuit is pre-assembled
   const isComplete = buildMode === 'complete';
   const steps = isComplete ? [] : (experiment.steps || []);
   const observe = experiment.observe || experiment.note || '';
@@ -46,15 +47,15 @@ const ExperimentGuide = React.memo(function ExperimentGuide({ experiment, buildM
     <div style={S.root} data-elab-guide="true">
       {/* Header */}
       <div style={S.header}>
-        <span style={S.headerIcon}>{experiment.icon || '\u25CF'}</span>
+        <span style={S.headerIcon}>{getExperimentIcon(experiment, 18)}</span>
         <span style={S.headerTitle}>{experiment.title}</span>
         <div style={S.headerActions}>
-          <button onClick={() => setExpanded(false)} style={S.headerBtn} title="Comprimi">
+          <button onClick={() => setExpanded(false)} style={S.headerBtn} title="Comprimi" aria-label="Comprimi">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 7H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           </button>
-          <button onClick={onClose} style={S.headerBtn} title="Chiudi">
+          <button onClick={onClose} style={S.headerBtn} title="Chiudi" aria-label="Chiudi">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
@@ -208,7 +209,7 @@ const S = {
     margin: 0,
     padding: '10px 14px',
     fontSize: 14,
-    color: 'var(--color-text-gray-400, #666)',
+    color: 'var(--color-text-gray-400, #525252)',
     lineHeight: 1.5,
     borderBottom: '1px solid var(--color-divider-subtle, #F0EDE6)',
   },

@@ -36,6 +36,13 @@ function esc(text) {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
+/** Tronca il testo a maxLen caratteri, tagliando su una parola. */
+function truncate(text, maxLen = 150) {
+  if (!text || text.length <= maxLen) return text;
+  const cut = text.lastIndexOf(' ', maxLen);
+  return text.slice(0, cut > 0 ? cut : maxLen) + '...';
+}
+
 function humanize(id) {
   const m = {
     led_base: 'LED', resistenza_ohm: 'Legge di Ohm', circuito_serie: 'Serie',
@@ -96,12 +103,19 @@ const SVG_STUDENT = `<svg width="44" height="44" viewBox="0 0 24 24" fill="none"
 const SVG_ARROW_UP = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12l5-5 5 5"/><path d="M12 7v10"/></svg>`;
 
 // ─── Scene builder ──────────────────────────────────────────────────
+// Costruisce le scene del fumetto dalla VERA lezione:
+// 1. Usa le fasi del lesson path (PREPARA, MOSTRA, CHIEDI, OSSERVA, CONCLUDI)
+// 2. Inserisce i dialoghi reali della sessione nei punti giusti
+// 3. Aggiunge esercizi, analogie, errori comuni dal curriculum
+// 4. Linguaggio sempre per bambini 10-14
 
 function buildScenes(session, lessonPath) {
   const scenes = [];
   const msgs = session?.messages || [];
   const errs = session?.errors || [];
+  const phases = lessonPath?.phases || [];
 
+  // ── INTRO: cosa abbiamo fatto oggi ──
   if (lessonPath?.title) {
     scenes.push({
       type: 'intro',
@@ -110,18 +124,82 @@ function buildScenes(session, lessonPath) {
     });
   }
 
-  let pairIdx = 0;
-  const sceneTypes = [
-    { title: 'Si comincia!', mood: 'discovery' },
-    { title: 'Andiamo avanti...', mood: 'discovery' },
-    { title: 'Approfondiamo!', mood: 'eureka' },
-    { title: 'Che curiosit\u00E0!', mood: 'eureka' },
-    { title: 'Ancora...', mood: 'discovery' },
-    { title: 'Un passo in pi\u00F9', mood: 'discovery' },
-    { title: 'Quasi alla fine!', mood: 'eureka' },
-    { title: 'Ecco!', mood: 'eureka' },
+  // ── COMPONENTI: cosa abbiamo usato ──
+  const components = lessonPath?.components_needed;
+  if (components?.length > 0) {
+    scenes.push({
+      type: 'components',
+      title: 'I nostri strumenti',
+      items: components,
+    });
+  }
+
+  // ── FASI + DIALOGHI: la storia della lezione ──
+  // Mappa i messaggi alle fasi temporali
+  let msgIdx = 0;
+  const storyArc = [
+    { title: 'La prima domanda', mood: 'discovery' },
+    { title: 'Si va avanti!', mood: 'discovery' },
+    { title: 'Un lampo di genio', mood: 'eureka' },
+    { title: 'La curiosit\u00E0 cresce', mood: 'question' },
+    { title: 'Sempre pi\u00F9 in profondo', mood: 'discovery' },
+    { title: 'Verso la soluzione', mood: 'eureka' },
+    { title: 'Ci siamo quasi!', mood: 'eureka' },
+    { title: 'L\u2019ultimo pezzo', mood: 'eureka' },
   ];
 
+  // Se ci sono fasi nel lesson path, usa quelle come struttura
+  if (phases.length > 0) {
+    for (const phase of phases) {
+      // Pannello fase (es. CHIEDI con domanda provocatoria)
+      if (phase.provocative_question) {
+        scenes.push({
+          type: 'challenge',
+          title: 'La Domanda!',
+          mood: 'question',
+          question: phase.provocative_question,
+          tip: phase.teacher_tip,
+        });
+      }
+
+      // Analogie — perfette per il fumetto
+      if (phase.analogies?.length > 0) {
+        for (const a of phase.analogies) {
+          scenes.push({
+            type: 'analogy',
+            title: 'Lo sapevi?',
+            mood: 'eureka',
+            concept: a.concept,
+            text: a.text,
+          });
+        }
+      }
+
+      // Errori comuni — "La Sfida"
+      if (phase.common_mistakes?.length > 0) {
+        for (const m of phase.common_mistakes) {
+          // Controlla se questo errore è successo davvero nella sessione
+          const happened = errs.some(e =>
+            (e.detail || '').toLowerCase().includes(m.mistake.toLowerCase().split(' ')[0])
+          );
+          if (happened || phase.common_mistakes.length <= 2) {
+            scenes.push({
+              type: 'mistake',
+              title: 'La Sfida!',
+              mood: 'oops',
+              mistake: m.mistake,
+              response: m.teacher_response,
+              analogy: m.analogy,
+              happened,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // Dialoghi reali dalla chat — inseriti come scene dialog
+  let pairIdx = 0;
   for (let i = 0; i < msgs.length; i++) {
     if (msgs[i].role === 'user') {
       const resp = msgs[i + 1]?.role === 'assistant' ? msgs[i + 1] : null;
@@ -133,13 +211,16 @@ function buildScenes(session, lessonPath) {
         return t >= t0 - 5000 && t <= t1 + 5000;
       });
 
-      let scene = sceneTypes[pairIdx % sceneTypes.length];
+      let scene = storyArc[pairIdx % storyArc.length];
       const q = msgs[i].text.toLowerCase();
-      if (sceneErrs.length) scene = { title: 'Oops!', mood: 'oops' };
-      else if (q.includes('cos\'') || q.includes('cosa ')) scene = { title: 'Domandona!', mood: 'question' };
-      else if (q.includes('perch')) scene = { title: 'Perch\u00E9?', mood: 'question' };
+      if (sceneErrs.length) scene = { title: 'La sfida!', mood: 'oops' };
+      else if (q.includes('cos\'') || q.includes('cosa ') || q.includes('che cos')) scene = { title: 'Domandona!', mood: 'question' };
+      else if (q.includes('perch')) scene = { title: 'Ma perch\u00E9?', mood: 'question' };
       else if (q.includes('funzion')) scene = { title: 'Come funziona?', mood: 'discovery' };
-      else if (q.includes('aiut') || q.includes('help')) scene = { title: 'Aiuto!', mood: 'question' };
+      else if (q.includes('aiut') || q.includes('help') || q.includes('non riesco')) scene = { title: 'Aiuto!', mood: 'question' };
+      else if (q.includes('non si accende') || q.includes('non funziona')) scene = { title: 'Qualcosa non va...', mood: 'oops' };
+      else if (q.includes('ho capito') || q.includes('ho fatto')) scene = { title: 'Eureka!', mood: 'eureka' };
+      else if (q.includes('provo') || q.includes('proviamo')) scene = { title: 'Si sperimenta!', mood: 'discovery' };
 
       scenes.push({
         type: 'dialog',
@@ -152,6 +233,17 @@ function buildScenes(session, lessonPath) {
       if (resp) i++;
       pairIdx++;
     }
+  }
+
+  // ── ESERCIZIO: prova a casa! ──
+  const concludePhase = phases.find(p => p.name === 'CONCLUDI');
+  if (concludePhase?.next_preview || lessonPath?.next_experiment?.preview) {
+    scenes.push({
+      type: 'exercise',
+      title: 'Prova a casa!',
+      text: concludePhase?.next_preview || lessonPath.next_experiment.preview,
+      summary: concludePhase?.summary_for_class || '',
+    });
   }
 
   scenes.push({
@@ -204,12 +296,21 @@ function statBarSVG(label, value, max, color) {
 
 // ─── Mood config ────────────────────────────────────────────────────
 
+// Mascotte espressive — robot UNLIM con espressioni diverse per mood
+const SVG_MASCOT_HAPPY = `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M12 2v4"/><circle cx="12" cy="2" r="1" fill="currentColor" stroke="none"/><path d="M3 14h2"/><path d="M19 14h2"/><circle cx="9" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="currentColor" stroke="none"/><path d="M9.5 16.5 Q12 18.5 14.5 16.5" stroke-width="1.5"/></svg>`;
+
+const SVG_MASCOT_THINK = `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M12 2v4"/><circle cx="12" cy="2" r="1" fill="currentColor" stroke="none"/><path d="M3 14h2"/><path d="M19 14h2"/><circle cx="9" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="currentColor" stroke="none"/><line x1="10" y1="17" x2="14" y2="17" stroke-width="1.5"/><circle cx="20" cy="6" r="1" fill="#E8941C" stroke="#E8941C"/><circle cx="22" cy="4" r="0.6" fill="#E8941C" stroke="#E8941C"/></svg>`;
+
+const SVG_MASCOT_SURPRISE = `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M12 2v4"/><circle cx="12" cy="2" r="1" fill="currentColor" stroke="none"/><path d="M3 14h2"/><path d="M19 14h2"/><circle cx="9" cy="12.5" r="1.8" stroke-width="1.5"/><circle cx="9" cy="12.5" r="0.6" fill="currentColor" stroke="none"/><circle cx="15" cy="12.5" r="1.8" stroke-width="1.5"/><circle cx="15" cy="12.5" r="0.6" fill="currentColor" stroke="none"/><ellipse cx="12" cy="17" rx="1.5" ry="1.2" stroke-width="1.5"/></svg>`;
+
+const SVG_MASCOT_OOPS = `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M12 2v4"/><circle cx="12" cy="2" r="1" fill="currentColor" stroke="none"/><path d="M3 14h2"/><path d="M19 14h2"/><line x1="8" y1="12" x2="10" y2="14" stroke-width="2"/><line x1="10" y1="12" x2="8" y2="14" stroke-width="2"/><line x1="14" y1="12" x2="16" y2="14" stroke-width="2"/><line x1="16" y1="12" x2="14" y2="14" stroke-width="2"/><path d="M9.5 17.5 Q12 16 14.5 17.5" stroke-width="1.5"/></svg>`;
+
 function moodConfig(mood, volCol) {
   const configs = {
-    discovery: { bg: '#F0F8FF', border: volCol, icon: SVG_LIGHTBULB, accent: volCol },
-    eureka: { bg: '#FFFEF0', border: '#E8941C', icon: SVG_LIGHTBULB, accent: '#E8941C' },
-    oops: { bg: '#FFF5F5', border: '#D32F2F', icon: SVG_WARNING, accent: '#D32F2F' },
-    question: { bg: '#F5F0FF', border: '#7C3AED', icon: SVG_QUESTION, accent: '#7C3AED' },
+    discovery: { bg: '#F0F8FF', border: volCol, icon: SVG_MASCOT_HAPPY, accent: volCol, label: 'Scoperta' },
+    eureka: { bg: '#FFFEF0', border: '#E8941C', icon: SVG_MASCOT_SURPRISE, accent: '#E8941C', label: 'Eureka' },
+    oops: { bg: '#FFF5F5', border: '#D32F2F', icon: SVG_MASCOT_OOPS, accent: '#D32F2F', label: 'La Sfida' },
+    question: { bg: '#F5F0FF', border: '#1E4D8C', icon: SVG_MASCOT_THINK, accent: '#1E4D8C', label: 'Domanda' },
   };
   return configs[mood] || configs.discovery;
 }
@@ -326,6 +427,90 @@ function buildReportHTML(session, lessonPath, screenshotDataUrl) {
       </div>`;
     }
 
+    if (sc.type === 'components') {
+      const items = (sc.items || []).map(c =>
+        `<span class="comp-pill">${esc(c.name)} ${c.quantity > 1 ? '\u00D7' + c.quantity : ''}</span>`
+      ).join('');
+      return `
+      <div class="panel panel-components" style="--panel-accent:${volCol}">
+        <div class="panel-num" style="background:${volCol}">${num}</div>
+        <div class="panel-header">
+          <span class="mood-icon" style="color:${volCol}">${SVG_BOOK}</span>
+          <span class="panel-title" style="color:${volCol}">${esc(sc.title)}</span>
+        </div>
+        <div class="comp-grid">${items}</div>
+      </div>`;
+    }
+
+    if (sc.type === 'challenge') {
+      const mc = moodConfig('question', volCol);
+      return `
+      <div class="panel panel-challenge" style="--panel-accent:${mc.border};background:${mc.bg}">
+        <div class="panel-num" style="background:${mc.border}">${num}</div>
+        <div class="panel-header">
+          <span class="mood-icon" style="color:${mc.accent}">${mc.icon}</span>
+          <span class="panel-title" style="color:${mc.accent}">${esc(sc.title)}</span>
+          <span class="mood-label" style="color:${mc.accent}">${mc.label}</span>
+        </div>
+        <div class="challenge-box">
+          <p class="challenge-q">${esc(sc.question)}</p>
+        </div>
+        ${sc.tip ? `<p class="challenge-tip">${esc(sc.tip)}</p>` : ''}
+        ${photoSlotHTML(idx)}
+      </div>`;
+    }
+
+    if (sc.type === 'analogy') {
+      const mc = moodConfig('eureka', volCol);
+      return `
+      <div class="panel panel-analogy" style="--panel-accent:${mc.border};background:${mc.bg}">
+        <div class="panel-num" style="background:${mc.border}">${num}</div>
+        <div class="panel-header">
+          <span class="mood-icon" style="color:${mc.accent}">${mc.icon}</span>
+          <span class="panel-title" style="color:${mc.accent}">${esc(sc.title)}</span>
+          <span class="mood-label" style="color:${mc.accent}">Analogia</span>
+        </div>
+        <div class="analogy-box">
+          <p class="analogy-text">${esc(sc.text)}</p>
+        </div>
+      </div>`;
+    }
+
+    if (sc.type === 'mistake') {
+      const mc = moodConfig('oops', volCol);
+      return `
+      <div class="panel panel-mistake" style="--panel-accent:${mc.border};background:${mc.bg}">
+        <div class="panel-num" style="background:${mc.border}">${num}</div>
+        <div class="panel-header">
+          <span class="mood-icon" style="color:${mc.accent}">${mc.icon}</span>
+          <span class="panel-title" style="color:${mc.accent}">${esc(sc.title)}</span>
+          <span class="mood-label" style="color:${mc.accent}">${sc.happened ? 'Successo!' : 'Attenzione'}</span>
+        </div>
+        <div class="mistake-box">
+          <p class="mistake-what"><strong>Errore:</strong> ${esc(sc.mistake)}</p>
+          <p class="mistake-fix">${esc(sc.response)}</p>
+          ${sc.analogy ? `<p class="mistake-analogy">${esc(sc.analogy)}</p>` : ''}
+        </div>
+        ${photoSlotHTML(idx)}
+      </div>`;
+    }
+
+    if (sc.type === 'exercise') {
+      return `
+      <div class="panel panel-exercise" style="--panel-accent:${volCol};background:linear-gradient(135deg,#FFF8E1,#FFFDE7)">
+        <div class="panel-num" style="background:${volCol}">${num}</div>
+        <div class="panel-header">
+          <span class="mood-icon" style="color:${volCol}">${SVG_STAR}</span>
+          <span class="panel-title" style="color:${volCol}">${esc(sc.title)}</span>
+          <span class="mood-label" style="color:${volCol}">Esercizio</span>
+        </div>
+        ${sc.summary ? `<p class="exercise-summary">${esc(sc.summary)}</p>` : ''}
+        <div class="exercise-box">
+          <p class="exercise-text">${esc(sc.text)}</p>
+        </div>
+      </div>`;
+    }
+
     if (sc.type === 'dialog') {
       const mc = moodConfig(sc.mood, volCol);
       const qT = formatTime(sc.question.timestamp);
@@ -336,6 +521,7 @@ function buildReportHTML(session, lessonPath, screenshotDataUrl) {
         <div class="panel-header">
           <span class="mood-icon" style="color:${mc.accent}">${mc.icon}</span>
           <span class="panel-title" style="color:${mc.accent}">${esc(sc.title)}</span>
+          <span class="mood-label" style="color:${mc.accent}">${mc.label}</span>
           ${qT ? `<span class="panel-time">${qT}</span>` : ''}
         </div>
         <div class="comic-row">
@@ -358,7 +544,7 @@ function buildReportHTML(session, lessonPath, screenshotDataUrl) {
         ${sc.answer ? `
         <div class="comic-row row-flip">
           <div class="balloon balloon-a">
-            <div class="balloon-content">${esc(sc.answer.text)}</div>
+            <div class="balloon-content">${esc(truncate(sc.answer.text, 180))}</div>
             <svg class="balloon-tail-svg tail-right-svg" width="16" height="20" viewBox="0 0 16 20">
               <path d="M0 0 C4 6, 14 8, 16 20 C12 14, 6 10, 0 8 Z" fill="#D6F0D6"/>
             </svg>
@@ -428,27 +614,31 @@ body{font-family:'Open Sans',system-ui,sans-serif;color:#1A1A2E;background:#E8E8
 .tb-pr{background:#1E4D8C;color:#fff}.tb-pr:hover{background:#163B6C}
 .tb-sc{background:#F0F2F5;color:#1E4D8C}.tb-sc:hover{background:#E0E4EA}
 .tb-photo{background:${volCol};color:#fff}.tb-photo:hover{filter:brightness(0.9)}
-.cover-page{background:linear-gradient(135deg,${volCol} 0%,#1E4D8C 100%);color:#fff;padding:56px 36px;text-align:center;position:relative;overflow:hidden}
-.cover-page::before{content:'';position:absolute;inset:0;background:radial-gradient(circle 2px at 30px 30px, rgba(255,255,255,0.08) 1px, transparent 2px);background-size:60px 60px;opacity:.6}
+.cover-page{background:linear-gradient(145deg,${volCol} 0%,#1E4D8C 60%,#0D2B52 100%);color:#fff;padding:64px 36px 56px;text-align:center;position:relative;overflow:hidden}
+.cover-page::before{content:'';position:absolute;inset:0;background:radial-gradient(circle 3px at 25px 25px, rgba(255,255,255,0.1) 2px, transparent 3px);background-size:50px 50px}
+.cover-page::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,rgba(0,0,0,.15),transparent)}
 .cover-inner{position:relative;z-index:1}
-.cover-mascot{width:100px;height:100px;border-radius:24px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff}
-.cover-h1{font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
-.cover-sub{font-family:'Oswald',sans-serif;font-size:20px;font-weight:500;opacity:.9}
-.cover-meta{font-size:14px;opacity:.7;margin-top:8px}
-.cover-badge{display:inline-block;background:rgba(255,255,255,.18);padding:5px 16px;border-radius:20px;font-size:14px;letter-spacing:.5px;margin-top:8px;font-weight:700}
+.cover-mascot{width:120px;height:120px;border-radius:28px;background:rgba(255,255,255,.18);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,.2);border:2px solid rgba(255,255,255,.15)}
+.cover-h1{font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cover-sub{font-family:'Oswald',sans-serif;font-size:22px;font-weight:500;opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.2)}
+.cover-meta{font-size:15px;opacity:.75;margin-top:10px}
+.cover-badge{display:inline-block;background:rgba(255,255,255,.22);padding:6px 20px;border-radius:24px;font-size:15px;letter-spacing:.5px;margin-top:10px;font-weight:700;border:1px solid rgba(255,255,255,.2)}
 .stats{display:flex;border-bottom:2px solid #F0F0F0}
 .st{flex:1;text-align:center;padding:16px 8px;border-right:1px solid #F0F0F0}.st:last-child{border:none}
-.st-v{font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;color:${volCol}}
-.st-l{font-size:14px;color:#737373;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.st-v{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:${volCol}}
+.st-l{font-size:14px;color:#555;text-transform:uppercase;letter-spacing:.6px;margin-top:3px;font-weight:600}
 .comic-grid{padding:20px 24px;display:flex;flex-direction:column;gap:22px}
-.panel{border:3px solid var(--panel-accent,#1E4D8C);border-radius:18px 4px 18px 4px;padding:22px 24px;position:relative;background:#FAFBFE}
-.panel:nth-child(even){border-radius:4px 18px 4px 18px}
+.panel{border:3px solid var(--panel-accent,#1E4D8C);border-radius:18px 6px 18px 6px;padding:24px 26px;position:relative;background:#FAFBFE;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+.panel:nth-child(even){border-radius:6px 18px 6px 18px}
 .panel-num{position:absolute;top:-14px;left:18px;width:28px;height:28px;border-radius:50%;background:var(--panel-accent,#1E4D8C);color:#fff;font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
 .panel-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-top:4px}
 .mood-icon{display:flex;align-items:center}
 .panel-title{font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.mood-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.6;padding:2px 8px;border-radius:10px;background:currentColor;color:inherit!important}
+.mood-label{-webkit-text-fill-color:#fff;background:var(--panel-accent,#1E4D8C);opacity:.7}
 .panel-time{font-size:14px;color:#737373;margin-left:auto;font-weight:600}
-.panel-intro,.panel-finale{background:linear-gradient(135deg,#FAFFFE,#F0F8F0)}
+.panel-intro{background:linear-gradient(135deg,#FAFFFE,#F0F8F0)}
+.panel-finale{background:linear-gradient(135deg,#F0FFF4,#E8F5E9);border-width:4px}
 .intro-body,.finale-body{display:flex;align-items:center;gap:20px;margin-top:8px}
 .mascot-circle{width:80px;height:80px;border-radius:50%;border:3px solid #1E4D8C;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;color:#1E4D8C;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
 .intro-content,.finale-content{flex:1}
@@ -476,7 +666,7 @@ body{font-family:'Open Sans',system-ui,sans-serif;color:#1A1A2E;background:#E8E8
 .char-student{background:#E3ECFA;border:2px solid #B8CCE8;color:#1E4D8C}
 .char-robot{background:#E3F5E3;border:2px solid #B8D8B8;color:#2D5A1A}
 .char-name{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#737373;margin-top:3px}
-.balloon{flex:1;padding:14px 18px;border-radius:18px;font-size:14px;line-height:1.6;position:relative;word-wrap:break-word}
+.balloon{flex:1;padding:16px 20px;border-radius:20px;font-size:15px;line-height:1.65;position:relative;word-wrap:break-word;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .balloon-q{background:#D6E4F5;border:2px solid #B8CCE8}
 .balloon-a{background:#D6F0D6;border:2px solid #B8D8B8}
 .balloon-content{position:relative;z-index:1}
@@ -499,8 +689,23 @@ body{font-family:'Open Sans',system-ui,sans-serif;color:#1A1A2E;background:#E8E8
 .photo-caption{display:block;width:100%;padding:4px 8px;border:1px solid #E0E0E0;border-radius:6px;margin-top:4px;font-size:14px;font-family:'Open Sans',sans-serif;text-align:center;outline:none}
 .photo-caption:focus{border-color:#1E4D8C}
 .photo-remove{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;background:#D32F2F;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,.2);padding:0;line-height:1}
-.footer{text-align:center;padding:16px 24px;border-top:1px solid #E8E8E8;font-size:14px;color:#737373}
+.comp-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.comp-pill{padding:8px 16px;border-radius:12px;font-size:14px;font-weight:600;background:#F0F4F8;border:1.5px solid #D0D8E0;color:#1A1A2E}
+.challenge-box{background:rgba(30,77,140,.06);border-radius:14px;padding:18px 22px;margin:8px 0}
+.challenge-q{font-size:18px;font-weight:700;font-family:'Oswald',sans-serif;color:#1E4D8C;line-height:1.4}
+.challenge-tip{font-size:14px;color:#555;margin-top:8px;font-style:italic;padding-left:12px;border-left:3px solid #D0D8E0}
+.analogy-box{background:rgba(232,148,28,.08);border-radius:14px;padding:18px 22px;margin:8px 0}
+.analogy-text{font-size:16px;color:#5D4037;line-height:1.6;font-weight:500}
+.mistake-box{margin:8px 0}
+.mistake-what{font-size:15px;color:#BF360C;margin-bottom:6px;padding:10px 14px;background:rgba(211,47,47,.06);border-radius:10px}
+.mistake-fix{font-size:15px;color:#2E7D32;padding:10px 14px;background:rgba(46,125,50,.06);border-radius:10px}
+.mistake-analogy{font-size:14px;color:#555;margin-top:6px;font-style:italic}
+.exercise-box{background:rgba(74,122,37,.08);border-radius:14px;padding:18px 22px;margin:8px 0;border:2px dashed rgba(74,122,37,.3)}
+.exercise-text{font-size:16px;color:#2D5A1A;line-height:1.6;font-weight:600}
+.exercise-summary{font-size:15px;color:#444;margin:8px 0;line-height:1.5}
+.footer{text-align:center;padding:20px 24px;border-top:2px solid #E8E8E8;font-size:14px;color:#555;background:#FAFBFE}
 .footer a{color:#1E4D8C;text-decoration:none;font-weight:700}
+.footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -543,6 +748,11 @@ ${photoScript(volCol, SVG_X)}
 
 // ─── Public API ─────────────────────────────────────────────────────
 
+/**
+ * Apre il fumetto e lancia STAMPA automaticamente.
+ * Strategia: iframe fullscreen nella stessa pagina (no popup blocker).
+ * Barra in alto con: STAMPA/PDF, Scarica HTML, Chiudi.
+ */
 export function openReportWindow(experimentId) {
   let session;
   if (experimentId) {
@@ -551,29 +761,89 @@ export function openReportWindow(experimentId) {
   }
   if (!session) session = getLastSession();
 
-  if (!session || (!session.messages?.length && !session.errors?.length)) {
+  if (!session || (!session.messages?.length && !session.errors?.length && !session.actions?.length)) {
     return false;
   }
 
   const lessonPath = getLessonPath(session.experimentId);
   const screenshot = captureSimulatorScreenshot();
   const html = buildReportHTML(session, lessonPath, screenshot);
+  const filename = `fumetto-elab-${session.experimentId || 'sessione'}`;
 
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const popup = window.open(url, '_blank');
+  try {
+    // Rimuovi iframe precedente se esiste
+    const old = document.getElementById('elab-report-frame');
+    if (old) old.remove();
 
-  if (!popup) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `fumetto-elab-${session.experimentId || 'sessione'}.html`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    const iframe = document.createElement('iframe');
+    iframe.id = 'elab-report-frame';
+    iframe.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;border:none;background:#fff;';
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentDocument || iframe.contentWindow.document;
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    // Barra di controllo in cima (DOM methods, no innerHTML)
+    const closeBar = doc.createElement('div');
+    closeBar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:10000;background:#1E4D8C;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 16px;font-family:Open Sans,sans-serif;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,.3);';
+
+    const label = doc.createElement('span');
+    label.style.fontWeight = '700';
+    label.textContent = 'Anteprima Fumetto \u2014 Clicca STAMPA per salvare come PDF';
+    closeBar.appendChild(label);
+
+    const btnGroup = doc.createElement('span');
+    btnGroup.style.cssText = 'display:flex;gap:8px;';
+
+    const btnStyle = 'border:none;padding:8px 20px;border-radius:6px;font-size:15px;font-weight:700;cursor:pointer;min-height:44px;';
+
+    const printBtn = doc.createElement('button');
+    printBtn.style.cssText = btnStyle + 'background:#4A7A25;color:#fff;';
+    printBtn.textContent = 'STAMPA / SALVA PDF';
+    printBtn.addEventListener('click', () => iframe.contentWindow.print());
+    btnGroup.appendChild(printBtn);
+
+    const dlBtn = doc.createElement('button');
+    dlBtn.style.cssText = btnStyle + 'background:#E8941C;color:#fff;font-weight:600;font-size:14px;';
+    dlBtn.textContent = 'Scarica HTML';
+    dlBtn.addEventListener('click', () => _downloadHTML(html, filename));
+    btnGroup.appendChild(dlBtn);
+
+    const closeBtn = doc.createElement('button');
+    closeBtn.style.cssText = btnStyle + 'background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);font-size:14px;font-weight:600;';
+    closeBtn.textContent = 'Chiudi';
+    closeBtn.addEventListener('click', () => iframe.remove());
+    btnGroup.appendChild(closeBtn);
+
+    closeBar.appendChild(btnGroup);
+    doc.body.insertBefore(closeBar, doc.body.firstChild);
+    doc.body.style.paddingTop = '56px';
+    // Nascondi la toolbar originale del fumetto (duplicata dalla barra iframe)
+    const origToolbar = doc.querySelector('.toolbar');
+    if (origToolbar) origToolbar.style.display = 'none';
+
+    // ESC per chiudere
+    doc.addEventListener('keydown', (e) => { if (e.key === 'Escape') iframe.remove(); });
+
+    return true;
+  } catch {
+    _downloadHTML(html, filename);
     return 'downloaded';
   }
+}
 
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-  return true;
+function _downloadHTML(html, filename) {
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 export function isReportCommand(text) {

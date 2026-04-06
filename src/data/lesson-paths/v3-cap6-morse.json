@@ -14,11 +14,31 @@
   "target_age": "10-14 anni",
   "objective": "I ragazzi imparano a creare funzioni personalizzate e a controllare la temporizzazione del LED per trasmettere un messaggio in codice Morse.",
   "components_needed": [
-    { "name": "Arduino Nano R4", "quantity": 1, "icon": "🔌" },
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "LED rosso", "quantity": 1, "icon": "💡" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "Fili di collegamento", "quantity": 3, "icon": "🔗" }
+    {
+      "name": "Arduino Nano R4",
+      "quantity": 1,
+      "icon": "🔌"
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 3,
+      "icon": "🔗"
+    }
   ],
   "phases": [
     {
@@ -29,7 +49,9 @@
       "teacher_tip": "Chiedi alla classe: come comunichereste un messaggio di aiuto se poteste solo accendere e spegnere una luce? Questo introduce il concetto di codifica.",
       "components_list": "Stesso circuito del LED su pin 13",
       "class_hook": "Chi sa cos'e SOS? Come lo mandereste con una torcia?",
-      "action_tags": ["loadexp:v3-cap6-morse"],
+      "action_tags": [
+        "loadexp:v3-cap6-morse"
+      ],
       "auto_action": null
     },
     {
@@ -40,7 +62,10 @@
       "teacher_tip": "Mostra prima il ritmo SOS battendo le mani: tre brevi, tre lunghi, tre brevi. Poi mostra come il codice traduce questo ritmo in istruzioni per Arduino.",
       "components_list": "Stesso circuito del LED su pin 13",
       "class_hook": "Guardate come un semplice LED puo mandare un messaggio!",
-      "action_tags": ["compile", "play"],
+      "action_tags": [
+        "compile",
+        "play"
+      ],
       "auto_action": null,
       "build_circuit": false
     },
@@ -95,5 +120,13 @@
       ],
       "next_preview": "Nel prossimo esperimento aggiungeremo un secondo LED per creare un effetto luci della polizia!"
     }
-  ]
+  ],
+  "next_experiment": {
+    "id": "v3-cap6-semaforo",
+    "title": "Il semaforo",
+    "preview": "Nella prossima lezione costruiremo un semaforo con 3 LED colorati!"
+  },
+  "session_save": {
+    "next_suggested": "v3-cap6-semaforo"
+  }
 }

@@ -12,7 +12,7 @@ Include:
 - **Scratch/Blockly** per programmare Arduino visualmente
 - **Compilatore Arduino** (C++ -> HEX -> emulazione AVR nel browser)
 - **Dashboard docente** con progressi, nudge, export CSV
-- **4 giochi didattici** (Detective, POE, Reverse Engineering, Circuit Review)
+- ~~4 giochi didattici~~ (rimossi 05/04/2026)
 - **PWA** con service worker e offline support
 
 ## Stack tecnico
@@ -86,11 +86,11 @@ Include:
 ## API globale simulatore
 ```javascript
 window.__ELAB_API
-  .galileo.highlightComponent(['led1', 'r1'])
-  .galileo.highlightPin(['nano:D13'])
-  .galileo.clearHighlights()
-  .galileo.serialWrite('Hello')
-  .galileo.getCircuitState()
+  .unlim.highlightComponent(['led1', 'r1'])
+  .unlim.highlightPin(['nano:D13'])
+  .unlim.clearHighlights()
+  .unlim.serialWrite('Hello')
+  .unlim.getCircuitState()
   .on('experimentChange', callback)
   .on('stateChange', callback)
   .on('serialOutput', callback)
@@ -122,10 +122,11 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqal
 | Compilatore | https://n8n.srv1022317.hstgr.cloud/compile (Hostinger) |
 | Brain V13 | http://72.60.129.50:11434 (VPS, Qwen3.5-2B) |
 
-## Bug aperti prioritari (04/04/2026)
-1. **21/27 esp Vol3 senza buildSteps** — mancano le 3 modalita' (Gia' Montato/Passo Passo/Percorso)
-2. **Scratch non configurato** — solo 10/92 esperimenti hanno scratchXml
-3. **Dashboard senza Supabase configurato** — funziona solo localStorage (no cross-device)
-4. **Lavagna** — non salva pagine, non cambia pagina
-5. **Componenti touch** — difficili da cliccare/trascinare su iPad
-6. **Lesson path** — alcuni con testi mancanti
+## Bug aperti prioritari (05/04/2026)
+1. ~~**21/27 esp Vol3 senza buildSteps**~~ — RISOLTO PDRv5: 92/92 esperimenti hanno buildSteps (100%)
+2. ~~**Scratch non configurato**~~ — RISOLTO PDRv5: 26/27 AVR hanno scratchXml (96%, 1 senza code)
+3. ~~**Dashboard senza Supabase configurato**~~ — RISOLTO S1 04/04 + PDRv5: cascade Supabase→localStorage, 3 bug fix
+4. ~~**Lavagna non salva pagine**~~ — RISOLTO PDRv5: useLavagnaPages + PageBar multi-pagina + responsive
+5. **Componenti touch** — difficili da cliccare/trascinare su iPad (touch target 44px applicato, drag non migliorato)
+6. ~~**Lesson path**~~ — RISOLTO PDRv5: 92/92 lesson paths completi
+7. **v3-cap7-esp8 (DAC 10-bit)** — hexFile mancante, analogWriteResolution non supportato da ATmega328p emulatore

@@ -190,7 +190,7 @@ registerComponent('multimeter', {
   defaultState: Multimeter.defaultState,
   category: 'passive',
   label: 'Multimetro',
-  icon: '\u{1F4CF}',
+  icon: '',
   volumeAvailableFrom: 2,
 });
 

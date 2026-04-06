@@ -360,7 +360,7 @@ const styles = {
         margin: 0,
         paddingLeft: '20px',
         fontSize: '14px',
-        color: '#666',
+        color: '#525252',
         lineHeight: '1.8',
     },
     error: {
@@ -394,7 +394,7 @@ const styles = {
         borderRadius: '10px',
         border: '1px solid #ddd',
         background: '#fff',
-        color: '#666',
+        color: '#525252',
         cursor: 'pointer',
     },
     backBtn: {
@@ -404,7 +404,7 @@ const styles = {
         borderRadius: '10px',
         border: '1px solid #ddd',
         background: '#f8f9fa',
-        color: '#666',
+        color: '#525252',
         cursor: 'pointer',
     },
     deleteBtn: {
@@ -426,7 +426,7 @@ const styles = {
         paddingTop: '24px',
         borderTop: '1px solid #eee',
         fontSize: '14px',
-        color: '#666',
+        color: '#525252',
         lineHeight: '1.5',
     },
     gdprIcon: {
@@ -452,7 +452,7 @@ const styles = {
         margin: '0 0 8px 0',
     },
     successSubmessage: {
-        color: '#666',
+        color: '#525252',
         fontSize: '14px',
         margin: '0 0 16px 0',
     },

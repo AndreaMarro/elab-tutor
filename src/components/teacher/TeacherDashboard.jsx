@@ -10,7 +10,7 @@ import React, { useState, useMemo, useCallback, useEffect, lazy, Suspense } from
 import { useAuth } from '../../context/AuthContext';
 import studentService from '../../services/studentService';
 import { adminService, usersLookup } from '../../services/userService';
-import { createClass, listClasses, removeStudent, updateClassGames } from '../../services/authService';
+import { createClass, listClasses, removeStudent } from '../../services/authService';
 import { useConfirmModal } from '../common/ConfirmModal';
 import { showToast } from '../common/Toast';
 import LESSON_PATHS from '../../data/lesson-paths/index';
@@ -186,32 +186,7 @@ const IconCreativo = ({ size = 16 }) => (
     </svg>
 );
 
-// Game icons
-const IconDetective = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg}>
-        <circle cx="8" cy="8" r="5" />
-        <line x1="12" y1="12" x2="18" y2="18" strokeWidth="2" />
-    </svg>
-);
-const IconPredict = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg}>
-        <circle cx="10" cy="10" r="8" />
-        <path d="M10 4 L10 10 L14 14" />
-    </svg>
-);
-const IconReverse = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg}>
-        <polyline points="3 10 7 6 7 14 3 10" fill="currentColor" stroke="none" />
-        <polyline points="17 10 13 6 13 14 17 10" fill="currentColor" stroke="none" />
-        <line x1="7" y1="10" x2="13" y2="10" />
-    </svg>
-);
-const IconReview = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg}>
-        <rect x="3" y="2" width="14" height="16" rx="2" />
-        <line x1="7" y1="7" x2="13" y2="7" /><line x1="7" y1="10" x2="13" y2="10" /><line x1="7" y1="13" x2="11" y2="13" />
-    </svg>
-);
+// Game icons removed (games removed 05/04/2026)
 
 // Status icons
 const IconCheck = ({ size = 14, color }) => (
@@ -344,7 +319,7 @@ function getStudentVolumes(studentData) {
 
 // ─── CSV EXPORT ──────────────────────────────────────────
 function exportStudentsCSV(users, allData, classReport, formatTempo) {
-    const headers = ['#', 'Nome', 'Email', 'Scuola', 'Sessioni', 'Tempo Totale', 'Esperimenti', 'Stato'];
+    const headers = ['#', 'Nome', 'Email', 'Scuola', 'Sessioni', 'Tempo Totale', 'Esperimenti', 'Stato', 'Fonte Dati'];
     const rows = users.map((u, i) => {
         const sd = allData[u.id];
         const att = classReport?.attivitaRecente?.find(a => a.userId === u.id);
@@ -359,6 +334,7 @@ function exportStudentsCSV(users, allData, classReport, formatTempo) {
             formatTempo(sd?.tempoTotale || 0),
             sd?.stats?.esperimentiTotali || 0,
             stato,
+            sd?._source || 'local',
         ];
     });
     const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
@@ -432,6 +408,66 @@ function _buildReportFromLegacyData(legacyData) {
     };
 }
 
+/** Prompt for class_key when no auth and no stored key */
+function ClassKeyPrompt({ onNavigate }) {
+    const [code, setCode] = useState('');
+    const [error, setError] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const trimmed = code.trim();
+        if (!trimmed) { setError('Inserisci un codice classe.'); return; }
+        localStorage.setItem('elab_class_key', trimmed);
+        // Reload to trigger data fetch with the new key
+        window.location.reload();
+    };
+
+    return (
+        <div className={css.centeredPadding} style={{ maxWidth: 440, margin: '60px auto', textAlign: 'center' }}>
+            <h2 className={css.headingNavy}>Dashboard Docente</h2>
+            <p style={{ marginBottom: 24, color: C.textMuted, fontSize: 15 }}>
+                Inserisci il codice della tua classe per accedere ai dati degli studenti.
+            </p>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
+                <input
+                    type="text"
+                    value={code}
+                    onChange={(e) => { setCode(e.target.value); setError(''); }}
+                    placeholder="Codice classe (es. ABC123)"
+                    autoFocus
+                    style={{
+                        width: '100%', maxWidth: 320, padding: '12px 16px',
+                        border: `2px solid ${error ? C.red : C.border}`,
+                        borderRadius: 10, fontSize: 16, fontFamily: "'Open Sans', sans-serif",
+                        textAlign: 'center', letterSpacing: 2, textTransform: 'uppercase',
+                    }}
+                    aria-label="Codice classe"
+                />
+                {error && <p style={{ color: C.red, fontSize: 14, margin: 0 }}>{error}</p>}
+                <button
+                    type="submit"
+                    style={{
+                        background: C.navy, color: C.white, border: 'none',
+                        borderRadius: 10, padding: '12px 32px', fontSize: 16,
+                        fontWeight: 700, cursor: 'pointer', minHeight: 48,
+                        fontFamily: "'Open Sans', sans-serif",
+                    }}
+                >
+                    Accedi alla Dashboard
+                </button>
+            </form>
+            {onNavigate && (
+                <button
+                    onClick={() => onNavigate('showcase')}
+                    style={{ marginTop: 20, background: 'none', border: 'none', color: C.textMuted, cursor: 'pointer', fontSize: 14, textDecoration: 'underline' }}
+                >
+                    Torna alla Home
+                </button>
+            )}
+        </div>
+    );
+}
+
 export default function TeacherDashboard({ onNavigate }) {
     const { user, isDocente, isAdmin } = useAuth();
     const { confirm: confirmModal, ConfirmDialog } = useConfirmModal();
@@ -488,9 +524,9 @@ export default function TeacherDashboard({ onNavigate }) {
                         if (!cancelled && classes.length > 0) {
                             const cls = classes[0]; // Use first class
                             const [students, sessions, moods] = await Promise.all([
-                                fetchClassStudents(cls.id),
-                                fetchClassSessions(cls.id, 30),
-                                fetchClassMoods(cls.id),
+                                fetchClassStudents(cls.id, cls.class_key),
+                                fetchClassSessions(cls.id, 30, cls.class_key),
+                                fetchClassMoods(cls.id, cls.class_key),
                             ]);
                             const legacyData = {};
                             const transformed = transformToLegacyFormat(students, sessions, moods);
@@ -570,12 +606,13 @@ export default function TeacherDashboard({ onNavigate }) {
         return result;
     }, [allUsers, filterSearch, volumeFilter, allStudentData]);
 
-    if (!user || (!isDocente && !isAdmin)) {
+    // Allow access via class_key (anonymous pattern) OR authenticated docente/admin
+    const hasClassKey = !!localStorage.getItem('elab_class_key');
+    const hasAccess = (user && (isDocente || isAdmin)) || hasClassKey;
+
+    if (!hasAccess) {
         return (
-            <div className={css.centeredPadding}>
-                <h2 className={css.headingNavy}>Area riservata ai docenti</h2>
-                <p>Accedi con un account docente per monitorare i tuoi studenti.</p>
-            </div>
+            <ClassKeyPrompt onNavigate={onNavigate} />
         );
     }
 
@@ -622,7 +659,7 @@ export default function TeacherDashboard({ onNavigate }) {
             <div className={css.header}>
                 <div className={css.headerLeft}>
                     <div>
-                        <h1 className={css.headerTitle}>La Serra del Prof. {user.nome?.split(' ')[0]}</h1>
+                        <h1 className={css.headerTitle}>La Serra del Prof. {user?.nome?.split(' ')[0] || 'Docente'}</h1>
                         <p className={css.headerSubtitle}>
                             {allUsers.length} studenti nel giardino
                             {isEmptyState && <span style={{ color: '#94A3B8', fontWeight: 600 }}> (in attesa di dati)</span>}
@@ -667,7 +704,7 @@ export default function TeacherDashboard({ onNavigate }) {
                     color: '#1E4D8C',
                 }}>
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#1E4D8C', display: 'inline-block', flexShrink: 0 }} />
-                    <span><strong>Dati dal cloud</strong> — Sincronizzazione attiva. I dati sono salvati e accessibili da qualsiasi dispositivo.</span>
+                    <span><strong>Dati dal cloud (Supabase)</strong> — Sincronizzazione attiva con {allUsers.length} studenti e {Object.values(allStudentData).reduce((sum, s) => sum + (s.esperimenti?.length || 0), 0)} sessioni.</span>
                 </div>
             )}
             {dataSource === 'server' && (
@@ -1324,24 +1361,6 @@ function StudenteDetailTab({ users, allData, selectedId, onSelectStudent, format
                                             })()}
                                         </div>
                                     </div>
-                                    <div className={css.activityCardCyan}>
-                                        <div className={css.activityCardLabel}>Punteggi giochi</div>
-                                        <div className={css.activityCardValue} style={{ color: C.cyan }}>
-                                            {(() => {
-                                                const gameResults = [];
-                                                (studentData.sessioni || []).forEach(s => {
-                                                    (s.attivita || []).forEach(a => {
-                                                        if (a.tipo === 'gioco' && a.dettaglio) {
-                                                            const m = a.dettaglio.match(/(\d+)\/(\d+)/);
-                                                            if (m) gameResults.push(parseInt(m[1]) / parseInt(m[2]));
-                                                        }
-                                                    });
-                                                });
-                                                if (gameResults.length === 0) return '—';
-                                                return Math.round(gameResults.reduce((s, v) => s + v, 0) / gameResults.length * 100) + '%';
-                                            })()}
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -1707,9 +1726,8 @@ function ClassiTab() {
                             Configura la tua classe in 3 semplici passi. Non serve nessuna esperienza tecnica!
                         </p>
                         {[
-                            { step: '1', emoji: '\u270F\uFE0F', title: 'Crea la tua classe', text: 'Scrivi il nome della classe nel campo qui sopra e premi "Crea"' },
-                            { step: '2', emoji: '\uD83D\uDCE2', title: 'Condividi il codice', text: 'Verrà generato un codice. Dettalo ai tuoi studenti, loro lo inseriranno al momento della registrazione' },
-                            { step: '3', emoji: '\uD83C\uDFAE', title: 'Attiva i giochi', text: 'Scegli quali giochi rendere disponibili per la classe. Puoi cambiarli in qualsiasi momento' },
+                            { step: '1', title: 'Crea la tua classe', text: 'Scrivi il nome della classe nel campo qui sopra e premi "Crea"' },
+                            { step: '2', title: 'Condividi il codice', text: 'Verrà generato un codice. Dettalo ai tuoi studenti, loro lo inseriranno al momento della registrazione' },
                         ].map(s => (
                             <div key={s.step} style={{
                                 display: 'flex', alignItems: 'flex-start', gap: 14,
@@ -1719,9 +1737,11 @@ function ClassiTab() {
                                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
                             }}>
                                 <span style={{
-                                    fontSize: 28, lineHeight: '1',
-                                    minWidth: 36, textAlign: 'center',
-                                }}>{s.emoji}</span>
+                                    fontSize: 16, fontWeight: 800, lineHeight: '1',
+                                    minWidth: 32, minHeight: 32, textAlign: 'center',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    background: C.lime, color: '#fff', borderRadius: '50%', flexShrink: 0,
+                                }}>{s.step}</span>
                                 <div>
                                     <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 2 }}>
                                         Passo {s.step}: {s.title}
@@ -1740,11 +1760,6 @@ function ClassiTab() {
                                 key={cls.id}
                                 cls={cls}
                                 onRemoveStudent={handleRemoveStudent}
-                                onUpdateGames={async (classId, games) => {
-                                    const result = await updateClassGames(classId, games);
-                                    if (result.success) fetchClasses();
-                                    return result;
-                                }}
                             />
                         ))}
                     </div>
@@ -1755,28 +1770,8 @@ function ClassiTab() {
     );
 }
 
-const ALL_GAMES = [
-    { key: 'CircuitDetective', label: 'Circuit Detective', icon: <IconDetective /> },
-    { key: 'PredictObserveExplain', label: 'Predict-Observe-Explain', icon: <IconPredict /> },
-    { key: 'ReverseEngineering', label: 'Reverse Engineering', icon: <IconReverse /> },
-    { key: 'CircuitReview', label: 'Circuit Review', icon: <IconReview /> },
-];
-
-function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
+function ClassCard({ cls, onRemoveStudent }) {
     const [expanded, setExpanded] = useState(false);
-    const [saving, setSaving] = useState(false);
-
-    const activeSet = new Set(cls.gamesActive || []);
-
-    const handleToggleGame = async (gameKey) => {
-        if (saving || !onUpdateGames) return;
-        const newGames = activeSet.has(gameKey)
-            ? [...activeSet].filter(g => g !== gameKey)
-            : [...activeSet, gameKey];
-        setSaving(true);
-        await onUpdateGames(cls.id, newGames);
-        setSaving(false);
-    };
 
     return (
         <div style={{
@@ -1825,51 +1820,6 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
                     }}>
                         {cls.active ? 'Attiva' : 'Disattivata'}
                     </span>
-                </div>
-            </div>
-
-            {/* Sprint 3: Game toggles */}
-            <div style={{ marginTop: 12, padding: '10px 12px', background: '#F8FAFC', borderRadius: 8 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}
-                    title="Attiva o disattiva i giochi che i tuoi studenti possono vedere nella sidebar"
-                >
-                    Giochi attivi per la classe
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {ALL_GAMES.map(game => {
-                        const isActive = activeSet.has(game.key);
-                        return (
-                            <label key={game.key} style={{
-                                display: 'flex', alignItems: 'center', gap: 10,
-                                cursor: saving ? 'wait' : 'pointer',
-                                opacity: saving ? 0.6 : 1,
-                                fontSize: 14,
-                            }}>
-                                <div
-                                    onClick={() => handleToggleGame(game.key)}
-                                    style={{
-                                        width: 36, height: 20, borderRadius: 10,
-                                        background: isActive ? C.lime : '#CBD5E1',
-                                        position: 'relative',
-                                        transition: 'background 0.2s',
-                                        flexShrink: 0,
-                                    }}
-                                >
-                                    <div style={{
-                                        width: 16, height: 16, borderRadius: '50%',
-                                        background: C.white,
-                                        position: 'absolute', top: 2,
-                                        left: isActive ? 18 : 2,
-                                        transition: 'left 0.2s',
-                                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                                    }} />
-                                </div>
-                                <span style={{ color: isActive ? C.navy : C.textMuted }}>
-                                    {game.icon} {game.label}
-                                </span>
-                            </label>
-                        );
-                    })}
                 </div>
             </div>
 
@@ -2707,31 +2657,9 @@ function getSkippedExperiments(allData, users) {
         });
 }
 
-function getGameScores(allData) {
-    const scores = {};
-    Object.values(allData).forEach(sd => {
-        (sd.sessioni || []).forEach(sess => {
-            (sess.attivita || []).forEach(att => {
-                if (att.tipo === 'gioco' && att.dettaglio) {
-                    const match = att.dettaglio.match(/^(.+?):\s*(\d+)\/(\d+)/);
-                    if (match) {
-                        const gameId = match[1];
-                        const score = parseInt(match[2]);
-                        const max = parseInt(match[3]);
-                        if (!scores[gameId]) scores[gameId] = { total: 0, count: 0, max };
-                        scores[gameId].total += score;
-                        scores[gameId].count++;
-                    }
-                }
-            });
-        });
-    });
-    return scores;
-}
-
 function exportReportCSV(users, allData, formatTempo) {
     const bom = '\uFEFF';
-    const headers = ['Nome Studente', 'Esperimenti Completati', 'Tempo Totale', 'Ultimo Accesso', 'Punteggio Medio Giochi'];
+    const headers = ['Nome Studente', 'Esperimenti Completati', 'Tempo Totale', 'Ultimo Accesso'];
     const rows = users.map(u => {
         const sd = allData[u.id];
         const completati = sd?.stats?.esperimentiTotali || 0;
@@ -2739,26 +2667,11 @@ function exportReportCSV(users, allData, formatTempo) {
         const ultimoAccesso = sd?.ultimoSalvataggio
             ? new Date(sd.ultimoSalvataggio).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' })
             : 'Mai';
-        // Game scores average
-        let gameAvg = '—';
-        const gameActivities = [];
-        (sd?.sessioni || []).forEach(sess => {
-            (sess.attivita || []).forEach(att => {
-                if (att.tipo === 'gioco' && att.dettaglio) {
-                    const match = att.dettaglio.match(/(\d+)\/(\d+)/);
-                    if (match) gameActivities.push(parseInt(match[1]) / parseInt(match[2]));
-                }
-            });
-        });
-        if (gameActivities.length > 0) {
-            gameAvg = Math.round(gameActivities.reduce((s, v) => s + v, 0) / gameActivities.length * 100) + '%';
-        }
         return [
             `"${(u.nome || '').replace(/"/g, '""')}"`,
             completati,
             tempo,
             ultimoAccesso,
-            gameAvg,
         ];
     });
     const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');

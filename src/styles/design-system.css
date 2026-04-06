@@ -7,9 +7,9 @@
  * 4px spacing grid, subtle shadows, generous radius.
  */
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* GLOBAL DESIGN TOKENS                                           */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 :root {
   /* --- Colors: ELAB palette refined for modern UI --- */
@@ -198,7 +198,7 @@
   --color-code-cursor: #F59E0B;
   --color-code-selection: rgba(124, 179, 66, 0.2);
   --color-code-line-active: rgba(124, 179, 66, 0.06);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   --color-code-gutter: #45475A;
   --color-code-comment: #6B7280;
 
@@ -345,9 +345,9 @@
   --font-code: var(--font-mono);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* SIMULATOR-SCOPED TOKENS (backward compat)                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-simulator {
   --elab-navy: var(--color-primary);
@@ -380,13 +380,13 @@
   --font-code: var(--font-mono);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ACCESSIBILITY — Reduced Motion                                  */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ACCESSIBILITY — Skip-to-content link (WCAG 2.4.1)              */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .skip-to-content {
   position: absolute;
@@ -399,7 +399,7 @@
   font-family: var(--font-sans);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   text-decoration: none;
   transition: top var(--transition-fast);
@@ -409,9 +409,9 @@
   top: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ACCESSIBILITY — Focus-visible ring (WCAG 2.4.7)                */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Global focus-visible for ALL interactive elements (keyboard only) */
 :focus-visible {
@@ -447,9 +447,9 @@
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* S161.3: Screen-reader only utility                             */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -462,9 +462,9 @@
   border: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* UTILITY CLASSES — Replace common inline styles                  */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Cursor */
 .u-pointer { cursor: pointer; }

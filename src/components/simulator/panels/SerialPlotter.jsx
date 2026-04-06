@@ -230,6 +230,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
               borderColor: paused ? 'rgba(229,75,61,0.3)' : 'var(--color-editor-border)',
             }}
             title={paused ? 'Riprendi' : 'Pausa'}
+            aria-label={paused ? 'Riprendi' : 'Pausa'}
           >
             {paused ? (
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -244,7 +245,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
           </button>
 
           {/* Clear */}
-          <button onClick={handleClear} style={S.iconBtn} title="Cancella dati">
+          <button onClick={handleClear} style={S.iconBtn} title="Cancella dati" aria-label="Cancella dati">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>

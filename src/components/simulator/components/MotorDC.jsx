@@ -95,7 +95,7 @@ registerComponent('motor-dc', {
   defaultState: MotorDC.defaultState,
   category: 'output',
   label: 'Motore DC',
-  icon: '\u{2699}\uFE0F',
+  icon: '',
   volumeAvailableFrom: 2,
 });
 

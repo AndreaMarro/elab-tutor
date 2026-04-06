@@ -8,7 +8,7 @@ const NAVY = '#1E4D8C';
 const LIME = '#4A7A25';
 const BG_LIGHT = '#F7F7F8';
 const TEXT = '#1A1A2E';
-const TEXT_SECONDARY = '#6B6B80';
+const TEXT_SECONDARY = '#5A5A6B'; /* WCAG AA 4.6:1 on white (was #6B6B80) */
 const BORDER = '#E5E5EA';
 
 const sectionStyle = {
@@ -224,7 +224,7 @@ export default function LandingPNRR({ onNavigate }) {
                   ['Funziona su LIM (browser)', 'Si', 'Si', 'No (Richiede install)'],
                   ['Kit fisici inclusi', 'Si', 'No', 'No'],
                   ['Acquistabile su MePA', 'Si', 'No', 'No (Open source)'],
-                  ['Curriculum strutturato', '67 esperimenti', 'Progetti liberi', 'Nessuno'],
+                  ['Curriculum strutturato', '92 esperimenti', 'Progetti liberi', 'Nessuno'],
                   ['Guida passo-passo', 'Si (Passo Passo)', 'No', 'No'],
                   ['Dashboard docente', 'Si', 'No', 'No'],
                   ['Prezzo indicativo', 'Kit €75 + licenza scuola', 'Gratis (no kit)', 'Gratis (no kit)'],
@@ -332,7 +332,7 @@ export default function LandingPNRR({ onNavigate }) {
               {
                 icon: '1',
                 title: 'Software didattico STEM',
-                desc: 'Simulatore di circuiti e Arduino con 67 esperimenti. Rientra nella voce "software e contenuti disciplinari" del Piano.',
+                desc: 'Simulatore di circuiti e Arduino con 92 esperimenti. Rientra nella voce "software e contenuti disciplinari" del Piano.',
               },
               {
                 icon: '2',
@@ -472,7 +472,7 @@ export default function LandingPNRR({ onNavigate }) {
               </h3>
               <ul style={{ margin: 0, paddingLeft: '20px', color: TEXT_SECONDARY, lineHeight: 2, fontSize: '15px' }}>
                 <li>Simulatore di circuiti con 21 componenti</li>
-                <li>67 esperimenti guidati passo dopo passo</li>
+                <li>92 esperimenti guidati passo dopo passo</li>
                 <li>Tutor AI Galileo in italiano</li>
                 <li>4 giochi educativi integrati</li>
                 <li>Editor di codice Arduino</li>

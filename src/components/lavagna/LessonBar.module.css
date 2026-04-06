@@ -180,14 +180,52 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* LIM */
+/* LIM (1024x768) — compact lesson bar, positioned above toolbar */
+@media (max-width: 1024px) and (min-height: 700px) {
+  .bar {
+    bottom: 112px; /* Above FloatingToolbar (56px from bottom) + gap */
+    max-width: calc(100vw - 80px);
+  }
+  .compact {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  .badge {
+    font-size: 13px;
+    padding: 1px 5px;
+  }
+  .progress {
+    font-size: 13px;
+    padding: 1px 6px;
+  }
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+  .stepLabel {
+    font-size: 13px;
+  }
+}
+
+/* Generic small-width fallback */
 @media (max-width: 1024px) {
   .bar {
-    bottom: 120px;
+    bottom: 112px;
     max-width: calc(100vw - 80px);
   }
   .compact {
     padding: 6px 10px;
     font-size: 14px;
+  }
+}
+
+/* iPad — full width, positioned above toolbar */
+@media (max-width: 768px) {
+  .bar {
+    bottom: 108px;
+    max-width: calc(100vw - 24px);
+  }
+  .quickAsk {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
   }
 }

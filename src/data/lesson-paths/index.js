@@ -46,6 +46,15 @@ import v1Cap13Esp2 from './v1-cap13-esp2.json';
 import v1Cap14Esp1 from './v1-cap14-esp1.json';
 
 // Volume 2 — Approfondiamo
+import v2Cap3Esp1 from './v2-cap3-esp1.json';
+import v2Cap3Esp2 from './v2-cap3-esp2.json';
+import v2Cap3Esp3 from './v2-cap3-esp3.json';
+import v2Cap3Esp4 from './v2-cap3-esp4.json';
+import v2Cap4Esp1 from './v2-cap4-esp1.json';
+import v2Cap4Esp2 from './v2-cap4-esp2.json';
+import v2Cap4Esp3 from './v2-cap4-esp3.json';
+import v2Cap5Esp1 from './v2-cap5-esp1.json';
+import v2Cap5Esp2 from './v2-cap5-esp2.json';
 import v2Cap6Esp1 from './v2-cap6-esp1.json';
 import v2Cap6Esp2 from './v2-cap6-esp2.json';
 import v2Cap6Esp3 from './v2-cap6-esp3.json';
@@ -115,6 +124,15 @@ const LESSON_PATHS = {
   'v1-cap13-esp2': v1Cap13Esp2,
   'v1-cap14-esp1': v1Cap14Esp1,
   // Volume 2
+  'v2-cap3-esp1': v2Cap3Esp1,
+  'v2-cap3-esp2': v2Cap3Esp2,
+  'v2-cap3-esp3': v2Cap3Esp3,
+  'v2-cap3-esp4': v2Cap3Esp4,
+  'v2-cap4-esp1': v2Cap4Esp1,
+  'v2-cap4-esp2': v2Cap4Esp2,
+  'v2-cap4-esp3': v2Cap4Esp3,
+  'v2-cap5-esp1': v2Cap5Esp1,
+  'v2-cap5-esp2': v2Cap5Esp2,
   'v2-cap6-esp1': v2Cap6Esp1,
   'v2-cap6-esp2': v2Cap6Esp2,
   'v2-cap6-esp3': v2Cap6Esp3,

@@ -76,16 +76,21 @@
 /* Handle for left panel — on the right edge */
 .handleRight {
   top: 0;
-  right: 0;
+  right: -6px;
   bottom: 0;
-  width: 8px;
+  width: 20px;
   cursor: ew-resize;
+  touch-action: none;
+}
+
+@media (pointer: coarse) {
+  .handleRight { width: 44px; right: -18px; }
 }
 
 .handleRight::after {
   content: '';
   width: 3px;
-  height: 32px;
+  height: 44px;
   border-radius: 2px;
   background: rgba(30, 77, 140, 0.2);
   transition: background 150ms ease;
@@ -98,16 +103,21 @@
 /* Handle for right panel — on the left edge */
 .handleLeft {
   top: 0;
-  left: 0;
+  left: -6px;
   bottom: 0;
-  width: 8px;
+  width: 20px;
   cursor: ew-resize;
+  touch-action: none;
+}
+
+@media (pointer: coarse) {
+  .handleLeft { width: 44px; left: -18px; }
 }
 
 .handleLeft::after {
   content: '';
   width: 3px;
-  height: 32px;
+  height: 44px;
   border-radius: 2px;
   background: rgba(30, 77, 140, 0.2);
   transition: background 150ms ease;
@@ -119,11 +129,12 @@
 
 /* Handle for bottom panel — on the top edge */
 .handleTop {
-  top: 0;
+  top: -6px;
   left: 0;
   right: 0;
-  height: 8px;
+  height: 20px;
   cursor: ns-resize;
+  touch-action: none;
 }
 
 .handleTop::after {
@@ -187,6 +198,7 @@
 .toggleBottom {
   left: 50%;
   top: -44px;
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   transform: translateX(-50%);
   width: 48px;
   height: 44px;
@@ -198,7 +210,6 @@
 /* Touch device: larger handles */
 @media (pointer: coarse) {
   .handleRight,
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   .handleLeft {
     width: 16px;
   }
@@ -219,6 +230,51 @@
 @media (max-width: 1100px) {
   .left {
     max-width: 160px;
+  }
+}
+
+/* LIM (1024x768) — compact sidebar 140px */
+@media (max-width: 1024px) and (min-height: 700px) {
+  .left {
+    max-width: 140px;
+  }
+  .toggle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* iPad — sidebar as bottom drawer in portrait */
+@media (max-width: 768px) and (orientation: portrait) {
+  .left {
+    /* Transform to bottom drawer instead of left panel */
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: none;
+    max-height: 40vh;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+  }
+  .left.closed {
+    transform: translateY(100%);
+  }
+  .toggleLeft {
+    top: -48px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+  }
+  /* All toggle buttons must be 48x48 minimum for touch */
+  .toggle {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
   }
 }
 

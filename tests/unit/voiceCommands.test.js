@@ -130,5 +130,88 @@ describe('voiceCommands', () => {
         expect(cmd.feedback).toBeTruthy();
       }
     });
+
+    it('has at least 24 unique commands', () => {
+      const cmds = getAvailableCommands();
+      expect(cmds.length).toBeGreaterThanOrEqual(24);
+    });
+
+    it('has no duplicate actions', () => {
+      const cmds = getAvailableCommands();
+      const actions = cmds.map(c => c.action);
+      expect(new Set(actions).size).toBe(actions.length);
+    });
+  });
+
+  describe('UNLIM Onnipotente commands', () => {
+    beforeEach(() => {
+      window.__ELAB_API = {
+        addComponent: vi.fn(),
+        clearCircuit: vi.fn(),
+        getCircuitDescription: vi.fn(() => '2 LED, 1 resistore'),
+        undo: vi.fn(),
+        redo: vi.fn(),
+        mountExperiment: vi.fn(),
+        setBuildMode: vi.fn(),
+        getExperimentList: vi.fn(() => ({
+          vol1: [{ id: 'v1-cap6-esp1', title: 'Accendi il tuo primo LED' }],
+          vol3: [{ id: 'v3-cap6-semaforo', title: 'Il semaforo' }],
+        })),
+      };
+    });
+
+    it('addLed calls addComponent', () => {
+      const match = matchVoiceCommand('aggiungi led');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.addComponent).toHaveBeenCalledWith('led');
+    });
+
+    it('addResistor calls addComponent', () => {
+      const match = matchVoiceCommand('metti resistore');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.addComponent).toHaveBeenCalledWith('resistor');
+    });
+
+    it('clearCircuit calls clearCircuit', () => {
+      const match = matchVoiceCommand('pulisci tutto');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.clearCircuit).toHaveBeenCalled();
+    });
+
+    it('describeCircuit returns circuit description', () => {
+      const match = matchVoiceCommand('descrivi circuito');
+      const feedback = executeVoiceCommand(match.command);
+      expect(feedback).toBe('2 LED, 1 resistore');
+    });
+
+    it('undo calls undo', () => {
+      const match = matchVoiceCommand('annulla');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.undo).toHaveBeenCalled();
+    });
+
+    it('redo calls redo', () => {
+      const match = matchVoiceCommand('ripeti');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.redo).toHaveBeenCalled();
+    });
+
+    it('mountExpSemafor finds semaforo experiment', () => {
+      const match = matchVoiceCommand('monta semaforo');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.mountExperiment).toHaveBeenCalledWith('v3-cap6-semaforo');
+    });
+
+    it('sandbox mode sets build mode', () => {
+      const match = matchVoiceCommand('sandbox');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.setBuildMode).toHaveBeenCalledWith('sandbox');
+    });
+
+    it('guided mode sets build mode', () => {
+      const match = matchVoiceCommand('passo passo');
+      executeVoiceCommand(match.command);
+      expect(window.__ELAB_API.setBuildMode).toHaveBeenCalledWith('guided');
+    });
   });
 });

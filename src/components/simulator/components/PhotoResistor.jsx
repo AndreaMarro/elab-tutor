@@ -90,7 +90,7 @@ registerComponent('photo-resistor', {
   defaultState: PhotoResistor.defaultState,
   category: 'input',
   label: 'Fotoresistore (LDR)',
-  icon: '\u{2600}\uFE0F',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

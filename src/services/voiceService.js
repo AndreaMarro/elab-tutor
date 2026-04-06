@@ -198,7 +198,7 @@ export function cancelRecording() {
  * @param {AbortSignal} signal - abort signal
  * @returns {Promise<Object>}
  */
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     if (!NANOBOT_URL) {
         throw new Error('Nanobot URL non configurato');
@@ -245,7 +245,8 @@ export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     }
 }
 
-// Edge TTS endpoint (VPS — zero GPU, voce IsabellaNeural)
+// Edge TTS endpoint (VPS — fallback only, prefer browser TTS for security)
+// NOTE: HTTP endpoint — traffic is unencrypted. Use only as last-resort fallback.
 const EDGE_TTS_URL = 'http://72.60.129.50:8880';
 
 /**

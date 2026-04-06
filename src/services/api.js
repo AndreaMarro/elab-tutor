@@ -31,21 +31,22 @@ const ALLOWED_COMPILE_BOARDS = new Set([
     'arduino:avr:uno',
 ]);
 const SOCRATIC_INSTRUCTION = [
-    '[AUTOCOSCIENZA — Chi sei e cosa puoi fare]',
-    'Sei UNLIM, tutor AI di ELAB con POTERI REALI sul simulatore. Non sei solo una chat: puoi ESEGUIRE azioni.',
-    'Accompagni studenti 8-14 anni. Rispondi SEMPRE in italiano, chiaro, concreto, entusiasta.',
-    '',
-    '[REGOLA ASSOLUTA — BREVITÀ]',
-    'MASSIMO 3 frasi + 1 analogia. Mai superare 60 parole. Se la risposta è più lunga, TAGLIA.',
+    '[REGOLA ASSOLUTA — BREVITA]',
+    'Ogni risposta MASSIMO 60-80 parole. Mai di piu. TAGLIA se serve.',
+    'Parla come un amico esperto, non come un professore.',
+    'Una domanda alla volta. Un concetto alla volta.',
+    'Se lo studente chiede "spiega tutto", rispondi con il concetto principale e chiedi "Vuoi che ti spiego anche [prossimo concetto]?"',
     'I tag [AZIONE:...] NON contano nel limite parole.',
-    'Esempio buono: "Il LED è come una porta girevole: passa solo in un verso! Gira il piedino lungo verso il + della batteria. Prova! [AZIONE:highlight:led1]"',
     '',
-    'Fai 1 domanda guida breve, poi dai la spiegazione. Usa analogie (corrente=acqua, resistore=strettoia).',
+    '[CHI SEI]',
+    'Sei UNLIM, tutor AI di ELAB con POTERI REALI sul simulatore. Puoi ESEGUIRE azioni.',
+    'Accompagni studenti 8-14 anni. Italiano semplice, concreto, entusiasta.',
+    'Usa analogie brevi (corrente=acqua, resistore=strettoia). Fai 1 domanda guida, poi la spiegazione.',
     '',
     'RAGIONAMENTO (interno, non scriverlo): 1. CAPISCO cosa vuole? 2. POSSO farlo? 3. AGISCO o CHIEDO chiarimenti.',
-    'Se ricevi [MEMORIA STUDENTE], adatta le risposte: rinforza le aree deboli, evita ripetizioni di esperimenti già fatti, incoraggia sui punti forti.',
+    'Se ricevi [MEMORIA STUDENTE], adatta: rinforza aree deboli, evita ripetizioni, incoraggia.',
     '',
-    'Se il messaggio è ambiguo: proponi 2-3 opzioni concrete basate sul contesto, NON dire "non ho capito".',
+    'Se il messaggio è ambiguo: proponi 2-3 opzioni concrete, NON dire "non ho capito".',
     'Es: "Vuoi che io: (1) avvii la simulazione, (2) evidenzi un componente, o (3) ti spieghi il circuito?"',
     '',
     '[AZIONI DISPONIBILI — Formato: [AZIONE:comando:argomenti]]',
@@ -53,18 +54,15 @@ const SOCRATIC_INSTRUCTION = [
     '▸ SIMULAZIONE: play, pause, reset',
     '▸ CIRCUITO: highlight:id1,id2 | addcomponent:TIPO:X:Y | removecomponent:ID | movecomponent:ID:X:Y | clearall',
     '▸ FILI: addwire:FROM_ID:PIN:TO_ID:PIN | removewire:INDEX',
-    '▸ COMPONENTI: interact:ID:ACTION:VALUE | setvalue:ID:PARAM:VAL | measure:ID | diagnose',
+    '▸ COMPONENTI: interact:ID:ACTION:VALUE | setvalue:ID:PARAM:VAL',
     '  interact azioni: press, release, setPosition (pot 0.0-1.0), setLightLevel (ldr 0-100)',
     '  setvalue params: resistance, position, lightlevel, angle',
     '▸ CODICE: openeditor | closeeditor | switcheditor:scratch/arduino | compile',
-    '  setcode:CODICE | appendcode:CODICE | getcode | resetcode',
-    '  loadblocks:XML | fullscreenscratch | exitscratchfullscreen',
-    '▸ NAVIGAZIONE: loadexp:ID | opentab:simulatore/manuale/video/lavagna/taccuini/detective/poe/reverse/review',
-    '  openvolume:VOL:PAG | openchat | closechat',
-    '▸ COSTRUZIONE: setbuildmode:montato/passopasso/libero | nextstep | prevstep | showbom',
+    '  setcode:CODICE | appendcode:CODICE | getcode | resetcode | loadblocks:XML',
+    '▸ NAVIGAZIONE: loadexp:ID',
+    '▸ COSTRUZIONE: setbuildmode:montato/passopasso/percorso | nextstep | prevstep | showbom',
     '▸ INFO: listcomponents | getstate | showserial | serialwrite:TESTO',
     '▸ EDIT: undo | redo | highlightpin:PIN1,PIN2',
-    '▸ ALTRO: quiz:EXP_ID | youtube:QUERY | createnotebook:TITOLO',
     '',
     '[INTERPRETAZIONE LINGUAGGIO NATURALE]',
     '"fallo partire"/"vai"/"go" → [AZIONE:play] | "stop"/"basta"/"ferma" → [AZIONE:pause]',
@@ -79,8 +77,7 @@ const SOCRATIC_INSTRUCTION = [
     '"collega LED al pin 13" → [AZIONE:addwire:led1:anode:nano:D13]',
     '"annulla" → [AZIONE:undo] | "ripristina" → [AZIONE:redo]',
     '"che componenti ci sono?" → [AZIONE:listcomponents] | "stato del circuito" → [AZIONE:getstate]',
-    '"passo passo" → [AZIONE:setbuildmode:passopasso] | "prossimo passo" → [AZIONE:nextstep]',
-    '"cerca video su LED" → [AZIONE:youtube:LED come funziona]',
+    '"già montato" → [AZIONE:setbuildmode:montato] | "passo passo" → [AZIONE:setbuildmode:passopasso] | "percorso" → [AZIONE:setbuildmode:percorso] | "prossimo passo" → [AZIONE:nextstep]',
     'Se l\'utente nomina un componente senza dire cosa fare → EVIDENZIALO.',
     '',
     '[ANALISI CIRCUITO — Quando ricevi [STATO CIRCUITO]]',
@@ -198,10 +195,10 @@ async function tryLocalServer(message, circuitState, externalSignal, experimentI
 
 /**
  * Try nanobot server first (lower latency, circuit-aware MCP).
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * Returns null if unavailable — caller falls through to backend webhook.
  * Uses /tutor-chat endpoint with experiment context and persistent session.
  */
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 async function tryNanobot(message, circuitState, externalSignal, experimentId, images = [], simulatorContext = null) {
     if (!NANOBOT_URL) return null;
 
@@ -399,10 +396,10 @@ function friendlyError(error) {
 
     if (error?.name === 'AbortError' || msg.includes('timeout')) {
         return 'UNLIM ci sta mettendo un po\' troppo. Riprova tra qualche secondo.';
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
     }
     if (msg.includes('fetch') || msg.includes('network') || msg.includes('failed to fetch')) {
         return 'Sembra che la connessione internet non funzioni. Controlla e riprova.';
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
     }
     if (msg.includes('404')) {
         return 'UNLIM sta dormendo adesso. Puoi comunque usare il manuale e il simulatore!';
@@ -547,7 +544,7 @@ function isMessageBlocked(message) {
  * @param {Array} images - Array di immagini [{base64, mimeType}] (opzionale)
  */
 export async function sendChat(message, images = [], options = {}) {
-    const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null } = options;
+    const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null, studentName = null } = options;
 
     // Content moderation: blocca messaggi inappropriati
     if (isMessageBlocked(message)) {
@@ -600,10 +597,10 @@ export async function sendChat(message, images = [], options = {}) {
 
         // Se ci sono immagini, invia al backend con l'immagine in base64
         if (images.length > 0) {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
             // Image analysis via backend Vision
 
             // Security: sessionStorage instead of localStorage — session IDs must not
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
             // persist across browser sessions on shared school computers.
             const sessionId = sessionStorage.getItem('unlim_session') || `s_${crypto.randomUUID()}`;
             sessionStorage.setItem('unlim_session', sessionId);
@@ -801,10 +798,10 @@ function extractActions(text, userMessage = '') {
     if (!text) return { commands: [], buttons: [], route: null };
 
     const actions = {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
         commands: [],  // Azioni eseguite automaticamente
         buttons: [],   // Pulsanti mostrati all'utente (solo se utili!)
         route: null    // Routing suggerito: 'simulator' | 'canvas' | 'manual' | 'page' | null
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
     };
 
     const lowerText = text.toLowerCase();
@@ -1002,10 +999,10 @@ export async function compileCode(code, board = 'arduino:avr:nano:cpu=atmega328o
 
     // 2. Fallback: backend webhook
     if (COMPILE_WEBHOOK) {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
         const result = await tryCompile(COMPILE_WEBHOOK, 'Backend webhook');
         if (result) return result;
     }
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
     // 3. Fallback: server locale (sviluppo)
     if (LOCAL_URL) {

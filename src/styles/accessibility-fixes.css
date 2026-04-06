@@ -10,9 +10,9 @@
  * 5. Missing aria-labels on interactive elements
  */
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FIX 1: CONTRAST RATIOS - Strengthen muted text colors           */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 :root {
   /* Enhanced contrast colors for WCAG AA (4.5:1 minimum) */
@@ -34,9 +34,9 @@
   color: var(--color-panel-text-muted) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FIX 2: TOUCH TARGETS - Minimum 44px for all interactive elements */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Simulator control buttons */
 .btn-icon,
@@ -85,9 +85,9 @@
   min-height: 44px !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FIX 3: FOCUS INDICATORS - Visible focus rings on all interactive */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Enhanced focus indicator system */
 button:focus-visible,
@@ -123,9 +123,9 @@ textarea:focus-visible,
   box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 0 4px #4A7A25 !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FIX 4: FONT SIZES - Ensure minimum 14px for readability         */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Override any font sizes below 14px */
 .text-xs,
@@ -159,9 +159,9 @@ textarea:focus-visible,
   font-size: 14px !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FIX 5: ARIA LABELS - Add screen reader support for key elements */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Ensure all interactive elements without visible text have aria-label */
 .btn-icon:not([aria-label]):not([aria-labelledby])::before {
@@ -198,10 +198,10 @@ textarea:focus-visible,
   border: 0 !important;
 }
 
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
-/* ═══════════════════════════════════════════════════════════════ */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* ---- */
 /* FIX 6: CHAT OVERLAY — CSS hover/focus instead of DOM mutations */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .chat-youtube-link:hover {
   border-color: var(--color-youtube-red, #FF0000) !important;
@@ -223,9 +223,9 @@ textarea:focus-visible,
   box-shadow: 0 2px 8px rgba(37,99,235,0.08) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* RESPONSIVE TOUCH TARGET ADJUSTMENTS                            */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Mobile-specific touch target increases */
 @media (max-width: 767px) {
@@ -258,9 +258,9 @@ textarea:focus-visible,
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* HIGH CONTRAST MODE SUPPORT                                     */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @media (prefers-contrast: high) {
   :root {
@@ -279,13 +279,13 @@ textarea:focus-visible,
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* MOTION REDUCTION SUPPORT                                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FIX 7: EXPERIMENT PICKER — CSS hover instead of DOM mutations  */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .ep-chapter-card {
   transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;

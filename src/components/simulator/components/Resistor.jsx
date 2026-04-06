@@ -147,7 +147,7 @@ registerComponent('resistor', {
   defaultState: Resistor.defaultState,
   category: 'passive',
   label: 'Resistore',
-  icon: '\u{2393}',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

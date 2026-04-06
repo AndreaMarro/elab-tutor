@@ -1089,7 +1089,7 @@ const pageStyles = {
     textAlign: 'center',
     padding: '24px 32px',
     fontSize: '14px',
-    color: '#666',
+    color: '#525252',
     borderTop: '1px solid #e0e0e0',
   },
 };
@@ -1137,7 +1137,7 @@ const styles = {
   subtitle: {
     margin: '4px 0 0 0',
     fontSize: '16px',
-    color: '#666',
+    color: '#525252',
     fontFamily: "'Open Sans', sans-serif",
   },
   meta: {
@@ -1224,7 +1224,7 @@ const styles = {
   },
   summary: {
     fontSize: '14px',
-    color: '#666',
+    color: '#525252',
     margin: '0 0 16px 0',
     fontStyle: 'italic',
   },
@@ -1252,7 +1252,7 @@ const styles = {
   textSmall: {
     fontSize: '14px',
     lineHeight: '1.6',
-    color: '#666',
+    color: '#525252',
     margin: '8px 0',
     fontFamily: "'Open Sans', sans-serif",
   },

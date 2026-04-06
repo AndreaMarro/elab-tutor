@@ -14,19 +14,68 @@
   "target_age": "10-14 anni",
   "objective": "Capire come un pulsante puo spegnere un LED normalmente acceso. Il LED parte acceso e si spegne solo quando teniamo premuto il pulsante. Introduciamo digitalRead e la logica invertita: premere = LOW.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "breadboard" },
-    { "name": "Pulsante (push button)", "quantity": 1, "icon": "button" },
-    { "name": "LED rosso", "quantity": 1, "icon": "led" },
-    { "name": "Resistore 470ohm", "quantity": 1, "icon": "resistor" },
-    { "name": "Fili di collegamento", "quantity": 5, "icon": "wire" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "breadboard"
+    },
+    {
+      "name": "Pulsante (push button)",
+      "quantity": 1,
+      "icon": "button"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "led"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 1,
+      "icon": "resistor"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 5,
+      "icon": "wire"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "INPUT_PULLUP", "pulsante", "digitalRead", "LED", "resistore", "breadboard", "codice", "programma", "GND", "HIGH", "LOW", "OUTPUT"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "analogico"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "INPUT_PULLUP",
+      "pulsante",
+      "digitalRead",
+      "LED",
+      "resistore",
+      "breadboard",
+      "codice",
+      "programma",
+      "GND",
+      "HIGH",
+      "LOW",
+      "OUTPUT"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "analogico"
+    ],
     "note": "Cap 7 Vol 3 — primo esperimento con pulsante, digitalRead, logica invertita."
   },
-  "prerequisites": ["v3-cap6-esp6"],
+  "prerequisites": [
+    "v3-cap6-esp6"
+  ],
   "next_experiment": {
     "id": "v3-cap7-esp3",
     "title": "Pulsante con INPUT_PULLUP",
@@ -49,7 +98,9 @@
       "duration_minutes": 10,
       "teacher_message": "Il circuito ha due parti: il LED su un pin OUTPUT e il pulsante su un pin INPUT. Quando il pulsante non e premuto, digitalRead legge HIGH e il LED resta acceso. Quando lo premiamo, legge LOW e il LED si spegne.",
       "teacher_tip": "Spiega il concetto di INPUT vs OUTPUT con un paragone semplice: OUTPUT e come parlare (Arduino comanda), INPUT e come ascoltare (Arduino riceve). Fino ad ora abbiamo solo parlato, oggi impariamo ad ascoltare.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap7-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap7-esp2]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -68,9 +119,25 @@
       "duration_minutes": 10,
       "teacher_message": "Premi Play! Il LED rosso si accende. Ora cliccate sul pulsante nel simulatore e tenetelo premuto: il LED si spegne. Rilasciate: torna acceso. E un comportamento momentaneo, non un toggle.",
       "teacher_tip": "Fai notare la differenza con un interruttore di casa: quello resta nella posizione in cui lo metti. Il pulsante invece torna su da solo quando lo lasci. Chiedi: servirebbe una variabile per farlo restare spento?",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]", "[AZIONE:highlight:btn1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:led1]",
+        "[AZIONE:highlight:btn1]"
+      ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "LED acceso normalmente. Premi il pulsante: si spegne. Rilascia: torna acceso. Il comportamento e immediato perche il loop legge il pulsante migliaia di volte al secondo."
+      "observation_prompt": "LED acceso normalmente. Premi il pulsante: si spegne. Rilascia: torna acceso. Il comportamento e immediato perche il loop legge il pulsante migliaia di volte al secondo.",
+      "analogies": [
+        {
+          "concept": "logica_invertita",
+          "text": "Spegnere con un pulsante è come il freno della bici: quando premi, la ruota si FERMA invece di girare.",
+          "evidence": "Analogia quotidiana"
+        },
+        {
+          "concept": "if_else",
+          "text": "IF...ELSE è come un bivio: se piove prendi l'ombrello, ALTRIMENTI prendi gli occhiali da sole.",
+          "evidence": "Analogia quotidiana"
+        }
+      ]
     },
     {
       "name": "CONCLUDI",
@@ -89,7 +156,12 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["digitalRead", "pin_INPUT", "pulsante_momentaneo", "HIGH_LOW"],
+    "concepts_covered": [
+      "digitalRead",
+      "pin_INPUT",
+      "pulsante_momentaneo",
+      "HIGH_LOW"
+    ],
     "next_suggested": "v3-cap7-esp3",
     "resume_message": "Avete imparato a leggere un pulsante con digitalRead! Prossimo: INPUT_PULLUP e la resistenza interna."
   }

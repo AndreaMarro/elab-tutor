@@ -320,7 +320,7 @@ registerComponent('lcd16x2', {
   defaultState: LCD16x2.defaultState,
   category: 'output',
   label: 'LCD 16x2',
-  icon: '\u{1F4DF}',
+  icon: '',
   volumeAvailableFrom: 3,
 });
 

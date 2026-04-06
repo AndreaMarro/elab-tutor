@@ -120,7 +120,7 @@ registerComponent('potentiometer', {
   defaultState: Potentiometer.defaultState,
   category: 'input',
   label: 'Potenziometro',
-  icon: '\u{1F39B}\uFE0F',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

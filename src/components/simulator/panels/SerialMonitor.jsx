@@ -96,6 +96,7 @@ const SerialMonitor = ({ serialOutput = '', onSerialInput, onClear, isRunning = 
                 borderColor: showTimestamps ? 'rgba(124,179,66,0.3)' : 'var(--color-editor-border)',
               }}
               title={showTimestamps ? 'Timestamp ON' : 'Timestamp OFF'}
+              aria-label={showTimestamps ? 'Timestamp ON' : 'Timestamp OFF'}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5"/>
@@ -114,6 +115,7 @@ const SerialMonitor = ({ serialOutput = '', onSerialInput, onClear, isRunning = 
               borderColor: autoScroll ? 'rgba(124,179,66,0.3)' : 'var(--color-editor-border)',
             }}
             title={autoScroll ? 'Auto-scroll ON' : 'Auto-scroll OFF'}
+            aria-label={autoScroll ? 'Auto-scroll ON' : 'Auto-scroll OFF'}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 3V13M5 10L8 13L11 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -121,7 +123,7 @@ const SerialMonitor = ({ serialOutput = '', onSerialInput, onClear, isRunning = 
           </button>
 
           {/* Clear button */}
-          <button onClick={onClear} style={S.iconBtn} title="Cancella output">
+          <button onClick={onClear} style={S.iconBtn} title="Cancella output" aria-label="Cancella output">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M4 4L12 12M4 12L12 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
@@ -140,6 +142,7 @@ const SerialMonitor = ({ serialOutput = '', onSerialInput, onClear, isRunning = 
                 fontSize: 14,
               }}
               title="Chiedi a Galileo di spiegare l'output"
+              aria-label="Chiedi a Galileo di spiegare l'output"
             >
               U
             </button>
@@ -272,7 +275,7 @@ const S = {
     padding: '5px 8px',
     outline: 'none',
     cursor: 'pointer',
-    minHeight: 36,
+    minHeight: 44,
   },
 
   iconBtn: {
@@ -284,10 +287,10 @@ const S = {
     padding: 0,
     cursor: 'pointer',
     lineHeight: 1,
-    width: 36,
-    height: 36,
-    minWidth: 36,
-    minHeight: 36,
+    width: 44,
+    height: 44,
+    minWidth: 44,
+    minHeight: 44,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -331,14 +334,14 @@ const S = {
 
   terminalPre: {
     margin: 0,
-    fontSize: 15,
-    lineHeight: 1.75,
-    color: '#B8F0B8',
+    fontSize: 17,
+    lineHeight: 1.8,
+    color: '#D4F5D4',
     fontFamily: 'var(--font-mono, "Fira Code", monospace)',
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-all',
-    letterSpacing: '0.02em',
-    textShadow: '0 0 1px rgba(184, 240, 184, 0.3)',
+    letterSpacing: '0.04em',
+    textShadow: 'none',
   },
 
   inputBar: {
@@ -356,10 +359,10 @@ const S = {
     borderRadius: 8,
     color: 'var(--color-code-text, #CDD6F4)',
     padding: '8px 12px',
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'var(--font-mono, "Fira Code", monospace)',
     outline: 'none',
-    minHeight: 36,
+    minHeight: 40,
     transition: 'border-color 200ms',
   },
 
@@ -373,7 +376,7 @@ const S = {
     cursor: 'pointer',
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
     fontWeight: 600,
-    minHeight: 36,
+    minHeight: 44,
     display: 'flex',
     alignItems: 'center',
     transition: 'opacity 150ms',

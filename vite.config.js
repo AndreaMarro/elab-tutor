@@ -13,6 +13,9 @@ function obfuscateChunks(obfuscatorOptions = {}) {
         'ElabTutorV4',  // S47: RC4+CFG causes TDZ crash on this 3.5MB chunk — still minified by Vite
         'ScratchEditor', // S112: Blockly is already Closure-compiled — 2nd obfuscator breaks internal refs (removeElem$module$ ReferenceError)
         'recharts', 'd3-vendor', 'supabase', 'experiments-vol', // Vendor/data chunks — no obfuscation needed
+        'LavagnaShell', 'LessonPathPanel', 'UnlimReport', 'UnlimWrapper', // UI panels — no core IP
+        'TeacherDashboard', 'StudentDashboard', 'unlimMemory', // Data/dashboard — no core IP
+        'VetrinaSimulatore', 'LandingPNRR', 'WelcomePage', // Landing pages — public
     ];
 
     return {
@@ -87,7 +90,7 @@ export default defineConfig(({ mode }) => ({
                 ],
             },
             workbox: {
-                maximumFileSizeToCacheInBytes: 1600 * 1024, // 1.6MB max per file — excludes large vendor chunks (cached at runtime)
+                maximumFileSizeToCacheInBytes: 2000 * 1024, // 2MB max per file — excludes large vendor chunks (cached at runtime)
                 // G11: Only precache critical path — NOT all chunks
                 // Lazy chunks (react-pdf, mammoth, admin, games) cached at runtime
                 globPatterns: [
@@ -99,9 +102,12 @@ export default defineConfig(({ mode }) => ({
                     // CodeMirror excluded from precache — runtime cached on first use (saves ~460KB)
                     // 'assets/codemirror-*.js',
                     'assets/avr-*.js',             // AVR emulation (if separate)
+                    // NewElabSimulator (1.3MB) NOT precached — runtime-cached via StaleWhileRevalidate on first simulator visit
+                    // Precaching it adds ~2.6MB to SW install (duplicate files from build), too heavy for school WiFi
                     'registerSW.js',
                     'fonts/*.woff2',
-                    'hex/*.hex',               // G40: pre-compiled HEX for offline use
+                    // HEX files runtime-cached via CacheFirst (elab-hex) — NOT precached to reduce SW install size
+                    // 'hex/*.hex',
                 ],
                 // Exclude heavy chunks from precache
                 globIgnores: [
@@ -113,9 +119,6 @@ export default defineConfig(({ mode }) => ({
                     'assets/GestionalePage*',
                     'assets/Admin*',
                     'assets/Fatturazione*',
-                    'assets/CircuitDetective*',
-                    'assets/ReverseEngineering*',
-                    'assets/PredictObserve*',
                     'assets/TeacherDashboard*',
                     'assets/StudentDashboard*',
                     'assets/VetrinaSimulatore*',
@@ -289,5 +292,15 @@ export default defineConfig(({ mode }) => ({
         chunkSizeWarningLimit: 1000,
         sourcemap: false,
         // minify: default (esbuild) — TDZ crash is obfuscator/minifier identifier collision (S57: confirmed NOT Rollup chunking)
+    },
+    css: {
+        devSourcemap: false,
+    },
+    esbuild: {
+        // Suppress false-positive CSS minifier warnings from obfuscated class names and comment artifacts
+        logOverride: {
+            'css-syntax-error': 'silent',
+            'unsupported-css-property': 'silent',
+        },
     },
 }))

@@ -142,8 +142,6 @@ export default function TutorLayout({
     // Socratic mode
     socraticMode,
     onToggleSocraticMode,
-    // Sprint 3: Teacher-gated games
-    allowedGames,
     // Screenshot
     onScreenshot,
     // Voice (UNLIM speaks — realtime via nanobot)
@@ -247,7 +245,6 @@ export default function TutorLayout({
                         onTabChange={onTabChange}
                         collapsed={sidebarCollapsed}
                         onToggleCollapsed={handleToggleSidebar}
-                        allowedGames={allowedGames}
                     />
                 )}
 
@@ -291,7 +288,6 @@ export default function TutorLayout({
                 <MobileBottomTabs
                     activeTab={activeTab}
                     onTabChange={onTabChange}
-                    allowedGames={allowedGames}
                 />
             )}
 

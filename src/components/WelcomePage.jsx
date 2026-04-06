@@ -42,7 +42,7 @@ const S = {
   },
   subtitle: {
     fontSize: 15,
-    color: '#666',
+    color: '#525252',
     margin: '0 0 32px',
   },
   label: {
@@ -96,15 +96,19 @@ export default function WelcomePage({ onNavigate }) {
   const [key, setKey] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     const trimmed = key.trim();
     if (!trimmed) {
       setError('Inserisci la chiave univoca');
       return;
     }
-    // Validazione chiave — password hardcoded unica
-    if (trimmed.toUpperCase() !== 'ELAB2026') {
+    // Validazione chiave — hash-based (non plaintext nel bundle)
+    const encoder = new TextEncoder();
+    const data = encoder.encode(trimmed.toUpperCase());
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    if (hashHex !== 'dbb6526661dd33a7021c9f3391a92bb76526d7809a37266d5831c83b84b95594') {
       setError('Chiave non valida. Controlla la tua chiave e riprova.');
       return;
     }

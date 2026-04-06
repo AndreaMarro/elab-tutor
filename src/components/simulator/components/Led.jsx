@@ -146,7 +146,7 @@ registerComponent('led', {
   defaultState: Led.defaultState,
   category: 'output',
   label: 'LED',
-  icon: '\u{1F4A1}',
+  icon: '',
   vfByColor: LED_COLORS,
   volumeAvailableFrom: 1,
 });

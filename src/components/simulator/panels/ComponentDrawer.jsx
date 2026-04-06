@@ -8,27 +8,34 @@
  */
 
 import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { WrenchIcon, CircuitIcon, ResistorIcon, LedIcon, ButtonIcon, BuzzerIcon, CapacitorIcon, MotorIcon, PotentiometerIcon, PhotoresistorIcon, DiodeIcon, ServoIcon, LcdIcon, WireIcon, BatteryIcon, MosfetIcon, RgbLedIcon, MagnetIcon, PuzzleIcon, LightbulbIcon, StarIcon, SuccessIcon } from '../../common/ElabIcons';
 import { getComponentsByVolume, getComponent } from '../components/registry';
 
-const STEP_ICONS = {
-  resistor: '\u{1F50C}',
-  led: '\u{1F4A1}',
-  'push-button': '\u{1F518}',
-  'rgb-led': '\u{1F308}',
-  'buzzer-piezo': '\u{1F50A}',
-  capacitor: '\u{26A1}',
-  'motor-dc': '\u{1F504}',
-  potentiometer: '\u{1F39B}\uFE0F',
-  'photo-resistor': '\u{2600}\uFE0F',
-  phototransistor: '\u{1F526}',
-  'reed-switch': '\u{1F9F2}',
-  'mosfet-n': '\u{1F4A0}',
-  diode: '\u{27A1}\uFE0F',
-  servo: '\u{1F3AF}',
-  lcd16x2: '\u{1F4DF}',
-  wire: '\u{1FA9F}',
-  battery9v: '\u{1F50B}',
+// SVG icon components per component type — replaces emoji (CLAUDE.md rule #11)
+const STEP_ICON_COMPONENTS = {
+  resistor: ResistorIcon,
+  led: LedIcon,
+  'push-button': ButtonIcon,
+  'rgb-led': RgbLedIcon,
+  'buzzer-piezo': BuzzerIcon,
+  capacitor: CapacitorIcon,
+  'motor-dc': MotorIcon,
+  potentiometer: PotentiometerIcon,
+  'photo-resistor': PhotoresistorIcon,
+  phototransistor: PhotoresistorIcon,
+  'reed-switch': MagnetIcon,
+  'mosfet-n': MosfetIcon,
+  diode: DiodeIcon,
+  servo: ServoIcon,
+  lcd16x2: LcdIcon,
+  wire: WireIcon,
+  battery9v: BatteryIcon,
 };
+
+function StepIcon({ type, size = 18, color = 'currentColor' }) {
+  const Comp = STEP_ICON_COMPONENTS[type] || PuzzleIcon;
+  return <Comp size={size} color={color} />;
+}
 
 /* ─── Short labels for sandbox chips (full names, no truncation) ─── */
 const SHORT_LABELS = {
@@ -141,7 +148,7 @@ const DraggableChip = React.memo(function DraggableChip({ type, label, icon }) {
           />
         </svg>
       ) : (
-        <span style={styles.chipIcon}>{icon || '\u{2022}'}</span>
+        <StepIcon type={type} size={20} color="var(--color-primary)" />
       )}
       <span style={styles.chipLabel}>{shortLabel}</span>
     </div>
@@ -261,9 +268,9 @@ const ComponentDrawer = ({
     ? (step.explanation || '')
     : '';
 
-  const stepIcon = step
-    ? isScratchStep ? '\u{1F9E9}'
-    : (step.componentType ? (STEP_ICONS[step.componentType] || '\u{1F9E9}') : STEP_ICONS.wire)
+  const stepIconType = step
+    ? isScratchStep ? 'puzzle'
+    : (step.componentType || 'wire')
     : null;
 
   const progressPct = allSteps.length === 0 ? 0
@@ -292,7 +299,7 @@ const ComponentDrawer = ({
         : styles.collapsedBadge;
       return (
         <button style={badgeStyle} onClick={() => setCollapsed(false)} aria-label={`Espandi guida passo passo — ${isIntro ? 'Inizia' : isComplete ? 'Fatto!' : `passo ${currentStep + 1} di ${allSteps.length}`}`}>
-          <span style={{ fontSize: 16 }} aria-hidden="true">{'\u{1F527}'}</span>
+          <WrenchIcon size={16} color="currentColor" />
           <span style={styles.collapsedBadgeText}>
             {isIntro ? 'Inizia' : isComplete ? 'Fatto!' : `${currentStep + 1}/${allSteps.length}`}
           </span>
@@ -305,7 +312,7 @@ const ComponentDrawer = ({
       <button style={styles.collapsedBar} onClick={() => setCollapsed(false)} aria-label="Espandi pannello componenti">
         <div style={styles.dragHandle} aria-hidden="true" />
         <span style={styles.collapsedTitle}>
-          {'\u{1F9E9} Componenti'}
+          <CircuitIcon size={16} color="currentColor" style={{ marginRight: 4 }} /> Componenti
         </span>
       </button>
     );
@@ -341,7 +348,7 @@ const ComponentDrawer = ({
         {mode === 'guided' && <div style={styles.dragHandle} />}
         {mode !== 'guided' && <div style={styles.dragHandle} />}
         <span style={mode === 'guided' ? styles.floatingHeaderTitle : styles.headerTitle}>
-          {mode === 'guided' ? '\u{1F527} Passo Passo' : '\u{1F9E9} Percorso'}
+          {mode === 'guided' ? <><WrenchIcon size={16} color="currentColor" /> Passo Passo</> : <><PuzzleIcon size={16} color="currentColor" /> Percorso</>}
         </span>
         <button
           onClick={(e) => { e.stopPropagation(); setCollapsed(true); }}
@@ -368,8 +375,8 @@ const ComponentDrawer = ({
                 : isComplete
                 ? `Completato!`
                 : isScratchStep
-                ? `\u{1F9E9} Codice ${scratchIndex + 1} di ${scratchSteps.length}`
-                : `\u{1F527} Passo ${currentStep + 1} di ${buildSteps.length}`
+                ? <><PuzzleIcon size={14} color="currentColor" /> {`Codice ${scratchIndex + 1} di ${scratchSteps.length}`}</>
+                : <><WrenchIcon size={14} color="currentColor" /> {`Passo ${currentStep + 1} di ${buildSteps.length}`}</>
               }
             </div>
 
@@ -377,13 +384,13 @@ const ComponentDrawer = ({
             <div style={styles.stepContent}>
               {isIntro ? (
                 <div style={styles.introText}>
-                  <span style={{ fontSize: 22 }}>{'\u{1F9F0}'}</span>
+                  <WrenchIcon size={22} color="var(--color-primary, #1E4D8C)" />
                   <span>Banco vuoto: breadboard e batteria pronti. Premi <strong>Avanti</strong> per iniziare!</span>
                 </div>
               ) : isComplete ? (
                 /* S86: Completion card with compile+play button */
                 <div style={styles.completionCard}>
-                  <span style={{ fontSize: 26 }}>{'\u{1F389}'}</span>
+                  <StarIcon size={26} color="var(--color-accent, #4A7A25)" />
                   <div style={{ flex: 1 }}>
                     <div style={styles.completionTitle}>
                       {hasScratch ? 'Circuito e codice pronti!' : 'Circuito completato!'}
@@ -405,17 +412,17 @@ const ComponentDrawer = ({
                 /* S86: Dedicated Scratch step card with explanation */
                 <div style={styles.scratchStepCard}>
                   <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'flex-start' }}>
-                    <span style={{ fontSize: 22, flexShrink: 0, lineHeight: 1 }}>{'\u{1F9E9}'}</span>
+                    <PuzzleIcon size={22} color="var(--color-primary, #1E4D8C)" />
                     <div style={{ flex: 1 }}>
                       <div style={styles.stepText}>{scratchStepText}</div>
                       {scratchStepHint && (
                         <div style={styles.scratchHint}>
-                          {'\u{1F4BB}'} {scratchStepHint}
+                          <CircuitIcon size={14} color="currentColor" /> {scratchStepHint}
                         </div>
                       )}
                       {scratchStepExplanation && (
                         <div style={styles.scratchExplanation}>
-                          {'\u{1F4A1}'} {scratchStepExplanation}
+                          <LightbulbIcon size={14} color="currentColor" /> {scratchStepExplanation}
                         </div>
                       )}
                     </div>
@@ -429,18 +436,18 @@ const ComponentDrawer = ({
                       <DraggableChip
                         type={step.componentType}
                         label={SHORT_LABELS[step.componentType] || step.componentType}
-                        icon={STEP_ICONS[step.componentType] || '\u{1F9E9}'}
+                        icon={<StepIcon type={step.componentType} size={18} />}
                       />
-                      <span style={{ fontSize: 16, color: 'var(--color-text-gray-400, #666)', fontFamily: 'var(--font-sans)', fontWeight: 600, letterSpacing: '0.3px' }}>trascina</span>
+                      <span style={{ fontSize: 16, color: 'var(--color-text-gray-400, #525252)', fontFamily: 'var(--font-sans)', fontWeight: 600, letterSpacing: '0.3px' }}>trascina</span>
                     </div>
                   ) : (
-                    <span style={{ fontSize: 20, flexShrink: 0 }}>{stepIcon}</span>
+                    <StepIcon type={stepIconType} size={20} />
                   )}
                   <div style={{ flex: 1 }}>
                     <div style={styles.stepText}>{step.text}</div>
                     {step.hint && (
                       <div style={styles.hint}>
-                        {'\u{1F4A1}'} {step.hint}
+                        <LightbulbIcon size={14} color="currentColor" /> {step.hint}
                       </div>
                     )}
                   </div>
@@ -476,7 +483,7 @@ const ComponentDrawer = ({
                         borderColor: 'var(--color-tab-scratch, #E67E22)',
                       }}
                     >
-                      {'\u{1F9E9}'} Blocchi
+                      <PuzzleIcon size={14} color="currentColor" /> Blocchi
                     </button>
                     <button
                       onClick={() => handleStartCode('arduino')}
@@ -503,7 +510,7 @@ const ComponentDrawer = ({
                       borderColor: isLast ? 'var(--color-success)' : 'var(--color-primary)',
                     }}
                   >
-                    {isLast ? '\u{2714} Finito!' : isScratchStep ? '\u{1F9E9} Avanti' : 'Avanti \u{2192}'}
+                    {isLast ? <><SuccessIcon size={14} color="currentColor" /> Finito!</> : isScratchStep ? <><PuzzleIcon size={14} color="currentColor" /> Avanti</> : <>Avanti →</>}
                   </button>
                 )
               )}
@@ -688,7 +695,7 @@ const styles = {
   collapsedTitle: {
     fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 600,
-    color: 'var(--color-text-gray-400, #666)',
+    color: 'var(--color-text-gray-400, #525252)',
   },
 
   /* Progress */

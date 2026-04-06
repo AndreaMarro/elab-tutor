@@ -8,14 +8,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import vcss from './VetrinaSimulatore.module.css';
+import { CircuitIcon, WrenchIcon, StarIcon, BookIcon, LightbulbIcon, RobotIcon } from './common/ElabIcons';
+
+const STAT_ICONS = { exp: CircuitIcon, comp: WrenchIcon, sfide: StarIcon, vol: BookIcon };
+const FEATURE_ICONS = { circuit: CircuitIcon, sim: LightbulbIcon, compile: CircuitIcon, guide: BookIcon, ai: RobotIcon };
 const AMAZON_URL = 'https://www.amazon.it/s?k=ELAB+elettronica';
 
 // ── Verified numbers from codebase ──
 const STATS = [
-    { value: 70, label: 'Esperimenti', icon: '\u26A1' },
-    { value: 21, label: 'Componenti',  icon: '\uD83D\uDD27' },
-    { value: 53, label: 'Sfide',       icon: '\uD83C\uDFAF' },
-    { value:  3, label: 'Volumi',      icon: '\uD83D\uDCDA' },
+    { value: 70, label: 'Esperimenti', icon: 'exp' },
+    { value: 21, label: 'Componenti',  icon: 'comp' },
+    { value: 53, label: 'Sfide',       icon: 'sfide' },
+    { value:  3, label: 'Volumi',      icon: 'vol' },
 ];
 
 const VOLUMES = [
@@ -40,12 +44,12 @@ const VOLUMES = [
 ];
 
 const FEATURES = [
-    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: '#4A7A25' },
-    { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: '#E8941C' },
-    { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: '#1E4D8C' },
-    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#4A7A25' },
-    { icon: '\uD83E\uDD16', title: 'Galileo AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
-    { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: '#E8941C' },
+    { IconComp: CircuitIcon, title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: '#4A7A25' },
+    { IconComp: LightbulbIcon, title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: '#E8941C' },
+    { IconComp: CircuitIcon, title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: '#1E4D8C' },
+    { IconComp: BookIcon, title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#4A7A25' },
+    { IconComp: RobotIcon, title: 'Galileo AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
+    { IconComp: StarIcon, title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: '#E8941C' },
 ];
 
 const SHOWCASE = [
@@ -205,7 +209,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                     <div className={vcss.statsRow}>
                         {STATS.map((s, i) => (
                             <div key={i} className={vcss.statCard}>
-                                <span className={vcss.statIcon}>{s.icon}</span>
+                                <span className={vcss.statIcon}>{(() => { const Ic = STAT_ICONS[s.icon]; return Ic ? <Ic size={24} color="currentColor" /> : s.icon; })()}</span>
                                 <span className={vcss.statValue}>
                                     <AnimatedNumber target={s.value} />
                                 </span>
@@ -304,7 +308,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                         {FEATURES.map((f, i) => (
                             <div key={i} className={vcss.featureCard}>
                                 <div className={vcss.featureIconWrap} style={{ background: f.accent + '18' }}>
-                                    <span className={vcss.featureIcon}>{f.icon}</span>
+                                    <span className={vcss.featureIcon}><f.IconComp size={28} color={f.accent} /></span>
                                 </div>
                                 <h3 className={vcss.featureTitle}>{f.title}</h3>
                                 <p className={vcss.featureDesc}>{f.desc}</p>
@@ -426,7 +430,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                                     rel="noopener noreferrer"
                                     className={vcss.amazonBtn}
                                 >
-                                    {'\uD83D\uDED2'} Acquista il Kit ELAB su Amazon
+                                    Acquista il Kit ELAB su Amazon
                                 </a>
                             </>
                         )}

@@ -103,7 +103,7 @@ registerComponent('push-button', {
   defaultState: PushButton.defaultState,
   category: 'input',
   label: 'Pulsante',
-  icon: '\u{1F518}',
+  icon: '',
   volumeAvailableFrom: 1,
 });
 

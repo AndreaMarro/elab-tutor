@@ -145,6 +145,7 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             aria-label="Cerca esperimento"
+            autoComplete="off"
           />
           {search && (
             <button className={css.clearBtn} onClick={() => setSearch('')} aria-label="Cancella ricerca">

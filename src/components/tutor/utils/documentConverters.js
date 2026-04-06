@@ -39,7 +39,7 @@ export const createPlaceholderPage = (fileName, format) => {
     ctx.textAlign = 'center';
     ctx.fillText(fileName, 400, 280);
     ctx.font = '16px sans-serif';
-    ctx.fillStyle = '#666';
+    ctx.fillStyle = '#525252';
     ctx.fillText(`Formato: ${format}`, 400, 320);
     return canvas.toDataURL('image/png');
 };
@@ -198,7 +198,7 @@ export const pptxToPages = async (arrayBuffer) => {
         ctx.fillStyle = '#4A7A25';
         ctx.fillRect(0, 0, 1280, 4);
         ctx.fillStyle = '#737373';
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
         ctx.font = '14px sans-serif';
         ctx.fillText(`Slide ${si + 1} / ${slideFiles.length}`, 1140, 700);
 
@@ -301,7 +301,7 @@ export const textToPages = async (text, fileName) => {
         ctx.fillStyle = isCode ? '#333' : '#f0f4f8';
         ctx.fillRect(0, 0, 800, 32);
         ctx.font = '11px monospace';
-        ctx.fillStyle = isCode ? '#737373' : '#666';
+        ctx.fillStyle = isCode ? '#737373' : '#525252';
         ctx.fillText(`${fileName} — Pagina ${p + 1}/${Math.ceil(lines.length / linesPerPage)}`, 12, 21);
 
         // Contenuto
@@ -399,7 +399,7 @@ export const processDocumentUpload = async (files) => {
         }
         // DOCX
         else if (fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileName.endsWith('.docx')) {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
             try {
                 const mammoth = (await import('mammoth')).default;
                 const arrayBuffer = await file.arrayBuffer();

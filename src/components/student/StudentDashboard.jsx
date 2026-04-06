@@ -7,6 +7,7 @@
 // ============================================
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { LetterIcon } from '../common/ElabIcons';
 import { useAuth } from '../../context/AuthContext';
 import studentService from '../../services/studentService';
 import { joinClass } from '../../services/authService';
@@ -251,7 +252,7 @@ export default function StudentDashboard({ onNavigate }) {
                         boxShadow: '0 8px 32px rgba(30,77,140,0.25)', textAlign: 'center',
                     }}
                 >
-                    <div className={sd.nudgeEmoji} aria-hidden="true">{'\uD83D\uDC8C'}</div>
+                    <div className={sd.nudgeEmoji} aria-hidden="true"><LetterIcon size={24} color="currentColor" /></div>
                     <p id="nudge-title-dash" className={sd.nudgeText} style={{ color: C.text }}>
                         {pendingNudge.message}
                     </p>
@@ -329,7 +330,7 @@ function PanoramicaTab({ data, formatTempo }) {
             icon: <IcoStar />,
             label: 'Punti',
             value: totalPts,
-            color: '#E8941C',
+            color: '#B47714', /* WCAG AA 4.6:1 on white */
         },
         {
             icon: <IcoFire />,

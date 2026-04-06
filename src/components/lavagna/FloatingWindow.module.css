@@ -127,12 +127,16 @@
 }
 
 .resizeCorner {
-  right: 0;
-  bottom: 0;
-  width: 20px;
-  height: 20px;
+  right: -4px;
+  bottom: -4px;
+  width: 28px;
+  height: 28px;
   cursor: nwse-resize;
   touch-action: none;
+}
+
+@media (pointer: coarse) {
+  .resizeCorner { width: 44px; height: 44px; right: -12px; bottom: -12px; }
 }
 
 /* Dot-grip pattern on corner */
@@ -141,8 +145,8 @@
   position: absolute;
   right: 4px;
   bottom: 4px;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   background-image: radial-gradient(circle, rgba(30, 77, 140, 0.3) 1.5px, transparent 1.5px);
   background-size: 4px 4px;
 }
@@ -173,14 +177,14 @@
 /* Touch device adjustments */
 @media (pointer: coarse) {
   .resizeRight {
-    width: 16px;
+    width: 20px;
   }
   .resizeBottom {
-    height: 16px;
+    height: 20px;
   }
   .resizeCorner {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
   }
   .resizeCorner::after {
     width: 14px;
@@ -190,10 +194,49 @@
   }
 }
 
-/* LIM / small screens */
+/* LIM (1024x768) — constrain UNLIM overlay to ~35% width so canvas remains usable */
+@media (max-width: 1024px) and (min-height: 700px) {
+  .window {
+    max-width: 340px;
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+    max-height: 80vh;
+    min-width: 260px;
+  }
+  .titleBar {
+    height: 40px;
+    min-height: 40px;
+  }
+  .titleText {
+    font-size: 13px;
+  }
+  .btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Generic small-width fallback */
 @media (max-width: 1024px) {
   .window {
     max-width: 90vw;
     max-height: 85vh;
+  }
+}
+
+/* iPad (max-width: 768px) — UNLIM overlay almost full width but with margins */
+@media (max-width: 768px) {
+  .window {
+    max-width: calc(100vw - 16px);
+    max-height: 70vh;
+    min-width: 240px;
+  }
+  /* All window buttons 48x48 for touch */
+  .btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
   }
 }

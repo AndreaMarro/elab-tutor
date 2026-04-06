@@ -146,9 +146,9 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <rect x="7" y="5" width="14" height="18" rx="2" fill="#333" stroke="#222" strokeWidth="0.5" />
         <text x="14" y="16" textAnchor="middle" fontSize="7" fill="#fff" fontWeight="bold" fontFamily="sans-serif">N</text>
         <path d="M4 10h3M4 18h3M21 14h3" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <text x="3" y="9" fontSize="5" fill="#666" fontFamily="sans-serif">G</text>
-        <text x="3" y="22" fontSize="5" fill="#666" fontFamily="sans-serif">S</text>
-        <text x="24" y="13" fontSize="5" fill="#666" fontFamily="sans-serif">D</text>
+        <text x="3" y="9" fontSize="5" fill="#444" fontFamily="sans-serif">G</text>
+        <text x="3" y="22" fontSize="5" fill="#444" fontFamily="sans-serif">S</text>
+        <text x="24" y="13" fontSize="5" fill="#444" fontFamily="sans-serif">D</text>
       </svg>
     )},
     { type: 'phototransistor', label: 'Fototransistore', vol: 2, icon: (

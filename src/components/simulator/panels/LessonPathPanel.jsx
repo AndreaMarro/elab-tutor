@@ -12,7 +12,7 @@
  *   onLoadExperiment: (id) => void — loads an experiment in the simulator
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { getCurriculum } from '../../../data/curriculumData';
 import { getLessonPath } from '../../../data/lesson-paths';
 import { getPrerequisites, getNewConcepts, CONCEPTS } from '../../../data/concept-graph';
@@ -184,7 +184,7 @@ function PrerequisiteCards({ experimentId }) {
                 Pensatela cosi: &laquo;{c.analogy}&raquo;
               </div>
               {c.metaphor && (
-                <div style={{ marginTop: 2, fontStyle: 'italic', color: '#666', fontSize: 14 }}>
+                <div style={{ marginTop: 2, fontStyle: 'italic', color: '#525252', fontSize: 14 }}>
                   Oppure: &laquo;{c.metaphor}&raquo;
                 </div>
               )}
@@ -208,10 +208,108 @@ const PHASE_TITLES = [
 ];
 const PHASE_DURATIONS = ['prima della lezione', '2 min', '3 min', '15 min', 'quando serve', '5 min'];
 
+/* ─── Adaptive Pacing — rallenta-accelera per studenti ─── */
+const FAST_THRESHOLD_MS = 5000;   // < 5s = troppo veloce
+const SLOW_THRESHOLD_MS = 120000; // > 120s = bloccato
+
+function useAdaptivePacing(phases) {
+  const phaseCount = phases?.length || 0;
+  // Track when each phase was entered
+  const phaseStartRef = useRef(Date.now());
+  // Per-phase timing records: { phaseIndex: { duration, tooFast, tooSlow } }
+  const timingsRef = useRef({});
+  // Hint state
+  const [hint, setHint] = useState(null);
+  // Stuck timer ref
+  const stuckTimerRef = useRef(null);
+  // Completed state
+  const [completed, setCompleted] = useState(false);
+  const [summary, setSummary] = useState(null);
+  // Start time of the whole lesson
+  const lessonStartRef = useRef(Date.now());
+
+  // Call when phase changes — records duration of previous phase and checks pacing
+  const onPhaseChange = useCallback((prevPhase, newPhase) => {
+    if (prevPhase < 0 || prevPhase === newPhase) return;
+
+    // Clear stuck timer
+    if (stuckTimerRef.current) {
+      clearTimeout(stuckTimerRef.current);
+      stuckTimerRef.current = null;
+    }
+
+    const now = Date.now();
+    const duration = now - phaseStartRef.current;
+    phaseStartRef.current = now;
+
+    // Record timing for previous phase
+    const tooFast = duration < FAST_THRESHOLD_MS;
+    const tooSlow = duration > SLOW_THRESHOLD_MS;
+    timingsRef.current[prevPhase] = { duration, tooFast, tooSlow };
+
+    // Show hint if too fast
+    if (tooFast) {
+      setHint({ type: 'fast', message: 'Stai andando veloce! Vuoi rileggere?' });
+      setTimeout(() => setHint(h => h?.type === 'fast' ? null : h), 5000);
+    } else {
+      setHint(null);
+    }
+
+    // Set stuck timer for new phase
+    if (newPhase >= 0 && newPhase < phaseCount) {
+      stuckTimerRef.current = setTimeout(() => {
+        setHint({ type: 'stuck', message: 'Hai bisogno di aiuto? Clicca la mascotte per chiedere a UNLIM' });
+      }, SLOW_THRESHOLD_MS);
+    }
+
+    // Check if lesson is complete (last phase visited)
+    if (prevPhase === phaseCount - 1 || newPhase === phaseCount - 1) {
+      // Mark complete when leaving the last phase
+      if (prevPhase === phaseCount - 1 && !timingsRef.current.__completed) {
+        timingsRef.current.__completed = true;
+        const totalMs = now - lessonStartRef.current;
+        const totalMin = Math.round(totalMs / 60000);
+        const stepsCompleted = Object.keys(timingsRef.current).filter(k => k !== '__completed').length;
+        setCompleted(true);
+        setSummary({
+          steps: stepsCompleted,
+          minutes: totalMin < 1 ? '< 1' : String(totalMin),
+        });
+      }
+    }
+  }, [phaseCount]);
+
+  // Start stuck timer for initial phase
+  useEffect(() => {
+    lessonStartRef.current = Date.now();
+    phaseStartRef.current = Date.now();
+    stuckTimerRef.current = setTimeout(() => {
+      setHint({ type: 'stuck', message: 'Hai bisogno di aiuto? Clicca la mascotte per chiedere a UNLIM' });
+    }, SLOW_THRESHOLD_MS);
+    return () => {
+      if (stuckTimerRef.current) clearTimeout(stuckTimerRef.current);
+    };
+  }, []);
+
+  const dismissHint = useCallback(() => setHint(null), []);
+
+  return { hint, dismissHint, onPhaseChange, completed, summary };
+}
+
 /* ─── Rich Lesson Path — Renderizza percorso lezione da JSON UNLIM ─── */
 function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClose, onLoadExperiment, collapsed = false, onToggleCollapse, embedded = false }) {
   const [alreadyLoaded, setAlreadyLoaded] = useState(false);
   const phases = path.phases;
+
+  // Adaptive pacing — tracks time per phase, shows hints
+  const { hint, dismissHint, onPhaseChange, completed, summary } = useAdaptivePacing(phases);
+  const prevPhaseRef = useRef(expandedPhase);
+  useEffect(() => {
+    if (prevPhaseRef.current !== expandedPhase) {
+      onPhaseChange(prevPhaseRef.current, expandedPhase);
+      prevPhaseRef.current = expandedPhase;
+    }
+  }, [expandedPhase, onPhaseChange]);
 
   // Progress bar visiva: ● PREPARA ○ MOSTRA ○ CHIEDI ○ OSSERVA ○ CONCLUDI
   const progressBar = (
@@ -396,7 +494,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
   };
 
   return (
-    <div style={collapsed ? { ...S.root, ...S.rootCollapsed } : { ...S.root, ...(embedded ? { border: 'none', borderRadius: 0, boxShadow: 'none' } : {}) }} onClick={collapsed ? onToggleCollapse : undefined}>
+    <div style={collapsed ? { ...S.root, ...S.rootCollapsed } : { ...S.root, ...(embedded ? { border: 'none', borderRadius: 0, boxShadow: 'none' } : {}) }} onClick={collapsed ? onToggleCollapse : undefined} role={collapsed ? 'button' : undefined} tabIndex={collapsed ? 0 : undefined} onKeyDown={collapsed ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggleCollapse?.(); } } : undefined} aria-label={collapsed ? 'Espandi percorso lezione' : undefined}>
       {/* Header — hidden when embedded in FloatingWindow */}
       {!embedded && (
       <div style={collapsed ? { ...S.header, borderRadius: 14 } : S.header}>
@@ -458,6 +556,30 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
         ))}
       </div>
 
+      {/* Adaptive pacing hint */}
+      {hint && (
+        <div style={RS.pacingHint} role="alert">
+          <span style={{ flex: 1 }}>{hint.message}</span>
+          <button
+            onClick={dismissHint}
+            style={RS.pacingHintDismiss}
+            aria-label="Chiudi suggerimento"
+          >
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+              <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/* Completion summary */}
+      {completed && summary && (
+        <div style={RS.completionSummary} role="status">
+          <strong>Lezione completata!</strong>
+          <span> Hai completato {summary.steps} passi in {summary.minutes} minut{summary.minutes === '1' ? 'o' : 'i'}.</span>
+        </div>
+      )}
+
       {/* Prossimo esperimento */}
       {path.next_experiment && onLoadExperiment && (
         <div style={{ padding: '8px 14px 14px' }}>
@@ -517,7 +639,7 @@ const RS = {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
-    color: '#666',
+    color: '#525252',
   },
   richBadge: {
     fontSize: 16,
@@ -621,6 +743,45 @@ const RS = {
     minHeight: 48,
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
   },
+  pacingHint: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    margin: '8px 14px',
+    padding: '10px 12px',
+    background: '#FFF3E0',
+    border: '1px solid #FFB74D',
+    borderRadius: 8,
+    fontSize: 14,
+    lineHeight: 1.4,
+    color: '#E65100',
+  },
+  pacingHintDismiss: {
+    border: 'none',
+    background: 'transparent',
+    cursor: 'pointer',
+    color: '#E65100',
+    padding: 4,
+    borderRadius: 4,
+    flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 28,
+    height: 28,
+    minWidth: 28,
+  },
+  completionSummary: {
+    margin: '8px 14px',
+    padding: '12px 14px',
+    background: '#E8F5E9',
+    border: '1px solid #81C784',
+    borderRadius: 8,
+    fontSize: 15,
+    lineHeight: 1.5,
+    color: '#2E7D32',
+    textAlign: 'center',
+  },
 };
 
 const LessonPathPanel = React.memo(function LessonPathPanel({
@@ -695,7 +856,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
     // Phase 2: MOSTRA
     <div key="p2" style={S.phaseContent}>
       <p style={S.phaseText}>
-        Il circuito è già montato nel simulatore sulla LIM.
+        Usa la modalità <strong>Già Montato</strong> per mostrare il circuito completo, oppure <strong>Passo Passo</strong> per costruirlo pezzo per pezzo sulla LIM.
       </p>
       <p style={S.phaseText}>
         Dì alla classe: <em>"Guardate lo schermo: questo è il circuito di oggi."</em>
@@ -818,7 +979,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       <div style={S.header}>
         <span style={S.headerIcon}>Lezione</span>
         <span style={S.headerTitle}>Percorso Lezione</span>
-        <button onClick={onClose} style={S.closeBtn} title="Chiudi">
+        <button onClick={onClose} style={S.closeBtn} title="Chiudi" aria-label="Chiudi">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>

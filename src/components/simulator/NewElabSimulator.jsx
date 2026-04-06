@@ -28,6 +28,7 @@ import SerialMonitor from './panels/SerialMonitor';
 import SerialPlotter from './panels/SerialPlotter';
 import CircuitSolver from './engine/CircuitSolver';
 import { findExperimentById, ALL_EXPERIMENTS } from '../../data/experiments-index';
+import { WrenchIcon, FootprintsIcon, RouteIcon } from '../common/ElabIcons';
 import { openReportWindow } from '../unlim/UnlimReport';
 import { compileCode as apiCompileCode } from '../../services/api';
 import { emitSimulatorEvent } from '../../services/simulator-api';
@@ -164,14 +165,20 @@ const NewElabSimulator = ({
   const [drawingEnabled, setDrawingEnabled] = useState(false);
 
   // Expose drawing toggle on __ELAB_API for Lavagna toolbar
-  // Poll until API is available (it's created async by useSimulatorAPI)
+  // Use ref to avoid stale closure on drawingEnabled
+  const drawingEnabledRef = useRef(drawingEnabled);
+  drawingEnabledRef.current = drawingEnabled;
   useEffect(() => {
-    const toggle = (enabled) => setDrawingEnabled(typeof enabled === 'boolean' ? enabled : (p) => !p);
+    const toggle = (enabled) => {
+      const newVal = typeof enabled === 'boolean' ? enabled : !drawingEnabledRef.current;
+      drawingEnabledRef.current = newVal;
+      setDrawingEnabled(newVal);
+    };
     const check = setInterval(() => {
       const api = typeof window !== 'undefined' && window.__ELAB_API;
       if (api) {
         api.toggleDrawing = toggle;
-        api.isDrawingEnabled = () => drawingEnabled;
+        api.isDrawingEnabled = () => drawingEnabledRef.current;
         clearInterval(check);
       }
     }, 200);
@@ -180,7 +187,7 @@ const NewElabSimulator = ({
       const api = typeof window !== 'undefined' && window.__ELAB_API;
       if (api) { delete api.toggleDrawing; delete api.isDrawingEnabled; }
     };
-  }, [drawingEnabled]);
+  }, []);
 
   // ─── Onboarding: welcome card per primo accesso ───
   const WELCOME_KEY = 'elab-sim-welcomed';
@@ -798,7 +805,7 @@ const NewElabSimulator = ({
           showWhiteboard={showWhiteboard}
           onToggleWhiteboard={currentExperiment ? () => setShowWhiteboard(prev => !prev) : undefined}
           showDrawingOverlay={drawingEnabled}
-          onToggleDrawingOverlay={currentExperiment ? () => setDrawingEnabled(prev => !prev) : undefined}
+          onToggleDrawingOverlay={() => setDrawingEnabled(prev => !prev)}
 
           showNotes={showNotes}
           onToggleNotes={currentExperiment ? () => toggleRightPanel('notes') : undefined}
@@ -833,12 +840,12 @@ const NewElabSimulator = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '8px 16px', background: 'var(--color-bg-secondary, #F7F8FA)', borderBottom: '1px solid var(--color-border, #E5E5E5)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ display: 'flex', gap: 3, background: 'var(--color-bg-tertiary, #ECECF0)', borderRadius: 12, padding: 4 }}>
             {[
-              { key: 'complete', label: 'Già Montato', icon: '\uD83D\uDD27', color: 'var(--color-primary, #1E4D8C)', title: 'Circuito già pronto — osserva e sperimenta' },
-              { key: 'guided', label: 'Passo Passo', icon: '\uD83D\uDC63', color: 'var(--color-accent, #4A7A25)', title: 'Costruisci il circuito un pezzo alla volta' },
-              { key: 'sandbox', label: 'Percorso', icon: '\uD83C\uDFA8', color: 'var(--color-primary, #1E4D8C)', title: 'Percorso lezione guidato dal docente' },
+              { key: 'complete', label: 'Già Montato', IconComp: WrenchIcon, color: 'var(--color-vol2, #E8941C)', title: 'Circuito già assemblato, osserva e sperimenta' },
+              { key: 'guided', label: 'Passo Passo', IconComp: FootprintsIcon, color: 'var(--color-accent, #4A7A25)', title: 'Costruisci il circuito un pezzo alla volta' },
+              { key: 'sandbox', label: 'Percorso', IconComp: RouteIcon, color: 'var(--color-primary, #1E4D8C)', title: 'Percorso lezione guidato dal docente' },
             ].map(m => {
-              const isActive = (m.key === 'complete' && !currentExperiment.buildMode) || currentExperiment.buildMode === m.key;
-              return (<button key={m.key} onClick={() => handleBuildModeSwitch(m.key)} title={m.title} style={{ border: 'none', borderRadius: 'var(--radius-md, 10px)', padding: '8px 24px', fontSize: 15, fontWeight: isActive ? 700 : 500, fontFamily: "var(--font-sans)", background: isActive ? m.color : 'transparent', color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-secondary, #6B6B80)', cursor: 'pointer', transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)', display: 'flex', alignItems: 'center', gap: 8, minHeight: 'var(--touch-min, 56px)', boxShadow: isActive ? 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03))' : 'none', letterSpacing: isActive ? '0.3px' : '0', transform: isActive ? 'scale(1.02)' : 'scale(1)' }}><span style={{ fontSize: 17 }}>{m.icon}</span>{m.label}</button>);
+              const isActive = currentExperiment.buildMode === m.key;
+              return (<button key={m.key} onClick={() => handleBuildModeSwitch(m.key)} title={m.title} style={{ border: 'none', borderRadius: 'var(--radius-md, 10px)', padding: '8px 24px', fontSize: 15, fontWeight: isActive ? 700 : 500, fontFamily: "var(--font-sans)", background: isActive ? m.color : 'transparent', color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-secondary, #5A5A6B)', cursor: 'pointer', transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)', display: 'flex', alignItems: 'center', gap: 8, minHeight: 'var(--touch-min, 56px)', boxShadow: isActive ? 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03))' : 'none', letterSpacing: isActive ? '0.3px' : '0', transform: isActive ? 'scale(1.02)' : 'scale(1)' }}><m.IconComp size={17} color="currentColor" />{m.label}</button>);
             })}
           </div>
         </div>
@@ -887,7 +894,7 @@ const NewElabSimulator = ({
                 <DrawingOverlay drawingEnabled={drawingEnabled} canvasWidth={canvasContainerRef.current?.offsetWidth || 800} canvasHeight={canvasContainerRef.current?.offsetHeight || 600} onPathsChange={() => {}} initialFullscreen={!!hideLessonPath} onClose={() => setDrawingEnabled(false)} />
                 <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">{simulationAnnouncement}</div>
                 {circuitWarning && (<div role="alert" aria-live="assertive" style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-vol3, #E54B3D)', color: 'var(--color-text, #1A1A2E)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display, 'Oswald', sans-serif)", fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 4px 16px rgba(229,75,61,0.4)', zIndex: 100, display: 'flex', alignItems: 'center', gap: 8, animation: 'pulse 0.6s ease-in-out infinite alternate' }}><span style={{ fontSize: 20 }}>{'!'}</span><span>{circuitWarning.message}</span></div>)}
-                {showGuide && currentExperiment && (!currentExperiment.buildMode || currentExperiment.buildMode === 'sandbox') && (<ExperimentGuide experiment={currentExperiment} buildMode={currentExperiment.buildMode || 'complete'} onClose={() => setShowGuide(false)} onSendToUNLIM={onSendToUNLIM} />)}
+                {showGuide && currentExperiment && currentExperiment.buildMode === 'sandbox' && (<ExperimentGuide experiment={currentExperiment} buildMode={currentExperiment.buildMode} onClose={() => setShowGuide(false)} onSendToUNLIM={onSendToUNLIM} />)}
                 {showBom && currentExperiment && (<BomPanel experiment={mergedExperiment} onClose={() => setShowBom(false)} />)}
                 {!hideLessonPath && showLessonPath && currentExperiment && (<LessonPathPanel experiment={currentExperiment} allExperiments={ALL_EXPERIMENTS} onClose={() => setShowLessonPath(false)} onSendToUNLIM={onSendToUNLIM} onLoadExperiment={(id) => { const exp = findExperimentById(id); if (exp) handleSelectExperiment(exp); }} />)}
                 {showQuiz && currentExperiment?.quiz?.length > 0 && (<QuizPanel experiment={currentExperiment} onClose={() => setShowQuiz(false)} onSendToUNLIM={onSendToUNLIM} onQuizComplete={handleQuizComplete} />)}
@@ -909,9 +916,9 @@ const NewElabSimulator = ({
                   {!showBottomPanel && (<button onClick={() => setShowBottomPanel(true)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, height: 44, minHeight: 44, background: 'var(--color-code-header, #181825)', border: 'none', borderTop: '1px solid var(--color-code-border, #313244)', cursor: 'pointer', width: '100%', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, color: 'var(--color-text-gray-300, #737373)' }} title="Apri Monitor Seriale"><span style={{ fontSize: 14 }}>{'\u25B2'}</span><span>Monitor Seriale</span>{isRunning && (<span style={{ width: 8, height: 8, borderRadius: '50%', background: LIME, boxShadow: '0 0 6px rgba(124,179,66,0.5)', flexShrink: 0 }} />)}</button>)}
                   {showBottomPanel && (<>
                     <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-editor-border, #2D3748)', flexShrink: 0 }}>
-                      <button onClick={() => setBottomPanel('monitor')} style={{ flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, background: bottomPanel === 'monitor' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: bottomPanel === 'monitor' ? LIME : 'var(--color-text-gray-400, #666)', borderBottom: bottomPanel === 'monitor' ? `2px solid ${LIME}` : '2px solid transparent', minHeight: 36 }}>Monitor</button>
-                      <button onClick={() => setBottomPanel('plotter')} style={{ flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, background: bottomPanel === 'plotter' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: bottomPanel === 'plotter' ? 'var(--color-tab-plotter, #3498DB)' : 'var(--color-text-gray-400, #666)', borderBottom: bottomPanel === 'plotter' ? '2px solid var(--color-tab-plotter, #3498DB)' : '2px solid transparent', minHeight: 36 }}>Plotter</button>
-                      <button onClick={() => setShowBottomPanel(false)} title="Chiudi pannello (Monitor/Plotter)" aria-label="Chiudi pannello seriale" style={{ padding: '4px 10px', border: 'none', cursor: 'pointer', background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-300, #737373)', fontSize: 16, borderBottom: '2px solid transparent', minHeight: 36, minWidth: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'color 150ms, background 150ms' }} onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }} onPointerLeave={e => { e.currentTarget.style.color = '#737373'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg></button>
+                      <button onClick={() => setBottomPanel('monitor')} style={{ flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, background: bottomPanel === 'monitor' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: bottomPanel === 'monitor' ? LIME : 'var(--color-text-gray-400, #8B8B8B)', borderBottom: bottomPanel === 'monitor' ? `2px solid ${LIME}` : '2px solid transparent', minHeight: 44 }}>Monitor</button>
+                      <button onClick={() => setBottomPanel('plotter')} style={{ flex: 1, padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14, fontWeight: 600, background: bottomPanel === 'plotter' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: bottomPanel === 'plotter' ? 'var(--color-tab-plotter, #3498DB)' : 'var(--color-text-gray-400, #8B8B8B)', borderBottom: bottomPanel === 'plotter' ? '2px solid var(--color-tab-plotter, #3498DB)' : '2px solid transparent', minHeight: 44 }}>Plotter</button>
+                      <button onClick={() => setShowBottomPanel(false)} title="Chiudi pannello (Monitor/Plotter)" aria-label="Chiudi pannello seriale" style={{ padding: '4px 10px', border: 'none', cursor: 'pointer', background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-300, #737373)', fontSize: 16, borderBottom: '2px solid transparent', minHeight: 44, minWidth: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'color 150ms, background 150ms' }} onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }} onPointerLeave={e => { e.currentTarget.style.color = '#737373'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg></button>
                     </div>
                     <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
                       {bottomPanel === 'monitor' ? (<SerialMonitor serialOutput={serialOutput} onSerialInput={handleSerialInput} onClear={() => setSerialOutput('')} isRunning={isRunning} onBaudRateChange={(baud) => { setSerialBaudRate(baud); if (avrRef.current) { const sketchBaud = avrRef.current.getConfiguredBaudRate(); setBaudMismatch(sketchBaud !== null && sketchBaud !== baud); } }} baudMismatch={baudMismatch} showTimestamps={serialTimestamps} onToggleTimestamps={() => setSerialTimestamps(prev => !prev)} onSendToUNLIM={onSendToUNLIM} />) : (<SerialPlotter serialOutput={serialOutput} isRunning={isRunning} onClear={() => setSerialOutput('')} />)}
@@ -961,7 +968,7 @@ const NewElabSimulator = ({
                 <>
                   <span className="elab-simulator__placeholder-icon">&#x26A1;</span>
                   <span className="elab-simulator__placeholder-text">ELAB Simulator</span>
-                  <span style={{ fontSize: 14, color: 'var(--color-text-gray-100, #AAA)' }}>Seleziona un esperimento dalla sidebar</span>
+                  <span style={{ fontSize: 14, color: 'var(--color-text-gray-300, #737373)' }}>Seleziona un esperimento dalla sidebar</span>
                   {!showSidebar && (<button onClick={() => setShowSidebar(true)} style={{ marginTop: 12, padding: '6px 16px', border: `1px solid ${LIME}`, borderRadius: 6, background: 'transparent', color: LIME, cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14 }}>Mostra Esperimenti</button>)}
                 </>
               )}
@@ -969,7 +976,7 @@ const NewElabSimulator = ({
           )}
 
           {!showCodeEditor && currentExperiment && currentExperiment.simulationMode === 'avr' && isVol3 && (
-            <button onClick={() => setShowCodeEditor(true)} aria-label="Apri editor codice" style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 30, width: 24, height: 64, border: 'none', borderRadius: '6px 0 0 6px', background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-md)', fontSize: 14, padding: 0, transition: 'opacity var(--transition-base)' }} title="Apri Editor">‹</button>
+            <button onClick={() => setShowCodeEditor(true)} aria-label="Apri editor codice" style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 30, width: 36, height: 80, border: 'none', borderRadius: '8px 0 0 8px', background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 12px rgba(30,77,140,0.4)', fontSize: 18, fontWeight: 700, padding: 0, transition: 'opacity var(--transition-base), transform 150ms ease' }} title="Apri Editor Codice / Blocchi Scratch">‹</button>
           )}
         </div>
 
@@ -977,10 +984,10 @@ const NewElabSimulator = ({
         {showCodeEditor && currentExperiment && (
           <div ref={editorPanelRef} className={`${lyStyles.codeEditorPanel} ${editorMode === 'scratch' ? (scratchFullscreen ? lyStyles.codeEditorPanelScratchFullscreen : lyStyles.codeEditorPanelScratch) : ''}`}>
             <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--color-blockly-grid, #2a3040)', background: 'var(--color-editor-bg, #161B22)', flexShrink: 0 }}>
-              <button onClick={() => setShowCodeEditor(false)} aria-label="Chiudi editor" title="Chiudi editor (torna al circuito)" style={{ width: 44, minHeight: 44, border: 'none', cursor: 'pointer', padding: 0, background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-400, #666)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'color 150ms, background 150ms' }} onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }} onPointerLeave={e => { e.currentTarget.style.color = '#666'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg></button>
-              <button onClick={() => { if (editorMode !== 'arduino') { setModeSwitchNotice('arduino'); setTimeout(() => setModeSwitchNotice(null), 4000); } setEditorMode('arduino'); setScratchFullscreen(false); }} style={{ flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, background: editorMode === 'arduino' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: editorMode === 'arduino' ? 'var(--color-accent, #4A7A25)' : 'var(--color-text-gray-400, #666)', borderBottom: editorMode === 'arduino' ? '2px solid var(--color-accent, #4A7A25)' : '2px solid transparent' }}>{'</>  Arduino C++'}</button>
-              {currentExperiment?.simulationMode === 'avr' && isVol3 && (<button onClick={() => { if (editorMode !== 'scratch') { setModeSwitchNotice('scratch'); setTimeout(() => setModeSwitchNotice(null), 4000); } setEditorMode('scratch'); }} style={{ flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, background: editorMode === 'scratch' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: editorMode === 'scratch' ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-text-gray-400, #666)', borderBottom: editorMode === 'scratch' ? '2px solid var(--color-tab-scratch, #E67E22)' : '2px solid transparent' }}>{'Blocchi'}</button>)}
-              {editorMode === 'scratch' && (<button onClick={() => setScratchFullscreen(f => !f)} title={scratchFullscreen ? 'Esci da schermo intero (Esc)' : 'Schermo intero'} aria-label={scratchFullscreen ? 'Esci da schermo intero' : 'Schermo intero'} style={{ padding: scratchFullscreen ? '7px 16px' : '7px 12px', border: 'none', cursor: 'pointer', minHeight: 44, minWidth: 56, fontFamily: "var(--font-sans)", fontSize: scratchFullscreen ? 14 : 18, fontWeight: scratchFullscreen ? 600 : 400, background: scratchFullscreen ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-editor-bg, #161B22)', color: scratchFullscreen ? '#fff' : 'var(--color-text-gray-400, #666)', borderLeft: scratchFullscreen ? 'none' : '1px solid var(--color-blockly-grid, #2a3040)', borderRadius: scratchFullscreen ? '6px' : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>{scratchFullscreen ? (<><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10 2h4v4M6 14H2v-4M14 2L9.5 6.5M2 14l4.5-4.5"/></svg>Esci</>) : (<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 6V2h4M14 10v4h-4M2 2l4.5 4.5M14 14L9.5 9.5"/></svg>)}</button>)}
+              <button onClick={() => setShowCodeEditor(false)} aria-label="Chiudi editor" title="Chiudi editor (torna al circuito)" style={{ width: 44, minHeight: 44, border: 'none', cursor: 'pointer', padding: 0, background: 'var(--color-editor-bg, #161B22)', color: 'var(--color-text-gray-400, #8B8B8B)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'color 150ms, background 150ms' }} onPointerEnter={e => { e.currentTarget.style.color = '#E54B3D'; e.currentTarget.style.background = 'rgba(229,75,61,0.1)'; }} onPointerLeave={e => { e.currentTarget.style.color = '#666'; e.currentTarget.style.background = 'var(--color-editor-bg, #161B22)'; }}><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4L12 12M4 12L12 4"/></svg></button>
+              <button onClick={() => { if (editorMode !== 'arduino') { setModeSwitchNotice('arduino'); setTimeout(() => setModeSwitchNotice(null), 4000); } setEditorMode('arduino'); setScratchFullscreen(false); }} style={{ flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, background: editorMode === 'arduino' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: editorMode === 'arduino' ? 'var(--color-accent, #4A7A25)' : 'var(--color-text-gray-400, #8B8B8B)', borderBottom: editorMode === 'arduino' ? '2px solid var(--color-accent, #4A7A25)' : '2px solid transparent' }}>{'</>  Arduino C++'}</button>
+              {currentExperiment?.simulationMode === 'avr' && isVol3 && (<button onClick={() => { if (editorMode !== 'scratch') { setModeSwitchNotice('scratch'); setTimeout(() => setModeSwitchNotice(null), 4000); } setEditorMode('scratch'); }} style={{ flex: 1, padding: '7px 0', border: 'none', cursor: 'pointer', minHeight: 44, fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, background: editorMode === 'scratch' ? 'var(--color-editor-active-bg, #1E2530)' : 'var(--color-editor-bg, #161B22)', color: editorMode === 'scratch' ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-text-gray-400, #8B8B8B)', borderBottom: editorMode === 'scratch' ? '2px solid var(--color-tab-scratch, #E67E22)' : '2px solid transparent' }}>{'Blocchi'}</button>)}
+              {editorMode === 'scratch' && (<button onClick={() => setScratchFullscreen(f => !f)} title={scratchFullscreen ? 'Esci da schermo intero (Esc)' : 'Schermo intero'} aria-label={scratchFullscreen ? 'Esci da schermo intero' : 'Schermo intero'} style={{ padding: scratchFullscreen ? '7px 16px' : '7px 12px', border: 'none', cursor: 'pointer', minHeight: 44, minWidth: 56, fontFamily: "var(--font-sans)", fontSize: scratchFullscreen ? 14 : 18, fontWeight: scratchFullscreen ? 600 : 400, background: scratchFullscreen ? 'var(--color-tab-scratch, #E67E22)' : 'var(--color-editor-bg, #161B22)', color: scratchFullscreen ? '#fff' : 'var(--color-text-gray-400, #8B8B8B)', borderLeft: scratchFullscreen ? 'none' : '1px solid var(--color-blockly-grid, #2a3040)', borderRadius: scratchFullscreen ? '6px' : 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>{scratchFullscreen ? (<><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10 2h4v4M6 14H2v-4M14 2L9.5 6.5M2 14l4.5-4.5"/></svg>Esci</>) : (<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 6V2h4M14 10v4h-4M2 2l4.5 4.5M14 14L9.5 9.5"/></svg>)}</button>)}
             </div>
             {modeSwitchNotice && (
               <div role="status" aria-live="polite" style={{ padding: '8px 16px', background: 'var(--color-vol2, #E8941C)', color: 'var(--color-text, #1A1A2E)', fontSize: 14, fontFamily: "var(--font-sans)", fontWeight: 500, textAlign: 'center', animation: 'sim-welcome-fade 0.3s ease' }}>

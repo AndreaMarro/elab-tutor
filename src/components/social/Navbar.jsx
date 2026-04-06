@@ -71,9 +71,9 @@ export default function Navbar({ currentPage, onNavigate }) {
             <nav style={styles.nav}>
                 <div style={styles.mobileBar}>
                     {/* Brand */}
-                    <span style={styles.brand} onClick={() => handleNavigate('tutor')}>
+                    <button style={{ ...styles.brand, border: 'none', background: 'none', cursor: 'pointer' }} onClick={() => handleNavigate('tutor')} aria-label="Vai alla home ELAB">
                         ELAB
-                    </span>
+                    </button>
 
                     {/* Inline icon buttons (visible even when menu is closed) */}
                     <div style={styles.mobileInlineIcons}>
@@ -222,9 +222,9 @@ export default function Navbar({ currentPage, onNavigate }) {
     return (
         <nav style={styles.nav}>
             <div style={styles.left}>
-                <span style={styles.brand} onClick={() => onNavigate('tutor')}>
+                <button style={{ ...styles.brand, border: 'none', background: 'none', cursor: 'pointer' }} onClick={() => onNavigate('tutor')} aria-label="Vai alla home ELAB">
                     ELAB
-                </span>
+                </button>
                 <div style={styles.links}>
                     {navItems.map(item => {
                         if (item.admin && !isAdmin) return null;
@@ -281,9 +281,9 @@ export default function Navbar({ currentPage, onNavigate }) {
                                 <span>{user.nome?.charAt(0).toUpperCase()}</span>
                             )}
                         </div>
-                        <span style={styles.userName} onClick={() => onNavigate('profile')}>
+                        <button style={{ ...styles.userName, border: 'none', background: 'none', cursor: 'pointer' }} onClick={() => onNavigate('profile')} aria-label="Vai al profilo">
                             {user.nome?.split(' ')[0]}
-                        </span>
+                        </button>
                         {isAdmin && <span style={styles.adminBadge}>ADMIN</span>}
                         {isDocente && <span style={styles.docenteBadge}>DOCENTE</span>}
                         <button onClick={handleLogout} style={styles.logoutBtn}>Esci</button>

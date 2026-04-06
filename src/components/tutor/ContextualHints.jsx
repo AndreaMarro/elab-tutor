@@ -114,7 +114,7 @@ export function TabHint({ tabId, onDismiss }) {
           </h4>
           <p style={{
             margin: 0,
-            color: 'var(--color-text-secondary, #6B6B80)',
+            color: 'var(--color-text-secondary, #5A5A6B)',
             fontFamily: 'var(--font-sans, Open Sans, sans-serif)',
             fontSize: 14,
             lineHeight: 1.4

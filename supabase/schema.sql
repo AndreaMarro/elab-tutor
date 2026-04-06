@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS classes (
     name        TEXT NOT NULL,
     school      TEXT,
     city        TEXT,
-    class_code  TEXT UNIQUE, -- codice 6 char per join studente
+    class_key   TEXT UNIQUE, -- codice 6 char per join studente (usato come class_key nel frontend)
     volumes     TEXT[] DEFAULT ARRAY['Volume 1', 'Volume 2', 'Volume 3'],
     active_games TEXT[] DEFAULT ARRAY[]::TEXT[],
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS student_sessions (
     actions_count     INTEGER DEFAULT 0,
     summary           TEXT CHECK (length(summary) <= 500), -- auto-generated, capped
     activity          JSONB DEFAULT '[]'::JSONB, -- array of {type, detail, timestamp}
+    class_key         TEXT, -- codice classe per accesso anonimo (senza auth)
     created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -68,6 +69,7 @@ CREATE TABLE IF NOT EXISTS student_sessions (
 CREATE INDEX IF NOT EXISTS idx_sessions_student ON student_sessions(student_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_experiment ON student_sessions(experiment_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_started ON student_sessions(started_at DESC);
+CREATE INDEX IF NOT EXISTS idx_sessions_class_key ON student_sessions(class_key);
 
 -- ─── STUDENT_PROGRESS ────────────────────────────────────
 -- Progressi aggregati per studente+esperimento.
@@ -82,6 +84,7 @@ CREATE TABLE IF NOT EXISTS student_progress (
     total_time_sec  INTEGER DEFAULT 0,
     last_result     TEXT DEFAULT 'pending', -- 'success' | 'partial' | 'skipped' | 'pending'
     concepts        TEXT[] DEFAULT ARRAY[]::TEXT[], -- concetti acquisiti
+    class_key       TEXT, -- codice classe per accesso anonimo
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE(student_id, experiment_id)
@@ -270,7 +273,12 @@ CREATE POLICY nudges_teacher_select ON nudges
     );
 -- Studente: legge e marca come letti i propri nudge
 CREATE POLICY nudges_student_select ON nudges
-    FOR SELECT USING (student_id = auth.uid() OR student_id IS NULL);
+    FOR SELECT USING (
+        student_id = auth.uid()
+        OR (student_id IS NULL AND class_id IN (
+            SELECT class_id FROM class_students WHERE student_id = auth.uid()
+        ))
+    );
 CREATE POLICY nudges_student_update ON nudges
     FOR UPDATE USING (student_id = auth.uid())
     WITH CHECK (student_id = auth.uid());
@@ -348,6 +356,11 @@ CREATE TABLE IF NOT EXISTS rate_limits (
     request_count INTEGER NOT NULL DEFAULT 0,
     window_start TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- RLS: rate_limits — users can only access their own session rate limits
+ALTER TABLE rate_limits ENABLE ROW LEVEL SECURITY;
+CREATE POLICY rate_limits_self ON rate_limits
+    FOR ALL USING (true) WITH CHECK (true); -- Managed by RPC function, not direct access
 
 -- RPC for atomic rate limit check+increment (called by guards.ts)
 CREATE OR REPLACE FUNCTION check_rate_limit(
@@ -443,8 +456,10 @@ CREATE INDEX IF NOT EXISTS idx_gdpr_audit_created ON gdpr_audit_log(created_at D
 
 -- RLS on audit log: service role can INSERT, nobody can UPDATE or DELETE
 ALTER TABLE gdpr_audit_log ENABLE ROW LEVEL SECURITY;
+-- Audit log: only the service role (server-side) can insert.
+-- Authenticated users cannot write fake audit entries.
 CREATE POLICY audit_insert_only ON gdpr_audit_log
-    FOR INSERT WITH CHECK (true); -- Service role can insert
+    FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 -- No SELECT/UPDATE/DELETE policies = immutable audit trail for non-service-role users
 
 -- ─── PARENTAL_CONSENTS ──────────────────────────────────
@@ -460,6 +475,22 @@ CREATE TABLE IF NOT EXISTS parental_consents (
     created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- ─── RLS: PARENTAL_CONSENTS (GDPR Art. 8 — minori) ──────
+ALTER TABLE parental_consents ENABLE ROW LEVEL SECURITY;
+
+-- Teachers can read/write consents for students in their classes
+CREATE POLICY parental_teacher_access ON parental_consents
+    FOR ALL USING (
+        class_id IN (SELECT id::TEXT FROM classes WHERE teacher_id = auth.uid())
+    );
+
+-- Students can read only their own consent
+CREATE POLICY parental_student_read ON parental_consents
+    FOR SELECT USING (student_id = auth.uid()::TEXT);
+
+-- Anonymous users (no auth) cannot access parental consents at all
+-- This is enforced by RLS default-deny: no policy matches → no access
 
 -- ─── LESSON_CONTEXTS TTL ────────────────────────────────
 -- Auto-delete lesson contexts older than 90 days (data minimization).

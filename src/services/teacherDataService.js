@@ -1,5 +1,6 @@
 /**
  * Teacher Data Service — Legge dati classe da Supabase per la dashboard.
+ * Supporta sia Supabase Auth (docente autenticato) sia class_key (anonimo).
  * Fallback a localStorage se Supabase non e configurato.
  * © Andrea Marro — 31/03/2026
  */
@@ -10,29 +11,79 @@ import logger from '../utils/logger';
 
 /**
  * Fetch tutte le classi dell'insegnante corrente.
+ * Prova Supabase Auth, poi fallback a class_key da localStorage.
  * @returns {Promise<Array<{ id, name, school, city, studentCount, created_at }>>}
  */
 export async function fetchTeacherClasses() {
   if (!isSupabaseConfigured()) return [];
   try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return [];
+    // 1. Prova Supabase Auth
+    let teacherId = null;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      teacherId = user?.id || null;
+    } catch { /* no auth */ }
 
-    const { data, error } = await supabase
-      .from('classes')
-      .select('id, name, school, city, created_at')
-      .eq('teacher_id', user.id)
-      .order('created_at', { ascending: false });
+    let data;
+    if (teacherId) {
+      // Authenticated teacher: query by teacher_id
+      const result = await supabase
+        .from('classes')
+        .select('id, name, school, city, class_key, created_at')
+        .eq('teacher_id', teacherId)
+        .order('created_at', { ascending: false });
+      if (result.error) throw result.error;
+      data = result.data;
+    } else {
+      // Anonymous: try to query classes table
+      const classKey = localStorage.getItem('elab_class_key');
+      if (classKey) {
+        try {
+          const result = await supabase
+            .from('classes')
+            .select('id, name, school, city, class_key, created_at')
+            .eq('class_key', classKey);
+          if (!result.error && result.data?.length > 0) {
+            data = result.data;
+          }
+        } catch { /* RLS may block anon access */ }
+      }
 
-    if (error) throw error;
+      // If classes table is blocked, build a virtual class from student_sessions
+      if (!data?.length && classKey) {
+        data = [{
+          id: 'virtual-' + classKey,
+          name: 'Classe ' + classKey,
+          school: null,
+          city: null,
+          class_key: classKey,
+          created_at: new Date().toISOString(),
+        }];
+      }
+    }
 
-    // Count students per class
-    const withCounts = await Promise.all((data || []).map(async (cls) => {
-      const { count } = await supabase
-        .from('class_students')
-        .select('*', { count: 'exact', head: true })
-        .eq('class_id', cls.id);
-      return { ...cls, studentCount: count || 0 };
+    if (!data?.length) return [];
+
+    // Count students per class from sessions (works even if class_students is empty)
+    const withCounts = await Promise.all(data.map(async (cls) => {
+      try {
+        if (cls.class_key) {
+          // Count unique student_ids from sessions with this class_key
+          const { data: sessions } = await supabase
+            .from('student_sessions')
+            .select('student_id')
+            .eq('class_key', cls.class_key);
+          const uniqueStudents = new Set((sessions || []).map(s => s.student_id));
+          return { ...cls, studentCount: uniqueStudents.size };
+        }
+        const { count } = await supabase
+          .from('class_students')
+          .select('*', { count: 'exact', head: true })
+          .eq('class_id', cls.id);
+        return { ...cls, studentCount: count || 0 };
+      } catch {
+        return { ...cls, studentCount: 0 };
+      }
     }));
 
     return withCounts;
@@ -44,28 +95,57 @@ export async function fetchTeacherClasses() {
 
 /**
  * Fetch studenti di una classe.
+ * Prova class_students, poi fallback a unique student_ids da sessions.
  * @param {string} classId
+ * @param {string} [classKey] — class_key per query diretta
  * @returns {Promise<Array<{ id, email, nome, joinedAt }>>}
  */
-export async function fetchClassStudents(classId) {
-  if (!isSupabaseConfigured() || !classId) return [];
+export async function fetchClassStudents(classId, classKey) {
+  if (!isSupabaseConfigured()) return [];
   try {
-    const { data, error } = await supabase
-      .from('class_students')
-      .select('student_id, joined_at')
-      .eq('class_id', classId);
+    // Path 1: try class_students table
+    if (classId && !classId.startsWith('virtual-')) {
+      try {
+        const { data, error } = await supabase
+          .from('class_students')
+          .select('student_id, student_name, joined_at')
+          .eq('class_id', classId);
+        if (!error && data?.length > 0) {
+          return data.map(row => ({
+            id: row.student_id,
+            email: '',
+            nome: row.student_name || 'Studente',
+            joinedAt: row.joined_at,
+          }));
+        }
+      } catch { /* RLS may block */ }
+    }
 
-    if (error) throw error;
-    if (!data?.length) return [];
+    // Path 2: build students from sessions with class_key
+    const key = classKey || localStorage.getItem('elab_class_key');
+    if (key) {
+      const { data: sessions } = await supabase
+        .from('student_sessions')
+        .select('student_id, started_at')
+        .eq('class_key', key)
+        .order('started_at', { ascending: true });
+      if (sessions?.length > 0) {
+        const seen = new Map();
+        sessions.forEach(s => {
+          if (!seen.has(s.student_id)) {
+            seen.set(s.student_id, s.started_at);
+          }
+        });
+        return Array.from(seen.entries()).map(([id, joinedAt]) => ({
+          id,
+          email: '',
+          nome: 'Studente ' + id.slice(0, 6),
+          joinedAt,
+        }));
+      }
+    }
 
-    // Return student IDs with join date — user metadata is not accessible with anon key
-    // Student names will be resolved from session data or class_students metadata
-    return (data || []).map(row => ({
-      id: row.student_id,
-      email: '',
-      nome: 'Studente',
-      joinedAt: row.joined_at,
-    }));
+    return [];
   } catch (err) {
     logger.warn('[TeacherData] fetchClassStudents failed:', err.message);
     return [];
@@ -74,17 +154,34 @@ export async function fetchClassStudents(classId) {
 
 /**
  * Fetch sessioni studenti di una classe negli ultimi N giorni.
+ * Supporta query per class_id (via class_students) o class_key diretto.
  * @param {string} classId
  * @param {number} days
+ * @param {string} [classCode] — codice classe per query diretta (senza join class_students)
  * @returns {Promise<Array>}
  */
-export async function fetchClassSessions(classId, days = 30) {
-  if (!isSupabaseConfigured() || !classId) return [];
+export async function fetchClassSessions(classId, days = 30, classCode) {
+  if (!isSupabaseConfigured()) return [];
   try {
+    const since = new Date(Date.now() - days * 86400000).toISOString();
+
+    // Path 1: query by class_key (after migration-001)
+    if (classCode) {
+      const { data, error } = await supabase
+        .from('student_sessions')
+        .select('*')
+        .eq('class_key', classCode)
+        .gte('started_at', since)
+        .order('started_at', { ascending: false });
+      if (!error && data?.length > 0) return data;
+      // Fall through to student_id path if class_key column doesn't exist yet
+    }
+
+    // Path 2: query by student_ids in class (original path)
+    if (!classId) return [];
     const studentIds = await getClassStudentIds(classId);
     if (!studentIds.length) return [];
 
-    const since = new Date(Date.now() - days * 86400000).toISOString();
     const { data, error } = await supabase
       .from('student_sessions')
       .select('*')
@@ -101,14 +198,31 @@ export async function fetchClassSessions(classId, days = 30) {
 }
 
 /**
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * Fetch mood reports della classe.
  * @param {string} classId
  * @returns {Promise<Array>}
  */
-export async function fetchClassMoods(classId) {
+export async function fetchClassMoods(classId, classKey) {
   if (!isSupabaseConfigured() || !classId) return [];
   try {
-    const studentIds = await getClassStudentIds(classId);
+    // Path 1: get student IDs from class_key sessions (works for virtual classes)
+    const key = classKey || localStorage.getItem('elab_class_key');
+    let studentIds = [];
+
+    if (key) {
+      const { data: sessions } = await supabase
+        .from('student_sessions')
+        .select('student_id')
+        .eq('class_key', key);
+      studentIds = [...new Set((sessions || []).map(s => s.student_id))];
+    }
+
+    // Path 2: fallback to class_students table
+    if (!studentIds.length && classId && !classId.startsWith('virtual-')) {
+      studentIds = await getClassStudentIds(classId);
+    }
+
     if (!studentIds.length) return [];
 
     const { data, error } = await supabase
@@ -150,15 +264,28 @@ export async function fetchPendingNudges(classId) {
 }
 
 /**
- * Crea una nuova classe.
+ * Crea una nuova classe con class_key generato automaticamente.
+ * Funziona con Supabase Auth o con UUID anonimo.
  * @param {{ name: string, school?: string, city?: string }} classData
  * @returns {Promise<{ success: boolean, class?: object, error?: string }>}
  */
 export async function createClass(classData) {
   if (!isSupabaseConfigured()) return { success: false, error: 'Supabase non configurato' };
   try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { success: false, error: 'Non autenticato' };
+    // Get teacher ID: Supabase Auth or anon UUID
+    let teacherId = null;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      teacherId = user?.id || null;
+    } catch { /* no auth */ }
+    if (!teacherId) {
+      // Fallback: use anon UUID from localStorage
+      teacherId = localStorage.getItem('elab_anon_uuid') || crypto.randomUUID();
+      localStorage.setItem('elab_anon_uuid', teacherId);
+    }
+
+    // Generate 6-char class code (uppercase alphanumeric)
+    const classCode = _generateClassCode();
 
     const { data, error } = await supabase
       .from('classes')
@@ -166,16 +293,31 @@ export async function createClass(classData) {
         name: classData.name,
         school: classData.school || null,
         city: classData.city || null,
-        teacher_id: user.id,
+        teacher_id: teacherId,
+        class_key: classCode,
       })
       .select()
       .single();
 
     if (error) throw error;
+
+    // Persist class_key for this teacher
+    localStorage.setItem('elab_class_key', classCode);
+
     return { success: true, class: data };
   } catch (err) {
     return { success: false, error: err.message };
   }
+}
+
+/** Genera un codice classe alfanumerico di 6 caratteri (es. 'AB3K7X'). */
+function _generateClassCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no I/O/0/1 per evitare confusione
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
 }
 
 /**
@@ -198,7 +340,6 @@ export function transformToLegacyFormat(students, sessions, moods) {
           nome: s.experiment_id,
           completato: s.completed,
           durata: s.duration_seconds,
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
           timestamp: s.started_at,
         })),
       sessioni: mySessions.map(s => ({

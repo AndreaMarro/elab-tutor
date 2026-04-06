@@ -118,7 +118,7 @@ registerComponent('mosfet-n', {
   defaultState: MosfetN.defaultState,
   category: 'active',
   label: 'MOSFET N-Channel',
-  icon: '\u{1F50C}',
+  icon: '',
   volumeAvailableFrom: 2,
 });
 

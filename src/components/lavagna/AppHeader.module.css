@@ -198,7 +198,7 @@
 }
 
 .btnPlay:hover {
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   background: var(--color-accent-hover, #3d6620);
 }
 
@@ -228,7 +228,55 @@
   color: #fff;
 }
 
-/* LIM / small screens: hide text, keep icons */
+/* ----
+   LIM (1024x768) — compact header, reduced font sizes by 2px
+   ---- */
+@media (max-width: 1024px) and (min-height: 700px) {
+  .header {
+    height: 44px;
+    min-height: 44px;
+  }
+  .experimentName {
+    max-width: 180px;
+    font-size: 13px; /* 15 - 2px */
+    padding: 4px 10px;
+  }
+  .brandText {
+    font-size: 16px; /* 18 - 2px */
+  }
+  .brandLogo {
+    width: 24px;
+    height: 24px;
+  }
+  .progressDots {
+    display: none;
+  }
+  .tabBtn {
+    font-size: 13px;
+    padding: 4px 10px;
+    min-height: 44px; /* Touch target maintained */
+  }
+  .playLabel {
+    font-size: 13px;
+  }
+  .btnText {
+    font-size: 13px;
+  }
+  /* Keep buttons touch-friendly at 48x48 */
+  .btn {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+  }
+  .btnPlay {
+    min-height: 40px;
+    height: 36px;
+    padding: 0 10px;
+  }
+}
+
+/* Generic small-width fallback */
 @media (max-width: 1024px) {
   .experimentName {
     max-width: 180px;
@@ -246,6 +294,9 @@
   }
 }
 
+/* ----
+   iPad (max-width: 768px) — all buttons 48x48, compact layout
+   ---- */
 @media (max-width: 768px) {
   .center {
     flex: 1;
@@ -258,5 +309,24 @@
   }
   .progressDots {
     display: none;
+  }
+  /* Hide brand text on small screens — keep logo only */
+  .brandText {
+    display: none;
+  }
+  .tabs {
+    margin-left: 4px;
+  }
+  .tabBtn {
+    font-size: 13px;
+    padding: 6px 8px;
+    min-height: 48px; /* 48px touch target for iPad */
+  }
+  /* All buttons 48x48 minimum */
+  .btn {
+    min-width: 48px;
+    min-height: 48px;
+    width: 48px;
+    height: 48px;
   }
 }

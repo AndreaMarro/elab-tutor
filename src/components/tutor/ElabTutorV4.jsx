@@ -21,10 +21,7 @@ import { findVideo, getYouTubeSearchUrl } from '../../data/unlim-videos'; // UNL
 import { getNewConcepts, getPrerequisites } from '../../data/concept-graph'; // PDR: concept graph for pedagogical context
 import { TabHint } from './ContextualHints';
 import NewElabSimulator from '../simulator/NewElabSimulator';
-const CircuitDetective = lazy(() => import('./CircuitDetective'));
-const PredictObserveExplain = lazy(() => import('./PredictObserveExplain'));
-const ReverseEngineeringLab = lazy(() => import('./ReverseEngineeringLab'));
-const CircuitReview = lazy(() => import('./CircuitReview'));
+// Games removed (confirmed decision by project owner)
 // (projectHistoryService rimosso — usato solo da handleCompile eliminato)
 import studentService from '../../services/studentService';
 import ConsentBanner from '../common/ConsentBanner';
@@ -371,7 +368,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
     /**
      * Auto-speak the latest AI response when voice mode is on.
      * Uses useEffect to react to new messages — works for ALL chat paths
-     * (text, voice, vision, hints, detective, etc.) without modifying each one.
+     * (text, voice, vision, hints, etc.) without modifying each one.
      */
     const lastMsgRef = useRef(null);
     useEffect(() => {
@@ -1478,7 +1475,7 @@ ${parts.join('\n')}${conceptContext}
 AZIONI DISPONIBILI (usa [AZIONE:comando:args] alla fine della risposta):
 CIRCUITO: play | pause | reset | addcomponent:tipo[:x:y] | removecomponent:id | addwire:comp1:pin1:comp2:pin2 | removewire:indice | clearall | interact:id:azione[:valore] | movecomponent:id:x:y | setvalue:id:parametro:valore | measure:id | diagnose | listcomponents
 CODICE: compile | openeditor | closeeditor | switcheditor:scratch|arduino | loadblocks:xml
-NAVIGAZIONE: loadexp:id | opentab:simulatore|manuale|video|lavagna | openvolume:1|2|3[:pagina] | setbuildmode:montato|passopasso|libero | nextstep | prevstep
+NAVIGAZIONE: loadexp:id | opentab:simulatore|manuale|video|lavagna | openvolume:1|2|3[:pagina] | setbuildmode:montato|passopasso|percorso | nextstep | prevstep
 VISTA: highlight:id1,id2 | highlightpin:comp:pin | showbom | showserial | quiz[:espId] | youtube:query | undo | redo
 TIPI COMPONENTE: led | resistor | pushbutton | capacitor | buzzer | potentiometer | battery
 
@@ -1868,7 +1865,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     setActiveTab('simulator');
                     executedActions.push(`loadexp:${resolvedId}`);
                 } else if (cmd === 'opentab' && parts[1]) {
-                    const tabMap = { simulatore: 'simulator', manuale: 'manual', video: 'videos', lavagna: 'canvas', taccuini: 'notebooks', detective: 'detective', poe: 'poe', reverse: 'reverse', review: 'review' };
+                    const tabMap = { simulatore: 'simulator', manuale: 'manual', video: 'videos', lavagna: 'canvas', taccuini: 'notebooks' };
                     const tab = tabMap[parts[1].toLowerCase()] || parts[1];
                     setActiveTab(tab);
                     executedActions.push(`opentab:${parts[1]}`);
@@ -1978,7 +1975,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     if (!meas) throw new Error(`nessuna misura per ${compId}`);
                     const vStr = meas.voltage !== undefined ? `${meas.voltage.toFixed(3)} V` : 'N/D';
                     const iStr = meas.current !== undefined ? `${(meas.current * 1000).toFixed(1)} mA` : 'N/D';
-                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCCA **Misura ${compId}**: Tensione = ${vStr} | Corrente = ${iStr}`, proactive: true }]);
+                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `**Misura ${compId}**: Tensione = ${vStr} | Corrente = ${iStr}`, proactive: true }]);
                     executedActions.push(`measure:${compId}`);
                 } else if (cmd === 'diagnose') {
                     handleDiagnoseCircuit();
@@ -2036,7 +2033,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     const modeMap = {
                         montato: 'complete', 'già montato': 'complete', giamontato: 'complete', complete: 'complete',
                         passopasso: 'guided', 'passo passo': 'guided', guided: 'guided',
-                        libero: 'sandbox', costruisci: 'sandbox', sandbox: 'sandbox',
+                        libero: 'sandbox', costruisci: 'sandbox', sandbox: 'sandbox', percorso: 'sandbox',
                     };
                     const mode = modeMap[(parts[1] || '').toLowerCase().replace(/[\s_-]+/g, '')] || parts[1];
                     if (!mode) throw new Error('modalità mancante');
@@ -2057,10 +2054,10 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                 } else if (cmd === 'listcomponents') {
                     const components = getLiveComponents();
                     if (components.length === 0) {
-                        setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: '\uD83D\uDCCB **Componenti**: Nessun componente piazzato.', proactive: true }]);
+                        setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: '**Componenti**: Nessun componente piazzato.', proactive: true }]);
                     } else {
                         const list = components.map(c => `\u2022 **${c.id}** (${c.type})`).join('\n');
-                        setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCCB **Componenti piazzati** (${components.length}):\n${list}`, proactive: true }]);
+                        setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `**Componenti piazzati** (${components.length}):\n${list}`, proactive: true }]);
                     }
                     executedActions.push('listcomponents');
                 } else if (cmd === 'getstate') {
@@ -2070,7 +2067,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     const wires = (circuitState.connections || []).length;
                     const simState = circuitState.isSimulating ? '\u25B6 In esecuzione' : '\u23F8 Fermata';
                     const expName = circuitState.experiment?.title || 'Nessuno';
-                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCCA **Stato Circuito**:\n\u2022 Esperimento: **${expName}**\n\u2022 Componenti: **${comps}**\n\u2022 Fili: **${wires}**\n\u2022 Simulazione: **${simState}**`, proactive: true }]);
+                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `**Stato Circuito**:\n\u2022 Esperimento: **${expName}**\n\u2022 Componenti: **${comps}**\n\u2022 Fili: **${wires}**\n\u2022 Simulazione: **${simState}**`, proactive: true }]);
                     executedActions.push('getstate');
                 } else if (cmd === 'setcode') {
                     const arg = parts.slice(1).join(':').replace(/\\n/g, '\n');
@@ -2090,7 +2087,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     const code = api?.getEditorCode?.() || '';
                     const mode = api?.getEditorMode?.() || 'arduino';
                     const displayCode = code ? code.substring(0, 500) + (code.length > 500 ? '\n// ... (troncato)' : '') : '(vuoto)';
-                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `\uD83D\uDCDD **Codice ${mode === 'scratch' ? 'Scratch (generato)' : 'Arduino'}**:\n\`\`\`cpp\n${displayCode}\n\`\`\``, proactive: true }]);
+                    setMessages(prev => [...prev, { id: Date.now() + 2, role: 'assistant', content: `**Codice ${mode === 'scratch' ? 'Scratch (generato)' : 'Arduino'}**:\n\`\`\`cpp\n${displayCode}\n\`\`\``, proactive: true }]);
                     executedActions.push('getcode');
                 } else if (cmd === 'resetcode') {
                     if (!api?.resetEditorCode) throw new Error('resetEditorCode non disponibile');
@@ -2327,9 +2324,8 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                 .replace(/\n{3,}/g, '\n\n')
                 .trim();
 
-            // G25: Client-side word count enforcement — truncate at 80 words (sentence boundary)
-            // The AI prompt says 60 words but LLMs often exceed it. Hard cap at 80.
-            const UNLIM_MAX_WORDS = 80;
+            // Client-side word count enforcement — truncate at 60 words (sentence boundary)
+            const UNLIM_MAX_WORDS = 60;
             const words = displayText.split(/\s+/).filter(Boolean);
             if (words.length > UNLIM_MAX_WORDS) {
                 const truncated = words.slice(0, UNLIM_MAX_WORDS).join(' ');
@@ -2414,10 +2410,6 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
             text: 'Dammi un indizio',
             action: () => handleSend('Dammi solo un indizio breve per andare avanti, senza spoiler della soluzione. Linguaggio semplice per 8-14 anni.')
         },
-        { text: 'Trova il Guasto', action: () => setActiveTab('detective') },
-        { text: 'Prevedi e Spiega', action: () => setActiveTab('poe') },
-        { text: 'Circuito Misterioso', action: () => setActiveTab('reverse') },
-        { text: 'Controlla Circuito', action: () => setActiveTab('review') },
         { text: 'Lavagna', action: () => setActiveTab('canvas') },
     ];
 
@@ -2515,7 +2507,6 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     isMobile={isMobile}
                     socraticMode={isSocraticMode}
                     onToggleSocraticMode={null}
-                    allowedGames={isDocente ? null : user?.classActiveGames ?? null}
                     voiceEnabled={voiceEnabled}
                     onVoiceToggle={handleVoiceToggle}
                     voiceRecording={voiceRecording}
@@ -2636,46 +2627,6 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                                 disclosureLevel={disclosureLevel}
                             />
                         </div>
-
-                        {activeTab === 'detective' && (
-                            <Suspense fallback={<div className="game-loading">Caricamento gioco...</div>}>
-                                <CircuitDetective
-                                    onSendToUNLIM={(msg) => { setShowChat(true); handleSend(msg); }}
-                                    onOpenSimulator={(experimentId) => { setPendingExperimentId(experimentId || null); setActiveTab('simulator'); }}
-                                    logSession={logSession}
-                                />
-                            </Suspense>
-                        )}
-
-                        {activeTab === 'poe' && (
-                            <Suspense fallback={<div className="game-loading">Caricamento gioco...</div>}>
-                                <PredictObserveExplain
-                                    onSendToUNLIM={(msg) => { setShowChat(true); handleSend(msg); }}
-                                    onOpenSimulator={(experimentId) => { setPendingExperimentId(experimentId || null); setActiveTab('simulator'); }}
-                                    logSession={logSession}
-                                />
-                            </Suspense>
-                        )}
-
-                        {activeTab === 'reverse' && (
-                            <Suspense fallback={<div className="game-loading">Caricamento gioco...</div>}>
-                                <ReverseEngineeringLab
-                                    onSendToUNLIM={(msg) => { setShowChat(true); handleSend(msg); }}
-                                    onOpenSimulator={(experimentId) => { setPendingExperimentId(experimentId || null); setActiveTab('simulator'); }}
-                                    logSession={logSession}
-                                />
-                            </Suspense>
-                        )}
-
-                        {activeTab === 'review' && (
-                            <Suspense fallback={<div className="game-loading">Caricamento gioco...</div>}>
-                                <CircuitReview
-                                    onSendToUNLIM={(msg) => { setShowChat(true); handleSend(msg); }}
-                                    onOpenSimulator={(experimentId) => { setPendingExperimentId(experimentId || null); setActiveTab('simulator'); }}
-                                    logSession={logSession}
-                                />
-                            </Suspense>
-                        )}
 
                         {activeTab === 'canvas' && (
                             <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: '#1E4D8C' }}>Caricamento...</div>}>

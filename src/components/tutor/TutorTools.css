@@ -1,13 +1,13 @@
-/* ============================================
+/* ----
    ELAB Tutor Tools — Modern Design System
    For: Detective, POE, Reverse, Review, Timeline
    Clean UI inspired by Claude.ai / ChatGPT
    (c) Andrea Marro — 13/02/2026
-   ============================================ */
+   ---- */
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CONTAINER                                                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool {
     height: 100%;
@@ -17,9 +17,9 @@
     font-family: var(--font-sans);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* HERO HEADER                                                     */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__hero {
     text-align: center;
@@ -62,9 +62,9 @@
     font-weight: var(--font-weight-semibold);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FILTER BAR                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__filters {
     display: flex;
@@ -99,9 +99,9 @@
     color: var(--color-text-inverse);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CARD BASE                                                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__card {
     background: var(--color-bg);
@@ -153,9 +153,9 @@
     margin: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CARD LIST (Grid)                                                */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__list {
     display: grid;
@@ -164,9 +164,9 @@
     margin: 0 auto;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* LIST ITEM (Clickable Card)                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__list-item {
     background: var(--color-bg);
@@ -198,7 +198,7 @@
 .elab-tool__list-item-icon {
     font-size: 1.8rem;
     flex-shrink: 0;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 }
 /* © Andrea Marro — 18/02/2026 */
 
@@ -236,9 +236,9 @@
     flex-shrink: 0;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* BADGES                                                          */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__badge {
     display: inline-block;
@@ -279,9 +279,9 @@
     color: var(--color-text-tertiary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* BUTTONS                                                         */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__btn {
     padding: var(--space-3) var(--space-5);
@@ -364,9 +364,9 @@
     color: var(--color-primary-hover);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* PROGRESS BAR                                                    */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__progress-bar {
     display: flex;
@@ -386,9 +386,9 @@
     background: var(--color-primary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CODE BLOCK                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__code {
     background: var(--color-code-bg, #1E293B);
@@ -399,7 +399,7 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-normal);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     max-height: 300px;
     margin: var(--space-2) 0;
 }
@@ -420,9 +420,9 @@
     white-space: pre;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* HINT / LEARN / FUNFACT                                          */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__hint {
     padding: var(--space-3) var(--space-4);
@@ -474,9 +474,9 @@
     font-size: var(--font-size-sm);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* INPUT ROW                                                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__input-row {
     display: flex;
@@ -520,9 +520,9 @@
     box-shadow: var(--shadow-focus);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* OPTION BUTTON (quiz/choices)                                    */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__option {
     padding: var(--space-4) var(--space-5);
@@ -575,9 +575,9 @@
     margin-right: var(--space-3);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* PROBE / TEST POINT                                              */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__probe {
     padding: var(--space-3) var(--space-4);
@@ -600,7 +600,7 @@
 }
 
 .elab-tool__probe-label {
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-sm);
     color: var(--color-text);
@@ -626,9 +626,9 @@
     color: var(--color-text-tertiary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* COMPONENT TAG                                                   */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__tag {
     padding: var(--space-2) var(--space-3);
@@ -652,9 +652,9 @@
     font-weight: var(--font-weight-bold);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* RESULT BOX                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__result {
     padding: var(--space-4);
@@ -690,9 +690,9 @@
     margin: var(--space-1) 0 0;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* COMPARISON GRID (POE observe)                                   */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__compare {
     display: grid;
@@ -739,9 +739,9 @@
     border: 1px solid var(--color-border);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* BUTTONS ROW                                                     */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__actions {
     display: flex;
@@ -783,9 +783,9 @@
     background: var(--color-primary-subtle);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* LOCKOUT OVERLAY                                                 */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__lockout {
     padding: var(--space-4);
@@ -801,7 +801,7 @@
     color: var(--color-warning);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 }
 /* © Andrea Marro — 18/02/2026 */
 
@@ -811,9 +811,9 @@
     margin-top: var(--space-1);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* TIMELINE                                                        */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-tool__timeline {
     display: flex;
@@ -878,9 +878,9 @@
     margin-top: -20px;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* TYPOGRAPHY HELPERS                                              */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-h1 {
     font-family: var(--font-display);
@@ -895,9 +895,9 @@
     font-family: var(--font-mono);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ANIMATIONS                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @keyframes elab-fadeIn {
     from { opacity: 0; transform: translateY(8px); }
@@ -935,9 +935,9 @@
     animation: elab-cardIn 0.3s ease backwards;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ACCESSIBILITY                                                   */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @media (prefers-reduced-motion: reduce) {
     .elab-tool__card,
@@ -976,9 +976,9 @@
     animation: fadeInDown 0.3s ease;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* RESPONSIVE                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @media (max-width: 600px) {
     .elab-tool {

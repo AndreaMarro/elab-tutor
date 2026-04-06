@@ -9,6 +9,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ControlBar from './ControlBar';
+import { getExperimentIcon } from '../../../utils/experimentIcon';
 
 /* ─── SVG Icons (inline, minimal set) ─── */
 const PlayIcon = () => (
@@ -270,7 +271,7 @@ const MinimalControlBar = (props) => {
         title="Cambia esperimento"
         aria-label={`Esperimento: ${experiment.title}. Clicca per cambiare.`}
       >
-        <span className="minimal-toolbar__experiment-icon">{experiment.icon}</span>
+        <span className="minimal-toolbar__experiment-icon">{getExperimentIcon(experiment, 16)}</span>
         <span className="minimal-toolbar__experiment-title">{experiment.title}</span>
       </button>
 

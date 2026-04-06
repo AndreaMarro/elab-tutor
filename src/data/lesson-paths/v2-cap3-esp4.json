@@ -1,0 +1,154 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-05",
+    "source": "curriculum YAML + experiments-vol2.js"
+  },
+  "experiment_id": "v2-cap3-esp4",
+  "volume": 2,
+  "chapter": 3,
+  "title": "Misuriamo la corrente in un circuito",
+  "chapter_title": "Il Multimetro",
+  "difficulty": 2,
+  "duration_minutes": 45,
+  "target_age": "10-14 anni",
+  "objective": "I ragazzi collegano il multimetro IN SERIE per misurare la corrente. Scoprono la Legge di Ohm in pratica.",
+  "components_needed": [
+    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
+    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
+    { "name": "Resistore 1k Ohm", "quantity": 1, "icon": "⚡" },
+    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+  ],
+  "vocabulary": {
+    "allowed": [
+      "multimetro", "amperometro", "corrente", "ampere", "milliampere",
+      "serie", "circuito chiuso", "resistore", "batteria", "Legge di Ohm",
+      "volt", "ohm", "puntale", "misura"
+    ],
+    "forbidden": [
+      "parallelo", "condensatore", "induttore", "MOSFET",
+      "Arduino", "codice", "programma", "digitale"
+    ],
+    "note": "Cap 3 Vol 2 — prima misura di corrente. Concetto IN SERIE fondamentale."
+  },
+  "prerequisites": ["multimetro_base", "tensione_batteria", "ohmmetro"],
+  "next_experiment": {
+    "id": "v2-cap4-esp1",
+    "title": "Due resistori in parallelo",
+    "preview": "La prossima volta mettiamo due resistori insieme in un modo speciale: in parallelo!"
+  },
+  "phases": [
+    {
+      "name": "PREPARA",
+      "icon": "📋",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi il multimetro misura la CORRENTE. Deve essere collegato IN SERIE, non in parallelo come il voltmetro!",
+      "teacher_tip": "Questo e il concetto piu difficile del capitolo. Usa il disegno: il multimetro deve stare 'nel mezzo' del circuito, come un casello autostradale.",
+      "components_list": "Ti servono: 1 batteria 9V, 1 breadboard, 1 resistore 1kOhm, 1 multimetro.",
+      "class_hook": "Il voltmetro guarda da fuori. L'amperometro deve stare IN MEZZO al circuito. Perche?",
+      "action_tags": [],
+      "auto_action": null
+    },
+    {
+      "name": "MOSTRA",
+      "icon": "🔧",
+      "duration_minutes": 10,
+      "teacher_message": "Mostra il circuito: batteria -> multimetro IN SERIE -> resistore -> batteria.",
+      "teacher_tip": "Evidenzia che il circuito e INTERROTTO e il multimetro chiude il circuito. Se lo togli, la corrente non passa.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp4]"],
+      "auto_action": "load_experiment",
+      "build_circuit": {
+        "description": "Monta il circuito con multimetro in serie",
+        "button_label": "Monta il circuito per me",
+        "intent": {
+          "components": [
+            { "type": "battery9v", "id": "bat1" },
+            { "type": "breadboard-half", "id": "bb1" },
+            { "type": "resistor", "id": "r1", "value": 1000 },
+            { "type": "multimeter", "id": "mm1" }
+          ],
+          "wires": [
+            { "from": "bat1:positive", "to": "mm1:probe-red", "color": "red" },
+            { "from": "mm1:probe-black", "to": "bb1:a1", "color": "orange" },
+            { "from": "bb1:e5", "to": "bb1:f5", "color": "green" },
+            { "from": "bb1:j10", "to": "bat1:negative", "color": "black" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CHIEDI",
+      "icon": "❓",
+      "duration_minutes": 10,
+      "teacher_message": "La batteria e 9V, il resistore e 1000 Ohm. Quanta corrente passa?",
+      "teacher_tip": "Scrivi alla lavagna: I = V / R = 9 / 1000 = 0.009 A = 9 mA. Poi verifichiamo con il multimetro!",
+      "provocative_question": "Abbiamo 9 Volt e 1000 Ohm. Se divido 9 per 1000, ottengo la corrente. Quanto fa? Proviamo a calcolare!",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "common_mistakes": [
+        {
+          "mistake": "Multimetro collegato in parallelo (come voltmetro)",
+          "teacher_response": "ATTENZIONE: in parallelo come amperometro puo bruciare il fusibile! Nel simulatore non succede nulla, ma nella realta e pericoloso.",
+          "analogy": "E come mettere un tubo enorme al posto di uno stretto: l'acqua passa tutta di li!"
+        },
+        {
+          "mistake": "Confondere mA con A",
+          "teacher_response": "9 milliampere = 0.009 ampere. Milli = un millesimo. Come millimetri e metri!",
+          "analogy": null
+        }
+      ]
+    },
+    {
+      "name": "OSSERVA",
+      "icon": "👀",
+      "duration_minutes": 10,
+      "teacher_message": "Premi Play e leggi la corrente sul display. Dovrebbe essere circa 9 mA!",
+      "teacher_tip": "Confronta il valore letto con il calcolo. Se coincide, la Legge di Ohm funziona davvero!",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:play]"],
+      "auto_action": "play_and_highlight",
+      "observation_prompt": "Il display mostra la corrente in milliampere. Corrisponde al nostro calcolo? La Legge di Ohm funziona!",
+      "analogies": [
+        {
+          "concept": "corrente_serie",
+          "text": "La corrente e come l'acqua che scorre in un tubo. Il multimetro in serie e come un contatore dell'acqua: deve stare nel tubo per contare quanta ne passa.",
+          "evidence": "Analogia idraulica — corrente"
+        },
+        {
+          "concept": "legge_di_ohm",
+          "text": "V = I x R. Tensione = Corrente per Resistenza. Come: Distanza = Velocita per Tempo.",
+          "evidence": "Legge di Ohm"
+        }
+      ]
+    },
+    {
+      "name": "CONCLUDI",
+      "icon": "✅",
+      "duration_minutes": 5,
+      "teacher_message": "Per misurare la corrente il multimetro va IN SERIE. La Legge di Ohm ci permette di calcolare prima e verificare dopo!",
+      "teacher_tip": "Riassumi le 3 funzioni del multimetro: Voltmetro (parallelo), Ohmmetro (scollegato), Amperometro (serie).",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "summary_for_class": "L'amperometro va sempre IN SERIE! E con la Legge di Ohm (I = V/R) possiamo calcolare la corrente prima ancora di misurarla.",
+      "concepts_learned": ["amperometro_serie", "legge_di_ohm", "corrente_mA"],
+      "next_preview": "La prossima volta esploriamo i resistori in parallelo: due resistori insieme valgono la meta!"
+    }
+  ],
+  "assessment_invisible": [
+    "Se lo studente sa che l'amperometro va in serie -> concetto fondamentale acquisito",
+    "Se calcola I = V/R spontaneamente -> Legge di Ohm interiorizzata",
+    "Se chiede 'cosa succede con un resistore piu piccolo?' -> pronto per approfondire"
+  ],
+  "session_save": {
+    "concepts_covered": ["amperometro_serie", "legge_di_ohm", "corrente_mA"],
+    "next_suggested": "v2-cap4-esp1",
+    "resume_message": "L'ultima volta avete misurato la corrente e verificato la Legge di Ohm! Oggi esploriamo i resistori in parallelo..."
+  }
+}

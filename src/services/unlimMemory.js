@@ -198,7 +198,7 @@ async function saveContext(classId, experimentId, context) {
     _saveContextLocal(classId, experimentId, context);
 
     if (!isSupabaseConfigured()) return;
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
     try {
         const userId = _getCurrentUserId();
@@ -380,13 +380,26 @@ function _getCurrentUserId() {
                 return payload.userId || payload.sub || null;
             } catch { /* invalid token */ }
         }
-        return localStorage.getItem('elab_tutor_session') || null;
+        // Stable anonymous UUID (same as supabaseSync.js)
+        return _getOrCreateAnonUuid();
     } catch {
         return null;
     }
 }
 
+function _getOrCreateAnonUuid() {
+    const key = 'elab_anon_uuid';
+    let uuid = localStorage.getItem(key);
+    if (uuid && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid)) {
+        return uuid;
+    }
+    uuid = crypto.randomUUID();
+    localStorage.setItem(key, uuid);
+    return uuid;
+}
+
 // ─── Backend Sync (tier 3: nanobot — AI-enriched) ──────────────
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
 const NANOBOT_URL = ((typeof import.meta !== 'undefined' && import.meta.env?.VITE_NANOBOT_URL) || '').trim() || null;
 let _syncDirty = false;
@@ -399,7 +412,6 @@ const AUTOSAVE_INTERVAL = 30_000;
 function _getSessionId() {
     const KEY = 'elab_tutor_session';
     try {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
         return localStorage.getItem(KEY) || '';
     } catch { return ''; }
 }

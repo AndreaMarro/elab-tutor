@@ -97,7 +97,11 @@
   "prerequisites": [
     "v3-extra-servo-sweep"
   ],
-  "next_experiment": null,
+  "next_experiment": {
+    "id": null,
+    "title": "Complimenti! Hai completato tutti gli esperimenti ELAB!",
+    "preview": "Hai costruito un gioco completo da zero. Sei pronto per progetti ancora più avanzati!"
+  },
   "phases": [
     {
       "name": "PREPARA",
@@ -398,6 +402,6 @@
       "integrazione_vol3"
     ],
     "next_suggested": null,
-    "resume_message": "Avete completato il Volume 3 con Simon Says! Siete programmatori Arduino!"
+    "resume_message": "Hai completato il progetto Simon Says, l'ultimo esperimento del Volume 3!"
   }
 }

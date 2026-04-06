@@ -8,6 +8,17 @@
 
 import React, { useMemo } from 'react';
 import { getComponent } from '../components/registry';
+import { ResistorIcon, LedIcon, ButtonIcon, BuzzerIcon, CapacitorIcon, MotorIcon, PotentiometerIcon, PhotoresistorIcon, DiodeIcon, ServoIcon, LcdIcon, WireIcon, BatteryIcon, MosfetIcon, RgbLedIcon, MagnetIcon, CircuitIcon } from '../../common/ElabIcons';
+
+const BOM_ICONS = {
+  resistor: ResistorIcon, led: LedIcon, 'push-button': ButtonIcon, 'rgb-led': RgbLedIcon,
+  'buzzer-piezo': BuzzerIcon, capacitor: CapacitorIcon, 'motor-dc': MotorIcon,
+  potentiometer: PotentiometerIcon, 'photo-resistor': PhotoresistorIcon,
+  phototransistor: PhotoresistorIcon, 'reed-switch': MagnetIcon, 'mosfet-n': MosfetIcon,
+  diode: DiodeIcon, servo: ServoIcon, lcd16x2: LcdIcon, wire: WireIcon,
+  battery9v: BatteryIcon, 'breadboard-half': CircuitIcon, 'breadboard': CircuitIcon,
+  'nano-r4': CircuitIcon, multimeter: CircuitIcon, switch: ButtonIcon,
+};
 
 const COMPONENT_LABELS = {
   'led': 'LED',
@@ -95,7 +106,7 @@ const BomPanel = React.memo(function BomPanel({ experiment, onClose }) {
           </svg>
           <span style={S.headerTitle}>Lista dei Pezzi</span>
         </div>
-        <button onClick={onClose} style={S.closeBtn}>
+        <button onClick={onClose} style={S.closeBtn} aria-label="Chiudi">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
@@ -121,7 +132,7 @@ const BomPanel = React.memo(function BomPanel({ experiment, onClose }) {
               const colorLabel = row.color ? ` (${row.color})` : '';
               return (
                 <tr key={i} style={{ background: i % 2 === 0 ? 'var(--color-bg)' : 'var(--color-bg-secondary)' }}>
-                  <td style={S.iconCell}>{icon}</td>
+                  <td style={S.iconCell}>{(() => { const Ic = BOM_ICONS[row.type]; return Ic ? <Ic size={18} color="var(--color-primary)" /> : icon; })()}</td>
                   <td style={S.nameCell}>
                     {label}{colorLabel}
                   </td>

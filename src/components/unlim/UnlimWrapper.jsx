@@ -27,6 +27,157 @@ import { startNudgeListener } from '../../services/nudgeService';
 import { useAuth } from '../../context/AuthContext';
 
 /**
+ * Execute [AZIONE:command:args] tags from AI response via __ELAB_API.
+ * Mirrors the Lavagna executeActionTags but adapted for UNLIM context.
+ * Returns array of executed action descriptions.
+ */
+function executeActionTags(rawResponse) {
+  const api = typeof window !== 'undefined' && window.__ELAB_API;
+  if (!api) return [];
+
+  const executed = [];
+  const re = /\[azione:([^\]]+)\]/gi;
+  let match;
+
+  while ((match = re.exec(rawResponse)) !== null) {
+    const full = match[1].trim();
+    const parts = full.split(':').map(s => s.trim());
+    const cmd = parts[0].toLowerCase();
+
+    try {
+      switch (cmd) {
+        case 'play': api.play?.(); executed.push('play'); break;
+        case 'pause': api.pause?.(); executed.push('pause'); break;
+        case 'reset': api.reset?.(); executed.push('reset'); break;
+        case 'highlight':
+          if (parts[1]) {
+            const ids = parts[1].split(',').map(s => s.trim());
+            api.unlim?.highlightComponent?.(ids);
+            setTimeout(() => api.unlim?.clearHighlights?.(), 4000);
+            executed.push('highlight:' + parts[1]);
+          }
+          break;
+        case 'highlightpin':
+          if (parts[1]) {
+            const pins = parts[1].split(',').map(s => s.trim());
+            api.unlim?.highlightPin?.(pins);
+            setTimeout(() => api.unlim?.clearHighlights?.(), 4000);
+            executed.push('highlightpin:' + parts[1]);
+          }
+          break;
+        case 'loadexp':
+          if (parts[1] && api.loadExperiment) {
+            api.loadExperiment(parts[1]);
+            executed.push('loadexp:' + parts[1]);
+          }
+          break;
+        case 'addcomponent':
+          if (parts[1] && api.addComponent) {
+            const x = parseInt(parts[2], 10) || 200;
+            const y = parseInt(parts[3], 10) || 150;
+            api.addComponent(parts[1], { x, y });
+            executed.push('addcomponent:' + parts[1]);
+          }
+          break;
+        case 'removecomponent':
+          if (parts[1] && api.removeComponent) {
+            api.removeComponent(parts[1]);
+            executed.push('removecomponent:' + parts[1]);
+          }
+          break;
+        case 'movecomponent':
+          if (parts[1] && api.moveComponent) {
+            api.moveComponent(parts[1], parseInt(parts[2], 10) || 0, parseInt(parts[3], 10) || 0);
+            executed.push('movecomponent:' + parts[1]);
+          }
+          break;
+        case 'addwire':
+          if (parts.length >= 5 && api.addWire) {
+            api.addWire(parts[1] + ':' + parts[2], parts[3] + ':' + parts[4]);
+            executed.push('addwire');
+          }
+          break;
+        case 'removewire':
+          if (parts[1] !== undefined && api.removeWire) {
+            api.removeWire(parseInt(parts[1], 10));
+            executed.push('removewire:' + parts[1]);
+          }
+          break;
+        case 'interact':
+          if (parts[1] && parts[2] && api.interact) {
+            api.interact(parts[1], parts[2], parts[3]);
+            executed.push('interact:' + parts[1] + ':' + parts[2]);
+          }
+          break;
+        case 'setvalue':
+          if (parts[1] && parts[2] && api.setComponentValue) {
+            api.setComponentValue(parts[1], parts[2], parts[3]);
+            executed.push('setvalue:' + parts[1] + ':' + parts[2]);
+          }
+          break;
+        case 'clearall':
+          api.clearAll?.();
+          executed.push('clearall');
+          break;
+        case 'compile': api.compile?.(); executed.push('compile'); break;
+        case 'undo': api.undo?.(); executed.push('undo'); break;
+        case 'redo': api.redo?.(); executed.push('redo'); break;
+        case 'listcomponents': {
+          api.getCircuitDescription?.();
+          executed.push('listcomponents');
+          break;
+        }
+        case 'getstate': {
+          api.getCircuitDescription?.();
+          executed.push('getstate');
+          break;
+        }
+        // ─── Build mode + navigation ───
+        case 'setbuildmode': {
+          const modeMap = { montato: 'complete', passopasso: 'guided', percorso: 'sandbox' };
+          const m = modeMap[parts[1]?.toLowerCase()] || parts[1];
+          if (m) { api.setBuildMode?.(m); executed.push('setbuildmode:' + m); }
+          break;
+        }
+        case 'nextstep': api.nextStep?.(); executed.push('nextstep'); break;
+        case 'prevstep': api.prevStep?.(); executed.push('prevstep'); break;
+        case 'showbom': api.showBom?.(); executed.push('showbom'); break;
+        // ─── Editor ───
+        case 'openeditor': api.showEditor?.(); executed.push('openeditor'); break;
+        case 'closeeditor': api.hideEditor?.(); executed.push('closeeditor'); break;
+        case 'switcheditor': {
+          const em = parts[1]?.toLowerCase() === 'scratch' ? 'scratch' : 'arduino';
+          api.setEditorMode?.(em); executed.push('switcheditor:' + em);
+          break;
+        }
+        case 'setcode':
+          if (parts.slice(1).join(':')) { api.setEditorCode?.(parts.slice(1).join(':')); executed.push('setcode'); }
+          break;
+        case 'appendcode':
+          if (parts.slice(1).join(':')) { api.appendEditorCode?.(parts.slice(1).join(':')); executed.push('appendcode'); }
+          break;
+        case 'getcode': api.getEditorCode?.(); executed.push('getcode'); break;
+        case 'resetcode': api.resetEditorCode?.(); executed.push('resetcode'); break;
+        case 'loadblocks':
+          if (parts[1]) { api.loadScratchWorkspace?.(parts.slice(1).join(':')); executed.push('loadblocks'); }
+          break;
+        // ─── Serial ───
+        case 'serialwrite':
+          if (parts[1]) { api.unlim?.serialWrite?.(parts.slice(1).join(':')); executed.push('serialwrite'); }
+          break;
+        case 'showserial': api.showSerialMonitor?.(); executed.push('showserial'); break;
+        default:
+          break;
+      }
+    } catch {
+      /* action error — skip silently */
+    }
+  }
+
+  return executed;
+}
+
+/**
  * S1 Ciclo 4: Execute an INTENT action from AI response.
  * Supported intents:
  *   { action: "add_component", type: "led", color: "green" }
@@ -222,6 +373,20 @@ export default function UnlimWrapper({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [inputBarVisible, setInputBarVisible] = useState(false);
   const [currentExperimentId, setCurrentExperimentId] = useState(null);
+
+  // Student name — persisted in localStorage
+  const [studentName, setStudentName] = useState(() => {
+    try { return localStorage.getItem('elab_student_name') || ''; } catch { return ''; }
+  });
+  const [namePromptShown, setNamePromptShown] = useState(false);
+  const namePromptDoneRef = useRef(false);
+
+  const saveStudentName = useCallback((name) => {
+    const trimmed = (name || '').trim();
+    if (!trimmed) return;
+    setStudentName(trimmed);
+    try { localStorage.setItem('elab_student_name', trimmed); } catch {}
+  }, []);
   // G36: Offline detection — show persistent banner after 2+ consecutive AI failures
   const [isOffline, setIsOffline] = useState(false);
   const failCountRef = useRef(0);
@@ -415,13 +580,56 @@ export default function UnlimWrapper({ children }) {
     } else {
       setInputBarVisible(true);
       setMascotState('active');
+
+      // Name prompt — ask for name on first open if not set
+      if (!studentName && !namePromptDoneRef.current) {
+        namePromptDoneRef.current = true;
+        setNamePromptShown(true);
+        setTimeout(() => {
+          showMessage('Ciao! Come ti chiami?', {
+            position: 'top-center',
+            icon: <HandWaveIcon size={18} />,
+            type: 'hint',
+            duration: 12000,
+          });
+          speakIfEnabled('Ciao! Come ti chiami?');
+        }, 500);
+      }
     }
-  }, [inputBarVisible, stt]);
+  }, [inputBarVisible, stt, studentName, showMessage, speakIfEnabled]);
 
   // Quando l'utente invia un messaggio dalla barra input → Galileo API
   // P1-1 fix: ricalcola lessonPath dentro il callback (no stale closure)
   // P1-5 fix: gestisce isLoading per disabilitare input durante richiesta
   const handleSend = useCallback(async (text) => {
+    // Name prompt intercept — if waiting for name, save it and greet
+    if (namePromptShown && !studentName) {
+      const name = text.trim().replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '').trim();
+      if (name && name.length >= 2 && name.length <= 30) {
+        saveStudentName(name);
+        setNamePromptShown(false);
+        const greeting = `Ciao ${name}! Sono UNLIM, il tuo tutor. Chiedi pure quello che vuoi!`;
+        showMessage(greeting, {
+          position: 'top-center',
+          icon: <RobotIcon size={18} />,
+          type: 'success',
+          duration: 8000,
+        });
+        speakIfEnabled(greeting);
+        setMascotState('speaking');
+        setTimeout(() => setMascotState(inputBarVisible ? 'active' : 'idle'), 4000);
+        return;
+      }
+      // Invalid name — ask again
+      showMessage('Scrivimi il tuo nome (solo lettere, almeno 2 caratteri)', {
+        position: 'top-center',
+        icon: <HandWaveIcon size={18} />,
+        type: 'info',
+        duration: 5000,
+      });
+      return;
+    }
+
     // G51: Offline guard — show message instead of loading spinner
     if (!navigator.onLine) {
       showMessage('Galileo non e disponibile offline. Consulta la guida cliccando PREPARA!', {
@@ -465,13 +673,13 @@ export default function UnlimWrapper({ children }) {
       const opened = openReportWindow(currentExperimentId);
       if (opened === 'downloaded') {
         showMessage('Report scaricato! Aprilo dalla cartella Download.', {
-          position: 'top-center', icon: '\uD83D\uDCC4', type: 'success', duration: 8000,
+          position: 'top-center', icon: '✓', type: 'success', duration: 8000,
         });
         speakIfEnabled('Report scaricato! Aprilo dalla cartella Download.');
         sessionTracker.recordAction('report_downloaded', currentExperimentId || 'last');
       } else if (opened) {
         showMessage('Report generato! Usa Stampa per salvarlo come PDF.', {
-          position: 'top-center', icon: '\uD83D\uDCC4', type: 'success', duration: 6000,
+          position: 'top-center', icon: '✓', type: 'success', duration: 6000,
         });
         speakIfEnabled('Report generato! Usa il pulsante Stampa per salvarlo come PDF.');
         sessionTracker.recordAction('report_generated', currentExperimentId || 'last');
@@ -531,13 +739,16 @@ export default function UnlimWrapper({ children }) {
       } catch { return undefined; }
     })();
 
-    const fullContext = [expCtx, vocabCtx, classCtx, memoryCtx, circuitCtx].filter(Boolean).join('\n') || undefined;
+    // Student name context — AI personalizes with "Bravo [nome]!" etc.
+    const nameCtx = studentName ? `NOME STUDENTE: ${studentName}. Usalo per personalizzare: "Bravo ${studentName}!", "Ottimo ${studentName}!". Non chiederlo di nuovo.` : undefined;
+    const fullContext = [nameCtx, expCtx, vocabCtx, classCtx, memoryCtx, circuitCtx].filter(Boolean).join('\n') || undefined;
 
     try {
       const result = await sendChat(text, [], {
         signal: controller.signal,
         experimentId: currentExperimentId || undefined,
         experimentContext: fullContext,
+        studentName: studentName || undefined,
       });
 
       if (controller.signal.aborted) return;
@@ -556,10 +767,13 @@ export default function UnlimWrapper({ children }) {
           } catch { /* malformed INTENT — ignore */ }
         }
 
-        // Estrai target componentId da action tags nella risposta
-        const highlightMatch = result.response.match(/\[azione:highlight:([^\]]+)\]/i);
-        const targetComponentId = highlightMatch
-          ? highlightMatch[1].split(',')[0].trim()
+        // Execute all [AZIONE:...] tags from the AI response
+        const executedActions = executeActionTags(result.response);
+
+        // Estrai target componentId da executed highlight actions for contextual positioning
+        const highlightAction = executedActions.find(a => a.startsWith('highlight:'));
+        const targetComponentId = highlightAction
+          ? highlightAction.replace('highlight:', '').split(',')[0].trim()
           : null;
 
         // Rimuovi i tag azione e INTENT dal testo visualizzato
@@ -617,7 +831,7 @@ export default function UnlimWrapper({ children }) {
         setIsLoading(false);
       }
     }
-  }, [showMessage, currentExperimentId, speakIfEnabled, sessionTracker]);
+  }, [showMessage, currentExperimentId, speakIfEnabled, sessionTracker, namePromptShown, studentName, saveStudentName, inputBarVisible]);
   // Aggiorna refs per callback stabili (usati da STT onResult senza dipendenza circolare)
   handleSendRef.current = handleSend;
   speakIfEnabledRef.current = speakIfEnabled;
@@ -798,13 +1012,15 @@ export default function UnlimWrapper({ children }) {
             }}
             isListening={stt.isListening}
             isLoading={isLoading}
-            placeholder={stt.isListening
+            placeholder={namePromptShown && !studentName
+              ? 'Scrivi il tuo nome...'
+              : stt.isListening
               ? (sttInputText || 'Sto ascoltando...')
               : isOffline
                 ? 'Offline — prova comandi: "avvia", "stop", "compila"...'
                 : lessonPath
-                  ? `Chiedi qualcosa su "${lessonPath.title}"...`
-                  : 'Chiedi qualcosa a UNLIM...'}
+                  ? `${studentName ? studentName + ', chiedi' : 'Chiedi'} qualcosa su "${lessonPath.title}"...`
+                  : `${studentName ? studentName + ', chiedi' : 'Chiedi'} qualcosa a UNLIM...`}
           />
         )}
       </UnlimErrorBoundary>

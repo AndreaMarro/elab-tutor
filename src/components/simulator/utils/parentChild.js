@@ -19,7 +19,7 @@ export function getChildComponents(parentId, layout) {
 
 /**
  * Given pinAssignments, infer parentId for each component.
- * Used when loading "Gia Montato" experiments that don't have parentId set.
+ * Used when loading experiments that don't have parentId set.
  * @param {Object} pinAssignments - e.g. { "led1:anode": "bb1:a5", "r1:pin1": "bb1:c3" }
  * @returns {Object} Map of compId -> parentBbId (e.g. { "led1": "bb1", "r1": "bb1" })
  */

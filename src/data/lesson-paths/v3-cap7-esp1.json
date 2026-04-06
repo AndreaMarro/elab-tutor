@@ -14,20 +14,72 @@
   "target_age": "10-14 anni",
   "objective": "Usare digitalRead per leggere lo stato di un pulsante e accendere un LED quando e premuto. Primo esperimento con un pin configurato come INPUT: Arduino riceve informazioni dal mondo esterno.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "🤖" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "🔲" },
-    { "name": "LED rosso", "quantity": 1, "icon": "❤️" },
-    { "name": "Resistore 470ohm", "quantity": 1, "icon": "⚡" },
-    { "name": "Resistore 10kohm", "quantity": 1, "icon": "⚡" },
-    { "name": "Pulsante", "quantity": 1, "icon": "🔘" },
-    { "name": "Fili di collegamento", "quantity": 7, "icon": "🔌" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "🤖"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "❤️"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Resistore 10kohm",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Pulsante",
+      "quantity": 1,
+      "icon": "🔘"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 7,
+      "icon": "🔌"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "INPUT", "OUTPUT", "digitalRead", "digitalWrite", "pulsante", "premuto", "rilasciato", "HIGH", "LOW", "if", "resistore pull-down", "condizione"],
-    "forbidden": ["interrupt", "debounce", "pull-up interno", "INPUT_PULLUP", "volatile", "millis"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "INPUT",
+      "OUTPUT",
+      "digitalRead",
+      "digitalWrite",
+      "pulsante",
+      "premuto",
+      "rilasciato",
+      "HIGH",
+      "LOW",
+      "if",
+      "resistore pull-down",
+      "condizione"
+    ],
+    "forbidden": [
+      "interrupt",
+      "debounce",
+      "pull-up interno",
+      "INPUT_PULLUP",
+      "volatile",
+      "millis"
+    ],
     "note": "Primo INPUT e primo if. Spiegare il pull-down come necessita pratica: senza resistore il pin 'fluttua' e legge valori a caso."
   },
-  "prerequisites": ["v3-cap6-esp2"],
+  "prerequisites": [
+    "v3-cap6-esp2"
+  ],
   "next_experiment": {
     "id": "v3-cap7-esp2",
     "title": "Pulsante con conteggio",
@@ -50,7 +102,9 @@
       "duration_minutes": 10,
       "teacher_message": "Carichiamo il circuito: pulsante collegato al pin 2 con resistore pull-down, LED sul pin 7. Nel codice, il pin 2 e INPUT e il pin 7 e OUTPUT. Con if leggiamo il pulsante e decidiamo.",
       "teacher_tip": "Spiegare il resistore pull-down in modo semplice: senza di lui, quando il pulsante non e premuto, il pin non sa se e HIGH o LOW. Il resistore lo tiene a LOW finche non premiamo.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap7-esp1]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap7-esp1]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -69,9 +123,23 @@
       "duration_minutes": 10,
       "teacher_message": "Premiamo Play. Ora premete il pulsante nel simulatore: il LED si accende. Rilasciate: si spegne. Arduino legge il pulsante e reagisce in tempo reale.",
       "teacher_tip": "Far notare la reattivita: non c'e ritardo visibile. Il loop e cosi veloce che la risposta sembra istantanea. Questo e il polling.",
-      "action_tags": ["[AZIONE:play]"],
+      "action_tags": [
+        "[AZIONE:play]"
+      ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Il LED si accende solo quando tenete premuto o resta acceso anche dopo che rilasciate? Perche?"
+      "observation_prompt": "Il LED si accende solo quando tenete premuto o resta acceso anche dopo che rilasciate? Perche?",
+      "analogies": [
+        {
+          "concept": "input_digitale",
+          "text": "Un pulsante collegato ad Arduino è come alzare la mano in classe: Arduino \"vede\" se la mano è su (HIGH) o giù (LOW).",
+          "evidence": "Analogia scolastica"
+        },
+        {
+          "concept": "digitalRead",
+          "text": "digitalRead è come guardare un semaforo: controlli se è verde (HIGH) o rosso (LOW) e poi decidi cosa fare.",
+          "evidence": "Analogia stradale"
+        }
+      ]
     },
     {
       "name": "CONCLUDI",
@@ -80,12 +148,24 @@
       "teacher_message": "Oggi Arduino ha imparato ad ascoltare. Con digitalRead legge HIGH o LOW dal pulsante. Con if decide cosa fare. Questa e la base di ogni programma interattivo: leggere, decidere, agire.",
       "teacher_tip": "Il pattern INPUT-DECISIONE-OUTPUT e il cuore di quasi tutti i programmi. Sottolinearlo: sensore legge, codice decide, attuatore agisce.",
       "summary_for_class": "Con digitalRead Arduino legge lo stato del pulsante. Con if decide se accendere il LED. Il pattern e: leggi l'ingresso, prendi una decisione, controlla l'uscita.",
-      "concepts_learned": ["pin INPUT e digitalRead", "istruzione if-else", "resistore pull-down", "interazione utente-Arduino", "pattern lettura-decisione-azione"],
+      "concepts_learned": [
+        "pin INPUT e digitalRead",
+        "istruzione if-else",
+        "resistore pull-down",
+        "interazione utente-Arduino",
+        "pattern lettura-decisione-azione"
+      ],
       "next_preview": "Nella prossima lezione il pulsante contera le pressioni. Ogni volta che premete, il conteggio sale."
     }
   ],
   "session_save": {
-    "concepts_covered": ["digitalRead", "pin INPUT", "if-else", "pull-down", "interazione"],
+    "concepts_covered": [
+      "digitalRead",
+      "pin INPUT",
+      "if-else",
+      "pull-down",
+      "interazione"
+    ],
     "next_suggested": "v3-cap7-esp2",
     "resume_message": "L'ultima volta avete usato il pulsante per accendere un LED con digitalRead e if. Oggi aggiungiamo il conteggio delle pressioni."
   }

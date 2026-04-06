@@ -1,0 +1,143 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-05",
+    "source": "curriculum YAML + experiments-vol2.js"
+  },
+  "experiment_id": "v2-cap3-esp3",
+  "volume": 2,
+  "chapter": 3,
+  "title": "Misuriamo una resistenza",
+  "chapter_title": "Il Multimetro",
+  "difficulty": 1,
+  "duration_minutes": 35,
+  "target_age": "10-14 anni",
+  "objective": "I ragazzi usano il multimetro in modalita ohmmetro per misurare il valore di un resistore e verificare le bande colorate.",
+  "components_needed": [
+    { "name": "Resistore 330 Ohm", "quantity": 1, "icon": "⚡" },
+    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+  ],
+  "vocabulary": {
+    "allowed": [
+      "multimetro", "ohmmetro", "resistore", "resistenza", "ohm",
+      "bande colorate", "codice colori", "misura", "puntale",
+      "scala", "valore", "tolleranza"
+    ],
+    "forbidden": [
+      "tensione", "corrente", "amperometro", "voltmetro",
+      "condensatore", "Arduino", "codice", "programma"
+    ],
+    "note": "Cap 3 Vol 2 — prima misura di resistenza. Si introduce il codice colori."
+  },
+  "prerequisites": ["multimetro_base"],
+  "next_experiment": {
+    "id": "v2-cap3-esp4",
+    "title": "Misuriamo la corrente in un circuito",
+    "preview": "La prossima volta colleghiamo il multimetro IN SERIE per misurare la corrente!"
+  },
+  "phases": [
+    {
+      "name": "PREPARA",
+      "icon": "📋",
+      "duration_minutes": 5,
+      "teacher_message": "Oggi i ragazzi usano il multimetro per misurare ohm e verificano se le bande colorate dicono la verita.",
+      "teacher_tip": "Porta 2-3 resistori diversi. Fai vedere le bande colorate PRIMA di misurare.",
+      "components_list": "Ti servono: 1 resistore 330 Ohm, 1 multimetro.",
+      "class_hook": "Questo componente ha delle strisce colorate. Secondo voi cosa significano?",
+      "action_tags": [],
+      "auto_action": null
+    },
+    {
+      "name": "MOSTRA",
+      "icon": "🔧",
+      "duration_minutes": 8,
+      "teacher_message": "Mostra il multimetro collegato al resistore. La manopola e sulla scala Ohm.",
+      "teacher_tip": "Spiega che per misurare la resistenza il componente deve essere SCOLLEGATO dal circuito. Il multimetro manda lui la corrente.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp3]"],
+      "auto_action": "load_experiment",
+      "build_circuit": {
+        "description": "Collega il multimetro al resistore",
+        "button_label": "Monta il circuito per me",
+        "intent": {
+          "components": [
+            { "type": "resistor", "id": "r1", "value": 330 },
+            { "type": "multimeter", "id": "mm1" }
+          ],
+          "wires": [
+            { "from": "r1:lead1", "to": "mm1:probe-red", "color": "red" },
+            { "from": "r1:lead2", "to": "mm1:probe-black", "color": "black" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CHIEDI",
+      "icon": "❓",
+      "duration_minutes": 8,
+      "teacher_message": "Le bande dicono 330 Ohm. Il multimetro leggera esattamente 330?",
+      "teacher_tip": "Introduci il concetto di tolleranza: la banda dorata significa +/- 5%. Il valore reale puo variare un po'.",
+      "provocative_question": "Se le bande colorate dicono 330 Ohm, il multimetro leggera esattamente 330.0? O un numero un po' diverso?",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "common_mistakes": [
+        {
+          "mistake": "Toccare i terminali del resistore con le dita",
+          "teacher_response": "Il corpo umano ha una resistenza! Se tocchi, il multimetro misura anche te.",
+          "analogy": null
+        },
+        {
+          "mistake": "Scala sbagliata (Volt invece di Ohm)",
+          "teacher_response": "Il display non cambia o mostra 0. Controlla la posizione della manopola!",
+          "analogy": null
+        }
+      ]
+    },
+    {
+      "name": "OSSERVA",
+      "icon": "👀",
+      "duration_minutes": 8,
+      "teacher_message": "Premi Play e leggi il valore. Confrontalo con quello che dicono le bande colorate.",
+      "teacher_tip": "Fai notare che il valore e molto vicino a 330 ma non identico. E normale: i componenti hanno una tolleranza.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": ["[AZIONE:play]"],
+      "auto_action": "play_and_highlight",
+      "observation_prompt": "Leggete il display! Il numero e vicino a 330 Ohm? Le bande colorate avevano ragione?",
+      "analogies": [
+        {
+          "concept": "resistenza_misura",
+          "text": "Misurare la resistenza e come pesare un pacco: l'etichetta dice 1 kg, ma la bilancia potrebbe dire 0.98 kg. Piccole differenze sono normali!",
+          "evidence": "Pedagogia STEM — tolleranza"
+        }
+      ]
+    },
+    {
+      "name": "CONCLUDI",
+      "icon": "✅",
+      "duration_minutes": 5,
+      "teacher_message": "Le bande colorate sono un codice che ci dice il valore. Il multimetro conferma (con piccole differenze normali).",
+      "teacher_tip": "Mostra brevemente la tabella colori: nero=0, marrone=1, rosso=2, arancione=3. Per 330: arancione-arancione-marrone.",
+      "components_list": null,
+      "class_hook": null,
+      "action_tags": [],
+      "auto_action": null,
+      "summary_for_class": "Le bande colorate sono un codice per leggere il valore del resistore. Il multimetro lo conferma!",
+      "concepts_learned": ["ohmmetro", "codice_colori_resistore", "tolleranza"],
+      "next_preview": "La prossima volta colleghiamo il multimetro IN SERIE per misurare quanta corrente passa nel circuito!"
+    }
+  ],
+  "assessment_invisible": [
+    "Se lo studente legge le bande colorate prima di misurare -> ha capito il codice",
+    "Se nota la differenza tra valore nominale e misurato -> comprende la tolleranza",
+    "Se chiede 'cosa succede con un resistore piu grande?' -> curiosita attiva"
+  ],
+  "session_save": {
+    "concepts_covered": ["ohmmetro", "codice_colori_resistore", "tolleranza"],
+    "next_suggested": "v2-cap3-esp4",
+    "resume_message": "L'ultima volta avete misurato una resistenza! Oggi il multimetro misura la corrente..."
+  }
+}

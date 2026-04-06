@@ -5,11 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ELAB BUILDER v4.0 — Modern Base Styles                         */
 /* Fonts: Inter (primary), Oswald (display), Fira Code (mono)     */
 /* Colors: Navy #1E4D8C, Green #4A7A25                            */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 * {
     box-sizing: border-box;
@@ -31,9 +31,9 @@ body,
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* TYPOGRAPHY                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .font-oswald {
     font-family: var(--font-display);
@@ -60,9 +60,9 @@ body,
     line-height: var(--line-height-relaxed);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* BUTTONS — Modern, clean with generous padding                   */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-btn {
     display: inline-flex;
@@ -126,9 +126,9 @@ body,
     color: var(--color-text);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CARDS — Clean, modern with subtle shadows                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-card {
     background: var(--color-bg);
@@ -153,9 +153,9 @@ body,
     border-color: var(--color-accent);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* BADGES                                                          */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-badge {
     display: inline-flex;
@@ -184,9 +184,9 @@ body,
     color: var(--color-primary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* INPUT FIELDS                                                    */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-input {
     width: 100%;
@@ -198,7 +198,7 @@ body,
     border-radius: var(--radius-md);
     color: var(--color-text);
     transition: all var(--transition-fast);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     min-height: var(--touch-min);
 }
 /* © Andrea Marro — 18/02/2026 */
@@ -214,9 +214,9 @@ body,
     color: var(--color-text-tertiary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* SCROLLBARS — Minimal, thin (Claude.ai style)                    */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 ::-webkit-scrollbar {
     width: 6px;
@@ -242,9 +242,9 @@ body,
     scrollbar-color: var(--color-border-hover) transparent;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* ANIMATIONS                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @keyframes slide-in-left {
     from { transform: translateX(-100%); opacity: 0; }
@@ -273,9 +273,9 @@ body,
     animation: fade-in 0.2s ease-out forwards;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CANVAS BACKGROUND                                               */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .canvas-bg {
     background-color: var(--color-bg-canvas);
@@ -285,9 +285,9 @@ body,
     background-size: 20px 20px;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* PRINT                                                           */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @page {
     size: A4;
@@ -322,9 +322,9 @@ body,
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* REDUCED MOTION                                                  */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @media (prefers-reduced-motion: reduce) {
     *,

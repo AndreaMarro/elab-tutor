@@ -431,7 +431,7 @@ registerComponent('breadboard-half', {
   defaultState: BreadboardHalf.defaultState,
   category: 'passive',
   label: 'Breadboard (Half)',
-  icon: '\u{1F4CB}',
+  icon: '',
   boardDimensions: BreadboardHalf.boardDimensions,
   getInternalConnections: BreadboardHalf.getInternalConnections,
   getHolePosition: BreadboardHalf.getHolePosition,

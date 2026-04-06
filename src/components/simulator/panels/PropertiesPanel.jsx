@@ -132,7 +132,7 @@ const PropertiesPanel = React.memo(function PropertiesPanel({ comp, onValueChang
           <div style={S.headerLabel}>{compName}</div>
           <div style={S.headerSub}>Modifica proprietà</div>
         </div>
-        <button onClick={onClose} style={S.closeBtn} onPointerDown={(e) => e.stopPropagation()}>
+        <button onClick={onClose} style={S.closeBtn} aria-label="Chiudi" onPointerDown={(e) => e.stopPropagation()}>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
@@ -351,7 +351,7 @@ const S = {
   fieldLabel: {
     fontSize: 14,
     fontWeight: 600,
-    color: 'var(--color-text-gray-400, #666)',
+    color: 'var(--color-text-gray-400, #525252)',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
   },
@@ -413,7 +413,7 @@ const S = {
     lineHeight: '40px',
     fontSize: 16,
     fontWeight: 700,
-    color: 'var(--color-text-gray-400, #666)',
+    color: 'var(--color-text-gray-400, #525252)',
     padding: '0 12px',
     border: '2px solid var(--color-border, #E5E5E5)',
     borderRadius: 8,

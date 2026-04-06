@@ -8,6 +8,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { VOLUMES, getExperimentsByVolume, getChaptersForVolume } from '../../../data/experiments-index';
+import { getExperimentIcon } from '../../../utils/experimentIcon';
+import { BookIcon } from '../../common/ElabIcons';
 
 const VOL_COLORS = {
   1: 'var(--color-vol1, #4A7A25)',
@@ -35,7 +37,7 @@ const ExperimentPicker = ({ onSelectExperiment, currentExperimentId = null, user
   const [selectedVolume, setSelectedVolume] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
   // Build mode selector REMOVED from here — only the main one in NewElabSimulator remains.
-  // Experiments always start as 'complete' (Già Montato), user switches via the main bar.
+  // Experiments always start as 'guided' (Passo Passo), user can switch to 'sandbox' (Percorso).
 
   /* userKits = null means bypass (admin/teacher), [] = no kits, ['Volume 1', ...] = specific access */
   const hasVolumeAccess = (volNum) => {
@@ -109,7 +111,7 @@ const ExperimentPicker = ({ onSelectExperiment, currentExperimentId = null, user
                     e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
                   }}
                 >
-                  <span style={{ fontSize: 32, lineHeight: 1 }}>{vol.icon}</span>
+                  <BookIcon size={32} color={volColor} />
                   <span style={{ ...S.volTitle, color: volColor }}>{vol.title}</span>
                   <span style={S.volSubtitle}>{vol.subtitle}</span>
                   <span style={{ ...S.volBadge, background: volColor }}>
@@ -139,7 +141,7 @@ const ExperimentPicker = ({ onSelectExperiment, currentExperimentId = null, user
             Volumi
           </button>
           <span style={{ ...S.panelHeaderTitle, color: volColor, fontSize: 14 }}>
-            {volInfo?.icon} {volInfo?.title}
+            <BookIcon size={14} color={volColor} /> {volInfo?.title}
           </span>
         </div>
         <div style={S.panelBody}>
@@ -199,7 +201,7 @@ const ExperimentPicker = ({ onSelectExperiment, currentExperimentId = null, user
                 <button
                   key={exp.id}
                   aria-label={`Carica esperimento: ${exp.title}`}
-                  onClick={() => onSelectExperiment({ ...exp, buildMode: hasBuildSteps ? 'guided' : false })}
+                  onClick={() => onSelectExperiment({ ...exp, buildMode: 'guided' })}
                   className={isCurrent ? '' : 'ep-exp-card'}
                   style={{
                     ...S.expCard,
@@ -208,7 +210,7 @@ const ExperimentPicker = ({ onSelectExperiment, currentExperimentId = null, user
                   }}
                 >
                   <div style={S.expTop}>
-                    <span style={{ fontSize: 20, lineHeight: 1 }}>{exp.icon}</span>
+                    {getExperimentIcon(exp, 20, volColor)}
                     <span style={S.expTitle}>{exp.title}</span>
                   </div>
                   <p style={S.expDesc}>{exp.desc}</p>
@@ -331,7 +333,7 @@ const S = {
 
   volSubtitle: {
     fontSize: 14,
-    color: 'var(--color-text-gray-400, #666)',
+    color: 'var(--color-text-gray-400, #525252)',
     textAlign: 'center',
     lineHeight: 1.4,
   },
@@ -463,7 +465,7 @@ const S = {
 
   expDesc: {
     fontSize: 14,
-    color: 'var(--color-text-gray-400, #666)',
+    color: 'var(--color-text-gray-400, #525252)',
     margin: 0,
     lineHeight: 1.5,
     fontFamily: 'var(--font-sans)',

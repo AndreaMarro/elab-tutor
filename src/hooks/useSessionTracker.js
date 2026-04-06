@@ -157,7 +157,10 @@ export function useSessionTracker() {
   }, []);
 
   // Listen to experimentChange → start/end sessions
+  // Uses polling (like LavagnaShell) because the simulator mounts async
   useEffect(() => {
+    let subscribed = false;
+
     function handleExpChange(data) {
       if (data?.experimentId) {
         startSession(data.experimentId);
@@ -166,16 +169,22 @@ export function useSessionTracker() {
     }
 
     function trySubscribe() {
+      if (subscribed) return true;
       const api = window.__ELAB_API;
       if (!api?.on) return false;
       api.on('experimentChange', handleExpChange);
+      subscribed = true;
       return true;
     }
 
+    // Poll every 500ms for up to 10 seconds (simulator may mount late in Lavagna)
     if (!trySubscribe()) {
-      const timer = setTimeout(trySubscribe, 800);
+      let attempts = 0;
+      const poll = setInterval(() => {
+        if (trySubscribe() || ++attempts > 20) clearInterval(poll);
+      }, 500);
       return () => {
-        clearTimeout(timer);
+        clearInterval(poll);
         const api = window.__ELAB_API;
         if (api?.off) api.off('experimentChange', handleExpChange);
       };
@@ -189,6 +198,7 @@ export function useSessionTracker() {
 
   // Save session on tab close / visibility change
   useEffect(() => {
+// © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati
     function handleUnload() {
       finaliseSession();
     }
@@ -198,7 +208,6 @@ export function useSessionTracker() {
         const s = sessionRef.current;
         s.endTime = new Date().toISOString();
         s.summary = buildSessionSummary(s);
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
         const sessions = loadSessions();
         // Replace or append
         const idx = sessions.findIndex(x => x.id === s.id);

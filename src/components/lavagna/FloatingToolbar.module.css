@@ -75,10 +75,25 @@
   }
 }
 
-/* LIM: when left panel is closed, toolbar goes vertical on the left */
-@media (max-width: 1024px) {
+/* LIM (1024x768): compact toolbar, sits above PageBar (44px) with gap */
+@media (max-width: 1024px) and (min-height: 700px) {
   .toolbar {
-    bottom: 64px;
+    bottom: 56px; /* PageBar ~44px + 12px gap */
+    padding: 4px 6px;
+    gap: 2px;
+    border-radius: 12px;
+  }
+
+  .btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .btn svg {
+    width: 20px;
+    height: 20px;
   }
 
   .verticalOnLIM {
@@ -91,6 +106,46 @@
   }
 
   .verticalOnLIM .divider {
+    width: 28px;
+    height: 1px;
+    margin: 2px 0;
+  }
+}
+
+/* Generic small-width fallback */
+@media (max-width: 1024px) {
+  .toolbar {
+    bottom: 56px;
+  }
+}
+
+/* iPad (768px) — toolbar above PageBar, touch-sized buttons */
+@media (max-width: 768px) {
+  .toolbar {
+    bottom: 56px; /* PageBar ~48px + 8px gap */
+    padding: 4px 6px;
+    gap: 2px;
+  }
+
+  .btn {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+/* iPad portrait — toolbar goes vertical on left edge */
+@media (max-width: 768px) and (orientation: portrait) {
+  .toolbar {
+    bottom: auto;
+    top: 60px;
+    left: 8px;
+    transform: none;
+    flex-direction: column;
+    padding: 6px;
+  }
+  .divider {
     width: 28px;
     height: 1px;
     margin: 2px 0;

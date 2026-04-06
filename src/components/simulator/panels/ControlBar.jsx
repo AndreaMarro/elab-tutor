@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { getExperimentIcon } from '../../../utils/experimentIcon';
 
 /* ─── Reusable ToolbarButton ─── */
 const ToolbarButton = ({
@@ -566,7 +567,7 @@ const ControlBar = ({
       {experiment && (
         <div className="toolbar-info">
           <span className="toolbar-info__title">
-            {experiment.icon} {experiment.title}
+            {getExperimentIcon(experiment, 16)} {experiment.title}
           </span>
           <span className="toolbar-info__meta">
             {modeLabel} {'\u00B7'} {diffStars}

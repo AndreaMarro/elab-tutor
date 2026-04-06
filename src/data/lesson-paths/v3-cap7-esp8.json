@@ -14,19 +14,72 @@
   "target_age": "10-14 anni",
   "objective": "Imparare il debounce software con millis() per gestire i rimbalzi meccanici del pulsante senza bloccare il programma. Il delay() ferma tutto il codice, mentre millis() permette di continuare a fare altro. E la tecnica usata dai professionisti.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "breadboard" },
-    { "name": "Pulsante (push button)", "quantity": 1, "icon": "button" },
-    { "name": "LED rosso", "quantity": 1, "icon": "led" },
-    { "name": "Resistore 470ohm", "quantity": 1, "icon": "resistor" },
-    { "name": "Fili di collegamento", "quantity": 5, "icon": "wire" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "breadboard"
+    },
+    {
+      "name": "Pulsante (push button)",
+      "quantity": 1,
+      "icon": "button"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "led"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 1,
+      "icon": "resistor"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 5,
+      "icon": "wire"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "pulsante", "digitalRead", "LED", "resistore", "breadboard", "codice", "programma", "GND", "debounce", "millis", "delay", "rimbalzo", "tempo", "variabile", "unsigned long"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "analogico", "interrupt"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "pulsante",
+      "digitalRead",
+      "LED",
+      "resistore",
+      "breadboard",
+      "codice",
+      "programma",
+      "GND",
+      "debounce",
+      "millis",
+      "delay",
+      "rimbalzo",
+      "tempo",
+      "variabile",
+      "unsigned long"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "analogico",
+      "interrupt"
+    ],
     "note": "Cap 7 Vol 3 — debounce con millis(), confronto con delay(), unsigned long."
   },
-  "prerequisites": ["v3-cap7-esp6"],
+  "prerequisites": [
+    "v3-cap7-esp6"
+  ],
   "next_experiment": {
     "id": "v3-cap8-esp1",
     "title": "Serial.println in setup",
@@ -49,7 +102,9 @@
       "duration_minutes": 10,
       "teacher_message": "Il circuito e uguale al toggle: pulsante INPUT_PULLUP e LED. La differenza e nel codice: usiamo millis() per registrare il tempo dell'ultima pressione. Se sono passati almeno 50ms dalla pressione precedente, accettiamo la nuova pressione. Altrimenti la ignoriamo.",
       "teacher_tip": "Spiega millis() come un cronometro che parte quando Arduino si accende e non si ferma mai. Restituisce il numero di millisecondi trascorsi dall'accensione. Il tipo unsigned long serve perche dopo 50 giorni il numero diventa enorme (4 miliardi). La logica e: tempo_attuale - tempo_ultima_pressione > 50.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap7-esp8]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap7-esp8]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -68,15 +123,31 @@
       "duration_minutes": 10,
       "teacher_message": "Premi Play! Provate a premere il pulsante velocemente tante volte. Con il debounce millis() ogni pressione viene registrata correttamente, senza salti o doppie letture. Il LED fa toggle pulito ad ogni pressione.",
       "teacher_tip": "Fai confrontare mentalmente con il debounce a delay: il risultato sembra lo stesso, ma con delay il LED non puo fare nient'altro durante quei 50ms. Con millis() Arduino e libero di controllare sensori, muovere motori, aggiornare display. Nella pratica professionale non si usa mai delay per il debounce.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:btn1]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Il toggle funziona in modo pulito: ogni pressione alterna il LED. La differenza dal debounce con delay non si vede a occhio, ma il programma non si blocca mai. Arduino resta libero di fare altro tra una pressione e l'altra."
+      "observation_prompt": "Il toggle funziona in modo pulito: ogni pressione alterna il LED. La differenza dal debounce con delay non si vede a occhio, ma il programma non si blocca mai. Arduino resta libero di fare altro tra una pressione e l'altra.",
+      "analogies": [
+        {
+          "concept": "debounce",
+          "text": "Il debounce è come aspettare che una palla smetta di rimbalzare prima di raccoglierla: il pulsante \"rimbalza\" elettricamente quando lo premi.",
+          "evidence": "Analogia fisica"
+        },
+        {
+          "concept": "millis",
+          "text": "millis() è come un cronometro che parte quando accendi Arduino e non si ferma mai. Lo usi per misurare quanto tempo è passato.",
+          "evidence": "Analogia sportiva"
+        }
+      ]
     },
     {
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 7,
-      "teacher_message": "Avete imparato la tecnica professionale per gestire i pulsanti! millis() e uno strumento potentissimo: serve per il debounce, per i timer, per far lampeggiare LED senza delay, per il multitasking. E la base della programmazione non-bloccante.",
+      "teacher_message": "Avete imparato la tecnica professionale per gestire i pulsanti! millis() e uno strumento potentissimo: serve per il debounce, per gli orologi interni di Arduino, per far lampeggiare LED senza delay, per il multitasking. E la base della programmazione non-bloccante.",
       "teacher_tip": "Recap: millis() restituisce i millisecondi dall'accensione. Confrontando il tempo attuale con quello dell'ultimo evento, decidiamo se e passato abbastanza tempo. Nessun delay, nessun blocco. Pattern: if(millis() - ultimoTempo > intervallo). Questo pattern si usa ovunque nella programmazione Arduino professionale.",
       "summary_for_class": "Il debounce con millis() e la versione professionale dell'anti-rimbalzo: invece di bloccare il programma con delay, confrontiamo i tempi. Se sono passati almeno 50ms dall'ultima pressione, accettiamo quella nuova. Il programma non si ferma mai e Arduino puo fare piu cose contemporaneamente!",
       "concepts_learned": [
@@ -90,7 +161,12 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["millis", "debounce_non_bloccante", "unsigned_long", "programmazione_non_bloccante"],
+    "concepts_covered": [
+      "millis",
+      "debounce_non_bloccante",
+      "unsigned_long",
+      "programmazione_non_bloccante"
+    ],
     "next_suggested": "v3-cap8-esp1",
     "resume_message": "Avete imparato il debounce professionale con millis()! Prossimo capitolo: comunicazione seriale."
   }

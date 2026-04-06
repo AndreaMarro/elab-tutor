@@ -1,12 +1,12 @@
-/* ============================================
+/* ----
    ELAB Tutor V4 — Modern Design System
    Clean, minimal UI inspired by Claude.ai & ChatGPT
    (c) Andrea Marro — 13/02/2026
-   ============================================ */
+   ---- */
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* BASE LAYOUT                                                     */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-v4 {
     display: flex;
@@ -18,9 +18,9 @@
     overflow: hidden;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* TYPOGRAPHY — Matching ELAB physical books                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-v4 h1,
 .elab-v4 h2,
@@ -54,9 +54,9 @@
     font-family: var(--font-mono);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FOOTER — Matches ELAB physical book footer                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .tutor-footer {
     background: var(--color-primary);
@@ -71,9 +71,9 @@
     letter-spacing: 0.3px;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* HEADER — Slim, modern, clean gradient                           */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-header {
     display: flex;
@@ -165,9 +165,9 @@
     box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* MAIN LAYOUT                                                     */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-main {
     display: flex;
@@ -183,9 +183,9 @@
     user-select: none;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CHAT PANEL — Claude.ai inspired messaging                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-chat {
     display: flex;
@@ -198,7 +198,7 @@
     max-width: calc(100% - 300px);
     border: 1px solid var(--color-border);
 }
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 .v4-messages {
     flex: 1;
@@ -399,14 +399,14 @@
 }
 
 .v4-send:disabled {
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     opacity: 0.35;
     cursor: not-allowed;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* RESIZE HANDLE                                                   */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-resize-handle {
     width: 12px;
@@ -433,9 +433,9 @@
     width: 4px;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CONTEXT PANEL — Right side panel                                */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 /* Tabs — Clean, modern tabs */
 /* © Andrea Marro — 18/02/2026 */
@@ -503,9 +503,9 @@
     position: relative;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* MANUAL / DOCUMENT VIEWER                                        */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-manual {
     height: 100%;
@@ -600,7 +600,7 @@
 }
 
 .v4-volume-btn {
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     flex: 1;
     padding: var(--space-3) var(--space-2);
     border: 1.5px solid var(--color-border);
@@ -801,7 +801,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     justify-content: center;
     cursor: pointer;
     padding: var(--space-10) var(--space-5);
@@ -893,9 +893,9 @@
     align-items: center;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* SIMULATOR                                                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-simulator-placeholder {
     flex: 1;
@@ -913,9 +913,9 @@
     border: none;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CANVAS / LAVAGNA                                                */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-canvas-wrapper {
     height: 100%;
@@ -1002,7 +1002,7 @@
     padding: var(--space-1) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     background: var(--color-bg);
     font-size: var(--font-size-sm);
     cursor: pointer;
@@ -1093,9 +1093,9 @@
     color: var(--color-text-tertiary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CODE PANEL                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-code {
     position: fixed;
@@ -1203,15 +1203,15 @@
 }
 
 .v4-output.error {
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     background: var(--color-danger-light);
     color: var(--color-danger);
     border-color: rgba(220, 38, 38, 0.2);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* NOTEBOOKS                                                       */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-notebooks {
     padding: var(--space-4);
@@ -1372,9 +1372,9 @@
     font-size: var(--font-size-sm);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* PRESENTATION MODAL                                              */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-presentation-overlay {
     position: fixed;
@@ -1404,7 +1404,7 @@
     background: var(--color-danger);
     color: white;
     border: none;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-weight: var(--font-weight-semibold);
@@ -1479,9 +1479,9 @@
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FULLSCREEN EXIT BUTTON                                          */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-fullscreen-exit {
     position: absolute;
@@ -1508,9 +1508,9 @@
     background: var(--color-primary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* LOADING SPINNER                                                 */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-loading {
     flex: 1;
@@ -1537,9 +1537,9 @@
     to { transform: rotate(360deg); }
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* VIDEO CONFERENCE / MEET                                         */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-meet-container {
     height: 100%;
@@ -1605,7 +1605,7 @@
     color: var(--color-text-secondary);
     text-align: center;
     max-width: 350px;
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     line-height: var(--line-height-relaxed);
 }
 
@@ -1769,9 +1769,9 @@
     background: rgba(220, 38, 38, 0.04);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* SESSION RECORDING BAR                                           */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-session-bar {
     display: flex;
@@ -1806,14 +1806,14 @@
     border-radius: var(--radius-xs);
     cursor: pointer;
     font-size: var(--font-size-sm);
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     font-weight: var(--font-weight-semibold);
     min-height: 44px;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* CANVAS TEXT TOOL                                                */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-text-input-overlay {
     position: absolute;
@@ -1879,9 +1879,9 @@
     min-height: 44px;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* VIDEO INPUT                                                     */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-video-input {
     padding: var(--space-3);
@@ -1930,9 +1930,9 @@
     flex-direction: column;
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* NOTEBOOK EDIT                                                   */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-edit-header {
     display: flex;
@@ -2007,7 +2007,7 @@
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
 }
-/* © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 06/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 .v4-add-page-btn:hover {
     background: var(--color-primary-subtle);
@@ -2015,9 +2015,9 @@
     color: var(--color-primary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* RESPONSIVE                                                      */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 @media (max-width: 768px) {
     .v4-main {
@@ -2080,9 +2080,9 @@
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* SCROLLBAR OVERRIDES                                             */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .v4-messages::-webkit-scrollbar,
 .v4-notebooks::-webkit-scrollbar,
@@ -2102,9 +2102,9 @@
     background: var(--color-text-tertiary);
 }
 
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 /* FOCUS STATES (Accessibility)                                    */
-/* ═══════════════════════════════════════════════════════════════ */
+/* ---- */
 
 .elab-v4 button:focus-visible,
 .elab-v4 a:focus-visible,
@@ -2124,7 +2124,7 @@
     align-items: center;
     justify-content: center;
     height: 200px;
-    color: var(--color-text-secondary, #6B6B80);
+    color: var(--color-text-secondary, #5A5A6B);
     font-family: var(--font-sans);
     font-size: 14px;
 }

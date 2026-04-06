@@ -31,7 +31,7 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const serverIdx = args.indexOf('--server');
 const volIdx = args.indexOf('--volume');
-const serverUrl = serverIdx >= 0 ? args[serverIdx + 1] : (process.env.COMPILE_URL || 'https://elab-compiler.onrender.com');
+const serverUrl = serverIdx >= 0 ? args[serverIdx + 1] : (process.env.COMPILE_URL || 'https://n8n.srv1022317.hstgr.cloud');
 const targetVol = volIdx >= 0 ? parseInt(args[volIdx + 1]) : null;
 const BOARD = 'arduino:avr:nano:cpu=atmega328old';
 const TIMEOUT = 65000;
@@ -71,19 +71,19 @@ async function main() {
   if (!targetVol || targetVol === 1) {
     try {
       const mod = await import(resolve(ROOT, 'src/data/experiments-vol1.js'));
-      volumes.push({ name: 'Vol1', experiments: mod.experiments || mod.default || [] });
+      volumes.push({ name: 'Vol1', experiments: mod.default?.experiments || mod.experiments || [] });
     } catch (e) { console.error('Failed to load Vol1:', e.message); }
   }
   if (!targetVol || targetVol === 2) {
     try {
       const mod = await import(resolve(ROOT, 'src/data/experiments-vol2.js'));
-      volumes.push({ name: 'Vol2', experiments: mod.experiments || mod.default || [] });
+      volumes.push({ name: 'Vol2', experiments: mod.default?.experiments || mod.experiments || [] });
     } catch (e) { console.error('Failed to load Vol2:', e.message); }
   }
   if (!targetVol || targetVol === 3) {
     try {
       const mod = await import(resolve(ROOT, 'src/data/experiments-vol3.js'));
-      volumes.push({ name: 'Vol3', experiments: mod.experiments || mod.default || [] });
+      volumes.push({ name: 'Vol3', experiments: mod.default?.experiments || mod.experiments || [] });
     } catch (e) { console.error('Failed to load Vol3:', e.message); }
   }
 
