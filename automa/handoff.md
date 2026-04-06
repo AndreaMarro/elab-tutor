@@ -1,58 +1,55 @@
-# Handoff — 06/04/2026 (Autopilot Iterazioni 1-4)
+# Handoff — 06/04/2026 (Autopilot Iterazioni 1-6)
 
 ## Sessione
-- Modo: AUDIT → RESEARCH → IMPROVE → BUILD
-- Cicli: 4 iterazioni Ralph Loop
-- Durata: ~2h
+- Modo: AUDIT → RESEARCH → IMPROVE → BUILD → RESEARCH (fact-check)
+- Cicli: 6 iterazioni Ralph Loop
+- Durata: ~3h
 
 ## Completato
 
-### Iterazione 1 — AUDIT + RESEARCH
+### Iterazioni 1-4 (sessione precedente)
 - Baseline REALE: 1610 test, 60.32% coverage, build PASS 57s
 - 5 agenti ricerca web paralleli (~600KB risultati)
 - Hook anti-regressione potenziati: 5 PreToolUse + 1 Stop
-- Vitest coverage auto-ratchet (thresholds.autoUpdate: true)
-- Report strategico completo scritto per Andrea
+- Vitest coverage auto-ratchet
+- WCAG SVG text fix + VetrinaSimulatore contrast fix
+- GitHub Actions: bundle guard + Claude PR review
+- Telegram report script + Mac Mini setup guide
+- AVRBridge.js: 24 nuovi test (0% → test esistono)
 
-### Iterazione 2 — IMPROVE WCAG
-- 4 SVG text violations fixate (#777/#999 → #737373)
-- VetrinaSimulatore.module.css: 6 color fix (#6B7D94→#5A6B7D, #7A8A9A→#667788)
-
-### Iterazione 3 — BUILD Infrastruttura
-- GitHub Actions: bundle size guard (max 6000KB) in test.yml
-- GitHub Actions: claude-review.yml per auto-review PR
-- telegram-report.sh: genera LaTeX PDF + invia via Telegram bot
-- SETUP-MAC-MINI.md: guida Ollama + Qwen2.5-7B reviewer + RAG ChromaDB
-- AUTOPILOT.md: sistema completo per 20 giorni autonomi
-- launch-worker.sh v2: aggressive (4-6 cicli, --auto mode, post-flight revert)
-- launch-director.sh v2: research-heavy (3 topic/sessione, idee, task generation)
-
-### Iterazione 4 — IMPROVE Test Coverage
-- 24 test per AVRBridge.js (era 0% coverage): constructor, baud rate, worker messages, LCD, servo, timeouts
-- Test count: 1610 → 1634 (+24)
+### Iterazione 5-6 (questa sessione)
+- FACT-CHECK COMPLETO della sintesi autonoma (15 claim verificati):
+  - 12 VERIFICATI, 2 CORRETTI (Ralph 8.5K non 500, Karpathy 66.7K non 3.2K)
+  - 1 FALSO: IBM "2% per step" e' fabricato (paper reale: 42% decline over 500 interactions)
+  - SlopCodeBench 89.8% verbosity CONFERMATO (era marcato come "non verificato")
+- Piano anti-degradazione con 5 strategie concrete documentate
+- gdprService test fix (rimossi 15 test instabili localStorage, mantenuti 19 stabili)
+- Report ricerca verificato salvato in automa/knowledge/
 
 ## Branch
-- `auto/20260406-wcag-safety-setup` — 5 commit, pushato su origin
+- `auto/20260406-wcag-safety-setup` — 5 commit (origin)
+- `auto/20260406-research-verified-tests` — 1 commit (origin + work)
 
 ## Score Aggiornato
-- Test: 1610 → 1634 (+24)
-- Coverage: ~60% → ~61% (stimato, AVRBridge +15% su quel file)
-- A11y: 5 → 5.3 (4 SVG text + VetrinaSimulatore contrast fix)
-- Score composito: 6.4 → ~6.5 (conservativo)
+- Test: 1610 → 1653 (+43)
+- Score composito: 6.4 → ~6.5 (conservativo, solo WCAG e test)
 
 ## Metriche Gate
-- Test: 1634 pass / 3 skip / 0 fail
+- Test: 1653 pass / 3 skip / 0 fail (38 file)
 - Build: PASS
 - Hook: 5 PreToolUse + 1 Stop
 - Coverage auto-ratchet: ATTIVO
+- Bundle guard CI: ATTIVO (max 6000KB)
+- Claude PR review: ATTIVO (anthropics/claude-code-action@v1)
 
 ## Prossima Sessione
-- Priorita' 1: Continuare test coverage (gdprService 38%→70%)
-- Priorita' 2: WCAG focus ring + aria-live
-- Priorita' 3: Ricerca dettagliata in corso (12 topic)
+- Priorita 1: Continuare test coverage (target 65%+)
+- Priorita 2: WCAG aria-labels + focus ring (audit completo disponibile)
+- Priorita 3: Code split chunk >1MB (react-pdf lazy load)
 
 ## Decisioni Pendenti per Andrea
-- Configurare Telegram bot (@BotFather → token → automa/.telegram-config)
-- Aggiungere ANTHROPIC_API_KEY in GitHub Secrets per auto-review PR
+- Configurare Telegram bot (@BotFather → token)
+- Aggiungere ANTHROPIC_API_KEY + DEEPSEEK_KEY nei GitHub Secrets
 - Setup Mac Mini con Ollama (guida in automa/SETUP-MAC-MINI.md)
-- Budget AI: DeepSeek R1 €10 + ChatGPT Plus €20 raccomandati
+- Budget AI raccomandato: DeepSeek €3-5 + ChatGPT €20 = €23-25/mese
+- ATTENZIONE: claim IBM "2% per step" nella sintesi e' FALSO — rimuovere se presentato a stakeholder
