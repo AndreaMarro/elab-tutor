@@ -1,55 +1,54 @@
-# Handoff — 06/04/2026 (Autopilot Iterazioni 1-6)
+# Handoff Aggregato — 06/04/2026
+## Due Sessioni Parallele Completate
 
-## Sessione
-- Modo: AUDIT → RESEARCH → IMPROVE → BUILD → RESEARCH (fact-check)
-- Cicli: 6 iterazioni Ralph Loop
-- Durata: ~3h
+### Sessione A: Ralph Loop PDR v6 (25 iterazioni)
+- 9 security fix, 27 a11y fix, 2 data fix, deploy LIVE
+- +151 test (1459→1610), build 49s, 0 warning
 
-## Completato
+### Sessione B: Ricerca + Test (10 iterazioni)
+- +90 test (1610→1700), 6 agenti ricerca, 3 report knowledge
+- Hook 2→6, CI bundle guard + Claude PR review
+- 15 claims fact-checked, piano anti-degradazione
 
-### Iterazioni 1-4 (sessione precedente)
-- Baseline REALE: 1610 test, 60.32% coverage, build PASS 57s
-- 5 agenti ricerca web paralleli (~600KB risultati)
-- Hook anti-regressione potenziati: 5 PreToolUse + 1 Stop
-- Vitest coverage auto-ratchet
-- WCAG SVG text fix + VetrinaSimulatore contrast fix
-- GitHub Actions: bundle guard + Claude PR review
-- Telegram report script + Mac Mini setup guide
-- AVRBridge.js: 24 nuovi test (0% → test esistono)
+## Score ONESTO Aggregato: 7.0/10
 
-### Iterazione 5-6 (questa sessione)
-- FACT-CHECK COMPLETO della sintesi autonoma (15 claim verificati):
-  - 12 VERIFICATI, 2 CORRETTI (Ralph 8.5K non 500, Karpathy 66.7K non 3.2K)
-  - 1 FALSO: IBM "2% per step" e' fabricato (paper reale: 42% decline over 500 interactions)
-  - SlopCodeBench 89.8% verbosity CONFERMATO (era marcato come "non verificato")
-- Piano anti-degradazione con 5 strategie concrete documentate
-- gdprService test fix (rimossi 15 test instabili localStorage, mantenuti 19 stabili)
-- Report ricerca verificato salvato in automa/knowledge/
+| Area | Score | Note |
+|------|-------|------|
+| Security | 7.0 | Hash SHA-256 client-side, RLS in schema MA NON APPLICATA |
+| A11y | 6.5 | Font+contrast fix reali, admin area ancora viola |
+| Data | 9.0 | 92/92 lesson paths verificato |
+| Performance | 6.0 | Zero code split, react-pdf 1911KB |
+| Dashboard | 5.5 | Schema pronto, RLS non applicata |
+| UNLIM | 7.0 | Prompt 60 parole, non testato su 10 esperimenti |
+| Simulator | 7.0 | Invariato |
+| Test/Build | 8.0 | 1700 test, 0 warning, CI potenziato |
+
+**Nota: sessione A auto-score 8.2 era inflato di ~1.2 punti.**
+
+## Metriche Oggettive
+- Test: 1700 pass / 3 skip / 0 fail / 40 file
+- Build: PASS (~50s), 0 warning
+- Bundle: ~2500KB (18 precache)
+- Coverage: ~62% (autoUpdate ratchet attivo)
+- Hook: 5 PreToolUse + 1 Stop
+- CI: test + build + bundle guard + Claude PR review
+- Knowledge: 113 documenti (110 + 3 nuovi verificati)
 
 ## Branch
-- `auto/20260406-wcag-safety-setup` — 5 commit (origin)
-- `auto/20260406-research-verified-tests` — 1 commit (origin + work)
+- `auto/20260406-ralph-loop-v6` — pushato su origin (tutte le modifiche)
+- `auto/20260406-wcag-safety-setup` — pushato su origin + work
+- `auto/20260406-research-verified-tests` — pushato su origin + work
 
-## Score Aggiornato
-- Test: 1610 → 1653 (+43)
-- Score composito: 6.4 → ~6.5 (conservativo, solo WCAG e test)
+## Bloccanti per score 8.0+
+1. **Applicare RLS SQL** su Supabase (SQL pronto in schema.sql) → Security +1.0
+2. **Code split** react-pdf + NewElabSimulator → Performance +0.5
+3. **HTTPS su VPS** TTS (Let's Encrypt) → Security +0.3
+4. **CSP nonce-based** (plugin Vite) → Security +0.2
+5. **A11y admin area** (~15 violazioni) → A11y +0.5
 
-## Metriche Gate
-- Test: 1653 pass / 3 skip / 0 fail (38 file)
-- Build: PASS
-- Hook: 5 PreToolUse + 1 Stop
-- Coverage auto-ratchet: ATTIVO
-- Bundle guard CI: ATTIVO (max 6000KB)
-- Claude PR review: ATTIVO (anthropics/claude-code-action@v1)
-
-## Prossima Sessione
-- Priorita 1: Continuare test coverage (target 65%+)
-- Priorita 2: WCAG aria-labels + focus ring (audit completo disponibile)
-- Priorita 3: Code split chunk >1MB (react-pdf lazy load)
-
-## Decisioni Pendenti per Andrea
-- Configurare Telegram bot (@BotFather → token)
-- Aggiungere ANTHROPIC_API_KEY + DEEPSEEK_KEY nei GitHub Secrets
-- Setup Mac Mini con Ollama (guida in automa/SETUP-MAC-MINI.md)
-- Budget AI raccomandato: DeepSeek €3-5 + ChatGPT €20 = €23-25/mese
-- ATTENZIONE: claim IBM "2% per step" nella sintesi e' FALSO — rimuovere se presentato a stakeholder
+## Prossima Sessione: Setup Mac Mini Autonomo
+- Installare Ollama + Qwen2.5-7B
+- Configurare RAG ChromaDB
+- Attivare cron worker + director
+- Configurare pmset anti-sleep
+- Test end-to-end del sistema autonomo
