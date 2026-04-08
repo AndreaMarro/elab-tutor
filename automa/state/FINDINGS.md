@@ -1,4 +1,4 @@
-# Scout Findings — 2026-04-09 06:05 (Ciclo 7)
-## Codebase: PULITO (7 cicli consecutivi)
-## 16 PR mergiate, ~12 aperte (conflitti)
-## Sistema stabile. Nessun nuovo problema.
+# Scout Findings — 2026-04-09 07:05 (Ciclo 8)
+## Codebase: PULITO (8 cicli consecutivi)
+## 18 PR mergiate, ~12 aperte (conflitti Mac Mini)
+## Nessun nuovo problema. Sistema stabile.
