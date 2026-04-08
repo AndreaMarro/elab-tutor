@@ -1,21 +1,11 @@
-# Next Task — 2026-04-09 04:17 (Ciclo 5)
+# Next Task — 2026-04-09 05:17 (Ciclo 6)
 
 ## TASK
-Scrivi 15+ test per studentService.js (servizio studente, zero test dedicati)
-
-## PERCHE'
-- 9 servizi gia' coperti stanotte. studentService e' il 10°
-- Gestisce profilo studente, sessioni, reflections
-- Ha _pruneIfNeeded() per bounded localStorage — testabile
-- Zero rischio (solo tests/)
+Scrivi 15+ test per projectHistoryService.js (12° servizio, zero test)
 
 ## FILE
-- tests/unit/studentService.test.js (NUOVO)
+tests/unit/projectHistoryService.test.js (NUOVO)
 
 ## APPROACH
-1. Leggi src/services/studentService.js
-2. Testa: _getReflections, _pruneIfNeeded, saveReflection, getStudentProfile
-3. Edge case: localStorage vuoto, pieno, JSON corrotto, zero reflections
-
-## SUCCESS
-npm test passa, +15 test
+Testa: saveSnapshot, getTimeline, getStory, listProjects, deleteProject
+Edge case: localStorage vuoto, JSON corrotto, progetto inesistente
