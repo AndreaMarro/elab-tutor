@@ -1,26 +1,21 @@
-# Next Task — 2026-04-09 03:17 (Ciclo 4)
+# Next Task — 2026-04-09 04:17 (Ciclo 5)
 
 ## TASK
-Scrivi 20+ test per classProfile.js (zero coverage, usato da Teacher Dashboard)
+Scrivi 15+ test per studentService.js (servizio studente, zero test dedicati)
 
 ## PERCHE'
-- classProfile.js ha 0% test coverage
-- E' il servizio che costruisce il profilo classe per il dashboard docente
-- Dashboard e' area con gap 5→7 (maggiore gap)
-- Codebase pulito (Scout non ha trovato bug P0/P1)
-- Scrivere test e' la cosa piu' produttiva ora
+- 9 servizi gia' coperti stanotte. studentService e' il 10°
+- Gestisce profilo studente, sessioni, reflections
+- Ha _pruneIfNeeded() per bounded localStorage — testabile
+- Zero rischio (solo tests/)
 
 ## FILE
-- tests/unit/classProfile.test.js (NUOVO)
+- tests/unit/studentService.test.js (NUOVO)
 
 ## APPROACH
-1. Leggi src/services/classProfile.js
-2. Testa buildClassProfile, buildClassContext, getWelcomeMessage, getNextLessonSuggestion
-3. Edge case: classe vuota, 1 studente, 30 studenti, dati mancanti
-4. Memoizzazione: verifica cache TTL
+1. Leggi src/services/studentService.js
+2. Testa: _getReflections, _pruneIfNeeded, saveReflection, getStudentProfile
+3. Edge case: localStorage vuoto, pieno, JSON corrotto, zero reflections
 
 ## SUCCESS
-- npm test passa, +20 test
-
-## RISK
-Zero (solo tests/)
+npm test passa, +15 test
