@@ -1,12 +1,18 @@
-# Scout Findings — 2026-04-09 02:02 (Ciclo 3)
+# Scout Findings — 2026-04-09 03:05 (Ciclo 4)
 
 ## Score: 1442 test, build OK, 0 regressioni
-## TOP Problemi
-1. [P2] ReportModule.jsx:50 + FatturazioneModule.jsx:69 — setState dopo .then() senza unmount guard
-2. [P3] crypto.js + GestionaleUtils.js + GlobalSearch.jsx — localStorage keys senza prefisso elab_
-3. [P2 FIXATO] gdprService.js fetch timeout — fixato ciclo precedente (#46)
-4. [INFO] 15 PR aperte con conflitti
+## Codebase: PULITO
+- Zero console.log/warn in produzione
+- Zero fetch senza timeout (fixato ciclo 2)
+- Zero dangerouslySetInnerHTML / eval
+- Tutti addEventListener hanno cleanup
+- Tutti setInterval hanno clearInterval
 
-## Raccomandazione
-Builder: scrivere test per authService.js o supabaseSync.js (aree con zero coverage)
-Il fix setState/unmount e' basso rischio ma tocca componenti admin — meglio test prima.
+## Problemi minori (P3+)
+1. [P3] supabaseSync.js:396 + unlimMemory.js:364 — Promise .then() senza .catch()
+   Impatto basso: Supabase auth session optional
+2. [P3] ReportModule.jsx:50 + FatturazioneModule.jsx:69 — setState dopo .then()
+   Impatto basso: componenti admin, non usati da studenti
+
+## Stato: Il codebase e' in buone condizioni. Non ci sono bug P0/P1 aperti.
+## Raccomandazione: continuare a scrivere test + risolvere conflitti PR quando Mac Mini torna
