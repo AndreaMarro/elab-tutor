@@ -1,6 +1,6 @@
-# Research Findings — 2026-04-09 02:22
+# Research Findings — 2026-04-09 03:22
 
-## Topic: TinkerCAD Classrooms vs ELAB 2026
-## Key Finding: TinkerCAD e' gratis con dashboard docente e co-teaching. ELAB vince su AI + kit fisico + italiano + offline.
-## Azione suggerita: enfatizzare AI Galileo per bando DM 219/2025, NON competere su prezzo
-## Urgenza: MEDIA — informazione strategica per pitch commerciale
+## Topic: Teacher Adoption EdTech — Barriere Onboarding
+## Key Finding: I docenti sono esausti e NON vogliono altro software da imparare. Vogliono semplicita' e riduzione del lavoro.
+## Azione suggerita: semplificare Teacher Dashboard a max 3 schermate, first-use experience <60 secondi
+## Urgenza: MEDIA — strategica per vendite, non tecnica
