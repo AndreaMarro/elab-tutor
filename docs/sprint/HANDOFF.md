@@ -1,21 +1,24 @@
 # Sprint Handoff — Principio Zero
 
-> Aggiornato: 2026-04-09 23:40
-> Sessione corrente: S1 (DESIGNER - completata)
-> Prossima: S2
+> Aggiornato: 2026-04-10 07:20
+> Sessione: S1-S8 COMPLETATE + audit + quality fix
+> LEGGI ANCHE: docs/sprint/DIRETTIVE-CLAUDE-WEB.md (regole obbligatorie)
 
-## Stato Metriche
+## Stato Metriche FINALI
 
 | Metrica | Valore | Target | % |
 |---------|--------|--------|---|
-| BuildSteps Vol1 | 38/38 exp hanno buildSteps | 38/38 | 100% |
-| BuildSteps Vol2 | 18/27 exp | 27/27 | 67% |
-| BuildSteps Vol3 | 6/27 exp | 27/27 | 22% |
-| ScratchXml Vol3 | 10/27 | 27/27 | 37% |
-| Lesson Paths | 83/92 | 92/92 | 90% |
-| Alias Mapping Tea | 24/24 chapter entries (92/92 exp coverage) | 92/92 | 100% |
-| Test count | 1618 | >= 1595 | OK |
-| CI | GREEN | GREEN | OK |
+| BuildSteps Vol1 | 38/38 | 38/38 | 100% ✅ |
+| BuildSteps Vol2 | 27/27 | 27/27 | 100% ✅ |
+| BuildSteps Vol3 | 27/27 | 27/27 | 100% ✅ |
+| ScratchXml Vol3 | 31 | ~27 | 96% ✅ |
+| Lesson Paths | 94 | 92 | 100%+2 ✅ |
+| Alias Mapping | 24 cap | 24 | 100% ✅ |
+| Voice Commands | 36 | 36 | 100% ✅ |
+| Vol2 targetPins | 72 | all | fixed ✅ |
+| "area di lavoro" | 0 | 0 | fixed ✅ |
+| Test count | 1649 | >= 1595 | OK ✅ |
+| CI | GREEN (test+build+e2e) | GREEN | OK ✅ |
 
 ## S1 Completata (2026-04-09 23:40)
 
