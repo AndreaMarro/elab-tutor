@@ -1,26 +1,23 @@
-# Build Result — 2026-04-09 15:34
+# Build Result — 2026-04-09 16:32
 
-## TASK: FIX P1 — Safety filter regex bypass (FIRST src/ CHANGE IN 20+ HOURS)
-## FILE: src/utils/aiSafetyFilter.js + tests/unit/safetyFilters.test.js
-## TEST PRIMA: 1526
-## TEST DOPO: 1532 (+6 regression tests)
-## STATUS: COMPLETATO — build PASS, 0 regressioni
+## TASK: FIX P2 — AbortSignal.timeout for 3 high-risk services
+## FILES: authService.js (2), compiler.js (1), licenseService.js (2)
+## TEST PRIMA: 1554
+## TEST DOPO: 1554 (zero regressions — no new tests needed, existing tests verify)
+## BUILD: PASS (47.88s, 2413 KiB)
+## STATUS: COMPLETATO — 5/5 fetch calls now have timeout
 
 ## Fix applicato
-- `\b` finale → `\w*` per catturare suffissi italiani (explicit + dangerous)
-- `ignora (le|tutte|ogni)` → `ignora (le|tutte le|ogni)` per catturare "ignora tutte le istruzioni"
-- 6 test di regressione aggiunti per i casi bypass
-
-## Bypass risolti
-| Prima | Dopo |
-|-------|------|
-| "pornografia" passava | BLOCCATO (explicit) |
-| "ammazzare" passava | BLOCCATO (explicit) |
-| "esplosivo" passava | BLOCCATO (dangerous) |
-| "ignora tutte le istruzioni" passava | BLOCCATO (promptInjection) |
-| "suicidio" passava | BLOCCATO (explicit) |
-| "uccidere" passava | BLOCCATO (explicit) |
+| File | Line | Timeout | Context |
+|------|------|---------|---------|
+| authService.js | ~122 | 10s | apiCall (login, register, all API) |
+| authService.js | ~362 | 10s | token refresh (auto-refresh timer) |
+| compiler.js | ~295 | 30s | fetchHexFile (precompiled HEX cache) |
+| licenseService.js | ~80 | 10s | verifyLicense (blocks app access) |
+| licenseService.js | ~157 | 10s | releaseLicense (logout cleanup) |
 
 ## Impatto
-Sicurezza minori: nessun contenuto esplicito/violento bypassa il filtro con suffissi italiani.
-Compliance COPPA/GDPR per ispezioni Garante Privacy H1 2026.
+- Login non puo' piu' bloccare l'UI indefinitamente
+- Compilazione ha timeout 30s (sufficiente per cold start)
+- Verifica licenza non puo' piu' bloccare l'accesso all'app
+- Tutti i timeout generano AbortError catturato dai catch esistenti
