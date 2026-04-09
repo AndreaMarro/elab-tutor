@@ -12,9 +12,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci || npm install
-      - name: Fix lightningcss platform binary
-        run: npm install lightningcss --force 2>/dev/null || true
+      - name: Install dependencies
+        run: |
+          npm ci 2>/dev/null || true
+          npm install lightningcss@latest --force 2>/dev/null || true
+          node -e "require('lightningcss')" 2>/dev/null || (rm -rf node_modules && npm install)
       - run: npx playwright install chromium --with-deps
       - name: Unit tests
         run: npx vitest run
