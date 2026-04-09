@@ -1,21 +1,26 @@
-# Build Result — 2026-04-09 14:36
+# Build Result — 2026-04-09 15:34
 
-## TASK: GDPR/COPPA Service unit tests (29th module)
-## TEST PRIMA: 1442
-## TEST DOPO: 1481 (+39)
-## TARGET: gdprService.js
-## STATUS: COMPLETATO — 39/39 test passati, zero regressioni
+## TASK: FIX P1 — Safety filter regex bypass (FIRST src/ CHANGE IN 20+ HOURS)
+## FILE: src/utils/aiSafetyFilter.js + tests/unit/safetyFilters.test.js
+## TEST PRIMA: 1526
+## TEST DOPO: 1532 (+6 regression tests)
+## STATUS: COMPLETATO — build PASS, 0 regressioni
 
-## Copertura
-- Consent lifecycle (save/get/validate/revoke): 12 test
-- COPPA compliance (age gating, requirements): 4 test
-- Privacy by Design (minimize, pseudonymize, retention): 8 test
-- Local data management (clear, summary): 4 test
-- Data subject rights (export, delete, correct): 5 test
-- Parental consent flow: 4 test
-- Webhook fallback: 1 test
-- Edge cases: 1 test
+## Fix applicato
+- `\b` finale → `\w*` per catturare suffissi italiani (explicit + dangerous)
+- `ignora (le|tutte|ogni)` → `ignora (le|tutte le|ogni)` per catturare "ignora tutte le istruzioni"
+- 6 test di regressione aggiunti per i casi bypass
 
-## Perche' questo modulo
-Garante Privacy ispeziona AI nelle scuole H1 2026 (40+ ispezioni).
-GDPR service testato = prova di compliance. Valore commerciale diretto.
+## Bypass risolti
+| Prima | Dopo |
+|-------|------|
+| "pornografia" passava | BLOCCATO (explicit) |
+| "ammazzare" passava | BLOCCATO (explicit) |
+| "esplosivo" passava | BLOCCATO (dangerous) |
+| "ignora tutte le istruzioni" passava | BLOCCATO (promptInjection) |
+| "suicidio" passava | BLOCCATO (explicit) |
+| "uccidere" passava | BLOCCATO (explicit) |
+
+## Impatto
+Sicurezza minori: nessun contenuto esplicito/violento bypassa il filtro con suffissi italiani.
+Compliance COPPA/GDPR per ispezioni Garante Privacy H1 2026.
