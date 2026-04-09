@@ -1,7 +1,7 @@
-# Handoff — 2026-04-09 10:40
-## PR mergiate: 25
-## Test nuovi: 289 (22 moduli)
+# Handoff — 2026-04-09 11:40
+## PR mergiate: 27
+## Test nuovi: ~300 (24 moduli)
 ## Bug fix: 2
-## Research: 10 report
+## Research: 11 report
 ## Regressioni: ZERO
 ## Mac Mini: offline
