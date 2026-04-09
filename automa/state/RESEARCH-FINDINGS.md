@@ -1,5 +1,5 @@
-# Research Findings — 2026-04-09 11:22
-## Topic: MePA Marketplace Inserimento Prodotto
-## Key Finding: Iscrizione gratuita, 2 step, 3-5 giorni. Le scuole DEVONO comprare su MePA sotto €140K.
-## Azione: chiedere a Davide se ELAB e' gia' su MePA, preparare scheda prodotto
-## Urgenza: ALTA — senza MePA le scuole non possono comprare ELAB con fondi PNRR
+# Research Findings — 2026-04-09 12:22
+## Topic: WebAssembly Circuit Simulation
+## Key Finding: WASM SPICE esiste (EEcircuit, ngspiceX) ma ELAB non ne ha bisogno ora. JS basta per max 15 componenti K-12.
+## Azione: SKIP — non prioritario. Bookmarkare per futuro.
+## Urgenza: BASSA — il CircuitSolver JS funziona
