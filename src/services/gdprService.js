@@ -34,6 +34,7 @@ async function callGdprWebhook(action, data) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
+                signal: AbortSignal.timeout(10000),
             });
             if (response.ok) {
                 return await response.json();
@@ -52,6 +53,7 @@ async function callGdprWebhook(action, data) {
                 ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
             },
             body: JSON.stringify({ action, ...data }),
+            signal: AbortSignal.timeout(10000),
         });
 
         if (!response.ok) {
@@ -196,9 +198,9 @@ async function requestDataCorrection(userId, corrections) {
         throw error;
     }
 }
+// © Andrea Marro — 09/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
 /**
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * Revoca consenso (Art. 7)
  * @param {string} userId
  * @returns {Promise<Object>}
@@ -397,9 +399,9 @@ function getCOPPARequirements(age) {
 // ============================================
 
 /**
+// © Andrea Marro — 09/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * Minimizza dati raccolti
  * @param {Object} data - Dati originali
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * @param {Array} allowedFields - Campi consentiti
  * @returns {Object}
  */

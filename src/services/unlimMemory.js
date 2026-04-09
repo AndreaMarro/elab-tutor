@@ -198,7 +198,7 @@ async function saveContext(classId, experimentId, context) {
     _saveContextLocal(classId, experimentId, context);
 
     if (!isSupabaseConfigured()) return;
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 09/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
     try {
         const userId = _getCurrentUserId();
@@ -399,7 +399,7 @@ const AUTOSAVE_INTERVAL = 30_000;
 function _getSessionId() {
     const KEY = 'elab_tutor_session';
     try {
-// © Andrea Marro — 04/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 09/04/2026 — ELAB Tutor — Tutti i diritti riservati
         return localStorage.getItem(KEY) || '';
     } catch { return ''; }
 }
@@ -417,6 +417,7 @@ async function syncWithBackend() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ sessionId, profile }),
+            signal: AbortSignal.timeout(10000),
         });
         if (res.ok) {
             _syncDirty = false;
@@ -432,7 +433,9 @@ async function loadFromBackend() {
     if (!sessionId) return;
 
     try {
-        const res = await fetch(`${NANOBOT_URL}/memory/${encodeURIComponent(sessionId)}`);
+        const res = await fetch(`${NANOBOT_URL}/memory/${encodeURIComponent(sessionId)}`, {
+            signal: AbortSignal.timeout(10000),
+        });
         if (!res.ok) return;
         const data = await res.json();
         if (!data.success || !data.profile) return;
