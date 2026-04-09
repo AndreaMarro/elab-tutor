@@ -1,11 +1,11 @@
-# Test Result — 2026-04-09 16:53
+# Test Result — 2026-04-09 17:53
 
-## TEST PRIMA: 1554
-## TEST DOPO: 1578 (+24)
-## Area: lessonPrepService (34th module)
-## STATUS: COMPLETATO — 24/24 test passati, zero regressioni
+## TEST PRIMA: 1578
+## TEST DOPO: 1595 (+17)
+## Area: sessionReportService (35th module)
+## STATUS: COMPLETATO — 17/17 test passati, zero regressioni
 
 ## Copertura
-- isLessonPrepCommand: 11 test (8 Italian command patterns + null/empty/case)
-- getLessonSummary: 8 test (structure, phases, firstTime, pastContext, needsReview, vocabulary)
-- prepareLesson: 5 test (with/without AI, AI failure graceful, phases, timestamp)
+- collectSessionData: 9 test (structure, volumes, welcome filter, null handling, buildProgress, duration)
+- fetchAISummary: 5 test (AI JSON parse, AI failure fallback, quiz/circuit/code in local summary)
+- captureCircuit: 3 test (null ref, null current, successful capture)
