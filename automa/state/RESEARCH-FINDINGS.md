@@ -1,5 +1,5 @@
-# Research Findings — 2026-04-09 09:22
-## Topic: React Code Splitting Vite Performance
-## Key Finding: react-pdf (1911KB) e NewElabSimulator (1298KB) sono candidati perfetti per lazy loading. 40-60% reduction attesa.
-## Azione: React.lazy su react-pdf e NewElabSimulator
-## Urgenza: MEDIA — impatta Lighthouse performance (gap 6→7)
+# Research Findings — 2026-04-09 10:22
+## Topic: Arduino Education Competitors
+## Key Finding: Nessun competitor ha AI tutor + kit fisico + volumi. ELAB e' unico nel settore.
+## Azione: creare pagina /confronto e enfatizzare unicita' AI nel bando DM219
+## Urgenza: ALTA — supporta pitch commerciale
