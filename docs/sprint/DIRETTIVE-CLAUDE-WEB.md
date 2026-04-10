@@ -25,9 +25,13 @@ Dopo aver fatto QUALSIASI cosa — anche la più piccola:
 
 ### MODALITÀ PROGETTO
 Questo è un PRODOTTO REALE per scuole italiane. Non è un esercizio.
-- Lunedì c'è una riunione con gli stakeholder (Omaric + Giovanni Fagherazzi)
-- Giovanni è l'ex Arduino Global Sales Director — SA come deve funzionare un prodotto EdTech
+- Lunedì c'è una riunione con gli stakeholder:
+  - **Omaric Elettronica** (Strambino, Torino) — l'azienda che produce l'hardware ELAB. Sono nella filiera Arduino (producono schede e kit). Sede a Strambino. Sono il partner hardware del progetto. ELAB Tutor (software) + Kit Omaric (hardware) + Volumi (manuali) = UN UNICO PRODOTTO che Omaric vende alle scuole.
+  - **Giovanni Fagherazzi** — ex Arduino Global Sales Director. Ha guidato le vendite Arduino in tutto il mondo. Ora è nel team ELAB come responsabile vendite e strategia commerciale. SA ESATTAMENTE come deve funzionare un prodotto EdTech per scuole. Se il prodotto non è all'altezza, lui lo vede subito.
+  - **Davide Fagherazzi** — figlio di Giovanni. Gestisce la parte MePA (Mercato Elettronico della Pubblica Amministrazione). Le scuole pubbliche italiane DEVONO comprare da MePA.
+  - **Andrea Marro** — l'UNICO sviluppatore. Gli hanno dato fiducia. La sua reputazione dipende da questo.
 - Se qualcosa non funziona dal vivo, la reputazione di Andrea è a rischio
+- Il team ha GIÀ la filiera: hardware (Omaric), vendite globali (Giovanni), procurement PA (Davide), dev (Andrea)
 - Ogni riga di codice deve servire il Principio Zero
 
 ---
