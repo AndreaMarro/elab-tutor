@@ -17,6 +17,8 @@ import { deriveState, computePanelActions, STATES } from './LavagnaStateManager'
 import MascotPresence from './MascotPresence';
 import ErrorToast from './ErrorToast';
 import { soundTick, soundPlay, soundPause } from './lavagnaSounds';
+import { buildClassProfile, getNextLessonSuggestion } from '../../services/classProfile';
+import { HandWaveIcon, PartyIcon, FlaskIcon } from '../common/ElabIcons';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -235,6 +237,99 @@ function QuickComponentPanel({ volumeNumber = 3 }) {
   );
 }
 
+/**
+ * BentornatiOverlay — Principio Zero welcome screen.
+ * When the teacher opens ELAB, UNLIM proposes the next experiment
+ * based on past sessions. No choices needed. 30 seconds to teaching.
+ * Claude web andrea marro — 11/04/2026
+ */
+function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
+  const dataRef = useRef(null);
+  if (!dataRef.current) {
+    dataRef.current = {
+      profile: buildClassProfile(),
+      suggestion: getNextLessonSuggestion(),
+    };
+  }
+  const { profile, suggestion } = dataRef.current;
+
+  // First-time users: auto-load first experiment after 2s
+  useEffect(() => {
+    if (!visible || !profile.isFirstTime || !suggestion) return;
+    const timer = setTimeout(() => onStart(suggestion), 2000);
+    return () => clearTimeout(timer);
+  }, [visible, profile.isFirstTime, suggestion, onStart]);
+
+  if (!visible) return null;
+
+  // First-time flow
+  if (profile.isFirstTime) {
+    return (
+      <div className={css.bentornatiOverlay}>
+        <div className={css.bentornatiCard}>
+          <div className={css.bentornatiIconWrap}>
+            <HandWaveIcon size={32} />
+          </div>
+          <h2 className={css.bentornatiTitle}>Benvenuti!</h2>
+          <p className={css.bentornatiMessage}>
+            Pronti per il primo esperimento?
+          </p>
+          <p className={css.bentornatiNext}>
+            <strong>{suggestion?.title || 'Accendi il tuo primo LED'}</strong>
+          </p>
+          <button className={css.bentornatiBtn} onClick={() => onStart(suggestion)}>
+            <FlaskIcon size={22} /> Inizia
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Returning with a suggested next experiment
+  if (suggestion) {
+    return (
+      <div className={css.bentornatiOverlay}>
+        <div className={css.bentornatiCard}>
+          <div className={css.bentornatiIconWrap}>
+            <PartyIcon size={32} />
+          </div>
+          <h2 className={css.bentornatiTitle}>Bentornati!</h2>
+          <p className={css.bentornatiMessage}>
+            L'ultima volta: <em>&ldquo;{profile.lastExperimentTitle}&rdquo;</em>
+          </p>
+          <p className={css.bentornatiNext}>
+            Oggi: <strong>{suggestion.title}</strong>
+          </p>
+          <button className={css.bentornatiBtn} onClick={() => onStart(suggestion)}>
+            <FlaskIcon size={22} /> Inizia
+          </button>
+          <button className={css.bentornatiAlt} onClick={onPickExperiment}>
+            Scegli un altro esperimento
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Returning but no suggestion (end of curriculum or no next_suggested)
+  return (
+    <div className={css.bentornatiOverlay}>
+      <div className={css.bentornatiCard}>
+        <div className={css.bentornatiIconWrap}>
+          <PartyIcon size={32} />
+        </div>
+        <h2 className={css.bentornatiTitle}>Bentornati!</h2>
+        <p className={css.bentornatiMessage}>
+          Pronti a continuare? Scegliete l'esperimento di oggi!
+        </p>
+        <button className={css.bentornatiBtn} onClick={onPickExperiment}>
+          Scegli esperimento
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function LavagnaShell() {
   const { user, isDocente, isStudente } = useAuth();
   const [activeTab, setActiveTab] = useState('lavagna'); // 'lavagna' | 'classe' | 'progressi'
@@ -255,23 +350,56 @@ export default function LavagnaShell() {
   const [isEditing, setIsEditing] = useState(false);
   const [lessonSteps, setLessonSteps] = useState([]);
   const [unlimSpeaking, setUnlimSpeaking] = useState(false);
-  const [leftPanelSize, setLeftPanelSize] = useState(180);
-  const [bottomPanelSize, setBottomPanelSize] = useState(200);
+  const [leftPanelSize, setLeftPanelSize] = useState(() => {
+    try { return parseInt(localStorage.getItem('elab-lavagna-left-panel') || '180', 10) || 180; } catch { return 180; }
+  });
+  const [bottomPanelSize, setBottomPanelSize] = useState(() => {
+    try { return parseInt(localStorage.getItem('elab-lavagna-bottom-panel') || '200', 10) || 200; } catch { return 200; }
+  });
   const [volumeOpen, setVolumeOpen] = useState(false);
-  const [currentVolume, setCurrentVolume] = useState(1);
-  const [currentVolumePage, setCurrentVolumePage] = useState(1);
+  const [currentVolume, setCurrentVolume] = useState(() => {
+    try { return parseInt(localStorage.getItem('elab-lavagna-volume') || '1', 10) || 1; } catch { return 1; }
+  });
+  const [currentVolumePage, setCurrentVolumePage] = useState(() => {
+    try { return parseInt(localStorage.getItem('elab-lavagna-page') || '1', 10) || 1; } catch { return 1; }
+  });
   const [percorsoOpen, setPercorsoOpen] = useState(false);
   const [unlimTab, setUnlimTab] = useState('chat'); // 'chat' | 'percorso'
-  const [buildMode, setBuildMode] = useState('complete'); // complete | guided | sandbox
+  const [buildMode, setBuildMode] = useState(() => {
+    try {
+      const v = localStorage.getItem('elab-lavagna-buildmode');
+      return ['complete', 'guided', 'sandbox'].includes(v) ? v : 'complete';
+    } catch { return 'complete'; }
+  }); // complete | guided | sandbox
   const [drawingEnabled, setDrawingEnabled] = useState(false);
+  const [bentornatiVisible, setBentornatiVisible] = useState(true);
 
-  // Principio Zero: auto-open picker on first visit if no experiment loaded
+  // Persist layout sizes and volume navigation to localStorage
   useEffect(() => {
-    if (!hasExperiment && !pickerOpen) {
-      const timer = setTimeout(() => setPickerOpen(true), 800);
+    try { localStorage.setItem('elab-lavagna-left-panel', String(leftPanelSize)); } catch {}
+  }, [leftPanelSize]);
+  useEffect(() => {
+    try { localStorage.setItem('elab-lavagna-bottom-panel', String(bottomPanelSize)); } catch {}
+  }, [bottomPanelSize]);
+  useEffect(() => {
+    try { localStorage.setItem('elab-lavagna-buildmode', buildMode); } catch {}
+  }, [buildMode]);
+  useEffect(() => {
+    try { localStorage.setItem('elab-lavagna-volume', String(currentVolume)); } catch {}
+  }, [currentVolume]);
+  useEffect(() => {
+    try { localStorage.setItem('elab-lavagna-page', String(currentVolumePage)); } catch {}
+  }, [currentVolumePage]);
+
+  // Principio Zero: Bentornati flow replaces the old auto-open picker.
+  // The BentornatiOverlay handles first-time vs returning users.
+  // Fallback: if bentornati is dismissed without loading, open picker.
+  useEffect(() => {
+    if (!hasExperiment && !bentornatiVisible && !pickerOpen) {
+      const timer = setTimeout(() => setPickerOpen(true), 400);
       return () => clearTimeout(timer);
     }
-  }, []); // Only on mount
+  }, [hasExperiment, bentornatiVisible, pickerOpen]);
   const manualOverridesRef = useRef({});
   const apiReadyRef = useRef(false);
 
@@ -458,11 +586,53 @@ export default function LavagnaShell() {
     }
     setExperimentName(exp.title || exp.id);
     setHasExperiment(true);
+    setBentornatiVisible(false);
     // Detect volume from experiment ID prefix (v1-*, v2-*, v3-*)
     const volMatch = (exp.id || '').match(/^v(\d)/);
     if (volMatch) setCurrentVolume(Number(volMatch[1]));
     // Reset manual overrides when loading new experiment
     manualOverridesRef.current = {};
+  }, []);
+
+  // Bentornati: teacher clicks "Inizia" → load suggested experiment + open UNLIM
+  // Handles race condition: if __ELAB_API is not ready yet, retries with polling
+  const handleBentornatiStart = useCallback((suggestion) => {
+    if (!suggestion?.experimentId) {
+      setBentornatiVisible(false);
+      return;
+    }
+    // Update UI immediately — no waiting
+    setExperimentName(suggestion.title || suggestion.experimentId);
+    setHasExperiment(true);
+    setBentornatiVisible(false);
+    setPickerOpen(false);
+    const volMatch = (suggestion.experimentId || '').match(/^v(\d)/);
+    if (volMatch) setCurrentVolume(Number(volMatch[1]));
+    setGalileoOpen(true);
+    manualOverridesRef.current = {};
+
+    // Load experiment via API — with retry if API not ready yet
+    const tryLoad = () => {
+      const api = typeof window !== 'undefined' && window.__ELAB_API;
+      if (api?.loadExperiment) {
+        api.loadExperiment(suggestion.experimentId);
+        return true;
+      }
+      return false;
+    };
+    if (!tryLoad()) {
+      // API not ready — poll every 300ms, up to 10 attempts (3s)
+      let attempts = 0;
+      const poll = setInterval(() => {
+        if (tryLoad() || ++attempts >= 10) clearInterval(poll);
+      }, 300);
+    }
+  }, []);
+
+  // Bentornati: teacher clicks "Scegli altro" → dismiss overlay, open picker
+  const handleBentornatiPickExperiment = useCallback(() => {
+    setBentornatiVisible(false);
+    setPickerOpen(true);
   }, []);
 
   // ── Galileo toggle (also from header) ──
@@ -659,6 +829,13 @@ export default function LavagnaShell() {
         speaking={unlimSpeaking}
         onClick={() => { manualOverridesRef.current.galileo = true; setGalileoOpen(true); }}
         mascotSrc="/assets/mascot/logo-senza-sfondo.png"
+      />
+
+      {/* Bentornati Overlay — Principio Zero: auto-propose next experiment */}
+      <BentornatiOverlay
+        visible={bentornatiVisible && !hasExperiment}
+        onStart={handleBentornatiStart}
+        onPickExperiment={handleBentornatiPickExperiment}
       />
 
       {/* Experiment Picker Modal */}
