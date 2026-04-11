@@ -1391,7 +1391,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -1564,7 +1564,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -1749,7 +1749,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -1967,7 +1967,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -2200,7 +2200,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -2418,7 +2418,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -2573,7 +2573,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -2729,7 +2729,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -2890,7 +2890,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -3081,7 +3081,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -3292,7 +3292,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -3571,7 +3571,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -3777,7 +3777,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -4003,7 +4003,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -4194,7 +4194,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -4346,7 +4346,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -4518,7 +4518,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -4762,7 +4762,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -4973,7 +4973,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -5202,7 +5202,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -5368,7 +5368,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -5502,7 +5502,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -5661,7 +5661,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -5805,7 +5805,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -5956,7 +5956,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -6122,7 +6122,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (mezza) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (mezza) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-half",
           hint: "La breadboard collega i componenti senza saldature."
@@ -6293,7 +6293,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la batteria 9V nell'area di lavoro",
+          text: "Posiziona la batteria 9V a sinistra della breadboard",
           componentId: "bat1",
           componentType: "battery9v",
           hint: "La batteria alimenta il circuito."
@@ -6393,7 +6393,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la batteria 9V nell'area di lavoro",
+          text: "Posiziona la batteria 9V a sinistra della breadboard",
           componentId: "bat1",
           componentType: "battery9v",
           hint: "Definisce la polarità del circuito artistico."
@@ -6600,7 +6600,7 @@ const EXPERIMENTS_VOL1 = {
       buildSteps: [
         {
           step: 1,
-          text: "Posiziona la breadboard (full-size) nell'area di lavoro. Sarà la base del tuo circuito!",
+          text: "Posiziona la breadboard (full-size) al centro del piano di lavoro. Sarà la base del tuo circuito!",
           componentId: "bb1",
           componentType: "breadboard-full",
           hint: "La breadboard full-size ha più spazio per i componenti."
