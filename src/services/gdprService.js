@@ -52,6 +52,7 @@ async function callGdprWebhook(action, data) {
                 'Content-Type': 'application/json',
                 ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
             },
+            signal: AbortSignal.timeout(10000),
             body: JSON.stringify({ action, ...data }),
             signal: AbortSignal.timeout(10000),
         });
