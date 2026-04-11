@@ -8,13 +8,14 @@
 
 | Metrica | Inizio sessione | Fine sessione | Delta |
 |---------|----------------|---------------|-------|
-| Test totali | 1726 | 1959 | **+233** |
-| File test | 56 | 76 | **+20** |
+| Test totali | 1726 | 2026 | **+300** |
+| File test | 56 | 82 | **+26** |
 | Test falliti | 0 | 0 | 0 |
 | Regressioni | - | **ZERO** | - |
 | Build | PASS | PASS | - |
+| Batch eseguiti | - | 10 | - |
 
-## Nuovi file test creati (20 file, 233 test)
+## Nuovi file test creati (26 file, 300 test)
 
 ### Servizi (+87 test)
 | File | Test | Modulo testato |
@@ -48,30 +49,45 @@
 | `poeChallenges.test.js` | 6 | POE framework, options, layers, funFacts |
 | `codeProtection.test.js` | 3 | Dev mode skip, no event listeners |
 
+### Hooks e auth (+37 test)
+| File | Test | Modulo testato |
+|------|------|----------------|
+| `lessonPaths.test.js` | 18 | Registry 3 volumi, 5 fasi, data integrity |
+| `useSTT.test.js` | 13 | SpeechRecognition API detection, config |
+| `supabaseAuth.test.js` | 11 | Auth fallback, signUp/In, error translation, roles |
+| `ErrorBoundary.test.jsx` | 6 | Crash recovery, ELAB branding, kid-friendly |
+
+### Components e servizi estesi (+19 test)
+| File | Test | Modulo testato |
+|------|------|----------------|
+| `ConfirmModal.test.jsx` | 12 | Dialog a11y, Escape, hook pattern, overlay |
+| `nudgeService.extended.test.js` | 7 | sendNudge, consumeNudges, GDPR PII |
+
 ## Aree coperte prima vs dopo
 
 | Area | File testati prima | File testati dopo |
 |------|-------------------|-------------------|
-| services/ | 15 | **21** (+6) |
+| services/ | 15 | **23** (+8) |
 | utils/ | 3 | **6** (+3) |
-| data/ | 1 | **10** (+9) |
-| components/lavagna/ | 6 | **7** (+1) |
-| components/common/ | 3 | 3 |
+| data/ | 1 | **11** (+10) |
+| hooks/ | 4 | **5** (+1) |
+| components/lavagna/ | 6 | **8** (+2) |
+| components/common/ | 3 | **5** (+2) |
 
 ## Gap rimanente verso 2225
 
 | Cosa manca | Test stimati |
 |------------|-------------|
-| hooks (useTTS, useSTT, useSessionTracker) | ~30 |
+| hooks (useTTS esteso, useSessionTracker esteso) | ~20 |
 | services (studentService, unlimMemory, gdprService estesi) | ~60 |
 | components (GalileoAdapter, VolumeViewer, RetractablePanel) | ~50 |
-| data (lesson-paths/index, scratch-xml-templates) | ~40 |
-| integration tests | ~80 |
-| **Totale stimato** | **~260** |
+| data (scratch-xml-templates) | ~30 |
+| integration tests | ~40 |
+| **Totale stimato** | **~200** |
 
 ## Anti-regressione
 
-- Suite completa eseguita dopo OGNI batch (7 batch totali)
+- Suite completa eseguita dopo OGNI batch (10 batch totali)
 - 0 regressioni in tutta la sessione
 - Build verificato: PASS (1m 29s)
 - Nessun file src/ modificato (solo test aggiunti)
