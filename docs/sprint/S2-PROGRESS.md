@@ -1,29 +1,88 @@
-# Sprint 2 — Progress Tracker
+# S2-PROGRESS — Sessione 2 Claude Web — 11-12/04/2026
 
-> Ogni task scrive qui. L'Orchestratore legge e decide.
+**Autore**: Claude code andrea marro
+**Branch**: `claude/review-workplan-directives-iEQpo`
+**Inizio**: 11/04/2026
+**Ultimo aggiornamento**: 12/04/2026 15:25 UTC
 
-## Baseline (11 aprile 2026, 01:00)
-- Test: 2110 pass, 64 file
-- Build: PASS (56s, 3005KB)
-- Chapter-map UI: NON integrato
-- Nanobot: DeepSeek primario (da cambiare a Gemini)
-- RAG: 246 chunk
-- Flusso "bentornati": NON esiste
-- E2E pass: 0/3
+## Stato file di piano
 
----
+| File | Stato |
+|------|-------|
+| `docs/plans/2026-04-12-sessione-prossima-prompt.md` | LETTO |
+| `docs/sprint/DIRETTIVE-CLAUDE-WEB.md` | LETTO — Regola Suprema applicata |
+| `docs/sprint/CLAUDE-WEB-SESSION-2.md` | LETTO — Credenziali acquisite |
+| `docs/volumi-originali/VOLUME-{1,2,3}-TESTO.txt` | DISPONIBILI dopo merge |
 
-## Task Updates (i task scrivono sotto)
+Merge da origin/main (commit 9970200) completato con successo.
 
-## Terminal — 04:15 (Ralph Loop Iteration 1)
-- **DONE**: Chapter-map UI integrato (Tea titles visibili) — MERGED + DEPLOYED
-- **DONE**: Audit parità volumi — score 4.5/10, 14 esp non simulabili, report 349 righe
-- **DONE**: 14 esperimenti etichettati simulable: false — PR #1 merged
-- **DONE**: 8 test scratchXml validation — tutti XML validi
-- **DONE**: 14 test voice commands — 36 comandi verificati
-- Test: 2140 pass (+30 questa iterazione)
-- Build: PASS
-- Prossimo: più test, deploy, verifica Chrome
+## Lavoro completato questa sessione
 
-## Claude Web — (atteso)
-- Non ancora iniziato. Task: flusso bentornati in LavagnaShell.jsx
+### BLOCCO 1: Merge Bentornati flow
+- Cherry-pick selettivo da `claude/bentornati-flow-VEhLp`
+- 3 file: LavagnaShell.jsx, LavagnaShell.module.css, BentornatiFlow.test.js
+- Build PASS, 0 regressioni
+
+### Test coverage scritti da me: 1726 -> 2119 (+393 test, 33 file nuovi)
+
+| Batch | Test | Moduli coperti |
+|-------|------|----------------|
+| 1 | +87 | gamificationService, sessionMetrics, activityBuffer, contentFilter, aiSafetyFilter |
+| 2-3 | +56 | lessonPrepService, sessionReportService, lavagnaSounds, welcomeMessages, codeProtection |
+| 4 | +37 | curriculumData, videoCourses, reviewCircuits, experimentsIndex |
+| 5 | +21 | conceptGraph, poeChallenges, mysteryCircuits |
+| 6-7 | +32 | unlimVideos, brokenCircuits, unlimKnowledgeBase, logger |
+| 8 | +24 | useSTT, supabaseAuth |
+| 9 | +24 | lessonPaths, ErrorBoundary |
+| 10 | +19 | ConfirmModal, nudgeService extended |
+| 11 | +26 | compiler precompiled, voiceCommands extended |
+| 12 | +16 | supabaseSync, classProfile extended |
+| 13 | +22 | gdprService GDPR/COPPA |
+| 14 | +29 | studentService, unlimMemory |
+
+### Post-merge: 2599 test totali (107 file)
+- Merge da main ha portato +480 test dal Ralph Loop + Terminal
+- 1 conflitto regex in aiSafetyFilter fixato
+- GATE: 2599/2599 PASS, 0 fail
+
+## Limiti ambiente (onesta' brutale)
+
+| Limitazione | Impatto |
+|------------|---------|
+| HTTPS esterno bloccato (proxy 403) | NON posso testare nanobot via curl |
+| Nessun browser Chrome | NON posso fare audit UX visuale |
+| Nessun deploy Vercel | NON posso deployare |
+
+### Task che NON posso fare da qui
+- TASK 3: Test UNLIM 30 domande via curl (proxy bloccato)
+- TASK 4: Audit UX su Chrome (no browser)
+- TASK 6: Compiler E2E (proxy bloccato)
+- Deploy Vercel (no CLI access)
+
+### Task che HO fatto
+- BLOCCO 1: Bentornati flow merged
+- TASK 7: +393 test scritti (tutti verificati con suite completa)
+- Merge main con risoluzione conflitti
+- Fix regressione post-merge (aiSafetyFilter regex)
+- 16 commit pushati
+- NON toccato ExperimentPicker.jsx ne' VetrinaSimulatore.jsx
+
+## Metriche finali
+
+```
+Test: 2599/2599 PASS, 107 file, 0 fail
+Target 2225: SUPERATO (+374)
+Regressioni: ZERO
+File src/ modificati: solo LavagnaShell.jsx + CSS (cherry-pick bentornati)
+Commit pushati: 16
+```
+
+## Prova Oggettiva Sessione (template direttive)
+
+- Test: npx vitest run → 2599 pass, 0 fail
+- Build: verificato (PASS, 1m 29s — prebuild signatures scartate)
+- CI: non verificabile (no gh CLI)
+- Flusso bentornati: INTEGRATO (cherry-pick da branch bentornati)
+- Chrome audit: NON POSSIBILE (no browser in sandbox)
+- UNLIM 30 domande: NON POSSIBILE (HTTPS proxy 403)
+- Score onesto: **6/10** — test solidi ma zero verifica live
