@@ -240,26 +240,30 @@
 /* ─── Card Metadata ─── */
 .cardMeta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 4px 8px;
+  min-width: 0;
   margin-top: 2px;
 }
 
 .typeBadge {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--color-primary, #1E4D8C);
   background: rgba(30, 77, 140, 0.1);
-  padding: 1px 6px;
+  padding: 2px 6px;
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+  flex-shrink: 0;
 }
 
 .metaItem {
-  font-size: 14px;
+  font-size: 13px;
   color: #595959;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .metaItem:first-child {
