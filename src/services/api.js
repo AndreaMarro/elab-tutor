@@ -16,7 +16,7 @@ import { searchKnowledgeBase } from '../data/unlim-knowledge-base';
 // Without this, URLs like "https://example.com\n" cause silent fetch failures
 // Nanobot: Supabase Edge Functions (SOLO Gemini — directive 11/04/2026)
 const _SUPABASE_EDGE = (import.meta.env.VITE_SUPABASE_EDGE_URL || 'https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1').trim();
-const _SUPABASE_ANON = (import.meta.env.VITE_SUPABASE_EDGE_KEY || '').trim();
+const _SUPABASE_ANON = (import.meta.env.VITE_SUPABASE_EDGE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1cXBkdWVvcG1sbGxxam1xbnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNDI3MDksImV4cCI6MjA5MDcxODcwOX0.289s8NklODdiXDVc_sXBb_Y7SGMgWSOss70iKQRVpjQ').trim();
 const NANOBOT_URL = (import.meta.env.VITE_NANOBOT_URL || '').trim() || _SUPABASE_EDGE; // Supabase Edge primary, Render legacy
 const CHAT_WEBHOOK = (import.meta.env.VITE_N8N_CHAT_URL || '').trim();
 const COMPILE_URL = (import.meta.env.VITE_COMPILE_URL || '').trim() || null; // Server standalone (priorità)
