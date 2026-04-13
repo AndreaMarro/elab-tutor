@@ -833,7 +833,7 @@ const NewElabSimulator = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '8px 16px', background: 'var(--color-bg-secondary, #F7F8FA)', borderBottom: '1px solid var(--color-border, #E5E5E5)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ display: 'flex', gap: 3, background: 'var(--color-bg-tertiary, #ECECF0)', borderRadius: 12, padding: 4 }}>
             {[
-              { key: 'complete', label: 'Libero', icon: '\uD83D\uDD27', color: 'var(--color-primary, #1E4D8C)', title: 'Breadboard libera — sperimenta come vuoi' },
+              { key: 'complete', label: 'Già Montato', icon: '\uD83D\uDD27', color: 'var(--color-primary, #1E4D8C)', title: 'Circuito già pronto — osserva e sperimenta' },
               { key: 'guided', label: 'Passo Passo', icon: '\uD83D\uDC63', color: 'var(--color-accent, #4A7A25)', title: 'Costruisci il circuito un pezzo alla volta' },
               { key: 'sandbox', label: 'Percorso', icon: '\uD83C\uDFA8', color: 'var(--color-primary, #1E4D8C)', title: 'Segui il percorso dell\'esperimento' },
             ].map(m => {
