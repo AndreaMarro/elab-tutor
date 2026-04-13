@@ -1,1 +1,1 @@
-{"status":"idle","currentCycle":0,"lastUpdate":"2026-04-14T03:30:00Z"}
+{"status":"running","currentCycle":1,"completedCycles":[1],"lastUpdate":"2026-04-14T04:30:00Z","notes":"CICLO 1: Edge TTS già attivo su VPS 72.60.129.50:8880 e collegato al frontend. Kokoro richiede SSH access (non disponibile). Score ciclo: 7/10 — TTS funziona ma non è Kokoro."}
