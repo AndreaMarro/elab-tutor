@@ -334,6 +334,7 @@ export default function LavagnaShell() {
   const { user, isDocente, isStudente } = useAuth();
   const [activeTab, setActiveTab] = useState('lavagna'); // 'lavagna' | 'classe' | 'progressi'
   const [activeTool, setActiveTool] = useState('select');
+  const [toolToast, setToolToast] = useState(null);
   const [galileoOpen, setGalileoOpen] = useState(false); // P0 fix: UNLIM parte minimizzato — il docente vede prima il circuito
   const [videoOpen, setVideoOpen] = useState(false);
   const [videoMinimized, setVideoMinimized] = useState(false);
@@ -518,6 +519,10 @@ export default function LavagnaShell() {
           const selectedId = api.getSelectedComponent?.();
           if (selectedId) {
             api.removeComponent(selectedId);
+          } else {
+            // Feedback: nulla selezionato
+            setToolToast('Tocca un componente prima di eliminarlo');
+            setTimeout(() => setToolToast(null), 2500);
           }
         }
         setActiveTool('select');
@@ -809,6 +814,13 @@ export default function LavagnaShell() {
             <span>Il pannello codice e integrato nel simulatore</span>
           </div>
         </RetractablePanel>
+      )}
+
+      {/* Tool feedback toast */}
+      {toolToast && (
+        <div role="status" aria-live="polite" style={{ position: 'fixed', bottom: 120, left: '50%', transform: 'translateX(-50%)', background: '#E8941C', color: '#fff', padding: '10px 20px', borderRadius: 10, fontSize: 15, fontWeight: 600, fontFamily: 'var(--font-sans)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)', zIndex: 9999, pointerEvents: 'none' }}>
+          {toolToast}
+        </div>
       )}
 
       {/* Drawing overlay controlled via NewElabSimulator's own DrawingOverlay + __ELAB_API.toggleDrawing */}
