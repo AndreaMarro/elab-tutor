@@ -18,8 +18,8 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - name: Install dependencies + Linux binaries
-        run: npm ci && npm install lightningcss-linux-x64-gnu --no-save
+      - name: Install dependencies (fresh install for native bindings)
+        run: rm -rf node_modules package-lock.json && npm install
 
       - name: Build
         run: npm run build
