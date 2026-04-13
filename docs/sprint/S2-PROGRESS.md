@@ -86,3 +86,10 @@ Commit pushati: 16
 - Chrome audit: NON POSSIBILE (no browser in sandbox)
 - UNLIM 30 domande: NON POSSIBILE (HTTPS proxy 403)
 - Score onesto: **6/10** — test solidi ma zero verifica live
+
+---
+**Audit automatico** — 2026-04-12 22:26 UTC | Test: 3642 passed (126 files) | Build: PASS (41.72s) | Regressioni: 0
+**Audit automatico** — 2026-04-13 03:20 UTC | Test: 3701 passed (128 files) | Build: PASS (155s) | Regressioni: 0
+**Audit automatico** — 2026-04-13 03:36 UTC | Test: 3701 passed (128 files) | Build: PASS (54.19s) | Regressioni: 0
+**Audit automatico** — 2026-04-13 04:33 UTC | Test: 3742 passed (130 files) | Build: PASS (51.23s) | Regressioni: 0
+**Audit automatico** — 2026-04-13 06:48 UTC | Test: 3742 passed (130 files) | Build: PASS (171s) | Regressioni: 0

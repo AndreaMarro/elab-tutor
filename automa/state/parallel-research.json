@@ -1,28 +1,6 @@
 {
   "findings": [
     {
-      "cycle": 39,
-      "topic_id": "ai_tutoring",
-      "topic": "AI tutoring adattivo per STEM education scaffolding ZPD",
-      "timestamp": "2026-03-26T15:07:21.418301",
-      "elapsed_s": 6.9,
-      "raw_response": "PRINCIPIO-1: Galileo dovrebbe adottare il principio di scaffolding, offrendo ai bambini supporto adeguato per affrontare compiti più complessi di elettronica in modo incrementale.\n\nERRORE-COMUNE: Fornire ai bambini compiti troppo complessi senza adeguata guida o supporto può causare frustrazione e mancanza di progresso.\n\nRACCOMANDAZIONE-GALILEO: Galileo dovrebbe identificare il livello di competenza di ciascun bambino e fornire task che siano all'interno della sua Zona Proximale di Sviluppo (ZPD), secondo Vygotsky. Utilizzare il metodo socratico per guidare i bambini attraverso domande che stimolino la loro riflessione e il loro pensiero critico. Fornire feedback formativo costante per aiutare i bambini a riconoscere e correggere gli errori, migliorando così la loro comprensione e abilità in elettronica.\n\nSEVERITY: medium\n\nIl contesto ciclo corrente mostra che Galileo ha una buona sicurezza, integrazione con AI, qualità del codice e accessibilità, ma ci sono aree come l'uso su iPad e le prestazioni che necessitano di miglioramento. Galileo dovrebbe concentrarsi su questi aspetti per garantire un'esperienza di apprendimento più inclusiva e efficiente per i bambini.",
-      "status": "ok",
-      "severity": "medium",
-      "actioned": true
-    },
-    {
-      "cycle": 40,
-      "topic_id": "lim_classroom",
-      "topic": "LIM lavagna interattiva aula tecnologia scuola media lezione tipo",
-      "timestamp": "2026-03-26T16:17:27.773283",
-      "elapsed_s": 3.9,
-      "raw_response": "FLUSSO-LEZIONE: Iniziamo con una breve presentazione dal docente, seguita da un'introduzione ai concetti chiave. Gli studenti lavorano poi in gruppi su attività pratiche, mentre il docente si muove tra i banchi per assistere. Alla fine, si tiene una discussione collettiva e si assegnano compiti a casa.\n\nVINCOLI-LIM: La LIM deve supportare la condivisione di contenuti digitali, la gestione di gruppi e la comunicazione in tempo reale. Deve essere facile da navigare e avere un'interfaccia intuitiva per studenti e docenti.\n\nREQUISITI-ELAB: ELAB Tutor deve essere integrato con la LIM, consentendo agli studenti di accedere alle risorse e alle attività direttamente dalla piattaforma. Deve supportare la creazione di compiti personalizzati e offrire feedback automatico.\n\nSEVERITY: medium",
-      "status": "ok",
-      "severity": "medium",
-      "actioned": true
-    },
-    {
       "cycle": 44,
       "topic_id": "ux_children",
       "topic": "UX design bambini 8-12 anni interfaccia educativa touch tablet",
@@ -586,9 +564,29 @@
       "text": "COMPETITOR-1: Tinkercad Circuits — Forza: Gratis e facile da usare, ma debolezza: manca l'AI e la pedagogia specifica per le scuole italiane.\nCOMPETITOR-2: Wokwi — Forza: Gratis e vasta gamma di componenti, ma debolezza: manca la pedagogia e l'AI.\nCOMPETITOR-3: Falstad — Forza: Simulazioni avanzate, ma debolezza: interfaccia meno intuitiva e manca l'AI.\nCOMPETITOR-4: PhET — Forza: Simulazioni educative gratuite, ma debolezza: manca il supporto specifico per le scuole italiane e l'AI.\n\nGAP-MERCAT",
       "status": "ok",
       "severity": "medium"
+    },
+    {
+      "cycle": 1,
+      "topic_id": "competitor",
+      "topic": "competitor EdTech simulatori elettronica 2026 Tinkercad Wokwi Arduino",
+      "timestamp": "2026-04-13T07:47:27.964230",
+      "elapsed_s": 0.0,
+      "raw_response": "[ERROR] Kimi: <urlopen error [Errno 8] nodename nor servname provided, or not known>",
+      "text": "[ERROR] Kimi: <urlopen error [Errno 8] nodename nor servname provided, or not known>",
+      "status": "error"
+    },
+    {
+      "cycle": 1,
+      "topic_id": "competitor",
+      "topic": "competitor EdTech simulatori elettronica 2026 Tinkercad Wokwi Arduino",
+      "timestamp": "2026-04-13T14:10:49.716288",
+      "elapsed_s": 0.0,
+      "raw_response": "[ERROR] Kimi: <urlopen error [Errno 8] nodename nor servname provided, or not known>",
+      "text": "[ERROR] Kimi: <urlopen error [Errno 8] nodename nor servname provided, or not known>",
+      "status": "error"
     }
   ],
   "last_cycle": 1,
   "total_insights": 51,
-  "updated": "2026-03-30T23:47:12.884629"
+  "updated": "2026-04-13T14:10:49.717221"
 }

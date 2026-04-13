@@ -198,7 +198,7 @@ async function tryLocalServer(message, circuitState, externalSignal, experimentI
                 signal: controller.signal,
             });
 
-// © Andrea Marro — 12/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
             if (!resp.ok) return null;
 
             const data = await resp.json();
@@ -399,7 +399,7 @@ export function checkRateLimit() {
             message: 'Facciamo una pausa! Riprova tra un minuto.',
             waitMs: Math.max(0, waitMs),
         };
-// © Andrea Marro — 12/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
     }
 
     // OK: registra il messaggio
@@ -600,7 +600,7 @@ export async function sendChat(message, images = [], options = {}) {
 
     // Nanobot message: experiment context + brevity rule (nanobot.yml ha il suo system prompt)
     // Webhook message: con SOCRATIC_INSTRUCTION (n8n non ha un system prompt proprio)
-// © Andrea Marro — 12/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
     const BREVITY_RULE = 'REGOLA: Rispondi in MASSIMO 3 frasi + 1 analogia. Mai superare 60 parole. I tag [AZIONE:...] non contano.';
     const nanobotMessage = experimentContext
         ? `${BREVITY_RULE}\n${experimentContext}\n\nMessaggio studente:\n${message}`
@@ -801,7 +801,7 @@ export async function sendChat(message, images = [], options = {}) {
                 };
             }
         }
-// © Andrea Marro — 12/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
         return {
             success: false,
@@ -1002,7 +1002,7 @@ export async function compileCode(code, board = 'arduino:avr:nano:cpu=atmega328o
                     data = data[0];
                 }
             } catch {
-// © Andrea Marro — 12/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
                 throw new Error('Risposta non valida dal compilatore');
             }
 
