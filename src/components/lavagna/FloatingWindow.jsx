@@ -3,7 +3,7 @@ import css from './FloatingWindow.module.css';
 
 const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
-let zCounter = 100;
+let zCounter = 1010;
 
 const STORAGE_PREFIX = 'elab-fw-';
 
@@ -55,7 +55,7 @@ export default function FloatingWindow({
   const [zIndex, setZIndex] = useState(() => ++zCounter);
 
   const bringToFront = useCallback(() => {
-    if (zCounter > 5000) zCounter = 100;
+    if (zCounter > 5000) zCounter = 1010;
     setZIndex(++zCounter);
     onFocus?.();
   }, [onFocus]);
@@ -116,7 +116,7 @@ export default function FloatingWindow({
       const cy = ev.clientY ?? ev.touches?.[0]?.clientY ?? 0;
       setPos({
         x: Math.max(0, Math.min(window.innerWidth - 280, cx - dragState.current.startX)),
-        y: Math.max(0, Math.min(window.innerHeight - 100, cy - dragState.current.startY)),
+        y: Math.max(48, Math.min(window.innerHeight - 100, cy - dragState.current.startY)),
       });
     };
     const handleUp = () => {

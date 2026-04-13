@@ -69,6 +69,21 @@ function pointsToSmoothPath(pointsStr) {
  * - canvasHeight: number — height of parent canvas container (used in normal mode)
  * - onPathsChange: (paths) => void — callback when paths change
  */
+const DRAWING_STORAGE_KEY = 'elab-drawing-paths';
+
+function loadDrawingPaths() {
+  try {
+    const raw = localStorage.getItem(DRAWING_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function saveDrawingPaths(paths) {
+  try {
+    localStorage.setItem(DRAWING_STORAGE_KEY, JSON.stringify(paths));
+  } catch { /* storage full — ignore */ }
+}
+
 export default function DrawingOverlay({
   drawingEnabled = false,
   canvasWidth = 800,
@@ -78,7 +93,7 @@ export default function DrawingOverlay({
   initialFullscreen = false,
 }) {
   const svgRef = useRef(null);
-  const [paths, setPaths] = useState([]);
+  const [paths, setPaths] = useState(() => loadDrawingPaths());
   const [currentPath, setCurrentPath] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentColor, setCurrentColor] = useState(DEFAULT_COLOR);
@@ -137,6 +152,7 @@ export default function DrawingOverlay({
     redoStackRef.current = []; // Clear redo on new action
     const updatedPaths = [...paths, newPath];
     setPaths(updatedPaths);
+    saveDrawingPaths(updatedPaths);
     setCurrentPath(null);
     onPathsChange?.(updatedPaths);
   }, [isDrawing, currentPath, paths, onPathsChange]);
@@ -146,6 +162,7 @@ export default function DrawingOverlay({
     const prev = undoStackRef.current.pop();
     redoStackRef.current.push(paths);
     setPaths(prev);
+    saveDrawingPaths(prev);
     onPathsChange?.(prev);
   }, [paths, onPathsChange]);
 
@@ -154,6 +171,7 @@ export default function DrawingOverlay({
     const next = redoStackRef.current.pop();
     undoStackRef.current.push(paths);
     setPaths(next);
+    saveDrawingPaths(next);
     onPathsChange?.(next);
   }, [paths, onPathsChange]);
 
@@ -163,6 +181,7 @@ export default function DrawingOverlay({
       redoStackRef.current = [];
     }
     setPaths([]);
+    saveDrawingPaths([]);
     setCurrentPath(null);
     onPathsChange?.([]);
   }, [paths, onPathsChange]);

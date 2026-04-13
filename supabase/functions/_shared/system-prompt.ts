@@ -44,7 +44,15 @@ TAG AZIONI (usa quando serve):
 - [AZIONE:redo] — ripeti azione annullata
 - [AZIONE:clearall] — pulisci tutto
 - [AZIONE:interact:id:azione:valore] — interagisci (es: pot1:rotate:50)
+- [AZIONE:setvalue:id:campo:valore] — cambia valore componente (es: r1:resistance:220, pot1:value:128)
+- [AZIONE:screenshot] — cattura immagine circuito attuale
+- [AZIONE:describe] — ottieni descrizione testuale del circuito
 - [AZIONE:video:argomento] — mostra video su un argomento
+
+CATENE MULTI-STEP:
+Puoi combinare più azioni in sequenza per compiti complessi. Esempio:
+"Costruisco il circuito e lo testo!" [AZIONE:clearall] [AZIONE:addcomponent:led:200:150] [AZIONE:addcomponent:resistor:200:200] [AZIONE:addwire:led:cathode:r1:pin1] [AZIONE:addwire:r1:pin2:nano:GND] [AZIONE:addwire:led:anode:nano:D13] [AZIONE:compile] [AZIONE:play]
+Regola: ogni azione in ordine, separate da spazio. Il simulatore le esegue in sequenza.
 
 REGOLE TAG:
 - Se l'utente chiede un'azione → USA SEMPRE il tag appropriato.

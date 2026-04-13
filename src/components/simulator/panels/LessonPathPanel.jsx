@@ -199,14 +199,14 @@ function PrerequisiteCards({ experimentId }) {
 /* ─── Phase data structure ─── */
 const LP_PHASE_ICONS = [null, null, null, null, null, null];
 const PHASE_TITLES = [
-  'PREPARA',
-  'MOSTRA',
-  'CHIEDI ALLA CLASSE',
-  'FAI OSSERVARE',
-  'USA GALILEO SE SERVE',
-  'CONCLUDI',
+  'MATERIALE',
+  'SCOPERTA',
+  'DOMANDE',
+  'ESPERIMENTO',
+  'APPROFONDIMENTO',
+  'RIEPILOGO',
 ];
-const PHASE_DURATIONS = ['prima della lezione', '2 min', '3 min', '15 min', 'quando serve', '5 min'];
+const PHASE_DURATIONS = ['prima', '2 min', '3 min', '15 min', 'facoltativo', '5 min'];
 
 /* ─── Rich Lesson Path — Renderizza percorso lezione da JSON UNLIM ─── */
 function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClose, onLoadExperiment, collapsed = false, onToggleCollapse, embedded = false }) {
@@ -250,7 +250,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
     if (phase.teacher_tip) {
       content.push(
         <div key="tip" style={RS.teacherTipBox}>
-          <span style={RS.teacherTipIcon}>Suggerimento:</span>
+          <span style={RS.teacherTipIcon}>Nota:</span>
           <span>{phase.teacher_tip}</span>
         </div>
       );
@@ -272,7 +272,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
     if (phase.class_hook) {
       content.push(
         <div key="hook" style={RS.hookBox}>
-          <span style={RS.hookIcon}>Domanda:</span>
+          <span style={RS.hookIcon}>Spunto:</span>
           <em>{phase.class_hook}</em>
         </div>
       );

@@ -494,5 +494,261 @@
     "title": "Simon Says — Gioco di Memoria",
     "content": "ESPERIMENTO: Simon Says — Gioco di Memoria\nVolume: Volume 3 - Arduino\nCapitolo: Extra\nDescrizione: Costruisci il classico gioco Simon con 4 LED colorati, 4 pulsanti e un cicalino che suona 4 note diverse! Arduino genera una sequenza luminosa e sonora sempre più lunga: ripetila premendo i pulsanti giusti!\nContesto pedagogico: Questo esperimento implementa il gioco Simon Says con feedback sonoro. 4 LED colorati (rosso D9, verde D10, blu D11, giallo D12) + un cicalino piezo (D8) mostrano una sequenza di luci e suoni che si allunga ad ogni turno. Ogni colore ha la sua nota: rosso=Do(262Hz), verde=Mi(330Hz), blu=Sol(392Hz), giallo=Do alto(523Hz). 4 pulsanti (rosso D3, verde D5, blu D6, giallo D13) in INPUT_PULLUP permettono al giocatore di ripetere la sequenza. Un array seq[] memorizza fino a 100 elementi. La funzione accendi() usa tone() e noTone() per abbinare suono e luce. gameOver() suona un tono grave (150Hz) durante il lampeggio. Usa randomSeed(analogRead(A0)) per sequenze diverse ad ogni partita.\nComponenti: breadboard-half, nano-r4, resistor(470), resistor(470), resistor(470), resistor(470), led, led, led, led, push-button, push-button, push-button, push-button, buzzer-piezo\nPassi:\n  1. Passo 1\n  2. Passo 2\n  3. Passo 3\n  4. Passo 4\n  5. Passo 5\n  6. Passo 6\n  7. Passo 7\n  8. Passo 8",
     "token_estimate": 327
+  },
+  {
+    "id": "v3-cap5-esp1",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 5 - Il nostro primo programma",
+    "title": "Cap. 5 Esp. 1 - Blink con LED_BUILTIN",
+    "content": "ESPERIMENTO: Cap. 5 Esp. 1 - Blink con LED_BUILTIN\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 5 - Il nostro primo programma\nDescrizione: Il primo programma in assoluto! Facciamo lampeggiare il LED integrato sulla scheda Arduino, quello collegato al pin 13. Si accende per 1 secondo, si spegne per 1 secondo, e ripete all'infinito.\nConcetto: pinMode, digitalWrite, delay, LED_BUILTIN, ciclo loop infinito\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 5 Esp. 1 - Blink con LED_BUILTIN'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: pinMode, digitalWrite, delay, LED_BUILTIN, ciclo loop infinito. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4\nPassi:\n  1. Collega l'Arduino Nano al computer con il cavo USB.\n  2. Apri l'editor e scrivi il codice: pinMode(13, OUTPUT) nel setup(), poi digitalWrite e delay nel loop().\n  3. Carica il programma e osserva il LED sulla scheda che lampeggia!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap5-esp2",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 5 - Il nostro primo programma",
+    "title": "Cap. 5 Esp. 2 - Modifica tempi del Blink",
+    "content": "ESPERIMENTO: Cap. 5 Esp. 2 - Modifica tempi del Blink\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 5 - Il nostro primo programma\nDescrizione: Cambiamo i tempi del Blink! Prova a modificare i valori dentro delay() per far lampeggiare il LED piu veloce o piu lento. Cosa succede con delay(100)? E con delay(2000)?\nConcetto: Parametri delay, sperimentazione, millisecondi vs secondi\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 5 Esp. 2 - Modifica tempi del Blink'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Parametri delay, sperimentazione, millisecondi vs secondi. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4\nPassi:\n  1. Parti dal programma Blink del Cap. 5 Esp. 1.\n  2. Cambia delay(1000) in delay(200) in entrambi i posti.\n  3. Carica e osserva: il LED lampeggia molto piu veloce! Prova altri valori.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp1",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 6 Esp. 1 - Circuito AND/OR con pulsanti",
+    "content": "ESPERIMENTO: Cap. 6 Esp. 1 - Circuito AND/OR con pulsanti\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Costruiamo un circuito logico con due pulsanti e un LED, SENZA programmare Arduino! Se colleghiamo i pulsanti in serie serve premerli entrambi (AND), se li colleghiamo in parallelo basta uno qualsiasi (OR).\nConcetto: Logica AND/OR, circuiti serie/parallelo, elettronica senza codice\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 6 Esp. 1 - Circuito AND/OR con pulsanti'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Logica AND/OR, circuiti serie/parallelo, elettronica senza codice. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, push-button, push-button, resistor(470), led-red\nPassi:\n  1. Collega il LED con resistore da 470 ohm al pin 5V di Arduino.\n  2. Collega due pulsanti IN SERIE tra il LED e GND: servono ENTRAMBI premuti per accendere (AND).\n  3. Ora prova a collegare i pulsanti IN PARALLELO: basta premerne UNO per accendere il LED (OR).",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp2",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 6 Esp. 1 - Colleghiamo la resistenza",
+    "content": "ESPERIMENTO: Cap. 6 Esp. 1 - Colleghiamo la resistenza\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Colleghiamo un LED esterno al pin 13 con un resistore da 470 ohm. Usiamo lo stesso programma Blink, ma ora vediamo lampeggiare un LED sulla breadboard!\nConcetto: LED esterno, resistore di protezione, circuito su breadboard\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 6 Esp. 1 - Colleghiamo la resistenza'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: LED esterno, resistore di protezione, circuito su breadboard. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), led-red\nPassi:\n  1. Collega il resistore da 470 ohm dal pin 13 dell'Arduino a una colonna della breadboard.\n  2. Collega l'anodo (+) del LED alla stessa colonna, e il catodo (-) al binario GND.\n  3. Carica il programma Blink: ora lampeggia il LED sulla breadboard!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-morse",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 6 Esp. 3 - SOS in codice Morse",
+    "content": "ESPERIMENTO: Cap. 6 Esp. 3 - SOS in codice Morse\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Modifichiamo il programma Blink per far lampeggiare il LED in codice Morse! S = tre lampi brevi, O = tre lampi lunghi. Il nostro Arduino manda un messaggio SOS!\nConcetto: Funzioni personalizzate, temporizzazione, codice Morse\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 6 Esp. 3 - SOS in codice Morse'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Funzioni personalizzate, temporizzazione, codice Morse. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), led-red\nPassi:\n  1. Usa lo stesso circuito dell'esperimento precedente (LED su pin 13 con resistore).\n  2. Modifica il programma: crea due funzioni, punto() per lampi brevi e linea() per lampi lunghi.\n  3. Nel loop, chiama punto() tre volte per la S, linea() tre volte per la O, e di nuovo punto() tre volte.\n  4. Carica il programma e osserva il LED lampeggiare SOS!\n  5. Prova a cambiare i tempi: delay piu corto = Morse piu veloce.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp3",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 6 Esp. 2 - Cambia il numero di pin",
+    "content": "ESPERIMENTO: Cap. 6 Esp. 2 - Cambia il numero di pin\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Spostiamo il LED su un pin diverso! Cambiamo il numero del pin nel codice e ricolleghiamo il filo. Cosi impariamo che possiamo usare QUALSIASI pin digitale.\nConcetto: Pin digitali intercambiabili, configurazione flessibile\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 6 Esp. 2 - Cambia il numero di pin'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Pin digitali intercambiabili, configurazione flessibile. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), led-green\nPassi:\n  1. Prendi il circuito dell'Es. 2 e scollega il filo dal pin 13.\n  2. Ricollegalo a un altro pin, ad esempio il pin 5.\n  3. Nel codice, cambia il 13 in 5 (sia nel setup che nel loop). Carica e verifica!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp4",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 6 Esp. 4 - Due LED: effetto polizia",
+    "content": "ESPERIMENTO: Cap. 6 Esp. 4 - Due LED: effetto polizia\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Due LED che si alternano come le luci della polizia! Quando uno e acceso l'altro e spento. Usiamo due pin digitali per controllare due LED separatamente.\nConcetto: Piu pin OUTPUT, sequenza di stati, semaforo\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 6 Esp. 4 - Due LED: effetto polizia'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Piu pin OUTPUT, sequenza di stati, semaforo. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), resistor(470), resistor(470), led-green, led-yellow, led-red\nPassi:\n  1. Collega 3 LED (verde, giallo, rosso) con i loro resistori ai pin 5, 6 e 9.\n  2. Nel setup() configura tutti e 3 i pin come OUTPUT.\n  3. Nel loop() accendi un LED alla volta spegnendo gli altri, con delay tra ogni fase.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp5",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 7 Ese. 7.3 - Pulsante con INPUT_PULLUP",
+    "content": "ESPERIMENTO: Cap. 7 Ese. 7.3 - Pulsante con INPUT_PULLUP\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Collegamento semplicissimo del pulsante con INPUT_PULLUP! Solo 1 filo + GND. Arduino attiva una resistenza interna. Quando premi, il LED si accende.\nConcetto: digitalRead, INPUT_PULLUP, variabile booleana, toggle semplice\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Ese. 7.3 - Pulsante con INPUT_PULLUP'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: digitalRead, INPUT_PULLUP, variabile booleana, toggle semplice. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, push-button, resistor(470), led-green\nPassi:\n  1. Collega il pulsante a cavallo della scanalatura della breadboard.\n  2. Un lato del pulsante va al pin 10 di Arduino, l'altro a GND.\n  3. Collega il LED con resistore al pin 5. Carica il codice e premi il pulsante!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp6",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 7 Mini-progetto - Due LED, un pulsante",
+    "content": "ESPERIMENTO: Cap. 7 Mini-progetto - Due LED, un pulsante\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Se premi il pulsante il LED verde si accende, se non premi si accende il rosso. Arduino sceglie quale LED attivare in base allo stato del pulsante!\nConcetto: Toggle, debounce, variabili di stato, 2 output\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Mini-progetto - Due LED, un pulsante'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Toggle, debounce, variabili di stato, 2 output. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, push-button, resistor(470), resistor(470), led-green, led-red\nPassi:\n  1. Posiziona l'Arduino Nano sopra la breadboard.\n  2. Inserisci il pulsante a cavallo della scanalatura (fila e/f, colonna 20).\n  3. Collega D6 (breakout wing W_D6) alla fila a col 20 (filo giallo). Fila j col 20 al binario GND (filo nero).\n  4. Circuito verde: resistore 470Ω fila c col 18-25, LED verde anodo fila d col 27, catodo d col 28. Ponte verde d25-d27. D10 (W_D10) alla fila a col 18.\n  5. Circuito rosso: resistore 470Ω fila g col 18-25, LED rosso anodo fila h col 27, catodo h col 28. Ponte verde h25-h27. D9 alla fila f col 18.\n  6. Collega le colonne dei catodi (28) al binario GND. Carica e premi il pulsante per alternare!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap6-esp7",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 6 - I pin digitali",
+    "title": "Cap. 6 Esp. 7 - Debounce del pulsante",
+    "content": "ESPERIMENTO: Cap. 6 Esp. 7 - Debounce del pulsante\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 6 - I pin digitali\nDescrizione: Miglioriamo il toggle! Il debounce con while aspetta che il pulsante venga rilasciato prima di continuare. Cosi evitiamo che un solo tocco venga letto come tante pressioni.\nConcetto: Debounce con while, rimbalzo meccanico, attesa rilascio\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 6 Esp. 7 - Debounce del pulsante'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Debounce con while, rimbalzo meccanico, attesa rilascio. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, push-button, resistor(470), led-green\nPassi:\n  1. Usa lo stesso circuito dell'Es. 6.5 (pulsante + LED).\n  2. La differenza e nel codice: dopo aver cambiato stato, il programma ASPETTA che il pulsante venga rilasciato.\n  3. Carica e confronta: ora ogni pressione conta come UNA sola, anche se tieni premuto!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp1",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 1 - analogRead base",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 1 - analogRead base\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Leggiamo un trimmer (potenziometro) con analogRead! Se il valore supera 511, il LED si accende. Il trimmer restituisce valori da 0 a 1023.\nConcetto: analogRead, valori 0-1023, soglia, confronto\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 1 - analogRead base'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: analogRead, valori 0-1023, soglia, confronto. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000), resistor(470), led-red\nPassi:\n  1. Collega il potenziometro: VCC al 5V, GND a massa, segnale al pin A0.\n  2. Collega un LED con resistore al pin 13.\n  3. Carica il codice e gira il potenziometro: superata la meta (511), il LED si accende!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp2",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 2 - analogRead con tensione",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 2 - analogRead con tensione\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Convertiamo il valore del trimmer in Volt veri! Con una formula semplice, Arduino ci dice quanti Volt sta leggendo sul pin A0.\nConcetto: Conversione ADC-Volt, float, formula proporzionale\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 2 - analogRead con tensione'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Conversione ADC-Volt, float, formula proporzionale. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000), resistor(470), led-red\nPassi:\n  1. Usa lo stesso circuito dell'Es. 7.1 (potenziometro + LED).\n  2. Nel codice, la variabile float tensione converte il valore 0-1023 in Volt 0-5V.\n  3. Apri il Serial Monitor per vedere la tensione in tempo reale (aggiungi Serial.println).",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp3",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 3 - Trimmer controlla 3 LED",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 3 - Trimmer controlla 3 LED\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Il trimmer controlla 3 LED diversi! Poco girato = LED 1, a meta = LED 2, tutto girato = LED 3. Dividiamo il range 0-1023 in 3 zone.\nConcetto: Intervalli, if-else if-else, range analogico diviso in zone\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 3 - Trimmer controlla 3 LED'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Intervalli, if-else if-else, range analogico diviso in zone. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000), resistor(470), resistor(470), resistor(470), led-red, led-yellow, led-green\nPassi:\n  1. Collega il potenziometro ad A0 come prima.\n  2. Collega 3 LED con resistori ai pin 3, 5 e 6.\n  3. Carica il codice e gira il trimmer: vedrai accendersi un LED alla volta in base alla posizione!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp4",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 4 - analogWrite (PWM fade)",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 4 - analogWrite (PWM fade)\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Facciamo crescere la luminosita del LED gradualmente! analogWrite non e analogico vero, ma usa il PWM (Pulse Width Modulation) per simulare valori intermedi.\nConcetto: analogWrite, PWM, for loop, luminosita graduale\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 4 - analogWrite (PWM fade)'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: analogWrite, PWM, for loop, luminosita graduale. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), led-red\nPassi:\n  1. Collega un LED con resistore al pin 5 (deve essere un pin PWM!).\n  2. Il for loop parte da 0 e arriva a 255, aumentando di 5 ogni volta.\n  3. Carica e osserva: il LED si accende gradualmente come un'alba!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp5",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 5 - PWM con valori manuali",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 5 - PWM con valori manuali\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Proviamo valori PWM specifici per capire la relazione tra numero e luminosita. 0 = spento, 64 = debole, 128 = meta, 255 = massimo.\nConcetto: Valori PWM discreti, relazione numero-luminosita\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 5 - PWM con valori manuali'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Valori PWM discreti, relazione numero-luminosita. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), led-red\nPassi:\n  1. Usa lo stesso circuito dell'Es. 7.4 (LED su pin PWM).\n  2. Il codice mostra 4 livelli di luminosita in sequenza.\n  3. Modifica i numeri dentro analogWrite per sperimentare! Cosa succede con 10? E con 200?",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp6",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 6 - Fade up/down con for",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 6 - Fade up/down con for\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Il LED si accende gradualmente e poi si spegne gradualmente, all'infinito! Due cicli for: uno che sale da 0 a 255 e uno che scende da 255 a 0.\nConcetto: Due cicli for, fade up e down, effetto respiro\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 6 - Fade up/down con for'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Due cicli for, fade up e down, effetto respiro. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, resistor(470), led-red\nPassi:\n  1. Usa lo stesso circuito dell'Es. 7.4 (LED su pin 5).\n  2. Il primo for sale (i va da 0 a 255), il secondo scende (i va da 255 a 0).\n  3. L'effetto e un respiro continuo: luce che cresce e decresce!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp7",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 7 - Trimmer controlla luminosita",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 7 - Trimmer controlla luminosita\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Il trimmer controlla la luminosita del LED in tempo reale! Usiamo map() per convertire il range 0-1023 del trimmer nel range 0-255 del PWM.\nConcetto: map(), conversione range, trimmer come controller, analogRead+analogWrite\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 7 - Trimmer controlla luminosita'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: map(), conversione range, trimmer come controller, analogRead+analogWrite. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000), resistor(470), led-red\nPassi:\n  1. Collega il potenziometro ad A0 e un LED con resistore al pin 5.\n  2. La funzione map() converte il range del trimmer (0-1023) in quello del PWM (0-255).\n  3. Gira il trimmer e controlla la luminosita del LED come un dimmer!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap7-esp8",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 7 - I pin analogici",
+    "title": "Cap. 7 Esp. 8 - DAC reale (10 bit)",
+    "content": "ESPERIMENTO: Cap. 7 Esp. 8 - DAC reale (10 bit)\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 7 - I pin analogici\nDescrizione: Il Nano R4 ha un vero DAC (Digital-to-Analog Converter) sul pin A0! Con analogWriteResolution(10) possiamo scrivere valori da 0 a 1023 con uscita analogica vera, non PWM.\nConcetto: DAC, analogWriteResolution, 10 bit vs 8 bit, uscita analogica vera\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 7 Esp. 8 - DAC reale (10 bit)'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: DAC, analogWriteResolution, 10 bit vs 8 bit, uscita analogica vera. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000)\nPassi:\n  1. Collega il trimmer al pin A1 (ingresso).\n  2. Il pin A0 e configurato come uscita DAC a 10 bit.\n  3. analogWriteResolution(10) cambia la risoluzione da 8 bit (0-255) a 10 bit (0-1023).",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap8-esp1",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 8 - Comunicazione Seriale",
+    "title": "Cap. 8 Esp. 1 - Serial.println in setup",
+    "content": "ESPERIMENTO: Cap. 8 Esp. 1 - Serial.println in setup\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 8 - Comunicazione Seriale\nDescrizione: Il primo messaggio da Arduino al computer! Scriviamo 'Ciao dal Team di ELAB!' una sola volta nel setup, e lo vediamo apparire nel Serial Monitor.\nConcetto: Serial.begin, Serial.println, Serial Monitor, comunicazione USB\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 8 Esp. 1 - Serial.println in setup'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Serial.begin, Serial.println, Serial Monitor, comunicazione USB. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4\nPassi:\n  1. Non serve nessun componente esterno: basta il cavo USB!\n  2. Serial.begin(9600) avvia la comunicazione a 9600 baud.\n  3. Apri il Serial Monitor e vedrai il messaggio apparire una sola volta.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap8-esp2",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 8 - Comunicazione Seriale",
+    "title": "Cap. 8 Esp. 2 - Serial.println in loop",
+    "content": "ESPERIMENTO: Cap. 8 Esp. 2 - Serial.println in loop\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 8 - Comunicazione Seriale\nDescrizione: Ora il messaggio si ripete all'infinito! Spostando Serial.println nel loop(), Arduino scrive il messaggio continuamente. Attenzione: senza delay va velocissimo!\nConcetto: Differenza setup vs loop, flusso continuo, velocita seriale\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 8 Esp. 2 - Serial.println in loop'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Differenza setup vs loop, flusso continuo, velocita seriale. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4\nPassi:\n  1. Il codice e quasi identico all'Es. 8.1, ma println e nel loop() invece che nel setup().\n  2. Carica e apri il Serial Monitor: il messaggio appare continuamente!\n  3. Prova ad aggiungere delay(1000) nel loop per rallentare.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap8-esp3",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 8 - Comunicazione Seriale",
+    "title": "Cap. 8 Esp. 3 - analogRead + Serial Monitor",
+    "content": "ESPERIMENTO: Cap. 8 Esp. 3 - analogRead + Serial Monitor\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 8 - Comunicazione Seriale\nDescrizione: Leggi il valore del potenziometro su A0 e stampalo sul Serial Monitor! Valori 0-1023.\nConcetto: analogRead, Serial Monitor, ADC 10 bit (0-1023)\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 8 Esp. 3 - analogRead + Serial Monitor'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: analogRead, Serial Monitor, ADC 10 bit (0-1023). Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000)\nPassi:\n  1. Costruisci lo stesso circuito dell'esperimento precedente (potenziometro su A0).\n  2. Carica il programma: apre la comunicazione seriale a 9600 baud.\n  3. Apri il Serial Monitor nel simulatore (pannello in basso).\n  4. Gira lentamente la manopola del potenziometro.\n  5. Osserva i numeri che appaiono sul Serial Monitor: vanno da 0 a 1023.\n  6. Prova a trovare il valore 512 (metà corsa) girando la manopola con precisione!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap8-esp4",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 8 - Comunicazione Seriale",
+    "title": "Cap. 8 Esp. 4 - Serial Plotter con 2 pot",
+    "content": "ESPERIMENTO: Cap. 8 Esp. 4 - Serial Plotter con 2 pot\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 8 - Comunicazione Seriale\nDescrizione: Due potenziometri collegati ai pin A3 e A4, con i valori stampati nel formato giusto per il Serial Plotter di Arduino IDE. Si vedono due grafici in tempo reale!\nConcetto: Serial Plotter, formato label:valore, grafici in tempo reale, 2 canali\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 8 Esp. 4 - Serial Plotter con 2 pot'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Serial Plotter, formato label:valore, grafici in tempo reale, 2 canali. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000), potentiometer(10000)\nPassi:\n  1. Collega due potenziometri: uno ad A3 e uno ad A4.\n  2. Il formato 'etichetta:valore spazio etichetta:valore' e quello richiesto dal Serial Plotter.\n  3. In Arduino IDE, apri il Serial Plotter (non il Monitor!) e vedrai due linee colorate.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v3-cap8-esp5",
+    "volume": 3,
+    "chapter": "Volume 3 - Capitolo 8 - Comunicazione Seriale",
+    "title": "Cap. 8 Esp. 5 - Pot + 3 LED + Serial",
+    "content": "ESPERIMENTO: Cap. 8 Esp. 5 - Pot + 3 LED + Serial\nVolume: Volume 3 - Arduino\nCapitolo: Capitolo 8 - Comunicazione Seriale\nDescrizione: Combiniamo tutto! Un potenziometro controlla 3 LED E stampa i valori sul Serial Monitor. E il progetto finale del Volume 3!\nConcetto: Progetto combinato, analogRead + digitalOutput + Serial, intervalli\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 8 Esp. 5 - Pot + 3 LED + Serial'. Questo e un esperimento di Volume 3 (Arduino). Il concetto chiave e: Progetto combinato, analogRead + digitalOutput + Serial, intervalli. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, nano-r4, potentiometer(10000), resistor(470), resistor(470), resistor(470), led-red, led-yellow, led-green\nPassi:\n  1. Collega il potenziometro ad A3.\n  2. Collega 3 LED con resistori ai pin 12, 11 e 10.\n  3. Apri il Serial Monitor: vedrai i valori del trimmer mentre i LED cambiano!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap3-esp1",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 3 - Il Multimetro",
+    "title": "Cap. 3 Esp. 1 - Controlliamo la carica della batteria",
+    "content": "ESPERIMENTO: Cap. 3 Esp. 1 - Controlliamo la carica della batteria\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 3 - Il Multimetro\nDescrizione: Usiamo il multimetro per misurare quanti Volt ha la nostra batteria da 9V. Scopriamo se e carica!\nConcetto: Multimetro in modalita voltmetro, tensione batteria, carica/scarica\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 3 Esp. 1 - Controlliamo la carica della batteria'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Multimetro in modalita voltmetro, tensione batteria, carica/scarica. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: battery9v, multimeter\nPassi:\n  1. Posiziona la batteria 9V a sinistra del piano di lavoro.\n  2. Posiziona il multimetro e impostalo su V (Volt).\n  3. Collega il puntale rosso al polo + e il nero al polo -.\n  4. Leggi il valore: una batteria nuova segna circa 9.4-9.6V!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap3-esp2",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 3 - Il Multimetro",
+    "title": "Cap. 3 Esp. 2 - Diario di misurazione della pila",
+    "content": "ESPERIMENTO: Cap. 3 Esp. 2 - Diario di misurazione della pila\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 3 - Il Multimetro\nDescrizione: Misuriamo la batteria ogni giorno e segniamo il valore. Quanto dura davvero una batteria 9V?\nConcetto: Scarica batteria nel tempo, misurazione ripetuta, diario scientifico\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 3 Esp. 2 - Diario di misurazione della pila'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Scarica batteria nel tempo, misurazione ripetuta, diario scientifico. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: battery9v, multimeter\nPassi:\n  1. Misura la tensione della batteria ogni giorno alla stessa ora.\n  2. Segna il valore su un foglio o un quaderno.\n  3. Dopo una settimana, confronta i valori: la tensione scende?",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap3-esp3",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 3 - Il Multimetro",
+    "title": "Cap. 3 Esp. 3 - Misuriamo una resistenza",
+    "content": "ESPERIMENTO: Cap. 3 Esp. 3 - Misuriamo una resistenza\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 3 - Il Multimetro\nDescrizione: Impariamo a misurare il valore di una resistenza con il multimetro. Le bande colorate dicono la verita?\nConcetto: Ohmmetro, bande colorate, tolleranza resistenza, verifica pratica\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 3 Esp. 3 - Misuriamo una resistenza'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Ohmmetro, bande colorate, tolleranza resistenza, verifica pratica. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: resistor(330), multimeter\nPassi:\n  1. Prendi un resistore da 330 Ohm e leggi le bande colorate.\n  2. Imposta il multimetro su Ohm (simbolo omega).\n  3. Tocca i terminali del resistore con i puntali.\n  4. Confronta il valore misurato con quello delle bande: sono uguali?",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap3-esp4",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 3 - Il Multimetro",
+    "title": "Cap. 3 Esp. 4 - Misuriamo la corrente in un circuito",
+    "content": "ESPERIMENTO: Cap. 3 Esp. 4 - Misuriamo la corrente in un circuito\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 3 - Il Multimetro\nDescrizione: Colleghiamo il multimetro IN SERIE per misurare quanta corrente passa. La Legge di Ohm funziona davvero?\nConcetto: Amperometro in serie, Legge di Ohm, corrente in mA\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 3 Esp. 4 - Misuriamo la corrente in un circuito'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Amperometro in serie, Legge di Ohm, corrente in mA. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: battery9v, breadboard-half, resistor(1000), multimeter\nPassi:\n  1. Costruisci un circuito: batteria 9V + resistore 1kOhm sulla breadboard.\n  2. Imposta il multimetro su A (Ampere) o mA.\n  3. Collega il multimetro IN SERIE: interrompi il circuito e inseriscilo nel mezzo.\n  4. Leggi il valore: dovrebbe essere circa 9mA (I = V/R = 9/1000).",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap4-esp1",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 4 - Approfondiamo le Resistenze",
+    "title": "Cap. 4 Esp. 1 - Due resistori in parallelo",
+    "content": "ESPERIMENTO: Cap. 4 Esp. 1 - Due resistori in parallelo\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 4 - Approfondiamo le Resistenze\nDescrizione: Mettiamo due resistori da 1kOhm in parallelo e misuriamo. Il risultato e la meta!\nConcetto: Resistenze in parallelo, formula 1/Rtot, la corrente sceglie la strada piu facile\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 4 Esp. 1 - Due resistori in parallelo'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Resistenze in parallelo, formula 1/Rtot, la corrente sceglie la strada piu facile. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, resistor(1000), resistor(1000), multimeter\nPassi:\n  1. Inserisci due resistori da 1kOhm in parallelo sulla breadboard.\n  2. Imposta il multimetro su Ohm.\n  3. Misura la resistenza totale: dovrebbe essere circa 500 Ohm!\n  4. Prova con valori diversi: cosa succede con 1kOhm + 2kOhm?",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap4-esp2",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 4 - Approfondiamo le Resistenze",
+    "title": "Cap. 4 Esp. 2 - Tre resistori in serie",
+    "content": "ESPERIMENTO: Cap. 4 Esp. 2 - Tre resistori in serie\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 4 - Approfondiamo le Resistenze\nDescrizione: Mettiamo tre resistori da 1kOhm in serie. La resistenza totale si somma!\nConcetto: Resistenze in serie, somma dei valori, ostacoli in fila\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 4 Esp. 2 - Tre resistori in serie'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Resistenze in serie, somma dei valori, ostacoli in fila. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: breadboard-half, resistor(1000), resistor(1000), resistor(1000), multimeter\nPassi:\n  1. Inserisci tre resistori da 1kOhm in serie sulla breadboard.\n  2. Imposta il multimetro su Ohm.\n  3. Misura la resistenza totale: dovrebbe essere circa 3000 Ohm!\n  4. Togli un resistore e rimisura: 2000 Ohm. In serie si sommano!",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap4-esp3",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 4 - Approfondiamo le Resistenze",
+    "title": "Cap. 4 Esp. 3 - Partitore di tensione",
+    "content": "ESPERIMENTO: Cap. 4 Esp. 3 - Partitore di tensione\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 4 - Approfondiamo le Resistenze\nDescrizione: Tre resistori in serie creano punti a tensione diversa. Misuriamo con il multimetro!\nConcetto: Partitore di tensione, tensione proporzionale alla resistenza, punti di misura\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 4 Esp. 3 - Partitore di tensione'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Partitore di tensione, tensione proporzionale alla resistenza, punti di misura. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: battery9v, breadboard-half, resistor(1000), resistor(1000), resistor(1000), multimeter\nPassi:\n  1. Costruisci un circuito con 3 resistori da 1kOhm in serie e una batteria 9V.\n  2. Misura la tensione ai capi di ogni resistore: dovrebbe essere circa 3V ciascuno.\n  3. Misura tra il primo e l'ultimo resistore: 6V!\n  4. Il partitore di tensione divide la tensione in proporzione ai valori.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap5-esp1",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 5 - Approfondiamo le Batterie",
+    "title": "Cap. 5 Esp. 1 - Batterie in serie (piu spinta!)",
+    "content": "ESPERIMENTO: Cap. 5 Esp. 1 - Batterie in serie (piu spinta!)\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 5 - Approfondiamo le Batterie\nDescrizione: Colleghiamo piu batterie in serie: le tensioni si sommano! Come le pile di una torcia.\nConcetto: Batterie in serie, somma delle tensioni, pile nella torcia\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 5 Esp. 1 - Batterie in serie (piu spinta!)'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Batterie in serie, somma delle tensioni, pile nella torcia. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: battery9v, battery9v, multimeter\nPassi:\n  1. Posiziona due batterie da 9V.\n  2. Collega il + della prima al - della seconda (in serie).\n  3. Misura la tensione totale con il multimetro: ~18V!\n  4. E lo stesso principio delle pile nella torcia.",
+    "token_estimate": 200
+  },
+  {
+    "id": "v2-cap5-esp2",
+    "volume": 2,
+    "chapter": "Volume 2 - Capitolo 5 - Approfondiamo le Batterie",
+    "title": "Cap. 5 Esp. 2 - Batterie in antiserie",
+    "content": "ESPERIMENTO: Cap. 5 Esp. 2 - Batterie in antiserie\nVolume: Volume 2 - Approfondiamo\nCapitolo: Capitolo 5 - Approfondiamo le Batterie\nDescrizione: Cosa succede se colleghiamo due batterie al contrario? Le tensioni si sottraggono!\nConcetto: Antiserie, sottrazione tensioni, forze opposte si annullano\nContesto pedagogico: Sei Galileo, il tutor AI di ELAB. Lo studente sta lavorando con l'esperimento 'Cap. 5 Esp. 2 - Batterie in antiserie'. Questo e un esperimento di Volume 2 (Approfondiamo). Il concetto chiave e: Antiserie, sottrazione tensioni, forze opposte si annullano. Spiega in modo semplice e coinvolgente, usando analogie adatte a bambini di 8-14 anni. Rispondi in italiano.\nComponenti: battery9v, battery9v, multimeter\nPassi:\n  1. Posiziona due batterie da 9V.\n  2. Collega il + della prima al + della seconda (antiserie!).\n  3. Misura la tensione: dovrebbe essere circa 0V.\n  4. Le forze opposte si annullano, come un tiro alla fune alla pari.",
+    "token_estimate": 200
   }
 ]

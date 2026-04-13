@@ -64,7 +64,7 @@ export default function PercorsoPanel({ visible = false, onClose, experiment: pr
   return (
     <FloatingWindow
       id="percorso-v2"
-      title="Percorso Lezione"
+      title="Guida Esperimento"
       defaultPosition={{ x: typeof window !== 'undefined' ? Math.max(20, window.innerWidth - 400) : 600, y: 56 }}
       defaultSize={{ w: 380, h: Math.min(550, typeof window !== 'undefined' ? window.innerHeight - 120 : 550) }}
       onClose={onClose}

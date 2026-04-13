@@ -833,9 +833,9 @@ const NewElabSimulator = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '8px 16px', background: 'var(--color-bg-secondary, #F7F8FA)', borderBottom: '1px solid var(--color-border, #E5E5E5)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ display: 'flex', gap: 3, background: 'var(--color-bg-tertiary, #ECECF0)', borderRadius: 12, padding: 4 }}>
             {[
-              { key: 'complete', label: 'Già Montato', icon: '\uD83D\uDD27', color: 'var(--color-primary, #1E4D8C)', title: 'Circuito già pronto — osserva e sperimenta' },
+              { key: 'complete', label: 'Libero', icon: '\uD83D\uDD27', color: 'var(--color-primary, #1E4D8C)', title: 'Breadboard libera — sperimenta come vuoi' },
               { key: 'guided', label: 'Passo Passo', icon: '\uD83D\uDC63', color: 'var(--color-accent, #4A7A25)', title: 'Costruisci il circuito un pezzo alla volta' },
-              { key: 'sandbox', label: 'Percorso', icon: '\uD83C\uDFA8', color: 'var(--color-primary, #1E4D8C)', title: 'Percorso lezione guidato dal docente' },
+              { key: 'sandbox', label: 'Percorso', icon: '\uD83C\uDFA8', color: 'var(--color-primary, #1E4D8C)', title: 'Segui il percorso dell\'esperimento' },
             ].map(m => {
               const isActive = (m.key === 'complete' && !currentExperiment.buildMode) || currentExperiment.buildMode === m.key;
               return (<button key={m.key} onClick={() => handleBuildModeSwitch(m.key)} title={m.title} style={{ border: 'none', borderRadius: 'var(--radius-md, 10px)', padding: '8px 24px', fontSize: 15, fontWeight: isActive ? 700 : 500, fontFamily: "var(--font-sans)", background: isActive ? m.color : 'transparent', color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-secondary, #6B6B80)', cursor: 'pointer', transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)', display: 'flex', alignItems: 'center', gap: 8, minHeight: 'var(--touch-min, 56px)', boxShadow: isActive ? 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03))' : 'none', letterSpacing: isActive ? '0.3px' : '0', transform: isActive ? 'scale(1.02)' : 'scale(1)' }}><span style={{ fontSize: 17 }}>{m.icon}</span>{m.label}</button>);
@@ -849,7 +849,7 @@ const NewElabSimulator = ({
         {/* LEFT SIDEBAR — hide palette in guided mode (Passo Passo manages components) */}
         {showSidebar && (
           <div ref={sidebarRef} className="elab-simulator__sidebar">
-            {leftPanelMode === 'palette' && currentExperiment && currentExperiment.buildMode !== 'guided' && (
+            {leftPanelMode === 'palette' && currentExperiment && (currentExperiment.buildMode !== 'guided') && (
               <ComponentPalette wireMode={wireMode} onWireModeToggle={() => setWireMode(prev => !prev)} volumeFilter={selectedVolume} style={{ height: '100%', border: 'none', borderRadius: 0 }} />
             )}
             <div style={{ display: leftPanelMode === 'palette' && currentExperiment && currentExperiment.buildMode !== 'guided' ? 'none' : 'block', height: '100%' }}>
@@ -894,7 +894,7 @@ const NewElabSimulator = ({
                 {exportToast && (<div role="status" aria-live="polite" style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent, #4A7A25)', color: 'var(--color-text-inverse, #fff)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, boxShadow: '0 4px 12px rgba(124,179,66,0.35)', zIndex: 100, pointerEvents: 'none' }}>Foto salvata!</div>)}
                 {wireToast && (<div role="status" aria-live="polite" style={{ position: 'absolute', bottom: 50, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-vol2, #E8941C)', color: 'var(--color-text, #1A1A2E)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display, 'Oswald', sans-serif)", fontSize: 16, fontWeight: 700, boxShadow: '0 4px 12px rgba(232,148,28,0.35)', zIndex: 100, pointerEvents: 'none' }}>{wireToast}</div>)}
                 {wireMode && (<div className={lyStyles.wireModeIndicator} role="status" aria-live="polite"><span style={{ fontSize: 14 }}>&#x1F50C;</span><span>Collegamento fili attivo</span>{wireStartRef.current && (<span style={{ color: 'var(--color-vol2-text, #996600)' }}>Da: {wireStartRef.current} — clicca il pin destinazione</span>)}</div>)}
-                {currentExperiment && (currentExperiment.buildMode === 'guided' || currentExperiment.buildMode === 'sandbox') && (
+                {currentExperiment && currentExperiment.buildMode === 'guided' && (
                   <ComponentDrawer mode={currentExperiment.buildMode} experiment={currentExperiment} currentStep={buildStepIndex} onStepChange={handleBuildStepChange} volumeNumber={selectedVolume}
                     onStartScratchPhase={(chosenMode) => { setShowCodeEditor(true); setEditorMode(chosenMode || 'scratch'); }}
                     onCompileAndPlay={() => { if (handleCompileOnly) handleCompileOnly(); }}

@@ -91,6 +91,25 @@ function executeActionTags(rawResponse) {
           }
           break;
         case 'clearall': api.clearAll?.(); executed.push('clearall'); break;
+        case 'setvalue':
+          if (parts[1] && parts[2] && parts[3] !== undefined && api.setComponentValue) {
+            api.setComponentValue(parts[1], parts[2], parts[3]);
+            executed.push('setvalue:' + parts[1] + ':' + parts[2] + ':' + parts[3]);
+          }
+          break;
+        case 'screenshot':
+          if (api.captureScreenshot) {
+            api.captureScreenshot();
+            executed.push('screenshot');
+          }
+          break;
+        case 'describe':
+          if (api.getCircuitDescription) {
+            const desc = api.getCircuitDescription();
+            logger.info('[Lavagna] Circuit description:', desc);
+            executed.push('describe');
+          }
+          break;
         default:
           logger.debug('[Lavagna] Unknown AZIONE:', cmd);
       }
@@ -179,6 +198,7 @@ async function executeIntentTags(rawResponse) {
         }
       } catch (err) {
         logger.warn('[Lavagna] INTENT parse error:', err.message);
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
       }
     }
   } catch (err) {
@@ -198,7 +218,6 @@ function detectImplicitActions(userMessage, aiResponse) {
   if (/\[azione:/i.test(aiResponse) || /\[INTENT:\{/.test(aiResponse)) return [];
 
   const combined = (userMessage + ' ' + aiResponse).toLowerCase();
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
   const executed = [];
 
   // Play / run simulation
@@ -380,6 +399,7 @@ export default function useGalileoChat() {
     setMessages(prev => [...prev, { id: Date.now(), role: 'user', content: userMessage }]);
     setIsLoading(true);
 
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
     // ── Lesson preparation command (Principio Zero: Lavagna = interfaccia docente) ──
     if (isLessonPrepCommand(userMessage)) {
       try {
@@ -399,7 +419,6 @@ export default function useGalileoChat() {
         // Fast local summary first
         const summary = getLessonSummary(expId);
         if (summary) {
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
           const introMsg = summary.isFirstTime
             ? `Preparo la lezione "${summary.title}"! Prima volta con questo esperimento.`
             : summary.needsReview
@@ -581,6 +600,7 @@ export default function useGalileoChat() {
 
   return {
     messages,
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
     setMessages,
     input,
     setInput,
