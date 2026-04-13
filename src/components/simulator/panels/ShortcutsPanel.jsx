@@ -60,7 +60,7 @@ const SHORTCUTS = [
 
 const ShortcutsPanel = React.memo(function ShortcutsPanel({ onClose }) {
   return (
-    <div style={S.backdrop} onClick={onClose}>
+    <div style={S.backdrop} onClick={onClose} role="button" tabIndex={-1} aria-label="Chiudi pannello scorciatoie">
       <div style={S.modal} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div style={S.header}>
@@ -71,7 +71,7 @@ const ShortcutsPanel = React.memo(function ShortcutsPanel({ onClose }) {
             </svg>
             <span style={S.headerTitle}>Scorciatoie da Tastiera</span>
           </div>
-          <button onClick={onClose} style={S.closeBtn}>
+          <button onClick={onClose} style={S.closeBtn} aria-label="Chiudi scorciatoie">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 3L11 11M3 11L11 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>

@@ -23,7 +23,7 @@ const UNLIMResponsePanel = React.memo(function UNLIMResponsePanel({
   if (!response) return null;
 
   return (
-    <div style={S.backdrop} onClick={() => !response.loading && onClose()}>
+    <div style={S.backdrop} onClick={() => !response.loading && onClose()} role="button" tabIndex={-1} aria-label="Chiudi risposta Galileo">
       <div style={S.panel} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div style={S.header}>

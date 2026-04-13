@@ -50,6 +50,10 @@ const ComponentCard = React.memo(function ComponentCard({ type, label, icon }) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Aggiungi ${label || type}`}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTapSelect(); } }}
       draggable="true"
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}

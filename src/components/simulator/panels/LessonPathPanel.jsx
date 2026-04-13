@@ -396,7 +396,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
   };
 
   return (
-    <div style={collapsed ? { ...S.root, ...S.rootCollapsed } : { ...S.root, ...(embedded ? { border: 'none', borderRadius: 0, boxShadow: 'none' } : {}) }} onClick={collapsed ? onToggleCollapse : undefined}>
+    <div style={collapsed ? { ...S.root, ...S.rootCollapsed } : { ...S.root, ...(embedded ? { border: 'none', borderRadius: 0, boxShadow: 'none' } : {}) }} onClick={collapsed ? onToggleCollapse : undefined} role={collapsed ? 'button' : undefined} tabIndex={collapsed ? 0 : undefined} aria-label={collapsed ? 'Espandi percorso lezione' : undefined}>
       {/* Header — hidden when embedded in FloatingWindow */}
       {!embedded && (
       <div style={collapsed ? { ...S.header, borderRadius: 14 } : S.header}>
