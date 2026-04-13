@@ -89,27 +89,39 @@ export default function FloatingToolbar({
   const barRef = useRef(null);
 
   const handleDragStart = useCallback((e) => {
-    // Only drag from the drag handle, not from buttons
-    if (e.target.closest('button')) return;
     e.preventDefault();
     const rect = barRef.current?.getBoundingClientRect();
     if (!rect) return;
+    const startX = e.clientX;
+    const startY = e.clientY;
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
+    let dragging = false;
 
     const onMove = (ev) => {
+      // Start dragging only after 4px of movement (distinguishes click from drag)
+      if (!dragging) {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+        if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+        dragging = true;
+      }
       const x = ev.clientX - offsetX;
       const y = ev.clientY - offsetY;
-      const clamped = {
+      setPos({
         x: Math.max(0, Math.min(window.innerWidth - rect.width, x)),
         y: Math.max(48, Math.min(window.innerHeight - rect.height, y)),
-      };
-      setPos(clamped);
+      });
     };
-    const onUp = () => {
+    const onUp = (ev) => {
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
-      setPos(prev => { if (prev) savePos(prev); return prev; });
+      if (dragging) {
+        // Was a drag — save position, prevent the click on buttons
+        setPos(prev => { if (prev) savePos(prev); return prev; });
+        ev.stopPropagation();
+      }
+      // If not dragging, the click passes through to buttons normally
     };
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
