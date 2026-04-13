@@ -343,13 +343,41 @@ function buildTutorContext() {
 }
 
 // ══════════════════════════════════════
+// Chat persistence — localStorage
+// ══════════════════════════════════════
+const CHAT_STORAGE_KEY = 'elab-unlim-chat-history-v1';
+const CHAT_MAX_MESSAGES = 100;
+
+function loadChatHistory() {
+  try {
+    const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (!raw) return [WELCOME_MSG];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return [WELCOME_MSG];
+    return parsed.slice(-CHAT_MAX_MESSAGES);
+  } catch { return [WELCOME_MSG]; }
+}
+
+function saveChatHistory(messages) {
+  try {
+    const capped = messages.slice(-CHAT_MAX_MESSAGES);
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(capped));
+  } catch { /* storage full */ }
+}
+
+// ══════════════════════════════════════
 // HOOK: useGalileoChat
 // ══════════════════════════════════════
 export default function useGalileoChat() {
-  const [messages, setMessages] = useState([WELCOME_MSG]);
+  const [messages, setMessages] = useState(() => loadChatHistory());
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const circuitStateRef = useRef(null);
+
+  // Persist chat history on every change
+  useEffect(() => {
+    saveChatHistory(messages);
+  }, [messages]);
 
   // Auto-reset loading if stuck > 30s
   useEffect(() => {
@@ -371,6 +399,7 @@ export default function useGalileoChat() {
   }, []);
 
   // ── Send message ──
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
   const handleSend = useCallback(async (messageOverride) => {
     const userMessage = messageOverride || input;
     if (!userMessage.trim() || isLoading) return;
@@ -399,7 +428,6 @@ export default function useGalileoChat() {
     setMessages(prev => [...prev, { id: Date.now(), role: 'user', content: userMessage }]);
     setIsLoading(true);
 
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
     // ── Lesson preparation command (Principio Zero: Lavagna = interfaccia docente) ──
     if (isLessonPrepCommand(userMessage)) {
       try {
@@ -572,6 +600,7 @@ export default function useGalileoChat() {
         setMessages(prev => [...prev, {
           id: Date.now(), role: 'user',
           content: 'Analizza questa schermata del simulatore',
+// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
           image: dataUrl,
         }]);
 
@@ -600,7 +629,6 @@ export default function useGalileoChat() {
 
   return {
     messages,
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
     setMessages,
     input,
     setInput,
