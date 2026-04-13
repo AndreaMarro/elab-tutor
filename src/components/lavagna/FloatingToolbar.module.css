@@ -55,6 +55,20 @@
   box-shadow: 0 0 0 2px rgba(74, 122, 37, 0.3);
 }
 
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  padding: 0 2px;
+  color: var(--color-primary, #1E4D8C);
+  flex-shrink: 0;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
 .divider {
   width: 1px;
   height: 28px;

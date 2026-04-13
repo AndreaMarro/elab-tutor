@@ -1,5 +1,19 @@
-import React from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import css from './FloatingToolbar.module.css';
+
+const STORAGE_KEY = 'elab-toolbar-pos';
+
+function loadPos() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* */ }
+  return null; // null = use CSS default (centered bottom)
+}
+
+function savePos(pos) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(pos)); } catch { /* */ }
+}
 
 const tools = [
   {
@@ -68,13 +82,68 @@ export default function FloatingToolbar({
   onToolChange,
   abovePanel = false,
   leftPanelOpen = false,
+  unlimSlot,
 }) {
+  const [pos, setPos] = useState(loadPos);
+  const dragRef = useRef(null);
+  const barRef = useRef(null);
+
+  const handleDragStart = useCallback((e) => {
+    // Only drag from the drag handle, not from buttons
+    if (e.target.closest('button')) return;
+    e.preventDefault();
+    const rect = barRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
+    const onMove = (ev) => {
+      const x = ev.clientX - offsetX;
+      const y = ev.clientY - offsetY;
+      const clamped = {
+        x: Math.max(0, Math.min(window.innerWidth - rect.width, x)),
+        y: Math.max(48, Math.min(window.innerHeight - rect.height, y)),
+      };
+      setPos(clamped);
+    };
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      setPos(prev => { if (prev) savePos(prev); return prev; });
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  }, []);
+
+  // Reset position on double-click (back to default centered)
+  const handleDoubleClick = useCallback((e) => {
+    if (e.target.closest('button')) return;
+    setPos(null);
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* */ }
+  }, []);
+
+  const posStyle = pos
+    ? { left: pos.x, top: pos.y, bottom: 'auto', transform: 'none' }
+    : {};
+
   return (
     <div
+      ref={barRef}
       className={`${css.toolbar} ${abovePanel ? css.abovePanel : ''} ${!leftPanelOpen ? css.verticalOnLIM : ''}`}
+      style={{ ...posStyle, cursor: 'grab', touchAction: 'none' }}
       role="toolbar"
       aria-label="Strumenti lavagna"
+      onPointerDown={handleDragStart}
+      onDoubleClick={handleDoubleClick}
     >
+      {/* Drag indicator */}
+      <div className={css.dragHandle} aria-hidden="true">
+        <svg width="6" height="20" viewBox="0 0 6 20" fill="none">
+          <circle cx="2" cy="4" r="1.2" fill="currentColor" opacity="0.3"/>
+          <circle cx="2" cy="10" r="1.2" fill="currentColor" opacity="0.3"/>
+          <circle cx="2" cy="16" r="1.2" fill="currentColor" opacity="0.3"/>
+        </svg>
+      </div>
       {tools.map((tool) => {
         if (tool.divider) {
           return <div key={tool.id} className={css.divider} aria-hidden="true" />;
@@ -91,6 +160,7 @@ export default function FloatingToolbar({
           </button>
         );
       })}
+      {/* UNLIM può agganciarsi qui quando l'utente lo trascina sulla barra */}
     </div>
   );
 }
