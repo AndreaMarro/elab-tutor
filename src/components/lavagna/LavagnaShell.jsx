@@ -515,9 +515,9 @@ export default function LavagnaShell() {
       }
       case 'delete': {
         if (api) {
-          const selected = api.getSelected?.();
-          if (selected?.length) {
-            selected.forEach(id => api.removeComponent?.(id));
+          const selectedId = api.getSelectedComponent?.();
+          if (selectedId) {
+            api.removeComponent(selectedId);
           }
         }
         setActiveTool('select');

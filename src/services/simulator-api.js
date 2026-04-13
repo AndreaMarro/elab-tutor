@@ -193,12 +193,20 @@ function createPublicAPI() {
       _simulatorRef?.removeComponent?.(id);
     },
 
+    /**
+     * Get the currently selected component ID (if any)
+     * @returns {string|null} component ID or null
+     */
+    getSelectedComponent() {
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+      return _simulatorRef?.getSelectedComponent?.() || null;
+    },
+
     // ─── UNLIM ONNIPOTENTE: Extended breadboard manipulation ───
 
     /**
      * Move a component to new coordinates
      * @param {string} componentId
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
      * @param {number} x - horizontal position
      * @param {number} y - vertical position
      */
@@ -391,6 +399,7 @@ function createPublicAPI() {
      * @param {string} customPrompt - Optional custom prompt (overrides unlimPrompt)
      * @returns {Promise<Object>} { success, response, source }
      */
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     async askUNLIM(customPrompt = null) {
       const exp = _simulatorRef?.getCurrentExperiment?.();
       const prompt = customPrompt || exp?.unlimPrompt ||
@@ -399,7 +408,6 @@ function createPublicAPI() {
       // Try to capture screenshot
       const screenshot = await this.captureScreenshot();
       const images = screenshot
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
         ? [{ base64: screenshot.split(',')[1], mimeType: 'image/png' }]
         : [];
 
@@ -592,6 +600,7 @@ function createPublicAPI() {
       const compilationSnapshot = _simulatorRef?.getCompilationSnapshot?.() || {};
       const exp = circuitState.experiment || {};
 
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
       // Build step phase detection (hardware vs code)
       const buildStepIndex = circuitState.buildStepIndex ?? -1;
       const buildStepTotal = circuitState.buildStepTotal ?? 0;
@@ -600,7 +609,6 @@ function createPublicAPI() {
         // If build step index exceeds hardware steps count, we're in code phase
         buildPhase = 'hardware'; // default — could be refined with scratchSteps info
       }
-// © Andrea Marro — 13/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
       // Compact component list
       const components = (circuitState.components || []).map(c => ({
