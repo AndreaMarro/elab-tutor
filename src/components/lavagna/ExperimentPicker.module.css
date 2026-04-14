@@ -142,6 +142,7 @@
 /* ─── Body (scrollable) ─── */
 .body {
   flex: 1;
+  min-height: 0; /* critical for flex child scrolling */
   overflow-y: auto;
   padding: 0 20px 16px;
   -webkit-overflow-scrolling: touch;
@@ -197,8 +198,8 @@
 }
 
 .card:active {
-  transform: translateY(0) scale(0.98);
 /* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+  transform: translateY(0) scale(0.98);
   transition-duration: 80ms;
 }
 .card:focus-visible {
@@ -398,8 +399,8 @@
   flex: 1;
   min-width: 0;
   display: flex;
-  flex-direction: column;
 /* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+  flex-direction: column;
   gap: 2px;
 }
 .lessonTitle {
