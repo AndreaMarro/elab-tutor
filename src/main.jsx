@@ -22,6 +22,17 @@ polyfill({
 });
 window.addEventListener('touchmove', function () { }, { passive: false });
 
+// Handle chunk loading errors after deploy (Credit: Tea PR #73)
+// When cached HTML references old chunk hashes, reload once
+window.addEventListener('vite:preloadError', (event) => {
+  const reloaded = sessionStorage.getItem('elab-chunk-reload');
+  if (!reloaded) {
+    sessionStorage.setItem('elab-chunk-reload', '1');
+    window.location.reload();
+  }
+  event.preventDefault();
+});
+
 // Anti-tampering (solo produzione)
 initCodeProtection()
 
