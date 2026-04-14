@@ -10,7 +10,7 @@
 | Metrica | Valore |
 |---------|--------|
 | Esperimenti nel simulatore | 92 (38 Vol1 + 27 Vol2 + 27 Vol3), raggruppati in 27 Lezioni |
-| Test automatici | 3.940 (tutti PASS) |
+| Test automatici | 8.190 (tutti PASS — target 7.500 superato) |
 | Deploy | Automatico — ogni push va live in 4 minuti |
 | Uptime sito | 100% (Vercel CDN globale) |
 | AI Tutor UNLIM | Attivo — Gemini + 5 provider fallback |

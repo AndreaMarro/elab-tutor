@@ -315,7 +315,7 @@ SESSIONI WEB (se avviate)
 
 | Metrica | Prima | Dopo (14/04) | Target |
 |---------|-------|-------------|--------|
-| Test | 3868 | **4100** | 7500 |
+| Test | 3868 | **8190** | 7500 **SUPERATO** |
 | UNLIM comprensione | ~70% | **60/60 test NL PASS** | 90%+ |
 | KB chunks | 94 | **549** | 500+ **RAGGIUNTO** |
 | Touch targets <44px | 11 P2 | 11 P2 | 0 |
@@ -324,7 +324,7 @@ SESSIONI WEB (se avviate)
 | Rename Galileo→UNLIM | 211 refs | **0 refs** | 0 **RAGGIUNTO** |
 | Vision | Non collegata | **Funzionante** | OK **RAGGIUNTO** |
 | Lavagna libera | Non esistente | **Implementata** | OK **RAGGIUNTO** |
-| Score | 7.5 | **8.1** | 8.5+ |
+| Score | 7.5 | **8.3** | 8.5+ |
 
 ---
 

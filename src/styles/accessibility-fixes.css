@@ -113,6 +113,26 @@
   }
 }
 
+/* Range slider touch target fix (P2 audit: track only 12px vs 44px thumb) */
+input[type="range"] {
+  -webkit-appearance: none;
+  min-height: 44px !important;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary, #1E4D8C);
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: #ddd;
+}
+
 /* ═══════════════════════════════════════════════════════════════ */
 /* FIX 3: FOCUS INDICATORS - Visible focus rings on all interactive */
 /* ═══════════════════════════════════════════════════════════════ */
@@ -178,6 +198,7 @@ textarea:focus-visible,
 .CodeMirror,
 .blockly-text {
   font-size: max(14px, 1rem) !important;
+/* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 }
 
 /* Status text and indicators */
@@ -198,7 +219,6 @@ textarea:focus-visible,
   left: -9999px;
   speak: always;
 }
-/* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 .control-btn:not([aria-label]):not([aria-labelledby])::before {
   content: "Controllo simulatore";
