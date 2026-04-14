@@ -9,8 +9,8 @@
 
 | Metrica | Valore |
 |---------|--------|
-| Esperimenti nel simulatore | 92 (38 Vol1 + 27 Vol2 + 27 Vol3) |
-| Test automatici | 3.868 (tutti PASS) |
+| Esperimenti nel simulatore | 92 (38 Vol1 + 27 Vol2 + 27 Vol3), raggruppati in 27 Lezioni |
+| Test automatici | 3.940 (tutti PASS) |
 | Deploy | Automatico — ogni push va live in 4 minuti |
 | Uptime sito | 100% (Vercel CDN globale) |
 | AI Tutor UNLIM | Attivo — Gemini + 5 provider fallback |
@@ -81,13 +81,38 @@ Tutto in una sola frase dell'utente. 7 azioni eseguite in sequenza.
 
 ---
 
-## 3. Innovazioni di questa sessione (13-14 Aprile)
+## 3. Innovazioni di questa sessione (14 Aprile)
+
+### Raggruppamento esperimenti in Lezioni
+I 92 esperimenti ora sono organizzati in **27 Lezioni per concetto**, come nei libri fisici:
+- "Accendi il LED" (3 variazioni), "Il LED RGB" (6 variazioni), "I pulsanti" (5 variazioni)...
+- Ogni Lezione mostra titolo del concetto, progresso, e si espande per mostrare le variazioni
+- Toggle "Lezioni / Tutti gli esperimenti" per flessibilita
+
+### UNLIM Onnisciente
+Il tutor AI ora raccoglie **tutto** il contesto dal simulatore prima di ogni risposta:
+- Stato circuito completo (componenti, connessioni, simulazione)
+- Codice Arduino nell'editor + stato compilazione
+- Passo Passo (step N di M) + tempo trascorso
+- Storico errori + tentativi falliti + stati pin
+
+### UNLIM Vision — "Guarda il mio circuito"
+Lo studente puo dire "guarda il mio circuito" e UNLIM cattura uno screenshot del simulatore, lo analizza con Gemini Vision, e risponde con una diagnosi visiva. Funziona con formulazioni naturali: "controlla", "analizza", "vedi la breadboard".
 
 ### Deploy automatico
 Ogni modifica al codice → test automatici → build → deploy su Vercel → live in 4 minuti. Zero intervento umano.
 
-### Knowledge Base completa
-94 schede esperimento nella base di conoscenza UNLIM. Ogni esperimento ha: descrizione, componenti, passi, contesto pedagogico. UNLIM conosce TUTTI gli esperimenti dei 3 volumi.
+### Knowledge Base massiccia — 549 chunk
+La base di conoscenza UNLIM e passata da 94 a **549 chunk**, con:
+- 266 chunk estratti dai 3 volumi PDF
+- 20 voci di glossario per bambini
+- 10 FAQ sulle domande piu comuni
+- 25 schede errori comuni con soluzioni
+- 25 analogie per concetti chiave
+- 15 esempi di codice Arduino commentati
+- 15 tips per capitolo e 15 schede sicurezza
+
+UNLIM puo rispondere anche **offline** grazie al matching locale su 549 chunk.
 
 ### Accessibilita
 - Touch target minimo 44px su TUTTI i bottoni (iPad/tablet)
@@ -106,7 +131,7 @@ Ogni modifica al codice → test automatici → build → deploy su Vercel → l
 Tea ha prodotto 4 documenti di analisi il 13/04:
 
 ### Complessita esperimenti
-Solo 6/92 esperimenti sono oltre il target 8-14 anni. Curriculum ben tarato. Azioni concrete identificate: tag "Progetto avanzato" sui 4 capstone, riscrittura concetto MOSFET.
+Solo 6/92 esperimenti sono oltre il target 8-14 anni. Curriculum ben tarato. **Azioni completate**: tag "Progetto avanzato" sui 4 capstone, riscrittura concetto MOSFET senza terminologia avanzata, schema finale aggiunto alle 3 sfide del Cap 9.
 
 ### Schema UX semplificato
 Proposta "Schermo-Lavagna" a 3 zone: cosa ti serve / cosa fai / come guidare. Pannello "Guida Docente" per insegnanti. In fase di implementazione.
@@ -179,27 +204,29 @@ Il prodotto gira a €10/mese. A scala (100 classi), i costi AI salgono a ~€50
 
 ## 8. Lavoro in corso OGGI (14 Aprile)
 
-### UNLIM Onnipotente — In implementazione
+### UNLIM Onnipotente — IMPLEMENTATO
 
-UNLIM sta diventando un tutor AI che:
-- **Vede il circuito** — contesto completo: componenti, connessioni, errori, codice, step corrente
-- **Analizza screenshot** — Gemini Vision per "guarda il mio circuito e dimmi cosa non va"
-- **Conosce i libri** — RAG allargato con i 3 volumi PDF chunked (target 500+ chunk)
-- **Capisce linguaggio naturale** — 50 formulazioni testate (bambino 8 anni, errori, dialetto, emotivo)
-- **Incrocia tutto** — algoritmi multi-analisi: contesto circuito + knowledge base + storia studente + vision per la risposta ottimale
+UNLIM e ora un tutor AI che:
+- **Vede il circuito** — contesto completo: componenti, connessioni, errori, codice, step corrente, pin states
+- **Analizza screenshot** — Gemini Vision per "guarda il mio circuito e dimmi cosa non va" (FUNZIONANTE)
+- **Conosce i libri** — RAG allargato con 549 chunk dai 3 volumi PDF + glossario + analogie + FAQ
+- **Capisce linguaggio naturale** — 60 test verificati (bambino 8 anni, ragazzo 14, docente, emotivo)
+- **Incrocia tutto** — contesto circuito + knowledge base + storia studente + vision per la risposta ottimale
 
-### Struttura Esperimenti — Ripensata
+### Struttura Esperimenti — COMPLETATA
 
-I libri fisici ELAB raggruppano gli esperimenti per CONCETTO con variazioni. Il simulatore li presentava come lista piatta. Stiamo ristrutturando la navigazione per riflettere l'organizzazione dei libri:
-- **Prima:** 92 esperimenti in lista → il bambino scorre all'infinito
-- **Dopo:** ~30 lezioni, ognuna con le sue variazioni → il bambino vede "Accendi il LED" e dentro trova le 3 variazioni
+I libri fisici ELAB raggruppano gli esperimenti per CONCETTO con variazioni. Ora il simulatore fa lo stesso:
+- **Prima:** 92 esperimenti in lista piatta — il bambino scorreva all'infinito
+- **Dopo:** 27 lezioni, ognuna con le sue variazioni — "Accendi il LED" contiene 3 esperimenti correlati
+- Toggle per chi preferisce la lista completa: "Lezioni / Tutti gli esperimenti"
 
-### Suggerimenti Tea — Implementati oggi
+### Suggerimenti Tea — Tutti implementati
 
-- Tag "Progetto avanzato" sui 4 capstone con durata stimata
-- Componenti filtrati: solo quelli dell'esperimento, "Mostra tutti" su richiesta
-- importWithRetry: retry automatico su moduli che non caricano
-- Chunk error handler: pagina si ricarica da sola dopo un deploy
+- Tag "Progetto avanzato" sui 4 capstone con durata stimata (gia implementato)
+- Componenti filtrati: solo quelli dell'esperimento, "Mostra tutti" su richiesta (gia implementato)
+- **MOSFET v2-cap8-esp3 riscritto**: eliminata "tensione di soglia", presentato come "interruttore magico" con analogie per bambini
+- **3 sfide Cap 9 Vol 1**: aggiunto "Mostra schema finale" come pulsante collassabile (soluzione di riferimento)
+- importWithRetry + Chunk error handler (PR #73 di Tea, gia mergiata)
 
 ### 8 Task Programmati paralleli
 
