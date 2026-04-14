@@ -323,17 +323,15 @@ export function searchKnowledgeBase(message) {
       }
     }
 
-    // Normalize by number of keywords (avoid bias toward entries with more keywords)
-    const normalizedScore = score / Math.max(entry.keywords.length, 1);
-
-    if (normalizedScore > bestScore) {
-      bestScore = normalizedScore;
+    // Use raw score (higher recall for natural language queries)
+    if (score > bestScore) {
+      bestScore = score;
       bestMatch = entry;
     }
   }
 
-  // Soglia minima: almeno 1.5 punti normalizzati
-  if (bestScore < 1.5 || !bestMatch) return null;
+  // Soglia minima: almeno 2.5 punti raw (1 exact match = 3 points)
+  if (bestScore < 2.5 || !bestMatch) return null;
 
   return {
     answer: bestMatch.answer,
