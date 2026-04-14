@@ -429,6 +429,37 @@ export default function useGalileoChat() {
     setMessages(prev => [...prev, { id: Date.now(), role: 'user', content: userMessage }]);
     setIsLoading(true);
 
+    // ── Vision trigger: "guarda il circuito", "analizza", "cosa vedi", "controlla" ──
+    const visionPatterns = /\b(guarda|analizza|controlla|vedi|osserva|screenshot|foto|immagine)\b.*\b(circuito|schema|breadboard|simulatore|lavagna|mio)\b|\b(circuito|schema|breadboard)\b.*\b(guarda|analizza|controlla|vedi|osserva)\b/i;
+    if (visionPatterns.test(userMessage)) {
+      try {
+        const api = typeof window !== 'undefined' && window.__ELAB_API;
+        if (api?.captureScreenshot) {
+          const dataUrl = await api.captureScreenshot();
+          if (dataUrl) {
+            const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
+            const images = [{ base64, mimeType: 'image/png' }];
+            const visionResult = await analyzeImage(images, userMessage, {
+              circuitState: circuitStateRef.current,
+            });
+            if (visionResult.success) {
+              const cleaned = sanitizeOutput(typeof visionResult.response === 'string' ? visionResult.response : JSON.stringify(visionResult.response));
+              setMessages(prev => [...prev, {
+                id: Date.now() + 1, role: 'assistant',
+                content: capWords(stripTagsForDisplay(cleaned)),
+                hasVision: true,
+              }]);
+              setIsLoading(false);
+              return;
+            }
+          }
+        }
+      } catch (err) {
+        logger.warn('[useGalileoChat] Vision analysis failed, falling through to normal chat:', err);
+      }
+      // Fall through to normal chat if vision fails
+    }
+
     // ── Lesson preparation command (Principio Zero: Lavagna = interfaccia docente) ──
     if (isLessonPrepCommand(userMessage)) {
       try {
@@ -563,12 +594,13 @@ export default function useGalileoChat() {
       const errorMsg = result.error || 'Errore sconosciuto';
       let friendly = errorMsg;
       if (errorMsg.includes('Timeout') || errorMsg.includes('timeout')) {
-        friendly = 'Galileo ci sta mettendo un po\'. Riprova tra qualche secondo.';
+        friendly = 'UNLIM ci sta mettendo un po\'. Riprova tra qualche secondo.';
       } else if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
         friendly = 'Controlla la connessione internet e riprova.';
       }
       setMessages(prev => [...prev, {
         id: Date.now() + 1, role: 'assistant',
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         content: friendly, isError: true, retryMessage: userMessage,
       }]);
     }
@@ -600,7 +632,6 @@ export default function useGalileoChat() {
         const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
         const images = [{ base64, mimeType: 'image/png' }];
         setMessages(prev => [...prev, {
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           id: Date.now(), role: 'user',
           content: 'Analizza questa schermata del simulatore',
           image: dataUrl,
