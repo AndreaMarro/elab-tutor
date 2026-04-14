@@ -208,7 +208,22 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
 
 function QuickComponentPanel({ volumeNumber = 3 }) {
   const svgPrefix = useId().replace(/:/g, '') + '_';
-  const components = useMemo(() => buildQuickComponents(svgPrefix, volumeNumber), [svgPrefix, volumeNumber]);
+  const allComponents = useMemo(() => buildQuickComponents(svgPrefix, volumeNumber), [svgPrefix, volumeNumber]);
+  const [showAll, setShowAll] = useState(false);
+
+  // Get component types used in current experiment
+  const experimentTypes = useMemo(() => {
+    const api = typeof window !== 'undefined' && window.__ELAB_API;
+    const exp = api?.getActiveExperiment?.();
+    if (!exp?.components) return null;
+    return new Set(exp.components.map(c => c.type));
+  }, []);
+
+  // Filter to experiment components unless "Mostra tutti" is active
+  const components = useMemo(() => {
+    if (showAll || !experimentTypes || experimentTypes.size === 0) return allComponents;
+    return allComponents.filter(c => experimentTypes.has(c.type));
+  }, [allComponents, experimentTypes, showAll]);
 
   const handleAdd = useCallback((type) => {
     const api = typeof window !== 'undefined' && window.__ELAB_API;
@@ -217,6 +232,8 @@ function QuickComponentPanel({ volumeNumber = 3 }) {
       soundTick();
     }
   }, []);
+
+  const hasFilter = experimentTypes && experimentTypes.size > 0 && !showAll;
 
   return (
     <div className={css.quickComponents}>
@@ -234,6 +251,15 @@ function QuickComponentPanel({ volumeNumber = 3 }) {
           </button>
         ))}
       </div>
+      {experimentTypes && experimentTypes.size > 0 && (
+        <button
+          className={css.showAllBtn}
+          onClick={() => setShowAll(s => !s)}
+          aria-label={showAll ? 'Mostra solo componenti esperimento' : 'Mostra tutti i componenti'}
+        >
+          {showAll ? 'Solo esperimento' : 'Mostra tutti'}
+        </button>
+      )}
     </div>
   );
 }
