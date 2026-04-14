@@ -20,6 +20,7 @@
 
 import { findExperimentById, EXPERIMENTS_VOL1, EXPERIMENTS_VOL2, EXPERIMENTS_VOL3 } from '../data/experiments-index';
 import { sendChat, analyzeImage, compileCode } from './api';
+import { logError } from './unlimContextCollector';
 import { captureWhiteboardScreenshot } from '../utils/whiteboardScreenshot';
 
 /**
@@ -197,8 +198,8 @@ function createPublicAPI() {
      * Get the currently selected component ID (if any)
      * @returns {string|null} component ID or null
      */
-    getSelectedComponent() {
 // © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+    getSelectedComponent() {
       return _simulatorRef?.getSelectedComponent?.() || null;
     },
 
@@ -398,8 +399,8 @@ function createPublicAPI() {
      * Ask UNLIM AI about the current experiment
      * @param {string} customPrompt - Optional custom prompt (overrides unlimPrompt)
      * @returns {Promise<Object>} { success, response, source }
-     */
 // © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+     */
     async askUNLIM(customPrompt = null) {
       const exp = _simulatorRef?.getCurrentExperiment?.();
       const prompt = customPrompt || exp?.unlimPrompt ||
@@ -433,7 +434,11 @@ function createPublicAPI() {
      * @returns {Promise<Object>} { success, hex, errors, output }
      */
     async compile(code, board = 'arduino:avr:nano:cpu=atmega328old') {
-      return await compileCode(code, board);
+      const result = await compileCode(code, board);
+      if (!result.success && result.errors) {
+        logError('compilation', result.errors);
+      }
+      return result;
     },
 
     /**
@@ -595,12 +600,12 @@ function createPublicAPI() {
      * simulation state, and last compilation result.
      * @returns {Object} Comprehensive simulator snapshot for UNLIM
      */
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     getSimulatorContext() {
       const circuitState = _simulatorRef?.getCircuitState?.() || {};
       const compilationSnapshot = _simulatorRef?.getCompilationSnapshot?.() || {};
       const exp = circuitState.experiment || {};
 
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
       // Build step phase detection (hardware vs code)
       const buildStepIndex = circuitState.buildStepIndex ?? -1;
       const buildStepTotal = circuitState.buildStepTotal ?? 0;
