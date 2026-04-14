@@ -343,4 +343,49 @@ export function searchKnowledgeBase(message) {
   };
 }
 
+/**
+ * Search RAG chunks (549 entries from volumes, glossary, FAQ, errors, analogies)
+ * Used as fallback when curated KB has no match.
+ * @param {string} message
+ * @param {number} topK - max results
+ * @returns {Array<{text, score, source, volume}>}
+ */
+let _ragChunks = null;
+export function searchRAGChunks(message, topK = 3) {
+  if (!message || typeof message !== 'string') return [];
+
+  // Lazy-load RAG chunks
+  if (!_ragChunks) {
+    try {
+      _ragChunks = require('./rag-chunks.json');
+    } catch {
+      return [];
+    }
+  }
+
+  const words = message
+    .toLowerCase()
+    .replace(/[^a-z\u00E0-\u00FA0-9\s']/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !STOP_WORDS.has(w));
+
+  if (words.length === 0) return [];
+
+  const scored = _ragChunks.map(chunk => {
+    const text = chunk.text.toLowerCase();
+    let score = 0;
+    for (const word of words) {
+      if (text.includes(word)) score += 1;
+    }
+    // Bonus for curated sources (glossary, FAQ, errors, analogies)
+    if (chunk.source !== 'volume-pdf') score *= 1.5;
+    return { ...chunk, score };
+  });
+
+  return scored
+    .filter(c => c.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, topK);
+}
+
 // © Andrea Marro — 20/02/2026
