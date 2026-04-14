@@ -4587,7 +4587,7 @@ void loop() {
       },
       concept: "Progetto combinato, analogRead + digitalOutput + Serial, intervalli",
       layer: "schema",
-
+      splitSuggestion: "Questo esperimento combina molti concetti. Suggerimento per il docente: spezzalo in due parti. Parte 1: solo pot + 1 LED + Serial Monitor (10 min). Parte 2: aggiungi gli altri 2 LED e le soglie (15 min).",
       estimatedMinutes: 45,
       buildSteps: [
         {

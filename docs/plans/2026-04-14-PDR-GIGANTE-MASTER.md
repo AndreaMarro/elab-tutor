@@ -313,15 +313,18 @@ SESSIONI WEB (se avviate)
 
 ## TARGET BENCHMARK
 
-| Metrica | Attuale | Target |
-|---------|---------|--------|
-| Test | 3868 | **7500** |
-| UNLIM comprensione | ~70% | **90%+** |
-| KB chunks | 94 | **500+** |
-| Touch targets <44px | 11 P2 | **0** |
-| Esperimenti oltre target | 6 senza label | **0** (tutti etichettati) |
-| Raggruppamento | Lista piatta 92 | **~30 lezioni con variazioni** |
-| Score | 7.5 | **8.5+** |
+| Metrica | Prima | Dopo (14/04) | Target |
+|---------|-------|-------------|--------|
+| Test | 3868 | **4100** | 7500 |
+| UNLIM comprensione | ~70% | **60/60 test NL PASS** | 90%+ |
+| KB chunks | 94 | **549** | 500+ **RAGGIUNTO** |
+| Touch targets <44px | 11 P2 | 11 P2 | 0 |
+| Esperimenti oltre target | 6 senza label | **0 (tutti etichettati)** | 0 **RAGGIUNTO** |
+| Raggruppamento | Lista piatta 92 | **27 lezioni con variazioni** | ~30 **RAGGIUNTO** |
+| Rename Galileo→UNLIM | 211 refs | **0 refs** | 0 **RAGGIUNTO** |
+| Vision | Non collegata | **Funzionante** | OK **RAGGIUNTO** |
+| Lavagna libera | Non esistente | **Implementata** | OK **RAGGIUNTO** |
+| Score | 7.5 | **8.1** | 8.5+ |
 
 ---
 

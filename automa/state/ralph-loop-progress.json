@@ -1,1 +1,26 @@
-{"status":"waiting-for-ralph-loop","iteration":0,"lastUpdate":"2026-04-14T11:30:00Z","notes":"PDR Gigante scritto. 8 task programmati attivi. In attesa di sessione Ralph Loop separata."}
+{
+  "session": "2026-04-14",
+  "iteration": 10,
+  "lastUpdate": "2026-04-14T13:35:00Z",
+  "status": "running",
+  "baseline": {
+    "tests": 4100,
+    "build": "PASS",
+    "deploy": "github-actions-auto"
+  },
+  "completedWork": [
+    "CICLO 2: Tea suggestions (MOSFET, solutionHint, advancedProject verified)",
+    "CICLO 3: 92 experiments → 27 Lessons (lesson-groups.js + ExperimentPicker)",
+    "CICLO 4: Rename Galileo→UNLIM 211 refs in 50+ files + context enrichment",
+    "CICLO 5: RAG 94→549 chunks (volumes + glossary + FAQ + errors + analogies + code)",
+    "CICLO 6: 60 NL tests (50 formulations + 10 KB/RAG verification)",
+    "CICLO 7: Vision trigger — screenshot→Gemini Vision in chat",
+    "CICLO 8: Report Fagherazzi updated with real numbers",
+    "Test Factory: +160 data integrity tests",
+    "Visual verification: ExperimentPicker Lessons view confirmed",
+    "Lavagna Libera: free mode without loading experiment"
+  ],
+  "commits": 8,
+  "testProgression": "3878 → 3940 → 4100",
+  "scoreOnesto": 8.1
+}
