@@ -5,6 +5,8 @@
 // © Andrea Marro — 20/02/2026
 // ============================================
 
+import RAG_CHUNKS from './rag-chunks.json';
+
 /**
  * Ogni entry contiene:
  *   keywords: parole chiave per il matching
@@ -196,9 +198,9 @@ const KNOWLEDGE_BASE = [
   {
     keywords: ['cosa', 'posso', 'fare', 'progetto', 'idea', 'costruire'],
     question: 'Cosa posso costruire con Arduino?',
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     answer: 'Con Arduino e i componenti di ELAB puoi costruire tantissime cose:\n\n **Semaforo** — LED rosso, giallo, verde con temporizzazione\n **Stazione meteo** — Sensore di temperatura + display\n **Piano elettronico** — Pulsanti + buzzer per suonare note\n **Robot evita-ostacoli** — Sensore ultrasuoni + motori\n **Lampada smart** — Fotoresistenza per accensione automatica\n **Gioco di reazione** — LED casuale + pulsante + timer\n **Irrigazione automatica** — Sensore umidità + pompa\n\nInzia dai progetti del libro ELAB e poi modifica e combina le idee. La creatività è il tuo superpotere!',
   },
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
   {
     keywords: ['aiuto', 'help', 'come', 'iniziare', 'principiante', 'base'],
     question: 'Come inizio con ELAB?',
@@ -348,18 +350,9 @@ export function searchKnowledgeBase(message) {
  * @param {number} topK - max results
  * @returns {Array<{text, score, source, volume}>}
  */
-let _ragChunks = null;
 export function searchRAGChunks(message, topK = 3) {
   if (!message || typeof message !== 'string') return [];
-
-  // Lazy-load RAG chunks
-  if (!_ragChunks) {
-    try {
-      _ragChunks = require('./rag-chunks.json');
-    } catch {
-      return [];
-    }
-  }
+  if (!RAG_CHUNKS || !Array.isArray(RAG_CHUNKS)) return [];
 
   const words = message
     .toLowerCase()
@@ -369,7 +362,7 @@ export function searchRAGChunks(message, topK = 3) {
 
   if (words.length === 0) return [];
 
-  const scored = _ragChunks.map(chunk => {
+  const scored = RAG_CHUNKS.map(chunk => {
     const text = chunk.text.toLowerCase();
     let score = 0;
     for (const word of words) {
