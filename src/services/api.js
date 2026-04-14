@@ -6,7 +6,7 @@
 // © Andrea Marro — 20/02/2026
 // ========================================
 import { filterAIResponse } from '../utils/aiSafetyFilter';
-import { searchKnowledgeBase } from '../data/unlim-knowledge-base';
+import { searchKnowledgeBase, searchRAGChunks } from '../data/unlim-knowledge-base';
 
 // URLs da variabili d'ambiente (Vite: VITE_ prefix)
 // In produzione: solo backend webhook. Nessun fallback localhost.
@@ -828,6 +828,21 @@ export async function sendChat(message, images = [], options = {}) {
                     actions,
                 };
             }
+
+            // Fallback a RAG chunks (549 chunk dai volumi, glossario, FAQ, errori, analogie)
+            const ragResults = searchRAGChunks(message, 3);
+            if (ragResults.length > 0) {
+                const topChunk = ragResults[0];
+                const ragAnswer = topChunk.source === 'glossary' || topChunk.source === 'faq' || topChunk.source === 'error-guide'
+                    ? topChunk.text
+                    : `Ecco cosa ho trovato nei volumi ELAB:\n\n${topChunk.text}`;
+                return {
+                    success: true,
+                    response: ragAnswer,
+                    source: 'rag-local',
+                    ragScore: topChunk.score,
+                };
+            }
         }
 
         return {
@@ -987,6 +1002,7 @@ export async function analyzeImage(imageData, question = "Analizza questa immagi
         : 'image/png';
 
     return await sendChat(question, [{ base64, mimeType }], { signal });
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
 }
 
 /**
@@ -1002,7 +1018,6 @@ export async function compileCode(code, board = 'arduino:avr:nano:cpu=atmega328o
 
     /**
      * Helper: chiama un endpoint di compilazione e ritorna il risultato
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
      */
     async function tryCompile(url, label) {
         const controller = new AbortController();
