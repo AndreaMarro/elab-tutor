@@ -236,6 +236,28 @@ describe('UNLIM Action Parser — 30 Test', () => {
       .toEqual(['loadexp:v1-cap6-esp2']);
   });
 
+  // === ABILITÀ 6-7: Spiegazione codice + Debug guidato ===
+  it('30a. spiegazione codice — risposta con highlight', () => {
+    const resp = 'Questa riga accende il LED sul pin 13! [AZIONE:highlight:led1]';
+    const r = parseActionTags(resp);
+    expect(r).toEqual(['highlight:led1']);
+    expect(resp.length).toBeLessThan(200);
+  });
+
+  it('30b. debug guidato — describe + highlight sequenza', () => {
+    const resp = 'Controlliamo le connessioni... [AZIONE:describe] Hmm, il LED sembra al contrario! [AZIONE:highlight:led1]';
+    const r = parseActionTags(resp);
+    expect(r).toEqual(['describe', 'highlight:led1']);
+  });
+
+  it('30c. debug guidato — nessuna soluzione diretta, solo guida', () => {
+    const resp = 'Prova a seguire il filo dal LED alla batteria... riesci a vedere dove si interrompe? [AZIONE:highlight:led1,r1]';
+    const r = parseActionTags(resp);
+    expect(r).toEqual(['highlight:led1,r1']);
+    // La risposta NON dà la soluzione ma guida lo studente
+    expect(resp).not.toMatch(/collegalo|spostalo|mettilo/i);
+  });
+
   it('30. costruzione guidata 7 step', () => {
     const r = parseActionTags(
       '[AZIONE:clearall] [AZIONE:addcomponent:led:200:150] [AZIONE:addcomponent:resistor:200:200] ' +
