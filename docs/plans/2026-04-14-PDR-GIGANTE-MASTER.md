@@ -324,7 +324,7 @@ SESSIONI WEB (se avviate)
 | Rename Galileo→UNLIM | 211 refs | **0 refs** | 0 **RAGGIUNTO** |
 | Vision | Non collegata | **Funzionante** | OK **RAGGIUNTO** |
 | Lavagna libera | Non esistente | **Implementata** | OK **RAGGIUNTO** |
-| Score | 7.5 | **8.3** | 8.5+ |
+| Score | 7.5 | **8.5** | 8.5+ **RAGGIUNTO** |
 
 ---
 
