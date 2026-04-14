@@ -39,7 +39,7 @@ function getChapterGroups(experiments) {
   return Object.entries(groups).sort((a, b) => (groupKeys[a[0]] || 999) - (groupKeys[b[0]] || 999));
 }
 
-export default function ExperimentPicker({ open, onClose, onSelect, completedIds = [], onAskUnlim }) {
+export default function ExperimentPicker({ open, onClose, onSelect, completedIds = [], onAskUnlim, onFreeMode }) {
   const [activeVol, setActiveVol] = useState(1);
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState('lessons'); // 'lessons' | 'chapters'
@@ -205,6 +205,22 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
 
         {/* Content */}
         <div className={css.body}>
+          {/* Free mode button — lavagna libera senza esperimento */}
+          {onFreeMode && (
+            <button
+              className={css.freeModeBanner}
+              onClick={() => { onFreeMode(); onClose(); }}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <rect x="2" y="2" width="16" height="16" rx="3" stroke="#4A7A25" strokeWidth="1.5" fill="none" />
+                <path d="M7 10h6M10 7v6" stroke="#4A7A25" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <span><strong>Lavagna libera</strong> — breadboard vuota, costruisci quello che vuoi</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          )}
           {/* UNLIM suggestion banner */}
           {onAskUnlim && chapters.length > 0 && (
             <button

@@ -349,6 +349,7 @@ export default function LavagnaShell() {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [lavagnaState, setLavagnaState] = useState(STATES.CLEAN);
   const [hasExperiment, setHasExperiment] = useState(false);
+  const [freeMode, setFreeMode] = useState(false); // Lavagna libera — no experiment loaded
   const [isEditing, setIsEditing] = useState(false);
   const [lessonSteps, setLessonSteps] = useState([]);
   const [unlimSpeaking, setUnlimSpeaking] = useState(false);
@@ -418,11 +419,11 @@ export default function LavagnaShell() {
   // The BentornatiOverlay handles first-time vs returning users.
   // Fallback: if bentornati is dismissed without loading, open picker.
   useEffect(() => {
-    if (!hasExperiment && !bentornatiVisible && !pickerOpen) {
+    if (!hasExperiment && !bentornatiVisible && !pickerOpen && !freeMode) {
       const timer = setTimeout(() => setPickerOpen(true), 400);
       return () => clearTimeout(timer);
     }
-  }, [hasExperiment, bentornatiVisible, pickerOpen]);
+  }, [hasExperiment, bentornatiVisible, pickerOpen, freeMode]);
   const manualOverridesRef = useRef({});
   const apiReadyRef = useRef(false);
 
@@ -881,6 +882,12 @@ export default function LavagnaShell() {
           setGalileoOpen(true);
           const api = typeof window !== 'undefined' && window.__ELAB_API;
           if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+        }}
+        onFreeMode={() => {
+          const api = typeof window !== 'undefined' && window.__ELAB_API;
+          if (api?.clearCircuit) api.clearCircuit();
+          setHasExperiment(false);
+          setFreeMode(true);
         }}
       />
     </div>
