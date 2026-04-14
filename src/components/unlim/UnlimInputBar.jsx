@@ -107,7 +107,7 @@ export default function UnlimInputBar({
         <button
           type="button"
           onClick={() => { reveal('mic'); onMicClick(); }}
-          aria-label={isListening ? 'Ferma registrazione' : 'Parla con Galileo'}
+          aria-label={isListening ? 'Ferma registrazione' : 'Parla con UNLIM'}
           title={isListening ? 'Ferma' : 'Parla'}
           className={isListening ? css.micBtnActive : css.micBtn}
         >
@@ -137,7 +137,7 @@ export default function UnlimInputBar({
         onChange={e => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        aria-label="Messaggio per Galileo"
+        aria-label="Messaggio per UNLIM"
         disabled={isLoading}
         autoComplete="off"
         className={css.textInput}
@@ -220,7 +220,7 @@ export default function UnlimInputBar({
 
       {/* A11y: loading state announcement */}
       <span role="status" aria-live="polite" className="sr-only">
-        {isLoading ? 'Galileo sta elaborando la risposta...' : ''}
+        {isLoading ? 'UNLIM sta elaborando la risposta...' : ''}
       </span>
     </form>
   );

@@ -25,7 +25,7 @@ describe('aiSafetyFilter', () => {
       const result = filterAIResponse('contenuto di sesso esplicito');
       expect(result.safe).toBe(false);
       expect(result.reason).toBe('explicit');
-      expect(result.filtered).toContain('Galileo non può rispondere');
+      expect(result.filtered).toContain('UNLIM non può rispondere');
     });
 
     it('blocks drug-related content', () => {

@@ -8,6 +8,7 @@ import EXPERIMENTS_VOL1 from '../../data/experiments-vol1';
 import EXPERIMENTS_VOL2 from '../../data/experiments-vol2';
 import EXPERIMENTS_VOL3 from '../../data/experiments-vol3';
 import { getDisplayInfo } from '../../data/chapter-map';
+import LESSON_GROUPS, { getLessonsForVolume } from '../../data/lesson-groups';
 import css from './ExperimentPicker.module.css';
 
 const VOLUMES = [
@@ -41,6 +42,8 @@ function getChapterGroups(experiments) {
 export default function ExperimentPicker({ open, onClose, onSelect, completedIds = [], onAskUnlim }) {
   const [activeVol, setActiveVol] = useState(1);
   const [search, setSearch] = useState('');
+  const [viewMode, setViewMode] = useState('lessons'); // 'lessons' | 'chapters'
+  const [expandedLesson, setExpandedLesson] = useState(null);
   const backdropRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -73,6 +76,21 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
   }, [experiments, search]);
 
   const chapters = useMemo(() => getChapterGroups(filtered), [filtered]);
+
+  // Lesson-based grouping
+  const lessons = useMemo(() => {
+    const volLessons = getLessonsForVolume(activeVol);
+    if (!search.trim()) return volLessons;
+    const q = search.toLowerCase();
+    return volLessons.filter(([, lesson]) =>
+      lesson.title.toLowerCase().includes(q) ||
+      lesson.concept.toLowerCase().includes(q) ||
+      lesson.experiments.some(eid => {
+        const exp = experiments.find(e => e.id === eid);
+        return exp && (exp.title?.toLowerCase().includes(q) || exp.desc?.toLowerCase().includes(q));
+      })
+    );
+  }, [activeVol, experiments, search]);
 
   const handleBackdropClick = useCallback((e) => {
     if (e.target === backdropRef.current) onClose();
@@ -169,7 +187,23 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
           )}
         </div>
 
-        {/* Experiment list grouped by chapter */}
+        {/* View mode toggle */}
+        <div className={css.viewToggle}>
+          <button
+            className={`${css.viewBtn} ${viewMode === 'lessons' ? css.viewBtnActive : ''}`}
+            onClick={() => { setViewMode('lessons'); setExpandedLesson(null); }}
+          >
+            Lezioni
+          </button>
+          <button
+            className={`${css.viewBtn} ${viewMode === 'chapters' ? css.viewBtnActive : ''}`}
+            onClick={() => setViewMode('chapters')}
+          >
+            Tutti gli esperimenti
+          </button>
+        </div>
+
+        {/* Content */}
         <div className={css.body}>
           {/* UNLIM suggestion banner */}
           {onAskUnlim && chapters.length > 0 && (
@@ -188,10 +222,84 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
               </svg>
             </button>
           )}
-          {chapters.length === 0 && (
+          {/* === LESSON VIEW === */}
+          {viewMode === 'lessons' && lessons.length === 0 && (
+            <p className={css.empty}>Nessuna lezione trovata.</p>
+          )}
+          {viewMode === 'lessons' && lessons.map(([lessonId, lesson]) => {
+            const isExpanded = expandedLesson === lessonId;
+            const lessonExps = lesson.experiments.map(eid => experiments.find(e => e.id === eid)).filter(Boolean);
+            const completedCount = lessonExps.filter(e => completedIds.includes(e.id)).length;
+            const allDone = completedCount === lessonExps.length && lessonExps.length > 0;
+            return (
+              <div key={lessonId} className={css.chapterGroup}>
+                <button
+                  className={css.lessonHeader}
+                  style={{ borderLeftColor: vol.color }}
+                  onClick={() => {
+                    if (lessonExps.length === 1) {
+                      handleSelect(lessonExps[0]);
+                    } else {
+                      setExpandedLesson(isExpanded ? null : lessonId);
+                    }
+                  }}
+                >
+                  <span className={css.lessonIcon}>{lesson.icon}</span>
+                  <div className={css.lessonInfo}>
+                    <span className={css.lessonTitle}>{lesson.title}</span>
+                    <span className={css.lessonConcept}>{lesson.concept}</span>
+                  </div>
+                  <div className={css.lessonMeta}>
+                    {lesson.advancedProject && <span className={css.advancedBadge}>Progetto avanzato</span>}
+                    {lesson.isChallenges && <span className={css.challengeBadge}>Sfide</span>}
+                    <span className={css.lessonCount}>{completedCount}/{lessonExps.length}</span>
+                    {allDone && (
+                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-label="Completata">
+                        <circle cx="10" cy="10" r="8" fill="#4A7A25" />
+                        <path d="M6 10l3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                    {lessonExps.length > 1 && (
+                      <svg width="14" height="14" viewBox="0 0 14 14" style={{ transform: isExpanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>
+                        <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </div>
+                </button>
+                {isExpanded && (
+                  <div className={css.cardGrid} style={{ marginTop: 8 }}>
+                    {lessonExps.map(exp => {
+                      const done = completedIds.includes(exp.id);
+                      return (
+                        <button key={exp.id} className={css.card} onClick={() => handleSelect(exp)}>
+                          <div className={css.cardTop} style={{ borderLeftColor: vol.color }}>
+                            <span className={css.cardTitle}>{exp.title?.replace(/Cap\.\s*\d+\s*(Esp\.\s*\d+\s*)?-\s*/, '')}</span>
+                            {done && (
+                              <svg className={css.checkIcon} width="16" height="16" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="8" fill="#4A7A25" />
+                                <path d="M6 10l3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            )}
+                          </div>
+                          {exp.desc && <p className={css.cardDesc}>{exp.desc}</p>}
+                          <div className={css.cardMeta}>
+                            {exp.estimatedMinutes && <span className={css.metaItem}>~{exp.estimatedMinutes} min</span>}
+                            {exp.difficulty != null && <span className={css.metaItem}>{'★'.repeat(Math.min(exp.difficulty, 3))}</span>}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {/* === CHAPTER VIEW (original) === */}
+          {viewMode === 'chapters' && chapters.length === 0 && (
             <p className={css.empty}>Nessun esperimento trovato.</p>
           )}
-          {chapters.map(([chapter, exps]) => (
+          {viewMode === 'chapters' && chapters.map(([chapter, exps]) => (
             <div key={chapter} className={css.chapterGroup}>
               <h3 className={css.chapterTitle} style={{ color: vol.color }}>{chapter}</h3>
               <div className={css.cardGrid}>

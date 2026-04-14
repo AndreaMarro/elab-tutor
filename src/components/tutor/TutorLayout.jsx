@@ -74,7 +74,7 @@ function OnboardingTooltip({ onDismiss, onNavigate, onLoadExperiment, onGoToDash
                 >
                     ✕
                 </button>
-                <img src="/assets/mascot/logo-senza-sfondo.png" alt="Galileo" style={{ width: 56, height: 56, objectFit: 'contain', marginBottom: 8 }} />
+                <img src="/assets/mascot/logo-senza-sfondo.png" alt="UNLIM" style={{ width: 56, height: 56, objectFit: 'contain', marginBottom: 8 }} />
                 <h2 style={{ margin: '0 0 4px', fontSize: '22px', fontFamily: 'var(--font-display, Oswald, sans-serif)', color: 'var(--color-primary)', textTransform: 'uppercase' }}>
                     Benvenuto!
                 </h2>

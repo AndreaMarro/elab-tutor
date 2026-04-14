@@ -344,7 +344,7 @@ export default function UnlimOverlay({ messages, onDismiss }) {
   return (
     <div
       ref={containerRef}
-      aria-label="Messaggi Galileo"
+      aria-label="Messaggi UNLIM"
       className={overlayCss.container}
     >
       {messages.map(msg => (

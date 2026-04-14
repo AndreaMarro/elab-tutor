@@ -15,6 +15,17 @@ import {
   collectFullContext,
 } from '../../src/services/unlimContextCollector';
 
+// ── Mock localStorage data store ──
+// The global setup.js mocks localStorage with vi.fn(), so we need to
+// back it with a real Map for these tests.
+const storageMap = new Map();
+function setupLocalStorage() {
+  localStorage.getItem.mockImplementation((key) => storageMap.get(key) ?? null);
+  localStorage.setItem.mockImplementation((key, val) => storageMap.set(key, val));
+  localStorage.removeItem.mockImplementation((key) => storageMap.delete(key));
+  localStorage.clear.mockImplementation(() => storageMap.clear());
+}
+
 // ── Mock __ELAB_API ──
 function mockAPI(overrides = {}) {
   const base = {
@@ -58,12 +69,13 @@ function clearAPI() {
 describe('unlimContextCollector', () => {
   beforeEach(() => {
     clearAPI();
-    localStorage.clear();
+    storageMap.clear();
+    setupLocalStorage();
   });
 
   afterEach(() => {
     clearAPI();
-    localStorage.clear();
+    storageMap.clear();
   });
 
   // ── Test 1: collectCircuitState returns full context from getSimulatorContext ──
@@ -174,7 +186,7 @@ describe('unlimContextCollector', () => {
   // ── Test 9: collectFullContext handles missing API gracefully ──
   it('9. collectFullContext returns partial context when API is missing', () => {
     clearAPI();
-    localStorage.setItem('elab_unlim_memory', JSON.stringify({
+    storageMap.set('elab_unlim_memory', JSON.stringify({
       experiments: {
         'v1-cap6-primo-circuito': { completed: true, attempts: 1, lastResult: 'success' },
       },

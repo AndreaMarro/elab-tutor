@@ -139,7 +139,7 @@ const SerialMonitor = ({ serialOutput = '', onSerialInput, onClear, isRunning = 
                 fontWeight: 700,
                 fontSize: 14,
               }}
-              title="Chiedi a Galileo di spiegare l'output"
+              title="Chiedi a UNLIM di spiegare l'output"
             >
               U
             </button>

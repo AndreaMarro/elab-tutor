@@ -346,7 +346,7 @@ function OfflineBanner() {
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         }}>
             <span aria-hidden="true" style={{ fontSize: 18 }}>{'//\u00A0'}</span>
-            <span>Sei offline &mdash; il simulatore e gli esperimenti funzionano! Galileo e la compilazione di nuovo codice no.</span>
+            <span>Sei offline &mdash; il simulatore e gli esperimenti funzionano! UNLIM e la compilazione di nuovo codice no.</span>
         </div>
     );
 }

@@ -47,14 +47,14 @@ export default function UnlimModeSwitch({ isUnlim, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      aria-label={isUnlim ? 'Passa a modalità Classic' : 'Passa a modalità Galileo'}
-      title={isUnlim ? 'Modalità Galileo attiva — clicca per Classic' : 'Modalità Classic — clicca per Galileo'}
+      aria-label={isUnlim ? 'Passa a modalità Classic' : 'Passa a modalità UNLIM'}
+      title={isUnlim ? 'Modalità UNLIM attiva — clicca per Classic' : 'Modalità Classic — clicca per UNLIM'}
       className={isUnlim ? css.switchBtnActive : css.switchBtn}
     >
       <span className={isUnlim ? css.trackActive : css.track}>
         <span className={isUnlim ? css.thumbActive : css.thumb} />
       </span>
-      <span>{isUnlim ? 'Galileo' : 'Classic'}</span>
+      <span>{isUnlim ? 'UNLIM' : 'Classic'}</span>
     </button>
   );
 }

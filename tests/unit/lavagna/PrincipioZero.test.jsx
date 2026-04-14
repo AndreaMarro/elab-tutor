@@ -7,12 +7,17 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import ExperimentPicker from '../../../src/components/lavagna/ExperimentPicker';
 import { deriveState, STATES } from '../../../src/components/lavagna/LavagnaStateManager';
 
+// Helper: switch to chapter view to see individual experiments
+function switchToChapterView() {
+  fireEvent.click(screen.getByText('Tutti gli esperimenti'));
+}
+
 describe('Principio Zero', () => {
   it('picker shows 92 experiments across 3 volumes', () => {
     render(<ExperimentPicker open={true} onClose={vi.fn()} onSelect={vi.fn()} />);
 
-    // Vol1 default
-    expect(screen.getByText(/Accendi il tuo primo LED/i)).toBeTruthy();
+    // Default is lesson view — check lesson cards
+    expect(screen.getByText('Accendi il LED')).toBeTruthy();
     expect(screen.getByText('0/38 completati')).toBeTruthy();
 
     // Switch to Vol2
@@ -28,6 +33,8 @@ describe('Principio Zero', () => {
     const onSelect = vi.fn();
     render(<ExperimentPicker open={true} onClose={vi.fn()} onSelect={onSelect} />);
 
+    // Switch to chapter view to access individual experiments
+    switchToChapterView();
     const firstCard = screen.getByText(/Accendi il tuo primo LED/i).closest('button');
     fireEvent.click(firstCard);
 
@@ -49,16 +56,16 @@ describe('Principio Zero', () => {
     expect(state).toBe(STATES.BUILD);
   });
 
-  it('search filters experiments correctly', () => {
+  it('search filters lessons correctly', () => {
     render(<ExperimentPicker open={true} onClose={vi.fn()} onSelect={vi.fn()} />);
 
     const input = screen.getByPlaceholderText('Cerca esperimento...');
     fireEvent.change(input, { target: { value: 'RGB' } });
 
-    // Should show RGB experiments
+    // In lesson view, should show RGB-related lessons
     expect(screen.getAllByText(/RGB/i).length).toBeGreaterThan(0);
-    // Should NOT show non-RGB experiments
-    expect(screen.queryByText(/Accendi il tuo primo LED/i)).toBeNull();
+    // Should NOT show unrelated lessons
+    expect(screen.queryByText('Il buzzer')).toBeNull();
   });
 
   it('picker has correct a11y structure', () => {

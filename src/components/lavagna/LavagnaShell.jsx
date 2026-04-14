@@ -662,7 +662,7 @@ export default function LavagnaShell() {
     setPickerOpen(true);
   }, []);
 
-  // ── Galileo toggle (also from header) ──
+  // ── UNLIM toggle (also from header) ──
   const toggleGalileo = useCallback(() => {
     manualOverridesRef.current.galileo = true;
     setGalileoOpen(prev => !prev);
@@ -773,7 +773,7 @@ export default function LavagnaShell() {
             />
           </main>
 
-          {/* Right — Galileo AI in FloatingWindow */}
+          {/* Right — UNLIM AI in FloatingWindow */}
           <GalileoAdapter
             visible={galileoOpen}
             onClose={() => { manualOverridesRef.current.galileo = true; setGalileoOpen(false); }}

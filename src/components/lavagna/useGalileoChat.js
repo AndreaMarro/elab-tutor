@@ -506,7 +506,7 @@ export default function useGalileoChat() {
     const slowTimer = setTimeout(() => {
       setMessages(prev => [...prev, {
         id: slowMsgId, role: 'assistant',
-        content: 'Galileo sta cercando la risposta migliore...',
+        content: 'UNLIM sta cercando la risposta migliore...',
         isSlowIndicator: true,
       }]);
     }, 5000);

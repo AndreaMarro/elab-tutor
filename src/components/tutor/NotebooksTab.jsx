@@ -31,7 +31,7 @@ export default function NotebooksTab({
                             <button
                                 className="v4-toolbar-btn"
                                 onClick={() => onSendToUNLIM(`Ho un taccuino aperto intitolato "${notebooks.find(n => n.id === activeNotebookId)?.title || 'senza titolo'}". Puoi aiutarmi a riassumere o approfondire gli argomenti?`)}
-                                title="Chiedi a Galileo"
+                                title="Chiedi a UNLIM"
                             >
                                 Chiedi a UNLIM
                             </button>

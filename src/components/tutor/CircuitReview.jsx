@@ -334,7 +334,7 @@ Rispondi in italiano, tono amichevole ma preciso.`;
       {reviewComplete && (
         <CrossNavigation links={[
           { icon: '', label: 'Apri il Simulatore', action: () => onOpenSimulator?.() },
-          { icon: '', label: 'Chiedi a Galileo', action: () => onSendToUNLIM?.(`Ho generato un circuito "${prompt}". Puoi controllare se è corretto?`) }
+          { icon: '', label: 'Chiedi a UNLIM', action: () => onSendToUNLIM?.(`Ho generato un circuito "${prompt}". Puoi controllare se è corretto?`) }
         ]} />
       )}
     </div>

@@ -197,7 +197,7 @@ function _endCurrentExperiment() {
 // ─── Public API for manual tracking calls ───
 
 /**
- * Log a chat interaction with Galileo AI.
+ * Log a chat interaction with UNLIM AI.
 // © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
  */
 function logChatInteraction(question, responseQuality) {

@@ -20,7 +20,7 @@ function MascotSVG({ className }) {
     <svg
       width="54" height="62" viewBox="0 0 54 62"
       fill="none" className={className}
-      role="img" aria-label="Galileo robot"
+      role="img" aria-label="UNLIM robot"
     >
       {/* Antenna */}
       <line x1="27" y1="0" x2="27" y2="10" stroke="#1E4D8C" strokeWidth="2.5" strokeLinecap="round" />
@@ -117,7 +117,7 @@ export default function UnlimMascot({ state = 'idle', onClick, isMuted = false, 
         ) : (
           <img
             src="/assets/mascot/logo-senza-sfondo.png"
-            alt="Galileo robot"
+            alt="UNLIM robot"
             className={imgClass}
             onError={() => setImgFailed(true)}
           />

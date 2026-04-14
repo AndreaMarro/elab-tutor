@@ -177,7 +177,7 @@ export default function PrivacyPolicy({ onClose }) {
                 <td style={styles.td}>Art. 6(1)(b) — Esecuzione contratto</td>
               </tr>
               <tr>
-                <td style={styles.td}>Chat AI (Galileo)</td>
+                <td style={styles.td}>Chat AI (UNLIM)</td>
                 <td style={styles.td}>Testo dei messaggi, immagini allegate (base64), ID esperimento corrente, stato del circuito, contesto simulatore</td>
                 <td style={styles.td}>Art. 6(1)(a) — Consenso</td>
               </tr>
@@ -259,7 +259,7 @@ export default function PrivacyPolicy({ onClose }) {
           <h3 style={styles.h3}>2.3 Dati Inviati ai Servizi AI</h3>
           <div style={styles.warningBox}>
             <p style={styles.text}>
-              Quando utilizzi il tutor AI Galileo/UNLIM, i seguenti dati vengono inviati
+              Quando utilizzi il tutor AI UNLIM/UNLIM, i seguenti dati vengono inviati
               ai provider AI (Anthropic Claude o Google Gemini) tramite i nostri server proxy:
             </p>
             <ul style={styles.list}>
@@ -355,7 +355,7 @@ export default function PrivacyPolicy({ onClose }) {
               </tr>
               <tr>
                 <td style={styles.td}>Erogazione servizio</td>
-                <td style={styles.td}>Simulatore, esperimenti, tutor AI Galileo</td>
+                <td style={styles.td}>Simulatore, esperimenti, tutor AI UNLIM</td>
               </tr>
               <tr>
                 <td style={styles.td}>Personalizzazione</td>

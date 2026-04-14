@@ -286,8 +286,8 @@ const MinimalControlBar = (props) => {
           className={`minimal-toolbar__btn minimal-toolbar__btn--unlim ${isAskingUNLIM ? 'minimal-toolbar__btn--loading' : ''}`}
           onClick={onAskUNLIM}
           disabled={isAskingUNLIM}
-          title="Chiedi a Galileo"
-          aria-label="Chiedi a Galileo"
+          title="Chiedi a UNLIM"
+          aria-label="Chiedi a UNLIM"
         >
           {isAskingUNLIM ? <SpinnerIcon /> : <UNLIMIcon />}
           <span className="minimal-toolbar__unlim-label">UNLIM</span>

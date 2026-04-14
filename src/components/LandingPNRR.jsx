@@ -219,7 +219,7 @@ export default function LandingPNRR({ onNavigate }) {
               <tbody>
                 {[
                   ['Lingua italiana completa', 'Si', 'Parziale', 'No'],
-                  ['Tutor AI integrato', 'Si (Galileo)', 'No', 'No'],
+                  ['Tutor AI integrato', 'Si (UNLIM)', 'No', 'No'],
                   ['GDPR — server EU', 'Si', 'No (Server USA)', 'Solo locale'],
                   ['Funziona su LIM (browser)', 'Si', 'Si', 'No (Richiede install)'],
                   ['Kit fisici inclusi', 'Si', 'No', 'No'],
@@ -337,7 +337,7 @@ export default function LandingPNRR({ onNavigate }) {
               {
                 icon: '2',
                 title: 'Tutor AI integrato',
-                desc: 'Galileo, il tutor in italiano, guida l\'insegnante passo dopo passo. Corrisponde alla voce "intelligenza artificiale" del Piano.',
+                desc: 'UNLIM, il tutor in italiano, guida l\'insegnante passo dopo passo. Corrisponde alla voce "intelligenza artificiale" del Piano.',
               },
               {
                 icon: '3',
@@ -473,7 +473,7 @@ export default function LandingPNRR({ onNavigate }) {
               <ul style={{ margin: 0, paddingLeft: '20px', color: TEXT_SECONDARY, lineHeight: 2, fontSize: '15px' }}>
                 <li>Simulatore di circuiti con 21 componenti</li>
                 <li>67 esperimenti guidati passo dopo passo</li>
-                <li>Tutor AI Galileo in italiano</li>
+                <li>Tutor AI UNLIM in italiano</li>
                 <li>4 giochi educativi integrati</li>
                 <li>Editor di codice Arduino</li>
                 <li>Licenza scuola annuale</li>
@@ -516,7 +516,7 @@ export default function LandingPNRR({ onNavigate }) {
           {[
             {
               q: 'Serve un insegnante esperto di elettronica?',
-              a: 'No. ELAB Tutor è progettato per insegnanti SENZA competenze pregresse in elettronica. Il tutor AI Galileo guida l\'insegnante passo dopo passo, e l\'insegnante impara mentre insegna.',
+              a: 'No. ELAB Tutor è progettato per insegnanti SENZA competenze pregresse in elettronica. Il tutor AI UNLIM guida l\'insegnante passo dopo passo, e l\'insegnante impara mentre insegna.',
             },
             {
               q: 'Posso ancora usare i fondi PNRR per ELAB?',

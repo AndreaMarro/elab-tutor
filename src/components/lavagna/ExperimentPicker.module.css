@@ -347,6 +347,90 @@
   }
 }
 
+/* View toggle */
+.viewToggle {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.viewBtn {
+  border: none;
+  background: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.viewBtn:hover { background: rgba(0, 0, 0, 0.04); }
+.viewBtnActive {
+  background: #1E4D8C !important;
+  color: #fff !important;
+}
+
+/* Lesson cards */
+.lessonHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 4px solid;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+.lessonHeader:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.lessonIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.lessonInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+/* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+  gap: 2px;
+}
+.lessonTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+.lessonConcept {
+  font-size: 12px;
+  color: #666;
+}
+.lessonMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.lessonCount {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+.challengeBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #E8941C;
+  background: rgba(232, 148, 28, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
 @media (max-width: 600px) {
   .tabRow {
     flex-direction: column;
@@ -359,4 +443,10 @@
   .cardGrid {
     grid-template-columns: 1fr;
   }
+  .lessonHeader {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .lessonIcon { font-size: 20px; }
+  .lessonTitle { font-size: 14px; }
 }

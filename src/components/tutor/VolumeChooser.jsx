@@ -78,7 +78,7 @@ export default function VolumeChooser({ onSelectVolume, lastVolume, lastExperime
         <div className={css.mascotRow}>
           <img
             src="/assets/mascot/logo-senza-sfondo.png"
-            alt="Galileo"
+            alt="UNLIM"
             className={css.mascot}
             onError={(e) => { e.target.style.display = 'none'; }}
           />

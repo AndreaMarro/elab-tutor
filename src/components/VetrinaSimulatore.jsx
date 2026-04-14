@@ -44,7 +44,7 @@ const FEATURES = [
     { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: '#E8941C' },
     { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: '#1E4D8C' },
     { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#4A7A25' },
-    { icon: '\uD83E\uDD16', title: 'Galileo AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
+    { icon: '\uD83E\uDD16', title: 'UNLIM AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
     { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: '#E8941C' },
 ];
 

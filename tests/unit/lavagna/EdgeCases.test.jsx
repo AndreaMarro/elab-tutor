@@ -21,7 +21,8 @@ describe('ExperimentPicker edge cases', () => {
   it('handles search with no results', () => {
     render(<ExperimentPicker open={true} onClose={vi.fn()} onSelect={vi.fn()} />);
     fireEvent.change(screen.getByPlaceholderText('Cerca esperimento...'), { target: { value: 'xyznonexistent' } });
-    expect(screen.getByText('Nessun esperimento trovato.')).toBeTruthy();
+    // In lesson view, shows "Nessuna lezione trovata."
+    expect(screen.getByText('Nessuna lezione trovata.')).toBeTruthy();
   });
 
   it('clears search when switching volumes', () => {
@@ -37,8 +38,8 @@ describe('ExperimentPicker edge cases', () => {
     fireEvent.click(screen.getByText('Volume 2'));
     fireEvent.click(screen.getByText('Volume 3'));
     fireEvent.click(screen.getByText('Volume 1'));
-    // Should be back to Vol1
-    expect(screen.getByText(/Accendi il tuo primo LED/i)).toBeTruthy();
+    // Should be back to Vol1 — check lesson view
+    expect(screen.getByText('Accendi il LED')).toBeTruthy();
   });
 
   it('shows correct completion for mixed completedIds', () => {

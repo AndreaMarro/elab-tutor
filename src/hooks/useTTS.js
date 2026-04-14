@@ -1,6 +1,6 @@
 // ============================================
 // ELAB Tutor - useTTS Hook
-// Text-to-Speech hook for Galileo AI responses
+// Text-to-Speech hook for UNLIM AI responses
 // © Andrea Marro — 01/04/2026
 // ============================================
 
@@ -323,7 +323,7 @@ export function useTTS() {
 
   // Test della voce corrente
   const testVoice = useCallback(() => {
-    const testText = "Ciao! Sono Galileo, il tuo compagno di avventure nell'elettronica!";
+    const testText = "Ciao! Sono UNLIM, il tuo compagno di avventure nell'elettronica!";
     return speak(testText);
   }, [speak]);
 

@@ -105,8 +105,8 @@
     min-height: 44px !important;
   }
 
-  /* GalileoAdapter tab buttons */
-  [class*="GalileoAdapter"] button,
+  /* UNLIMAdapter tab buttons */
+  [class*="UNLIMAdapter"] button,
   [class*="galileoAdapter"] button {
     min-width: 44px !important;
     min-height: 44px !important;

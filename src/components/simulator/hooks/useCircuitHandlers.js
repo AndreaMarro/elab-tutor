@@ -424,7 +424,7 @@ export default function useCircuitHandlers({
   const handleAskUNLIM = useCallback(async () => {
     if (!mergedExperiment || isAskingUNLIM) return;
     setIsAskingUNLIM(true);
-    setUnlimResponse({ text: 'Galileo sta analizzando l\'esperimento... Potrebbe richiedere fino a 30 secondi.', timestamp: Date.now(), loading: true });
+    setUnlimResponse({ text: 'UNLIM sta analizzando l\'esperimento... Potrebbe richiedere fino a 30 secondi.', timestamp: Date.now(), loading: true });
 
     try {
       const ledStates = (mergedExperiment.components || [])
@@ -479,14 +479,14 @@ export default function useCircuitHandlers({
       if (result.success) {
         setUnlimResponse({ text: result.response, timestamp: Date.now() });
       } else {
-        const errorText = result.response || 'Galileo non e disponibile al momento.';
+        const errorText = result.response || 'UNLIM non e disponibile al momento.';
         setUnlimResponse({ text: errorText + '\n\nPuoi comunque leggere la guida dell\'esperimento nel pannello a destra.', timestamp: Date.now() });
       }
     } catch (err) {
       logger.error('[ELAB] Ask UNLIM error:', err);
       const msg = err?.message?.includes('abort') || err?.message?.includes('timeout')
-        ? 'Galileo ci sta mettendo troppo. Il servizio potrebbe essere temporaneamente non disponibile.'
-        : 'Errore di connessione con Galileo.';
+        ? 'UNLIM ci sta mettendo troppo. Il servizio potrebbe essere temporaneamente non disponibile.'
+        : 'Errore di connessione con UNLIM.';
       setUnlimResponse({ text: msg + '\n\nPuoi comunque leggere la guida dell\'esperimento nel pannello a destra.', timestamp: Date.now() });
     } finally {
       setIsAskingUNLIM(false);

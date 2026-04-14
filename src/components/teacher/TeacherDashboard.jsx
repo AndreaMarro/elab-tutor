@@ -1527,7 +1527,7 @@ function DocumentiTab({ users, allData, classReport, formatTempo }) {
                         { q: 'Come inizio una lezione?', a: 'Apri il simulatore, scegli un esperimento dal menu. Lo studente vede tutto sulla LIM.' },
                         { q: 'Come invio un messaggio a uno studente?', a: 'Vai alla tab "Studenti", seleziona lo studente e scrivi un messaggio nella sezione in basso.' },
                         { q: 'Come vedo i progressi della classe?', a: 'La tab "Classe" mostra una griglia con tutti gli esperimenti completati per studente.' },
-                        { q: 'Come uso Galileo (il tutor AI)?', a: 'Clicca la mascotte robot in basso a destra. Lo studente puo fare domande a voce o scrivere.' },
+                        { q: 'Come uso UNLIM (il tutor AI)?', a: 'Clicca la mascotte robot in basso a destra. Lo studente puo fare domande a voce o scrivere.' },
                         { q: 'Come creo una classe?', a: 'Vai alla tab "Le mie classi", inserisci il nome e clicca "Crea". Poi aggiungi gli studenti.' },
                         { q: 'Che differenza c\'e tra i 3 volumi?', a: 'Vol.1: circuiti base (LED, resistori). Vol.2: sensori e attuatori. Vol.3: Arduino e programmazione.' },
                     ].map((faq, i) => (

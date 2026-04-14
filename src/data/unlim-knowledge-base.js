@@ -254,8 +254,8 @@ const KNOWLEDGE_BASE = [
   },
   {
     keywords: ['galileo', 'chat', 'tutor', 'chiedere', 'domanda'],
-    question: 'Come posso usare Galileo?',
-    answer: 'Io sono Galileo, il tuo tutor di elettronica! Ecco cosa posso fare:\n\n **Rispondi alle tue domande** — Chiedimi qualsiasi cosa su elettronica e Arduino\n **Ti guido nel manuale** — Ti indico le pagine giuste per approfondire\n **Ti suggerisco esperimenti** — Posso proporti sfide e progetti\n **Ti aiuto col debug** — Descrivi il problema e ti aiuto a risolverlo\n **Analizzo i tuoi disegni** — Puoi mandarmi una foto della lavagna!\n\n**Suggerimenti:**\n- Fai domande specifiche: "Perché il LED non si accende?" è meglio di "Non funziona"\n- Descrivi il tuo circuito: componenti, collegamento, codice\n- Non aver paura di chiedere! Non esistono domande stupide.',
+    question: 'Come posso usare UNLIM?',
+    answer: 'Io sono UNLIM, il tuo tutor di elettronica! Ecco cosa posso fare:\n\n **Rispondi alle tue domande** — Chiedimi qualsiasi cosa su elettronica e Arduino\n **Ti guido nel manuale** — Ti indico le pagine giuste per approfondire\n **Ti suggerisco esperimenti** — Posso proporti sfide e progetti\n **Ti aiuto col debug** — Descrivi il problema e ti aiuto a risolverlo\n **Analizzo i tuoi disegni** — Puoi mandarmi una foto della lavagna!\n\n**Suggerimenti:**\n- Fai domande specifiche: "Perché il LED non si accende?" è meglio di "Non funziona"\n- Descrivi il tuo circuito: componenti, collegamento, codice\n- Non aver paura di chiedere! Non esistono domande stupide.',
   },
 
   // ── SICUREZZA ──────────────────────────────────

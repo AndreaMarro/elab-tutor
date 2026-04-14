@@ -505,7 +505,7 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
                 color: 'var(--color-accent, #4A7A25)',
                 borderColor: 'var(--color-accent, #4A7A25)',
               }}
-              title="Chiedi a Galileo di spiegare il codice"
+              title="Chiedi a UNLIM di spiegare il codice"
               aria-label="Spiega il codice"
             >? Spiega</button>
           )}

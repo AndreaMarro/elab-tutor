@@ -187,7 +187,9 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
   const desc = experiment?.desc || '';
   const observe = experiment?.observe || experiment?.note || '';
   const concept = experiment?.concept || '';
+  const solutionHint = experiment?.solutionHint || '';
   const [currentStep, setCurrentStep] = React.useState(-1); // -1 = intro, 0..N-1 = steps, N = osserva, N+1 = concetto
+  const [showSolution, setShowSolution] = React.useState(false);
 
   // Total "pages": intro + steps + observe (if any) + concept (if any)
   const hasObserve = !!observe;
@@ -297,6 +299,17 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
         <div style={GS.sectionCard}>
           <div style={GS.sectionTitle}>Cosa osservare</div>
           <div style={GS.sectionText}>{observe}</div>
+          {solutionHint && (
+            <div style={{ marginTop: 10 }}>
+              <button
+                style={{ background: 'none', border: '1px dashed #999', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontSize: 13, color: '#666' }}
+                onClick={() => setShowSolution(s => !s)}
+              >
+                {showSolution ? 'Nascondi schema finale' : 'Mostra schema finale (soluzione)'}
+              </button>
+              {showSolution && <div style={{ marginTop: 8, padding: 10, background: '#f0f7ff', borderRadius: 6, fontSize: 13, lineHeight: 1.5 }}>{solutionHint}</div>}
+            </div>
+          )}
         </div>
       </div>
     );

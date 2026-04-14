@@ -167,7 +167,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
             : _nextSuggestion
                 ? `**Pronti!**\n\nVolume ${activeVolume} attivo. Oggi: **${_nextSuggestion.title}** — premi Inizia!`
                 : `**Pronti!**\n\nVolume ${activeVolume} attivo. Scegliete un esperimento o chiedetemi qualcosa!`)
-        : `**Ciao! Sono Galileo**\n\nScegliete il volume per iniziare!`;
+        : `**Ciao! Sono UNLIM**\n\nScegliete il volume per iniziare!`;
     const [messages, setMessages] = useState([{
         id: 'welcome',
         role: 'assistant',
@@ -2128,7 +2128,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                 setMessages(prev => [...prev, {
                     id: Date.now() + 3,
                     role: 'assistant',
-                    content: 'Galileo non ha capito bene come eseguire questa azione. Riprova con parole diverse!',
+                    content: 'UNLIM non ha capito bene come eseguire questa azione. Riprova con parole diverse!',
                     proactive: true,
                 }]);
             }
@@ -2228,7 +2228,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
             setMessages(prev => [...prev, {
                 id: slowMsgId,
                 role: 'assistant',
-                content: 'Galileo sta cercando la risposta migliore...',
+                content: 'UNLIM sta cercando la risposta migliore...',
                 isSlowIndicator: true,
             }]);
         }, 5000);
@@ -2355,7 +2355,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
             const errorMsg = result.error || 'Errore sconosciuto';
             let friendlyError = errorMsg;
             if (errorMsg.includes('Timeout') || errorMsg.includes('timeout')) {
-                friendlyError = 'Galileo ci sta mettendo un po\'. Riprova tra qualche secondo.';
+                friendlyError = 'UNLIM ci sta mettendo un po\'. Riprova tra qualche secondo.';
             } else if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
                 friendlyError = 'Controlla la connessione internet e riprova.';
             } else if (errorMsg.includes('500') || errorMsg.includes('502') || errorMsg.includes('503')) {

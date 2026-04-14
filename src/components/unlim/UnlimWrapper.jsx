@@ -418,13 +418,13 @@ export default function UnlimWrapper({ children }) {
     }
   }, [inputBarVisible, stt]);
 
-  // Quando l'utente invia un messaggio dalla barra input → Galileo API
+  // Quando l'utente invia un messaggio dalla barra input → UNLIM API
   // P1-1 fix: ricalcola lessonPath dentro il callback (no stale closure)
   // P1-5 fix: gestisce isLoading per disabilitare input durante richiesta
   const handleSend = useCallback(async (text) => {
     // G51: Offline guard — show message instead of loading spinner
     if (!navigator.onLine) {
-      showMessage('Galileo non e disponibile offline. Consulta la guida cliccando PREPARA!', {
+      showMessage('UNLIM non e disponibile offline. Consulta la guida cliccando PREPARA!', {
         position: 'top-center', icon: <AntennaIcon size={18} />, type: 'info', duration: 5000,
       });
       return;

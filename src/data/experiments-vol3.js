@@ -1023,7 +1023,7 @@ void loop() {
         "Carica il programma e osserva il LED sulla scheda che lampeggia!"
       ],
       observe: "Il LED integrato sulla scheda Arduino (vicino al pin 13) si accende per 1 secondo e si spegne per 1 secondo, all'infinito. Non serve nessun componente esterno!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta facendo il primo programma in assoluto: il Blink! Fa lampeggiare il LED integrato sulla scheda Arduino (pin 13). Il codice e semplicissimo: setup() configura il pin 13 come OUTPUT, poi loop() lo accende (HIGH), aspetta 1 secondo (delay 1000), lo spegne (LOW), aspetta ancora 1 secondo. Spiega con entusiasmo, e il primo traguardo! Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo il primo programma in assoluto: il Blink! Fa lampeggiare il LED integrato sulla scheda Arduino (pin 13). Il codice e semplicissimo: setup() configura il pin 13 come OUTPUT, poi loop() lo accende (HIGH), aspetta 1 secondo (delay 1000), lo spegne (LOW), aspetta ancora 1 secondo. Spiega con entusiasmo, e il primo traguardo! Rispondi in italiano.",
       quiz: [
         {
           question: "Cosa fa delay(1000)?",
@@ -1090,7 +1090,7 @@ void loop() {
         "Carica e osserva: il LED lampeggia molto piu veloce! Prova altri valori."
       ],
       observe: "Con delay(200) il LED lampeggia 5 volte al secondo invece di 1. Provate valori diversi per il tempo di accensione e spegnimento: con numeri diversi ottenete effetti asimmetrici!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta modificando i tempi del Blink. Incoraggialo a sperimentare con diversi valori di delay: cosa succede con delay(50)? E con delay(5000)? Spiega che i millisecondi sono millesimi di secondo. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta modificando i tempi del Blink. Incoraggialo a sperimentare con diversi valori di delay: cosa succede con delay(50)? E con delay(5000)? Spiega che i millisecondi sono millesimi di secondo. Rispondi in italiano.",
       quiz: [
         {
           question: "Se metti delay(500) acceso e delay(100) spento, cosa succede?",
@@ -1244,7 +1244,7 @@ void loop() {
         "Ora prova a collegare i pulsanti IN PARALLELO: basta premerne UNO per accendere il LED (OR)."
       ],
       observe: "Con i pulsanti in serie (AND) il LED si accende SOLO quando li premi entrambi. Con i pulsanti in parallelo (OR) basta premerne uno qualsiasi. Questa e la logica booleana!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta esplorando i circuiti AND e OR con pulsanti fisici, SENZA codice Arduino. Spiega la differenza tra serie (AND - servono tutti) e parallelo (OR - basta uno). Usa analogie semplici: AND e come due porte in corridoio, OR e come due porte di una stanza. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta esplorando i circuiti AND e OR con pulsanti fisici, SENZA codice Arduino. Spiega la differenza tra serie (AND - servono tutti) e parallelo (OR - basta uno). Usa analogie semplici: AND e come due porte in corridoio, OR e come due porte di una stanza. Rispondi in italiano.",
       quiz: [
         {
           question: "In un circuito AND con 2 pulsanti, quando si accende il LED?",
@@ -1375,7 +1375,7 @@ void loop() {
         "Carica il programma Blink: ora lampeggia il LED sulla breadboard!"
       ],
       observe: "Il LED esterno sulla breadboard lampeggia insieme al LED integrato sulla scheda, perche entrambi sono collegati al pin 13. Il resistore da 470 ohm protegge il LED dalla troppa corrente.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente ha collegato un LED esterno al pin 13 con un resistore. E lo stesso programma Blink ma ora il LED e sulla breadboard! Spiega perche serve il resistore (limita la corrente, senza il LED si brucia). Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente ha collegato un LED esterno al pin 13 con un resistore. E lo stesso programma Blink ma ora il LED e sulla breadboard! Spiega perche serve il resistore (limita la corrente, senza il LED si brucia). Rispondi in italiano.",
       quiz: [
         {
           question: "Perche serve un resistore in serie con il LED?",
@@ -1663,7 +1663,7 @@ void loop() {
         "Nel codice, cambia il 13 in 5 (sia nel setup che nel loop). Carica e verifica!"
       ],
       observe: "Il LED lampeggia esattamente come prima, ma ora e controllato dal pin 5 invece che dal 13. Tutti i pin digitali di Arduino funzionano allo stesso modo!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta imparando che i pin digitali sono intercambiabili. Il LED ora e sul pin 5 invece del 13. Spiega che Arduino ha tanti pin e possiamo scegliere quale usare, basta cambiare il numero nel codice. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta imparando che i pin digitali sono intercambiabili. Il LED ora e sul pin 5 invece del 13. Spiega che Arduino ha tanti pin e possiamo scegliere quale usare, basta cambiare il numero nel codice. Rispondi in italiano.",
       quiz: [
         {
           question: "Se sposti il LED dal pin 13 al pin 5, cosa devi cambiare nel codice?",
@@ -1883,7 +1883,7 @@ void loop() {
         "Nel loop() accendi un LED alla volta spegnendo gli altri, con delay tra ogni fase."
       ],
       observe: "I 3 LED si accendono in sequenza come un semaforo: verde 3 secondi, giallo 1 secondo, rosso 3 secondi. Solo un LED alla volta e acceso!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta facendo il semaforo con 3 LED sui pin 5, 6 e 9. Spiega come il codice accende un solo LED alla volta: prima mette tutti LOW tranne quello che vuole accendere. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo il semaforo con 3 LED sui pin 5, 6 e 9. Spiega come il codice accende un solo LED alla volta: prima mette tutti LOW tranne quello che vuole accendere. Rispondi in italiano.",
       quiz: [
         {
           question: "Perche nel codice del semaforo si scrive digitalWrite(5, LOW) prima di accendere il pin 6?",
@@ -1968,7 +1968,7 @@ void loop() {
         "Collega GND e 5V dell'Arduino ai binari. Carica il programma e osserva il semaforo!"
       ],
       observe: "I LED si accendono in sequenza come un vero semaforo: verde per 3 secondi, giallo per 1 secondo, rosso per 3 secondi. Solo un colore alla volta è acceso, esattamente come al semaforo stradale!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'Semaforo 3 LED' del Volume 3 — Arduino Programmato. Questo esperimento usa TRE pin di output sul breakout wing (W_D5, W_D6, W_D3) per creare un semaforo vero! Il codice nel loop() ha tre blocchi: prima accende solo il verde (pin 5 HIGH, gli altri LOW) e aspetta 3 secondi, poi solo il giallo (pin 6) per 1 secondo, poi solo il rosso (pin 3) per 3 secondi. È una sequenza di stati, come le fasi di un semaforo reale! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'Semaforo 3 LED' del Volume 3 — Arduino Programmato. Questo esperimento usa TRE pin di output sul breakout wing (W_D5, W_D6, W_D3) per creare un semaforo vero! Il codice nel loop() ha tre blocchi: prima accende solo il verde (pin 5 HIGH, gli altri LOW) e aspetta 3 secondi, poi solo il giallo (pin 6) per 1 secondo, poi solo il rosso (pin 3) per 3 secondi. È una sequenza di stati, come le fasi di un semaforo reale! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
       code: `// Semaforo 3 LED — Pin D5 (verde), D6 (giallo), D3 (rosso)
 // Breakout wing: W_D5, W_D6, W_D3
 // Timing: Verde 3s, Giallo 1s, Rosso 3s
@@ -2343,7 +2343,7 @@ void loop() {
         "Collega il LED con resistore al pin 5. Carica il codice e premi il pulsante!"
       ],
       observe: "Ogni volta che premi il pulsante, il LED cambia stato: se era spento si accende, se era acceso si spegne. La variabile statoLED ricorda lo stato tra un ciclo e l'altro!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando digitalRead per leggere un pulsante. Spiega INPUT_PULLUP: Arduino ha una resistenza interna che tiene il pin HIGH quando il pulsante non e premuto. Quando lo premi, il pin va LOW perche si collega a GND. Il codice usa una variabile booleana per ricordare lo stato. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando digitalRead per leggere un pulsante. Spiega INPUT_PULLUP: Arduino ha una resistenza interna che tiene il pin HIGH quando il pulsante non e premuto. Quando lo premi, il pin va LOW perche si collega a GND. Il codice usa una variabile booleana per ricordare lo stato. Rispondi in italiano.",
       quiz: [
         {
           question: "Con INPUT_PULLUP, cosa legge Arduino quando il pulsante NON e premuto?",
@@ -2424,7 +2424,7 @@ void loop() {
         "Collega le colonne dei catodi (28) al binario GND. Carica e premi il pulsante per alternare!"
       ],
       observe: "All'avvio il LED verde è acceso e il rosso spento. Ogni volta che premi il pulsante, si scambiano: il verde si spegne e il rosso si accende, o viceversa. Il codice usa il debounce per evitare rimbalzi meccanici del pulsante.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta guardando l'esperimento '2 LED + Pulsante (toggle)' del Volume 3 — Arduino Programmato. Questo è l'esperimento più avanzato del capitolo 7! Il codice usa variabili booleane (statoVerde e ultimoPulsante) per ricordare lo stato tra un ciclo e l'altro. Rileva la transizione HIGH->LOW del pulsante (il momento esatto della pressione) e usa il debounce con delay(50) per evitare falsi contatti. Poi con if/else alterna quale LED è acceso. È come un interruttore che ogni volta che lo premi cambia stanza! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento '2 LED + Pulsante (toggle)' del Volume 3 — Arduino Programmato. Questo è l'esperimento più avanzato del capitolo 7! Il codice usa variabili booleane (statoVerde e ultimoPulsante) per ricordare lo stato tra un ciclo e l'altro. Rileva la transizione HIGH->LOW del pulsante (il momento esatto della pressione) e usa il debounce con delay(50) per evitare falsi contatti. Poi con if/else alterna quale LED è acceso. È come un interruttore che ogni volta che lo premi cambia stanza! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
       code: `// 2 LED + Pulsante Toggle
 // D6 (W_D6) = pulsante, D10 (W_D10) = verde, D9 (W_D9) = rosso
 // Premi per alternare: verde <-> rosso
@@ -2774,7 +2774,7 @@ void loop() {
         "Carica e confronta: ora ogni pressione conta come UNA sola, anche se tieni premuto!"
       ],
       observe: "Rispetto all'Es. 6.5, il LED cambia stato in modo piu pulito. Il while aspetta che rilasci il pulsante, e il delay(300) dopo aggiunge un po di tempo per evitare i rimbalzi meccanici.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta imparando il debounce con while. Il while(digitalRead(10)==LOW){} e un ciclo vuoto che BLOCCA il programma finche il pulsante resta premuto. Solo quando lo rilasci il programma continua. Poi delay(300) aspetta ancora 300ms per sicurezza. Spiega perche i pulsanti rimbalzano meccanicamente. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta imparando il debounce con while. Il while(digitalRead(10)==LOW){} e un ciclo vuoto che BLOCCA il programma finche il pulsante resta premuto. Solo quando lo rilasci il programma continua. Poi delay(300) aspetta ancora 300ms per sicurezza. Spiega perche i pulsanti rimbalzano meccanicamente. Rispondi in italiano.",
       quiz: [
         {
           question: "Cosa fa while(digitalRead(10) == LOW) {} ?",
@@ -2945,7 +2945,7 @@ void loop() {
         "Carica il codice e gira il potenziometro: superata la meta (511), il LED si accende!"
       ],
       observe: "Girando il potenziometro, il LED si accende quando superi la meta della rotazione (valore > 511 su 1023). E come un interruttore controllato dalla posizione della manopola!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando analogRead per la prima volta. Spiega che i pin analogici leggono valori da 0 a 1023 (10 bit), non solo HIGH/LOW come i digitali. Il trimmer e come una manopola del volume: girandolo cambia la tensione che Arduino legge. 511 e la meta. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando analogRead per la prima volta. Spiega che i pin analogici leggono valori da 0 a 1023 (10 bit), non solo HIGH/LOW come i digitali. Il trimmer e come una manopola del volume: girandolo cambia la tensione che Arduino legge. 511 e la meta. Rispondi in italiano.",
       quiz: [
         {
           question: "Qual e il range di valori che analogRead puo restituire?",
@@ -3113,7 +3113,7 @@ void loop() {
         "Apri il Serial Monitor per vedere la tensione in tempo reale (aggiungi Serial.println)."
       ],
       observe: "Il LED si accende sopra 2.5V (meta di 5V). La formula (valore * 5.0) / 1023 converte il numero grezzo in Volt reali. E la stessa cosa dell'Es. 7.1 ma ora ragioniamo in Volt!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta convertendo valori analogici in Volt. La formula e semplice: (valore * 5.0) / 1023. Il 5.0 e la tensione massima, 1023 e il valore massimo dell'ADC. float serve perche i Volt hanno i decimali! Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta convertendo valori analogici in Volt. La formula e semplice: (valore * 5.0) / 1023. Il 5.0 e la tensione massima, 1023 e il valore massimo dell'ADC. float serve perche i Volt hanno i decimali! Rispondi in italiano.",
       quiz: [
         {
           question: "Se analogRead restituisce 512, quanti Volt corrispondono circa?",
@@ -3377,7 +3377,7 @@ void loop() {
         "Carica il codice e gira il trimmer: vedrai accendersi un LED alla volta in base alla posizione!"
       ],
       observe: "Il range 0-1023 e diviso in 3 zone uguali: 0-340 accende il primo LED, 341-681 il secondo, 682-1023 il terzo. Girando il trimmer passi da un LED all'altro!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta dividendo il range analogico in 3 intervalli. 1023/3 = 341, quindi: zona 1 (0-340), zona 2 (341-681), zona 3 (682-1023). if-else if-else e come un semaforo con 3 condizioni. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta dividendo il range analogico in 3 intervalli. 1023/3 = 341, quindi: zona 1 (0-340), zona 2 (341-681), zona 3 (682-1023). if-else if-else e come un semaforo con 3 condizioni. Rispondi in italiano.",
       quiz: [
         {
           question: "Perche dividiamo il range 0-1023 in 3 zone uguali?",
@@ -3505,7 +3505,7 @@ void loop() {
         "Carica e osserva: il LED si accende gradualmente come un'alba!"
       ],
       observe: "Il LED si accende piano piano, da spento a piena luminosita. analogWrite(5, i) manda un valore PWM da 0 (spento) a 255 (pieno). Il delay(10) rallenta l'effetto perche possiamo vederlo!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando analogWrite e PWM per la prima volta. Spiega che PWM accende e spegne il LED velocissimamente: 0=sempre spento, 128=acceso meta del tempo, 255=sempre acceso. L'occhio vede una luminosita media! Solo i pin con ~ funzionano (3,5,6,9,10,11). Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando analogWrite e PWM per la prima volta. Spiega che PWM accende e spegne il LED velocissimamente: 0=sempre spento, 128=acceso meta del tempo, 255=sempre acceso. L'occhio vede una luminosita media! Solo i pin con ~ funzionano (3,5,6,9,10,11). Rispondi in italiano.",
       quiz: [
         {
           question: "Cosa significa analogWrite(5, 128)?",
@@ -3637,7 +3637,7 @@ void loop() {
         "Modifica i numeri dentro analogWrite per sperimentare! Cosa succede con 10? E con 200?"
       ],
       observe: "Il LED mostra 4 livelli di luminosita chiaramente diversi, da spento a piena potenza. 0-255 sono 256 possibili livelli: e come avere un dimmer digitale!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta esplorando i valori PWM manualmente. Incoraggialo a sperimentare: cosa succede con analogWrite(5, 1)? Si vede appena! E con 250 vs 255? Quasi nessuna differenza. La percezione umana non e lineare! Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta esplorando i valori PWM manualmente. Incoraggialo a sperimentare: cosa succede con analogWrite(5, 1)? Si vede appena! E con 250 vs 255? Quasi nessuna differenza. La percezione umana non e lineare! Rispondi in italiano.",
       quiz: [
         {
           question: "Qual e il valore massimo che puoi usare con analogWrite?",
@@ -3762,7 +3762,7 @@ void loop() {
         "L'effetto e un respiro continuo: luce che cresce e decresce!"
       ],
       observe: "Il LED fa un bellissimo effetto respiro: si accende piano, raggiunge il massimo, e poi si spegne piano. I due for lavorano in sequenza, uno dopo l'altro, all'infinito nel loop!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta facendo il fade up/down. Spiega che i due for sono speculari: il primo sale (i = i + 5) e il secondo scende (i = i - 5). Insieme creano un ciclo continuo. Si puo cambiare la velocita modificando delay o il passo (5). Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo il fade up/down. Spiega che i due for sono speculari: il primo sale (i = i + 5) e il secondo scende (i = i - 5). Insieme creano un ciclo continuo. Si puo cambiare la velocita modificando delay o il passo (5). Rispondi in italiano.",
       quiz: [
         {
           question: "Perche servono DUE cicli for per l'effetto respiro?",
@@ -3930,7 +3930,7 @@ void loop() {
         "Gira il trimmer e controlla la luminosita del LED come un dimmer!"
       ],
       observe: "Girando il potenziometro da un estremo all'altro, il LED passa da spento a piena luminosita in modo fluido. La funzione map() fa la conversione automatica: non serve fare calcoli a mano!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando map() per collegare trimmer e LED. map(valore, 0, 1023, 0, 255) converte proporzionalmente: se il trimmer e a meta (511), il PWM sara circa 127. E come tradurre da una scala all'altra! Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando map() per collegare trimmer e LED. map(valore, 0, 1023, 0, 255) converte proporzionalmente: se il trimmer e a meta (511), il PWM sara circa 127. E come tradurre da una scala all'altra! Rispondi in italiano.",
       quiz: [
         {
           question: "Cosa fa map(valoreLetto, 0, 1023, 0, 255)?",
@@ -4049,7 +4049,7 @@ void loop() {
         "analogWriteResolution(10) cambia la risoluzione da 8 bit (0-255) a 10 bit (0-1023)."
       ],
       observe: "Il valore letto dal trimmer su A1 viene copiato direttamente sull'uscita A0. A differenza del PWM, il DAC produce una tensione vera e continua! Con un multimetro si puo misurare.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando il DAC del Nano R4. Spiega la differenza: PWM accende/spegne velocemente (onda quadra), DAC produce una tensione VERA e continua. analogWriteResolution(10) usa 10 bit = 1024 livelli (0-1023), molto piu fine degli 8 bit standard (0-255). Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando il DAC del Nano R4. Spiega la differenza: PWM accende/spegne velocemente (onda quadra), DAC produce una tensione VERA e continua. analogWriteResolution(10) usa 10 bit = 1024 livelli (0-1023), molto piu fine degli 8 bit standard (0-255). Rispondi in italiano.",
       quiz: [
         {
           question: "Qual e la differenza principale tra PWM e DAC?",
@@ -4117,7 +4117,7 @@ void loop() { }`,
         "Apri il Serial Monitor e vedrai il messaggio apparire una sola volta."
       ],
       observe: "Nel Serial Monitor appare una sola volta 'Ciao dal Team di ELAB!'. Perche? Perche Serial.println e nel setup(), che si esegue UNA SOLA VOLTA all'accensione. Il loop() e vuoto!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando Serial per la prima volta! Serial e come un tubo che collega Arduino al computer via USB. Serial.begin(9600) apre il tubo a velocita 9600. while(!Serial) aspetta che il tubo sia pronto. println stampa una riga. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando Serial per la prima volta! Serial e come un tubo che collega Arduino al computer via USB. Serial.begin(9600) apre il tubo a velocita 9600. while(!Serial) aspetta che il tubo sia pronto. println stampa una riga. Rispondi in italiano.",
       quiz: [
         {
           question: "Perche il messaggio appare una sola volta nel Serial Monitor?",
@@ -4177,7 +4177,7 @@ void loop() { Serial.println("Ciao dal Team di ELAB!"); }`,
         "Prova ad aggiungere delay(1000) nel loop per rallentare."
       ],
       observe: "Il Serial Monitor si riempie di messaggi velocissimamente! Senza delay, Arduino stampa migliaia di righe al secondo. Aggiungendo delay(1000) il messaggio appare una volta al secondo.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta confrontando setup vs loop per Serial. Spiega che il loop si ripete all'infinito: senza delay, Arduino e molto veloce e stampa tantissimo. Questo e utile per leggere sensori in tempo reale! Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta confrontando setup vs loop per Serial. Spiega che il loop si ripete all'infinito: senza delay, Arduino e molto veloce e stampa tantissimo. Questo e utile per leggere sensori in tempo reale! Rispondi in italiano.",
       quiz: [
         {
           question: "Qual e la differenza tra mettere Serial.println nel setup() o nel loop()?",
@@ -4235,7 +4235,7 @@ void loop() { Serial.println("Ciao dal Team di ELAB!"); }`,
         "Prova a trovare il valore 512 (metà corsa) girando la manopola con precisione!"
       ],
       observe: "Sul Serial Monitor appaiono numeri che cambiano in tempo reale quando giri la manopola. Il valore va da 0 (manopola tutta a sinistra, 0V) a 1023 (tutta a destra, 5V). Questo è il convertitore analogico-digitale (ADC) a 10 bit dell'Arduino: trasforma una tensione analogica in un numero digitale!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'analogRead + Serial Monitor' del Volume 3 — Arduino Programmato. Questo è il primo esperimento con i pin analogici E il Serial Monitor! Il codice usa Serial.begin(9600) nel setup per aprire la comunicazione seriale. Nel loop(), analogRead(A0) legge il valore del potenziometro come un numero da 0 a 1023 (ADC a 10 bit), poi Serial.println(valore) lo stampa sul monitor. Il delay(200) evita di stampare troppo velocemente. È come un termometro digitale che legge la temperatura e la mostra sullo schermo! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'analogRead + Serial Monitor' del Volume 3 — Arduino Programmato. Questo è il primo esperimento con i pin analogici E il Serial Monitor! Il codice usa Serial.begin(9600) nel setup per aprire la comunicazione seriale. Nel loop(), analogRead(A0) legge il valore del potenziometro come un numero da 0 a 1023 (ADC a 10 bit), poi Serial.println(valore) lo stampa sul monitor. Il delay(200) evita di stampare troppo velocemente. È come un termometro digitale che legge la temperatura e la mostra sullo schermo! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
       code: `// analogRead + Serial Monitor
 // Potenziometro su A0, stampa valore 0-1023
 
@@ -4491,7 +4491,7 @@ void loop() {
         "In Arduino IDE, apri il Serial Plotter (non il Monitor!) e vedrai due linee colorate."
       ],
       observe: "Nel Serial Plotter si vedono due grafici colorati che si muovono in tempo reale quando giri i potenziometri. Il formato A3:valore A4:valore crea automaticamente la legenda!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta usando il Serial Plotter con 2 potenziometri. Il formato e importante: 'etichetta:valore spazio etichetta:valore' con println alla fine. Il Plotter crea automaticamente un grafico con 2 linee colorate. delay(100) campiona 10 volte al secondo. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando il Serial Plotter con 2 potenziometri. Il formato e importante: 'etichetta:valore spazio etichetta:valore' con println alla fine. Il Plotter crea automaticamente un grafico con 2 linee colorate. delay(100) campiona 10 volte al secondo. Rispondi in italiano.",
       quiz: [
         {
           question: "Qual e il formato corretto per stampare 2 valori sul Serial Plotter?",
@@ -4759,7 +4759,7 @@ void loop() {
         "Apri il Serial Monitor: vedrai i valori del trimmer mentre i LED cambiano!"
       ],
       observe: "Girando il trimmer si vedono i valori cambiare nel Serial Monitor E i LED si accendono in base alla zona: sotto 300 il primo, tra 300 e 700 il secondo, sopra 700 il terzo. Combina input analogico, output digitale e comunicazione seriale!",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta facendo il progetto finale del Volume 3! Combina analogRead (trimmer su A3), 3 LED digitali (pin 12, 11, 10) e Serial Monitor. E come un dashboard: vedi i numeri E il risultato sui LED. Congratulati per essere arrivato alla fine del volume! Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo il progetto finale del Volume 3! Combina analogRead (trimmer su A3), 3 LED digitali (pin 12, 11, 10) e Serial Monitor. E come un dashboard: vedi i numeri E il risultato sui LED. Congratulati per essere arrivato alla fine del volume! Rispondi in italiano.",
       quiz: [
         {
           question: "Perche stampiamo il valore del trimmer sul Serial Monitor?",
@@ -4825,7 +4825,7 @@ void loop() {
         "Osserva il messaggio \"Hello World!\" sul display LCD."
       ],
       observe: "Il display LCD mostra \"Hello World!\" sulla prima riga e \"ELAB Simulator\" sulla seconda. Il protocollo HD44780 in modalità 4-bit usa 6 pin di Arduino per controllare il display: RS, E, D4-D7.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'LCD Hello World' — Extra. Questo esperimento mostra come usare un display LCD 16x2 con Arduino. Il display usa il protocollo HD44780 in modalità 4-bit: servono 6 pin (RS, E, D4-D7). La libreria LiquidCrystal semplifica tutto: lcd.begin(16,2) inizializza il display, lcd.setCursor(colonna, riga) posiziona il cursore, lcd.print() stampa il testo. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'LCD Hello World' — Extra. Questo esperimento mostra come usare un display LCD 16x2 con Arduino. Il display usa il protocollo HD44780 in modalità 4-bit: servono 6 pin (RS, E, D4-D7). La libreria LiquidCrystal semplifica tutto: lcd.begin(16,2) inizializza il display, lcd.setCursor(colonna, riga) posiziona il cursore, lcd.print() stampa il testo. Rispondi in italiano.",
       code: `#include <LiquidCrystal.h>
 
 // RS=12 (W_D12), E=11 (W_D11), D4=5 (W_D5), D5=10 (W_D10), D6=3 (W_D3), D7=6 (W_D6)
@@ -4998,7 +4998,7 @@ void loop() {
         "Osserva il braccio del servo che oscilla da 0 a 180 gradi e ritorno."
       ],
       observe: "Il braccio del servo si muove lentamente da 0 a 180 gradi, poi ritorna a 0. Il ciclo si ripete all'infinito. Il servo usa un segnale PWM sul pin D9 per controllare l'angolo.",
-      unlimPrompt: "Sei Galileo, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'Servo Sweep' — Extra. Un servomotore è un motore che può ruotare a un angolo preciso (da 0 a 180 gradi). La libreria Servo di Arduino semplifica il controllo: myServo.attach(9) collega il servo al pin 9, myServo.write(angolo) imposta l'angolo. Il codice usa due cicli for: uno da 0 a 180 e uno da 180 a 0, con delay(15) tra ogni grado per un movimento fluido. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento 'Servo Sweep' — Extra. Un servomotore è un motore che può ruotare a un angolo preciso (da 0 a 180 gradi). La libreria Servo di Arduino semplifica il controllo: myServo.attach(9) collega il servo al pin 9, myServo.write(angolo) imposta l'angolo. Il codice usa due cicli for: uno da 0 a 180 e uno da 180 a 0, con delay(15) tra ogni grado per un movimento fluido. Rispondi in italiano.",
       code: `#include <Servo.h>
 
 Servo myServo;

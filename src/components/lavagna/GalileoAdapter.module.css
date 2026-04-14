@@ -1,11 +1,11 @@
-/* GalileoAdapter — CSS overrides for ChatOverlay inside FloatingWindow
+/* UNLIMAdapter — CSS overrides for ChatOverlay inside FloatingWindow
  * ChatOverlay uses position:fixed internally. We override this to make it
  * flow within FloatingWindow's body container.
  * (c) Andrea Marro — 01/04/2026
  */
 
 .galileoWindow {
-  /* FloatingWindow max-height override — Galileo needs full height */
+  /* FloatingWindow max-height override — UNLIM needs full height */
   max-height: 90vh;
 }
 

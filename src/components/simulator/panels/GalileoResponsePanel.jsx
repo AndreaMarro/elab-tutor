@@ -33,7 +33,7 @@ const UNLIMResponsePanel = React.memo(function UNLIMResponsePanel({
             </span>
             <div>
               <div style={S.headerTitle}>
-                {response.loading ? 'Galileo sta pensando...' : 'Galileo spiega l\'esperimento'}
+                {response.loading ? 'UNLIM sta pensando...' : 'UNLIM spiega l\'esperimento'}
               </div>
               {!response.loading && (
                 <div style={S.headerSub}>Assistente AI ELAB</div>

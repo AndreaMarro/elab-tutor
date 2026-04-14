@@ -874,7 +874,7 @@ export default function WhiteboardOverlay({
         <ToolBtn label={showGrid ? 'Nascondi griglia' : 'Mostra griglia'} active={showGrid} onClick={() => setShowGrid(g => !g)}><IconGrid /></ToolBtn>
         <Sep />
         <ToolBtn label="Salva PNG" onClick={exportPng}><IconDownload /></ToolBtn>
-        {onSendToUNLIM && <ToolBtn label="Invia a Galileo" onClick={sendToUNLIM}><IconUNLIM /></ToolBtn>}
+        {onSendToUNLIM && <ToolBtn label="Invia a UNLIM" onClick={sendToUNLIM}><IconUNLIM /></ToolBtn>}
         <ToolBtn label="Cancella tutto" onClick={clearAll} danger><IconTrash /></ToolBtn>
         <ToolBtn label="Chiudi lavagna" onClick={onClose}><IconClose /></ToolBtn>
       </div>

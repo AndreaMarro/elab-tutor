@@ -133,12 +133,12 @@ describe('WCAG AA — Correttezza formula luminanza', () => {
 // 3. ARIA-LABEL su componenti interattivi ELAB
 // ══════════════════════════════════════════════════════════════════════════════
 describe('WCAG AA — aria-label nei componenti ELAB', () => {
-  it('UnlimInputBar: input messaggio ha aria-label "Messaggio per Galileo"', async () => {
+  it('UnlimInputBar: input messaggio ha aria-label "Messaggio per UNLIM"', async () => {
     const { render, screen } = await import('@testing-library/react');
     const React = await import('react');
     // Leggiamo il sorgente JSX per verificare che l'aria-label sia definito
     const src = await import('../../src/components/unlim/UnlimInputBar.jsx?raw');
-    expect(src.default).toContain('aria-label="Messaggio per Galileo"');
+    expect(src.default).toContain('aria-label="Messaggio per UNLIM"');
   });
 
   it('UnlimInputBar: pulsante invia ha aria-label "Invia messaggio"', async () => {

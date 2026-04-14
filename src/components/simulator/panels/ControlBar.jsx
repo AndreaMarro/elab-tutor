@@ -536,7 +536,7 @@ const ControlBar = ({
 
           /* ── Aiuto ── */
           { type: 'separator', label: 'Aiuto' },
-          experiment && onAskUNLIM && { label: isAskingUNLIM ? 'Galileo sta pensando...' : 'Chiedi a Galileo', action: onAskUNLIM, disabled: isAskingUNLIM },
+          experiment && onAskUNLIM && { label: isAskingUNLIM ? 'UNLIM sta pensando...' : 'Chiedi a UNLIM', action: onAskUNLIM, disabled: isAskingUNLIM },
           onDiagnoseCircuit && { label: 'Controlla Circuito', action: onDiagnoseCircuit },
           onGetHints && { label: 'Suggerimenti', action: onGetHints },
           experimentName && {
@@ -624,14 +624,14 @@ const ControlBar = ({
               className={`toolbar-btn toolbar-btn--unlim ${isAskingUNLIM ? 'toolbar-btn--loading' : ''}`}
               onClick={onAskUNLIM}
               disabled={isAskingUNLIM}
-              title="Chiedi a Galileo di spiegare questo esperimento"
-              aria-label="Chiedi a Galileo"
+              title="Chiedi a UNLIM di spiegare questo esperimento"
+              aria-label="Chiedi a UNLIM"
             >
               <span className="toolbar-btn__icon" aria-hidden="true">
                 {isAskingUNLIM ? <SpinnerIcon /> : <UNLIMIcon />}
               </span>
               <span className="toolbar-btn__label toolbar-btn__label--unlim">
-                {isAskingUNLIM ? 'Galileo...' : 'Galileo'}
+                {isAskingUNLIM ? 'UNLIM...' : 'UNLIM'}
               </span>
             </button>
           </div>

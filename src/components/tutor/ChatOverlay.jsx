@@ -198,9 +198,9 @@ export default React.memo(function ChatOverlay({
         return (
             <div className={css.minimizedPanel} style={{ width: `${panelWidth}px` }}>
                 {/* Header only */}
-                <div className={css.minimizedHeader} role="button" tabIndex={0} onClick={() => setMinimized(false)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMinimized(false); } }} aria-label="Espandi chat Galileo">
+                <div className={css.minimizedHeader} role="button" tabIndex={0} onClick={() => setMinimized(false)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMinimized(false); } }} aria-label="Espandi chat UNLIM">
                     <div className={css.headerLeft}>
-                        <img src="/assets/mascot/logo-senza-sfondo.png" alt="Galileo" className={css.mascotImg} />
+                        <img src="/assets/mascot/logo-senza-sfondo.png" alt="UNLIM" className={css.mascotImg} />
                         <span className={css.brandName}>UNLIM</span>
                         <span className={css.statusRow}>
                             <span className={css.statusDot} />
@@ -252,7 +252,7 @@ export default React.memo(function ChatOverlay({
                     cursor: isFullscreen ? 'default' : (isDragging ? 'grabbing' : 'grab'),
                 }}>
                 <div className={css.headerInfo}>
-                    <img src="/assets/mascot/logo-senza-sfondo.png" alt="Galileo" className={css.mascotImgLarge} />
+                    <img src="/assets/mascot/logo-senza-sfondo.png" alt="UNLIM" className={css.mascotImgLarge} />
                     <div className={css.headerMeta}>
                         <span className={css.brandName}>UNLIM</span>
                         <span className={css.statusRowFull}>
@@ -448,7 +448,7 @@ export default React.memo(function ChatOverlay({
                     <button
                         onClick={onVoiceRecord}
                         disabled={isLoading && !voiceRecording}
-                        aria-label={voiceRecording ? 'Ferma registrazione' : 'Parla con Galileo'}
+                        aria-label={voiceRecording ? 'Ferma registrazione' : 'Parla con UNLIM'}
                         title={voiceRecording ? 'Tap per inviare' : 'Tap per parlare'}
                         className={voiceRecording ? css.recordBtnRecording : (voicePlaying ? css.recordBtnPlaying : css.recordBtn)}
                     >

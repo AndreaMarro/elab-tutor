@@ -8,7 +8,7 @@
  *   experiment: { id, title, icon, desc, components, steps, observe, concept, chapter }
  *   allExperiments: Array — full experiment list for "next experiment" logic
  *   onClose: () => void
- *   onSendToUNLIM: (msg) => void — sends a message to Galileo
+ *   onSendToUNLIM: (msg) => void — sends a message to UNLIM
  *   onLoadExperiment: (id) => void — loads an experiment in the simulator
  */
 
@@ -753,7 +753,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       </p>
       <div style={S.tipBox}>
         <span style={S.tipIcon}>Suggerimento:</span>
-        <span><em>"Ottima domanda! Chiediamolo a Galileo."</em></span>
+        <span><em>"Ottima domanda! Chiediamolo a UNLIM."</em></span>
       </div>
       <p style={S.phaseHint}>
         Non devi sapere tutto. Usare UNLIM davanti alla classe è un modello positivo:
@@ -829,7 +829,7 @@ const LessonPathPanel = React.memo(function LessonPathPanel({
       <div style={S.expTitle}>
         <span>{experiment.icon || '●'}</span>
         <span style={{ flex: 1 }}>{experiment.title}</span>
-        {hasCurriculum && <span style={S.curatedBadge}>Preparato da Galileo</span>}
+        {hasCurriculum && <span style={S.curatedBadge}>Preparato da UNLIM</span>}
       </div>
 
       {/* 6 Phases — accordion */}

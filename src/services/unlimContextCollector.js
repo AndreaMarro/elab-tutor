@@ -15,6 +15,22 @@ import logger from '../utils/logger';
 
 const MEMORY_KEY = 'elab_unlim_memory';
 const SESSIONS_KEY = 'elab_unlim_sessions';
+const ERROR_HISTORY_KEY = 'elab_error_history';
+
+/**
+ * Log an error to the session error history (for AI context)
+ * @param {string} type - Error type: 'compilation', 'circuit', 'runtime'
+ * @param {string} message - Error message
+ */
+export function logError(type, message) {
+  try {
+    const history = JSON.parse(sessionStorage.getItem(ERROR_HISTORY_KEY) || '[]');
+    history.push({ type, message: String(message).slice(0, 200), ts: Date.now() });
+    // Keep max 20 entries
+    if (history.length > 20) history.splice(0, history.length - 20);
+    sessionStorage.setItem(ERROR_HISTORY_KEY, JSON.stringify(history));
+  } catch { /* silent */ }
+}
 
 /**
  * Get the __ELAB_API safely
@@ -182,6 +198,7 @@ export function collectFullContext() {
   const elapsed = collectElapsedTime();
   if (elapsed !== null) {
     context.elapsedSeconds = elapsed;
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
   }
 
   // (f) Completed experiments
@@ -198,7 +215,6 @@ export function collectFullContext() {
     }
   } catch { /* silent */ }
 
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
   // Extra: editor mode + visibility
   try {
     if (api) {
@@ -213,6 +229,34 @@ export function collectFullContext() {
   try {
     const buildMode = api?.getBuildMode?.();
     if (buildMode) context.buildMode = buildMode;
+  } catch { /* silent */ }
+
+  // Extra: error history (recent compilation errors and circuit warnings)
+  try {
+    const errorHistory = JSON.parse(sessionStorage.getItem('elab_error_history') || '[]');
+    if (errorHistory.length > 0) {
+      context.recentErrors = errorHistory.slice(-5); // Last 5 errors
+      context.errorCount = errorHistory.length;
+    }
+  } catch { /* silent */ }
+
+  // Extra: failed attempts count on current experiment
+  try {
+    const memory = JSON.parse(localStorage.getItem(MEMORY_KEY) || '{}');
+    const currentExpId = api?.getCurrentExperimentId?.();
+    if (currentExpId && memory.experiments?.[currentExpId]) {
+      const exp = memory.experiments[currentExpId];
+      context.currentExperimentAttempts = exp.attempts || 0;
+      context.currentExperimentHintsUsed = exp.hintsUsed || 0;
+    }
+  } catch { /* silent */ }
+
+  // Extra: pin voltage measurements (for debugging help)
+  try {
+    const pinState = api?.getPinStates?.();
+    if (pinState && Object.keys(pinState).length > 0) {
+      context.pinStates = pinState;
+    }
   } catch { /* silent */ }
 
   logger.debug('[unlimContextCollector] Full context collected:', Object.keys(context));
