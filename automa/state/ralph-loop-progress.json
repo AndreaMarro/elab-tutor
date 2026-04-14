@@ -1,26 +1,23 @@
 {
   "session": "2026-04-14",
-  "iteration": 10,
-  "lastUpdate": "2026-04-14T13:35:00Z",
-  "status": "running",
-  "baseline": {
-    "tests": 4100,
+  "status": "completed-all-targets",
+  "finalStats": {
+    "commits": 20,
+    "tests": 8190,
+    "testFiles": 159,
+    "ragChunks": 549,
+    "lessons": 27,
+    "galileoRefs": 0,
     "build": "PASS",
-    "deploy": "github-actions-auto"
+    "site": "200 OK",
+    "score": 8.5
   },
-  "completedWork": [
-    "CICLO 2: Tea suggestions (MOSFET, solutionHint, advancedProject verified)",
-    "CICLO 3: 92 experiments → 27 Lessons (lesson-groups.js + ExperimentPicker)",
-    "CICLO 4: Rename Galileo→UNLIM 211 refs in 50+ files + context enrichment",
-    "CICLO 5: RAG 94→549 chunks (volumes + glossary + FAQ + errors + analogies + code)",
-    "CICLO 6: 60 NL tests (50 formulations + 10 KB/RAG verification)",
-    "CICLO 7: Vision trigger — screenshot→Gemini Vision in chat",
-    "CICLO 8: Report Fagherazzi updated with real numbers",
-    "Test Factory: +160 data integrity tests",
-    "Visual verification: ExperimentPicker Lessons view confirmed",
-    "Lavagna Libera: free mode without loading experiment"
-  ],
-  "commits": 8,
-  "testProgression": "3878 → 3940 → 4100",
-  "scoreOnesto": 8.1
+  "pdrTargets": "10/10 achieved",
+  "nextSessionPriorities": [
+    "1. Dashboard docente con dati Supabase reali (blocker per vendite scuole)",
+    "2. Kokoro TTS deploy su VPS (voce naturale in produzione)",
+    "3. Pannello Guida Docente contestuale (Tea idea #1 — massimo impatto)",
+    "4. Modalita Proietta in Classe — font 2x, canvas gigante (Tea idea #2)",
+    "5. Ridurre cold start Render 15s (piano Pro o switch provider)"
+  ]
 }
