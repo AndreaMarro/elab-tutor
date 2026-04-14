@@ -345,7 +345,19 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
       <div style={GS.nav}>
         {!isFirst && <button style={GS.navBtn(false)} onClick={() => setCurrentStep(s => s - 1)}>Indietro</button>}
         {!isLast && <button style={GS.navBtn(true)} onClick={() => setCurrentStep(s => s + 1)}>{isFirst ? 'Inizia' : 'Avanti'}</button>}
-        {isLast && <button style={GS.navBtn(true)} onClick={() => setCurrentStep(-1)}>Ricomincia</button>}
+        {isLast && <button style={GS.navBtn(false)} onClick={() => setCurrentStep(-1)}>Ricomincia</button>}
+        {isLast && (
+          <button
+            style={{ ...GS.navBtn(true), background: 'linear-gradient(135deg, #4A7A25, #3A6A1A)', animation: 'pulse 2s infinite' }}
+            onClick={() => {
+              const api = typeof window !== 'undefined' && window.__ELAB_API;
+              if (api?.loadNextExperiment) api.loadNextExperiment();
+              else if (api?.openExperimentPicker) api.openExperimentPicker();
+            }}
+          >
+            Prossimo esperimento →
+          </button>
+        )}
       </div>
     </div>
   );
