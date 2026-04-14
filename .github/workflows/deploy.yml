@@ -3,6 +3,13 @@ name: Deploy to Vercel
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'automa/**'
+      - 'tests/**'
+      - '*.md'
+      - '.claude/**'
+  workflow_dispatch:
 
 jobs:
   deploy:
