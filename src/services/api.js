@@ -603,9 +603,19 @@ export async function sendChat(message, images = [], options = {}) {
 // © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     // Webhook message: con SOCRATIC_INSTRUCTION (n8n non ha un system prompt proprio)
     const BREVITY_RULE = 'REGOLA: Rispondi in MASSIMO 3 frasi + 1 analogia. Mai superare 60 parole. I tag [AZIONE:...] non contano.';
+
+    // RAG context injection: top 2 relevant chunks from volumes/glossary/FAQ
+    let ragContext = '';
+    if (images.length === 0) {
+        const ragResults = searchRAGChunks(message, 2);
+        if (ragResults.length > 0) {
+            ragContext = '\n[CONTESTO DAI VOLUMI ELAB]\n' + ragResults.map(r => r.text).join('\n---\n') + '\n[FINE CONTESTO]\n';
+        }
+    }
+
     const nanobotMessage = experimentContext
-        ? `${BREVITY_RULE}\n${experimentContext}\n\nMessaggio studente:\n${message}`
-        : `${BREVITY_RULE}\n\nMessaggio studente:\n${message}`;
+        ? `${BREVITY_RULE}\n${experimentContext}${ragContext}\n\nMessaggio studente:\n${message}`
+        : `${BREVITY_RULE}${ragContext}\n\nMessaggio studente:\n${message}`;
     const webhookMessage = buildChatMessage(message, socraticMode, experimentContext);
 
     // 0. Try local server first (Ollama, 100% offline, zero config)
@@ -791,6 +801,7 @@ export async function sendChat(message, images = [], options = {}) {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: message, maxResults: 3 })
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
                 });
                 const searchData = await searchResponse.json();
 
@@ -801,7 +812,6 @@ export async function sendChat(message, images = [], options = {}) {
                         response: answer,
                         source: 'local-rag',
                         actions: extractActions(answer)
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
                     };
                 }
             } catch {
@@ -992,6 +1002,7 @@ export async function analyzeImage(imageData, question = "Analizza questa immagi
     const { signal } = options;
 
     // Check if already aborted before starting
+// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     if (signal?.aborted) {
         throw new DOMException('Aborted', 'AbortError');
     }
@@ -1002,7 +1013,6 @@ export async function analyzeImage(imageData, question = "Analizza questa immagi
         : 'image/png';
 
     return await sendChat(question, [{ base64, mimeType }], { signal });
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
 }
 
 /**
