@@ -175,6 +175,62 @@ Il prodotto gira a €10/mese. A scala (100 classi), i costi AI salgono a ~€50
 
 ---
 
-*Documento generato automaticamente da Claude Code Terminal — 14/04/2026*
+---
+
+## 8. Lavoro in corso OGGI (14 Aprile)
+
+### UNLIM Onnipotente — In implementazione
+
+UNLIM sta diventando un tutor AI che:
+- **Vede il circuito** — contesto completo: componenti, connessioni, errori, codice, step corrente
+- **Analizza screenshot** — Gemini Vision per "guarda il mio circuito e dimmi cosa non va"
+- **Conosce i libri** — RAG allargato con i 3 volumi PDF chunked (target 500+ chunk)
+- **Capisce linguaggio naturale** — 50 formulazioni testate (bambino 8 anni, errori, dialetto, emotivo)
+- **Incrocia tutto** — algoritmi multi-analisi: contesto circuito + knowledge base + storia studente + vision per la risposta ottimale
+
+### Struttura Esperimenti — Ripensata
+
+I libri fisici ELAB raggruppano gli esperimenti per CONCETTO con variazioni. Il simulatore li presentava come lista piatta. Stiamo ristrutturando la navigazione per riflettere l'organizzazione dei libri:
+- **Prima:** 92 esperimenti in lista → il bambino scorre all'infinito
+- **Dopo:** ~30 lezioni, ognuna con le sue variazioni → il bambino vede "Accendi il LED" e dentro trova le 3 variazioni
+
+### Suggerimenti Tea — Implementati oggi
+
+- Tag "Progetto avanzato" sui 4 capstone con durata stimata
+- Componenti filtrati: solo quelli dell'esperimento, "Mostra tutti" su richiesta
+- importWithRetry: retry automatico su moduli che non caricano
+- Chunk error handler: pagina si ricarica da sola dopo un deploy
+
+### 8 Task Programmati paralleli
+
+Mentre lavoriamo, 8 worker autonomi girano ogni ora:
+1. Sentinella Build — verifica che nulla si rompa
+2. Test Factory — genera 50 nuovi test/ora (target 7500)
+3. Utenti Simulati — 10 tipologie di bambini/docenti testate
+4. Debug Sistematico — scan completo di ogni bottone e funzione
+5. Lettore Volumi — confronto PDF libri vs simulatore
+6. AI Combo Researcher — tutte le combinazioni AI con costi
+7. RAG Expander — allarga la knowledge base
+8. Sincronizzatore — aggrega tutto e committa su GitHub
+
+---
+
+## 9. Visione: dove arriviamo
+
+ELAB Tutor non e un simulatore. E un **sistema educativo completo** dove:
+
+- Il **docente** apre la LIM, sceglie la lezione, e ha la guida per condurre la classe
+- Il **bambino** vede il circuito, tocca i componenti, parla con UNLIM
+- **UNLIM** capisce dove e lo studente, cosa sa, cosa non sa, e lo guida senza mai dare la risposta diretta
+- Il **genitore** a casa puo seguire lo stesso percorso del docente
+- La **scuola** compra un pacchetto annuale (kit + software + AI) a un prezzo competitivo con margine 86.5%
+
+L'intelligenza artificiale non sostituisce il docente. Lo POTENZIA. Il docente sa sempre cosa dire, quali domande fare, quali errori aspettarsi. UNLIM gestisce il bambino che alza la mano quando il docente e occupato con un altro.
+
+Nessun competitor ha questo. Arduino Education ha il kit. Tinkercad ha il simulatore. Noi abbiamo kit + simulatore + AI tutor + voce + wake word + offline + GDPR zero.
+
+---
+
+*Documento generato da Claude Code Terminal — 14/04/2026*
 *Repository: github.com/AndreaMarro/elabtutor*
 *Contatto: Andrea Marro — sviluppatore unico*
