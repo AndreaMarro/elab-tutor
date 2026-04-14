@@ -188,6 +188,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
   const observe = experiment?.observe || experiment?.note || '';
   const concept = experiment?.concept || '';
   const solutionHint = experiment?.solutionHint || '';
+  const splitSuggestion = experiment?.splitSuggestion || '';
   const [currentStep, setCurrentStep] = React.useState(-1); // -1 = intro, 0..N-1 = steps, N = osserva, N+1 = concetto
   const [showSolution, setShowSolution] = React.useState(false);
 
@@ -275,6 +276,11 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
         <div style={GS.title}>{experiment.icon || '💡'} {experiment.title}</div>
         {desc && <div style={GS.desc}>{desc}</div>}
         {!desc && <div style={GS.desc}>Pronto a iniziare? Premi Avanti per il primo passo.</div>}
+        {splitSuggestion && (
+          <div style={{ marginTop: 8, padding: 10, background: '#FFF8E7', borderRadius: 8, border: '1px solid #E8941C33', fontSize: 12, color: '#8B6914', lineHeight: 1.5 }}>
+            <strong>Suggerimento docente:</strong> {splitSuggestion}
+          </div>
+        )}
       </div>
     );
   } else if (currentStep < steps.length) {
