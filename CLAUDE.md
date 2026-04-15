@@ -7,8 +7,8 @@ Live: https://www.elabtutor.school
 
 Include:
 - **Simulatore di circuiti** proprietario (CircuitSolver MNA/KCL + AVRBridge avr8js)
-- **92 esperimenti** in 3 volumi (38 Vol1 + 27 Vol2 + 27 Vol3)
-- **Tutor AI "Galileo"** (chat, voice, messaggi contestuali, report fumetto)
+- **92 esperimenti** in 3 volumi (38 Vol1 + 27 Vol2 + 27 Vol3), raggruppati in **27 Lezioni**
+- **Tutor AI "UNLIM"** (chat, voice, vision, RAG 549 chunk, report fumetto) — NON "Galileo"
 - **Scratch/Blockly** per programmare Arduino visualmente
 - **Compilatore Arduino** (C++ -> HEX -> emulazione AVR nel browser)
 - **Dashboard docente** con progressi, nudge, export CSV
@@ -17,12 +17,43 @@ Include:
 
 ## Stack tecnico
 - React 19 + Vite 7 (NO react-router — routing custom con useState e hash)
-- Vitest (1001+ test)
+- Vitest (8190+ test — target 12000)
 - Deploy: Vercel (frontend) + Supabase (backend DB)
 - Nanobot AI: Render (https://elab-galileo.onrender.com)
 - Compilatore: n8n su Hostinger (https://n8n.srv1022317.hstgr.cloud/compile)
 - CPU emulation: avr8js (ATmega328p nel browser)
 - Styling: CSS Modules (preferiti) + inline styles (legacy, da migrare)
+
+## Anti-regressione (FERREA)
+- BASELINE: `npx vitest run` PRIMA e DOPO ogni modifica — se test scendono → REVERT IMMEDIATO
+- `npm run build` deve passare prima di ogni commit
+- MAI fare `git add -A` senza controllare `git diff` prima
+- Snapshot baseline ogni sessione: `git tag baseline-HHMM`
+- Se qualcosa si rompe: `git stash && npx vitest run` — se passa, il problema è nel tuo codice
+
+## Volumi fisici — parallelismo CRITICO
+- **PDF**: `/VOLUME 3/CONTENUTI/volumi-pdf/` (Vol1 27MB, Vol2 17MB, Vol3 18MB)
+- **Testo estratto**: `pdftotext "percorso.pdf" /tmp/volN.txt`
+- **Regola**: OGNI esperimento nel simulatore DEVE citare pagina e testo esatto del volume
+- **Struttura**: il libro presenta esperimenti come racconto continuo per capitolo, NON come card separate
+- **27 Lezioni** raggruppano per concetto come nel libro fisico (src/data/lesson-groups.js)
+- **Riferimenti**: src/data/volume-references.js (DA CREARE/COMPLETARE)
+
+## Tea (collaboratrice)
+- Documenti: `/VOLUME 3/TEA/` (4 documenti del 13/04/2026)
+  - analisi_complessita_esperimenti.pdf — 92 esperimenti analizzati, 4 capstone, MOSFET problematico
+  - riepilogo_correzioni_github.pdf — PR #73 mergiata (chunk error + icone + Scratch)
+  - schema_ux_semplificato.docx — 3 zone, Guida Docente, toolbar 4 comandi
+  - 10_idee_miglioramento.docx — Dashboard, Proietta in Classe, Quaderno, Glossario, etc.
+
+## UNLIM AI (nome corretto, NON Galileo)
+- **RAG**: 549 chunk in `src/data/rag-chunks.json` (volumi + glossario + FAQ + errori + analogie + codice)
+- **KB**: `src/data/unlim-knowledge-base.js` → `searchKnowledgeBase()` + `searchRAGChunks()`
+- **Context**: `src/services/unlimContextCollector.js` → `collectFullContext()` (circuit, code, compilation, step, errors, pin states)
+- **Chat hook**: `src/components/lavagna/useGalileoChat.js` (nome file legacy, contenuto UNLIM)
+- **Vision**: "guarda il mio circuito" → screenshot → Gemini Vision → diagnosi
+- **Voce**: Kokoro TTS (localhost) + Edge TTS (VPS) + wake word "Ehi UNLIM" + 36 comandi vocali
+- **Brevita'**: MAX 3 frasi + 1 analogia, MAX 60 parole, tag [AZIONE:...] non contano
 
 ## Regole immutabili
 
@@ -35,18 +66,19 @@ Include:
 
 ### Qualita'
 6. `npm run build` deve passare prima di ogni deploy
-7. `npm run test:ci` deve passare prima di ogni commit
+7. `npx vitest run` deve passare prima di ogni commit (8190+ test)
 8. Font minimo 13px testi, 10px label secondarie
 9. Touch target minimo 44x44px per bottoni interattivi
 10. Contrasto WCAG AA: 4.5:1 testo, 3:1 grafici
 11. MAI emoji come icone nei componenti — usare ElabIcons.jsx
 12. MAI dati finti o demo — tutto deve funzionare con dati reali
 13. MAI aggiungere dipendenze npm senza approvazione di Andrea
+14. MAI chiamare il tutor "Galileo" — il nome è **UNLIM**
 
 ### Design
-14. Target: bambini 8-14 — interfaccia chiara, feedback visivo forte
-15. Palette: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D
-16. Font: Oswald (titoli) + Open Sans (body) + Fira Code (codice)
+15. Target: bambini 8-14 — interfaccia chiara, feedback visivo forte
+16. Palette: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D
+17. Font: Oswald (titoli) + Open Sans (body) + Fira Code (codice)
 
 ## Collaborazione (multi-developer)
 - **Mai pushare su `main` direttamente** — sempre branch + Pull Request
@@ -68,7 +100,9 @@ Include:
 | `src/components/simulator/NewElabSimulator.jsx` | 1022 | Shell simulatore, orchestrazione pannelli |
 | `src/services/api.js` | 1040 | Tutte le API calls, routing, retry, fallback chain |
 | `src/services/simulator-api.js` | 755 | API globale __ELAB_API, eventi, bridge |
-| `src/components/simulator/utils/pinComponentMap.js` | 399 | Pin mapping Union-Find, connettivita' elettrica |
+| `src/services/unlimContextCollector.js` | 250 | Raccolta contesto completo per UNLIM |
+| `src/data/lesson-groups.js` | 250 | 27 Lezioni raggruppate per concetto |
+| `src/data/rag-chunks.json` | 4463 | 549 chunk RAG per ricerca offline |
 | `vite.config.js` | 293 | Build config, chunk splitting, obfuscation |
 | `package.json` | - | Dipendenze — mai modificare senza OK |
 
@@ -80,17 +114,18 @@ Include:
 - `src/components/dashboard/` — Dashboard docente
 - `src/styles/` — CSS globali
 - `src/data/lesson-paths/` — Percorsi lezione JSON
+- `src/data/volume-references.js` — Mapping pagine volumi (DA COMPLETARE)
 - `docs/` — Documentazione
 - `tests/` — Test
 
 ## API globale simulatore
 ```javascript
 window.__ELAB_API
-  .galileo.highlightComponent(['led1', 'r1'])
-  .galileo.highlightPin(['nano:D13'])
-  .galileo.clearHighlights()
-  .galileo.serialWrite('Hello')
-  .galileo.getCircuitState()
+  .unlim.highlightComponent(['led1', 'r1'])
+  .unlim.highlightPin(['nano:D13'])
+  .unlim.clearHighlights()
+  .unlim.serialWrite('Hello')
+  .unlim.getCircuitState()
   .on('experimentChange', callback)
   .on('stateChange', callback)
   .on('serialOutput', callback)
@@ -102,11 +137,12 @@ window.__ELAB_API
   .clearCircuit()
   .mountExperiment(id)
   .getCircuitDescription()
+  .captureScreenshot()
 ```
 
 ## Deploy commands
 ```bash
-# Frontend -> Vercel
+# Frontend -> Vercel (deploy automatico via GitHub Actions)
 npm run build && npx vercel --prod --yes
 
 # Backend -> Supabase
@@ -114,18 +150,22 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqal
 ```
 
 ## Infrastruttura
-| Servizio | URL |
-|----------|-----|
-| Frontend | https://www.elabtutor.school (Vercel) |
-| Supabase | vxvqalmxqtezvgiboxyv.supabase.co |
-| Nanobot AI | https://elab-galileo.onrender.com (Render) |
-| Compilatore | https://n8n.srv1022317.hstgr.cloud/compile (Hostinger) |
-| Brain V13 | http://72.60.129.50:11434 (VPS, Qwen3.5-2B) |
+| Servizio | URL | Stato |
+|----------|-----|-------|
+| Frontend | https://www.elabtutor.school (Vercel) | OK |
+| Supabase | vxvqalmxqtezvgiboxyv.supabase.co | OK |
+| Nanobot AI | https://elab-galileo.onrender.com (Render) | OK (15s cold start) |
+| Compilatore | https://n8n.srv1022317.hstgr.cloud/compile (Hostinger) | OK |
+| Brain V13 | http://72.60.129.50:11434 (VPS, Qwen3.5-2B) | NON VERIFICATO |
+| Kokoro TTS | localhost:8881 | SOLO LOCALE |
+| Edge TTS | http://72.60.129.50:8880 | NON VERIFICATO |
 
-## Bug aperti prioritari (04/04/2026)
-1. **21/27 esp Vol3 senza buildSteps** — mancano le 3 modalita' (Gia' Montato/Passo Passo/Percorso)
-2. **Scratch non configurato** — solo 10/92 esperimenti hanno scratchXml
-3. **Dashboard senza Supabase configurato** — funziona solo localStorage (no cross-device)
-4. **Lavagna** — non salva pagine, non cambia pagina
-5. **Componenti touch** — difficili da cliccare/trascinare su iPad
-6. **Lesson path** — alcuni con testi mancanti
+## Bug aperti prioritari (15/04/2026)
+1. **Parallelismo volumi ASSENTE** — esperimenti non citano pagina/testo esatto del libro fisico
+2. **UNLIM backend scatola nera** — manda contesto ma non c'è prova che il backend lo usi
+3. **Kokoro TTS non in produzione** — solo localhost, serve VPS/cloud
+4. **Vision non testata live** — trigger implementato ma mai verificato end-to-end
+5. **Dashboard pochi dati reali** — Supabase connesso ma grafici assenti
+6. **Voce non testata E2E** — STT→comprensione→risposta→TTS flow mai verificato
+7. **Render cold start 15s** — prima risposta UNLIM lenta
+8. **RAG generico** — 549 chunk non legati a pagine specifiche dei volumi
