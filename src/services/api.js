@@ -7,6 +7,7 @@
 // ========================================
 import { filterAIResponse } from '../utils/aiSafetyFilter';
 import { searchKnowledgeBase, searchRAGChunks } from '../data/unlim-knowledge-base';
+import { getVolumeRef } from '../data/volume-references';
 
 // URLs da variabili d'ambiente (Vite: VITE_ prefix)
 // In produzione: solo backend webhook. Nessun fallback localhost.
@@ -197,8 +198,8 @@ async function tryLocalServer(message, circuitState, externalSignal, experimentI
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
                 signal: controller.signal,
+// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
             });
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
             if (!resp.ok) return null;
 
@@ -398,8 +399,8 @@ export function checkRateLimit() {
         return {
             allowed: false,
             message: 'Facciamo una pausa! Riprova tra un minuto.',
+// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
             waitMs: Math.max(0, waitMs),
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         };
     }
 
@@ -599,23 +600,78 @@ export async function sendChat(message, images = [], options = {}) {
 
     try {
 
-    // Nanobot message: experiment context + brevity rule (nanobot.yml ha il suo system prompt)
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
+    // Nanobot message: enriched context + brevity rule
     // Webhook message: con SOCRATIC_INSTRUCTION (n8n non ha un system prompt proprio)
     const BREVITY_RULE = 'REGOLA: Rispondi in MASSIMO 3 frasi + 1 analogia. Mai superare 60 parole. I tag [AZIONE:...] non contano.';
 
-    // RAG context injection: top 2 relevant chunks from volumes/glossary/FAQ
-    let ragContext = '';
-    if (images.length === 0) {
-        const ragResults = searchRAGChunks(message, 2);
-        if (ragResults.length > 0) {
-            ragContext = '\n[CONTESTO DAI VOLUMI ELAB]\n' + ragResults.map(r => r.text).join('\n---\n') + '\n[FINE CONTESTO]\n';
+    // ── ENRICHED CONTEXT: circuit + student + RAG + volume refs ──
+    const contextParts = [BREVITY_RULE];
+
+    // Experiment context (from buildTutorContext in useGalileoChat)
+    if (experimentContext) contextParts.push(experimentContext);
+
+    // Simulator context snapshot (circuit, code, build step, errors, pin states)
+    if (simulatorContext && typeof simulatorContext === 'object' && Object.keys(simulatorContext).length > 0) {
+        const ctxLines = ['[STATO SIMULATORE]'];
+        if (simulatorContext.circuit) {
+            const c = simulatorContext.circuit;
+            const comps = c.components || [];
+            const wires = c.wires || c.connections || [];
+            if (comps.length > 0) ctxLines.push('Componenti: ' + comps.slice(0, 15).map(comp => `${comp.type || comp.id}(${comp.id})${comp.on ? ' [ON]' : ''}`).join(', '));
+            if (wires.length > 0) ctxLines.push(`Fili: ${wires.length} connessioni`);
+            if (c.simulation) ctxLines.push(`Simulazione: ${c.simulation.state || (c.isSimulating ? 'running' : 'stopped')}`);
+        }
+        if (simulatorContext.circuitDescription) ctxLines.push('Descrizione: ' + simulatorContext.circuitDescription.slice(0, 300));
+        if (simulatorContext.editorCode) ctxLines.push('Codice Arduino: ' + simulatorContext.editorCode.slice(0, 500));
+        if (simulatorContext.compilation) {
+            const comp = simulatorContext.compilation;
+            ctxLines.push(`Compilazione: ${comp.success ? 'OK' : 'ERRORE'}${comp.errors ? ' — ' + String(comp.errors).slice(0, 200) : ''}`);
+        }
+        if (simulatorContext.buildStep) ctxLines.push(`Passo Passo: step ${simulatorContext.buildStep.current}/${simulatorContext.buildStep.total}`);
+        if (simulatorContext.elapsedSeconds) ctxLines.push(`Tempo: ${Math.round(simulatorContext.elapsedSeconds / 60)} min`);
+        if (simulatorContext.recentErrors?.length > 0) ctxLines.push('Errori recenti: ' + simulatorContext.recentErrors.slice(-3).map(e => e.message).join('; '));
+        if (simulatorContext.pinStates && Object.keys(simulatorContext.pinStates).length > 0) {
+            const pins = Object.entries(simulatorContext.pinStates).slice(0, 8).map(([k, v]) => `${k}=${v}`).join(', ');
+            ctxLines.push('Pin: ' + pins);
+        }
+        if (ctxLines.length > 1) contextParts.push(ctxLines.join('\n'));
+
+        // Student history
+        if (simulatorContext.completedExperiments?.total > 0) {
+            contextParts.push(`[STORIA STUDENTE] Esperimenti completati: ${simulatorContext.completedExperiments.total}. IDs: ${simulatorContext.completedExperiments.list.slice(0, 10).map(e => e.id).join(', ')}`);
+        }
+        if (simulatorContext.currentExperimentAttempts > 0) {
+            contextParts.push(`Tentativi su questo esperimento: ${simulatorContext.currentExperimentAttempts}, hint usati: ${simulatorContext.currentExperimentHintsUsed || 0}`);
         }
     }
 
-    const nanobotMessage = experimentContext
-        ? `${BREVITY_RULE}\n${experimentContext}${ragContext}\n\nMessaggio studente:\n${message}`
-        : `${BREVITY_RULE}${ragContext}\n\nMessaggio studente:\n${message}`;
+    // Volume reference injection: cite the physical book when available
+    if (experimentId) {
+        const volRef = getVolumeRef(experimentId);
+        if (volRef) {
+            const volLines = [`[RIFERIMENTO LIBRO FISICO] Vol. ${volRef.volume}, pag. ${volRef.bookPage} — ${volRef.chapter}`];
+            if (volRef.bookText) volLines.push(`Testo libro: "${volRef.bookText}"`);
+            if (volRef.bookContext) volLines.push(`Contesto: ${volRef.bookContext}`);
+            volLines.push('Quando rispondi, cita il libro: "Come spiega il Vol. N a pagina X..."');
+            contextParts.push(volLines.join('\n'));
+        }
+    }
+
+    // RAG context injection: top 3 relevant chunks from volumes/glossary/FAQ
+    if (images.length === 0) {
+        const ragResults = searchRAGChunks(message, 3);
+        if (ragResults.length > 0) {
+            const ragLines = ragResults.map(r => {
+                const src = r.source ? ` (${r.source})` : '';
+                return r.text + src;
+            });
+            contextParts.push('[CONTESTO DAI VOLUMI ELAB]\n' + ragLines.join('\n---\n') + '\n[FINE CONTESTO]');
+        }
+    }
+
+    contextParts.push('\nMessaggio studente:\n' + message);
+    const nanobotMessage = contextParts.join('\n\n');
     const webhookMessage = buildChatMessage(message, socraticMode, experimentContext);
 
     // 0. Try local server first (Ollama, 100% offline, zero config)
@@ -745,6 +801,7 @@ export async function sendChat(message, images = [], options = {}) {
         }
 
         let data;
+// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
         try {
             data = JSON.parse(responseText);
         } catch (parseError) {
@@ -801,7 +858,6 @@ export async function sendChat(message, images = [], options = {}) {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: message, maxResults: 3 })
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
                 });
                 const searchData = await searchResponse.json();
 
@@ -946,6 +1002,7 @@ function extractActions(text, userMessage = '') {
         actions.commands.push({ type: 'showCode', code });
         actions.buttons.push({
             type: 'openSimulator',
+// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
             code,
             label: 'Prova nel Simulatore'
         });
@@ -1002,7 +1059,6 @@ export async function analyzeImage(imageData, question = "Analizza questa immagi
     const { signal } = options;
 
     // Check if already aborted before starting
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     if (signal?.aborted) {
         throw new DOMException('Aborted', 'AbortError');
     }
@@ -1111,6 +1167,18 @@ export function preloadExperiment(experimentId) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ experimentId }),
     }).catch(() => { }); // Fire-and-forget, non blocca mai
+}
+
+/**
+ * Warm up the Render backend to eliminate the 37s cold start.
+ * Called once on app load via a lightweight HEAD request.
+ * Fire-and-forget — never blocks the UI.
+ */
+export function warmupRender() {
+    fetch(`${RENDER_FALLBACK}/health`, {
+        method: 'HEAD',
+        signal: AbortSignal.timeout(60000), // 60s max, Render wakes in ~37s
+    }).catch(() => { }); // Silently ignore errors (service may be sleeping)
 }
 
 export { API };

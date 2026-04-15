@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import useIsMobile from './hooks/useIsMobile';
 import useOnlineStatus from './hooks/useOnlineStatus';
 import { startSyncInterval, stopSyncInterval } from './services/supabaseSync';
+import { warmupRender } from './services/api';
 
 import RequireAuth from './components/auth/RequireAuth';
 import RequireLicense from './components/auth/RequireLicense';
@@ -355,6 +356,7 @@ function App() {
     // G49: Start Supabase sync queue processing on mount
     useEffect(() => {
         startSyncInterval();
+        warmupRender(); // Ping Render backend on load to reduce cold start (37s → ~0s)
         return () => stopSyncInterval();
     }, []);
 
