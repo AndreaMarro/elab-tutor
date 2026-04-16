@@ -1,15 +1,75 @@
 {
-  "timestamp": "2026-04-14T06:20:00Z",
-  "ralphLoop": {"iteration": 5, "status": "running", "score": "7.2/10"},
-  "build": {"pass": true, "tests": 3857},
-  "unlim": {"actions": 17, "skills": 7, "tests": 63, "wakeWord": true},
-  "kokoro": {"localHealthy": true, "vpsEdgeTts": true},
-  "parita": {"score": 8, "accentsFixed": 17, "falsePositives": 3},
-  "touch": {"p0_fixed": 5, "p1_fixed": 12},
-  "recommendations": [
-    "Deploy Supabase Edge Functions — richiede token Andrea",
-    "Test UNLIM live su elabtutor.school — serve deploy",
-    "Multimetro virtuale Vol2 — task grande, prossima sessione"
+  "timestamp": "2026-04-16T07:11:06Z",
+  "summary": {
+    "tests": { "total": 11501, "fail": 7, "lastDelta": "+44 (voice-commands, all pass)", "note": "7 failures open in principioZeroCompliance — KB entries missing parole-analogia or leaving jargon without analogy" },
+    "build": "PASS",
+    "site": 200,
+    "volumeAudit": { "completed": 20, "total": 87, "discrepancies": 35, "bySeverity": { "high": 0, "medium": 13, "low": 22 } },
+    "unlimQuality": { "score": "4.1/5", "kbCoverage": "18/20", "criticalBugs": 2, "gaps": 2 },
+    "userSimulation": { "passed": 49, "total": 50, "failedOn": "Chiara iPad (12y) — PotOverlay range slider touch target <44px" },
+    "uxIssues": { "P0": 2, "P1": 16, "P2": 3, "total": 21, "worstFile": "ManualTab.jsx (7 P1)" },
+    "apiHealth": { "healthy": 3, "total": 6, "details": {
+      "site": "200 OK (906ms)",
+      "nanobot": "200 OK (1565ms, UNLIM risponde correttamente)",
+      "supabase": "401 FAIL — Dashboard probabilmente vuota/broken",
+      "kokoro": "0 FAIL — non in esecuzione in locale",
+      "edgeTts": "200 OK (580ms, VPS UP)",
+      "compiler": "404 FAIL — n8n endpoint /compile non trovato (CRITICO per Arduino)"
+    }},
+    "solverIssues": "UNKNOWN (d3-solver.json non trovato)"
+  },
+  "blockers": [
+    "CRITICO: Compiler n8n 404 — endpoint /compile non risponde su hstgr.cloud. Compilazione Arduino non funziona in produzione.",
+    "CRITICO: Supabase 401 — Dashboard probabilmente senza dati reali. Project vxvqalmxqtezvgiboxyv potrebbe essere in pausa.",
+    "P0-UX: ChatOverlay textarea senza aria-label + no role=dialog — WCAG 2.1 failure per utenti con screen reader.",
+    "P0-TEST: 7 test falliti in principioZeroCompliance — KB entries con jargon tecnico senza analogia per bambini 10-14 anni.",
+    "UNLIM-BUG-CRITICO: 'non funziona' → risposta di celebrazione ('Fantastico! Hai fatto un ottimo lavoro!') — inversione semantica per bambini frustrati.",
+    "UNLIM-BUG: 'cos'e il PWM' → risposta su Arduino invece di PWM — tie-breaking errato nell'array KB."
   ],
-  "blockers": ["Supabase Edge deploy richiede SUPABASE_ACCESS_TOKEN"]
+  "recommendations": [
+    "FIX IMMEDIATO: Verificare path n8n compiler — provare /webhook/compile o riattivare il workflow. Senza compilatore Arduino non funziona.",
+    "FIX IMMEDIATO: Resume Supabase project (dashboard Supabase → riattivare progetto vxvqalmxqtezvgiboxyv).",
+    "FIX 1h: In unlim-knowledge-base.js celebration entry, sostituire keyword 'funziona' con 'funzionato'/'riuscito' — evita match su 'non funziona'.",
+    "FIX 30min: Spostare entry PWM prima di entry Arduino nell'array KNOWLEDGE_BASE — risolve tie-breaking 'cos'e il PWM'.",
+    "FIX 2h: Aggiungere aria-label a ChatOverlay textarea (line 386) + role=dialog+aria-modal a chat panel (line 241).",
+    "FIX 3h: Risolvere 7 test failures — aggiungere parole-analogia alle KB entries per i topic mancanti.",
+    "PRIORITA ALTA: Aggiungere chunk RAG per Scratch/Blockly — 0 risultati per 'scratch blockly' e gap critico per Vol3.",
+    "PRIORITA ALTA: Aggiungere keyword 'anodo', 'catodo', 'piedino', 'polarita' alla KB entry LED RGB.",
+    "PRIORITA MEDIA: Aggiungere minHeight: 44px + padding esplicito al range input in PotOverlay.jsx e LdrOverlay.jsx (touch target iPad).",
+    "Volume audit: continuare da v1-cap9-esp7 — 67/87 esperimenti non ancora auditati (topologia potenziometro vs PDF e pattern critico da cap9)."
+  ],
+  "scoreEstimate": 7.0,
+  "scoreBreakdown": {
+    "tests": "9.0/10 (11494/11501 pass, 7 P0 falliti aperti) × 0.15 = 1.35",
+    "build": "10/10 (PASS) × 0.10 = 1.00",
+    "site": "10/10 (200 OK) × 0.05 = 0.50",
+    "unlimQuality": "8.2/10 (4.1/5, 2 critical bugs) × 0.20 = 1.64",
+    "volumeAudit": "6.0/10 (13 medium discrepancies, solo 23% auditato) × 0.15 = 0.90",
+    "userSimulation": "8.5/10 (49/50 = 98%, 1 fail iPad touch) × 0.10 = 0.85",
+    "uxIssues": "5.0/10 (2 P0 + 16 P1 issues) × 0.10 = 0.50",
+    "apiHealth": "4.0/10 (3/6 OK, compiler+supabase FAIL critici) × 0.15 = 0.60",
+    "note": "Totale ponderato 7.34 → arrotondato 7.0 per penalita compiler CRITICO"
+  },
+  "workerStatus": {
+    "sentinella": "OK",
+    "testFactory": "OK",
+    "volumeAudit": "OK",
+    "unlimQuality": "STALE",
+    "vendita": "OK",
+    "userSimulator": "OK",
+    "debuggerUx": "STALE",
+    "debuggerApi": "STALE",
+    "debuggerSolver": "ERROR"
+  },
+  "workerNotes": {
+    "sentinella": "w1-build.json — 2026-04-16T14:48Z. Build PASS, 7 test P0 aperti in principioZeroCompliance.",
+    "testFactory": "w2-tests.json — 2026-04-16T14:50Z. +44 test voice-commands, allPass=true. Totale cumulativo 11501.",
+    "volumeAudit": "a1-volumes.json — 2026-04-16T07:30Z. 20/87 auditati, 35 discrepanze (0 high, 13 medium, 22 low). Pattern critici: topologia potenziometro (cap9), esperimenti esplorativi cristallizzati in config fisse.",
+    "unlimQuality": "a2-unlim.json — 2026-04-16T00:00Z (STALE >7h). KB 18/20 hit, 4.1/5. 2 bug critici, 2 gap. Emotional support FIXATO (4/4).",
+    "vendita": "r1-vendita.json — 2026-04-16T06:35Z. Pricing: €20/classe/mese (59% margine), €9.99/famiglia, €500/anno scuola. MePA deadline 30/06/2026.",
+    "userSimulator": "t1-utenti.json — 2026-04-16T06:58Z. 49/50 scenario pass (98%). Fail: Chiara iPad touch target. Gap: Scratch RAG 0 risultati.",
+    "debuggerUx": "d1-ux.json — 2026-04-16T00:00Z (STALE >7h). 21 issues (2 P0 + 16 P1 + 3 P2). ManualTab.jsx worst (7 P1). Lavagna components clean.",
+    "debuggerApi": "d2-api.json — 2026-04-16T00:00Z (STALE >7h). 3/6 endpoint OK. Compiler 404 e Supabase 401 critici. Edge TTS VPS OK.",
+    "debuggerSolver": "d3-solver.json — FILE NON TROVATO. Worker non ha prodotto output."
+  }
 }
