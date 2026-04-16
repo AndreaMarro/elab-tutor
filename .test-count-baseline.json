@@ -1,8 +1,24 @@
 {
-  "total": 1578,
-  "date": "2026-04-09",
+  "total": 11983,
+  "date": "2026-04-17",
+  "commit": "c6b04a0",
+  "test_files": 190,
   "coverage_min": 60.0,
-  "bundle_max_kb": 3500,
-  "regression_threshold": 0.02,
-  "notes": "Baseline aggiornato 09/04/2026. 1578 test su main, 35 file, 34 moduli. Precedente 1700 era inflato."
+  "bundle_max_kb": 90000,
+  "precache_max_kb": 5000,
+  "regression_threshold": 0.005,
+  "regression_threshold_absolute": 50,
+  "notes": [
+    "Baseline 17/04/2026 post sessione PDR v3 DEFINITIVO: 11983 test PASS, 190 file, 0 fail.",
+    "regression_threshold: 0.5% massimo tollerato (era 2% troppo permissivo su 11K test).",
+    "regression_threshold_absolute: 50 test massimo di diminuzione (anche se %ratio OK, 50 test persi e' bug grave).",
+    "bundle_max_kb 90000 = dist/ totale 82MB (include PDF, hex, fonts, volumes). Valore misurato: 82256 KB.",
+    "precache_max_kb 5000 = PWA precache soglia. Valore misurato: 4821 KiB.",
+    "Update obbligatorio dopo ogni sessione che incrementa test: date, commit, total, test_files."
+  ],
+  "previousBaseline": {
+    "total": 1578,
+    "date": "2026-04-09",
+    "note": "Obsoleto — 1578 era baseline di inizio Aprile, non aggiornato per 8 giorni."
+  }
 }
