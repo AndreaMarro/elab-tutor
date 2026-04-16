@@ -1,5 +1,17 @@
 # ELAB Tutor — Contesto per Claude Code
 
+## PRINCIPIO ZERO (la regola piu importante di tutto il progetto)
+
+**Il docente e il tramite. UNLIM e lo strumento del docente. Gli studenti lavorano sui kit fisici ELAB.**
+
+- UNLIM prepara lezioni personalizzate basate sui volumi fisici + contesto delle sessioni passate
+- Gli studenti NON interagiscono direttamente con UNLIM ne con ELAB Tutor: vedono tutto sulla LIM (Lavagna Interattiva Multimediale) proiettata dal docente
+- Il linguaggio di UNLIM NON e rivolto direttamente all'insegnante come "fai questo" — deve fargli CAPIRE cosa fare e cosa dire ai ragazzi, usando le stesse parole del libro
+- I ragazzi lavorano sui kit ELAB fisici (breadboard, componenti, batterie) seguendo le istruzioni del docente che legge dal Volume + dalla schermata UNLIM
+- **CHIUNQUE** accendendo ELAB Tutor deve essere in grado, SENZA conoscenze pregresse, di giostrarsi sulla piattaforma e spiegare ai ragazzi
+- Il testo dei volumi deve essere CITATO e USATO per la lettura — le stesse parole, non parafrasi
+- Il differenziatore competitivo: nessun competitor prepara lezioni personalizzate basate sulle sessioni precedenti + contenuto specifico dei volumi
+
 ## Cosa e' questo progetto
 ELAB e' un tutor educativo per elettronica e Arduino per bambini 8-14 anni.
 Il prodotto include kit fisici (3 volumi + componenti) e questo software web.
@@ -17,7 +29,7 @@ Include:
 
 ## Stack tecnico
 - React 19 + Vite 7 (NO react-router — routing custom con useState e hash)
-- Vitest (8190+ test — target 12000)
+- Vitest (9846+ test — target 12000)
 - Deploy: Vercel (frontend) + Supabase (backend DB)
 - Nanobot AI: Render (https://elab-galileo.onrender.com)
 - Compilatore: n8n su Hostinger (https://n8n.srv1022317.hstgr.cloud/compile)
@@ -37,7 +49,7 @@ Include:
 - **Regola**: OGNI esperimento nel simulatore DEVE citare pagina e testo esatto del volume
 - **Struttura**: il libro presenta esperimenti come racconto continuo per capitolo, NON come card separate
 - **27 Lezioni** raggruppano per concetto come nel libro fisico (src/data/lesson-groups.js)
-- **Riferimenti**: src/data/volume-references.js (DA CREARE/COMPLETARE)
+- **Riferimenti**: src/data/volume-references.js (92/92 enriched con bookText dai PDF, 1221 righe)
 
 ## Tea (collaboratrice)
 - Documenti: `/VOLUME 3/TEA/` (4 documenti del 13/04/2026)
@@ -66,7 +78,7 @@ Include:
 
 ### Qualita'
 6. `npm run build` deve passare prima di ogni deploy
-7. `npx vitest run` deve passare prima di ogni commit (8190+ test)
+7. `npx vitest run` deve passare prima di ogni commit (9846+ test)
 8. Font minimo 13px testi, 10px label secondarie
 9. Touch target minimo 44x44px per bottoni interattivi
 10. Contrasto WCAG AA: 4.5:1 testo, 3:1 grafici
@@ -154,18 +166,18 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqal
 |----------|-----|-------|
 | Frontend | https://www.elabtutor.school (Vercel) | OK |
 | Supabase | vxvqalmxqtezvgiboxyv.supabase.co | OK |
-| Nanobot AI | https://elab-galileo.onrender.com (Render) | OK (15s cold start) |
+| Nanobot AI | https://elab-galileo.onrender.com (Render) | OK (18s cold start, dice UNLIM) |
 | Compilatore | https://n8n.srv1022317.hstgr.cloud/compile (Hostinger) | OK |
 | Brain V13 | http://72.60.129.50:11434 (VPS, Qwen3.5-2B) | NON VERIFICATO |
 | Kokoro TTS | localhost:8881 | SOLO LOCALE |
-| Edge TTS | http://72.60.129.50:8880 | NON VERIFICATO |
+| Edge TTS | http://72.60.129.50:8880 | OK (verificato 16/04, /tts → 200) |
 
-## Bug aperti prioritari (15/04/2026)
-1. **Parallelismo volumi ASSENTE** — esperimenti non citano pagina/testo esatto del libro fisico
-2. **UNLIM backend scatola nera** — manda contesto ma non c'è prova che il backend lo usi
-3. **Kokoro TTS non in produzione** — solo localhost, serve VPS/cloud
+## Bug aperti prioritari (16/04/2026)
+1. ~~**Parallelismo volumi ASSENTE**~~ **RISOLTO** — 92/92 esperimenti con bookText, integrati in UI e UNLIM prompt
+2. ~~**UNLIM backend scatola nera**~~ **MITIGATO** — contesto arricchito (circuit+student+RAG+volume+group) iniettato nel prompt
+3. **Kokoro TTS non in produzione** — Edge TTS VPS UP (200 OK) come alternativa, CORS da verificare
 4. **Vision non testata live** — trigger implementato ma mai verificato end-to-end
-5. **Dashboard pochi dati reali** — Supabase connesso ma grafici assenti
-6. **Voce non testata E2E** — STT→comprensione→risposta→TTS flow mai verificato
-7. **Render cold start 15s** — prima risposta UNLIM lenta
-8. **RAG generico** — 549 chunk non legati a pagine specifiche dei volumi
+5. **Dashboard pochi dati reali** — Supabase probabilmente PAUSED (401), serve resume manuale
+6. ~~**Voce non testata E2E**~~ **PARZIALE** — Edge TTS VPS OK, apostrophe bug fixato, 320 test voice
+7. **Render cold start 18s** — warmup automatico aggiunto ma prima risposta ancora lenta
+8. ~~**RAG generico**~~ **MIGLIORATO** — short-phrase fallback per bambini ("non va" ora funziona)
