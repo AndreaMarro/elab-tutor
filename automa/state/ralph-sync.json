@@ -1,75 +1,124 @@
 {
-  "timestamp": "2026-04-16T07:11:06Z",
+  "timestamp": "2026-04-16T08:01:46Z",
   "summary": {
-    "tests": { "total": 11501, "fail": 7, "lastDelta": "+44 (voice-commands, all pass)", "note": "7 failures open in principioZeroCompliance — KB entries missing parole-analogia or leaving jargon without analogy" },
+    "tests": {
+      "total": 11457,
+      "fail": 7,
+      "pass": 11450,
+      "lastDelta": "0 (w2 BLOCKED — in attesa fix principioZeroCompliance)",
+      "note": "7 failures persistenti in principioZeroCompliance — KB entries con jargon senza analogia per bambini 10-14"
+    },
     "build": "PASS",
     "site": 200,
-    "volumeAudit": { "completed": 20, "total": 87, "discrepancies": 35, "bySeverity": { "high": 0, "medium": 13, "low": 22 } },
-    "unlimQuality": { "score": "4.1/5", "kbCoverage": "18/20", "criticalBugs": 2, "gaps": 2 },
-    "userSimulation": { "passed": 49, "total": 50, "failedOn": "Chiara iPad (12y) — PotOverlay range slider touch target <44px" },
-    "uxIssues": { "P0": 2, "P1": 16, "P2": 3, "total": 21, "worstFile": "ManualTab.jsx (7 P1)" },
-    "apiHealth": { "healthy": 3, "total": 6, "details": {
-      "site": "200 OK (906ms)",
-      "nanobot": "200 OK (1565ms, UNLIM risponde correttamente)",
-      "supabase": "401 FAIL — Dashboard probabilmente vuota/broken",
-      "kokoro": "0 FAIL — non in esecuzione in locale",
-      "edgeTts": "200 OK (580ms, VPS UP)",
-      "compiler": "404 FAIL — n8n endpoint /compile non trovato (CRITICO per Arduino)"
-    }},
-    "solverIssues": "UNKNOWN (d3-solver.json non trovato)"
+    "volumeAudit": {
+      "completed": 25,
+      "total": 87,
+      "discrepancies": 47,
+      "bySeverity": { "medium": "presente", "low": "maggioranza" },
+      "note": "25/87 auditati (28.7%). 47 discrepanze trovate. Pattern critico: esperimenti esplorativi PDF cristallizzati in config fisse nel codice."
+    },
+    "unlimQuality": {
+      "score": "4.1/5",
+      "kbCoverage": "18/20",
+      "criticalBugs": 2,
+      "underSixtyWords": 5,
+      "note": "2 bug critici NON fixati: (1) 'non funziona' → risposta celebrazione; (2) match debole per query bambini 1-2 parole"
+    },
+    "userSimulation": {
+      "passed": 50,
+      "total": 50,
+      "warnings": 9,
+      "note": "50/50 funzionali, ma 9 warning su match debole KB. CRITICO: RAG ha 0 chunk Scratch/Blockly."
+    },
+    "uxIssues": {
+      "P0": 4,
+      "P1": 26,
+      "P2": 4,
+      "total": 34,
+      "worstFile": "ChatOverlay.jsx (P0: textarea no aria-label + no role=dialog)"
+    },
+    "apiHealth": {
+      "healthy": 3,
+      "total": 6,
+      "details": {
+        "site": "200 OK (557ms) ✓",
+        "nanobot": "200 OK (1402ms, no cold start) ✓",
+        "supabase": "401 FAIL — PAUSED (free tier). Dashboard senza dati reali. ✗",
+        "kokoro": "0 FAIL — non in esecuzione locale ✗",
+        "edgeTts": "200 OK (575ms, VPS UP) ✓",
+        "compiler": "404 FAIL — /compile su n8n Hostinger non trovato. Arduino non compilabile. ✗"
+      }
+    },
+    "solverIssues": "UNKNOWN — d3-solver.json non trovato (worker non ha prodotto output)"
   },
   "blockers": [
-    "CRITICO: Compiler n8n 404 — endpoint /compile non risponde su hstgr.cloud. Compilazione Arduino non funziona in produzione.",
-    "CRITICO: Supabase 401 — Dashboard probabilmente senza dati reali. Project vxvqalmxqtezvgiboxyv potrebbe essere in pausa.",
-    "P0-UX: ChatOverlay textarea senza aria-label + no role=dialog — WCAG 2.1 failure per utenti con screen reader.",
-    "P0-TEST: 7 test falliti in principioZeroCompliance — KB entries con jargon tecnico senza analogia per bambini 10-14 anni.",
-    "UNLIM-BUG-CRITICO: 'non funziona' → risposta di celebrazione ('Fantastico! Hai fatto un ottimo lavoro!') — inversione semantica per bambini frustrati.",
-    "UNLIM-BUG: 'cos'e il PWM' → risposta su Arduino invece di PWM — tie-breaking errato nell'array KB."
+    "CRITICO: Supabase 401 (PAUSED) — Dashboard vuota, dati sessioni non salvati/caricati. Resume manuale su supabase.com > vxvqalmxqtezvgiboxyv.",
+    "CRITICO: Compiler n8n 404 — Compilazione Arduino non funziona in produzione. Verificare path: /webhook/compile o riattivar workflow n8n.",
+    "CRITICO: d3-solver.json MANCANTE — Worker debugger-solver non ha prodotto output questa run.",
+    "P0-TEST: 7 test falliti in principioZeroCompliance — KB entries mancano parole-analogia: 'Ho paura di sbagliare!', 'Come si misura la temperatura?' (x2), 'Come si usa un display LCD?' (x2), 'Come è organizzato il manuale ELAB?' (x2).",
+    "P0-UX: ChatOverlay textarea senza aria-label (line 386) + panel senza role=dialog+aria-modal (line 241) — WCAG 2.1 failure.",
+    "UNLIM-BUG-CRITICO: 'non funziona' → risposta celebrazione (STOP_WORD elimina 'non', 'funziona' matcha entry celebrazione con score 3.5). Bambino frustrato riceve 'Fantastico!'.",
+    "RAG-GAP: 0 chunk RAG dedicati a Scratch/Blockly — docenti Vol3 (programmazione visuale) trovano solo C++. Blocco pedagogico."
   ],
   "recommendations": [
-    "FIX IMMEDIATO: Verificare path n8n compiler — provare /webhook/compile o riattivare il workflow. Senza compilatore Arduino non funziona.",
-    "FIX IMMEDIATO: Resume Supabase project (dashboard Supabase → riattivare progetto vxvqalmxqtezvgiboxyv).",
-    "FIX 1h: In unlim-knowledge-base.js celebration entry, sostituire keyword 'funziona' con 'funzionato'/'riuscito' — evita match su 'non funziona'.",
-    "FIX 30min: Spostare entry PWM prima di entry Arduino nell'array KNOWLEDGE_BASE — risolve tie-breaking 'cos'e il PWM'.",
-    "FIX 2h: Aggiungere aria-label a ChatOverlay textarea (line 386) + role=dialog+aria-modal a chat panel (line 241).",
-    "FIX 3h: Risolvere 7 test failures — aggiungere parole-analogia alle KB entries per i topic mancanti.",
-    "PRIORITA ALTA: Aggiungere chunk RAG per Scratch/Blockly — 0 risultati per 'scratch blockly' e gap critico per Vol3.",
-    "PRIORITA ALTA: Aggiungere keyword 'anodo', 'catodo', 'piedino', 'polarita' alla KB entry LED RGB.",
-    "PRIORITA MEDIA: Aggiungere minHeight: 44px + padding esplicito al range input in PotOverlay.jsx e LdrOverlay.jsx (touch target iPad).",
-    "Volume audit: continuare da v1-cap9-esp7 — 67/87 esperimenti non ancora auditati (topologia potenziometro vs PDF e pattern critico da cap9)."
+    "IMMEDIATO (5min): Resume Supabase project su supabase.com — dashboard > vxvqalmxqtezvgiboxyv > Settings > Resume.",
+    "IMMEDIATO (30min): Fix 'non funziona' bug in unlim-knowledge-base.js — nella entry celebrazione sostituire keyword 'funziona' con 'funzionato'/'riuscito' per evitare match su negazione.",
+    "IMMEDIATO (30min): Verificare path n8n compiler — provare /webhook/compile, /api/compile, o riattivare workflow dal dashboard Hostinger.",
+    "FIX (2h): Aggiungere parole-analogia alle 7 KB entries che falliscono principioZeroCompliance per sbloccare w2 testFactory.",
+    "FIX (2h): Aggiungere 5-10 chunk RAG dedicati Scratch/Blockly in rag-chunks.json. Priorità CRITICA per docenti Vol3.",
+    "FIX (1h): Fix P0 UX ChatOverlay — aria-label textarea (line 386), role=dialog+aria-modal sul panel (line 241), focus trap.",
+    "FIX (1h): Aggiungere keyword bambini ('non va', 'non accende', 'rotto', 'aiuto') alle entry KB LED/circuiti base per migliorare match query 1-2 parole.",
+    "FIX (30min): Aggiungere keywords KB: 'docente', 'kit', 'materiali', 'cosa comprare' — 2 tipologie utenti (docenti e genitori) trovano match deboli.",
+    "BACKLOG: Volume audit continuare da v1-cap9-esp7 — 62/87 esperimenti non ancora auditati.",
+    "BACKLOG: Avviare worker d3-solver per analisi circuiti — file mancante."
   ],
-  "scoreEstimate": 7.0,
+  "scoreEstimate": 6.9,
   "scoreBreakdown": {
-    "tests": "9.0/10 (11494/11501 pass, 7 P0 falliti aperti) × 0.15 = 1.35",
+    "tests": "9.0/10 (11450/11457 pass, 7 P0 aperti) × 0.15 = 1.35",
     "build": "10/10 (PASS) × 0.10 = 1.00",
     "site": "10/10 (200 OK) × 0.05 = 0.50",
-    "unlimQuality": "8.2/10 (4.1/5, 2 critical bugs) × 0.20 = 1.64",
-    "volumeAudit": "6.0/10 (13 medium discrepancies, solo 23% auditato) × 0.15 = 0.90",
-    "userSimulation": "8.5/10 (49/50 = 98%, 1 fail iPad touch) × 0.10 = 0.85",
-    "uxIssues": "5.0/10 (2 P0 + 16 P1 issues) × 0.10 = 0.50",
-    "apiHealth": "4.0/10 (3/6 OK, compiler+supabase FAIL critici) × 0.15 = 0.60",
-    "note": "Totale ponderato 7.34 → arrotondato 7.0 per penalita compiler CRITICO"
+    "unlimQuality": "7.5/10 (4.1/5, 2 critical bugs unfixed) × 0.20 = 1.50",
+    "volumeAudit": "5.5/10 (25/87 = 28.7%, 47 discrepanze) × 0.15 = 0.825",
+    "userSimulation": "9.0/10 (50/50 pass, 9 warnings) × 0.10 = 0.90",
+    "uxIssues": "4.5/10 (4 P0 + 26 P1 + 4 P2 = 34 totali) × 0.10 = 0.45",
+    "apiHealth": "4.0/10 (3/6 OK, Supabase PAUSED + compiler 404) × 0.15 = 0.60",
+    "totale": "7.125 → penalità Supabase PAUSED -0.2 = 6.9",
+    "note": "Score stabile vs precedente (7.0). Nessun fix applicato sui blocker. API health critica irrisolta."
   },
   "workerStatus": {
     "sentinella": "OK",
     "testFactory": "OK",
     "volumeAudit": "OK",
-    "unlimQuality": "STALE",
-    "vendita": "OK",
+    "unlimQuality": "OK",
+    "vendita": "STALE",
     "userSimulator": "OK",
-    "debuggerUx": "STALE",
-    "debuggerApi": "STALE",
+    "debuggerUx": "OK",
+    "debuggerApi": "OK",
     "debuggerSolver": "ERROR"
   },
   "workerNotes": {
-    "sentinella": "w1-build.json — 2026-04-16T14:48Z. Build PASS, 7 test P0 aperti in principioZeroCompliance.",
-    "testFactory": "w2-tests.json — 2026-04-16T14:50Z. +44 test voice-commands, allPass=true. Totale cumulativo 11501.",
-    "volumeAudit": "a1-volumes.json — 2026-04-16T07:30Z. 20/87 auditati, 35 discrepanze (0 high, 13 medium, 22 low). Pattern critici: topologia potenziometro (cap9), esperimenti esplorativi cristallizzati in config fisse.",
-    "unlimQuality": "a2-unlim.json — 2026-04-16T00:00Z (STALE >7h). KB 18/20 hit, 4.1/5. 2 bug critici, 2 gap. Emotional support FIXATO (4/4).",
-    "vendita": "r1-vendita.json — 2026-04-16T06:35Z. Pricing: €20/classe/mese (59% margine), €9.99/famiglia, €500/anno scuola. MePA deadline 30/06/2026.",
-    "userSimulator": "t1-utenti.json — 2026-04-16T06:58Z. 49/50 scenario pass (98%). Fail: Chiara iPad touch target. Gap: Scratch RAG 0 risultati.",
-    "debuggerUx": "d1-ux.json — 2026-04-16T00:00Z (STALE >7h). 21 issues (2 P0 + 16 P1 + 3 P2). ManualTab.jsx worst (7 P1). Lavagna components clean.",
-    "debuggerApi": "d2-api.json — 2026-04-16T00:00Z (STALE >7h). 3/6 endpoint OK. Compiler 404 e Supabase 401 critici. Edge TTS VPS OK.",
-    "debuggerSolver": "d3-solver.json — FILE NON TROVATO. Worker non ha prodotto output."
+    "sentinella": "w1-build.json aggiornato 1.2h fa. Build PASS. 7 test P0 aperti in principioZeroCompliance. w2 BLOCCATO.",
+    "testFactory": "w2-tests.json aggiornato 0.4h fa. BLOCKED — nessun nuovo test finché i 7 P0 non vengono fixati. Total fermo a 11457.",
+    "volumeAudit": "a1-volumes.json aggiornato 0.1h fa. 25/87 auditati (+5 da run precedente). 47 discrepanze. Prossimo: v1-cap9-esp7.",
+    "unlimQuality": "a2-unlim.json aggiornato 0.1h fa. Score 4.1/5 STABILE (stesso run precedente). 2 bug critici non fixati.",
+    "vendita": "r1-vendita.json STALE (9.5h fa). Pricing confermato: €20/classe/mese (59% margine). MePA deadline 30/06/2026.",
+    "userSimulator": "t1-utenti.json aggiornato 0.1h fa. 50/50 pass (migliore del precedente 49/50). 9 warning. Gap critico: RAG Scratch/Blockly ZERO.",
+    "debuggerUx": "d1-ux.json aggiornato 0.0h fa. 34 issues (4 P0 + 26 P1 + 4 P2) — più di prima (21). Scansione più profonda (15 file).",
+    "debuggerApi": "d2-api.json aggiornato 0.0h fa. 3/6 healthy. Supabase 401 PAUSED. Compiler 404. Edge TTS VPS OK.",
+    "debuggerSolver": "d3-solver.json FILE NON TROVATO. Worker non eseguito. Analisi solver assente."
+  },
+  "changesSinceLastSync": {
+    "improvements": [
+      "t1-utenti: 50/50 pass (era 49/50 — touch target Chiara iPad risolto o scenario rivisitato)",
+      "a1-volumes: +5 esperimenti auditati (20→25)",
+      "d1-ux: scansione più profonda (15 file vs precedente)"
+    ],
+    "regressions": [],
+    "unchanged": [
+      "Supabase ancora PAUSED (401) — nessun fix applicato",
+      "Compiler ancora 404 — nessun fix applicato",
+      "UNLIM bug 'non funziona' ancora presente — nessun fix applicato",
+      "7 test falliti ancora aperti — w2 ancora BLOCKED"
+    ]
   }
 }
