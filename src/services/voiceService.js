@@ -245,12 +245,28 @@ export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     }
 }
 
-// TTS endpoints — Kokoro (best quality) → Edge TTS (fallback) → Nanobot (last resort)
+// TTS endpoints — Kokoro (best quality) → Edge TTS proxy (HTTPS-safe) → Nanobot (last resort)
 const KOKORO_URL = 'http://localhost:8881';
 const EDGE_TTS_URL = 'http://72.60.129.50:8880';
 
 /**
- * Send text to TTS. Chain: Kokoro (localhost) → Edge TTS (VPS) → nanobot.
+ * Pick the right Edge TTS endpoint for the current environment.
+ * On HTTPS origins (production elabtutor.school) the plain-HTTP VPS would be
+ * blocked as mixed content, so we go through the same-origin Vercel proxy
+ * `/api/tts` (see api/tts.js). On HTTP localhost we hit the VPS directly
+ * because Vercel dev doesn't always run the serverless function.
+ */
+function getEdgeTtsUrl(encodedText) {
+    try {
+        if (typeof window !== 'undefined' && window.location?.protocol === 'https:') {
+            return `/api/tts?text=${encodedText}`;
+        }
+    } catch { /* SSR / node — fall through */ }
+    return `${EDGE_TTS_URL}/tts?text=${encodedText}`;
+}
+
+/**
+ * Send text to TTS. Chain: Kokoro (localhost) → Edge TTS (VPS/proxy) → nanobot.
  * @param {string} text - text to synthesize
  * @returns {Promise<ArrayBuffer>} audio data (WAV or MP3)
  */
@@ -270,10 +286,11 @@ export async function synthesizeSpeech(text) {
         logger.debug('[Voice] Kokoro not available:', e.message);
     }
 
-    // 2. Try Edge TTS (VPS, good quality, free)
+    // 2. Try Edge TTS — goes through /api/tts proxy on HTTPS origins to
+    //    avoid mixed-content blocks, or direct to VPS on localhost.
     try {
-        const resp = await fetch(`${EDGE_TTS_URL}/tts?text=${encoded}`, {
-            signal: AbortSignal.timeout(10000),
+        const resp = await fetch(getEdgeTtsUrl(encoded), {
+            signal: AbortSignal.timeout(15000),
         });
         if (resp.ok) {
             logger.debug('[Voice] Edge TTS success');
