@@ -1,89 +1,84 @@
 {
-  "timestamp": "2026-04-16T08:01:46Z",
+  "timestamp": "2026-04-17T20:54:59Z",
   "summary": {
     "tests": {
-      "total": 11457,
-      "fail": 7,
-      "pass": 11450,
-      "lastDelta": "0 (w2 BLOCKED — in attesa fix principioZeroCompliance)",
-      "note": "7 failures persistenti in principioZeroCompliance — KB entries con jargon senza analogia per bambini 10-14"
+      "total": 4751,
+      "reportedTotal": 11457,
+      "failing": 7,
+      "note": "4751 test passano (w1); 40 file falliscono setup SSR (copertura ridotta da ~11k). w2 BLOCKED: 7 FAIL in principioZeroCompliance.test.js — KB entries mancano parole-analogia."
     },
     "build": "PASS",
     "site": 200,
     "volumeAudit": {
-      "completed": 25,
+      "completed": 35,
       "total": 87,
-      "discrepancies": 47,
-      "bySeverity": { "medium": "presente", "low": "maggioranza" },
-      "note": "25/87 auditati (28.7%). 47 discrepanze trovate. Pattern critico: esperimenti esplorativi PDF cristallizzati in config fisse nel codice."
+      "discrepancies": 72,
+      "highSeverity": 7,
+      "mediumSeverity": 27,
+      "lowSeverity": 38,
+      "note": "40% completato (Cap6-Cap12 Vol1). 7 bug HIGH critici: cap9-esp9 (pot2 orfano + LED sbagliato), cap10-esp1/2/3 (orphan resistors + contraddizione PDF), cap10-esp4 (accoppiamento ottico non simulabile), cap10-esp6 (5 incoerenze interne)."
     },
     "unlimQuality": {
-      "score": "4.1/5",
+      "score": "4.0/5",
       "kbCoverage": "18/20",
-      "criticalBugs": 2,
-      "underSixtyWords": 5,
-      "note": "2 bug critici NON fixati: (1) 'non funziona' → risposta celebrazione; (2) match debole per query bambini 1-2 parole"
+      "ragHits": "17/20",
+      "wordCountIssue": "14/18 risposte KB superano 60 parole",
+      "actionGaps": 2,
+      "note": "2 BUG precedenti erano falsi positivi (risolti). Gap persistenti: 'avvia' e 'mostra il codice' non gestiti come azioni."
     },
     "userSimulation": {
-      "passed": 50,
-      "total": 50,
-      "warnings": 9,
-      "note": "50/50 funzionali, ma 9 warning su match debole KB. CRITICO: RAG ha 0 chunk Scratch/Blockly."
+      "passed": 25,
+      "total": 25,
+      "note": "Task prevedeva 50 scenari ma solo 25 definiti. Tutti i 25 disponibili PASS."
     },
     "uxIssues": {
       "P0": 4,
-      "P1": 26,
-      "P2": 4,
+      "P1": 25,
+      "P2": 5,
       "total": 34,
-      "worstFile": "ChatOverlay.jsx (P0: textarea no aria-label + no role=dialog)"
+      "note": "P0: ChatOverlay manca role=dialog + aria-modal; PropertiesPanel manca role=dialog + close button senza label. Scan parziale (15/~30 file)."
     },
     "apiHealth": {
       "healthy": 3,
       "total": 6,
-      "details": {
-        "site": "200 OK (557ms) ✓",
-        "nanobot": "200 OK (1402ms, no cold start) ✓",
-        "supabase": "401 FAIL — PAUSED (free tier). Dashboard senza dati reali. ✗",
-        "kokoro": "0 FAIL — non in esecuzione locale ✗",
-        "edgeTts": "200 OK (575ms, VPS UP) ✓",
-        "compiler": "404 FAIL — /compile su n8n Hostinger non trovato. Arduino non compilabile. ✗"
+      "detail": {
+        "site": "OK (200, 148ms)",
+        "nanobot": "OK (200, 1.1s, warm)",
+        "supabase": "FAIL (401, PERSISTENTE 2° giorno — progetto PAUSED su free tier)",
+        "kokoro": "DOWN (localhost:8881 — locale, atteso)",
+        "edgeTts": "OK (200, 521ms)",
+        "compiler": "FAIL (404 su /compile PERSISTENTE 2° giorno — verificare path n8n)"
       }
     },
-    "solverIssues": "UNKNOWN — d3-solver.json non trovato (worker non ha prodotto output)"
+    "solverIssues": 1
   },
   "blockers": [
-    "CRITICO: Supabase 401 (PAUSED) — Dashboard vuota, dati sessioni non salvati/caricati. Resume manuale su supabase.com > vxvqalmxqtezvgiboxyv.",
-    "CRITICO: Compiler n8n 404 — Compilazione Arduino non funziona in produzione. Verificare path: /webhook/compile o riattivar workflow n8n.",
-    "CRITICO: d3-solver.json MANCANTE — Worker debugger-solver non ha prodotto output questa run.",
-    "P0-TEST: 7 test falliti in principioZeroCompliance — KB entries mancano parole-analogia: 'Ho paura di sbagliare!', 'Come si misura la temperatura?' (x2), 'Come si usa un display LCD?' (x2), 'Come è organizzato il manuale ELAB?' (x2).",
-    "P0-UX: ChatOverlay textarea senza aria-label (line 386) + panel senza role=dialog+aria-modal (line 241) — WCAG 2.1 failure.",
-    "UNLIM-BUG-CRITICO: 'non funziona' → risposta celebrazione (STOP_WORD elimina 'non', 'funziona' matcha entry celebrazione con score 3.5). Bambino frustrato riceve 'Fantastico!'.",
-    "RAG-GAP: 0 chunk RAG dedicati a Scratch/Blockly — docenti Vol3 (programmazione visuale) trovano solo C++. Blocco pedagogico."
+    "CRITICAL: Supabase vxvqalmxqtezvgiboxyv restituisce 401 per il 2° giorno consecutivo — progetto PAUSED su free tier. Dashboard docente completamente non funzionante. Azione: resume manuale su supabase.com > Projects > vxvqalmxqtezvgiboxyv > Settings.",
+    "CRITICAL: Compilatore n8n 404 PERSISTENTE (2° giorno) — compilazione Arduino non funziona. Verificare path corretto su dashboard Hostinger n8n (possibile POST /webhook/compile).",
+    "HIGH: w2-tests BLOCKED — 7 test FAIL in principioZeroCompliance.test.js. KB entries mancano parole-analogia per: 'Ho paura di sbagliare!', 'Come si misura la temperatura con Arduino?', 'Come si usa un display LCD?', 'Come e organizzato il manuale ELAB?'. Nessun nuovo test generato.",
+    "HIGH: 7 bug HIGH severity nei volumi (cap9-esp9 prioritario: pot2 orfano + LED sbagliato; cap10-esp1/2/3: orphan resistors + contraddizione PDF; cap10-esp6: 5 incoerenze interne).",
+    "MEDIUM: 4 P0 ARIA issue in UI — ChatOverlay (role=dialog mancante + aria-modal) e PropertiesPanel (role=dialog + close button senza label)."
   ],
   "recommendations": [
-    "IMMEDIATO (5min): Resume Supabase project su supabase.com — dashboard > vxvqalmxqtezvgiboxyv > Settings > Resume.",
-    "IMMEDIATO (30min): Fix 'non funziona' bug in unlim-knowledge-base.js — nella entry celebrazione sostituire keyword 'funziona' con 'funzionato'/'riuscito' per evitare match su negazione.",
-    "IMMEDIATO (30min): Verificare path n8n compiler — provare /webhook/compile, /api/compile, o riattivare workflow dal dashboard Hostinger.",
-    "FIX (2h): Aggiungere parole-analogia alle 7 KB entries che falliscono principioZeroCompliance per sbloccare w2 testFactory.",
-    "FIX (2h): Aggiungere 5-10 chunk RAG dedicati Scratch/Blockly in rag-chunks.json. Priorità CRITICA per docenti Vol3.",
-    "FIX (1h): Fix P0 UX ChatOverlay — aria-label textarea (line 386), role=dialog+aria-modal sul panel (line 241), focus trap.",
-    "FIX (1h): Aggiungere keyword bambini ('non va', 'non accende', 'rotto', 'aiuto') alle entry KB LED/circuiti base per migliorare match query 1-2 parole.",
-    "FIX (30min): Aggiungere keywords KB: 'docente', 'kit', 'materiali', 'cosa comprare' — 2 tipologie utenti (docenti e genitori) trovano match deboli.",
-    "BACKLOG: Volume audit continuare da v1-cap9-esp7 — 62/87 esperimenti non ancora auditati.",
-    "BACKLOG: Avviare worker d3-solver per analisi circuiti — file mancante."
+    "1. [URGENTE 5min] Resume Supabase: supabase.com > vxvqalmxqtezvgiboxyv > Settings > Resume Project.",
+    "2. [URGENTE 15min] Fix compilatore n8n: testare POST a /webhook/compile o verificare dashboard Hostinger per il path aggiornato.",
+    "3. [1h] Fix 7 KB entries principioZeroCompliance: aggiungere parole-analogia per 'Ho paura di sbagliare!', 'temperatura con Arduino', 'display LCD', 'organizzato il manuale'. Sblocca w2-tests.",
+    "4. [2h] Fix bug HIGH cap9-esp9 (pot2 orfano + LED singolo vs RGB) e cap10-esp1/2/3 (orphan resistors contraddiscono PDF). Impattano fedelta pedagogica.",
+    "5. [1h] Fix 4 P0 ARIA: role='dialog' + aria-modal='true' su ChatOverlay e PropertiesPanel; aria-label su close button PropertiesPanel.",
+    "6. [30min] UNLIM action-intent detection: if (/^\\s*(avvia|ferma|compila|mostra|carica|salva|cancella|riavvia|resetta)/i.test(input)) dispatch a __ELAB_API. Fix 2 GAP persistenti.",
+    "7. [30min] UNLIM: accorciare 14/18 risposte KB sopra 60 parole — regola Principio Zero.",
+    "8. RAG: aggiungere 5-10 chunk dedicati a Scratch/Blockly — gap segnalato per 2 run consecutivi."
   ],
-  "scoreEstimate": 6.9,
+  "scoreEstimate": 6.2,
   "scoreBreakdown": {
-    "tests": "9.0/10 (11450/11457 pass, 7 P0 aperti) × 0.15 = 1.35",
-    "build": "10/10 (PASS) × 0.10 = 1.00",
-    "site": "10/10 (200 OK) × 0.05 = 0.50",
-    "unlimQuality": "7.5/10 (4.1/5, 2 critical bugs unfixed) × 0.20 = 1.50",
-    "volumeAudit": "5.5/10 (25/87 = 28.7%, 47 discrepanze) × 0.15 = 0.825",
-    "userSimulation": "9.0/10 (50/50 pass, 9 warnings) × 0.10 = 0.90",
-    "uxIssues": "4.5/10 (4 P0 + 26 P1 + 4 P2 = 34 totali) × 0.10 = 0.45",
-    "apiHealth": "4.0/10 (3/6 OK, Supabase PAUSED + compiler 404) × 0.15 = 0.60",
-    "totale": "7.125 → penalità Supabase PAUSED -0.2 = 6.9",
-    "note": "Score stabile vs precedente (7.0). Nessun fix applicato sui blocker. API health critica irrisolta."
+    "build_site": "9.0/10 (PASS + 200 + 148ms veloce)",
+    "tests": "5.5/10 (4751 pass ma 7 failing + 40 SSR file + w2 BLOCKED)",
+    "volumeAudit": "5.0/10 (7 HIGH bug su 35 auditati, 40% completamento)",
+    "unlimQuality": "8.0/10 (4.0/5 score, 18/20 KB hits, 2 action GAP)",
+    "userSimulation": "10.0/10 (25/25 PASS)",
+    "uxIssues": "3.0/10 (4 P0 + 25 P1 su scan parziale)",
+    "apiHealth": "4.0/10 (Supabase + compiler down, 3/6 healthy)",
+    "solver": "9.5/10 (tutti edge case PASS, 1 issue LOW)"
   },
   "workerStatus": {
     "sentinella": "OK",
@@ -92,33 +87,13 @@
     "unlimQuality": "OK",
     "vendita": "STALE",
     "userSimulator": "OK",
-    "debuggerUx": "OK",
+    "debuggerUx": "STALE",
     "debuggerApi": "OK",
-    "debuggerSolver": "ERROR"
+    "debuggerSolver": "STALE"
   },
-  "workerNotes": {
-    "sentinella": "w1-build.json aggiornato 1.2h fa. Build PASS. 7 test P0 aperti in principioZeroCompliance. w2 BLOCCATO.",
-    "testFactory": "w2-tests.json aggiornato 0.4h fa. BLOCKED — nessun nuovo test finché i 7 P0 non vengono fixati. Total fermo a 11457.",
-    "volumeAudit": "a1-volumes.json aggiornato 0.1h fa. 25/87 auditati (+5 da run precedente). 47 discrepanze. Prossimo: v1-cap9-esp7.",
-    "unlimQuality": "a2-unlim.json aggiornato 0.1h fa. Score 4.1/5 STABILE (stesso run precedente). 2 bug critici non fixati.",
-    "vendita": "r1-vendita.json STALE (9.5h fa). Pricing confermato: €20/classe/mese (59% margine). MePA deadline 30/06/2026.",
-    "userSimulator": "t1-utenti.json aggiornato 0.1h fa. 50/50 pass (migliore del precedente 49/50). 9 warning. Gap critico: RAG Scratch/Blockly ZERO.",
-    "debuggerUx": "d1-ux.json aggiornato 0.0h fa. 34 issues (4 P0 + 26 P1 + 4 P2) — più di prima (21). Scansione più profonda (15 file).",
-    "debuggerApi": "d2-api.json aggiornato 0.0h fa. 3/6 healthy. Supabase 401 PAUSED. Compiler 404. Edge TTS VPS OK.",
-    "debuggerSolver": "d3-solver.json FILE NON TROVATO. Worker non eseguito. Analisi solver assente."
-  },
-  "changesSinceLastSync": {
-    "improvements": [
-      "t1-utenti: 50/50 pass (era 49/50 — touch target Chiara iPad risolto o scenario rivisitato)",
-      "a1-volumes: +5 esperimenti auditati (20→25)",
-      "d1-ux: scansione più profonda (15 file vs precedente)"
-    ],
-    "regressions": [],
-    "unchanged": [
-      "Supabase ancora PAUSED (401) — nessun fix applicato",
-      "Compiler ancora 404 — nessun fix applicato",
-      "UNLIM bug 'non funziona' ancora presente — nessun fix applicato",
-      "7 test falliti ancora aperti — w2 ancora BLOCKED"
-    ]
+  "staleWorkers": {
+    "vendita": "1342 minuti (22.4 ore) — dati commerciali outdated, non bloccanti",
+    "debuggerUx": "774 minuti (12.9 ore) — scan parziale 15/~30 file, dati ancora validi",
+    "debuggerSolver": "739 minuti (12.3 ore) — edge case analysis completa, dati validi"
   }
 }
