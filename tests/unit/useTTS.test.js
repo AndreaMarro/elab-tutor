@@ -68,12 +68,16 @@ describe('useTTS', () => {
     expect(result.current.isSpeaking).toBe(false);
   });
 
-  it('speak calls speechSynthesis.speak', () => {
+  it('speak calls speechSynthesis.speak', async () => {
     const { result } = renderHook(() => useTTS());
     act(() => {
       result.current.speak('Ciao bambini!');
     });
-    expect(speechSynthesis.speak).toHaveBeenCalled();
+    // speak() is async: tries server TTS first, then falls back to browser speechSynthesis
+    // Wait for the async fallback to resolve
+    await vi.waitFor(() => {
+      expect(speechSynthesis.speak).toHaveBeenCalled();
+    }, { timeout: 2000 });
   });
 
   it('stop calls speechSynthesis.cancel', () => {
