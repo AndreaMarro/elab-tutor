@@ -198,7 +198,7 @@ const VOICE_COMMANDS = [
       const all = window.__ELAB_API?.getExperimentList?.();
       const exps = [...(all?.vol1 || []), ...(all?.vol2 || []), ...(all?.vol3 || [])];
       const match = exps.find(e => e.title?.toLowerCase().includes('semafor'));
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       if (match) window.__ELAB_API?.mountExperiment?.(match.id);
     },
     feedback: 'Sto montando il semaforo!',
@@ -399,7 +399,7 @@ const VOICE_COMMANDS = [
       const chapter = chapters.find(c => c.displayChapter === num);
       if (!chapter) return;
 
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       // Find first experiment matching this chapter key
       const all = window.__ELAB_API?.getExperimentList?.();
       const volKey = `vol${volume}`;
@@ -463,8 +463,10 @@ export function matchVoiceCommand(text) {
 
   for (const cmd of VOICE_COMMANDS) {
     for (const pattern of cmd.patterns) {
-      if (normalized === pattern || (() => {
-        const re = new RegExp(`\\b${pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
+      // Normalize pattern the same way as input text (fixes apostrophe/accent mismatches)
+      const normPattern = normalize(pattern);
+      if (normalized === normPattern || (() => {
+        const re = new RegExp(`\\b${normPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
         return re.test(normalized);
       })()) {
         if (pattern.length > bestLen) {

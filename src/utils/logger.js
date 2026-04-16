@@ -8,6 +8,7 @@ const isDev = import.meta.env.DEV;
 const logger = {
     debug: (...args) => { if (isDev) console.log('[DEBUG]', ...args); },
     info: (...args) => { if (isDev) console.log('[INFO]', ...args); },
+    log: (...args) => { if (isDev) console.log('[LOG]', ...args); },
     warn: (...args) => { console.warn('[WARN]', ...args); },
     error: (...args) => { console.error('[ERROR]', ...args); },
 };

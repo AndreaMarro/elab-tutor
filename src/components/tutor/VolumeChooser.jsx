@@ -72,7 +72,7 @@ export default function VolumeChooser({ onSelectVolume, lastVolume, lastExperime
     : `Volume ${lastVolume}`;
 
   return (
-    <div className={css.overlay} role="dialog" aria-label="Scegli il volume">
+    <div className={css.overlay} role="dialog" aria-modal="true" aria-label="Scegli il volume">
       <div className={css.container}>
         {/* Mascot */}
         <div className={css.mascotRow}>

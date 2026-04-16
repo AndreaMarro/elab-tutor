@@ -62,18 +62,18 @@ export default function ManualTab({
             {/* Sub-toolbar */}
             {!isFullscreen && (
                 <div className="v4-sub-toolbar">
-                    <div className="v4-toggle-group">
-                        <button className={`v4-toggle-btn ${viewMode === 'manual' ? 'active' : ''}`} onClick={() => onSetViewMode('manual')}>Manuali</button>
-                        <button className={`v4-toggle-btn ${viewMode === 'document' ? 'active' : ''}`} onClick={() => onSetViewMode('document')}>Documenti</button>
+                    <div className="v4-toggle-group" role="group" aria-label="Modalità visualizzazione">
+                        <button className={`v4-toggle-btn ${viewMode === 'manual' ? 'active' : ''}`} onClick={() => onSetViewMode('manual')} aria-pressed={viewMode === 'manual'}>Manuali</button>
+                        <button className={`v4-toggle-btn ${viewMode === 'document' ? 'active' : ''}`} onClick={() => onSetViewMode('document')} aria-pressed={viewMode === 'document'}>Documenti</button>
                     </div>
 
-                    <input type="file" ref={docInputRef} onChange={handleDocumentUpload} accept="image/*,.pdf,.docx,.pptx,.txt,.md,.csv,.json,.xml,.ino,.c,.cpp,.py,.js,.css,.html" multiple style={{ display: 'none' }} />
-                    <button className="v4-toolbar-btn" onClick={() => docInputRef.current?.click()} title="Carica file">Carica</button>
-                    <button className="v4-toolbar-btn primary" onClick={onSendDocScreenshot} title="Invia questa pagina a UNLIM per fartela spiegare">Spiega questa pagina</button>
+                    <input type="file" ref={docInputRef} onChange={handleDocumentUpload} accept="image/*,.pdf,.docx,.pptx,.txt,.md,.csv,.json,.xml,.ino,.c,.cpp,.py,.js,.css,.html" multiple style={{ display: 'none' }} aria-label="Carica file" />
+                    <button className="v4-toolbar-btn" onClick={() => docInputRef.current?.click()} aria-label="Carica file">Carica</button>
+                    <button className="v4-toolbar-btn primary" onClick={onSendDocScreenshot} aria-label="Invia questa pagina a UNLIM per fartela spiegare">Spiega questa pagina</button>
 
                     <div className="v4-toolbar-spacer" />
 
-                    <button className="v4-toolbar-btn icon-only" onClick={onToggleFullscreen} title="Fullscreen">⛶</button>
+                    <button className="v4-toolbar-btn icon-only" onClick={onToggleFullscreen} aria-label={isFullscreen ? 'Esci da fullscreen' : 'Fullscreen'} aria-pressed={isFullscreen}><span aria-hidden="true">⛶</span></button>
                 </div>
             )}
 
@@ -115,10 +115,10 @@ export default function ManualTab({
                     {!loadingVolume && selectedVolume && volumePages[selectedVolume]?.length > 0 && (
                         <>
                             <div className="v4-page-nav">
-                                <button onClick={() => onSetCurrentDocPage(p => Math.max(0, p - 1))} disabled={currentDocPage === 0}>←</button>
-                                <input type="number" className="v4-page-input" value={currentDocPage + 1} onChange={(e) => { const p = parseInt(e.target.value) - 1; if (p >= 0 && p < volumePages[selectedVolume].length) onSetCurrentDocPage(p); }} min="1" max={volumePages[selectedVolume].length} />
+                                <button onClick={() => onSetCurrentDocPage(p => Math.max(0, p - 1))} disabled={currentDocPage === 0} aria-label="Pagina precedente"><span aria-hidden="true">←</span></button>
+                                <input type="number" className="v4-page-input" value={currentDocPage + 1} onChange={(e) => { const p = parseInt(e.target.value) - 1; if (p >= 0 && p < volumePages[selectedVolume].length) onSetCurrentDocPage(p); }} min="1" max={volumePages[selectedVolume].length} aria-label="Numero pagina" />
                                 <span className="v4-page-count">/ {volumePages[selectedVolume].length}</span>
-                                <button onClick={() => onSetCurrentDocPage(p => Math.min(volumePages[selectedVolume].length - 1, p + 1))} disabled={currentDocPage >= volumePages[selectedVolume].length - 1}>→</button>
+                                <button onClick={() => onSetCurrentDocPage(p => Math.min(volumePages[selectedVolume].length - 1, p + 1))} disabled={currentDocPage >= volumePages[selectedVolume].length - 1} aria-label="Pagina successiva"><span aria-hidden="true">→</span></button>
                                 <ZoomControls fitMode={fitMode} onSetFitMode={onSetFitMode} pdfZoom={pdfZoom} onSetPdfZoom={onSetPdfZoom} />
                             </div>
 
@@ -176,8 +176,8 @@ export default function ManualTab({
                                         onSetUploadedDocs(prev => prev.filter(d => d.id !== currentDoc.id));
                                         onSetCurrentDoc(null);
                                     }}
-                                    title="Rimuovi documento"
-                                >✕</button>
+                                    aria-label="Rimuovi documento"
+                                ><span aria-hidden="true">✕</span></button>
                             )}
                         </div>
                     )}
@@ -186,9 +186,9 @@ export default function ManualTab({
                         <>
                             {currentDoc.pages.length > 1 && (
                                 <div className="v4-page-nav">
-                                    <button onClick={() => onSetCurrentDocPage(p => Math.max(0, p - 1))} disabled={currentDocPage === 0}>←</button>
+                                    <button onClick={() => onSetCurrentDocPage(p => Math.max(0, p - 1))} disabled={currentDocPage === 0} aria-label="Pagina precedente"><span aria-hidden="true">←</span></button>
                                     <span className="v4-page-count">Pagina {currentDocPage + 1} / {currentDoc.pages.length}</span>
-                                    <button onClick={() => onSetCurrentDocPage(p => Math.min(currentDoc.pages.length - 1, p + 1))} disabled={currentDocPage >= currentDoc.pages.length - 1}>→</button>
+                                    <button onClick={() => onSetCurrentDocPage(p => Math.min(currentDoc.pages.length - 1, p + 1))} disabled={currentDocPage >= currentDoc.pages.length - 1} aria-label="Pagina successiva"><span aria-hidden="true">→</span></button>
                                     <ZoomControls fitMode={fitMode} onSetFitMode={onSetFitMode} pdfZoom={pdfZoom} onSetPdfZoom={onSetPdfZoom} />
                                 </div>
                             )}
@@ -240,7 +240,7 @@ export default function ManualTab({
 function ZoomControls({ fitMode, onSetFitMode, pdfZoom, onSetPdfZoom }) {
     return (
         <div className="v4-zoom-controls">
-            <select value={fitMode} onChange={(e) => onSetFitMode(e.target.value)}>
+            <select value={fitMode} onChange={(e) => onSetFitMode(e.target.value)} aria-label="Modalità visualizzazione">
                 <option value="width">Larghezza</option>
                 <option value="height">Altezza</option>
                 <option value="page">Pagina</option>
@@ -248,9 +248,9 @@ function ZoomControls({ fitMode, onSetFitMode, pdfZoom, onSetPdfZoom }) {
             </select>
             {fitMode === 'free' && (
                 <>
-                    <button className="v4-zoom-btn" onClick={() => onSetPdfZoom(z => Math.max(0.25, z - 0.25))}>−</button>
-                    <span className="v4-zoom-label">{Math.round(pdfZoom * 100)}%</span>
-                    <button className="v4-zoom-btn" onClick={() => onSetPdfZoom(z => Math.min(4, z + 0.25))}>+</button>
+                    <button className="v4-zoom-btn" onClick={() => onSetPdfZoom(z => Math.max(0.25, z - 0.25))} aria-label="Riduci zoom"><span aria-hidden="true">−</span></button>
+                    <span className="v4-zoom-label" aria-live="polite" aria-atomic="true">{Math.round(pdfZoom * 100)}%</span>
+                    <button className="v4-zoom-btn" onClick={() => onSetPdfZoom(z => Math.min(4, z + 0.25))} aria-label="Aumenta zoom"><span aria-hidden="true">+</span></button>
                 </>
             )}
         </div>

@@ -198,7 +198,7 @@ export function collectFullContext() {
   const elapsed = collectElapsedTime();
   if (elapsed !== null) {
     context.elapsedSeconds = elapsed;
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   }
 
   // (f) Completed experiments

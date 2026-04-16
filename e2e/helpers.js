@@ -24,6 +24,8 @@ export async function setupUser(page) {
     localStorage.setItem('elab_consent_v2', 'accepted');
     // Onboarding tooltip already seen
     localStorage.setItem('elab_onboarding_seen', 'true');
+    // Skip bentornati welcome screen in E2E (goes straight to picker)
+    localStorage.setItem('elab_skip_bentornati', 'true');
   });
 }
 
