@@ -8,6 +8,7 @@
 import { filterAIResponse } from '../utils/aiSafetyFilter';
 import { searchKnowledgeBase, searchRAGChunks } from '../data/unlim-knowledge-base';
 import { getVolumeRef } from '../data/volume-references';
+import { ensureBookCitation } from './bookCitation';
 import { getExperimentGroupContext } from '../data/lesson-groups';
 
 // URLs da variabili d'ambiente (Vite: VITE_ prefix)
@@ -197,8 +198,8 @@ async function isLocalServerAvailable() {
  * Try elab-local-server (Ollama) — lowest latency, 100% offline.
  * Returns null if unavailable — caller falls through to cloud.
  */
-async function tryLocalServer(message, circuitState, externalSignal, experimentId, images = [], simulatorContext = null) {
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+async function tryLocalServer(message, circuitState, externalSignal, experimentId, images = [], simulatorContext = null) {
     if (!await isLocalServerAvailable()) return null;
 
     try {
@@ -301,7 +302,7 @@ async function tryNanobot(message, circuitState, externalSignal, experimentId, i
             const { filtered: safeContent } = filterAIResponse(data.response);
             return {
                 success: true,
-                response: safeContent,
+                response: ensureBookCitation(safeContent, experimentId),
                 source: 'nanobot',
                 actions: extractActions(safeContent),
             };
@@ -398,8 +399,8 @@ const RATE_LIMIT = {
  *   - allowed: se il messaggio può essere inviato
  *   - message: messaggio italiano da mostrare all'utente
  *   - waitMs: millisecondi da attendere
- *
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+ *
  * @returns {{ allowed: boolean, message: string|null, waitMs: number }}
  */
 export function checkRateLimit() {
@@ -599,8 +600,8 @@ function isMessageBlocked(message) {
  * Chat con UNLIM — Fallback chain: nanobot → backend webhook → local RAG → knowledge base
  * @param {string} message - Il messaggio dell'utente
  * @param {Array} images - Array di immagini [{base64, mimeType}] (opzionale)
- */
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+ */
 export async function sendChat(message, images = [], options = {}) {
     const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null } = options;
 
@@ -732,7 +733,7 @@ export async function sendChat(message, images = [], options = {}) {
                     // Render fallback success
                     return {
                         success: true,
-                        response: renderData.response,
+                        response: ensureBookCitation(renderData.response, experimentId),
                         source: 'render-fallback',
                         actions: extractActions(renderData.response),
                     };
@@ -800,11 +801,11 @@ export async function sendChat(message, images = [], options = {}) {
                 }
 
                 const { filtered: safeContent } = filterAIResponse(content);
-
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+
                 return {
                     success: true,
-                    response: safeContent,
+                    response: ensureBookCitation(safeContent, experimentId),
                     source: 'backend-vision',
                     actions: extractActions(safeContent)
                 };
@@ -878,7 +879,7 @@ export async function sendChat(message, images = [], options = {}) {
 
         return {
             success: true,
-            response: safeContent,
+            response: ensureBookCitation(safeContent, experimentId),
             source: 'backend',
             actions: extractActions(safeContent)
         };
@@ -1001,8 +1002,8 @@ function extractActions(text, userMessage = '') {
         if (firstMatch) {
             const vol = parseInt(firstMatch[1]);
             const page = parseInt(firstMatch[2]);
-            actions.buttons.push({
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+            actions.buttons.push({
                 type: 'openPage',
                 volume: vol,
                 page: page,
@@ -1202,8 +1203,8 @@ export function preloadExperiment(experimentId) {
     }).catch(() => { }); // Fire-and-forget, non blocca mai
 }
 
-/**
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+/**
  * Warm up the Render backend to eliminate the 37s cold start.
  * Called once on app load via a lightweight HEAD request.
  * Fire-and-forget — never blocks the UI.
