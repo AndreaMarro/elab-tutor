@@ -8,6 +8,7 @@
 import { filterAIResponse } from '../utils/aiSafetyFilter';
 import { searchKnowledgeBase, searchRAGChunks } from '../data/unlim-knowledge-base';
 import { getVolumeRef } from '../data/volume-references';
+import { getExperimentGroupContext } from '../data/lesson-groups';
 
 // URLs da variabili d'ambiente (Vite: VITE_ prefix)
 // In produzione: solo backend webhook. Nessun fallback localhost.
@@ -38,17 +39,44 @@ const ALLOWED_COMPILE_BOARDS = new Set([
 const SOCRATIC_INSTRUCTION = [
     '[AUTOCOSCIENZA — Chi sei e cosa puoi fare]',
     'Sei UNLIM, tutor AI di ELAB con POTERI REALI sul simulatore. Non sei solo una chat: puoi ESEGUIRE azioni.',
-    'Accompagni studenti 8-14 anni. Rispondi SEMPRE in italiano, chiaro, concreto, entusiasta.',
+    '',
+    '[PRINCIPIO ZERO — La regola più importante di tutte]',
+    'Tu produci CONTENUTO che il docente proietta sulla LIM e la classe legge insieme.',
+    'NON ti rivolgi al docente ("fai questo"). NON ti rivolgi direttamente a uno studente.',
+    'Produci testo nel linguaggio dei ragazzi (10-14 anni) che è utile a TUTTA LA CLASSE.',
+    'Il docente guarda con la coda dell\'occhio e capisce SUBITO cosa fare — anche se è totalmente impreparato.',
+    'Se il docente non sa cosa fare, diventa PIÙ PROATTIVO: indica il prossimo passo, FAI DIRETTAMENTE la domanda alla classe.',
+    'Esempio: "Ragazzi, secondo voi cosa succede se togliamo la resistenza? Proviamo!" — UNLIM fa la domanda, i ragazzi rispondono.',
+    'I ragazzi lavorano sui kit fisici ELAB — breadboard, LED, resistori, batterie reali.',
+    'CHIUNQUE accenda ELAB Tutor deve poter fare lezione SENZA conoscenze pregresse.',
+    '',
+    'Usa le STESSE PAROLE dei volumi ELAB — cita il libro, non parafrasare.',
+    'Se ricevi [RIFERIMENTO LIBRO FISICO], CITA quella pagina: "Come dice il libro a pagina 29..."',
+    'Se ricevi [CONTESTO CAPITOLO], racconta come questo esperimento prosegue dal precedente.',
+    'Se ricevi [STORIA SESSIONI], prosegui dal punto giusto senza ripetere ciò che è già stato fatto.',
     '',
     '[REGOLA ASSOLUTA — BREVITÀ]',
     'MASSIMO 3 frasi + 1 analogia. Mai superare 60 parole. Se la risposta è più lunga, TAGLIA.',
     'I tag [AZIONE:...] NON contano nel limite parole.',
-    'Esempio buono: "Il LED è come una porta girevole: passa solo in un verso! Gira il piedino lungo verso il + della batteria. Prova! [AZIONE:highlight:led1]"',
+    'Esempio buono: "Come dice il libro a pagina 29: il LED è come una porta girevole, passa solo in un verso! Gira il piedino lungo verso il +. [AZIONE:highlight:led1]"',
     '',
-    'Fai 1 domanda guida breve, poi dai la spiegazione. Usa analogie (corrente=acqua, resistore=strettoia).',
+    '[LINGUAGGIO — Come parlare ai ragazzi 10-14 anni]',
+    'SEMPRE in italiano. SEMPRE con analogie dal mondo reale che i ragazzi conoscono.',
+    'MAI dire: "220 Ohm", "tensione di soglia", "kΩ". INVECE: "la resistenza arancione del kit", "la spinta dell\'elettricità".',
+    'MAI dare numeri tecnici senza spiegazione. "470 Ohm" diventa "il resistore giallo-viola-marrone, quello medio".',
+    'Usa METAFORE che funzionano: corrente=acqua nel tubo, resistore=strettoia, LED=porta girevole, batteria=pompa.',
+    'Il tono è da compagno di avventure: entusiasta ma non infantile. Come un amico più grande che spiega.',
+    '',
+    'Esempi BUONI:',
+    '"La corrente è come l\'acqua: scorre dal + al − della batteria, e il resistore è una strettoia che la rallenta!"',
+    '"Il LED funziona come una porta girevole: passa solo in un verso! Se non si accende, prova a girarlo."',
+    '"Come dice il libro a pagina 29, per il nostro primo esperimento ci servono un LED, una breadboard e la batteria da 9 volt."',
+    '',
+    'Esempi CATTIVI (da NON fare):',
+    '"La tensione di soglia del LED è circa 2V con una corrente di 20mA" — TROPPO TECNICO',
+    '"Collega il terminale anodico al rail positivo" — INCOMPRENSIBILE per un ragazzino',
     '',
     'RAGIONAMENTO (interno, non scriverlo): 1. CAPISCO cosa vuole? 2. POSSO farlo? 3. AGISCO o CHIEDO chiarimenti.',
-    'Se ricevi [MEMORIA STUDENTE], adatta le risposte: rinforza le aree deboli, evita ripetizioni di esperimenti già fatti, incoraggia sui punti forti.',
     '',
     'Se il messaggio è ambiguo: proponi 2-3 opzioni concrete basate sul contesto, NON dire "non ho capito".',
     'Es: "Vuoi che io: (1) avvii la simulazione, (2) evidenzi un componente, o (3) ti spieghi il circuito?"',
@@ -170,6 +198,7 @@ async function isLocalServerAvailable() {
  * Returns null if unavailable — caller falls through to cloud.
  */
 async function tryLocalServer(message, circuitState, externalSignal, experimentId, images = [], simulatorContext = null) {
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
     if (!await isLocalServerAvailable()) return null;
 
     try {
@@ -198,7 +227,6 @@ async function tryLocalServer(message, circuitState, externalSignal, experimentI
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),
                 signal: controller.signal,
-// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
             });
 
             if (!resp.ok) return null;
@@ -371,6 +399,7 @@ const RATE_LIMIT = {
  *   - message: messaggio italiano da mostrare all'utente
  *   - waitMs: millisecondi da attendere
  *
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * @returns {{ allowed: boolean, message: string|null, waitMs: number }}
  */
 export function checkRateLimit() {
@@ -399,7 +428,6 @@ export function checkRateLimit() {
         return {
             allowed: false,
             message: 'Facciamo una pausa! Riprova tra un minuto.',
-// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
             waitMs: Math.max(0, waitMs),
         };
     }
@@ -543,7 +571,7 @@ const BLOCKED_PATTERNS = [
     // Linguaggio volgare italiano (pattern parziali per catturare varianti)
     /\b(cazz|merd|fott|culo|minchi|stronz|porc[ao]\s*di|porc[ao]\s*madon|vaff|troi)/i,
     // Violenza
-    /\b(ammazzar|uccider|sparar|accoltell|bomb[ae]|esplod|terroris)/i,
+    /\b(ammaz|uccid|sparar|sparo|accoltell|bomb[ae]|esplod|terroris|pistol|coltel)/i,
     // Richieste di dati personali (protezione minori)
     /\b(numero\s*(di\s*)?telefon|indirizzo\s*(di\s*)?casa|dove\s*abiti|password|carta\s*(di\s*)?credito|codice\s*fiscal)/i,
     // Contenuti per adulti
@@ -572,6 +600,7 @@ function isMessageBlocked(message) {
  * @param {string} message - Il messaggio dell'utente
  * @param {Array} images - Array di immagini [{base64, mimeType}] (opzionale)
  */
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 export async function sendChat(message, images = [], options = {}) {
     const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null } = options;
 
@@ -600,7 +629,6 @@ export async function sendChat(message, images = [], options = {}) {
 
     try {
 
-// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
     // Nanobot message: enriched context + brevity rule
     // Webhook message: con SOCRATIC_INSTRUCTION (n8n non ha un system prompt proprio)
     const BREVITY_RULE = 'REGOLA: Rispondi in MASSIMO 3 frasi + 1 analogia. Mai superare 60 parole. I tag [AZIONE:...] non contano.';
@@ -655,6 +683,11 @@ export async function sendChat(message, images = [], options = {}) {
             if (volRef.bookContext) volLines.push(`Contesto: ${volRef.bookContext}`);
             volLines.push('Quando rispondi, cita il libro: "Come spiega il Vol. N a pagina X..."');
             contextParts.push(volLines.join('\n'));
+        }
+        // Group context: where this experiment sits in the chapter
+        const groupCtx = getExperimentGroupContext(experimentId);
+        if (groupCtx) {
+            contextParts.push(`[CONTESTO CAPITOLO] ${groupCtx.narrative}. Concetto: ${groupCtx.concept}.${groupCtx.prevExp ? ` L'esperimento precedente era ${groupCtx.prevExp}.` : ' Questo è il primo esperimento del capitolo.'}${groupCtx.nextExp ? ` Il prossimo sarà ${groupCtx.nextExp}.` : ' Questo è l\'ultimo esperimento del capitolo.'}`);
         }
     }
 
@@ -768,6 +801,7 @@ export async function sendChat(message, images = [], options = {}) {
 
                 const { filtered: safeContent } = filterAIResponse(content);
 
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
                 return {
                     success: true,
                     response: safeContent,
@@ -801,7 +835,6 @@ export async function sendChat(message, images = [], options = {}) {
         }
 
         let data;
-// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
         try {
             data = JSON.parse(responseText);
         } catch (parseError) {
@@ -969,6 +1002,7 @@ function extractActions(text, userMessage = '') {
             const vol = parseInt(firstMatch[1]);
             const page = parseInt(firstMatch[2]);
             actions.buttons.push({
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
                 type: 'openPage',
                 volume: vol,
                 page: page,
@@ -1002,7 +1036,6 @@ function extractActions(text, userMessage = '') {
         actions.commands.push({ type: 'showCode', code });
         actions.buttons.push({
             type: 'openSimulator',
-// © Andrea Marro — 15/04/2026 — ELAB Tutor — Tutti i diritti riservati
             code,
             label: 'Prova nel Simulatore'
         });
@@ -1170,6 +1203,7 @@ export function preloadExperiment(experimentId) {
 }
 
 /**
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * Warm up the Render backend to eliminate the 37s cold start.
  * Called once on app load via a lightweight HEAD request.
  * Fire-and-forget — never blocks the UI.
