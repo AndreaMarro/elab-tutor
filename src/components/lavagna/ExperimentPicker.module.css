@@ -198,7 +198,7 @@
 }
 
 .card:active {
-/* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   transform: translateY(0) scale(0.98);
   transition-duration: 80ms;
 }
@@ -399,7 +399,7 @@
 /* Lesson cards */
 .lessonHeader {
   display: flex;
-/* © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   align-items: center;
   gap: 12px;
   width: 100%;

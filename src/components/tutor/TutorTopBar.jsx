@@ -105,6 +105,7 @@ export default function TutorTopBar({
                         className="topbar-btn topbar-session-btn"
                         onClick={onExportSession}
                         title="Esporta sessione"
+                        aria-label="Esporta sessione"
                     >
                         <span className="session-dot" />
                         <span className="topbar-btn-label">Sessione</span>
@@ -115,6 +116,8 @@ export default function TutorTopBar({
                     className={`topbar-btn ${showChat ? 'active' : ''}`}
                     onClick={onToggleChat}
                     title={showChat ? 'Nascondi Chat UNLIM (Ctrl+K)' : 'Mostra Chat UNLIM (Ctrl+K)'}
+                    aria-label={showChat ? 'Nascondi Chat UNLIM' : 'Mostra Chat UNLIM'}
+                    aria-pressed={showChat}
                 >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -125,6 +128,8 @@ export default function TutorTopBar({
                     className={`topbar-btn ${isFullscreen ? 'active' : ''}`}
                     onClick={onToggleFullscreen}
                     title={isFullscreen ? 'Esci Fullscreen' : 'Fullscreen'}
+                    aria-label={isFullscreen ? 'Esci fullscreen' : 'Fullscreen'}
+                    aria-pressed={isFullscreen}
                 >
                     {isFullscreen ? (
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

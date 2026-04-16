@@ -198,7 +198,7 @@ function createPublicAPI() {
      * Get the currently selected component ID (if any)
      * @returns {string|null} component ID or null
      */
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
     getSelectedComponent() {
       return _simulatorRef?.getSelectedComponent?.() || null;
     },
@@ -331,7 +331,7 @@ function createPublicAPI() {
         ? `Componenti: ${compList.join(', ')}.`
         : 'Nessun componente attivo.';
       const wireText = conns.length > 0
-        ? ` Fili: ${conns.length} collegamento${conns.length > 1 ? 'i' : 'o'}.`
+        ? ` Fili: ${conns.length} collegament${conns.length > 1 ? 'i' : 'o'}.`
         : ' Nessun filo collegato.';
 
       return `${expName}${simStatus}${compText}${wireText}`;
@@ -399,7 +399,7 @@ function createPublicAPI() {
      * Ask UNLIM AI about the current experiment
      * @param {string} customPrompt - Optional custom prompt (overrides unlimPrompt)
      * @returns {Promise<Object>} { success, response, source }
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
      */
     async askUNLIM(customPrompt = null) {
       const exp = _simulatorRef?.getCurrentExperiment?.();
@@ -600,7 +600,7 @@ function createPublicAPI() {
      * simulation state, and last compilation result.
      * @returns {Object} Comprehensive simulator snapshot for UNLIM
      */
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
     getSimulatorContext() {
       const circuitState = _simulatorRef?.getCircuitState?.() || {};
       const compilationSnapshot = _simulatorRef?.getCompilationSnapshot?.() || {};

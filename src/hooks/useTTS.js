@@ -7,6 +7,18 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import logger from '../utils/logger';
 
+// Lazy-load server TTS (Edge TTS VPS / Kokoro) to avoid blocking initial render
+let _synthesizeSpeech = null;
+async function getServerTTS() {
+  if (!_synthesizeSpeech) {
+    try {
+      const mod = await import('../services/voiceService');
+      _synthesizeSpeech = mod.synthesizeSpeech;
+    } catch { _synthesizeSpeech = null; }
+  }
+  return _synthesizeSpeech;
+}
+
 // Voice quality ranking — higher score = better voice for kids
 const PREFERRED_VOICES = [
   { pattern: /google.*italiano/i, score: 100 },
@@ -143,8 +155,14 @@ export function useTTS() {
 
   // Pulisce l'utterance corrente e svuota la coda chunk
   const cleanup = useCallback(() => {
+    // Cancel browser speechSynthesis
     if (synthRef.current) {
       synthRef.current.cancel();
+    }
+    // Stop server TTS audio if playing
+    if (utteranceRef.current && typeof utteranceRef.current.pause === 'function') {
+      utteranceRef.current.pause();
+      utteranceRef.current.currentTime = 0;
     }
     if (safetyTimerRef.current) {
       clearTimeout(safetyTimerRef.current);
@@ -180,6 +198,7 @@ export function useTTS() {
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
       .replace(/#+\s*/g, '')
       .trim();
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   }, []);
 
   // Speak a single chunk (internal)
@@ -198,7 +217,6 @@ export function useTTS() {
       setIsPaused(false);
     };
 
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
     utterance.onerror = (event) => {
       if (event.error !== 'interrupted' && event.error !== 'canceled') {
         logger.error('TTS Error:', event.error);
@@ -254,44 +272,67 @@ export function useTTS() {
     });
   }, [speakChunk]);
 
+  // Play audio from ArrayBuffer (server TTS — Edge TTS VPS / Kokoro)
+  const playAudioBuffer = useCallback((buffer) => {
+    try {
+      const blob = new Blob([buffer], { type: 'audio/mp3' });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.volume = 0.85;
+      audio.onended = () => { URL.revokeObjectURL(url); setIsSpeaking(false); setIsPaused(false); };
+      audio.onerror = () => { URL.revokeObjectURL(url); setIsSpeaking(false); };
+      setIsSpeaking(true);
+      setIsLoading(false);
+      audio.play().catch(() => { URL.revokeObjectURL(url); setIsSpeaking(false); });
+      // Store ref so stop() can cancel it
+      utteranceRef.current = audio;
+    } catch { /* fallthrough to browser TTS */ }
+  }, []);
+
+  // Browser speechSynthesis fallback (internal)
+  const speakWithBrowser = useCallback((cleanText, options) => {
+    if (!isSupported || !selectedVoice) { setIsLoading(false); return; }
+    if (!preWarmedRef.current) preWarm();
+    const chunks = chunkText(cleanText);
+    if (chunks.length === 0) { setIsLoading(false); return; }
+    chunkQueueRef.current = chunks;
+    playNextChunk(options);
+  }, [isSupported, selectedVoice, preWarm, playNextChunk]);
+
   // Funzione principale per far parlare il testo
   const speak = useCallback((text, options = {}) => {
-    if (!isSupported || !text) return false;
-    if (!selectedVoice) {
-      pendingTextRef.current = { text, options };
-      return true;
-    }
-
-    // Pre-warm on first real speak
-    if (!preWarmedRef.current) preWarm();
+    if (!text) return false;
 
     cleanup();
     chunkQueueRef.current = [];
     setIsLoading(true);
 
-    try {
-      const cleanText = cleanForSpeech(text);
-      if (!cleanText) {
-        setIsLoading(false);
-        return false;
-      }
+    const cleanText = cleanForSpeech(text);
+    if (!cleanText) { setIsLoading(false); return false; }
 
-      // Split into natural chunks for better prosody
-      const chunks = chunkText(cleanText);
-      if (chunks.length === 0) {
-        setIsLoading(false);
-        return false;
+    // Try server TTS first (Edge TTS VPS / Kokoro — voce naturale)
+    getServerTTS().then(async (synth) => {
+      if (synth) {
+        try {
+          const audioBuffer = await synth(cleanText);
+          if (audioBuffer && audioBuffer.byteLength > 0) {
+            logger.info('[TTS] Voce naturale (server)');
+            playAudioBuffer(audioBuffer);
+            return;
+          }
+        } catch (e) {
+          logger.debug('[TTS] Server TTS non disponibile:', e.message);
+        }
       }
+      // Fallback: browser speechSynthesis
+      logger.info('[TTS] Fallback: browser speechSynthesis');
+      speakWithBrowser(cleanText, options);
+    }).catch(() => {
+      speakWithBrowser(cleanText, options);
+    });
 
-      chunkQueueRef.current = chunks;
-      playNextChunk(options);
-      return true;
-    } catch (error) {
-      logger.error('Errore TTS:', error);
-      setIsLoading(false);
-      return false;
-    }
-  }, [isSupported, selectedVoice, cleanup, cleanForSpeech, preWarm, playNextChunk]);
+    return true;
+  }, [cleanup, cleanForSpeech, playAudioBuffer, speakWithBrowser]);
 
   // Pausa/riprendi
   const togglePause = useCallback(() => {

@@ -90,7 +90,8 @@ const PotOverlay = React.memo(function PotOverlay({ value, onValueChange, onClos
             max="1000"
             value={Math.round(value * 1000)}
             onChange={(e) => onValueChange(parseInt(e.target.value) / 1000)}
-            style={{ flex: 1, accentColor: LIME }}
+            aria-label="Regola posizione potenziometro"
+            style={{ flex: 1, accentColor: LIME, minHeight: 44, height: 44, padding: '16px 0', touchAction: 'manipulation' }}
           />
           <span className={ovStyles.valueText}>
             {Math.round(value * 100)}%

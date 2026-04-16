@@ -308,7 +308,7 @@ export default function ConsentBanner() {
                 disabled={sending}
               />
               {parentEmailError && (
-                <p className={styles.emailError}>{parentEmailError}</p>
+                <p className={styles.emailError} role="alert" aria-live="assertive">{parentEmailError}</p>
               )}
               <button
                 className={styles.btnParental}

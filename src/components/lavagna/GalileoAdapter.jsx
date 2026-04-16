@@ -11,6 +11,8 @@ import ChatOverlay from '../tutor/ChatOverlay';
 import useGalileoChat from './useGalileoChat';
 const LessonPathPanel = lazy(() => import('../simulator/panels/LessonPathPanel'));
 import { getLessonPath } from '../../data/lesson-paths';
+import { getVolumeRef } from '../../data/volume-references';
+import { getExperimentGroupContext } from '../../data/lesson-groups';
 import unlimMemory from '../../services/unlimMemory';
 const ExperimentGuide = lazy(() => import('../simulator/panels/ExperimentGuide'));
 // Voice service loaded on demand (saves ~1.5MB from initial bundle)
@@ -26,6 +28,7 @@ import css from './GalileoAdapter.module.css';
 /** Embedded Percorso — 5 phases one at a time (PREPARA/MOSTRA/CHIEDI/OSSERVA/CONCLUDI). Principio Zero. */
 function EmbeddedPercorso({ experiment, onAskUNLIM }) {
   const path = getLessonPath(experiment?.id);
+  const volRef = getVolumeRef(experiment?.id);
   const [currentPhase, setCurrentPhase] = React.useState(0);
   const [sessionContext, setSessionContext] = React.useState(null);
 
@@ -134,6 +137,15 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
             <span style={PS.phaseIcon}>{phase.icon || '📋'}</span>
             <span>{phase.name}</span>
           </div>
+          {/* Book reference badge — only on first phase */}
+          {currentPhase === 0 && volRef && (
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 10, padding: '4px 10px', background: 'rgba(30,77,140,0.06)', borderRadius: 8, border: '1px solid rgba(30,77,140,0.15)' }}>
+              <span style={{ fontSize: 13 }}>📖</span>
+              <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: 11, fontWeight: 600, color: '#1E4D8C', letterSpacing: '0.5px' }}>
+                Vol. {volRef.volume}, pag. {volRef.bookPage}
+              </span>
+            </div>
+          )}
           {/* Adaptive context banner — only on first phase */}
           {currentPhase === 0 && sessionContext && (
             <div style={{ ...PS.tip, background: sessionContext.alreadyDone ? 'rgba(74,122,37,0.08)' : 'rgba(30,77,140,0.05)', borderColor: sessionContext.alreadyDone ? '#4A7A2530' : '#1E4D8C20', marginBottom: 14 }}>
@@ -189,6 +201,8 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
   const concept = experiment?.concept || '';
   const solutionHint = experiment?.solutionHint || '';
   const splitSuggestion = experiment?.splitSuggestion || '';
+  const volRef = getVolumeRef(experiment?.id);
+  const groupCtx = getExperimentGroupContext(experiment?.id);
   const [currentStep, setCurrentStep] = React.useState(-1); // -1 = intro, 0..N-1 = steps, N = osserva, N+1 = concetto
   const [showSolution, setShowSolution] = React.useState(false);
 
@@ -274,6 +288,36 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     content = (
       <div style={GS.content}>
         <div style={GS.title}>{experiment.icon || '💡'} {experiment.title}</div>
+        {groupCtx && (
+          <div style={{ textAlign: 'center', fontSize: 12, color: '#4A7A25', fontWeight: 600, fontFamily: "'Oswald', sans-serif", letterSpacing: '1px', marginBottom: 6 }}>
+            {groupCtx.narrative}
+          </div>
+        )}
+        {volRef && (
+          <div style={{ margin: '0 auto 12px', padding: '10px 14px', background: 'linear-gradient(135deg, #eff6ff, #f8fafc)', borderRadius: 12, border: '1px solid #93c5fd40', maxWidth: 340 }}>
+            <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 11, fontWeight: 600, color: '#1E4D8C', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 4 }}>
+              Vol. {volRef.volume}, pag. {volRef.bookPage}
+            </div>
+            <div style={{ fontFamily: "'Open Sans', sans-serif", fontSize: 13, color: '#555', lineHeight: 1.5 }}>
+              {volRef.chapter}
+            </div>
+            {volRef.bookText && (
+              <details style={{ marginTop: 8 }}>
+                <summary style={{ cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#1E4D8C', fontFamily: "'Oswald', sans-serif", letterSpacing: '0.5px', padding: '4px 0' }}>
+                  📖 Cosa dice il libro
+                </summary>
+                <div style={{ marginTop: 6, fontSize: 13, color: '#333', lineHeight: 1.6, fontStyle: 'italic', borderLeft: '3px solid #1E4D8C', paddingLeft: 12, background: 'rgba(30, 77, 140, 0.03)', padding: '10px 12px', borderRadius: '0 6px 6px 0' }}>
+                  {volRef.bookText}
+                </div>
+                {volRef.bookQuote && (
+                  <div style={{ marginTop: 6, fontSize: 12, color: '#666', lineHeight: 1.5, fontStyle: 'italic', textAlign: 'center', padding: '6px 10px' }}>
+                    💬 "{volRef.bookQuote}"
+                  </div>
+                )}
+              </details>
+            )}
+          </div>
+        )}
         {desc && <div style={GS.desc}>{desc}</div>}
         {!desc && <div style={GS.desc}>Pronto a iniziare? Premi Avanti per il primo passo.</div>}
         {splitSuggestion && (
@@ -291,11 +335,18 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
           <div style={GS.stepLabel}>
             <span>Passo {currentStep + 1} di {steps.length}</span>
             <span style={GS.stepLabelBar} />
+            {groupCtx && <span style={{ fontSize: 10, color: '#4A7A25', opacity: 0.8 }}>Esp. {groupCtx.position}/{groupCtx.total}</span>}
+            {volRef && <span style={{ fontSize: 11, color: '#1E4D8C', opacity: 0.7 }}>Vol. {volRef.volume}, p. {volRef.bookPage}</span>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={GS.stepNum}>{currentStep + 1}</span>
             <span style={GS.stepText}>{steps[currentStep]}</span>
           </div>
+          {volRef?.bookInstructions?.[currentStep] && (
+            <div style={{ marginTop: 12, fontSize: 13, color: '#555', lineHeight: 1.5, fontStyle: 'italic', borderLeft: '3px solid #1E4D8C20', paddingLeft: 10 }}>
+              Il libro dice: "{volRef.bookInstructions[currentStep]}"
+            </div>
+          )}
         </div>
       </div>
     );
@@ -410,7 +461,7 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
   useEffect(() => {
     if (!visible) return;
     const timer = setTimeout(() => {
-      const btn = document.querySelector('[aria-label="Espandi chat Galileo"]');
+      const btn = document.querySelector('[aria-label="Espandi chat UNLIM"]');
       if (btn) btn.click();
     }, 150);
     return () => clearTimeout(timer);
