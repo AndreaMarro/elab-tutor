@@ -75,7 +75,7 @@ serve(async (req: Request) => {
     // Try Flash first, then Flash-Lite fallback, then Brain
     try {
       result = await callGemini({
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-2.5-flash',
         systemPrompt: DIAGNOSE_PROMPT,
         message,
         maxOutputTokens: 200,
@@ -89,7 +89,7 @@ serve(async (req: Request) => {
       // Fallback to Flash-Lite
       try {
         result = await callGemini({
-          model: 'gemini-3.1-flash-lite-preview',
+          model: 'gemini-2.5-flash-lite',
           systemPrompt: DIAGNOSE_PROMPT,
           message,
           maxOutputTokens: 200,

@@ -226,7 +226,7 @@ serve(async (req: Request) => {
     const model = routeModel(safeMessage, hasImages, safeCircuitState as CircuitState | null);
 
     // 4. Determine thinking level for Pro model
-    const thinkingLevel = model === 'gemini-3.1-pro-preview' ? 'medium' : undefined;
+    const thinkingLevel = model === 'gemini-2.5-pro' ? 'medium' : undefined;
 
     // 5. Call Gemini
     let result;

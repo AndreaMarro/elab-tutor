@@ -27,15 +27,15 @@ export function routeModel(
   const hasErrors = (circuitState?.errors?.length ?? 0) > 0;
 
   // PRO (5%): vision + circuit errors, or explicit complex analysis
-  if (hasImages && hasErrors) return 'gemini-3.1-pro-preview';
-  if (PRO_KEYWORDS.test(message)) return 'gemini-3.1-pro-preview';
+  if (hasImages && hasErrors) return 'gemini-2.5-pro';
+  if (PRO_KEYWORDS.test(message)) return 'gemini-2.5-pro';
 
   // FLASH (25%): vision without errors, explanations, reasoning
-  if (hasImages) return 'gemini-3-flash-preview';
-  if (FLASH_KEYWORDS.test(message)) return 'gemini-3-flash-preview';
+  if (hasImages) return 'gemini-2.5-flash';
+  if (FLASH_KEYWORDS.test(message)) return 'gemini-2.5-flash';
 
   // FLASH-LITE (70%): everything else (greetings, quiz, hints, simple Q&A)
-  return 'gemini-3.1-flash-lite-preview';
+  return 'gemini-2.5-flash-lite';
 }
 
 /**
@@ -43,8 +43,8 @@ export function routeModel(
  */
 export function modelDisplayName(model: GeminiModel): string {
   switch (model) {
-    case 'gemini-3.1-flash-lite-preview': return 'flash-lite';
-    case 'gemini-3-flash-preview': return 'flash';
-    case 'gemini-3.1-pro-preview': return 'pro';
+    case 'gemini-2.5-flash-lite': return 'flash-lite';
+    case 'gemini-2.5-flash': return 'flash';
+    case 'gemini-2.5-pro': return 'pro';
   }
 }

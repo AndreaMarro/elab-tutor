@@ -115,7 +115,7 @@ export async function callGemini(options: GeminiOptions): Promise<GeminiResult> 
     temperature,
   };
 
-  if (thinkingLevel && model !== 'gemini-3.1-flash-lite-preview') {
+  if (thinkingLevel && model !== 'gemini-2.5-flash-lite') {
     generationConfig.thinkingConfig = { thinkingLevel };
   }
 

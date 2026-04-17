@@ -68,7 +68,7 @@ serve(async (req: Request) => {
     let result;
     try {
       result = await callGemini({
-        model: 'gemini-3.1-flash-lite-preview',
+        model: 'gemini-2.5-flash-lite',
         systemPrompt,
         message: hintMessage,
         maxOutputTokens: 150,
