@@ -12,6 +12,23 @@ export default defineConfig({
         environment: 'jsdom',
         globals: true,
         setupFiles: ['./tests/setup.js'],
+        // 18/04/2026: timeout esteso da default 5s a 15s + thread pool
+        // limitato per sopportare saturazione Mac (load avg >20) che causa
+        // flaky in full suite senza essere regressioni reali. Il test runner
+        // di default spawna N worker = CPU core; con Claude.app + altri
+        // processi di sistema, la saturazione causa timeout 5s su test che
+        // in isolamento passano in <1s. MaxThreads 4 serializza un po' di
+        // piu' ma evita la saturazione. Fix osservato: 12056/12056 PASS
+        // stabile anche su Mac carico.
+        testTimeout: 15000,
+        hookTimeout: 15000,
+        pool: 'forks',
+        poolOptions: {
+            forks: {
+                maxForks: 4,
+                minForks: 2,
+            },
+        },
         env: {
             VITE_N8N_AUTH_URL: 'https://api.elab-tutor.test/auth',
             VITE_N8N_GDPR_URL: 'https://api.elab-tutor.test/gdpr',
