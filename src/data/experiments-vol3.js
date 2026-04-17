@@ -3493,134 +3493,135 @@ void loop() {
       ]
     },
     {
+      // ────────────────────────────────────────────────────────────
+      // ALLINEATO al libro Vol3 Cap "I Pin Analogici" p.77-82
+      // (17/04/2026 TASK 5):
+      // "analogRead + Monitor Seriale" — primo programma che USA il PC
+      // per vedere i valori analogici.
+      // Il precedente contenuto (PWM con valori manuali) era utile ma
+      // NON era questo passo del libro; il libro a p.77 introduce la
+      // lettura analogica e Serial.println().
+      // ────────────────────────────────────────────────────────────
       id: "v3-cap7-esp5",
-      title: "Cap. 7 Esp. 5 - PWM con valori manuali",
-      desc: "Proviamo valori PWM specifici per capire la relazione tra numero e luminosita. 0 = spento, 64 = debole, 128 = meta, 255 = massimo.",
+      title: "Cap. 7 Esp. 5 - analogRead + Monitor Seriale",
+      bookRef: "Vol3 p.77-82 - primo analogRead con Serial",
+      desc: "Leggi il potenziometro con analogRead(A0) e stampa i numeri sul Monitor Seriale. Gira la manopola e vedi i valori 0-1023 scorrere sul PC!",
       chapter: "Capitolo 7 - I pin analogici",
-      difficulty: 1,
-      icon: "\u{1F4A1}",
+      difficulty: 2,
+      icon: "\u{1F4DF}",
       simulationMode: "avr",
       components: [
         { type: "breadboard-half", id: "bb1" },
         { type: "nano-r4", id: "nano1" },
-        { type: "resistor", id: "r1", value: 470 },
-        { type: "led", id: "led1", color: "red" }
+        { type: "potentiometer", id: "pot1", value: 10000 }
       ],
       connections: [
-        { from: "nano1:W_D5", to: "bb1:a18", color: "green" },
-        { from: "bb1:d25", to: "bb1:d27", color: "green" },
-        { from: "bb1:a28", to: "bb1:bus-bot-minus-28", color: "black" },
+        { from: "bb1:f22", to: "bb1:bus-bot-plus-22", color: "red" },
+        { from: "nano1:W_A0", to: "bb1:f23", color: "yellow" },
+        { from: "bb1:f24", to: "bb1:bus-bot-minus-24", color: "black" },
         { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
         { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" }
       ],
       pinAssignments: {
-        "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25",
-        "led1:anode": "bb1:d27", "led1:cathode": "bb1:d28"
+        "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24"
       },
-      code: `// PWM con valori manuali — prova a cambiare i numeri!
-// Pin 5 = LED PWM
+      code: `// Vol3 Cap 8 p.77-82 — Primo analogRead con Monitor Seriale
+// Gira la manopola e guarda i numeri scorrere sul PC!
 
-void setup() { pinMode(5, OUTPUT); }
+int valore = 0;  // scatolina dove salvare la lettura
+
+void setup() {
+  // Apri il canale per parlare con il PC a 9600 baud
+  Serial.begin(9600);
+}
 
 void loop() {
-  analogWrite(5, 0);    // spento
-  delay(1000);
-  analogWrite(5, 64);   // luminosita bassa
-  delay(1000);
-  analogWrite(5, 128);  // luminosita media
-  delay(1000);
-  analogWrite(5, 255);  // luminosita massima
-  delay(1000);
+  valore = analogRead(A0);       // leggo il pin A0 (0-1023)
+  Serial.println(valore);        // scrivo il numero sul PC
+  delay(200);                    // pausa: altrimenti inondo il Monitor
 }`,
       layout: {
         "nano1": { x: 230, y: 10, parentId: "bb1" },
         "bb1": { x: 280, y: 10 },
-        "r1": { x: 451.5, y: 58.75 },
-        "led1": { x: 496.5, y: 43.75 }
+        "pot1": { x: 462.75, y: 83.75 }
       },
-      concept: "Valori PWM discreti, relazione numero-luminosita",
+      concept: "analogRead, pin A0-A5, valori 0-1023, variabili int, Serial.begin, Serial.println",
       layer: "schema",
+      scratchXml: ANALOG_READ_BASE_SCRATCH,
 
-      estimatedMinutes: 15,
+      estimatedMinutes: 30,
       buildSteps: [
         {
           step: 1,
-          text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori C18 e C25",
-          componentId: "r1",
-          componentType: "resistor",
-          targetPins: { "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25" },
-          hint: "Stesso circuito dell'Es. 7.4. Stavolta testiamo valori PWM specifici."
+          text: "Prendi il potenziometro da 10k\u03A9 e posizionalo nei fori H22, H23, H24",
+          componentId: "pot1",
+          componentType: "potentiometer",
+          targetPins: { "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24" },
+          hint: "Il potenziometro ha 3 pin: un lato 5V, l'altro GND, in mezzo il segnale che cambia con la manopola."
         },
         {
           step: 2,
-          text: "Prendi il LED rosso e mettilo nei fori D27 e D28. L'anodo (+) in D27!",
-          componentId: "led1",
-          componentType: "led",
-          targetPins: { "led1:anode": "bb1:d27", "led1:cathode": "bb1:d28" },
-          hint: "Vedrai 4 livelli di luminosita: 0, 64, 128, 255."
+          text: "Collega un filo ROSSO dal foro F22 al binario + (5V)",
+          wireFrom: "bb1:f22",
+          wireTo: "bb1:bus-bot-plus-22",
+          wireColor: "red",
+          hint: "Alimenta il potenziometro con 5V."
         },
         {
           step: 3,
-          text: "Collega un filo VERDE dal foro D25 al foro D27 (ponte R1 al LED)",
-          wireFrom: "bb1:d25",
-          wireTo: "bb1:d27",
-          wireColor: "green",
-          hint: "Collega il resistore al LED."
+          text: "Collega un filo GIALLO dal pin A0 dell'Arduino al foro F23 (piedino centrale)",
+          wireFrom: "nano1:W_A0",
+          wireTo: "bb1:f23",
+          wireColor: "yellow",
+          hint: "A0 legge la tensione del piedino centrale del potenziometro: valori 0-1023."
         },
         {
           step: 4,
-          text: "Collega un filo VERDE dal pin D5 dell'Arduino al foro A18",
-          wireFrom: "nano1:W_D5",
-          wireTo: "bb1:a18",
-          wireColor: "green",
-          hint: "D5 e un pin PWM. Prova a cambiare i valori nel codice!"
+          text: "Collega un filo NERO dal foro F24 al binario GND (-)",
+          wireFrom: "bb1:f24",
+          wireTo: "bb1:bus-bot-minus-24",
+          wireColor: "black",
+          hint: "GND del potenziometro a massa."
         },
         {
           step: 5,
-          text: "Collega un filo NERO dal foro A28 al binario GND (-)",
-          wireFrom: "bb1:a28",
-          wireTo: "bb1:bus-bot-minus-28",
-          wireColor: "black",
-          hint: "Catodo del LED verso massa."
-        },
-        {
-          step: 6,
           text: "Collega un filo NERO dal pin GND dell'Arduino al binario GND (-)",
           wireFrom: "nano1:GND_R",
           wireTo: "bb1:bus-bot-minus-1",
           wireColor: "black",
-          hint: "Massa dell'Arduino."
+          hint: "Chiudi il circuito di massa dell'Arduino."
         },
         {
-          step: 7,
-          text: "Collega un filo ROSSO dal pin 5V al binario +. Osserva i 4 livelli di luminosita!",
+          step: 6,
+          text: "Collega un filo ROSSO dal pin 5V al binario +. Carica il codice e apri Strumenti > Monitor Seriale a 9600 baud!",
           wireFrom: "nano1:5V",
           wireTo: "bb1:bus-bot-plus-1",
           wireColor: "red",
-          hint: "0 = spento, 64 = debole, 128 = meta, 255 = massimo. E un dimmer digitale!"
+          hint: "Sul Monitor Seriale vedrai i numeri 0-1023 che cambiano mentre giri la manopola."
         }
       ],
-      scratchXml: PWM_MANUAL_SCRATCH,
       steps: [
-        "Usa lo stesso circuito dell'Es. 7.4 (LED su pin PWM).",
-        "Il codice mostra 4 livelli di luminosita in sequenza.",
-        "Modifica i numeri dentro analogWrite per sperimentare! Cosa succede con 10? E con 200?"
+        "Collega il potenziometro: 5V e GND agli estremi, piedino centrale ad A0.",
+        "Scrivi Serial.begin(9600) nel setup.",
+        "Nel loop: int valore = analogRead(A0); Serial.println(valore); delay(200);",
+        "Carica lo sketch e apri Strumenti > Monitor Seriale (9600 baud).",
+        "Gira la manopola: i numeri da 0 a 1023 scorrono sul PC!"
       ],
-      observe: "Il LED mostra 4 livelli di luminosita chiaramente diversi, da spento a piena potenza. 0-255 sono 256 possibili livelli: e come avere un dimmer digitale!",
-      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta esplorando i valori PWM manualmente. Incoraggialo a sperimentare: cosa succede con analogWrite(5, 1)? Si vede appena! E con 250 vs 255? Quasi nessuna differenza. La percezione umana non e lineare! Rispondi in italiano.",
+      observe: "Il Monitor Seriale mostra numeri da 0 (manopola a sinistra) a 1023 (manopola a destra). Arduino 'sente' quanto è girata la manopola e lo dice al PC. È la prima volta che Arduino parla col computer usando il Monitor Seriale!",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo l'ESPERIMENTO del Volume 3 a pagina 77: 'analogRead con Monitor Seriale'. Spiega che analogRead(A0) restituisce un numero da 0 a 1023 (10 bit di risoluzione). Il potenziometro è come un termometro della rotazione: manopola tutta a sinistra = 0, tutta a destra = 1023. Serial.begin(9600) apre il canale di comunicazione tra Arduino e PC via cavo USB; 9600 è la velocità in baud. Serial.println(valore) scrive il numero seguito da 'a capo'. Il delay(200) evita di inondare il Monitor di numeri. Cita il libro a pagina 77 (o 80/81/82). Per aprire il Monitor Seriale: Strumenti > Monitor Seriale, impostare 9600 baud in basso a destra. Rispondi in italiano semplice per ragazzi 10-14 anni.",
       quiz: [
         {
-          question: "Qual e il valore massimo che puoi usare con analogWrite?",
-          options: ["1023", "255", "100"],
+          question: "Perché scriviamo Serial.begin(9600)?",
+          options: ["Per accendere un LED", "Per aprire il canale di comunicazione Arduino ↔ PC a 9600 baud", "Per impostare il pin A0 come input"],
           correct: 1,
-          explanation: "analogWrite usa 8 bit, quindi i valori vanno da 0 (spento) a 255 (massima potenza). Sono 256 livelli possibili di luminosita!"
-        },
+          explanation: "Serial.begin(9600) apre il canale seriale: Arduino può 'parlare' col PC via USB a 9600 baud (la velocità). Nel Monitor Seriale devi impostare la stessa velocità, altrimenti vedrai caratteri strani (libro p.80)."
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+        },
         {
-          question: "Se scrivi analogWrite(5, 0), cosa succede al LED?",
-          options: ["Si accende al massimo", "Resta completamente spento", "Si accende a meta luminosita"],
+          question: "Perché serve il delay(200) nel loop?",
+          options: ["Per far girare più velocemente Arduino", "Per evitare di inondare il Monitor Seriale di numeri illeggibili", "Perché Arduino si scalda senza pausa"],
           correct: 1,
-          explanation: "Il valore 0 significa duty cycle 0%: il pin non manda mai corrente, quindi il LED resta completamente spento. E l'opposto di 255 che lo tiene sempre acceso!"
+          explanation: "Senza pausa Arduino stamperebbe migliaia di numeri al secondo e il Monitor scorrerebbe troppo veloce. Il delay(200) dà 5 letture al secondo, leggibili (libro p.81)."
         }
       ]
     },
@@ -3815,8 +3816,8 @@ void loop() {
         {
           step: 2,
           text: "Collega un filo ROSSO dal foro F22 al binario + (5V)",
-          wireFrom: "bb1:f22",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          wireFrom: "bb1:f22",
           wireTo: "bb1:bus-bot-plus-22",
           wireColor: "red",
           hint: "VCC del potenziometro al 5V."
@@ -4016,8 +4017,8 @@ void loop() {
       steps: [
         "Collega il trimmer al pin A1 (ingresso).",
         "Il pin A0 e configurato come uscita DAC a 10 bit.",
-        "analogWriteResolution(10) cambia la risoluzione da 8 bit (0-255) a 10 bit (0-1023)."
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+        "analogWriteResolution(10) cambia la risoluzione da 8 bit (0-255) a 10 bit (0-1023)."
       ],
       observe: "Il valore letto dal trimmer su A1 viene copiato direttamente sull'uscita A0. A differenza del PWM, il DAC produce una tensione vera e continua! Con un multimetro si puo misurare.",
       unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando il DAC del Nano R4. Spiega la differenza: PWM accende/spegne velocemente (onda quadra), DAC produce una tensione VERA e continua. analogWriteResolution(10) usa 10 bit = 1024 livelli (0-1023), molto piu fine degli 8 bit standard (0-255). Rispondi in italiano.",
@@ -4217,8 +4218,8 @@ void loop() {
   int valore = analogRead(A0);
   Serial.println(valore);
   delay(200);
-}`,
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+}`,
       hexFile: "/hex/v3-cap8-esp3.hex",
       scratchXml: SERIAL_SCRATCH,
       concept: "analogRead, Serial Monitor, ADC 10 bit (0-1023)",
@@ -4418,8 +4419,8 @@ void loop() {
           text: "Collega un filo ROSSO dal foro F27 al binario + (5V) - VCC POT2",
           wireFrom: "bb1:f27",
           wireTo: "bb1:bus-bot-plus-27",
-          wireColor: "red",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          wireColor: "red",
           hint: "VCC del secondo potenziometro al 5V."
         },
         {
@@ -4619,8 +4620,8 @@ void loop() {
         },
         {
           step: 8,
-          text: "Prendi il resistore R2 (470\u03A9) e posizionalo nei fori E22 e E29 - LED giallo",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          text: "Prendi il resistore R2 (470\u03A9) e posizionalo nei fori E22 e E29 - LED giallo",
           componentId: "r2",
           componentType: "resistor",
           targetPins: { "r2:pin1": "bb1:e22", "r2:pin2": "bb1:e29" },
@@ -4820,8 +4821,8 @@ void loop() {
         {
           label: "Inizializza LCD",
           description: "Trascina il blocco 'LCD Init' dalla categoria LCD Display nel Setup. I pin sono già impostati: RS=12, E=11, D4=5, D5=10, D6=3, D7=6.",
-          explanation: "Il display LCD 16x2 usa il protocollo HD44780 in modalità 4-bit. Servono 6 pin: RS (Register Select) per distinguere dati/comandi, E (Enable) per validare i dati, e D4-D7 per i 4 bit di dati. lcd.begin(16,2) dice al display le sue dimensioni.",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          explanation: "Il display LCD 16x2 usa il protocollo HD44780 in modalità 4-bit. Servono 6 pin: RS (Register Select) per distinguere dati/comandi, E (Enable) per validare i dati, e D4-D7 per i 4 bit di dati. lcd.begin(16,2) dice al display le sue dimensioni.",
           xml: `<xml xmlns="https://developers.google.com/blockly/xml"><block type="arduino_base" x="40" y="30" deletable="false"><statement name="SETUP"><block type="arduino_lcd_init"><field name="RS">12</field><field name="E">11</field><field name="D4">5</field><field name="D5">10</field><field name="D6">3</field><field name="D7">6</field><field name="COLS">16</field><field name="ROWS">2</field></block></statement></block></xml>`,
         },
         {
@@ -5021,8 +5022,8 @@ void loop() {
       layer: "schema",
       estimatedMinutes: 15,
       buildSteps: [
-        {
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+        {
           step: 1,
           text: "Prendi il servomotore e posizionalo accanto alla breadboard",
           componentId: "servo1",
@@ -5222,8 +5223,8 @@ void accendi(int idx, int ms) {
   digitalWrite(LED[idx], HIGH);
   tone(BUZZER, NOTE[idx]);
   delay(ms);
-  digitalWrite(LED[idx], LOW);
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+  digitalWrite(LED[idx], LOW);
   noTone(BUZZER);
   delay(100);
 }
@@ -5423,8 +5424,8 @@ void loop() {
         },
         {
           step: 16,
-          text: "Collega un filo NERO dal foro J30 al binario GND (−) — massa del LED giallo",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          text: "Collega un filo NERO dal foro J30 al binario GND (−) — massa del LED giallo",
           wireFrom: "bb1:j30",
           wireTo: "bb1:bus-bot-minus-30",
           wireColor: "black",
@@ -5624,8 +5625,8 @@ void loop() {
         },
         {
           step: 8,
-          text: "Compila e avvia! Il Simon mostra un LED casuale con suono — premi il pulsante giusto per confermare. Prova a espandere il gioco!",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          text: "Compila e avvia! Il Simon mostra un LED casuale con suono — premi il pulsante giusto per confermare. Prova a espandere il gioco!",
           hint: "Questa è la versione semplificata: un turno alla volta. Il codice C++ completo nella tab Arduino aggiunge la sequenza crescente!",
           explanation: "La versione Scratch è semplificata (1 turno). Il codice C++ completo aggiunge un array per memorizzare la sequenza, livelli crescenti, e Game Over con lampeggio e suono grave!",
           xml: SIMON_SCRATCH_FULL
