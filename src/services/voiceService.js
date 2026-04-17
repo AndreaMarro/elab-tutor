@@ -245,38 +245,57 @@ export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     }
 }
 
-// TTS endpoints — Kokoro (best quality) → Edge TTS proxy (HTTPS-safe) → Nanobot (last resort)
-const KOKORO_URL = 'http://localhost:8881';
+// TTS endpoints — Kokoro VPS (best quality IT, OpenAI-compat) → Edge TTS VPS → fallback
+// (17/04/2026) Kokoro-FastAPI deployato come container Docker su VPS porta 8881.
+// Espone API OpenAI-compat POST /v1/audio/speech. Voce if_sara italiana femminile.
+const KOKORO_VPS_URL = 'http://72.60.129.50:8881';
+const KOKORO_VOICE = 'if_sara'; // Italian female Sara
 const EDGE_TTS_URL = 'http://72.60.129.50:8880';
 
 /**
- * Pick the right Edge TTS endpoint for the current environment.
- * On HTTPS origins (production elabtutor.school) the plain-HTTP VPS would be
- * blocked as mixed content, so we go through the same-origin Vercel proxy
- * `/api/tts` (see api/tts.js). On HTTP localhost we hit the VPS directly
- * because Vercel dev doesn't always run the serverless function.
+ * Pick the right TTS endpoint for the current environment.
+ * HTTPS origin (produzione elabtutor.school): il VPS plain-HTTP e' bloccato
+ * come mixed content → usiamo i proxy same-origin Vercel `/api/kokoro` (primario)
+ * e `/api/tts` (fallback Edge). Su localhost HTTP dev hit diretto VPS.
  */
-function getEdgeTtsUrl(encodedText) {
+function isHttpsOrigin() {
     try {
-        if (typeof window !== 'undefined' && window.location?.protocol === 'https:') {
-            return `/api/tts?text=${encodedText}`;
-        }
-    } catch { /* SSR / node — fall through */ }
+        return typeof window !== 'undefined' && window.location?.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
+function getKokoroUrl() {
+    return isHttpsOrigin() ? '/api/kokoro' : `${KOKORO_VPS_URL}/v1/audio/speech`;
+}
+
+function getEdgeTtsUrl(encodedText) {
+    if (isHttpsOrigin()) return `/api/tts?text=${encodedText}`;
     return `${EDGE_TTS_URL}/tts?text=${encodedText}`;
 }
 
 /**
- * Send text to TTS. Chain: Kokoro (localhost) → Edge TTS (VPS/proxy) → nanobot.
+ * Send text to TTS. Chain: Kokoro VPS → Edge TTS VPS → Nanobot → browser fallback.
  * @param {string} text - text to synthesize
- * @returns {Promise<ArrayBuffer>} audio data (WAV or MP3)
+ * @returns {Promise<ArrayBuffer>} audio data (MP3)
  */
 export async function synthesizeSpeech(text) {
-    const encoded = encodeURIComponent(text.slice(0, 500));
+    const clipped = String(text || '').slice(0, 500);
+    if (!clipped) throw new Error('Empty text for TTS');
+    const encoded = encodeURIComponent(clipped);
 
-    // 1. Try Kokoro first (local, best quality Italian voice)
+    // 1. Kokoro VPS (OpenAI-compat, voce italiana naturale)
     try {
-        const resp = await fetch(`${KOKORO_URL}/tts?text=${encoded}`, {
-            signal: AbortSignal.timeout(8000),
+        const resp = await fetch(getKokoroUrl(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                input: clipped,
+                voice: KOKORO_VOICE,
+                response_format: 'mp3',
+            }),
+            signal: AbortSignal.timeout(10000),
         });
         if (resp.ok) {
             logger.debug('[Voice] Kokoro TTS success');
