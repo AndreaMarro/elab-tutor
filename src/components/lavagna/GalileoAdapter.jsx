@@ -9,6 +9,8 @@ import React, { useState, useCallback, useEffect, useRef, lazy, Suspense } from 
 import FloatingWindow from './FloatingWindow';
 import ChatOverlay from '../tutor/ChatOverlay';
 import useGalileoChat from './useGalileoChat';
+import useUnlimNudge from '../../hooks/useUnlimNudge';
+import UnlimNudgeOverlay from './UnlimNudgeOverlay';
 const LessonPathPanel = lazy(() => import('../simulator/panels/LessonPathPanel'));
 import { getLessonPath } from '../../data/lesson-paths';
 import { getVolumeRef } from '../../data/volume-references';
@@ -212,6 +214,17 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
   const totalPages = 1 + steps.length + (hasObserve ? 1 : 0) + (hasConcept ? 1 : 0);
   const pageIndex = currentStep + 1; // 0-based page (intro = 0)
 
+  // Principio Zero: UNLIM proattivo quando il docente resta fermo sullo stesso
+  // passo. Il hook traccia idle (mouse/key), step stuck, poll 15s; quando
+  // `shouldNudge` decide di agire, mostriamo l'overlay con il messaggio per
+  // la classe. Se il docente dismette, il hook nasconde il nudge per 90s.
+  const nudge = useUnlimNudge({
+    currentExperimentId: experiment?.id || null,
+    currentStepIndex: currentStep,
+    totalSteps,
+    enabled: !!experiment?.id,
+  });
+
   const GS = {
     container: { display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' },
     content: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '8px 4px' },
@@ -386,7 +399,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
   const isLast = pageIndex >= totalPages - 1;
 
   return (
-    <div style={GS.container}>
+    <div style={{ ...GS.container, position: 'relative' }}>
       {content}
       {/* Progress dots */}
       <div style={GS.progress}>
@@ -410,6 +423,14 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
           </button>
         )}
       </div>
+      {/* Proactive UNLIM nudge — Principio Zero */}
+      <UnlimNudgeOverlay
+        visible={nudge.nudge}
+        message={nudge.message}
+        priority={nudge.priority}
+        onDismiss={nudge.dismiss}
+        onAskUNLIM={onAskUNLIM}
+      />
     </div>
   );
 }
