@@ -30,16 +30,28 @@ export async function checkVoiceCapabilities() {
         result.microphone = false;
     }
 
-    // Check Edge TTS (VPS) first
-    try {
-        const edgeResp = await fetch(`${EDGE_TTS_URL}/health`, {
-            signal: AbortSignal.timeout(3000),
-        });
-        if (edgeResp.ok) {
-            result.tts = true;
-            result.stt = result.microphone; // STT uses browser SpeechRecognition
-        }
-    } catch { /* Edge TTS not available */ }
+    // Check Edge TTS (VPS) first — skipped on HTTPS origins because the VPS
+    // is plain HTTP and the CSP `connect-src` blocks mixed content with a
+    // noisy console error. In HTTPS produzione la voce passa comunque dal
+    // proxy `/api/tts` → se il proxy e' deployato, assumiamo tts disponibile.
+    const isHttps = typeof window !== 'undefined' && window.location?.protocol === 'https:';
+    if (isHttps) {
+        // In prod HTTPS assumiamo che TTS sia coperto da Kokoro + Edge proxy
+        // (vedi synthesizeSpeech fallback chain); ultimo fallback sempre
+        // speechSynthesis browser.
+        result.tts = true;
+        result.stt = result.microphone;
+    } else {
+        try {
+            const edgeResp = await fetch(`${EDGE_TTS_URL}/health`, {
+                signal: AbortSignal.timeout(3000),
+            });
+            if (edgeResp.ok) {
+                result.tts = true;
+                result.stt = result.microphone; // STT uses browser SpeechRecognition
+            }
+        } catch { /* Edge TTS not available */ }
+    }
 
     // Fallback: check nanobot voice endpoints
     if (!result.tts && NANOBOT_URL) {
@@ -198,7 +210,7 @@ export function cancelRecording() {
  * @param {AbortSignal} signal - abort signal
  * @returns {Promise<Object>}
  */
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     if (!NANOBOT_URL) {
         throw new Error('Nanobot URL non configurato');
@@ -399,5 +411,6 @@ export function stopPlayback() {
  */
 export async function playTracked(audio, format = 'audio/mpeg') {
     stopPlayback();
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
     await playAudio(audio, format);
 }

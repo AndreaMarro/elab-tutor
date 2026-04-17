@@ -182,6 +182,15 @@ async function isLocalServerAvailable() {
     if (_localServerAvailable !== null && now - _localServerCheckedAt < 60000) {
         return _localServerAvailable;
     }
+    // Skip entirely on HTTPS origins: CSP blocca localhost:8000 con errore
+    // rumoroso in console e il server locale non c'e' mai in produzione.
+    try {
+        if (typeof window !== 'undefined' && window.location?.protocol === 'https:') {
+            _localServerAvailable = false;
+            _localServerCheckedAt = now;
+            return false;
+        }
+    } catch { /* SSR */ }
     try {
         const resp = await fetch(`${LOCAL_SERVER}/health`, {
             signal: AbortSignal.timeout(2000),
@@ -198,7 +207,7 @@ async function isLocalServerAvailable() {
  * Try elab-local-server (Ollama) — lowest latency, 100% offline.
  * Returns null if unavailable — caller falls through to cloud.
  */
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 async function tryLocalServer(message, circuitState, externalSignal, experimentId, images = [], simulatorContext = null) {
     if (!await isLocalServerAvailable()) return null;
 
@@ -399,7 +408,7 @@ const RATE_LIMIT = {
  *   - allowed: se il messaggio può essere inviato
  *   - message: messaggio italiano da mostrare all'utente
  *   - waitMs: millisecondi da attendere
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
  *
  * @returns {{ allowed: boolean, message: string|null, waitMs: number }}
  */
@@ -600,7 +609,7 @@ function isMessageBlocked(message) {
  * Chat con UNLIM — Fallback chain: nanobot → backend webhook → local RAG → knowledge base
  * @param {string} message - Il messaggio dell'utente
  * @param {Array} images - Array di immagini [{base64, mimeType}] (opzionale)
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
  */
 export async function sendChat(message, images = [], options = {}) {
     const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null } = options;
@@ -801,7 +810,7 @@ export async function sendChat(message, images = [], options = {}) {
                 }
 
                 const { filtered: safeContent } = filterAIResponse(content);
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
                 return {
                     success: true,
@@ -1002,7 +1011,7 @@ function extractActions(text, userMessage = '') {
         if (firstMatch) {
             const vol = parseInt(firstMatch[1]);
             const page = parseInt(firstMatch[2]);
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
             actions.buttons.push({
                 type: 'openPage',
                 volume: vol,
@@ -1203,7 +1212,7 @@ export function preloadExperiment(experimentId) {
     }).catch(() => { }); // Fire-and-forget, non blocca mai
 }
 
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 /**
  * Warm up the Render backend to eliminate the 37s cold start.
  * Called once on app load via a lightweight HEAD request.
