@@ -9,20 +9,23 @@
   },
   "baseline": {
     "tests_original_pdr": 11983,
-    "tests_current_high_water_mark": 12039,
-    "tests_min_required": 12039,
-    "last_verified_at": "2026-04-17T11:43:00Z",
-    "last_verified_by": "interactive-session (flaky fix)",
+    "tests_current_high_water_mark": 12056,
+    "tests_min_required": 12056,
+    "last_verified_at": "2026-04-17T19:24:00Z",
+    "last_verified_by": "interactive-session (TASK 3 v3-cap6-esp1 + esp2 parity)",
     "flaky_fixed": {
       "test": "tests/unit/parallelismoVolumiReale.test.js > lessonPrepService exports > esporta prepareLesson e getLessonSummary",
       "resolution": "added explicit 10s timeout on the dynamic-import test (it(..., fn, 10_000)). Verified stable across 3 consecutive full-suite runs.",
-      "fixed_at": "2026-04-17T11:43:00Z"
+      "fixed_at": "2026-04-17T11:43:00Z",
+      "commit": "f38aacb"
     }
   },
   "iterations": {
     "builder_runs": 1,
     "auditor_runs": 0,
-    "remaining_budget": 99
+    "remaining_budget": 99,
+    "last_builder_run_at": "2026-04-17T11:32:00Z",
+    "last_builder_run_outcome": "NO_COMMIT — flaky test pre-existing (now fixed in f38aacb)"
   },
   "scoreboard": {
     "builder_commits_approved": 4,
@@ -38,7 +41,7 @@
     "avg_test_behavioral_quality": 0
   },
   "deliverables": {
-    "D1_vol3_book_alignment": {"status": "todo", "commit": null, "completed_at": null},
+    "D1_vol3_book_alignment": {"status": "partial", "commits": ["8837e32"], "completed": ["v3-cap6-esp1", "v3-cap6-esp2"], "remaining": ["v3-cap7-esp1 (TASK 4)", "v3-cap7-esp5 (TASK 5)"]},
     "D2_unlim_omniscient": {"status": "partial", "commits": ["8293e3f", "62c9702"], "remaining": ["TASK 8", "TASK 9"]},
     "D3_kokoro_tts_prod": {"status": "partial", "commits": ["927cdbd"], "blocker": "Kokoro VPS deploy richiede Andrea"},
     "D4_porcupine_eval": {"status": "done-rejected", "doc": "docs/strategia/2026-04-18-ricerca-web-validata.md", "decision": "Porcupine not suitable for production, use Web Speech API or openWakeWord"},
@@ -49,9 +52,9 @@
     "D9_dashboard_supabase": {"status": "blocked", "blocker": "credentials + schema review Andrea"}
   },
   "tasks_pdr": {
-    "completed": ["TASK 1", "TASK 2", "TASK 6", "TASK 7", "TASK 10", "TASK 11b"],
+    "completed": ["TASK 1", "TASK 2", "TASK 3", "TASK 6", "TASK 7", "TASK 10", "TASK 11b"],
     "remaining_safe": ["TASK 11a", "TASK 12"],
-    "remaining_with_risk": ["TASK 3", "TASK 4", "TASK 5"],
+    "remaining_with_risk": ["TASK 4", "TASK 5"],
     "remaining_blocked": ["TASK 8", "TASK 9", "TASK 11"]
   },
   "anti_inflation": {
@@ -72,6 +75,6 @@
     "ralph_auditor_verdict_max_entries": 50,
     "on_overflow": "oldest entries trimmed, summary moved to automa/state/ralph-archive/"
   },
-  "last_updated": "2026-04-17T11:32:00Z",
-  "updated_by": "ralph-builder-run-1"
+  "last_updated": "2026-04-17T19:35:00Z",
+  "updated_by": "interactive-session (sync post TASK 3 + flaky fix + key rotation)"
 }

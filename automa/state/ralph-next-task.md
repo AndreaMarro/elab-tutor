@@ -1,76 +1,72 @@
 # Ralph Loop — Next Task Consensus
 
-**Status:** PENDING
-**Updated by:** seed interactive session
-**Updated at:** 2026-04-18T08:55Z
+**Status:** ASSIGNED: TASK 11a
+**Updated by:** interactive-session (Andrea + Claude pilot) — sync post run-1 + TASK 3 + flaky fix
+**Updated at:** 2026-04-17T19:35Z
 
-## Regole di scelta (lette dal builder)
+## Note per il prossimo fire builder (22:12 locale)
 
-Il builder sceglie un TASK solo se soddisfa TUTTE queste condizioni:
+- **Baseline aggiornata a 12056** (non più 12039). Il flaky che aveva bloccato run-1 è stato fixato in commit `f38aacb`. Se il pre-commit hook del progetto usa ancora 11983 come baseline interna ignora — è il minimo storico. `tests_min_required` in metrics.json è ora 12056.
+- **TASK 3 è già stato chiuso** in sessione interactive (commit `8837e32`). Il builder NON deve rifarlo — deve fare TASK 11a come assegnato.
+- Se leggi questo file e vedi Status `ASSIGNED: TASK 11a`, procedi con quello. È SAFE (solo documentazione, no modifiche a file critici).
 
-1. È in `## Rimanenti` qui sotto con checkbox `[ ]`
-2. Non richiede modifiche a file critici (vedi lista sotto) — altrimenti ESCALATE ad Andrea
-3. Ha un criterio di "fatto" esprimibile in ≥3 test comportamentali misurabili
-4. Si completa in <25 minuti di lavoro focalizzato (se serve più tempo: spezza)
-5. Non ha dipendenze da infrastruttura non verificata (es. Kokoro TTS locale se non gira)
+## Istruzioni pilot (da Andrea)
+
+Il builder deve fare TASK 11a (OpenClaw/clawbot valutazione) perche' TASK 3-5 (allineamento Vol3) li faccio io in sessione interactive (richiedono lettura PDF libro + match circuit specifico che e' piu' veloce sincrono).
+
+Builder puo' dopo: se TASK 11a completato → Status tornera' PENDING e prendera' il prossimo `[ ]`.
+
+## TASK 11a — Criteri "fatto" espliciti (misurabili)
+
+Output: `docs/strategia/2026-04-18-openclaw-valutazione.md`
+
+Criteri OBBLIGATORI (tutti devono essere soddisfatti):
+
+1. **Ricerca WebSearch real-time** — il doc DEVE contenere almeno 5 URL fonte 2026 con `[titolo](url)` markdown
+2. **3+ use case ELAB concreti** valutati individualmente:
+   - A) Dev ops: Ralph Loop alert Andrea Telegram
+   - B) Docente: report fine lezione su Telegram
+   - C) Commerciale: alert Fagherazzi/Omaric quando sessione fallita
+3. **Per ogni use case**: fattibilita' tecnica + costo mese + alternative (email, Slack, Discord, push PWA) + raccomandazione **SI/NO con motivo**
+4. **Valutazione come architettura sistema** (richiesto da Andrea): OpenClaw puo' essere la spina dorsale dell'orchestrazione automi ELAB? Decisione motivata.
+5. **Honest tradeoffs section**: almeno 3 rischi/limiti espliciti
+
+Deliverable PDR: D8 (da `automa/state/ralph-mission.md`).
 
 ## File critici — intoccabili senza ESCALATE
 
-- src/components/simulator/engine/CircuitSolver.js
-- src/components/simulator/engine/AVRBridge.js
-- src/components/simulator/engine/PlacementEngine.js
-- src/components/simulator/canvas/SimulatorCanvas.jsx
-- src/components/simulator/NewElabSimulator.jsx
-- src/services/api.js (eccetto bug fix mirati <30 righe diff)
-- package.json (niente npm install autonomo)
-- vite.config.js
-- vercel.json (solo con evidenza che serve per il TASK)
+(invariato — vedi mission.md)
 
-## Completati (verificare con git log prima di riassegnare)
+## Completati
 
 - [x] TASK 1 — Drawing persistence per experimentId → commit 59e8fce
 - [x] TASK 2 — FloatingToolbar drag fix → commit 62c9702
+- [x] TASK 3 — Allinea v3-cap6-esp1 libro p.56 (+ esp2 p.57) → commit 8837e32
 - [x] TASK 6 — useUnlimNudge integration → commit 62c9702
 - [x] TASK 7 — ensureBookCitation → commit 8293e3f
 - [x] TASK 10 — Vercel /api/tts proxy → commit 927cdbd
 - [x] TASK 11b — Ricerca web validata 2026 → commit 59e8fce
+- [x] Fix flaky parallelismoVolumiReale → commit f38aacb
 
 ## Rimanenti (priorità top-down)
 
-- [ ] TASK 11a — OpenClaw valutazione doc
-  - Output: docs/strategia/2026-04-18-openclaw-valutazione.md
-  - Criteri fatto: (a) ≥3 use case ELAB valutati con fattibilità/costo/alternative (b) decisione SÌ/NO motivata per ogni use case (c) almeno 2 WebSearch references (d) ≥5 test su un nuovo openclawAdvisor.js che decide se un use case e' adatto
-  - NON richiede file critici — SAFE
-
+- [ ] TASK 11a — OpenClaw valutazione ← ASSIGNED qui al builder automatico (prossimo fire 22:12)
+- [ ] TASK 4 — Allinea v3-cap7-esp1 libro p.65 ← INTERACTIVE (Claude) prossimo
+- [ ] TASK 5 — Allinea v3-cap7-esp5 libro p.77 ← INTERACTIVE (Claude) dopo TASK 4
 - [ ] TASK 12 — Handoff doc
-  - Output: docs/plans/2026-04-19-next-session-plan.md
-  - Criteri fatto: (a) elenca TASK completati con SHA (b) elenca TASK rimanenti con effort stimato (c) include baseline test count verificato con comando (d) include score 30 criteri da commercial-readiness.json se esiste
-  - NON richiede codice — SAFE
-
-- [ ] TASK 3 — Allinea v3-cap6-esp1 a libro p.56 (LED + digitalWrite + 470Ω)
-  - Output: modifica src/data/experiments-vol3.js + eventuale lesson-paths JSON
-  - Criteri fatto: (a) components include nano-r4 + led-red + resistor-470 + breadboard (b) connections collegano D13 → anodo + catodo → resistenza → GND (c) unlimPrompt cita "pagina 56" (d) ≥5 test nuovi in tests/unit/v3Cap6Esp1ParityLibro.test.js
-  - RISCHIO: tocca data ma i CircuitSolver test potrebbero dipendere — ESCALATE se test CircuitSolver rompono
-
-- [ ] TASK 4 — Allinea v3-cap7-esp1 a libro p.65 (pulsante + digitalRead + if/else)
-  - Come TASK 3 ma pulsante + INPUT_PULLUP
-
-- [ ] TASK 5 — Allinea v3-cap7-esp5 a libro p.77 (analogRead + Serial)
-  - Come TASK 3 ma potenziometro + Serial.begin(9600)
-
-- [ ] TASK 11 — Dashboard docente dati Supabase reali — RICHIEDE Andrea per schema + auth, ESCALATE primo ciclo
-- [ ] TASK 8 — E2E Vision via Playwright MCP — RICHIEDE Andrea pre-approval tool
-- [ ] TASK 9 — E2E Voice via Playwright MCP — RICHIEDE Andrea pre-approval tool
+- [ ] TASK 11 — Dashboard docente Supabase (richiede schema review Andrea)
+- [ ] TASK 8 — E2E Vision Playwright MCP (richiede approval)
+- [ ] TASK 9 — E2E Voice Playwright MCP (richiede approval)
 
 ## Status machine
 
-- **PENDING** → builder sceglie autonomo dalla lista `[ ]` alta
-- **ASSIGNED: TASK X** → builder fa solo quello, senza scelta
-- **REVERT: <sha>** → builder esegue `git revert --no-edit <sha>`, niente altro
-- **FIX-FORWARD: <descrizione>** → builder corregge il problema e commit come "fix(ralph): <desc>"
-- **ESCALATE: <motivo>** → builder NON lavora, solo scrive log "waiting Andrea"
-- **BLOCKED-BY-AUDITOR** → builder ha avuto 2 REVERT consecutivi, aspetta Andrea
+(invariato)
 
-## Storico Status (append-only dall'auditor)
+## Storico Status (append-only)
 
 - 2026-04-18T08:55Z: PENDING (seed interactive)
+- 2026-04-17T11:32Z: PENDING + flaky_known (run-1 no commit — comportamento corretto)
+- 2026-04-17T11:43Z: flaky_fixed (commit f38aacb, baseline stabile 12039)
+- 2026-04-17T11:55Z: ASSIGNED: TASK 11a (pilot da Andrea — builder fa doc mentre Claude interactive allinea Vol3)
+- 2026-04-17T19:24Z: TASK 3 completato (commit 8837e32) — baseline 12056
+- 2026-04-17T19:35Z: sync metrics + next-task (ASSIGNED: TASK 11a confermato per prossimo fire 22:12)
