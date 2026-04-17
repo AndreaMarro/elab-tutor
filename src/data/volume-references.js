@@ -917,14 +917,15 @@ const VOLUME_REFERENCES = {
   },
   'v3-cap6-esp2': {
     volume: 3, bookPage: 57, chapter: "Capitolo 6 - I Pin Digitali: Le Dita di Arduino", chapterPage: 53,
-    bookText: "Cambia il numero di pin sia sul codice che sulla breadboard. Modifica il pin: prova a usare un pin diverso da D13.",
+    bookText: "Cambia il numero di pin sia sul codice che sulla breadboard. Modifica il pin: prova a usare un pin diverso da D13 (esempio: D8).",
     bookInstructions: [
-      "Sposta il filo del LED da D13 a un altro pin (es. D8)",
-      "Modifica il codice: pinMode(8, OUTPUT), digitalWrite(8, HIGH/LOW)",
-      "Carica e verifica che funzioni"
+      "Sposta il filo arancione dal pin D13 al pin D8 dell'Arduino Nano",
+      "Modifica il codice: pinMode(8, OUTPUT) invece di pinMode(13, OUTPUT)",
+      "Modifica digitalWrite(8, HIGH) e digitalWrite(8, LOW)",
+      "Carica e verifica che il LED lampeggi identico a prima"
     ],
-    bookQuote: null,
-    bookContext: "Lo studente impara che qualsiasi pin digitale può essere usato come OUTPUT, basta cambiare il numero nel codice e il collegamento fisico."
+    bookQuote: "Qualsiasi pin digitale può essere usato come OUTPUT — basta cambiarlo sia nel codice che fisicamente.",
+    bookContext: "Secondo esperimento del Cap. 6: generalizzazione. Lo studente impara che D13 non ha nulla di speciale come OUTPUT — qualsiasi pin digitale funziona uguale."
   },
   'v3-cap6-morse': {
     volume: 3, bookPage: 57, chapter: "Capitolo 6 - I Pin Digitali: Le Dita di Arduino", chapterPage: 53,
@@ -1001,8 +1002,8 @@ const VOLUME_REFERENCES = {
       "Collega l'altro lato del pulsante a GND",
       "Usa pinMode(2, INPUT_PULLUP) nel codice"
     ],
-    bookQuote: "Se premi il pulsante, D2 si collega a GND e Arduino legge LOW. Se non premi, Arduino legge HIGH grazie al pullup interno.",
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+    bookQuote: "Se premi il pulsante, D2 si collega a GND e Arduino legge LOW. Se non premi, Arduino legge HIGH grazie al pullup interno.",
     bookContext: "Primo esperimento con INPUT. Il capitolo spiega che Arduino ora ascolta anziché comandare: INPUT_PULLUP attiva una resistenza interna che rende stabile la lettura."
   },
   'v3-cap7-esp1': {
@@ -1202,8 +1203,8 @@ export function getVolumeRef(experimentId) {
   return VOLUME_REFERENCES[experimentId] || null;
 }
 
-/**
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+/**
  * Returns the book page number for an experiment.
  * @param {string} experimentId
  * @returns {number | null}
