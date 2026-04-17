@@ -2774,161 +2774,169 @@ void loop() {
     // CAPITOLO 7 — I pin analogici (8 esperimenti)
     // ═══════════════════════════════════════════════════
     {
-      // ────────────────────────────────────────────────────────────
-      // ALLINEATO al libro Vol3 Cap 7 p.64-69 (17/04/2026 TASK 4):
-      // "Pulsante con INPUT_PULLUP + digitalRead + if/else".
-      // Il precedente contenuto (analogRead con potenziometro) apparteneva
-      // concettualmente al Cap 8 del libro, non al Cap 7.
-      // DEBITO TECNICO: gli altri v3-cap7-espN (2-8) restano sul pin
-      // analogico (coerenti tra loro) — da rinominare Cap8 in task futuro
-      // per evitare breakage massiccio di references/tests.
-      // NB libro: "premuto = LOW" con pullup (pag 65) — sembra inverso
-      // ma la resistenza interna tiene il pin HIGH stabile, la pressione
-      // lo connette a GND portandolo a LOW.
-      // ────────────────────────────────────────────────────────────
       id: "v3-cap7-esp1",
-      title: "Cap. 7 Esp. 1 - Pulsante con INPUT_PULLUP",
-      bookRef: "Vol3 p.64-69 - ESPERIMENTO 7.3 + 7.9",
-      desc: "Premi il pulsante e il LED si accende! Usiamo digitalRead + if/else per decidere. Con INPUT_PULLUP il pulsante serve solo 1 filo verso GND (no resistenze extra).",
-      chapter: "Capitolo 7 - I pin INPUT e OUTPUT",
+      title: "Cap. 7 Esp. 1 - analogRead base",
+      desc: "Leggiamo un trimmer (potenziometro) con analogRead! Se il valore supera 511, il LED si accende. Il trimmer restituisce valori da 0 a 1023.",
+      chapter: "Capitolo 7 - I pin analogici",
       difficulty: 2,
-      icon: "\u{1F518}",
+      icon: "\u{1F39B}",
       simulationMode: "avr",
       components: [
         { type: "breadboard-half", id: "bb1" },
         { type: "nano-r4", id: "nano1" },
-        { type: "push-button", id: "btn1" },
+        { type: "potentiometer", id: "pot1", value: 10000 },
         { type: "resistor", id: "r1", value: 470 },
         { type: "led", id: "led1", color: "red" }
       ],
       connections: [
-        { from: "nano1:W_D3", to: "bb1:a18", color: "yellow" },
-        { from: "bb1:e18", to: "bb1:e20", color: "yellow" },
-        { from: "bb1:f20", to: "bb1:bus-bot-minus-20", color: "black" },
-        { from: "nano1:W_D13", to: "bb1:a25", color: "orange" },
-        { from: "bb1:c25", to: "bb1:c28", color: "green" },
-        { from: "bb1:a30", to: "bb1:bus-bot-minus-30", color: "black" },
+        { from: "bb1:f22", to: "bb1:bus-bot-plus-22", color: "red" },
+        { from: "nano1:W_A0", to: "bb1:f23", color: "yellow" },
+        { from: "bb1:f24", to: "bb1:bus-bot-minus-24", color: "black" },
+        { from: "nano1:W_D13", to: "bb1:a18", color: "orange" },
+        { from: "bb1:d25", to: "bb1:d27", color: "green" },
+        { from: "bb1:a28", to: "bb1:bus-bot-minus-28", color: "black" },
         { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
         { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" }
       ],
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       pinAssignments: {
-        "btn1:pin1": "bb1:e18", "btn1:pin2": "bb1:e20",
-        "btn1:pin3": "bb1:f18", "btn1:pin4": "bb1:f20",
-        "r1:pin1": "bb1:c25", "r1:pin2": "bb1:c28",
-        "led1:anode": "bb1:d28", "led1:cathode": "bb1:d30"
+        "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24",
+        "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25",
+        "led1:anode": "bb1:d27", "led1:cathode": "bb1:d28"
       },
-      code: `// Vol3 Cap.7 Esp.1 — Pulsante controlla LED (libro p.64-69)
-// INPUT_PULLUP: premuto = LOW (sembra inverso ma è cosi', vedi libro p.65)
-
-const int pulsante = 3;
-const int led = 13;
+      code: `// analogRead base — trimmer controlla LED on/off
+// A0 = trimmer, pin 13 = LED
 
 void setup() {
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT_PULLUP);  // scorciatoia: no resistenza esterna
+  pinMode(A0, INPUT);
+  pinMode(13, OUTPUT);
 }
 
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 void loop() {
-  if (digitalRead(pulsante) == LOW) {
-    // Pulsante PREMUTO — pullup tira il pin a GND
-    digitalWrite(led, HIGH);
-  } else {
-    // Pulsante rilasciato — pullup interno tiene pin HIGH
-    digitalWrite(led, LOW);
-  }
+  int valoreLetto = analogRead(A0);
+  if (valoreLetto > 511) { digitalWrite(13, HIGH); } else { digitalWrite(13, LOW); }
 }`,
       layout: {
         "nano1": { x: 230, y: 10, parentId: "bb1" },
         "bb1": { x: 280, y: 10 },
-        "btn1": { x: 425.25, y: 81.25 },
-        "r1": { x: 474.75, y: 58.75 },
-        "led1": { x: 504, y: 43.75 }
+        "pot1": { x: 462.75, y: 83.75 },
+        "r1": { x: 451.5, y: 58.75 },
+        "led1": { x: 496.5, y: 43.75 }
       },
-      concept: "INPUT vs OUTPUT, digitalRead, INPUT_PULLUP, if/else, 'premuto=LOW'",
+      concept: "analogRead, valori 0-1023, soglia, confronto",
       layer: "schema",
-      scratchXml: PULLUP_LED_SCRATCH,
 
       estimatedMinutes: 30,
       buildSteps: [
         {
           step: 1,
-          text: "Prendi il pulsante (4 gambe) e posizionalo a cavallo della fessura centrale nei fori E18/F18 e E20/F20",
-          componentId: "btn1",
-          componentType: "push-button",
-          targetPins: { "btn1:pin1": "bb1:e18", "btn1:pin2": "bb1:e20", "btn1:pin3": "bb1:f18", "btn1:pin4": "bb1:f20" },
-          hint: "Il pulsante va SEMPRE a cavallo della fessura centrale (libro p.63)."
+          text: "Prendi il potenziometro da 10k\u03A9 e posizionalo nei fori H22, H23, H24",
+          componentId: "pot1",
+          componentType: "potentiometer",
+          targetPins: { "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24" },
+          hint: "Il potenziometro ha 3 pin: VCC, segnale e GND. La manopola regola la tensione."
         },
         {
           step: 2,
-          text: "Collega un filo GIALLO dal pin D3 dell'Arduino al foro A18",
-          wireFrom: "nano1:W_D3",
-          wireTo: "bb1:a18",
-          wireColor: "yellow",
-          hint: "D3 leggera il pulsante con digitalRead(3)."
+          text: "Collega un filo ROSSO dal foro F22 al binario + (5V)",
+          wireFrom: "bb1:f22",
+          wireTo: "bb1:bus-bot-plus-22",
+          wireColor: "red",
+          hint: "VCC del potenziometro al 5V."
         },
         {
           step: 3,
-          text: "Collega il filo YELLOW di ponte dal foro E18 al foro E20 (collega i due lati del pulsante)",
-          wireFrom: "bb1:e18",
-          wireTo: "bb1:e20",
+          text: "Collega un filo GIALLO dal pin A0 dell'Arduino al foro F23",
+          wireFrom: "nano1:W_A0",
+          wireTo: "bb1:f23",
           wireColor: "yellow",
-          hint: "Ponte interno tra il pin segnale e il contatto verso GND."
+          hint: "Segnale del potenziometro ad A0. analogRead(A0) leggera valori 0-1023."
         },
         {
           step: 4,
-          text: "Collega un filo NERO dal foro F20 al binario GND (-). L'altro lato del pulsante va a massa",
-          wireFrom: "bb1:f20",
-          wireTo: "bb1:bus-bot-minus-20",
+          text: "Collega un filo NERO dal foro F24 al binario GND (-)",
+          wireFrom: "bb1:f24",
+          wireTo: "bb1:bus-bot-minus-24",
           wireColor: "black",
-          hint: "Con INPUT_PULLUP il pulsante basta collegarlo fra D3 e GND. Niente resistenze esterne."
+          hint: "GND del potenziometro a massa."
         },
         {
           step: 5,
-          text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori C25 e C28",
+          text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori C18 e C25",
           componentId: "r1",
           componentType: "resistor",
-          targetPins: { "r1:pin1": "bb1:c25", "r1:pin2": "bb1:c28" },
-          hint: "Il resistore protegge il LED dalla troppa corrente."
+          targetPins: { "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25" },
+          hint: "R1 protegge il LED."
         },
         {
           step: 6,
-          text: "Prendi il LED rosso e mettilo nei fori D28 e D30. L'anodo (gamba lunga) in D28!",
+          text: "Prendi il LED rosso e mettilo nei fori D27 e D28. L'anodo (+) in D27!",
           componentId: "led1",
           componentType: "led",
-          targetPins: { "led1:anode": "bb1:d28", "led1:cathode": "bb1:d30" },
-          hint: "La gamba lunga (anodo) va in D28, la corta (catodo) in D30."
+          targetPins: { "led1:anode": "bb1:d27", "led1:cathode": "bb1:d28" },
+          hint: "Il LED si accende quando il trimmer supera meta corsa (valore > 511)."
         },
         {
           step: 7,
-          text: "Collega un filo ARANCIONE dal pin D13 al foro A25, un filo VERDE dal foro C25 al foro C28 (R1→LED), un filo NERO dal foro A30 al binario GND (-). Carica il codice e PREMI il pulsante!",
-          wireFrom: "nano1:W_D13",
-          wireTo: "bb1:a25",
-          wireColor: "orange",
-          hint: "Con INPUT_PULLUP: premuto=LOW, rilasciato=HIGH. Il libro lo chiama 'inversione apparente' (p.65)."
-        }
-      ],
-      steps: [
-        "Inserisci il pulsante a cavallo della fessura centrale della breadboard.",
-        "Collega un lato del pulsante al pin D3 dell'Arduino, l'altro lato al bus GND.",
-        "Collega un LED con resistenza 470Ω al pin D13.",
-        "Carica lo sketch: pinMode(3, INPUT_PULLUP) + if (digitalRead(3) == LOW) → LED acceso.",
-        "Premi il pulsante: il LED si accende. Rilascialo: si spegne."
-      ],
-      observe: "Quando premi il pulsante il LED si accende, quando lo rilasci si spegne. Il libro (p.65) chiama questo effetto 'premuto = LOW': sembra al contrario, ma è corretto. La resistenza di pullup interna ad Arduino tiene il pin HIGH quando non premi; premendo, colleghi il pin a GND e Arduino legge LOW.",
-      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo l'ESPERIMENTO del Cap. 7 del Volume 3 a pagina 65: 'Pulsante con INPUT_PULLUP'. Spiega che INPUT_PULLUP attiva una resistenza interna che tiene il pin HIGH quando il pulsante NON è premuto. Quando il pulsante è premuto, il pin va a GND e Arduino legge LOW. Questo è il motivo per cui nel codice scriviamo `if (digitalRead(pulsante) == LOW)`: sembra inverso ma è corretto. Cita il libro a pagina 65. Se lo studente sbaglia ==  con = spiega la differenza (assegna vs confronta, libro p.68). Rispondi in italiano semplice per ragazzi 10-14 anni.",
-      quiz: [
-        {
-          question: "Con INPUT_PULLUP, quando il pulsante è PREMUTO, digitalRead restituisce:",
-          options: ["HIGH", "LOW", "Dipende dalla velocità di pressione"],
-          correct: 1,
-          explanation: "Con INPUT_PULLUP, la resistenza interna tiene il pin HIGH quando il pulsante non è premuto. Premendo, il pin si collega a GND e Arduino legge LOW. Sembra inverso ma è così (libro p.65)."
+          text: "Collega un filo VERDE dal foro D25 al foro D27 (ponte R1 al LED)",
+          wireFrom: "bb1:d25",
+          wireTo: "bb1:d27",
+          wireColor: "green",
+          hint: "Collega il resistore al LED."
         },
         {
-          question: "Perché usiamo `==` e non `=` dentro un `if`?",
-          options: ["Sono uguali, si può usare qualsiasi", "`=` assegna un valore, `==` confronta", "`==` è più veloce di `=`"],
+          step: 8,
+          text: "Collega un filo ARANCIONE dal pin D13 dell'Arduino al foro A18",
+          wireFrom: "nano1:W_D13",
+          wireTo: "bb1:a18",
+          wireColor: "orange",
+          hint: "D13 controlla il LED."
+        },
+        {
+          step: 9,
+          text: "Collega un filo NERO dal foro A28 al binario GND (-) - catodo LED",
+          wireFrom: "bb1:a28",
+          wireTo: "bb1:bus-bot-minus-28",
+          wireColor: "black",
+          hint: "Catodo del LED verso massa."
+        },
+        {
+          step: 10,
+          text: "Collega un filo NERO dal pin GND dell'Arduino al binario GND (-)",
+          wireFrom: "nano1:GND_R",
+          wireTo: "bb1:bus-bot-minus-1",
+          wireColor: "black",
+          hint: "Massa dell'Arduino."
+        },
+        {
+          step: 11,
+          text: "Collega un filo ROSSO dal pin 5V al binario +. Gira il trimmer e osserva!",
+          wireFrom: "nano1:5V",
+          wireTo: "bb1:bus-bot-plus-1",
+          wireColor: "red",
+          hint: "Superata meta corsa (511) il LED si accende. E il tuo primo sensore analogico!"
+        }
+      ],
+      scratchXml: ANALOG_READ_BASE_SCRATCH,
+      steps: [
+        "Collega il potenziometro: VCC al 5V, GND a massa, segnale al pin A0.",
+        "Collega un LED con resistore al pin 13.",
+        "Carica il codice e gira il potenziometro: superata la meta (511), il LED si accende!"
+      ],
+      observe: "Girando il potenziometro, il LED si accende quando superi la meta della rotazione (valore > 511 su 1023). E come un interruttore controllato dalla posizione della manopola!",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando analogRead per la prima volta. Spiega che i pin analogici leggono valori da 0 a 1023 (10 bit), non solo HIGH/LOW come i digitali. Il trimmer e come una manopola del volume: girandolo cambia la tensione che Arduino legge. 511 e la meta. Rispondi in italiano.",
+      quiz: [
+        {
+          question: "Qual e il range di valori che analogRead puo restituire?",
+          options: ["Da 0 a 255", "Da 0 a 1023", "Da 0 a 5"],
           correct: 1,
-          explanation: "`=` mette un valore in una variabile (es. `int led = 13`). `==` fa una domanda: 'sono uguali?'. Dentro un `if` serve una domanda, quindi `==` (libro p.68)."
+          explanation: "analogRead usa un convertitore a 10 bit, quindi restituisce valori da 0 (0 Volt) a 1023 (5 Volt). Sono 1024 livelli possibili!"
+        },
+        {
+          question: "Cosa succede quando il valore del trimmer e esattamente 511?",
+          options: ["Il LED si accende", "Il LED resta spento", "Arduino si resetta"],
+          correct: 1,
+          explanation: "Il codice dice if(valoreLetto > 511): il 511 NON e maggiore di 511, quindi la condizione e falsa e il LED resta spento. Serve almeno 512 per accenderlo!"
         }
       ]
     },
@@ -3004,6 +3012,7 @@ void loop() {
           hint: "VCC del potenziometro al 5V."
         },
         {
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 3,
           text: "Collega un filo GIALLO dal pin A0 dell'Arduino al foro F23",
           wireFrom: "nano1:W_A0",
@@ -3012,7 +3021,6 @@ void loop() {
           hint: "Segnale del potenziometro ad A0."
         },
         {
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 4,
           text: "Collega un filo NERO dal foro F24 al binario GND (-)",
           wireFrom: "bb1:f24",
@@ -3205,6 +3213,7 @@ void loop() {
         },
         {
           step: 4,
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           text: "Collega un filo NERO dal foro F24 al binario GND (-)",
           wireFrom: "bb1:f24",
           wireTo: "bb1:bus-bot-minus-24",
@@ -3213,7 +3222,6 @@ void loop() {
         },
         {
           step: 5,
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori B16 e B23 - circuito rosso",
           componentId: "r1",
           componentType: "resistor",
@@ -3406,6 +3414,7 @@ void loop() {
         "r1": { x: 451.5, y: 58.75 },
         "led1": { x: 496.5, y: 43.75 }
       },
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       concept: "analogWrite, PWM, for loop, luminosita graduale",
       layer: "schema",
 
@@ -3414,7 +3423,6 @@ void loop() {
         {
           step: 1,
           text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori C18 e C25",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           componentId: "r1",
           componentType: "resistor",
           targetPins: { "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25" },
@@ -3607,6 +3615,7 @@ void loop() {
         "Modifica i numeri dentro analogWrite per sperimentare! Cosa succede con 10? E con 200?"
       ],
       observe: "Il LED mostra 4 livelli di luminosita chiaramente diversi, da spento a piena potenza. 0-255 sono 256 possibili livelli: e come avere un dimmer digitale!",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta esplorando i valori PWM manualmente. Incoraggialo a sperimentare: cosa succede con analogWrite(5, 1)? Si vede appena! E con 250 vs 255? Quasi nessuna differenza. La percezione umana non e lineare! Rispondi in italiano.",
       quiz: [
         {
@@ -3615,7 +3624,6 @@ void loop() {
           correct: 1,
           explanation: "analogWrite usa 8 bit, quindi i valori vanno da 0 (spento) a 255 (massima potenza). Sono 256 livelli possibili di luminosita!"
         },
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
         {
           question: "Se scrivi analogWrite(5, 0), cosa succede al LED?",
           options: ["Si accende al massimo", "Resta completamente spento", "Si accende a meta luminosita"],
@@ -3808,6 +3816,7 @@ void loop() {
           step: 1,
           text: "Prendi il potenziometro da 10k\u03A9 e posizionalo nei fori H22, H23, H24",
           componentId: "pot1",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           componentType: "potentiometer",
           targetPins: { "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24" },
           hint: "Il trimmer controlla la luminosita del LED in tempo reale!"
@@ -3816,7 +3825,6 @@ void loop() {
           step: 2,
           text: "Collega un filo ROSSO dal foro F22 al binario + (5V)",
           wireFrom: "bb1:f22",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireTo: "bb1:bus-bot-plus-22",
           wireColor: "red",
           hint: "VCC del potenziometro al 5V."
@@ -4009,6 +4017,7 @@ void loop() {
           wireFrom: "nano1:5V",
           wireTo: "bb1:bus-bot-plus-1",
           wireColor: "red",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "analogWriteResolution(10) usa 1024 livelli. DAC e diverso dal PWM: tensione continua!"
         }
       ],
@@ -4017,7 +4026,6 @@ void loop() {
         "Collega il trimmer al pin A1 (ingresso).",
         "Il pin A0 e configurato come uscita DAC a 10 bit.",
         "analogWriteResolution(10) cambia la risoluzione da 8 bit (0-255) a 10 bit (0-1023)."
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       ],
       observe: "Il valore letto dal trimmer su A1 viene copiato direttamente sull'uscita A0. A differenza del PWM, il DAC produce una tensione vera e continua! Con un multimetro si puo misurare.",
       unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando il DAC del Nano R4. Spiega la differenza: PWM accende/spegne velocemente (onda quadra), DAC produce una tensione VERA e continua. analogWriteResolution(10) usa 10 bit = 1024 livelli (0-1023), molto piu fine degli 8 bit standard (0-255). Rispondi in italiano.",
@@ -4210,6 +4218,7 @@ void loop() { Serial.println("Ciao dal Team di ELAB!"); }`,
 // Potenziometro su A0, stampa valore 0-1023
 
 void setup() {
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   Serial.begin(9600);
 }
 
@@ -4218,7 +4227,6 @@ void loop() {
   Serial.println(valore);
   delay(200);
 }`,
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       hexFile: "/hex/v3-cap8-esp3.hex",
       scratchXml: SERIAL_SCRATCH,
       concept: "analogRead, Serial Monitor, ADC 10 bit (0-1023)",
@@ -4411,6 +4419,7 @@ void loop() {
           wireFrom: "bb1:f24",
           wireTo: "bb1:bus-bot-minus-24",
           wireColor: "black",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "GND del primo potenziometro a massa."
         },
         {
@@ -4419,7 +4428,6 @@ void loop() {
           wireFrom: "bb1:f27",
           wireTo: "bb1:bus-bot-plus-27",
           wireColor: "red",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "VCC del secondo potenziometro al 5V."
         },
         {
@@ -4612,6 +4620,7 @@ void loop() {
         {
           step: 7,
           text: "Collega un filo VERDE dal foro D23 al foro D25 (ponte R1 al LED rosso)",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireFrom: "bb1:d23",
           wireTo: "bb1:d25",
           wireColor: "green",
@@ -4620,7 +4629,6 @@ void loop() {
         {
           step: 8,
           text: "Prendi il resistore R2 (470\u03A9) e posizionalo nei fori E22 e E29 - LED giallo",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           componentId: "r2",
           componentType: "resistor",
           targetPins: { "r2:pin1": "bb1:e22", "r2:pin2": "bb1:e29" },
@@ -4813,6 +4821,7 @@ void loop() {
   // Nulla da fare nel loop
 }`,
       hexFile: "/hex/v3-extra-lcd-hello.hex",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       // S112: scratchXml = complete LCD Hello World program
       scratchXml: `<xml xmlns="https://developers.google.com/blockly/xml"><block type="arduino_base" x="40" y="30" deletable="false"><statement name="SETUP"><block type="arduino_lcd_init"><field name="RS">12</field><field name="E">11</field><field name="D4">5</field><field name="D5">10</field><field name="D6">3</field><field name="D7">6</field><field name="COLS">16</field><field name="ROWS">2</field><next><block type="arduino_lcd_set_cursor"><field name="COL">0</field><field name="ROW">0</field><next><block type="arduino_lcd_print"><value name="TEXT"><shadow type="text"><field name="TEXT">Hello World!</field></shadow></value><next><block type="arduino_lcd_set_cursor"><field name="COL">0</field><field name="ROW">1</field><next><block type="arduino_lcd_print"><value name="TEXT"><shadow type="text"><field name="TEXT">ELAB Simulator</field></shadow></value></block></next></block></next></block></next></block></next></block></statement></block></xml>`,
       // S111: LCD Blockly blocks — full Scratch support
@@ -4821,7 +4830,6 @@ void loop() {
           label: "Inizializza LCD",
           description: "Trascina il blocco 'LCD Init' dalla categoria LCD Display nel Setup. I pin sono già impostati: RS=12, E=11, D4=5, D5=10, D6=3, D7=6.",
           explanation: "Il display LCD 16x2 usa il protocollo HD44780 in modalità 4-bit. Servono 6 pin: RS (Register Select) per distinguere dati/comandi, E (Enable) per validare i dati, e D4-D7 per i 4 bit di dati. lcd.begin(16,2) dice al display le sue dimensioni.",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           xml: `<xml xmlns="https://developers.google.com/blockly/xml"><block type="arduino_base" x="40" y="30" deletable="false"><statement name="SETUP"><block type="arduino_lcd_init"><field name="RS">12</field><field name="E">11</field><field name="D4">5</field><field name="D5">10</field><field name="D6">3</field><field name="D7">6</field><field name="COLS">16</field><field name="ROWS">2</field></block></statement></block></xml>`,
         },
         {
@@ -5014,6 +5022,7 @@ void loop() {
           label: "Oscillazione completa",
           description: "Aggiungi un altro 'Servo.write' con angolo 180 e un altro 'Attendi 1000ms'. Il braccio oscillerà avanti e indietro! Compila e osserva.",
           explanation: "Il servo ora oscilla tra 0° e 180° — è come un tergicristallo! La versione C++ usa un ciclo for con delay(15) per ogni grado, creando un movimento fluido. Con i blocchi facciamo un salto netto che è comunque visibile e istruttivo.",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           xml: SERVO_SCRATCH,
         },
       ],
@@ -5022,7 +5031,6 @@ void loop() {
       estimatedMinutes: 15,
       buildSteps: [
         {
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 1,
           text: "Prendi il servomotore e posizionalo accanto alla breadboard",
           componentId: "servo1",
@@ -5215,6 +5223,7 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     digitalWrite(LED[i], LOW);
   }
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   delay(500);
 }
 
@@ -5223,7 +5232,6 @@ void accendi(int idx, int ms) {
   tone(BUZZER, NOTE[idx]);
   delay(ms);
   digitalWrite(LED[idx], LOW);
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   noTone(BUZZER);
   delay(100);
 }
@@ -5416,6 +5424,7 @@ void loop() {
         {
           step: 15,
           text: "Collega un filo GIALLO dal pin D12 al foro F22 (ingresso resistore R4)",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireFrom: "nano1:W_D12",
           wireTo: "bb1:f22",
           wireColor: "yellow",
@@ -5424,7 +5433,6 @@ void loop() {
         {
           step: 16,
           text: "Collega un filo NERO dal foro J30 al binario GND (−) — massa del LED giallo",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireFrom: "bb1:j30",
           wireTo: "bb1:bus-bot-minus-30",
           wireColor: "black",
@@ -5617,6 +5625,7 @@ void loop() {
         },
         {
           step: 7,
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           text: "Aggiungi 4 blocchi 'Se' per leggere i pulsanti: se 'Leggi pin 3' = 0 allora accendi LED rosso + suona Do + stampa 'Rosso premuto!'",
           hint: "Con INPUT_PULLUP, il pulsante premuto dà 0 (LOW). Il giocatore vede e sente quale pulsante ha premuto!",
           explanation: "digitalRead() legge lo stato del pin: con INPUT_PULLUP, il pulsante premuto dà 0 (LOW) e rilasciato dà 1 (HIGH). Serial.println() stampa sul Monitor Seriale per il debug.",
@@ -5625,7 +5634,6 @@ void loop() {
         {
           step: 8,
           text: "Compila e avvia! Il Simon mostra un LED casuale con suono — premi il pulsante giusto per confermare. Prova a espandere il gioco!",
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "Questa è la versione semplificata: un turno alla volta. Il codice C++ completo nella tab Arduino aggiunge la sequenza crescente!",
           explanation: "La versione Scratch è semplificata (1 turno). Il codice C++ completo aggiunge un array per memorizzare la sequenza, livelli crescenti, e Game Over con lampeggio e suono grave!",
           xml: SIMON_SCRATCH_FULL
