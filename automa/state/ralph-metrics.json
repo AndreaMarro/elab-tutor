@@ -11,19 +11,24 @@
     "tests_original_pdr": 11983,
     "tests_current_high_water_mark": 12039,
     "tests_min_required": 12039,
-    "last_verified_at": "2026-04-18T08:45:00Z",
-    "last_verified_by": "interactive-session"
+    "last_verified_at": "2026-04-17T11:43:00Z",
+    "last_verified_by": "interactive-session (flaky fix)",
+    "flaky_fixed": {
+      "test": "tests/unit/parallelismoVolumiReale.test.js > lessonPrepService exports > esporta prepareLesson e getLessonSummary",
+      "resolution": "added explicit 10s timeout on the dynamic-import test (it(..., fn, 10_000)). Verified stable across 3 consecutive full-suite runs.",
+      "fixed_at": "2026-04-17T11:43:00Z"
+    }
   },
   "iterations": {
-    "builder_runs": 0,
+    "builder_runs": 1,
     "auditor_runs": 0,
-    "remaining_budget": 100
+    "remaining_budget": 99
   },
   "scoreboard": {
     "builder_commits_approved": 4,
     "builder_commits_reverted": 0,
     "builder_commits_fix_forward": 0,
-    "builder_no_commits": 0,
+    "builder_no_commits": 1,
     "builder_escalates": 0,
     "auditor_approved": 0,
     "auditor_rubber_stamps_streak": 0,
@@ -67,6 +72,6 @@
     "ralph_auditor_verdict_max_entries": 50,
     "on_overflow": "oldest entries trimmed, summary moved to automa/state/ralph-archive/"
   },
-  "last_updated": "2026-04-18T08:55:00Z",
-  "updated_by": "interactive-session-seed"
+  "last_updated": "2026-04-17T11:32:00Z",
+  "updated_by": "ralph-builder-run-1"
 }

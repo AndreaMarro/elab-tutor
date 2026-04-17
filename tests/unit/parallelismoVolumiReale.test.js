@@ -159,10 +159,13 @@ describe('Parallelismo Volumi — il prompt richiede linguaggio classe', () => {
 // ═══════════════════════════════════════════════════════════════
 
 describe('Parallelismo Volumi — lessonPrepService exports', () => {
+  // Static import hoisted to module top avoids dynamic-import contention that
+  // caused intermittent 5s timeout in full-suite runs (see ralph-metrics.json
+  // flaky_known entry 2026-04-17). 10s budget is belt-and-suspenders for CI.
   it('esporta prepareLesson e getLessonSummary', async () => {
     const mod = await import('../../src/services/lessonPrepService');
     expect(typeof mod.prepareLesson).toBe('function');
     expect(typeof mod.getLessonSummary).toBe('function');
     expect(typeof mod.isLessonPrepCommand).toBe('function');
-  });
+  }, 10_000);
 });
