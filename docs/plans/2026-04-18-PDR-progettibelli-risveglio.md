@@ -60,7 +60,18 @@ Nessuna PR tua attualmente aperta. Le 27 che hai fatto sono tutte MERGED. Tea ha
 
 ## Macro-obiettivo scelto (UNO solo)
 
-Andrea ha 3 scelte da proporti. Lui deciderà prima di lanciarti. Default proposto: **Opzione A** (massimo impatto, rischio basso).
+Andrea ha 3 scelte da proporti. Lui deciderà prima di lanciarti.
+
+**Raccomandazione CoV-verificata (18/04 02:15):**
+Dopo analisi fredda di impatto × rischio × reperibilità dati:
+
+| Opzione | Impatto PNRR | Rischio regressione | Reperibilità dati | Verdetto |
+|---------|--------------|----------------------|-------------------|----------|
+| A - Dashboard | ★★★★★ (blocca vendite B2B) | basso (no engine) | alto (schema Supabase esiste) | **PREFERITA** |
+| B - Cap 9 buzzer | ★★ (contenuto marginale) | medio (tocca AVRBridge se `tone()` non supportato) | alto (sketch ufficiali) | secondaria |
+| C - UNLIM memory | ★★★ (retention) | medio (schema DB da creare) | medio (richiede admin Andrea) | terza scelta |
+
+**Default: Opzione A**. Se Andrea vuole stretching engine skills → B; se vuole retention play → C.
 
 ### OPZIONE A — "Dashboard Docente con dati Supabase reali" (preferita)
 
@@ -144,6 +155,29 @@ Andrea ha 3 scelte da proporti. Lui deciderà prima di lanciarti. Default propos
 5. Endpoint Edge Function `unlim-memory-sync` se serve (opzionale, meglio client-side direct)
 
 **Rischio**: tocca schema DB Supabase → richiede credentials admin. Andrea deve eseguire migration.
+
+---
+
+## Infrastruttura Triade disponibile (18/04 03:00, commit `3c98266` su elab-tutor)
+
+Prima di cominciare, sappi che Andrea ha appena pushato su `elab-tutor` una nuova orchestration layer. Se lavori su `elabtutor` (tuo repo), puoi o (a) pull da `elab-tutor` per allinearti, o (b) ignorarla e lavorare solo con regole ferree standard. Se la usi:
+
+- **`automa/baseline-tests.txt`** = hard floor (oggi 12056). Se il tuo commit fa scendere sotto → revert automatico.
+- **`scripts/benchmark.cjs --fast --write`** = score oggettivo 0-10 su 10 metriche (test_count, build_size, e2e_pass_rate, volume_ref_coverage, dashboard_live, unlim_latency_p95, git_hygiene, documentation, accessibility_wcag, worker_uptime). Run all'inizio e alla fine: scrivi il delta nella PR.
+- **`scripts/guard-critical-files.sh`** = blocca modifiche a CircuitSolver/AVRBridge/PlacementEngine/SimulatorCanvas/package.json/vite.config.js. Bypass: `authorized-engine-change` nel commit body (USA SOLO se necessario per Opzione B).
+- **`.claude/agents/{planner,generator-app,generator-test,evaluator}.md`** = 4 agent specs della triade. NON sei tu — tu sei progettibelli-go indipendente, ma puoi ispirarti al modello Evaluator (pessimismo forzato: "3 cose che potrebbero essere rotte") per la tua self-review.
+- **`automa/tasks/pending/ATOM-*.md`** = atomic task queue del planner CLI. NON li consumare tu — quelli sono per la triade CLI di Andrea. Tu lavori UN macro-obiettivo scelto.
+
+**Se pull da `elab-tutor`**, il tuo flow diventa:
+```bash
+# Inizio sessione
+node scripts/benchmark.cjs --fast --write  # baseline
+# ... tuo lavoro ...
+node scripts/benchmark.cjs --fast --write  # finale
+cat automa/state/benchmark.json | jq '{score, delta}'  # delta da mettere in PR
+```
+
+Se il delta è negativo → hai regredito su qualche metrica. Indaga prima di chiudere PR.
 
 ---
 
@@ -285,11 +319,12 @@ Committi lo stato parziale. Apri PR "DRAFT" con titolo `[WIP-BLOCKED] <descrizio
 
 - **1 sola PR** aperta su `elabtutor` repo (NON 10+)
 - Branch `feature/progettibelli-macro-<opzione>` con 15-30 commit atomici
-- Benchmark oggettivo eseguito pre/post (se `scripts/benchmark.cjs` esiste già sul repo, altrimenti skip)
+- Benchmark oggettivo pre/post via `node scripts/benchmark.cjs --fast --write` (script ora presente dal commit `3c98266` su `elab-tutor`; se su `elabtutor` manca, pull da `elab-tutor` o skip)
+- Delta benchmark atteso: **>= +1.0 punti** sul weighted score 0-10 (baseline 2.77 fast mode del 18/04)
 - Report stress test 50 scenari
 - Doc utente scritta
 - `automa/state/progettibelli-session.md` aggiornato a 100% o con blocchi esplicitati
-- `docs/HISTORY.md` aggiornato (numeri verificati)
+- `docs/HISTORY.md` aggiornato (numeri verificati, CoV-compliant)
 
 ## Cosa NON deliverare
 
@@ -350,10 +385,17 @@ Sei un agent Claude Agent SDK collegato al repository AndreaMarro/elabtutor. Le 
 
 ## Output atteso fine sessione
 - 1 PR aperta con 15-30 commit
-- 15+ test nuovi comportamentali
+- 15+ test nuovi comportamentali (ognuno con almeno 1 expect comportamentale, NO test smoke vuoti)
 - Stress test 50 scenari eseguito (report)
 - Doc utente scritta
 - automa/state/progettibelli-session.md 100% o blocchi esplicitati
+- Se ti sei allineato a elab-tutor (commit 3c98266+): benchmark delta documentato in PR body via `node scripts/benchmark.cjs --fast --write`
+
+## Anti-inflation (CoV obbligatoria)
+- Ogni claim numerico nel commit message DEVE essere preceduto da comando di verifica.
+  Esempio: "Test: 12106/12106 PASS" ⇒ DEVI aver appena fatto girare `npx vitest run` e mostrato l'output (anche solo `tail -3`).
+- VIETATI: numeri arrotondati a tema marketing ("oltre 1000 test"), aggettivi auto-laudativi nel commit, claim su feature non testate.
+- Se hai inventato anche solo un numero → revert + commit fix con disclaimer.
 
 ONESTÀ RIGOROSA. NESSUN NUMERO INFLAZIONATO. CLAIM SOLO CON FONTE VERIFICATA.
 
