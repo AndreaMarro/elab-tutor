@@ -32,11 +32,16 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Node 22 required: Node 20 + npm ci has known bug where optional
+          # native deps (lightningcss-linux-x64-gnu) silently skip install on
+          # Linux runners, causing vite build to fail at postcss plugin load
+          # AND vitest test collection to silently drop ~123 test files.
+          # deploy.yml uses Node 22 successfully.
+          node-version: '22'
           cache: 'npm'
 
       - name: Install deps
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Regola 1 - Pre-Audit presente
         id: rule1

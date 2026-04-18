@@ -23,14 +23,19 @@ export function AuthProvider({ children }) {
 
         async function initAuth() {
             // ── E2E override: localStorage user bypasses real auth ──
-            try {
-                const e2eRaw = localStorage.getItem('elab_e2e_user');
-                if (e2eRaw) {
-                    const e2eUser = JSON.parse(e2eRaw);
-                    if (!cancelled) { setUser(e2eUser); setHasLicense(true); setLoading(false); }
-                    return;
-                }
-            } catch { /* ignore malformed */ }
+            // SECURITY: gate behind DEV/test mode only. In PROD, any visitor
+            // could set `elab_e2e_user` in DevTools and become admin.
+            // Dead-code elimination by Vite removes this block from prod bundle.
+            if (import.meta.env.DEV || import.meta.env.MODE === 'test') {
+                try {
+                    const e2eRaw = localStorage.getItem('elab_e2e_user');
+                    if (e2eRaw) {
+                        const e2eUser = JSON.parse(e2eRaw);
+                        if (!cancelled) { setUser(e2eUser); setHasLicense(true); setLoading(false); }
+                        return;
+                    }
+                } catch { /* ignore malformed */ }
+            }
 
             // ── Supabase path: se configurato, controlla sessione Supabase ──
             if (isSupabaseConfigured()) {
