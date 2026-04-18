@@ -1,201 +1,296 @@
-# 🚀 LAUNCH INSTRUCTIONS (v2 — GitHub Actions, Mac chiuso OK)
+# 🚀 LAUNCH INSTRUCTIONS v3 — Claude Code Web Routines (winner)
 
 **Data**: 18/04/2026
 **Per**: Andrea Marro
 **Stima tempo tuo attivo**: ~20 min, poi Mac chiuso
+**Costo extra**: €0 (incluso Max ×2)
 
 ---
 
-## 📋 Perché GitHub Actions (onestà)
+## 🎯 Perché Claude Code Web Routines vince
 
-La prima versione LAUNCH prevedeva Claude Code Channels + Routines CLI. Verificato in session live:
-- `/telegram:configure` → **Unknown command** in CLI 2.1.114
-- `CronCreate` → fire solo quando REPL attivo (Mac deve stare acceso)
+Verifica live sul tuo browser: **Routines** è accessibile nella sidebar di claude.ai/code. Significa:
+- ✅ Gira in cloud Anthropic (Mac chiuso OK)
+- ✅ Incluso Max (€0 extra vs GitHub Actions €60-150/mese API key)
+- ✅ Stesso Opus 4.7 del CLI
+- ✅ 15 routines/giorno × 2 Max = **30 fire/giorno totali**
+- ✅ GitHub integration nativa
 
-Strada reale che permette Mac chiuso: **GitHub Actions** con:
-- Cron schedule (GitHub runner gira indipendentemente)
-- `anthropics/claude-code-action@v1` esegue PDR con API key
-- Telegram notifications via Bot API diretta
-- Commit+push da runner
-
-Costo API stimato: ~€15-50/weekend a seconda di quante routine girano.
+GitHub Actions `routines-orchestrator.yml` resta **committato** come **backup** se servirà più throughput o un task cade.
 
 ---
 
-## ⏱ Step 1 — Crea Anthropic API Key (5 min)
+## ⏱ Step 1 — Apri Claude Code Web (1 min)
 
-**Serve una API key separata dal Max subscription** (Max non permette headless automation).
+1. Vai su **https://claude.ai/code**
+2. Login Max #1 se richiesto
+3. Sidebar → click **Routines** (icona ⚡)
 
-1. Vai su https://console.anthropic.com/
-2. Login (stesso account Max)
-3. Settings → API Keys → Create Key
-4. Nome: `elab-github-actions`
-5. Spending limit: **€50/mese hard cap** (scegli un limit)
-6. Copia la key: `sk-ant-api03-...` ← **SALVA**
+---
 
-## ⏱ Step 2 — Crea Telegram Bot (5 min)
+## ⏱ Step 2 — Crea 6 Routines su Max #1 (10 min)
 
-1. Apri Telegram
-2. Cerca `@BotFather`
-3. `/newbot`
-4. Nome: `ElabOpsBot` (o altro disponibile)
-5. Copia token: `1234567890:ABC...` ← **SALVA**
-6. Scrivi al tuo bot (cerca username) e premi START
-7. Trova il tuo chat_id:
-   - Apri: `https://api.telegram.org/bot<TOKEN>/getUpdates` (sostituisci TOKEN)
-   - Nel JSON cerca `"chat":{"id": XXXXXX`
-   - Copia chat_id ← **SALVA**
+Per ognuna click **New Routine** (o `+`) e compila i campi. Usa schedule e prompt sotto.
 
-## ⏱ Step 3 — Configura 3 GitHub Secrets (5 min)
+**Nota**: molti UI Routines permettono di **linkare file dal repo** come prompt invece di copy-paste. Se vedi questa opzione, linka direttamente il file md.
 
-Nel tuo Mac terminale:
+### Routine 1: `pdr1-unlim-core`
 
-```bash
-cd "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder"
-
-# 3 comandi, sostituisci i valori ovviamente
-gh secret set ANTHROPIC_API_KEY
-# → incolla la key sk-ant-api03-... e INVIO
-
-gh secret set TELEGRAM_BOT_TOKEN
-# → incolla token bot 1234567890:ABC... e INVIO
-
-gh secret set TELEGRAM_CHAT_ID
-# → incolla chat_id numerico e INVIO
+```
+Name: pdr1-unlim-core
+Schedule: Every 4 hours (at :00)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/unlim-core-v1
+Prompt file: docs/plans/2026-04-18-pdr1-unlim-core-design.md
+Allowed tools: Bash, Edit, Read, Write, Glob, Grep, WebSearch
+Max turns: 30
 ```
 
-Verifica:
-```bash
-gh secret list
-# Deve mostrare 3 secrets
+### Routine 2: `pdr2-openclaw-infra`
+
+```
+Name: pdr2-openclaw-infra
+Schedule: Every 6 hours (at :30)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/openclaw-infra-v1
+Prompt file: docs/plans/2026-04-18-pdr2-openclaw-infra-design.md
+Allowed tools: Bash, Edit, Read, Write, Glob, Grep, WebSearch
+Max turns: 30
 ```
 
-## ⏱ Step 4 — Abilita GitHub Actions schedule (2 min)
+### Routine 3: `pdr3-vps-runpod-deploy` (CRITICAL path)
 
-Il workflow `.github/workflows/routines-orchestrator.yml` è già committato. 
-Vai su GitHub:
-
-1. https://github.com/AndreaMarro/elab-tutor/actions
-2. Menu sinistro → "Routines Orchestrator"
-3. Se vedi banner "This scheduled workflow is disabled because there hasn't been activity in this repository for 60 days" → click **Enable**
-4. Verifica schedule lista (8 cron entries visibili)
-
-## ⏱ Step 5 — Primo test manuale (3 min)
-
-Lancia manualmente una routine per verificare tutto funziona:
-
-```bash
-gh workflow run routines-orchestrator.yml \
-  --field routine=regression-hunter
+```
+Name: pdr3-vps-runpod-deploy
+Schedule: Every 12 hours (at 06:15 and 18:15)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/vps-runpod-deploy-v1
+Prompt file: docs/plans/2026-04-18-pdr3-vps-runpod-deploy-design.md
+Allowed tools: Bash, Edit, Read, Write, Glob, Grep, WebSearch
+Max turns: 30
 ```
 
-Verifica:
-```bash
-gh run list --workflow=routines-orchestrator.yml --limit 3
-# Atteso: in_progress o queued
+### Routine 4: `pdr4-lesson-reader`
+
+```
+Name: pdr4-lesson-reader
+Schedule: Every 12 hours (at 08:45 and 20:45)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/lesson-reader-v1
+Prompt file: docs/plans/2026-04-18-pdr4-lesson-reader-design.md
+Allowed tools: Bash, Edit, Read, Write, Glob, Grep, WebSearch
+Max turns: 30
 ```
 
-Attendi 2-3 min. Telegram dovrebbe ricevere messaggio tipo:
+### Routine 5: `regression-hunter`
+
 ```
-OK Routine: regression-hunter
+Name: regression-hunter
+Schedule: Every 6 hours (at :07)
+Repository: AndreaMarro/elab-tutor
+Branch: main (read-only, only auto-revert se regressione)
+Prompt file: docs/plans/2026-04-18-routine-regression-hunter-prompt.md
+Allowed tools: Bash, Read, Grep
+Max turns: 10
+```
+
+### Routine 6: `pdr-stress-chaos` (scheduled venerdì)
+
+```
+Name: pdr-stress-chaos
+Schedule: Fridays at 18:00
+Repository: AndreaMarro/elab-tutor
+Branch: test/stress-chaos-62h
+Prompt file: docs/plans/2026-04-18-pdr-stress-chaos-design.md
+Allowed tools: Bash, Edit, Read, Write, Glob, Grep, WebSearch, WebFetch
+Max turns: 60
+```
+
+**Total Max #1**: 14 fire/giorno (sotto il cap 15) ✅
+
+---
+
+## ⏱ Step 3 — Switch Max #2 e crea 5 altre Routines (7 min)
+
+**Logout** (click avatar → logout), poi **login con Max #2**.
+
+### Routine 7: `pdr-test-multiplier` (+3604 test)
+
+```
+Name: pdr-test-multiplier
+Schedule: Every 4 hours (at :00)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/test-multiplier-v1
+Prompt file: docs/plans/2026-04-18-pdr-test-multiplier-design.md
+Max turns: 30
+```
+
+### Routine 8: `pdr-commercial`
+
+```
+Name: pdr-commercial
+Schedule: Every 12 hours (at 10:00 and 22:00)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/commercial-v1
+Prompt file: docs/plans/2026-04-18-pdr-commercial-pacchetti-design.md
+Max turns: 30
+```
+
+### Routine 9: `auditor` (review PR quando aperte)
+
+```
+Name: auditor
+Schedule: Every 3 hours (at :15)
+Repository: AndreaMarro/elab-tutor
+Branch: main (read-only, aggiunge audit report alle PR aperte)
+Prompt file: docs/plans/2026-04-18-routine-auditor-prompt.md
+Allowed tools: Bash, Read, Edit, Grep
+Max turns: 20
+```
+
+### Routine 10: `cost-tracker`
+
+```
+Name: cost-tracker
+Schedule: Every 24 hours (at 23:00)
+Repository: AndreaMarro/elab-tutor
 Branch: main
-Status: success
-https://github.com/AndreaMarro/elab-tutor/actions/runs/NNNN
+Prompt file: docs/plans/2026-04-18-routine-cost-tracker-prompt.md
+Max turns: 10
 ```
 
-**Se arriva Telegram** → sistema operativo.
-**Se niente** → check secrets (`gh secret list`) e logs GitHub Action.
+### Routine 11: `pdr-feedback` (FASE 15)
 
-## ⏱ Step 6 — Chiudi Mac
-
-Sistema gira autonomo. Ogni cron fire:
-- GitHub runner Ubuntu si accende
-- Esegue Claude Code Action con PDR specifico
-- Commit/PR su branch dedicato
-- Notifica Telegram
-- Runner si spegne (pay-per-run)
-
----
-
-## 📱 Comandi utili da telefono
-
-```bash
-# Da Termux Android o SSH da phone al Mac
-gh workflow run routines-orchestrator.yml --field routine=pdr1-unlim-core  # lancia manuale
-gh run list --workflow=routines-orchestrator.yml --limit 10                # ultimi run
-gh run view <RUN_ID>                                                       # dettaglio
-gh pr list                                                                 # PR aperte
-gh pr view 74                                                              # review PR
-gh pr merge 74 --squash                                                    # merge da phone
+```
+Name: pdr-feedback
+Schedule: Every 24 hours (at 11:00)
+Repository: AndreaMarro/elab-tutor
+Branch: feature/feedback-research-v1
+Prompt file: docs/plans/2026-04-18-pdr-feedback-research-design.md
+Max turns: 30
 ```
 
-Telegram notifiche arrivano da sole ad ogni job completato (success o fail).
+**Total Max #2**: 13 fire/giorno (sotto cap 15) ✅
 
 ---
 
-## 🎯 Schedule attivo (locale UTC nel workflow)
+## ⏱ Step 4 — Configura GitHub connector (2 min)
 
-| Schedule | Routine | Fire frequency |
-|----------|---------|----------------|
-| `15 */6 * * *` | PDR3 VPS RunPod | ogni 6h :15 |
-| `0 */4 * * *` | PDR1 UNLIM Core | ogni 4h |
-| `30 */4 * * *` | PDR2 OpenClaw Infra | ogni 4h :30 |
-| `45 */6 * * *` | PDR4 Lesson Reader | ogni 6h :45 |
-| `0 */8 * * *` | Test Multiplier | ogni 8h |
-| `*/30 * * * *` | Regression Hunter | ogni 30 min |
-| `7 * * * *` | Cost Tracker | ogni ora :07 |
-| `0 18 * * 5` | Stress Chaos | venerdì 18:00 |
+Su Claude Code Web:
+1. Sidebar → **Customize** o **Connectors** o **Settings**
+2. Trova sezione **GitHub** 
+3. Click **Connect** (se non già connesso)
+4. Autorizza accesso a `AndreaMarro/elab-tutor`
+5. Verifica: nella creazione routine, dropdown **Repository** mostra elab-tutor
 
-Fire totali/giorno stimati: ~100-120
-Costo API stimato: €2-5/giorno con Claude Sonnet 4.6 (€60-150/mese)
+Se GitHub non è connettibile via Routines UI, le routines useranno la Claude session per fare `git clone/push` via Bash tool (funzionerà comunque ma più lento).
 
 ---
 
-## 💰 Budget realistico
+## ⏱ Step 5 — Notifica Telegram (5 min opzionale)
 
-**Con GitHub Actions**:
-- GitHub Actions runner gratis (public repo, under 2000 min/mese)
-- **ANTHROPIC_API_KEY consumo**: €60-150/mese a regime
-- Telegram bot: gratis
-- Total: **€60-150/mese sopra Max**
+Claude Code Routines potrebbe avere **Channels Telegram nativo**. Verifica:
+- Sidebar → **Customize** → **Channels** o **Integrations**
+- Se vedi **Telegram** → connect (BotFather token + chat_id)
+- Se non vedi → **fallback webhook**:
 
-**Alternative più economiche** (futuro):
-- Hetzner CX52 + claude-code CLI headless: €32/mese ma più complesso setup OAuth
-- Mac Mini M4 always-on: €849 one-time, poi €0 (ma serve setup)
+Crea `.github/workflows/routine-notify.yml` (workflow che triggera su push a branch feature/* e manda Telegram):
 
----
-
-## ⚠️ Limit check importante
-
-- Workflow `timeout-minutes: 45` per job → no runaway
-- `max_turns: 30` per Claude Code → no loop infinito
-- GitHub free tier 2000 min/mese → OK per 100 run × 5-10 min/run
-- Spending limit Anthropic Console → stop automatico se superato
-
-## 🆘 Emergency kill
-
-```bash
-# Disabilita workflow
-gh workflow disable routines-orchestrator.yml
-
-# Cancella run in corso
-gh run cancel <RUN_ID>
-
-# Ri-abilita quando vuoi
-gh workflow enable routines-orchestrator.yml
+```yaml
+name: Telegram Notify on Routine Push
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'test/**'
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    env:
+      TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      BRANCH: ${{ github.ref_name }}
+      SHA: ${{ github.sha }}
+    steps:
+      - name: Send
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+            -d "chat_id=${CHAT_ID}" \
+            -d "text=Routine push on ${BRANCH}: ${SHA}"
 ```
+
+(devi settare i 2 secrets come già nel piano LAUNCH v2)
+
+---
+
+## ⏱ Step 6 — Test manuale prima routine (3 min)
+
+Nel menu Routines, trova `pdr1-unlim-core` e click **Run now** (icona play).
+
+Attesa: vedi un session link che apri per monitorare live. Dopo pochi minuti dovresti vedere:
+- Routine session running
+- Commits incrementali su `feature/unlim-core-v1`
+- Completion → commit finale o PR draft
+
+Verifica su GitHub:
+- https://github.com/AndreaMarro/elab-tutor/branches → `feature/unlim-core-v1` esiste con nuovi commit
+- https://github.com/AndreaMarro/elab-tutor/pulls → PR se sub-task completato
+
+Se vedi movimento → **sistema operativo**. Chiudi Mac.
+
+---
+
+## 🆘 Se qualcosa non funziona
+
+| Problema | Soluzione |
+|----------|-----------|
+| "Routines" non visibile sidebar | Beta rollout progressivo, richiedi accesso a support@anthropic.com |
+| Max cap 15/giorno superato | Riduce frequenza routines (already calibrato sotto) |
+| GitHub push fails | Verifica GitHub connector permissions |
+| Routine fallisce su PDR troppo lungo | Spezza in sub-PDR con solo 1 task per routine |
+| Telegram non arriva | Fallback webhook GitHub Actions (secret già settati) |
+
+---
+
+## 💰 Budget reale
+
+**Claude Code Web Routines**: €0 extra (incluso Max ×2 €400/mese)
+
+**Eventuali costi extra**:
+- Supabase Pro: €25 (già attivo)
+- Vercel Pro: €20 (già attivo)
+- Hostinger VPS: €15 (già attivo)
+- Totale ops invariato: **€60/mese** già attivo
+
+**Se migri a Hetzner CX52 OpenClaw** (quando PDR2 completato): +€32/mese.
+
+**Se usi RunPod EU per UNLIM inference** (post PDR3 deploy): +€30-100/mese variabile.
+
+---
 
 ## 🎯 KPI weekend atteso
 
-Al tuo rientro (lunedì):
-- 2-3 PR aperte per review
-- Baseline test stabile o crescente
-- Zero regressioni (Regression Hunter auto-revert)
-- Costo totale: €15-50
+Mac chiuso da ora a lunedì mattina (~48h):
+- ✅ 20-40 fire totali routines (14/giorno × 2 Max × 2 giorni = ~56)
+- ✅ 2-5 PR aperte per review (PDR1, PDR2, PDR4, Test Multiplier)
+- ✅ Baseline test crescente verso 15660
+- ✅ Zero regressioni (regression-hunter every 6h)
+- ✅ Telegram notifiche ricevute
 
-Se tutto verde → merge PR, prosegui sviluppo.
-Se qualcosa rosso → Telegram già te l'ha detto, fix + re-run.
+Al tuo rientro: apri GitHub Mobile, review PR, merge ok.
 
 ---
 
-**Non pretendo che sia perfetto al primo tentativo**. GitHub Actions + Claude Code Action è pattern noto, ma il tuo use case è specifico. Primo weekend è anche stress test del sistema stesso. Iterate dopo.
+## 📝 Backup attivi
+
+Tutti già committati, disponibili se Claude Code Web Routines ha problemi:
+
+1. **GitHub Actions** `routines-orchestrator.yml` — con ANTHROPIC_API_KEY (costa ma illimitato)
+2. **GitHub Actions** `governance-gate.yml` — CI bloccante per PR (sempre attivo)
+3. **.githooks/pre-commit** e **pre-push** — regression guard locale (sempre attivo)
+
+---
+
+**Pronto? Apri claude.ai/code → Routines → inizia dal Step 2.**
+
+Se qualcosa è diverso nell'UI Web Routines (i nomi dei campi possono variare), **fammi uno screenshot** e adatto le istruzioni in tempo reale.
