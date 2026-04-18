@@ -24,11 +24,19 @@ Il codice esistente di ELAB Tutor è il risultato di 100+ sessioni di sviluppo. 
 3. `ls supabase/functions/` per backend già presente
 4. Verifica `CLAUDE.md` sezione "File critici"
 
-**Mai riscrivere da zero senza motivo documentato**:
-- Se ricordi pattern esistente → `MODIFY` esistente
-- Se serve nuova feature → extension, non replacement
-- Se il file esistente è "quasi giusto" → refactor incrementale, non rewrite
-- Se proprio serve rewrite → `docs/decisions/REWRITE-XXX.md` con motivazione tecnica + plan migrazione
+**Priorità al riuso. Rewrite OK quando giustificato**:
+- Default: `MODIFY` esistente se pattern simile c'è
+- Nuova feature: extension di moduli esistenti
+- "Quasi giusto": refactor incrementale
+- **Rewrite ammesso quando**: codice legacy mal strutturato, test coverage assente, architettura non scalabile per v2 UNLIM, oppure quando la qualità finale richiede rifondazione. In tutti i casi:
+  - `docs/decisions/REWRITE-XXX.md` con motivazione tecnica onesta
+  - Plan di migrazione incrementale (non big-bang)
+  - Test equivalenti coprono vecchio comportamento + nuovo
+  - Baseline test non regredita post-rewrite
+  - Auditor APPROVE indipendente
+
+**Principio chiave (Andrea 18/04/2026)**: "FAI LA COSA MIGLIORE, SENZA OMETTERE".
+Meglio rewrite ben fatto che patchwork sbrindellato. Ma prima di rewrite, verifica davvero che l'esistente non sia salvabile.
 
 **Esempi concreti**:
 - "Aggiungi TTS" → usa `src/hooks/useTTS.js` + `src/services/voiceService.js` esistenti, estendi
