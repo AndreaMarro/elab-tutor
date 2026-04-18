@@ -22,6 +22,28 @@
 | UNLIM live | verificato 17/04 via Playwright |
 | Kokoro VPS | LIVE porta 8881 |
 
+## Stato pre-sessione (aggiornato 18/04 h01:30)
+
+Infrastruttura **già bootstrappata** su branch `session/2026-04-17-pdr-v3-prep`, commit da verificare con `git log --oneline -10`:
+
+| File | Stato | Nota |
+|------|-------|------|
+| `.claude/agents/planner.md` | ✅ pronto | opus, produce 1 task atomico |
+| `.claude/agents/generator-app.md` | ✅ pronto | sonnet, codice UI/services |
+| `.claude/agents/generator-test.md` | ✅ pronto | sonnet, vitest + playwright |
+| `.claude/agents/evaluator.md` | ✅ pronto | haiku, verdetto oggettivo |
+| `scripts/guard-critical-files.sh` | ✅ eseguibile + smoke-tested | blocca engine-files senza token |
+| `scripts/benchmark.cjs` | ✅ funzionante, 10 metriche | fast mode 2.77/10, full mode TBD |
+| `automa/baseline-tests.txt` | ✅ 12056 | baseline hard floor |
+| `automa/state/README.md` | ✅ | protocollo file state |
+| `CLAUDE.md` | ✅ aggiornato | Karpathy principles + anti-inflation + triade + benchmark |
+
+**Tea PR #73**: chiusa 18/04 h00:37 con credit message (commit 60884c6 già integra il lavoro).
+
+**Cosa NON fare in sessione**: rifare questi pezzi. Sono già pronti e testati.
+
+**Cosa fare in sessione**: usare gli agent esistenti per produrre lavoro reale (dashboard, playwright spec, e2e stress test, fix bug, miglioramenti benchmark).
+
 ## Regola zero ASSOLUTA
 
 **`npx vitest run` prima e dopo OGNI modifica al codice sorgente**. Se count scende sotto `12056` → **REVERT IMMEDIATO**. Non negoziabile.

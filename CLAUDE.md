@@ -29,7 +29,7 @@ Include:
 
 ## Stack tecnico
 - React 19 + Vite 7 (NO react-router — routing custom con useState e hash)
-- Vitest (9846+ test — target 12000)
+- Vitest (**12056 test PASS baseline verificata 18/04/2026** — vedi `automa/baseline-tests.txt`, target 14000)
 - Deploy: Vercel (frontend) + Supabase (backend DB)
 - Nanobot AI: Render (https://elab-galileo.onrender.com)
 - Compilatore: n8n su Hostinger (https://n8n.srv1022317.hstgr.cloud/compile)
@@ -40,8 +40,24 @@ Include:
 - BASELINE: `npx vitest run` PRIMA e DOPO ogni modifica — se test scendono → REVERT IMMEDIATO
 - `npm run build` deve passare prima di ogni commit
 - MAI fare `git add -A` senza controllare `git diff` prima
+- MAI `--no-verify` su commit (pre-commit hook è lì per proteggerti)
+- MAI push diretto su `main` — solo PR via `gh pr create`
 - Snapshot baseline ogni sessione: `git tag baseline-HHMM`
 - Se qualcosa si rompe: `git stash && npx vitest run` — se passa, il problema è nel tuo codice
+- Score oggettivo: `node scripts/benchmark.cjs --write` — è la verità, non la self-claim
+- Guard critical files: `scripts/guard-critical-files.sh` blocca modifiche engine senza `authorized-engine-change`
+
+## Principi Karpathy (da `forrestchang/andrej-karpathy-skills`, 54K stars)
+1. **Think**: ragiona prima di scrivere codice. Un minuto di pensiero ≫ 10 minuti di refactor
+2. **Simple**: la soluzione più semplice che risolve il problema è quella giusta. Niente astrazioni premature
+3. **Surgical**: tocca il minimo necessario. Un file, una funzione, una riga — mai "già che ci sei"
+4. **Goal-driven**: ogni riga deve servire un goal esplicito. Se non sai perché la stai scrivendo, non scriverla
+
+## Regola anti-inflazione numerica (CoV — Chain of Verification)
+- **Mai inventare numeri**: se dici "12056 test" devi averli appena visti in `vitest run` output, non ricordati a memoria
+- **Mai inflazionare progress**: "quasi pronto" = 0%, "funziona" = testato live con utente reale
+- **Mai self-rate**: il benchmark `node scripts/benchmark.cjs` è l'unico score valido. I claim del generator non valgono
+- **CoV su ogni PR**: 3 volte `npx vitest run` prima di dichiarare "test passano" — se uno dei 3 fallisce → indaga flakiness, non nascondere
 
 ## Volumi fisici — parallelismo CRITICO
 - **PDF**: `/VOLUME 3/CONTENUTI/volumi-pdf/` (Vol1 27MB, Vol2 17MB, Vol3 18MB)
@@ -181,3 +197,27 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqal
 6. ~~**Voce non testata E2E**~~ **PARZIALE** — Edge TTS VPS OK, apostrophe bug fixato, 320 test voice
 7. **Render cold start 18s** — warmup automatico aggiunto ma prima risposta ancora lenta
 8. ~~**RAG generico**~~ **MIGLIORATO** — short-phrase fallback per bambini ("non va" ora funziona)
+9. **Dashboard docente NON esiste** (verificato 18/04: `src/components/dashboard/` vuoto) — target PDR #2 progettibelli
+10. **Playwright 0 spec** (verificato 18/04: config presente, `tests/e2e/` vuoto) — target PDR #1 Fase 4
+
+## Triade agent (Planner / Generator / Evaluator)
+Operativa da 18/04/2026 via `.claude/agents/`:
+- `planner.md` — opus, legge stato, produce 1 task atomico in `automa/tasks/pending/`
+- `generator-app.md` — sonnet, implementa UI/services, commit atomici con Test count
+- `generator-test.md` — sonnet, scrive vitest + playwright, mai codice applicativo
+- `evaluator.md` — haiku (scetticismo calibrato, no self-eval bias), verdetto in `automa/evals/`
+
+**Lancio tipico** (da Claude CLI in sessione lunga):
+```
+@planner leggi stato, produci 1 task su metrica benchmark più bassa
+@generator-app prendi il task in automa/tasks/pending/ATOM-001 e implementa
+@evaluator verifica HEAD, verdetto PASS/WARN/FAIL
+```
+
+## Benchmark oggettivo
+- Script: `scripts/benchmark.cjs` (10 metriche pesate, score 0-10)
+- Output: `automa/state/benchmark.json` con commit SHA + delta vs run precedente
+- **Target 2026**: 8.0/10 (realistico in 2-3 mesi)
+- **Baseline 18/04/2026 fast mode**: 2.77/10 (onesta, sotto i claim passati di 7-8)
+- Fast mode: `node scripts/benchmark.cjs --fast` (legge artifact cache, no vitest/build)
+- Full mode: `node scripts/benchmark.cjs --write` (gira tutto, scrive state)

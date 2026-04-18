@@ -82,7 +82,9 @@ npm-debug.log*
 .env*.local
 datasets/galileo-brain-20k.jsonl
 # Claude Code (personal per ogni developer)
-.claude/
+.claude/*
+# Ma gli agenti della Triade sono asset del progetto, non config personale
+!.claude/agents/
 
 # Audit screenshots and reports (generated, not source)
 audit-*.png
