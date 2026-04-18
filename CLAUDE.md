@@ -188,9 +188,10 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqal
 | Kokoro TTS | localhost:8881 | SOLO LOCALE |
 | Edge TTS | http://72.60.129.50:8880 | OK (verificato 16/04, /tts → 200) |
 
-## Bug aperti prioritari (18/04/2026)
+## Bug aperti prioritari (18/04/2026 sera)
 1. ~~**Parallelismo volumi ASSENTE**~~ **RISOLTO** — 92/92 esperimenti con bookText, integrati in UI e UNLIM prompt
-2. ~~**UNLIM backend scatola nera**~~ **RISOLTO 18/04** — Principio Zero esplicito in BASE_PROMPT Edge Function (commit 4d12f33) + fix Gemini 2.5 thinking-budget (commit 1d17ede). Verificato live: UNLIM cita "Come dice il Vol. 1 a pagina 29: '...470 Ohm...'" per v1-cap6-esp1. Deploy Supabase OK.
+2. ~~**UNLIM backend scatola nera**~~ **RISOLTO v3 VERIFICATO LIVE (18/04 sera)** — Principio Zero v3 in BASE_PROMPT: UNLIM PREPARA contenuto (non parla), docente veicola naturalmente. Commit: 4d12f33 (iniziale parziale) -> 44677ff (tono classe parziale) -> 250364a (v3 completo). Deploy Supabase OK. Test live: risposta "Ragazzi, come spiega il Vol. 1 a pagina 29...470 Ohm...ingredienti ricetta speciale!" per v1-cap6-esp1. Zero meta-istruzioni "Docente leggi". CoV 3/3 PASS (12056 test). Audit onesto: docs/audits/2026-04-18-cov-principio-zero-v3.md.
+11. **Esperimenti non fattibili** (audit pending) — alcuni esperimenti tipo "robot" non oggettivamente realizzabili con kit ELAB fisico. Richiede sessione dedicata Andrea+Omaric per lista componenti effettivi, poi audit 92 esperimenti vs kit → rimpiazzo alternative realistic.
 3. **Kokoro TTS non in produzione** — Edge TTS VPS UP (200 OK) come alternativa, CORS da verificare
 4. **Vision non testata live** — trigger implementato ma mai verificato end-to-end
 5. **Dashboard pochi dati reali** — Supabase probabilmente PAUSED (401), serve resume manuale
