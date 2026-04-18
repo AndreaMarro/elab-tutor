@@ -29,9 +29,17 @@ jobs:
       - name: Run tests and capture count
         id: tests
         run: |
-          TEST_OUTPUT=$(npm test -- --run 2>&1) || true
-          PASSED=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ passed' | grep -oE '[0-9]+' | head -1)
-          FAILED=$(echo "$TEST_OUTPUT" | grep -oE '[0-9]+ failed' | grep -oE '[0-9]+' | head -1)
+          # Use --reporter=json for reliable test count (not file count).
+          # Previous regex '[0-9]+ passed | head -1' matched "Test Files N passed"
+          # instead of "Tests M passed" and produced false-positive REGRESSION.
+          npx vitest run --reporter=json > /tmp/vitest-output.json 2>&1 || true
+          PASSED=$(jq -r '.numPassedTests // 0' /tmp/vitest-output.json 2>/dev/null || echo 0)
+          FAILED=$(jq -r '.numFailedTests // 0' /tmp/vitest-output.json 2>/dev/null || echo 0)
+          if [ "$PASSED" = "0" ] || [ -z "$PASSED" ]; then
+            RAW=$(npx vitest run 2>&1 | tail -30)
+            PASSED=$(echo "$RAW" | grep -oE 'Tests[[:space:]]+[0-9]+ passed' | grep -oE '[0-9]+' | head -1)
+            FAILED=$(echo "$RAW" | grep -oE 'Tests[[:space:]]+[0-9]+ failed' | grep -oE '[0-9]+' | head -1)
+          fi
           echo "passed=${PASSED:-0}" >> "$GITHUB_OUTPUT"
           echo "failed=${FAILED:-0}" >> "$GITHUB_OUTPUT"
           echo "Test passati: ${PASSED:-0}, falliti: ${FAILED:-0}"
