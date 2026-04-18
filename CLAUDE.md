@@ -188,9 +188,9 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqal
 | Kokoro TTS | localhost:8881 | SOLO LOCALE |
 | Edge TTS | http://72.60.129.50:8880 | OK (verificato 16/04, /tts → 200) |
 
-## Bug aperti prioritari (16/04/2026)
+## Bug aperti prioritari (18/04/2026)
 1. ~~**Parallelismo volumi ASSENTE**~~ **RISOLTO** — 92/92 esperimenti con bookText, integrati in UI e UNLIM prompt
-2. ~~**UNLIM backend scatola nera**~~ **MITIGATO** — contesto arricchito (circuit+student+RAG+volume+group) iniettato nel prompt
+2. ~~**UNLIM backend scatola nera**~~ **RISOLTO 18/04** — Principio Zero esplicito in BASE_PROMPT Edge Function (commit 4d12f33) + fix Gemini 2.5 thinking-budget (commit 1d17ede). Verificato live: UNLIM cita "Come dice il Vol. 1 a pagina 29: '...470 Ohm...'" per v1-cap6-esp1. Deploy Supabase OK.
 3. **Kokoro TTS non in produzione** — Edge TTS VPS UP (200 OK) come alternativa, CORS da verificare
 4. **Vision non testata live** — trigger implementato ma mai verificato end-to-end
 5. **Dashboard pochi dati reali** — Supabase probabilmente PAUSED (401), serve resume manuale
