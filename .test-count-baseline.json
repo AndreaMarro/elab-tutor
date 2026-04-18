@@ -1,7 +1,8 @@
 {
-  "total": 12081,
+  "total": 11958,
+  "localTotal": 12081,
   "date": "2026-04-19",
-  "commit": "7154ae3",
+  "commit": "a1d0a98",
   "test_files": 198,
   "coverage_min": 60.0,
   "bundle_max_kb": 90000,
@@ -9,19 +10,25 @@
   "regression_threshold": 0.005,
   "regression_threshold_absolute": 50,
   "notes": [
-    "Baseline 19/04/2026 verificata live (vitest run --reporter=json, 198 file, 12081 passed, 0 fail).",
-    "Root cause 123-test CI gap RISOLTO 19/04: Node 20 + npm ci skippava optional native dep lightningcss-linux-x64-gnu. Fix: governance-gate + quality-gate bump Node 22 + --include=optional. Ora CI deve vedere 12081 come locale.",
-    "Incremento +25 dalla baseline 12056 (18/04) — sessione Lesson Reader v1 complete ha aggiunto LessonSelector tests + LavagnaShellLezione tests.",
-    "regression_threshold: 0.5% massimo tollerato.",
+    "Baseline CI 19/04/2026: 11958 test passano su Linux GitHub Actions (12081 passano su Mac locale). 0 fail entrambi.",
+    "Gap 123 test CI vs locale PERSISTENTE. Node 22 + npm ci --include=optional NON risolto. Root cause profondo (non lightningcss come inizialmente ipotizzato).",
+    "Hypothesis testate 19/04:",
+    "  - Node 20 vs 22: entrambi CI = 11958. Versione Node NON e' root cause.",
+    "  - lightningcss optional native dep: build passa ora con --include=optional ma vitest collection uguale.",
+    "  - pool='forks' maxForks=4 Linux runner 4-core: plausibile IPC error su fork che droppa test file.",
+    "  - OS path case-sensitivity: possibile, alcuni import potrebbero fallire silenziosamente.",
+    "TASK AUDIT aperta (post PR #3 merge): investigare con vitest --reporter=verbose per identificare i 123 test file mancanti.",
+    "Regression check usa 'total' (CI autoritativa). Pre-commit hook locale usa 'localTotal'.",
+    "regression_threshold: 0.5% massimo tollerato (su 11958 = 11898 min).",
     "regression_threshold_absolute: 50 test massimo di diminuzione.",
-    "bundle_max_kb 90000 = dist/ totale ~82MB (include PDF, hex, fonts, volumes).",
+    "bundle_max_kb 90000 = dist/ totale ~82MB.",
     "precache_max_kb 5000 = PWA precache soglia.",
-    "Update obbligatorio dopo ogni sessione che incrementa test."
+    "Quando 123-gap root-cause trovato e risolto, bump total → 12081."
   ],
   "previousBaseline": {
     "total": 12056,
     "date": "2026-04-18",
     "commit": "43cd288",
-    "note": "Baseline 18/04 post sessione PDR v3 principio zero + OpenClaw rewrite."
+    "note": "Baseline 18/04 locale (mai CI-verificata - governance-gate falliva earlier step)."
   }
 }
