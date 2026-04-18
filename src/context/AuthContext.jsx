@@ -22,6 +22,16 @@ export function AuthProvider({ children }) {
         let cancelled = false;
 
         async function initAuth() {
+            // ── E2E override: localStorage user bypasses real auth ──
+            try {
+                const e2eRaw = localStorage.getItem('elab_e2e_user');
+                if (e2eRaw) {
+                    const e2eUser = JSON.parse(e2eRaw);
+                    if (!cancelled) { setUser(e2eUser); setHasLicense(true); setLoading(false); }
+                    return;
+                }
+            } catch { /* ignore malformed */ }
+
             // ── Supabase path: se configurato, controlla sessione Supabase ──
             if (isSupabaseConfigured()) {
                 try {

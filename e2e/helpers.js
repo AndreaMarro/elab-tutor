@@ -43,15 +43,20 @@ export async function setVolume(page, volume = '1') {
 
 /**
  * Simulate a teacher user session.
+ * Uses elab_e2e_user key read by AuthContext before real auth flow.
  */
 export async function setTeacherUser(page) {
   await page.addInitScript(() => {
-    localStorage.setItem('elab_user', JSON.stringify({
+    localStorage.setItem('elab_e2e_user', JSON.stringify({
       id: 'test-teacher-e2e',
       email: 'teacher@test.elab',
-      role: 'teacher',
-      firstName: 'Prof',
-      lastName: 'Test',
+      ruolo: 'docente',
+      name: 'Prof',
+      surname: 'Test',
+      username: 'prof.test',
+      userType: 'family',
+      kits: ['Volume 1'],
+      premium: true,
     }));
   });
 }
