@@ -6,6 +6,43 @@
 
 ---
 
+## ⚖️ Regola 0 (sopra tutte le altre) — NO REWRITE, SOLO RIUSO + POTENZIAMENTO
+
+Il codice esistente di ELAB Tutor è il risultato di 100+ sessioni di sviluppo. Contiene:
+- 12056 test baseline verdi
+- 92 esperimenti in 3 volumi (bookText integrato)
+- 27 Lezioni raggruppate (`lesson-groups.js`)
+- UNLIM: RAG 549 chunk, memoria, contesto, voice, proactivity
+- Simulatore: CircuitSolver 2486 righe, AVRBridge 1242 righe, PlacementEngine 822 righe
+- Dashboard docente components (anche se vuota come feature, il ponte esiste)
+- Compiler n8n + Brain V13 VPS + Edge TTS VPS
+- 5 Edge Functions deployate (unlim-chat, unlim-diagnose, unlim-hints, unlim-tts, unlim-gdpr)
+
+**Prima di scrivere nuovo codice, CERCA l'esistente**:
+1. `grep` per funzione/classe simili
+2. `find src/ -name "*.js"` per utility esistenti
+3. `ls supabase/functions/` per backend già presente
+4. Verifica `CLAUDE.md` sezione "File critici"
+
+**Mai riscrivere da zero senza motivo documentato**:
+- Se ricordi pattern esistente → `MODIFY` esistente
+- Se serve nuova feature → extension, non replacement
+- Se il file esistente è "quasi giusto" → refactor incrementale, non rewrite
+- Se proprio serve rewrite → `docs/decisions/REWRITE-XXX.md` con motivazione tecnica + plan migrazione
+
+**Esempi concreti**:
+- "Aggiungi TTS" → usa `src/hooks/useTTS.js` + `src/services/voiceService.js` esistenti, estendi
+- "UNLIM con memoria" → usa `src/services/unlimMemory.js` + `supabase/functions/_shared/memory.ts`
+- "Vision diagnosi" → estendi `src/services/unlimContextCollector.js` + `supabase/functions/unlim-diagnose/`
+- "Lesson Reader" → usa `src/data/lesson-groups.js` + `volume-references.js` + `experiments-vol*.js`
+
+**Conseguenze violazione**:
+- Se PR ha rewrite non documentato → BLOCK merge
+- Se baseline test scende (perché rewrite ha dimenticato edge case) → revert automatico
+- Self-check: "Il file che sto creando esiste già in forma simile?" Se sì, MODIFY.
+
+---
+
 ## 🛡 Le 5 regole ferree (embedded in ogni task)
 
 Queste regole sono **non-negoziabili** e sono enforced da GitHub Action `governance-gate.yml`.
