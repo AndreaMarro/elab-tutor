@@ -21,8 +21,7 @@ import { buildClassProfile, getNextLessonSuggestion } from '../../services/class
 import { HandWaveIcon, PartyIcon, FlaskIcon } from '../common/ElabIcons';
 import { isWakeWordSupported, startWakeWordListener, stopWakeWordListener } from '../../services/wakeWord';
 import LessonReader from './LessonReader';
-import LESSON_GROUPS from '../../data/lesson-groups';
-import { findLessonForExperiment } from '../../data/lesson-groups';
+import LessonSelector from './LessonSelector';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -851,6 +850,11 @@ export default function LavagnaShell() {
 
         {activeTab === 'lezione' && (
           <div className={css.dashboardView}>
+            <LessonSelector
+              volumeNumber={currentVolume}
+              activeLessonId={activeLessonId}
+              onLessonSelect={setActiveLessonId}
+            />
             <LessonReader
               lessonId={activeLessonId}
               currentExperimentId={currentExperiment?.id}
