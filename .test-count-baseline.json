@@ -1,24 +1,26 @@
 {
-  "total": 11983,
-  "date": "2026-04-17",
-  "commit": "c6b04a0",
-  "test_files": 190,
+  "total": 12056,
+  "date": "2026-04-18",
+  "commit": "43cd288",
+  "test_files": 195,
   "coverage_min": 60.0,
   "bundle_max_kb": 90000,
   "precache_max_kb": 5000,
   "regression_threshold": 0.005,
   "regression_threshold_absolute": 50,
   "notes": [
-    "Baseline 17/04/2026 post sessione PDR v3 DEFINITIVO: 11983 test PASS, 190 file, 0 fail.",
+    "Baseline 18/04/2026 verificata live (vitest run 39.46s, 195 file, 12056 passed, 0 fail).",
+    "Incremento +73 dalla precedente baseline 11983 (17/04) — sessione 17-18/04 ha aggiunto vol3 parity tests, bookCitation tests, fix flaky parallelismoVolumiReale.",
     "regression_threshold: 0.5% massimo tollerato (era 2% troppo permissivo su 11K test).",
     "regression_threshold_absolute: 50 test massimo di diminuzione (anche se %ratio OK, 50 test persi e' bug grave).",
     "bundle_max_kb 90000 = dist/ totale 82MB (include PDF, hex, fonts, volumes). Valore misurato: 82256 KB.",
-    "precache_max_kb 5000 = PWA precache soglia. Valore misurato: 4821 KiB.",
+    "precache_max_kb 5000 = PWA precache soglia. Valore misurato: 4794 KiB (post commit 6b0cacd).",
     "Update obbligatorio dopo ogni sessione che incrementa test: date, commit, total, test_files."
   ],
   "previousBaseline": {
-    "total": 1578,
-    "date": "2026-04-09",
-    "note": "Obsoleto — 1578 era baseline di inizio Aprile, non aggiornato per 8 giorni."
+    "total": 11983,
+    "date": "2026-04-17",
+    "commit": "c6b04a0",
+    "note": "Post sessione PDR v3 DEFINITIVO: 190 file, 0 fail."
   }
 }
