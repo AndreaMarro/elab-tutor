@@ -115,8 +115,13 @@ export async function callGemini(options: GeminiOptions): Promise<GeminiResult> 
     temperature,
   };
 
-  if (thinkingLevel && model !== 'gemini-2.5-flash-lite') {
-    generationConfig.thinkingConfig = { thinkingLevel };
+  // Gemini 2.5 flash/pro fanno thinking di default, consumando maxOutputTokens
+  // prima dell'output visibile (troncamento a poche parole). Disabilita esplicitamente
+  // se il caller non lo richiede; flash-lite non supporta thinking, quindi skip.
+  if (model !== 'gemini-2.5-flash-lite') {
+    generationConfig.thinkingConfig = thinkingLevel
+      ? { thinkingLevel }
+      : { thinkingBudget: 0 };
   }
 
   const requestBody = {
