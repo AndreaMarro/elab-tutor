@@ -16,6 +16,7 @@ export default function AppHeader({
   onTabChange,
   showClasseTab = false,
   showProgressiTab = false,
+  showLezioneTab = false,
 }) {
   return (
     <header className={css.header} role="banner">
@@ -31,13 +32,20 @@ export default function AppHeader({
           />
           <span className={css.brandText}>ELAB</span>
         </div>
-        {(showClasseTab || showProgressiTab) && (
+        {(showClasseTab || showProgressiTab || showLezioneTab) && (
           <div className={css.tabs}>
             <button
               className={`${css.tabBtn} ${activeTab === 'lavagna' ? css.tabBtnActive : ''}`}
               onClick={() => onTabChange?.('lavagna')}
               aria-label="Lavagna"
             >Lavagna</button>
+            {showLezioneTab && (
+              <button
+                className={`${css.tabBtn} ${activeTab === 'lezione' ? css.tabBtnActive : ''}`}
+                onClick={() => onTabChange?.('lezione')}
+                aria-label="Lezione Guidata"
+              >Lezione Guidata</button>
+            )}
             {showClasseTab && (
               <button
                 className={`${css.tabBtn} ${activeTab === 'classe' ? css.tabBtnActive : ''}`}

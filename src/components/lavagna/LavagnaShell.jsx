@@ -20,6 +20,9 @@ import { soundTick, soundPlay, soundPause } from './lavagnaSounds';
 import { buildClassProfile, getNextLessonSuggestion } from '../../services/classProfile';
 import { HandWaveIcon, PartyIcon, FlaskIcon } from '../common/ElabIcons';
 import { isWakeWordSupported, startWakeWordListener, stopWakeWordListener } from '../../services/wakeWord';
+import LessonReader from './LessonReader';
+import LESSON_GROUPS from '../../data/lesson-groups';
+import { findLessonForExperiment } from '../../data/lesson-groups';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -359,7 +362,12 @@ function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
 
 export default function LavagnaShell() {
   const { user, isDocente, isStudente } = useAuth();
-  const [activeTab, setActiveTab] = useState('lavagna'); // 'lavagna' | 'classe' | 'progressi'
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const saved = localStorage.getItem('elab_lavagna_active_tab');
+      return ['lavagna', 'lezione', 'classe', 'progressi'].includes(saved) ? saved : 'lavagna';
+    } catch { return 'lavagna'; }
+  });
   const [activeTool, setActiveTool] = useState('select');
   const [toolToast, setToolToast] = useState(null);
   const [galileoOpen, setGalileoOpen] = useState(false); // P0 fix: UNLIM parte minimizzato — il docente vede prima il circuito
@@ -393,6 +401,7 @@ export default function LavagnaShell() {
     try { return parseInt(localStorage.getItem('elab-lavagna-page') || '1', 10) || 1; } catch { return 1; }
   });
   const [percorsoOpen, setPercorsoOpen] = useState(false);
+  const [activeLessonId, setActiveLessonId] = useState('v1-accendi-led');
   const [unlimTab, setUnlimTab] = useState('chat'); // 'chat' | 'percorso'
   const [buildMode, setBuildMode] = useState(() => {
     try {
@@ -442,6 +451,9 @@ export default function LavagnaShell() {
   useEffect(() => {
     try { localStorage.setItem('elab-lavagna-page', String(currentVolumePage)); } catch {}
   }, [currentVolumePage]);
+  useEffect(() => {
+    try { localStorage.setItem('elab_lavagna_active_tab', activeTab); } catch {}
+  }, [activeTab]);
 
   // Principio Zero: Bentornati flow replaces the old auto-open picker.
   // The BentornatiOverlay handles first-time vs returning users.
@@ -685,6 +697,15 @@ export default function LavagnaShell() {
     }
   }, []);
 
+  const handleLessonExperimentSelect = useCallback((expId) => {
+    const api = typeof window !== 'undefined' && window.__ELAB_API;
+    api?.mountExperiment?.(expId);
+    setCurrentExperiment({ id: expId });
+    setHasExperiment(true);
+    const volMatch = expId.match(/^v(\d)/);
+    if (volMatch) setCurrentVolume(Number(volMatch[1]));
+  }, []);
+
   // Bentornati: teacher clicks "Scegli altro" → dismiss overlay, open picker
   const handleBentornatiPickExperiment = useCallback(() => {
     setBentornatiVisible(false);
@@ -757,6 +778,7 @@ export default function LavagnaShell() {
         percorsoOpen={galileoOpen && unlimTab === 'percorso'}
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        showLezioneTab={isDocente}
         showClasseTab={isDocente}
         showProgressiTab={isStudente}
       />
@@ -824,6 +846,16 @@ export default function LavagnaShell() {
             <Suspense fallback={<div className={css.loading}><span>Caricamento progressi...</span></div>}>
               <StudentDashboard />
             </Suspense>
+          </div>
+        )}
+
+        {activeTab === 'lezione' && (
+          <div className={css.dashboardView}>
+            <LessonReader
+              lessonId={activeLessonId}
+              currentExperimentId={currentExperiment?.id}
+              onExperimentSelect={handleLessonExperimentSelect}
+            />
           </div>
         )}
 
