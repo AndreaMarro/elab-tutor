@@ -106,7 +106,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <path d="M3 6l3 3M3 3l2 2" stroke="#E8941C" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
-    { type: 'reed-switch', label: 'Reed Switch', vol: 1, icon: (
+    { type: 'reed-switch', label: 'Interruttore Reed', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <rect x="5" y="10" width="18" height="8" rx="4" fill="none" stroke="#999" strokeWidth="1" />
         <path d="M8 14h4M16 14h4" stroke="#666" strokeWidth="1.5" strokeLinecap="round" />
@@ -401,7 +401,9 @@ export default function LavagnaShell() {
     } catch { return 'complete'; }
   }); // complete | guided | sandbox
   const [drawingEnabled, setDrawingEnabled] = useState(false);
-  const [bentornatiVisible, setBentornatiVisible] = useState(true);
+  const [bentornatiVisible, setBentornatiVisible] = useState(() => {
+    try { return localStorage.getItem('elab_skip_bentornati') !== 'true'; } catch { return true; }
+  });
   const [wakeWordActive, setWakeWordActive] = useState(false);
 
   // "Ehi UNLIM" wake word — ascolta in background, apre UNLIM e manda il comando

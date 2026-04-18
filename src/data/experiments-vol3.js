@@ -198,7 +198,7 @@ const SIMON_SCRATCH_STEP28 = `<xml xmlns="https://developers.google.com/blockly/
 <value name="B"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
 </block></value>
 <statement name="DO0">
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 <block type="arduino_digital_write"><field name="PIN">12</field><field name="STATE">HIGH</field>
 <next><block type="arduino_tone"><field name="PIN">8</field><value name="FREQ"><shadow type="math_number"><field name="NUM">523</field></shadow></value>
 <next><block type="arduino_serial_print"><field name="NEWLINE">TRUE</field>
@@ -399,7 +399,7 @@ const SERIAL_SCRATCH = `<xml xmlns="https://developers.google.com/blockly/xml">
 <value name="CONTENT"><block type="arduino_variable_get"><field name="VAR">valore</field></block></value>
 <next><block type="arduino_delay"><value name="DELAY_TIME"><shadow type="math_number"><field name="NUM">200</field></shadow></value>
 </block></next></block></next></block>
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 </statement>
 </block></xml>`;
 
@@ -600,7 +600,7 @@ const PULLUP_LED_SCRATCH = `<xml xmlns="https://developers.google.com/blockly/xm
 <statement name="LOOP">
 <block type="controls_if">
 <mutation else="1"/>
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 <value name="IF0">
 <block type="logic_compare"><field name="OP">EQ</field>
 <value name="A"><block type="arduino_digital_read"><field name="PIN">10</field></block></value>
@@ -801,7 +801,7 @@ const PWM_FADE_UPDOWN_SCRATCH = `<xml xmlns="https://developers.google.com/block
 <block type="controls_for">
 <field name="VAR">i</field>
 <value name="FROM"><shadow type="math_number"><field name="NUM">0</field></shadow></value>
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 <value name="TO"><shadow type="math_number"><field name="NUM">255</field></shadow></value>
 <value name="BY"><shadow type="math_number"><field name="NUM">5</field></shadow></value>
 <statement name="DO">
@@ -1002,7 +1002,7 @@ void loop() {
         "bb1": { x: 280, y: 10 }
       },
       concept: "pinMode, digitalWrite, delay, LED_BUILTIN, ciclo loop infinito",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       layer: "schema",
 
       estimatedMinutes: 15,
@@ -1111,160 +1111,16 @@ void loop() {
     // CAPITOLO 6 — I pin digitali (7 esperimenti)
     // ═══════════════════════════════════════════════════
     {
+      // ────────────────────────────────────────────────────────────
+      // ALLINEATO al libro Vol3 p.56 ESPERIMENTO 1 (18/04/2026 TASK 3):
+      // "Colleghiamo la resistenza" — LED esterno + 470Ω + pin D13.
+      // Il precedente contenuto (AND/OR con 2 pulsanti) non era nel libro
+      // ed è stato rimosso per preservare il parallelismo volumi ↔ simulatore.
+      // ────────────────────────────────────────────────────────────
       id: "v3-cap6-esp1",
-      title: "Cap. 6 Esp. 1 - Circuito AND/OR con pulsanti",
-      desc: "Costruiamo un circuito logico con due pulsanti e un LED, SENZA programmare Arduino! Se colleghiamo i pulsanti in serie serve premerli entrambi (AND), se li colleghiamo in parallelo basta uno qualsiasi (OR).",
-      chapter: "Capitolo 6 - I pin digitali",
-      difficulty: 1,
-      icon: "\u{1F50C}",
-      simulationMode: "avr",
-      components: [
-        { type: "breadboard-half", id: "bb1" },
-        { type: "nano-r4", id: "nano1" },
-        { type: "push-button", id: "btn1" },
-        { type: "push-button", id: "btn2" },
-        { type: "resistor", id: "r1", value: 470 },
-        { type: "led", id: "led1", color: "red" }
-      ],
-      connections: [
-        { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" },
-        { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
-        { from: "bb1:bus-bot-plus-18", to: "bb1:a18", color: "red" },
-        { from: "bb1:j22", to: "bb1:a22", color: "orange" },
-        { from: "bb1:a26", to: "bb1:a25", color: "orange" },
-        { from: "bb1:d30", to: "bb1:bus-bot-minus-30", color: "black" }
-      ],
-      pinAssignments: {
-        "btn1:pin1": "bb1:e18", "btn1:pin2": "bb1:e22",
-        "btn1:pin3": "bb1:f18", "btn1:pin4": "bb1:f22",
-        "btn2:pin1": "bb1:e22", "btn2:pin2": "bb1:e26",
-        "btn2:pin3": "bb1:f22", "btn2:pin4": "bb1:f26",
-        "r1:pin1": "bb1:c25", "r1:pin2": "bb1:c30",
-        "led1:anode": "bb1:d29", "led1:cathode": "bb1:d30"
-      },
-      code: null,
-      layout: {
-        "nano1": { x: 230, y: 10, parentId: "bb1" },
-        "bb1": { x: 280, y: 10 },
-        "btn1": { x: 440.25, y: 81.25 },
-        "btn2": { x: 470.25, y: 81.25 },
-        "r1": { x: 500.25, y: 58.75 },
-        "led1": { x: 511.5, y: 43.75 }
-      },
-      concept: "Logica AND/OR, circuiti serie/parallelo, elettronica senza codice",
-      layer: "schema",
-
-      estimatedMinutes: 30,
-      buildSteps: [
-        {
-          step: 1,
-          text: "Prendi il primo pulsante (BTN1) e posizionalo a cavallo della scanalatura, nei fori E18-F18 e E22-F22",
-          componentId: "btn1",
-          componentType: "push-button",
-          targetPins: { "btn1:pin1": "bb1:e18", "btn1:pin2": "bb1:e22", "btn1:pin3": "bb1:f18", "btn1:pin4": "bb1:f22" },
-          hint: "Il primo pulsante del circuito AND/OR. A cavallo della scanalatura centrale."
-        },
-        {
-          step: 2,
-          text: "Prendi il secondo pulsante (BTN2) e posizionalo a cavallo, nei fori E22-F22 e E26-F26",
-          componentId: "btn2",
-          componentType: "push-button",
-          targetPins: { "btn2:pin1": "bb1:e22", "btn2:pin2": "bb1:e26", "btn2:pin3": "bb1:f22", "btn2:pin4": "bb1:f26" },
-          hint: "Il secondo pulsante, in serie col primo per creare la logica AND."
-        },
-        {
-          step: 3,
-          text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori C25 e C30",
-          componentId: "r1",
-          componentType: "resistor",
-          targetPins: { "r1:pin1": "bb1:c25", "r1:pin2": "bb1:c30" },
-          hint: "Il resistore protegge il LED dalla troppa corrente."
-        },
-        {
-          step: 4,
-          text: "Prendi il LED rosso e mettilo nei fori D29 e D30. L'anodo (+) in D29!",
-          componentId: "led1",
-          componentType: "led",
-          targetPins: { "led1:anode": "bb1:d29", "led1:cathode": "bb1:d30" },
-          hint: "Il LED si accendera solo quando la condizione AND o OR e soddisfatta."
-        },
-        {
-          step: 5,
-          text: "Collega un filo ROSSO dal binario + (5V) al foro A18",
-          wireFrom: "bb1:bus-bot-plus-18",
-          wireTo: "bb1:a18",
-          wireColor: "red",
-          hint: "Alimentazione dal 5V al primo pulsante."
-        },
-        {
-          step: 6,
-          text: "Collega un filo ARANCIONE dal foro J22 al foro A22 (ponte tra i due pulsanti)",
-          wireFrom: "bb1:j22",
-          wireTo: "bb1:a22",
-          wireColor: "orange",
-          hint: "Collega l'uscita del primo pulsante all'ingresso del secondo."
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
-        },
-        {
-          step: 7,
-          text: "Collega un filo ARANCIONE dal foro A26 al foro A25 (pulsante al resistore)",
-          wireFrom: "bb1:a26",
-          wireTo: "bb1:a25",
-          wireColor: "orange",
-          hint: "Collega l'uscita dei pulsanti al resistore."
-        },
-        {
-          step: 8,
-          text: "Collega un filo NERO dal foro D30 al binario GND (-) - catodo LED",
-          wireFrom: "bb1:d30",
-          wireTo: "bb1:bus-bot-minus-30",
-          wireColor: "black",
-          hint: "Il catodo del LED va a massa."
-        },
-        {
-          step: 9,
-          text: "Collega un filo ROSSO dal pin 5V dell'Arduino al binario +",
-          wireFrom: "nano1:5V",
-          wireTo: "bb1:bus-bot-plus-1",
-          wireColor: "red",
-          hint: "Alimentazione dal 5V di Arduino."
-        },
-        {
-          step: 10,
-          text: "Collega un filo NERO dal pin GND dell'Arduino al binario GND (-). Premi entrambi i pulsanti!",
-          wireFrom: "nano1:GND_R",
-          wireTo: "bb1:bus-bot-minus-1",
-          wireColor: "black",
-          hint: "Circuito AND: servono ENTRAMBI i pulsanti premuti per accendere il LED!"
-        }
-      ],
-      steps: [
-        "Collega il LED con resistore da 470 ohm al pin 5V di Arduino.",
-        "Collega due pulsanti IN SERIE tra il LED e GND: servono ENTRAMBI premuti per accendere (AND).",
-        "Ora prova a collegare i pulsanti IN PARALLELO: basta premerne UNO per accendere il LED (OR)."
-      ],
-      observe: "Con i pulsanti in serie (AND) il LED si accende SOLO quando li premi entrambi. Con i pulsanti in parallelo (OR) basta premerne uno qualsiasi. Questa e la logica booleana!",
-      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta esplorando i circuiti AND e OR con pulsanti fisici, SENZA codice Arduino. Spiega la differenza tra serie (AND - servono tutti) e parallelo (OR - basta uno). Usa analogie semplici: AND e come due porte in corridoio, OR e come due porte di una stanza. Rispondi in italiano.",
-      quiz: [
-        {
-          question: "In un circuito AND con 2 pulsanti, quando si accende il LED?",
-          options: ["Quando premi un pulsante qualsiasi", "Solo quando premi entrambi i pulsanti contemporaneamente", "Il LED e sempre acceso"],
-          correct: 1,
-          explanation: "In un circuito AND (serie) la corrente deve passare attraverso ENTRAMBI i pulsanti. Se uno e aperto, il circuito e interrotto!"
-        },
-        {
-          question: "Come si ottiene un circuito OR con due pulsanti?",
-          options: ["Si collegano i pulsanti uno dopo l'altro (in serie)", "Si collegano i pulsanti affiancati (in parallelo)", "Si usa un solo pulsante piu grande"],
-          correct: 1,
-          explanation: "In un circuito OR i pulsanti sono in parallelo: la corrente puo passare da uno O dall'altro. Basta premerne uno qualsiasi per accendere il LED!"
-        }
-      ]
-    },
-    {
-      id: "v3-cap6-esp2",
-      title: "Cap. 6 Esp. 2 - Colleghiamo la resistenza",
-      bookRef: "Vol3 Cap6 ESPERIMENTO 2",
-      desc: "Colleghiamo un LED esterno al pin 13 con un resistore da 470 ohm. Usiamo lo stesso programma Blink, ma ora vediamo lampeggiare un LED sulla breadboard!",
+      title: "Cap. 6 Esp. 1 - Colleghiamo la resistenza",
+      bookRef: "Vol3 p.56 - ESPERIMENTO 1",
+      desc: "Il primo LED esterno! Colleghiamo un LED + resistenza 470Ω al pin D13. Stesso sketch Blink del Cap. 5, ma ora il LED lampeggia sulla breadboard invece che sulla scheda.",
       chapter: "Capitolo 6 - I pin digitali",
       difficulty: 1,
       icon: "\u{1F4A1}",
@@ -1288,7 +1144,8 @@ void loop() {
         "led1:anode": "bb1:d27",
         "led1:cathode": "bb1:d28"
       },
-      code: `// LED esterno su pin 13 — stesso Blink, LED sulla breadboard!
+      code: `// Vol3 Cap.6 Esp.1 — LED esterno su pin 13
+// Stesso Blink del Cap. 5, ma ora il LED lampeggia sulla breadboard!
 
 void setup() {
   pinMode(13, OUTPUT);
@@ -1298,6 +1155,128 @@ void loop() {
   digitalWrite(13, HIGH);
   delay(1000);
   digitalWrite(13, LOW);
+  delay(1000);
+}`,
+      layout: {
+        "nano1": { x: 230, y: 10, parentId: "bb1" },
+        "bb1": { x: 280, y: 10 },
+        "r1": { x: 451.5, y: 58.75 },
+        "led1": { x: 496.5, y: 43.75 }
+      },
+      concept: "LED esterno controllato da pin digitale, resistore di protezione 470Ω, circuito su breadboard",
+      layer: "schema",
+      estimatedMinutes: 15,
+      buildSteps: [
+        {
+          step: 1,
+          text: "Prendi il resistore R1 (470\u03A9) e posizionalo nei fori C18 e C25",
+          componentId: "r1",
+          componentType: "resistor",
+          targetPins: { "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25" },
+          hint: "Il resistore protegge il LED dalla troppa corrente."
+        },
+        {
+          step: 2,
+          text: "Prendi il LED rosso e mettilo nei fori D27 e D28. L'anodo (gamba lunga) in D27!",
+          componentId: "led1",
+          componentType: "led",
+          targetPins: { "led1:anode": "bb1:d27", "led1:cathode": "bb1:d28" },
+          hint: "La gamba lunga (anodo) va nel foro D27, la corta (catodo) in D28."
+        },
+        {
+          step: 3,
+          text: "Collega un filo VERDE dal foro D25 al foro D27 (ponte tra resistenza e LED)",
+          wireFrom: "bb1:d25",
+          wireTo: "bb1:d27",
+          wireColor: "green",
+          hint: "Questo filo collega il resistore all'anodo del LED."
+        },
+        {
+          step: 4,
+          text: "Collega un filo ARANCIONE dal pin D13 dell'Arduino al foro A18",
+          wireFrom: "nano1:W_D13",
+          wireTo: "bb1:a18",
+          wireColor: "orange",
+          hint: "D13 controlla il LED esterno, esattamente come faceva con il LED integrato."
+        },
+        {
+          step: 5,
+          text: "Collega un filo NERO dal foro A28 al binario GND (-)",
+          wireFrom: "bb1:a28",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+          wireTo: "bb1:bus-bot-minus-28",
+          wireColor: "black",
+          hint: "Il catodo del LED va a massa chiudendo il circuito."
+        }
+      ],
+      steps: [
+        "Posiziona il resistore da 470Ω in serie al LED.",
+        "Collega il pin D13 dell'Arduino all'anodo del LED (tramite la resistenza).",
+        "Collega il catodo del LED a GND.",
+        "Carica lo sketch Blink usando il pin 13 al posto di LED_BUILTIN."
+      ],
+      observe: "Il LED sulla breadboard lampeggia una volta al secondo — esattamente come il LED integrato sulla scheda, ma ora sei TU a posizionarlo. Stesso codice, stesso comportamento, nuovo circuito!",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo l'ESPERIMENTO 1 del Volume 3 a pagina 56: 'Colleghiamo la resistenza'. Il circuito è LED esterno (rosso) + resistenza 470\u03A9 in serie, pilotati dal pin D13 con lo sketch Blink. Spiega perché serve la resistenza (protegge il LED dalla troppa corrente, è come un tubo stretto per l'acqua), che la gamba lunga del LED è l'anodo (+) e va verso D13, e che il codice è identico a quello del Cap. 5 ma con '13' al posto di 'LED_BUILTIN'. Cita sempre il libro a pagina 56. Rispondi in italiano semplice per ragazzi 10-14 anni.",
+      quiz: [
+        {
+          question: "A cosa serve la resistenza da 470\u03A9 in serie al LED?",
+          options: ["A far brillare di più il LED", "A proteggere il LED dalla troppa corrente", "A cambiare il colore del LED"],
+          correct: 1,
+          explanation: "La resistenza limita la corrente che passa nel LED. Senza resistenza il LED potrebbe bruciarsi! È come un tubo stretto che riduce il flusso dell'acqua."
+        },
+        {
+          question: "Qual è la differenza tra anodo e catodo nel LED?",
+          options: ["Sono la stessa cosa", "L'anodo è la gamba lunga (+), il catodo la gamba corta (-)", "L'anodo va a GND, il catodo al pin digitale"],
+          correct: 1,
+          explanation: "L'anodo (gamba lunga) è il polo positivo e va verso il pin Arduino. Il catodo (gamba corta) è il polo negativo e va a GND. Se inverti il LED non si accende!"
+        }
+      ]
+    },
+    {
+      // ────────────────────────────────────────────────────────────
+      // ALLINEATO al libro Vol3 p.57 ESPERIMENTO 2 (18/04/2026 TASK 3):
+      // "Cambia il numero di pin" — stesso circuito LED+470Ω, ma pilotato
+      // da un pin diverso (D8 invece di D13). Dimostra che qualsiasi pin
+      // digitale funziona come OUTPUT.
+      // ────────────────────────────────────────────────────────────
+      id: "v3-cap6-esp2",
+      title: "Cap. 6 Esp. 2 - Cambia il numero di pin",
+      bookRef: "Vol3 p.57 - ESPERIMENTO 2",
+      desc: "Stesso circuito LED + resistenza 470Ω, ma ora il LED è pilotato dal pin D8 invece di D13. Cambia il numero nel codice e sposta il filo: il LED lampeggia lo stesso!",
+      chapter: "Capitolo 6 - I pin digitali",
+      difficulty: 1,
+      icon: "\u{1F4A1}",
+      simulationMode: "avr",
+      components: [
+        { type: "breadboard-half", id: "bb1" },
+        { type: "nano-r4", id: "nano1" },
+        { type: "resistor", id: "r1", value: 470 },
+        { type: "led", id: "led1", color: "red" }
+      ],
+      connections: [
+        { from: "nano1:W_D8", to: "bb1:a18", color: "orange" },
+        { from: "bb1:d25", to: "bb1:d27", color: "green" },
+        { from: "bb1:a28", to: "bb1:bus-bot-minus-28", color: "black" },
+        { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
+        { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" }
+      ],
+      pinAssignments: {
+        "r1:pin1": "bb1:c18",
+        "r1:pin2": "bb1:c25",
+        "led1:anode": "bb1:d27",
+        "led1:cathode": "bb1:d28"
+      },
+      code: `// Vol3 Cap.6 Esp.2 — Stesso Blink, pin diverso (D8 invece di D13)
+// Dimostra che qualsiasi pin digitale può essere OUTPUT
+
+void setup() {
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(8, HIGH);
+  delay(1000);
+  digitalWrite(8, LOW);
   delay(1000);
 }`,
       layout: {
@@ -1337,11 +1316,11 @@ void loop() {
         },
         {
           step: 4,
-          text: "Collega un filo ARANCIONE dal pin D13 dell'Arduino al foro A18",
-          wireFrom: "nano1:W_D13",
+          text: "Collega un filo ARANCIONE dal pin D8 dell'Arduino al foro A18",
+          wireFrom: "nano1:W_D8",
           wireTo: "bb1:a18",
           wireColor: "orange",
-          hint: "D13 controlla il LED esterno, come quello integrato."
+          hint: "Ora usiamo D8 al posto di D13 — un pin digitale qualsiasi!"
         },
         {
           step: 5,
@@ -1361,33 +1340,33 @@ void loop() {
         },
         {
           step: 7,
-          text: "Collega un filo ROSSO dal pin 5V al binario +. Il LED lampeggia come quello integrato!",
+          text: "Collega un filo ROSSO dal pin 5V al binario +. Modifica il codice: pinMode(8, OUTPUT) e digitalWrite(8, ...) — il LED lampeggia lo stesso!",
           wireFrom: "nano1:5V",
           wireTo: "bb1:bus-bot-plus-1",
           wireColor: "red",
-          hint: "Stesso programma Blink, ma ora il LED e sulla breadboard!"
+          hint: "Qualsiasi pin digitale funziona come OUTPUT. Cambia il numero nel codice e nel collegamento."
         }
       ],
       scratchXml: BLINK_EXTERNAL_SCRATCH,
       steps: [
-        "Collega il resistore da 470 ohm dal pin 13 dell'Arduino a una colonna della breadboard.",
-        "Collega l'anodo (+) del LED alla stessa colonna, e il catodo (-) al binario GND.",
-        "Carica il programma Blink: ora lampeggia il LED sulla breadboard!"
+        "Sposta il filo dal pin D13 al pin D8 dell'Arduino.",
+        "Modifica il codice: pinMode(8, OUTPUT) e digitalWrite(8, HIGH/LOW).",
+        "Carica e verifica che il LED lampeggi esattamente come prima."
       ],
-      observe: "Il LED esterno sulla breadboard lampeggia insieme al LED integrato sulla scheda, perche entrambi sono collegati al pin 13. Il resistore da 470 ohm protegge il LED dalla troppa corrente.",
-      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente ha collegato un LED esterno al pin 13 con un resistore. E lo stesso programma Blink ma ora il LED e sulla breadboard! Spiega perche serve il resistore (limita la corrente, senza il LED si brucia). Rispondi in italiano.",
+      observe: "Il LED lampeggia identico a prima. Hai appena scoperto che qualsiasi pin digitale può essere usato come OUTPUT — basta cambiare il numero nel codice e il collegamento fisico. Arduino Nano ha 14 pin digitali (D2-D13) e tutti possono comandare un LED.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta facendo l'ESPERIMENTO 2 del Volume 3 a pagina 57: 'Cambia il numero di pin'. Stesso circuito LED + 470Ω dell'esperimento precedente, ma ora pilotato dal pin D8 invece di D13. Spiega che Arduino Nano ha 14 pin digitali (D2-D13) e TUTTI possono funzionare come OUTPUT: basta cambiare il numero nel codice (pinMode e digitalWrite) e spostare il filo fisicamente. Cita sempre il libro a pagina 57. Rispondi in italiano semplice per ragazzi 10-14 anni.",
       quiz: [
         {
-          question: "Perche serve un resistore in serie con il LED?",
-          options: ["Per far lampeggiare il LED piu velocemente", "Per limitare la corrente e non bruciare il LED", "Per cambiare il colore del LED"],
+          question: "Quali pin di Arduino Nano possono essere usati come OUTPUT digitale?",
+          options: ["Solo il pin D13", "Tutti i pin digitali D2-D13", "Solo i pin analogici A0-A5"],
           correct: 1,
-          explanation: "Il LED senza resistore riceve troppa corrente e si brucia! Il resistore da 470 ohm limita la corrente a un valore sicuro (circa 7mA con 3.3V ai capi)."
+          explanation: "Arduino Nano ha 14 pin digitali (D0-D13). Tutti tranne D0 e D1 (riservati per la seriale) possono essere OUTPUT. Basta chiamare pinMode(pin, OUTPUT)."
         },
         {
-          question: "Perche il LED esterno e quello integrato lampeggiano insieme?",
-          options: ["Perche tutti i LED sono sempre sincronizzati", "Perche entrambi sono collegati al pin 13", "Perche la breadboard li collega automaticamente"],
-          correct: 1,
-          explanation: "Sia il LED integrato sulla scheda che quello esterno sono collegati al pin 13. Quando il codice scrive HIGH o LOW sul pin 13, entrambi ricevono lo stesso segnale!"
+          question: "Cosa bisogna modificare per passare da D13 a D8?",
+          options: ["Solo il codice Arduino", "Solo il collegamento fisico", "Sia il codice (pinMode e digitalWrite) sia il filo sulla breadboard"],
+          correct: 2,
+          explanation: "Entrambi! Il codice dice ad Arduino quale pin usare, il filo porta il segnale dal pin al LED. Se ne cambi solo uno, il circuito non funziona."
         }
       ]
     },
@@ -1404,7 +1383,6 @@ void loop() {
         { type: "breadboard-half", id: "bb1" },
         { type: "nano-r4", id: "nano1" },
         { type: "resistor", id: "r1", value: 470 },
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         { type: "led", id: "led1", color: "red" }
       ],
       connections: [
@@ -1426,6 +1404,7 @@ void setup() {
   pinMode(13, OUTPUT);
 }
 
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 // Punto: lampo breve (200ms)
 void punto() {
   digitalWrite(13, HIGH);
@@ -1605,7 +1584,6 @@ void loop() {
           componentType: "resistor",
           targetPins: { "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25" },
           hint: "Il resistore protegge il LED."
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         },
         {
           step: 2,
@@ -1627,6 +1605,7 @@ void loop() {
           step: 4,
           text: "Collega un filo VERDE dal pin D5 dell'Arduino al foro A18",
           wireFrom: "nano1:W_D5",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireTo: "bb1:a18",
           wireColor: "green",
           hint: "D5 invece di D13: qualsiasi pin digitale funziona!"
@@ -1806,7 +1785,6 @@ void loop() {
           step: 8,
           text: "Collega un filo VERDE dal foro H23 al foro H30 (ponte R3 al LED rosso)",
           wireFrom: "bb1:h23",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireTo: "bb1:h30",
           wireColor: "green",
           hint: "Collega il resistore al LED rosso."
@@ -1828,6 +1806,7 @@ void loop() {
           hint: "Catodo del LED verde verso massa."
         },
         {
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 11,
           text: "Collega un filo GIALLO dal pin D6 dell'Arduino al foro A22",
           wireFrom: "nano1:W_D6",
@@ -2007,7 +1986,6 @@ void loop() {
         {
           step: 1,
           text: "Prendi il resistore R1 (470Ω) e posizionalo nei fori B16 e B23 — circuito verde",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           componentId: "r1",
           componentType: "resistor",
           targetPins: { "r1:pin1": "bb1:b16", "r1:pin2": "bb1:b23" },
@@ -2029,6 +2007,7 @@ void loop() {
           wireColor: "green",
           hint: "Collega il resistore al LED verde attraverso le colonne."
         },
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
         {
           step: 4,
           text: "Prendi il resistore R2 (470Ω) e posizionalo nei fori E22 e E29 — circuito giallo",
@@ -2208,7 +2187,6 @@ void loop() {
         { type: "nano-r4", id: "nano1" },
         { type: "push-button", id: "btn1" },
         { type: "resistor", id: "r1", value: 470 },
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         { type: "led", id: "led1", color: "green" }
       ],
       connections: [
@@ -2230,6 +2208,7 @@ void loop() {
 // Pin 10 = pulsante, Pin 5 = LED
 
 bool statoLED = false;
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
 void setup() {
   pinMode(10, INPUT_PULLUP);
@@ -2250,7 +2229,7 @@ void loop() {
         "r1": { x: 451.5, y: 58.75 },
         "led1": { x: 496.5, y: 43.75 }
       },
-      concept: "digitalRead, INPUT_PULLUP, variabile booleana, toggle semplice",
+      concept: "digitalRead, INPUT_PULLUP, variabile vero-o-falso, toggle semplice",
       layer: "schema",
 
       estimatedMinutes: 30,
@@ -2343,7 +2322,7 @@ void loop() {
         "Collega il LED con resistore al pin 5. Carica il codice e premi il pulsante!"
       ],
       observe: "Ogni volta che premi il pulsante, il LED cambia stato: se era spento si accende, se era acceso si spegne. La variabile statoLED ricorda lo stato tra un ciclo e l'altro!",
-      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando digitalRead per leggere un pulsante. Spiega INPUT_PULLUP: Arduino ha una resistenza interna che tiene il pin HIGH quando il pulsante non e premuto. Quando lo premi, il pin va LOW perche si collega a GND. Il codice usa una variabile booleana per ricordare lo stato. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta usando digitalRead per leggere un pulsante. Spiega INPUT_PULLUP: Arduino ha una resistenza interna che tiene il pin HIGH quando il pulsante non e premuto. Quando lo premi, il pin va LOW perche si collega a GND. Il codice usa una variabile vero-o-falso per ricordare lo stato. Rispondi in italiano.",
       quiz: [
         {
           question: "Con INPUT_PULLUP, cosa legge Arduino quando il pulsante NON e premuto?",
@@ -2352,7 +2331,7 @@ void loop() {
           explanation: "INPUT_PULLUP attiva una resistenza interna che tiene il pin HIGH. Quando premi il pulsante, colleghi il pin a GND e Arduino legge LOW."
         },
         {
-          question: "A cosa serve la variabile booleana statoLED nel codice?",
+          question: "A cosa serve la variabile vero-o-falso statoLED nel codice?",
           options: ["A misurare la luminosita del LED", "A ricordare se il LED e acceso o spento tra un ciclo e l'altro", "A contare quante volte premi il pulsante"],
           correct: 1,
           explanation: "La variabile bool statoLED salva lo stato corrente del LED. Senza questa variabile, il programma non saprebbe se il LED era acceso o spento al ciclo precedente!"
@@ -2409,7 +2388,6 @@ void loop() {
         "nano1": { x: 230, y: 10, parentId: "bb1" },
         "bb1": { x: 280, y: 10 },
         "btn1": { x: 455.25, y: 81.25 },
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         "r1": { x: 451.5, y: 58.75 },
         "led1": { x: 496.5, y: 43.75 },
         "r2": { x: 451.5, y: 98.75 },
@@ -2424,13 +2402,14 @@ void loop() {
         "Collega le colonne dei catodi (28) al binario GND. Carica e premi il pulsante per alternare!"
       ],
       observe: "All'avvio il LED verde è acceso e il rosso spento. Ogni volta che premi il pulsante, si scambiano: il verde si spegne e il rosso si accende, o viceversa. Il codice usa il debounce per evitare rimbalzi meccanici del pulsante.",
-      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento '2 LED + Pulsante (toggle)' del Volume 3 — Arduino Programmato. Questo è l'esperimento più avanzato del capitolo 7! Il codice usa variabili booleane (statoVerde e ultimoPulsante) per ricordare lo stato tra un ciclo e l'altro. Rileva la transizione HIGH->LOW del pulsante (il momento esatto della pressione) e usa il debounce con delay(50) per evitare falsi contatti. Poi con if/else alterna quale LED è acceso. È come un interruttore che ogni volta che lo premi cambia stanza! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'esperimento '2 LED + Pulsante (toggle)' del Volume 3 — Arduino Programmato. Questo è l'esperimento più avanzato del capitolo 7! Il codice usa variabili vero-o-falso (statoVerde e ultimoPulsante) per ricordare lo stato tra un ciclo e l'altro. Rileva la transizione HIGH->LOW del pulsante (il momento esatto della pressione) e usa il debounce con delay(50) per evitare falsi contatti. Poi con if/else alterna quale LED è acceso. È come un interruttore che ogni volta che lo premi cambia stanza! Spiega il codice riga per riga in modo semplice, usando analogie adatte a bambini di 8-12 anni. Rispondi in italiano.",
       code: `// 2 LED + Pulsante Toggle
 // D6 (W_D6) = pulsante, D10 (W_D10) = verde, D9 (W_D9) = rosso
 // Premi per alternare: verde <-> rosso
 
 bool statoVerde = true;
 bool ultimoPulsante = HIGH;
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
 void setup() {
   pinMode(6, INPUT_PULLUP);
@@ -2610,7 +2589,6 @@ void loop() {
           xml: MINI_TOGGLE_SCRATCH,
         },
       ],
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
       quiz: [
         {
           question: "Cos'è il debounce e perché serve?",
@@ -2632,6 +2610,7 @@ void loop() {
       desc: "Miglioriamo il toggle! Il debounce con while aspetta che il pulsante venga rilasciato prima di continuare. Cosi evitiamo che un solo tocco venga letto come tante pressioni.",
       chapter: "Capitolo 6 - I pin digitali",
       difficulty: 2,
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       icon: "\u{1F3AF}",
       simulationMode: "avr",
       components: [
@@ -2811,7 +2790,6 @@ void loop() {
       ],
       connections: [
         { from: "bb1:f22", to: "bb1:bus-bot-plus-22", color: "red" },
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         { from: "nano1:W_A0", to: "bb1:f23", color: "yellow" },
         { from: "bb1:f24", to: "bb1:bus-bot-minus-24", color: "black" },
         { from: "nano1:W_D13", to: "bb1:a18", color: "orange" },
@@ -2833,6 +2811,7 @@ void setup() {
   pinMode(13, OUTPUT);
 }
 
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
 void loop() {
   int valoreLetto = analogRead(A0);
   if (valoreLetto > 511) { digitalWrite(13, HIGH); } else { digitalWrite(13, LOW); }
@@ -3012,7 +2991,6 @@ void loop() {
         "led1": { x: 496.5, y: 43.75 }
       },
       concept: "Conversione ADC-Volt, float, formula proporzionale",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
       layer: "schema",
 
       estimatedMinutes: 30,
@@ -3034,6 +3012,7 @@ void loop() {
           hint: "VCC del potenziometro al 5V."
         },
         {
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 3,
           text: "Collega un filo GIALLO dal pin A0 dell'Arduino al foro F23",
           wireFrom: "nano1:W_A0",
@@ -3213,7 +3192,6 @@ void loop() {
           text: "Prendi il potenziometro da 10k\u03A9 e posizionalo nei fori H22, H23, H24",
           componentId: "pot1",
           componentType: "potentiometer",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           targetPins: { "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24" },
           hint: "Il trimmer controlla quale dei 3 LED si accende."
         },
@@ -3235,6 +3213,7 @@ void loop() {
         },
         {
           step: 4,
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           text: "Collega un filo NERO dal foro F24 al binario GND (-)",
           wireFrom: "bb1:f24",
           wireTo: "bb1:bus-bot-minus-24",
@@ -3414,7 +3393,6 @@ void loop() {
         { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
         { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" }
       ],
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
       pinAssignments: {
         "r1:pin1": "bb1:c18", "r1:pin2": "bb1:c25",
         "led1:anode": "bb1:d27", "led1:cathode": "bb1:d28"
@@ -3436,6 +3414,7 @@ void loop() {
         "r1": { x: 451.5, y: 58.75 },
         "led1": { x: 496.5, y: 43.75 }
       },
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       concept: "analogWrite, PWM, for loop, luminosita graduale",
       layer: "schema",
 
@@ -3615,7 +3594,6 @@ void loop() {
         {
           step: 6,
           text: "Collega un filo NERO dal pin GND dell'Arduino al binario GND (-)",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireFrom: "nano1:GND_R",
           wireTo: "bb1:bus-bot-minus-1",
           wireColor: "black",
@@ -3637,6 +3615,7 @@ void loop() {
         "Modifica i numeri dentro analogWrite per sperimentare! Cosa succede con 10? E con 200?"
       ],
       observe: "Il LED mostra 4 livelli di luminosita chiaramente diversi, da spento a piena potenza. 0-255 sono 256 possibili livelli: e come avere un dimmer digitale!",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta esplorando i valori PWM manualmente. Incoraggialo a sperimentare: cosa succede con analogWrite(5, 1)? Si vede appena! E con 250 vs 255? Quasi nessuna differenza. La percezione umana non e lineare! Rispondi in italiano.",
       quiz: [
         {
@@ -3816,7 +3795,6 @@ void setup() {
   pinMode(A0, INPUT);
 }
 
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
 void loop() {
   int valoreLetto = analogRead(A0);
   int valorePWM = map(valoreLetto, 0, 1023, 0, 255);
@@ -3838,6 +3816,7 @@ void loop() {
           step: 1,
           text: "Prendi il potenziometro da 10k\u03A9 e posizionalo nei fori H22, H23, H24",
           componentId: "pot1",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           componentType: "potentiometer",
           targetPins: { "pot1:vcc": "bb1:h22", "pot1:signal": "bb1:h23", "pot1:gnd": "bb1:h24" },
           hint: "Il trimmer controlla la luminosita del LED in tempo reale!"
@@ -4017,7 +3996,6 @@ void loop() {
           hint: "A1 legge il trimmer. A0 e riservato per l'uscita DAC!"
         },
         {
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 4,
           text: "Collega un filo NERO dal foro F24 al binario GND (-)",
           wireFrom: "bb1:f24",
@@ -4039,6 +4017,7 @@ void loop() {
           wireFrom: "nano1:5V",
           wireTo: "bb1:bus-bot-plus-1",
           wireColor: "red",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "analogWriteResolution(10) usa 1024 livelli. DAC e diverso dal PWM: tensione continua!"
         }
       ],
@@ -4218,7 +4197,6 @@ void loop() { Serial.println("Ciao dal Team di ELAB!"); }`,
         { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
         { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" }
       ],
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
       // Same pot layout as cap8-pot
       // vcc col 22 → 5V bus, signal col 23 → A0, gnd col 24 → GND bus
       layout: {
@@ -4240,6 +4218,7 @@ void loop() { Serial.println("Ciao dal Team di ELAB!"); }`,
 // Potenziometro su A0, stampa valore 0-1023
 
 void setup() {
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   Serial.begin(9600);
 }
 
@@ -4419,7 +4398,6 @@ void loop() {
           hint: "Il secondo potenziometro va sul pin A4."
         },
         {
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 3,
           text: "Collega un filo ROSSO dal foro F22 al binario + (5V) - VCC POT1",
           wireFrom: "bb1:f22",
@@ -4441,6 +4419,7 @@ void loop() {
           wireFrom: "bb1:f24",
           wireTo: "bb1:bus-bot-minus-24",
           wireColor: "black",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "GND del primo potenziometro a massa."
         },
         {
@@ -4620,7 +4599,6 @@ void loop() {
           wireFrom: "bb1:f24",
           wireTo: "bb1:bus-bot-minus-24",
           wireColor: "black",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           hint: "GND del potenziometro a massa."
         },
         {
@@ -4642,6 +4620,7 @@ void loop() {
         {
           step: 7,
           text: "Collega un filo VERDE dal foro D23 al foro D25 (ponte R1 al LED rosso)",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireFrom: "bb1:d23",
           wireTo: "bb1:d25",
           wireColor: "green",
@@ -4821,7 +4800,6 @@ void loop() {
         "Collega il display LCD alla breadboard e al Nano come mostrato nello schema.",
         "Premi Compila per compilare il codice.",
         "Premi Play per avviare la simulazione.",
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         "Osserva il messaggio \"Hello World!\" sul display LCD."
       ],
       observe: "Il display LCD mostra \"Hello World!\" sulla prima riga e \"ELAB Simulator\" sulla seconda. Il protocollo HD44780 in modalità 4-bit usa 6 pin di Arduino per controllare il display: RS, E, D4-D7.",
@@ -4843,6 +4821,7 @@ void loop() {
   // Nulla da fare nel loop
 }`,
       hexFile: "/hex/v3-extra-lcd-hello.hex",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
       // S112: scratchXml = complete LCD Hello World program
       scratchXml: `<xml xmlns="https://developers.google.com/blockly/xml"><block type="arduino_base" x="40" y="30" deletable="false"><statement name="SETUP"><block type="arduino_lcd_init"><field name="RS">12</field><field name="E">11</field><field name="D4">5</field><field name="D5">10</field><field name="D6">3</field><field name="D7">6</field><field name="COLS">16</field><field name="ROWS">2</field><next><block type="arduino_lcd_set_cursor"><field name="COL">0</field><field name="ROW">0</field><next><block type="arduino_lcd_print"><value name="TEXT"><shadow type="text"><field name="TEXT">Hello World!</field></shadow></value><next><block type="arduino_lcd_set_cursor"><field name="COL">0</field><field name="ROW">1</field><next><block type="arduino_lcd_print"><value name="TEXT"><shadow type="text"><field name="TEXT">ELAB Simulator</field></shadow></value></block></next></block></next></block></next></block></next></block></statement></block></xml>`,
       // S111: LCD Blockly blocks — full Scratch support
@@ -5022,7 +5001,6 @@ void loop() {
       // S102: Scratch steps — Servo Sweep (versione semplificata: 0° ↔ 180° con delay)
       scratchSteps: [
         {
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           label: "Apri l'editor blocchi",
           description: "Programmiamo il servomotore! Apri l'editor e vai sulla tab Blocchi.",
           explanation: "Un servomotore è diverso da un motore normale: può ruotare a un angolo preciso (da 0° a 180°). La versione a blocchi è semplificata — salta tra 0° e 180° invece di fare lo sweep graduale del codice C++.",
@@ -5044,6 +5022,7 @@ void loop() {
           label: "Oscillazione completa",
           description: "Aggiungi un altro 'Servo.write' con angolo 180 e un altro 'Attendi 1000ms'. Il braccio oscillerà avanti e indietro! Compila e osserva.",
           explanation: "Il servo ora oscilla tra 0° e 180° — è come un tergicristallo! La versione C++ usa un ciclo for con delay(15) per ogni grado, creando un movimento fluido. Con i blocchi facciamo un salto netto che è comunque visibile e istruttivo.",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           xml: SERVO_SCRATCH,
         },
       ],
@@ -5114,7 +5093,7 @@ void loop() {
     {
       id: "v3-extra-simon",
       title: "Simon Says — Gioco di Memoria",
-      desc: "Costruisci il classico gioco Simon con 4 LED colorati, 4 pulsanti e un cicalino che suona 4 note diverse! Arduino genera una sequenza luminosa e sonora sempre più lunga: ripetila premendo i pulsanti giusti!",
+      desc: "Il classico Simon: 4 LED colorati, 4 pulsanti, un cicalino. Arduino mostra una sequenza; tu la ripeti!",
       chapter: "Extra",
       difficulty: 3,
       icon: null,
@@ -5214,7 +5193,7 @@ void loop() {
         "Se sbagli, tutti i LED lampeggiano con un suono grave (Game Over) e il gioco ricomincia!",
         "Sfida te stesso: quanti livelli riesci a completare?"
       ],
-      observe: "Osserva come ogni LED si accende per 400ms insieme alla sua nota musicale (Do=262Hz per il rosso, Mi=330Hz per il verde, Sol=392Hz per il blu, Do alto=523Hz per il giallo). Il cicalino aiuta la memoria: puoi ricordare la sequenza sia con i colori che con le note! Il timeout per premere un pulsante è di 3 secondi.",
+      observe: "Ogni LED si accende per 400ms insieme alla sua nota musicale (rosso=Do, verde=Mi, blu=Sol, giallo=Do alto). Il cicalino aiuta la memoria: ricordi con colori e note! Hai 3 secondi per premere.",
       unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta giocando a Simon Says! Questo esperimento implementa il gioco con feedback sonoro. 4 LED colorati (rosso D9, verde D10, blu D11, giallo D12) + un cicalino piezo (D8) mostrano una sequenza di luci e suoni che si allunga ad ogni turno. Ogni colore ha la sua nota: rosso=Do(262Hz), verde=Mi(330Hz), blu=Sol(392Hz), giallo=Do alto(523Hz). 4 pulsanti (rosso D3, verde D5, blu D6, giallo D13) in INPUT_PULLUP permettono al giocatore di ripetere la sequenza. Un array seq[] memorizza fino a 100 elementi. La funzione accendi() usa tone() e noTone() per abbinare suono e luce. gameOver() suona un tono grave (150Hz) durante il lampeggio. Usa randomSeed(analogRead(A0)) per sequenze diverse ad ogni partita. Spiega in modo semplice e coinvolgente. Rispondi in italiano.",
       code: `// SIMON GAME — ELAB Volume 3
 // Gioco di memoria con 4 LED, 4 pulsanti e cicalino
@@ -5223,7 +5202,6 @@ const int LED[] = {9, 10, 11, 12};
 const int BTN[] = {3, 5, 6, 13};
 const int BUZZER = 8;
 // Do, Mi, Sol, Do alto — una nota per ogni colore
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
 const int NOTE[] = {262, 330, 392, 523};
 int seq[100];
 int livello = 0;
@@ -5245,6 +5223,7 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     digitalWrite(LED[i], LOW);
   }
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   delay(500);
 }
 
@@ -5424,7 +5403,6 @@ void loop() {
           wireTo: "bb1:bus-bot-minus-24",
           wireColor: "black",
           hint: "Collegamento a GND dalla sezione inferiore."
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         },
         /* === LED GIALLO (r4 + led4) === */
         {
@@ -5446,6 +5424,7 @@ void loop() {
         {
           step: 15,
           text: "Collega un filo GIALLO dal pin D12 al foro F22 (ingresso resistore R4)",
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           wireFrom: "nano1:W_D12",
           wireTo: "bb1:f22",
           wireColor: "yellow",
@@ -5625,7 +5604,6 @@ void loop() {
           explanation: "Le variabili sono come scatole con un nome: 'ledNum' contiene il numero del LED scelto. random(0,4) genera 0, 1, 2 o 3 (il 4 è escluso)."
         },
         {
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
           step: 4,
           text: "Aggiungi un blocco 'Se' che controlla: se ledNum = 0, allora 'Scrivi pin 9 HIGH' + 'Suona pin 8 freq 262'",
           hint: "262Hz è la nota Do — il suono del LED rosso. Ogni 'Se' accende un LED diverso con la sua nota.",
@@ -5647,6 +5625,7 @@ void loop() {
         },
         {
           step: 7,
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
           text: "Aggiungi 4 blocchi 'Se' per leggere i pulsanti: se 'Leggi pin 3' = 0 allora accendi LED rosso + suona Do + stampa 'Rosso premuto!'",
           hint: "Con INPUT_PULLUP, il pulsante premuto dà 0 (LOW). Il giocatore vede e sente quale pulsante ha premuto!",
           explanation: "digitalRead() legge lo stato del pin: con INPUT_PULLUP, il pulsante premuto dà 0 (LOW) e rilasciato dà 1 (HIGH). Serial.println() stampa sul Monitor Seriale per il debug.",

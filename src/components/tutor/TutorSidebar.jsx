@@ -126,6 +126,8 @@ export default function TutorSidebar({
                                 <button
                                     className="sidebar-section-label sidebar-dropdown-toggle"
                                     onClick={() => setGamesOpen(!gamesOpen)}
+                                    aria-expanded={gamesOpen}
+                                    aria-label="Giochi didattici"
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -208,7 +210,7 @@ export default function TutorSidebar({
                     className="sidebar-collapse-btn"
                     onClick={onToggleCollapsed}
                     title={collapsed ? 'Espandi (Ctrl+B)' : 'Comprimi (Ctrl+B)'}
-                    aria-label="Toggle sidebar"
+                    aria-label={collapsed ? 'Espandi barra laterale' : 'Comprimi barra laterale'}
                 >
                     {collapsed ? (
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -198,7 +198,7 @@ const LESSON_GROUPS = {
     title: 'Progetti LED: semaforo e Morse',
     concept: 'Sequenze e pattern con i LED',
     volume: 3,
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
     chapter: 6,
     icon: '🚦',
     experiments: ['v3-cap6-semaforo', 'v3-cap6-morse']
@@ -259,6 +259,33 @@ export function getLessonsForVolume(volumeNumber) {
  */
 export function getLessonCount() {
   return Object.keys(LESSON_GROUPS).length;
+}
+
+/**
+ * Ritorna il contesto di posizione di un esperimento nel suo gruppo.
+ * Es: { position: 2, total: 3, lessonTitle: "Accendi il LED", chapter: 6, volume: 1,
+ *        prevExp: "v1-cap6-esp1", nextExp: "v1-cap6-esp3",
+ *        narrative: "Esperimento 2 di 3 — Capitolo 6: Accendi il LED" }
+ * @param {string} experimentId
+ * @returns {object|null}
+ */
+export function getExperimentGroupContext(experimentId) {
+  const result = findLessonForExperiment(experimentId);
+  if (!result) return null;
+  const { lesson } = result;
+  const idx = lesson.experiments.indexOf(experimentId);
+  if (idx === -1) return null;
+  return {
+    position: idx + 1,
+    total: lesson.experiments.length,
+    lessonTitle: lesson.title,
+    concept: lesson.concept,
+    chapter: lesson.chapter,
+    volume: lesson.volume,
+    prevExp: idx > 0 ? lesson.experiments[idx - 1] : null,
+    nextExp: idx < lesson.experiments.length - 1 ? lesson.experiments[idx + 1] : null,
+    narrative: `Esperimento ${idx + 1} di ${lesson.experiments.length} — Capitolo ${lesson.chapter}: ${lesson.title}`,
+  };
 }
 
 export default LESSON_GROUPS;

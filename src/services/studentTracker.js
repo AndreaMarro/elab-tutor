@@ -198,7 +198,7 @@ function _endCurrentExperiment() {
 
 /**
  * Log a chat interaction with UNLIM AI.
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
  */
 function logChatInteraction(question, responseQuality) {
     if (!_userId || !_sessionId) return;

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import css from './FloatingToolbar.module.css';
+import { computeNextPos, getPositionStyle } from './floatingToolbarDrag';
 
 const STORAGE_KEY = 'elab-toolbar-pos';
 
@@ -88,7 +89,11 @@ export default function FloatingToolbar({
   const dragRef = useRef(null);
   const barRef = useRef(null);
 
-  // Drag only from the drag handle area — buttons work normally
+  // Drag only from the drag handle area — buttons work normally.
+  // Uses position:fixed while dragging (see floatingToolbarDrag.js) so that
+  // clientX/clientY (viewport) map directly to left/top without any
+  // offset-parent correction. Previously, when the toolbar was inside a
+  // <main> with panel margins, the bar jumped by the margin amount.
   const handleDragStart = useCallback((e) => {
     // If user clicked a button, let the button handle it — no drag
     if (e.target.closest('button')) return;
@@ -100,16 +105,21 @@ export default function FloatingToolbar({
     const offsetY = e.clientY - rect.top;
     // Capture pointer so we don't lose it
     if (barRef.current?.setPointerCapture) {
-      barRef.current.setPointerCapture(e.pointerId);
+      try { barRef.current.setPointerCapture(e.pointerId); } catch { /* */ }
     }
 
     const onMove = (ev) => {
-      const x = ev.clientX - offsetX;
-      const y = ev.clientY - offsetY;
-      setPos({
-        x: Math.max(0, Math.min(window.innerWidth - rect.width, x)),
-        y: Math.max(48, Math.min(window.innerHeight - rect.height, y)),
+      const next = computeNextPos({
+        clientX: ev.clientX,
+        clientY: ev.clientY,
+        offsetX,
+        offsetY,
+        width: rect.width,
+        height: rect.height,
+        viewportW: window.innerWidth,
+        viewportH: window.innerHeight,
       });
+      setPos(next);
     };
     const onUp = () => {
       window.removeEventListener('pointermove', onMove);
@@ -127,9 +137,7 @@ export default function FloatingToolbar({
     try { localStorage.removeItem(STORAGE_KEY); } catch { /* */ }
   }, []);
 
-  const posStyle = pos
-    ? { left: pos.x, top: pos.y, bottom: 'auto', transform: 'none' }
-    : {};
+  const posStyle = getPositionStyle(pos);
 
   return (
     <div

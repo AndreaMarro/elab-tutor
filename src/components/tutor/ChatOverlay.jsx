@@ -238,7 +238,7 @@ export default React.memo(function ChatOverlay({
     };
 
     return (
-        <div className={isFullscreen ? css.panelFullscreen : css.panel} style={panelDynamic}>
+        <div className={isFullscreen ? css.panelFullscreen : css.panel} style={panelDynamic} role="dialog" aria-modal={isFullscreen} aria-label="Chat UNLIM">
 
             {/* ======== HEADER ======== */}
             <div
@@ -389,6 +389,7 @@ export default React.memo(function ChatOverlay({
                     onChange={e => onInputChange(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Chiedi a UNLIM..."
+                    aria-label="Scrivi messaggio a UNLIM"
                     disabled={isLoading}
                     rows={1}
                     className={`elab-input ${css.inputTextarea}`}

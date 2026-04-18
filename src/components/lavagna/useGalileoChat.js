@@ -86,8 +86,8 @@ function executeActionTags(rawResponse) {
         case 'undo': api.undo?.(); executed.push('undo'); break;
         case 'redo': api.redo?.(); executed.push('redo'); break;
         case 'interact':
-          if (parts[1] && parts[2] && api.interactComponent) {
-            api.interactComponent(parts[1], parts[2], parts[3]);
+          if (parts[1] && parts[2] && api.interact) {
+            api.interact(parts[1], parts[2], parts[3]);
             executed.push('interact:' + parts[1] + ':' + parts[2]);
           }
           break;
@@ -109,6 +109,184 @@ function executeActionTags(rawResponse) {
             const desc = api.getCircuitDescription();
             logger.info('[Lavagna] Circuit description:', desc);
             executed.push('describe');
+          }
+          break;
+        // ── Movement & Wires ──
+        case 'movecomponent':
+          if (parts[1] && api.moveComponent) {
+            api.moveComponent(parts[1], parseInt(parts[2], 10) || 200, parseInt(parts[3], 10) || 150);
+            executed.push('movecomponent:' + parts[1]);
+          }
+          break;
+        case 'removewire':
+          if (parts[1] !== undefined && api.removeWire) {
+            api.removeWire(parseInt(parts[1], 10));
+            executed.push('removewire:' + parts[1]);
+          }
+          break;
+        // ── Diagnostics ──
+        case 'measure':
+          if (parts[1]) {
+            logger.info('[Lavagna] Measure requested:', parts[1]);
+            executed.push('measure:' + parts[1]);
+          }
+          break;
+        case 'diagnose':
+          logger.info('[Lavagna] Diagnose requested');
+          executed.push('diagnose');
+          break;
+        // ── Editor Control ──
+        case 'openeditor':
+          api.showEditor?.();
+          executed.push('openeditor');
+          break;
+        case 'closeeditor':
+          api.hideEditor?.();
+          executed.push('closeeditor');
+          break;
+        case 'switcheditor':
+          if (parts[1] && api.setEditorMode) {
+            api.setEditorMode(parts[1] === 'scratch' ? 'scratch' : 'arduino');
+            executed.push('switcheditor:' + parts[1]);
+          }
+          break;
+        case 'setcode':
+          if (parts.slice(1).join(':') && api.setEditorCode) {
+            api.setEditorCode(parts.slice(1).join(':'));
+            executed.push('setcode');
+          }
+          break;
+        case 'appendcode':
+          if (parts.slice(1).join(':') && api.appendEditorCode) {
+            api.appendEditorCode(parts.slice(1).join(':'));
+            executed.push('appendcode');
+          }
+          break;
+        case 'getcode':
+          if (api.getEditorCode) {
+            const code = api.getEditorCode();
+            logger.info('[Lavagna] Editor code:', code?.slice(0, 200));
+            executed.push('getcode');
+          }
+          break;
+        case 'resetcode':
+          api.resetEditorCode?.();
+          executed.push('resetcode');
+          break;
+        case 'loadblocks':
+          if (parts.slice(1).join(':') && api.loadScratchWorkspace) {
+            api.loadScratchWorkspace(parts.slice(1).join(':'));
+            executed.push('loadblocks');
+          }
+          break;
+        case 'fullscreenscratch':
+          api.showEditor?.();
+          api.setEditorMode?.('scratch');
+          executed.push('fullscreenscratch');
+          break;
+        case 'exitscratchfullscreen':
+          api.hideEditor?.();
+          executed.push('exitscratchfullscreen');
+          break;
+        // ── Navigation ──
+        case 'opentab': {
+          const tab = parts[1];
+          if (tab) {
+            // Emit navigation event for the shell to handle
+            window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab } }));
+            executed.push('opentab:' + tab);
+          }
+          break;
+        }
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
+        case 'openvolume': {
+          const vol = parseInt(parts[1], 10);
+          const pag = parseInt(parts[2], 10);
+          if (vol && pag) {
+            window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab: 'manuale', volume: vol, page: pag } }));
+            executed.push('openvolume:' + vol + ':' + pag);
+          }
+          break;
+        }
+        case 'openchat':
+          window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab: 'chat' } }));
+          executed.push('openchat');
+          break;
+        case 'closechat':
+          window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab: 'simulatore' } }));
+          executed.push('closechat');
+          break;
+        // ── Build Mode (Passo Passo) ──
+        case 'setbuildmode':
+          if (parts[1] && api.setBuildMode) {
+            const modeMap = { montato: 'complete', passopasso: 'guided', libero: 'sandbox' };
+            api.setBuildMode(modeMap[parts[1]] || parts[1]);
+            executed.push('setbuildmode:' + parts[1]);
+          }
+          break;
+        case 'nextstep':
+          api.nextStep?.();
+          executed.push('nextstep');
+          break;
+        case 'prevstep':
+          api.prevStep?.();
+          executed.push('prevstep');
+          break;
+        case 'showbom':
+          api.showBom?.();
+          executed.push('showbom');
+          break;
+        // ── Info Commands ──
+        case 'listcomponents':
+          if (api.getCircuitDescription) {
+            const desc = api.getCircuitDescription();
+            logger.info('[Lavagna] Components:', desc);
+            executed.push('listcomponents');
+          }
+          break;
+        case 'getstate':
+          if (api.getSimulatorContext) {
+            const ctx = api.getSimulatorContext();
+            logger.info('[Lavagna] State:', ctx);
+            executed.push('getstate');
+          }
+          break;
+        case 'showserial':
+          api.showSerialMonitor?.();
+          executed.push('showserial');
+          break;
+        case 'serialwrite':
+          if (parts[1] && api.serialWrite) {
+            api.serialWrite(parts.slice(1).join(':'));
+            executed.push('serialwrite');
+          }
+          break;
+        case 'highlightpin':
+          if (parts[1]) {
+            const pins = parts[1].split(',').map(s => s.trim());
+            api.highlightPin?.(pins);
+            setTimeout(() => api.unlim?.clearHighlights?.(), 4000);
+            executed.push('highlightpin:' + parts[1]);
+          }
+          break;
+        // ── Special ──
+        case 'quiz':
+          if (parts[1]) {
+            window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab: 'detective', experimentId: parts[1] } }));
+            executed.push('quiz:' + parts[1]);
+          }
+          break;
+        case 'youtube':
+          if (parts.slice(1).join(' ')) {
+            const query = encodeURIComponent(parts.slice(1).join(' '));
+            window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab: 'video', query: parts.slice(1).join(' ') } }));
+            executed.push('youtube:' + parts.slice(1).join(' '));
+          }
+          break;
+        case 'createnotebook':
+          if (parts.slice(1).join(' ')) {
+            window.dispatchEvent(new CustomEvent('elab-navigate', { detail: { tab: 'taccuini', title: parts.slice(1).join(' ') } }));
+            executed.push('createnotebook');
           }
           break;
         default:
@@ -198,7 +376,6 @@ async function executeIntentTags(rawResponse) {
           }
         }
       } catch (err) {
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         logger.warn('[Lavagna] INTENT parse error:', err.message);
       }
     }
@@ -222,6 +399,7 @@ function detectImplicitActions(userMessage, aiResponse) {
   const executed = [];
 
   // Play / run simulation
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
   if (/\b(accendi|avvia|fai partire|esegui|simula|prova|play)\b/.test(combined) &&
       !/\b(non |senza |prima di )\b.*\b(accend|avvia|esegu)/.test(combined)) {
     api.play?.();
@@ -282,7 +460,7 @@ function stripTagsForDisplay(text) {
 }
 
 // ── Word count cap (G25 — max 80 words for display) ──
-const MAX_WORDS = 80;
+const MAX_WORDS = 60;
 function capWords(text) {
   const words = text.split(/\s+/).filter(Boolean);
   if (words.length <= MAX_WORDS) return text;
@@ -399,7 +577,6 @@ export default function useGalileoChat() {
     return () => api.off?.('circuitChange', handler);
   }, []);
 
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
   // ── Send message ──
   const handleSend = useCallback(async (messageOverride) => {
     const userMessage = messageOverride || input;
@@ -423,6 +600,7 @@ export default function useGalileoChat() {
       ]);
       if (!messageOverride) setInput('');
       return;
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
     }
 
     if (!messageOverride) setInput('');
@@ -600,7 +778,6 @@ export default function useGalileoChat() {
       }
       setMessages(prev => [...prev, {
         id: Date.now() + 1, role: 'assistant',
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
         content: friendly, isError: true, retryMessage: userMessage,
       }]);
     }
@@ -624,6 +801,7 @@ export default function useGalileoChat() {
   // ── Screenshot analysis ──
   const handleScreenshot = useCallback(async () => {
     const api = typeof window !== 'undefined' && window.__ELAB_API;
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
     if (!api?.captureScreenshot) return;
     try {
       setIsLoading(true);

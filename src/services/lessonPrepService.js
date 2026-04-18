@@ -7,6 +7,8 @@
  */
 
 import { getLessonPath } from '../data/lesson-paths';
+import { getVolumeRef } from '../data/volume-references';
+import { getExperimentGroupContext } from '../data/lesson-groups';
 import { getSavedSessions } from '../hooks/useSessionTracker';
 import { sendChat } from './api';
 
@@ -112,10 +114,59 @@ export async function prepareLesson(experimentId, options = {}) {
  * Build a prompt that asks UNLIM to personalize the lesson.
  */
 function buildPrepPrompt(lessonPath, pastContext) {
-  let prompt = `Prepara la lezione "${lessonPath.title}" (${lessonPath.experiment_id}).`;
+  const expId = lessonPath.experiment_id;
+  const volRef = getVolumeRef(expId);
+
+  let prompt = `Prepara la lezione "${lessonPath.title}" (${expId}).`;
   prompt += `\nObiettivo: ${lessonPath.objective}`;
   prompt += `\nDurata: ${lessonPath.duration_minutes} minuti`;
   prompt += `\nDifficolta: ${lessonPath.difficulty}/3`;
+
+  // Principio Zero: inietta testo esatto dal volume fisico
+  if (volRef) {
+    prompt += `\n\nDAL LIBRO FISICO (Vol. ${volRef.volume}, pag. ${volRef.bookPage}):`;
+    prompt += `\nCapitolo: ${volRef.chapter}`;
+    if (volRef.bookText) {
+      prompt += `\nTesto introduttivo: "${volRef.bookText}"`;
+    }
+    if (volRef.bookInstructions?.length) {
+      prompt += `\nIstruzioni dal libro:`;
+      volRef.bookInstructions.forEach((step, i) => {
+        prompt += `\n  ${i + 1}. ${step}`;
+      });
+    }
+    if (volRef.bookQuote) {
+      prompt += `\nCitazione: "${volRef.bookQuote}"`;
+    }
+    if (volRef.bookContext) {
+      prompt += `\nContesto narrativo: ${volRef.bookContext}`;
+    }
+    prompt += `\n\nIMPORTANTE: usa le stesse parole del libro quando possibile. Il docente legge dal libro mentre i ragazzi lavorano sui kit fisici. Le istruzioni devono corrispondere a quelle scritte nel volume.`;
+  }
+
+  // PRINCIPIO EVOLUTIVO: gli esperimenti sono modifiche incrementali del precedente
+  // Esempio: v1-cap6-esp2 e' "togli il resistore dal circuito di v1-cap6-esp1"
+  // UNLIM deve raccontare la CONTINUITA' narrativa, non presentare circuiti da zero
+  const groupCtx = getExperimentGroupContext(expId);
+  if (groupCtx) {
+    prompt += `\n\n[CONTESTO EVOLUTIVO DEL CAPITOLO]`;
+    prompt += `\nQuesto è l'${groupCtx.narrative}.`;
+    if (groupCtx.prevExp) {
+      const prevRef = getVolumeRef(groupCtx.prevExp);
+      prompt += `\nL'esperimento precedente era ${groupCtx.prevExp}`;
+      if (prevRef?.bookText) {
+        prompt += ` dove il libro diceva: "${prevRef.bookText.slice(0, 200)}${prevRef.bookText.length > 200 ? '...' : ''}"`;
+      }
+      prompt += `\nI ragazzi hanno GIÀ COSTRUITO il circuito precedente. Questo esperimento è un'EVOLUZIONE di quello: modifica un elemento, osserva cosa cambia. NON ricominciare da zero — parti dal circuito già fatto.`;
+    } else {
+      prompt += `\nÈ il PRIMO esperimento del capitolo: parti da zero, costruisci il circuito base.`;
+    }
+    if (groupCtx.nextExp) {
+      prompt += `\nIl prossimo esperimento sarà ${groupCtx.nextExp} — prepara la transizione.`;
+    } else {
+      prompt += `\nÈ l'ULTIMO esperimento del capitolo: consolida il concetto e prepara al capitolo successivo.`;
+    }
+  }
 
   if (lessonPath.vocabulary?.allowed) {
     prompt += `\nVocabolario consentito: ${lessonPath.vocabulary.allowed.join(', ')}`;
@@ -147,6 +198,7 @@ function buildPrepPrompt(lessonPath, pastContext) {
 }
 
 /**
+// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
  * Get a lesson summary for the teacher before starting.
  * Quick, no AI call — just local data.
  */

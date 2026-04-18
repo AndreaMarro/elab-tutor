@@ -8,6 +8,7 @@
  */
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { loadDrawingPaths, saveDrawingPaths } from '../../../utils/drawingStorage';
 
 const COLORS = [
   { name: 'Rosso', hex: '#EF4444', label: 'Rosso' },
@@ -68,22 +69,9 @@ function pointsToSmoothPath(pointsStr) {
  * - canvasWidth: number — width of parent canvas container (used in normal mode)
  * - canvasHeight: number — height of parent canvas container (used in normal mode)
  * - onPathsChange: (paths) => void — callback when paths change
+ * - experimentId: string | null — when provided, paths are persisted per-experiment
+ *   so drawings do not bleed across lessons (18/04/2026 — Principio Zero fix).
  */
-const DRAWING_STORAGE_KEY = 'elab-drawing-paths';
-
-function loadDrawingPaths() {
-  try {
-    const raw = localStorage.getItem(DRAWING_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
-
-function saveDrawingPaths(paths) {
-  try {
-    localStorage.setItem(DRAWING_STORAGE_KEY, JSON.stringify(paths));
-  } catch { /* storage full — ignore */ }
-}
-
 export default function DrawingOverlay({
   drawingEnabled = false,
   canvasWidth = 800,
@@ -91,9 +79,10 @@ export default function DrawingOverlay({
   onPathsChange,
   onClose,
   initialFullscreen = false,
+  experimentId = null,
 }) {
   const svgRef = useRef(null);
-  const [paths, setPaths] = useState(() => loadDrawingPaths());
+  const [paths, setPaths] = useState(() => loadDrawingPaths(experimentId));
   const [currentPath, setCurrentPath] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentColor, setCurrentColor] = useState(DEFAULT_COLOR);
@@ -107,6 +96,16 @@ export default function DrawingOverlay({
   const undoStackRef = useRef([]);
   const redoStackRef = useRef([]);
   const MAX_UNDO = 50;
+
+  // When the active experiment changes, load THAT experiment's paths.
+  // Without this the overlay would keep showing ink from whichever lesson
+  // was open at mount time — exactly the bug reported on the lavagna.
+  useEffect(() => {
+    setPaths(loadDrawingPaths(experimentId));
+    // Clear undo/redo stacks on experiment switch — they belong to the previous lesson
+    undoStackRef.current = [];
+    redoStackRef.current = [];
+  }, [experimentId]);
 
   // Current stroke width: eraser is always large, pen uses selected size
   const strokeWidth = isEraser ? ERASER_WIDTH : penSize;
@@ -152,28 +151,28 @@ export default function DrawingOverlay({
     redoStackRef.current = []; // Clear redo on new action
     const updatedPaths = [...paths, newPath];
     setPaths(updatedPaths);
-    saveDrawingPaths(updatedPaths);
+    saveDrawingPaths(updatedPaths, experimentId);
     setCurrentPath(null);
     onPathsChange?.(updatedPaths);
-  }, [isDrawing, currentPath, paths, onPathsChange]);
+  }, [isDrawing, currentPath, paths, onPathsChange, experimentId]);
 
   const handleUndo = useCallback(() => {
     if (undoStackRef.current.length === 0) return;
     const prev = undoStackRef.current.pop();
     redoStackRef.current.push(paths);
     setPaths(prev);
-    saveDrawingPaths(prev);
+    saveDrawingPaths(prev, experimentId);
     onPathsChange?.(prev);
-  }, [paths, onPathsChange]);
+  }, [paths, onPathsChange, experimentId]);
 
   const handleRedo = useCallback(() => {
     if (redoStackRef.current.length === 0) return;
     const next = redoStackRef.current.pop();
     undoStackRef.current.push(paths);
     setPaths(next);
-    saveDrawingPaths(next);
+    saveDrawingPaths(next, experimentId);
     onPathsChange?.(next);
-  }, [paths, onPathsChange]);
+  }, [paths, onPathsChange, experimentId]);
 
   const handleClearAll = useCallback(() => {
     if (paths.length > 0) {
@@ -181,10 +180,10 @@ export default function DrawingOverlay({
       redoStackRef.current = [];
     }
     setPaths([]);
-    saveDrawingPaths([]);
+    saveDrawingPaths([], experimentId);
     setCurrentPath(null);
     onPathsChange?.([]);
-  }, [paths, onPathsChange]);
+  }, [paths, onPathsChange, experimentId]);
 
   const handleToggleDrawing = useCallback(() => {
     setDrawingMode(prev => !prev);

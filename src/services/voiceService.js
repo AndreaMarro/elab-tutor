@@ -30,16 +30,28 @@ export async function checkVoiceCapabilities() {
         result.microphone = false;
     }
 
-    // Check Edge TTS (VPS) first
-    try {
-        const edgeResp = await fetch(`${EDGE_TTS_URL}/health`, {
-            signal: AbortSignal.timeout(3000),
-        });
-        if (edgeResp.ok) {
-            result.tts = true;
-            result.stt = result.microphone; // STT uses browser SpeechRecognition
-        }
-    } catch { /* Edge TTS not available */ }
+    // Check Edge TTS (VPS) first — skipped on HTTPS origins because the VPS
+    // is plain HTTP and the CSP `connect-src` blocks mixed content with a
+    // noisy console error. In HTTPS produzione la voce passa comunque dal
+    // proxy `/api/tts` → se il proxy e' deployato, assumiamo tts disponibile.
+    const isHttps = typeof window !== 'undefined' && window.location?.protocol === 'https:';
+    if (isHttps) {
+        // In prod HTTPS assumiamo che TTS sia coperto da Kokoro + Edge proxy
+        // (vedi synthesizeSpeech fallback chain); ultimo fallback sempre
+        // speechSynthesis browser.
+        result.tts = true;
+        result.stt = result.microphone;
+    } else {
+        try {
+            const edgeResp = await fetch(`${EDGE_TTS_URL}/health`, {
+                signal: AbortSignal.timeout(3000),
+            });
+            if (edgeResp.ok) {
+                result.tts = true;
+                result.stt = result.microphone; // STT uses browser SpeechRecognition
+            }
+        } catch { /* Edge TTS not available */ }
+    }
 
     // Fallback: check nanobot voice endpoints
     if (!result.tts && NANOBOT_URL) {
@@ -198,7 +210,7 @@ export function cancelRecording() {
  * @param {AbortSignal} signal - abort signal
  * @returns {Promise<Object>}
  */
-// © Andrea Marro — 14/04/2026 — ELAB Tutor — Tutti i diritti riservati
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     if (!NANOBOT_URL) {
         throw new Error('Nanobot URL non configurato');
@@ -245,22 +257,57 @@ export async function sendVoiceChat(audioBlob, options = {}, signal = null) {
     }
 }
 
-// TTS endpoints — Kokoro (best quality) → Edge TTS (fallback) → Nanobot (last resort)
-const KOKORO_URL = 'http://localhost:8881';
+// TTS endpoints — Kokoro VPS (best quality IT, OpenAI-compat) → Edge TTS VPS → fallback
+// (17/04/2026) Kokoro-FastAPI deployato come container Docker su VPS porta 8881.
+// Espone API OpenAI-compat POST /v1/audio/speech. Voce if_sara italiana femminile.
+const KOKORO_VPS_URL = 'http://72.60.129.50:8881';
+const KOKORO_VOICE = 'if_sara'; // Italian female Sara
 const EDGE_TTS_URL = 'http://72.60.129.50:8880';
 
 /**
- * Send text to TTS. Chain: Kokoro (localhost) → Edge TTS (VPS) → nanobot.
+ * Pick the right TTS endpoint for the current environment.
+ * HTTPS origin (produzione elabtutor.school): il VPS plain-HTTP e' bloccato
+ * come mixed content → usiamo i proxy same-origin Vercel `/api/kokoro` (primario)
+ * e `/api/tts` (fallback Edge). Su localhost HTTP dev hit diretto VPS.
+ */
+function isHttpsOrigin() {
+    try {
+        return typeof window !== 'undefined' && window.location?.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
+function getKokoroUrl() {
+    return isHttpsOrigin() ? '/api/kokoro' : `${KOKORO_VPS_URL}/v1/audio/speech`;
+}
+
+function getEdgeTtsUrl(encodedText) {
+    if (isHttpsOrigin()) return `/api/tts?text=${encodedText}`;
+    return `${EDGE_TTS_URL}/tts?text=${encodedText}`;
+}
+
+/**
+ * Send text to TTS. Chain: Kokoro VPS → Edge TTS VPS → Nanobot → browser fallback.
  * @param {string} text - text to synthesize
- * @returns {Promise<ArrayBuffer>} audio data (WAV or MP3)
+ * @returns {Promise<ArrayBuffer>} audio data (MP3)
  */
 export async function synthesizeSpeech(text) {
-    const encoded = encodeURIComponent(text.slice(0, 500));
+    const clipped = String(text || '').slice(0, 500);
+    if (!clipped) throw new Error('Empty text for TTS');
+    const encoded = encodeURIComponent(clipped);
 
-    // 1. Try Kokoro first (local, best quality Italian voice)
+    // 1. Kokoro VPS (OpenAI-compat, voce italiana naturale)
     try {
-        const resp = await fetch(`${KOKORO_URL}/tts?text=${encoded}`, {
-            signal: AbortSignal.timeout(8000),
+        const resp = await fetch(getKokoroUrl(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                input: clipped,
+                voice: KOKORO_VOICE,
+                response_format: 'mp3',
+            }),
+            signal: AbortSignal.timeout(10000),
         });
         if (resp.ok) {
             logger.debug('[Voice] Kokoro TTS success');
@@ -270,10 +317,11 @@ export async function synthesizeSpeech(text) {
         logger.debug('[Voice] Kokoro not available:', e.message);
     }
 
-    // 2. Try Edge TTS (VPS, good quality, free)
+    // 2. Try Edge TTS — goes through /api/tts proxy on HTTPS origins to
+    //    avoid mixed-content blocks, or direct to VPS on localhost.
     try {
-        const resp = await fetch(`${EDGE_TTS_URL}/tts?text=${encoded}`, {
-            signal: AbortSignal.timeout(10000),
+        const resp = await fetch(getEdgeTtsUrl(encoded), {
+            signal: AbortSignal.timeout(15000),
         });
         if (resp.ok) {
             logger.debug('[Voice] Edge TTS success');
@@ -363,5 +411,6 @@ export function stopPlayback() {
  */
 export async function playTracked(audio, format = 'audio/mpeg') {
     stopPlayback();
+// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
     await playAudio(audio, format);
 }

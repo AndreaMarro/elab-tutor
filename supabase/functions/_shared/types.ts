@@ -97,7 +97,10 @@ export interface StudentContext {
   currentChapter: number | null;
 }
 
+// NB (17/04/2026): modelli GA Google. I preview 3.x erano instabili (503
+// UNAVAILABLE a partire da oggi pomeriggio) e causavano UNLIM DOWN per
+// Tea. Ripristiniamo 2.5 GA validati funzionanti via curl test.
 export type GeminiModel =
-  | 'gemini-3.1-flash-lite-preview'
-  | 'gemini-3-flash-preview'
-  | 'gemini-3.1-pro-preview';
+  | 'gemini-2.5-flash-lite'
+  | 'gemini-2.5-flash'
+  | 'gemini-2.5-pro';
