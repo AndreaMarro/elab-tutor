@@ -56,3 +56,27 @@
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: test | **Source**: watchdog-elab
+
+---
+
+### 2026-04-19T04:24:00Z — secret_elab_anon_key_missing
+
+**Detail**: GitHub repository secret `ELAB_ANON_KEY` not set. Watchdog Edge Function content + Principio Zero v3 tone check disabled (CORS preflight still works). Verified via `gh secret list -R AndreaMarro/elab-tutor` — only VERCEL_* secrets present.
+
+**Pattern hint**: Andrea adds via `gh secret set ELAB_ANON_KEY -R AndreaMarro/elab-tutor` (paste value in interactive prompt, NEVER in chat). After add, watchdog auto-detects and starts checking content + tone on next `*/15` cron.
+
+**Run**: post-deploy investigation | **Source**: watchdog-elab
+
+---
+
+### 2026-04-19T04:24:00Z — secret_anthropic_api_key_missing_root_cause_confirmed
+
+**Detail**: GitHub repository secret `ANTHROPIC_API_KEY` confirmed not set via `gh secret list`. This is the ROOT CAUSE of the recurring "Routines Orchestrator" workflow failures noted earlier. Each `*/30` cron firing triggers Claude Code Action which immediately fails at OAuth/API key step. CI minutes wasted ~15 min per run × 48 runs/day = 12h compute/day.
+
+**Pattern hint**: Two options:
+1. Andrea adds key: `gh secret set ANTHROPIC_API_KEY -R AndreaMarro/elab-tutor`
+2. OR temporarily disable workflow: rename `.github/workflows/routines-orchestrator.yml` to `.disabled` or set `if: false` on jobs
+
+Recommend option 2 first (immediate stop of failures), then option 1 when ready to use autonomous PDR runner.
+
+**Run**: post-deploy investigation | **Source**: watchdog-elab
