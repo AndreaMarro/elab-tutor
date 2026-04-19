@@ -744,7 +744,7 @@ export default function LavagnaShell() {
   // ── Vision (VisionButton → UNLIM) ──
   const handleVisionResult = useCallback(({ base64, mimeType }) => {
     if (!base64) return;
-    manualOverridesRef.current.galileo = false;
+    manualOverridesRef.current.galileo = true;
     setGalileoOpen(true);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('elab-vision-capture', {
