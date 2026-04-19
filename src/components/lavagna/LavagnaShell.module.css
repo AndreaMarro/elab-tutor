@@ -39,6 +39,14 @@
   font-size: 18px;
 }
 
+/* VisionButton — top-right of canvas, above FloatingToolbar z-index */
+.visionButtonSlot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 955;
+}
+
 /* ── Quick Component Panel (left RetractablePanel content) ── */
 
 .quickComponents {
