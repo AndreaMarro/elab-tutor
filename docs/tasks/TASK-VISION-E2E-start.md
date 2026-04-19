@@ -30,10 +30,27 @@ Segui `docs/plans/2026-04-19-pdr-vision-e2e.md` + `docs/superpowers/plans/2026-0
 ## Governance 8-step
 
 - [x] [1] Pre-audit (questo file)
-- [ ] [2] TDD fail-first
-- [ ] [3] Implementation
-- [ ] [4] CoV 3x
-- [ ] [5] Audit indipendente
-- [ ] [6] Doc-as-code
-- [ ] [7] Post-audit
-- [ ] [8] Merge prep (PR draft)
+- [x] [2] TDD fail-first (commit a20a503, 7 red tests)
+- [x] [3] Implementation (commit cc47c43 component, 0f665f3 wire, a65a38d E2E)
+- [x] [4] CoV 3x — 12088/12088 ×3, build PWA OK 55s, E2E 3/3 PASS ×2
+- [x] [5] Audit indipendente — sub-agent feature-dev:code-reviewer
+- [x] [6] Doc-as-code — `docs/features/vision-e2e.md` + CHANGELOG
+- [x] [7] Post-audit (questo file aggiornato)
+- [ ] [8] Merge prep (PR draft) — in corso
+
+## Exit criteria — verifica finale
+
+- [x] 7/7 unit tests PASS (tests/unit/tutor/VisionButton.test.jsx)
+- [x] 3/3 Playwright E2E PASS (e2e/22-vision-flow.spec.js)
+- [x] Baseline 12081 → 12088 (+7), zero regressioni
+- [x] Build success (PWA v1.2.0, precache 30 entries 4800 KiB)
+- [x] Principio Zero v3 verificato (no "Docente leggi" nel componente, test E2E check attivo)
+- [x] WCAG AA (touch 44px, focus-visible orange, aria-label, aria-busy, prefers-reduced-motion)
+
+## Commits finali
+
+- b639549 chore(task): start TASK-VISION-E2E pre-audit state
+- a20a503 test(tutor): TDD fail per VisionButton Vision E2E
+- cc47c43 feat(tutor): VisionButton component con screenshot capture
+- 0f665f3 feat(lavagna): wire VisionButton → UNLIM vision flow
+- a65a38d test(e2e): Vision flow Playwright — 3/3 PASS
