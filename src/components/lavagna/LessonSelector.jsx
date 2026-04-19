@@ -11,19 +11,17 @@ export default function LessonSelector({ volumeNumber, activeLessonId, onLessonS
         {lessons.map(([lessonId, lesson]) => {
           const isActive = lessonId === activeLessonId;
           return (
-            <li
-              key={lessonId}
-              data-testid={`lesson-option-${lessonId}`}
-              className={`${styles.item} ${isActive ? styles.selected : ''}`}
-              onClick={() => onLessonSelect?.(lessonId)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onLessonSelect?.(lessonId);
-              }}
-            >
-              <span className={styles.chapter}>Cap. {lesson.chapter}</span>
-              <span className={styles.title}>{lesson.title}</span>
+            <li key={lessonId} className={styles.itemWrap}>
+              <button
+                type="button"
+                data-testid={`lesson-option-${lessonId}`}
+                className={`${styles.item} ${isActive ? styles.selected : ''}`}
+                onClick={() => onLessonSelect?.(lessonId)}
+                aria-pressed={isActive}
+              >
+                <span className={styles.chapter}>Cap. {lesson.chapter}</span>
+                <span className={styles.title}>{lesson.title}</span>
+              </button>
             </li>
           );
         })}

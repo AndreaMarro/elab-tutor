@@ -60,14 +60,34 @@ test.describe('Lesson Reader — full user flow', () => {
     await expect(heading).toBeVisible({ timeout: 5000 });
   });
 
-  test('clicking experiment step triggers mount', async ({ page }) => {
+  test('clicking experiment step triggers mountExperiment via __ELAB_API', async ({ page }) => {
+    // Spy on __ELAB_API.mountExperiment BEFORE click so we capture the call.
+    await page.evaluate(() => {
+      const api = window.__ELAB_API;
+      if (!api) { window.__spyError = 'missing __ELAB_API'; return; }
+      // Preserve original so simulator still mounts; just record the call.
+      window.__mountCalls = [];
+      const orig = api.mountExperiment?.bind(api);
+      api.mountExperiment = (id) => {
+        window.__mountCalls.push(id);
+        return orig ? orig(id) : undefined;
+      };
+    });
+
     await goToLezione(page);
     const step = page.getByTestId('lesson-step-v1-cap6-esp1');
     await expect(step).toBeVisible({ timeout: 5000 });
     await step.click();
-    await page.waitForTimeout(500);
-    const stepClasses = await step.getAttribute('class');
-    expect(stepClasses).toBeTruthy();
+
+    // Poll for the mount call (async handler chain: click → onExperimentSelect
+    // → parent state → effect → __ELAB_API.mountExperiment).
+    await expect.poll(
+      async () => page.evaluate(() => (window.__mountCalls || []).slice()),
+      { timeout: 5000 }
+    ).toContain('v1-cap6-esp1');
+
+    // Also verify aria-current is now "step" (accessibility state update).
+    await expect(step).toHaveAttribute('aria-current', 'step');
   });
 
   test('Principio Zero v3: no "Docente leggi" anywhere', async ({ page }) => {
