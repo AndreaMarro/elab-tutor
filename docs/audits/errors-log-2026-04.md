@@ -80,3 +80,37 @@
 Recommend option 2 first (immediate stop of failures), then option 1 when ready to use autonomous PDR runner.
 
 **Run**: post-deploy investigation | **Source**: watchdog-elab
+
+---
+
+### 2026-04-19T04:42:00Z — lightningcss_native_dep_missing_recurring
+
+**Detail**: GitHub Actions Build steps in `governance-gate.yml` and `quality-gate.yml` consistently fail with:
+```
+Cannot find module '../lightningcss.linux-x64-gnu.node'
+Require stack: lightningcss/node/index.js
+```
+Affects PR #4 (vision-e2e-live) + PR #5 (watchdog-monitor). Both fail same way at Build step, ~200ms after vite starts.
+
+**Pattern hint**: 4th occurrence of this issue (postmortem #5 documented 3 prior failed fixes: Node 20→22, npm rebuild, explicit install). Current workflow does:
+```yaml
+npm rebuild lightningcss @tailwindcss/oxide 2>/dev/null || true
+```
+The `2>/dev/null || true` SILENTLY swallows rebuild errors. Need either:
+1. Explicit install: `npm install lightningcss-linux-x64-gnu --no-save` before build
+2. Use Bun instead of npm in CI (oven-sh/setup-bun used elsewhere — check if works)
+3. Pin npm version that handles optional deps correctly
+
+This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
+
+**Run**: post-deploy investigation | **Source**: watchdog-elab
+
+---
+
+### 2026-04-19T04:43:00Z — coverage_comment_403_token_permissions
+
+**Detail**: `coverage-comment` job in CI/CD Pipeline workflow fails with `HTTP 403: Resource not accessible by integration` when posting coverage comment to PR #5. Same issue affects PR #4. Endpoint: `POST /repos/AndreaMarro/elab-tutor/issues/5/comments`.
+
+**Pattern hint**: Likely cause: workflow's `permissions:` block missing `pull-requests: write` for fork PRs OR branch-protection ruleset preventing PR comments from GitHub Actions. Check `.github/workflows/test.yml` permissions block. Non-blocking (informational comment, not gate).
+
+**Run**: post-deploy investigation | **Source**: watchdog-elab
