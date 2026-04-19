@@ -85,3 +85,49 @@ Creare `automa/tasks/pending/ATOM-002-dashboard-a11y-fixes.md` per il Planner de
 ---
 
 *Audit preliminare. Per un audit certificato in sede di gara pubblica, commissionare VPAT/ACR da consulente WCAG professionista.*
+
+
+## Fixed 19/04 (ATOM-002 applicato)
+
+**Commit**: (vedi git log feature/vision-e2e-live)
+
+### P0-1 — Grafici Recharts [CHIUSO]
+
+Tutti e 3 i grafici (LineChart trend, BarChart top esperimenti, PieChart mood) wrappati in `<div role="img" aria-label="...">` con descrizione significativa costruita dinamicamente dai dati:
+
+- LineChart → "Andamento esperimenti completati: da N (data inizio) a M (data fine) nel periodo osservato, K punti dati"
+- BarChart → "Top K esperimenti più completati. Nome1: N completamenti; Nome2: M..."
+- PieChart → "Distribuzione mood studenti: Felice 12, Neutro 5, ..."
+
+Verifica: `grep -c 'role="img"' TeacherDashboard.jsx` → 3 (era 0) ✅
+
+### P0-2 — Tabelle semanticamente corrette [CHIUSO]
+
+Aggiunto `<caption className="sr-only">` a 6 tabelle (Attività Settimanale, Progresso Individuale, Matrice Completamento, gridScroll, Tempo Medio per Esperimento, Audit Log GDPR). Aggiunto `scope="col"` a tutti i `<th>` delle thead (ora 24 occorrenze). Header di capitolo usa `scope="colgroup"` per colSpan. Header di colonna con testo verticale ha `aria-label` leggibile.
+
+Verifica: `grep -c '<caption' TeacherDashboard.jsx` → 6 (era 0) ✅
+Verifica: `grep -c 'scope="col"' TeacherDashboard.jsx` → 24 ✅
+
+### P1-1 — Aria-live su cambio tab [CHIUSO]
+
+Aggiunta region `<div role="status" aria-live="polite" className="sr-only">` subito dopo il tablist che annuncia "Sezione {label} attiva" ad ogni `setActiveTab`. Migliorato tablist anche con `aria-label`, `id` sui tab, `tabIndex` roving, e `aria-labelledby` + `tabIndex={0}` sul tabpanel.
+
+Verifica: `grep -c 'aria-live' TeacherDashboard.jsx` → 2 (era 1) ✅
+
+### P1-2 — Contrasto testo muted [CHIUSO]
+
+`--color-text-muted` in `src/styles/design-system.css:267` cambiato da `#64748B` (~3.4:1 su `#F0F4F8`) a `#475569` (slate-600, ~5.5:1, sopra soglia AA 4.5:1).
+
+Verifica: `grep '--color-text-muted:' design-system.css` → `#475569` ✅
+
+### Regression guard
+
+- Parse JSX del file con `@babel/parser` → OK (nessun errore di sintassi introdotto).
+- Smoke e2e `e2e/21-dashboard-a11y-smoke.spec.js` garantisce che tablist, aria-hidden su decorativi, pulsanti con nome accessibile e nessun role invalido restino presenti.
+- Baseline 12056 non toccata (nessun file di logic, solo markup + 1 CSS var).
+
+### Note residue (out of scope ATOM-002)
+
+- P2: screen reader reale (NVDA/JAWS/VoiceOver) non testato — richiede verifica manuale.
+- P2: focus management al cambio tab (spostare focus al tabpanel) non implementato — richiede useRef.
+- P2: ampliare `scope="row"` su prima colonna delle tbody (nomi studenti) → ATOM follow-up.
