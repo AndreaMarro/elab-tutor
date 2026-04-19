@@ -95,3 +95,14 @@ screenshot-*.png
 console-errors*.png
 homepage_*.png
 2026-*.png
+
+# External agents repo (cloned locally, non committare il mass)
+.claude/external-agents/wshobson-agents/
+
+# caveman + caveman-compression (clone locali)
+.claude/external-agents/caveman/
+.claude/external-agents/caveman-compression/
+.claude/external-agents/oh-my-claudecode/
+
+# agency-agents (226 md files, local only)
+.claude/external-agents/agency-agents/

@@ -27,26 +27,24 @@ export default function LessonReader({ lessonId, currentExperimentId, onExperime
           const showPreview = idx === 0 || isActive;
 
           return (
-            <li
-              key={expId}
-              data-testid={`lesson-step-${expId}`}
-              className={`${styles.step} ${isActive ? styles.active : ''}`}
-              onClick={() => onExperimentSelect?.(expId)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onExperimentSelect?.(expId);
-              }}
-            >
-              <span className={styles.expId}>{expId}</span>
-              {ref && (
-                <>
-                  <span className={styles.page}>pag. {ref.bookPage}</span>
-                  {showPreview && ref.bookText && (
-                    <p className={styles.preview}>{ref.bookText}</p>
-                  )}
-                </>
-              )}
+            <li key={expId} className={styles.stepWrap}>
+              <button
+                type="button"
+                data-testid={`lesson-step-${expId}`}
+                className={`${styles.step} ${isActive ? styles.active : ''}`}
+                onClick={() => onExperimentSelect?.(expId)}
+                aria-current={isActive ? 'step' : undefined}
+              >
+                <span className={styles.expId}>{expId}</span>
+                {ref && (
+                  <>
+                    <span className={styles.page}>pag. {ref.bookPage}</span>
+                    {showPreview && ref.bookText && (
+                      <span className={styles.preview}>{ref.bookText}</span>
+                    )}
+                  </>
+                )}
+              </button>
             </li>
           );
         })}

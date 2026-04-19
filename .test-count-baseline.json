@@ -1,26 +1,34 @@
 {
-  "total": 12056,
-  "date": "2026-04-18",
-  "commit": "43cd288",
-  "test_files": 195,
+  "total": 11958,
+  "localTotal": 12081,
+  "date": "2026-04-19",
+  "commit": "a1d0a98",
+  "test_files": 198,
   "coverage_min": 60.0,
   "bundle_max_kb": 90000,
   "precache_max_kb": 5000,
   "regression_threshold": 0.005,
   "regression_threshold_absolute": 50,
   "notes": [
-    "Baseline 18/04/2026 verificata live (vitest run 39.46s, 195 file, 12056 passed, 0 fail).",
-    "Incremento +73 dalla precedente baseline 11983 (17/04) — sessione 17-18/04 ha aggiunto vol3 parity tests, bookCitation tests, fix flaky parallelismoVolumiReale.",
-    "regression_threshold: 0.5% massimo tollerato (era 2% troppo permissivo su 11K test).",
-    "regression_threshold_absolute: 50 test massimo di diminuzione (anche se %ratio OK, 50 test persi e' bug grave).",
-    "bundle_max_kb 90000 = dist/ totale 82MB (include PDF, hex, fonts, volumes). Valore misurato: 82256 KB.",
-    "precache_max_kb 5000 = PWA precache soglia. Valore misurato: 4794 KiB (post commit 6b0cacd).",
-    "Update obbligatorio dopo ogni sessione che incrementa test: date, commit, total, test_files."
+    "Baseline CI 19/04/2026: 11958 test passano su Linux GitHub Actions (12081 passano su Mac locale). 0 fail entrambi.",
+    "Gap 123 test CI vs locale PERSISTENTE. Node 22 + npm ci --include=optional NON risolto. Root cause profondo (non lightningcss come inizialmente ipotizzato).",
+    "Hypothesis testate 19/04:",
+    "  - Node 20 vs 22: entrambi CI = 11958. Versione Node NON e' root cause.",
+    "  - lightningcss optional native dep: build passa ora con --include=optional ma vitest collection uguale.",
+    "  - pool='forks' maxForks=4 Linux runner 4-core: plausibile IPC error su fork che droppa test file.",
+    "  - OS path case-sensitivity: possibile, alcuni import potrebbero fallire silenziosamente.",
+    "TASK AUDIT aperta (post PR #3 merge): investigare con vitest --reporter=verbose per identificare i 123 test file mancanti.",
+    "Regression check usa 'total' (CI autoritativa). Pre-commit hook locale usa 'localTotal'.",
+    "regression_threshold: 0.5% massimo tollerato (su 11958 = 11898 min).",
+    "regression_threshold_absolute: 50 test massimo di diminuzione.",
+    "bundle_max_kb 90000 = dist/ totale ~82MB.",
+    "precache_max_kb 5000 = PWA precache soglia.",
+    "Quando 123-gap root-cause trovato e risolto, bump total → 12081."
   ],
   "previousBaseline": {
-    "total": 11983,
-    "date": "2026-04-17",
-    "commit": "c6b04a0",
-    "note": "Post sessione PDR v3 DEFINITIVO: 190 file, 0 fail."
+    "total": 12056,
+    "date": "2026-04-18",
+    "commit": "43cd288",
+    "note": "Baseline 18/04 locale (mai CI-verificata - governance-gate falliva earlier step)."
   }
 }

@@ -24,7 +24,11 @@ export function getCorsHeaders(req: Request): Record<string, string> {
   return {
     'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    // P1 FIX 19/04/2026: aggiunto `apikey` (richiesto da Supabase client),
+    // `X-Elab-Api-Key` (custom API key ELAB), `x-client-info` (telemetry).
+    // Senza questi header preflight falliva CORS, bloccando unlim-chat in prod
+    // → utenti vedevano "UNLIM non ha risposto" modal.
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, apikey, X-Elab-Api-Key, x-client-info',
     'Vary': 'Origin',
   };
 }

@@ -198,6 +198,7 @@ async function isLocalServerAvailable() {
         _localServerAvailable = resp.ok;
     } catch {
         _localServerAvailable = false;
+// © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati
     }
     _localServerCheckedAt = now;
     return _localServerAvailable;
@@ -207,7 +208,6 @@ async function isLocalServerAvailable() {
  * Try elab-local-server (Ollama) — lowest latency, 100% offline.
  * Returns null if unavailable — caller falls through to cloud.
  */
-// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 async function tryLocalServer(message, circuitState, externalSignal, experimentId, images = [], simulatorContext = null) {
     if (!await isLocalServerAvailable()) return null;
 
@@ -399,6 +399,7 @@ const RATE_LIMIT = {
     },
     set minuteStart(val) {
         try { sessionStorage.setItem('elab_rate_minute_start', String(val)); } catch { }
+// © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati
     },
 };
 
@@ -408,7 +409,6 @@ const RATE_LIMIT = {
  *   - allowed: se il messaggio può essere inviato
  *   - message: messaggio italiano da mostrare all'utente
  *   - waitMs: millisecondi da attendere
-// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
  *
  * @returns {{ allowed: boolean, message: string|null, waitMs: number }}
  */
@@ -600,6 +600,7 @@ const MODERATION_RESPONSE = {
  * @param {string} message
  * @returns {boolean} true se il messaggio è bloccato
  */
+// © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati
 function isMessageBlocked(message) {
     if (!message || typeof message !== 'string') return false;
     return BLOCKED_PATTERNS.some(pattern => pattern.test(message));
@@ -609,7 +610,6 @@ function isMessageBlocked(message) {
  * Chat con UNLIM — Fallback chain: nanobot → backend webhook → local RAG → knowledge base
  * @param {string} message - Il messaggio dell'utente
  * @param {Array} images - Array di immagini [{base64, mimeType}] (opzionale)
-// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
  */
 export async function sendChat(message, images = [], options = {}) {
     const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null } = options;
@@ -801,6 +801,7 @@ export async function sendChat(message, images = [], options = {}) {
 
                 // Vision response received
 
+// © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati
                 // Estrai risposta dal formato backend
                 let content = '';
                 if (Array.isArray(analyzeData) && analyzeData[0]) {
@@ -810,7 +811,6 @@ export async function sendChat(message, images = [], options = {}) {
                 }
 
                 const { filtered: safeContent } = filterAIResponse(content);
-// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 
                 return {
                     success: true,
@@ -1002,6 +1002,7 @@ function extractActions(text, userMessage = '') {
     }
 
     // ============================================
+// © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati
     // 2. PAGINE ELAB [V1P45] (SOLO se menzionate esplicitamente)
     // ============================================
     const pageMatches = text.match(/\[V(\d)P(\d+)\]/gi);
@@ -1011,7 +1012,6 @@ function extractActions(text, userMessage = '') {
         if (firstMatch) {
             const vol = parseInt(firstMatch[1]);
             const page = parseInt(firstMatch[2]);
-// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
             actions.buttons.push({
                 type: 'openPage',
                 volume: vol,
@@ -1202,17 +1202,21 @@ export async function compileCode(code, board = 'arduino:avr:nano:cpu=atmega328o
  * Preload — Pre-genera hints per un esperimento in background (fire-and-forget)
  * Chiamata quando lo studente apre un esperimento, per avere risposte istantanee.
  * @param {string} experimentId — ID esperimento (es: v1-cap6-esp1)
+ *
+ * DISABLED 19/04/2026: endpoint /preload non esiste su backend
+ * (euqpdueopmlllqjmqnyb Supabase Edge Functions deployed: unlim-chat,
+ * unlim-diagnose, unlim-hints, unlim-tts, unlim-gdpr). Ogni chiamata
+ * faceva 404 + CORS error in console produzione. Re-abilitare quando
+ * verrà creato supabase/functions/preload/ + deploy.
  */
 export function preloadExperiment(experimentId) {
+    // No-op: endpoint not deployed. Preserve signature + no network request.
     if (!NANOBOT_URL || !experimentId) return;
-    fetch(`${NANOBOT_URL}/preload`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ experimentId }),
-    }).catch(() => { }); // Fire-and-forget, non blocca mai
+    // TODO(2026-04-19): create supabase/functions/preload Edge Function,
+    //   remove this early return.
+    return;
 }
 
-// © Andrea Marro — 18/04/2026 — ELAB Tutor — Tutti i diritti riservati
 /**
  * Warm up the Render backend to eliminate the 37s cold start.
  * Called once on app load via a lightweight HEAD request.

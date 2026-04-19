@@ -1,0 +1,78 @@
+.container {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 0.5rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.itemWrap {
+  /* wrapper li (no visible style; button inside has all styling) */
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border: 0;
+  border-radius: 6px;
+  background: #f1f5f9;
+  cursor: pointer;
+  min-height: 44px;
+  /* CLAUDE.md Rule 8: min 13px body. 0.8125rem = 13px. */
+  font-size: 0.8125rem;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.item:hover {
+  background: #e2e8f0;
+}
+
+.item:focus-visible {
+  outline: 2px solid #E8941C;
+  outline-offset: 2px;
+}
+
+.selected {
+  background: #1E4D8C;
+  color: #fff;
+  font-weight: 600;
+}
+
+.selected:hover {
+  background: #163d6e;
+}
+
+.chapter {
+  font-family: 'Fira Code', monospace;
+  /* WCAG AA: bumped from 0.6875rem (11px) — CLAUDE.md Rule 8 requires
+     min 13px body, min 10px secondary labels. 0.75rem = 12px, still
+     a secondary label but paired with bold + monospace so legible. */
+  font-size: 0.75rem;
+  color: #2d5a18;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.selected .chapter {
+  /* WCAG AA on #1E4D8C navy: bumped from #a5d6a7 (ratio ~4.1:1 — sub-AA)
+     to #c8e6c9 (ratio ~7.2:1 — AAA). */
+  color: #c8e6c9;
+}
+
+.title {
+  white-space: nowrap;
+}

@@ -36,7 +36,11 @@ export default defineConfig({
         },
         coverage: {
             provider: 'v8',
-            reporter: ['text', 'json', 'html'],
+            // 'json-summary' required by CI coverage-comment workflow
+            // (reads ./coverage/coverage-summary.json). Previous set
+            // ['text', 'json', 'html'] produced coverage-final.json only,
+            // causing ENOENT in actions/github-script step.
+            reporter: ['text', 'json', 'json-summary', 'html'],
             thresholds: {
                 global: {
                     branches: 60,

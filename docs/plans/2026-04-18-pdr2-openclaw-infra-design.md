@@ -1,254 +1,206 @@
-# PDR #2 — OpenClaw Infrastructure (scheletro UNLIM in produzione)
+# PDR #2 — UNLIM Serving Layer (ex "OpenClaw Infra", corretto 19/04)
+
+**Status**: ⚠️ **REWRITTEN 2026-04-19** — versione precedente aveva assumption errata su OpenClaw
 
 **Target agent**: Claude Opus 4.7 via Managed Agent (Max #1)
-**Durata stimata**: 60-80h autonome
-**Branch**: `feature/openclaw-infra-v1`
+**Durata stimata**: 50-70h autonome
+**Branch**: `feature/unlim-serving-v1`
 **Dipendenze**: PDR3 VPS RunPod Deploy (endpoint URL disponibili)
 **Governance**: `docs/GOVERNANCE.md` regole 0-5 obbligatorie
 
 ---
 
-## 🎯 Obiettivo supremo
+## ⚠️ Correzione onesta (19/04/2026)
 
-OpenClaw è il **cervello di UNLIM in produzione**: intercetta richieste da Supabase Edge Function, gestisce memoria persistente cross-session, decide quale modello RunPod chiamare, parla con docenti via Telegram, esegue azioni autonome. NON orchestrator sviluppo.
+**Versione 18/04 di questo PDR era sbagliata**. Descriveva "OpenClaw" come container Docker scheletro UNLIM su Hetzner CX52 per serving docenti/studenti.
 
-**Ref**: `CLAUDE.md` + `docs/audits/2026-04-18-cov-principio-zero-v3.md` + feedback Andrea "openclaw scheletro UNLIM, parte infrastruttura ELAB Tutor".
+**Realtà verificata 19/04 via fetch `github.com/openclaw/openclaw`**:
+- OpenClaw è **personal AI assistant** (Peter Steinberger, 360k stars, MIT)
+- Node.js v24 + TypeScript, multi-channel (WhatsApp/Telegram/Slack/Discord/Signal/iMessage)
+- Wake word, canvas, cron, webhook — **personal use**, non serving classi
+- Integrates OpenAI primary (non Claude-first)
 
----
+**OpenClaw NON è soluzione per serving UNLIM in produzione**. Era mia assumption errata.
 
-## ⚖️ Regola 0 applicata — riuso esistente
+**OpenClaw uso corretto**: tool **personale Andrea** su Mac Mini Strambino:
+- Meeting notes automatiche (Fagherazzi, Omaric, Davide)
+- Telegram bridge workflow Andrea
+- Cron task personali
+- Voice wake personal assistant
 
-**Codice esistente da riusare/potenziare**:
-- `src/services/unlimMemory.js` → estendi per multi-livello class/teacher/school
-- `src/services/unlimProactivity.js` → collegati con OpenClaw proactive logic
-- `supabase/functions/_shared/memory.ts` → pattern memoria Supabase da portare in OpenClaw
-- `supabase/functions/_shared/rag.ts` → pattern retrieval da portare in OpenClaw
-- `supabase/functions/unlim-chat/index.ts` → questo diventa il **bridge** che chiama OpenClaw
-- `src/data/rag-chunks.json` (549 chunk) → **RIUSA**, espandi a 5000+
-
-**Nuovo (perché OpenClaw è componente separato self-hosted)**:
-- Container Docker OpenClaw su Hetzner CX52 dedicato
-- API HTTP tra Supabase Edge Function e OpenClaw
-- Neo4j embedded per knowledge graph
-- Telegram bot ufficiale ELAB (per docenti)
+NON integrato in prodotto ELAB. Minori GDPR rischio, OpenAI primary, feature set personal-adult.
 
 ---
 
-## 📋 Task suddivisi (8 macro-task)
+## 🎯 Obiettivo reale PDR #2
 
-### Task 2.1 — Provisioning Hetzner CX52
+Costruire **UNLIM Serving Layer**: componente infrastructure che:
+- Intercetta richieste da Supabase Edge Function `unlim-chat`
+- Gestisce memoria persistente cross-session
+- Routa a endpoint RunPod corretto (LLM / Vision / TTS / STT / Embedding)
+- Fallback chain: RunPod → Brain V13 VPS Hostinger → degraded mode
+- Cost guard + circuit breaker
+- Audit log
 
-**Obiettivo**: VPS dedicato Germania GDPR compliant 16GB RAM.
-
-**Action**:
-- Account Hetzner (via hetzner.cloud) — Andrea autorizza, OpenClaw provisioning script
-- Server: CX52 (€32/mese, 16GB RAM, 8 vCPU, 320GB SSD, Germania Falkenstein)
-- OS: Ubuntu 24.04 LTS
-- SSH: solo key-based, port custom (non 22)
-- User: `openclaw` non-privileged, sudo solo per specific commands
-- UFW firewall: allow 443 (HTTPS), 22-custom (SSH da IP Andrea only), deny all else
-- Fail2ban + CrowdSec
-- Unattended upgrades per security patch
-
-**Deliverable**:
-- `docs/infra/hetzner-cx52-setup.md` con procedure + firewall rules
-- Ansible playbook `infrastructure/hetzner/provision.yml` per reproducibilità
-- Secret storage in GitHub Actions secrets (non in repo)
-
-**Exit criteria**:
-- [ ] VPS up, pingable
-- [ ] SSH key auth only (password fail)
-- [ ] UFW deny default, allow whitelist
-- [ ] Fail2ban attivo
-- [ ] CIS benchmark score > 80%
-- [ ] `nmap` scan: solo porta 443 + SSH custom expost
-
-### Task 2.2 — Docker rootless + network config
-
-**Obiettivo**: container isolation per OpenClaw senza privilegi root.
-
-**Action**:
-- Install Docker rootless mode (user `openclaw`)
-- Docker network `unlim-internal` bridge
-- Docker Compose file `docker-compose.yml` con OpenClaw + Neo4j + Prometheus + Grafana
-
-**Deliverable**:
-- `infrastructure/hetzner/docker-compose.yml`
-- `docs/infra/docker-setup.md`
-
-**Exit criteria**:
-- [ ] `docker info` senza errori da user `openclaw`
-- [ ] Container isolati, no host-network
-- [ ] Volumes montati con restricted permissions
-
-### Task 2.3 — Deploy OpenClaw container hardened
-
-**Obiettivo**: OpenClaw istance sicura (138 CVE mitigation).
-
-**Action**:
-- Pull image OpenClaw latest (verificare SHA signed)
-- Config `config.toml`:
-  - No anonymous access
-  - API key richiesta (stored in Supabase Vault)
-  - Rate limit 60 req/min
-  - Log level INFO, no debug in prod
-  - CORS restricted a Supabase Edge Function + elabtutor.school
-- Integration Telegram bot `@ElabUnlimBot` (BotFather token)
-- Webhook callback per Supabase (action execution)
-
-**Deliverable**:
-- `openclaw/config.toml` (template, senza secret)
-- `openclaw/Dockerfile.hardened` (multi-stage build, minimal)
-- `docs/infra/openclaw-security.md` con checklist 138 CVE
-
-**Exit criteria**:
-- [ ] OpenClaw responde a `/health` endpoint
-- [ ] Penetration test base (sqlmap, nikto) zero findings critici
-- [ ] Weekly auto-update image attivo
-- [ ] Audit log su Supabase `openclaw_audit` table
-
-### Task 2.4 — API bridge Edge Function ↔ OpenClaw
-
-**Obiettivo**: quando Supabase Edge Function riceve chat da frontend, inoltra a OpenClaw che decide/orchestra.
-
-**Action**:
-- **MODIFY** `supabase/functions/unlim-chat/index.ts`:
-  - Invece di chiamare Gemini direttamente, chiama OpenClaw `/unlim/chat` endpoint
-  - Passa message + sessionId + experimentId + circuitState + context collector output
-  - Riceve risposta UNLIM + action tags
-  - Forward audio TTS generato da OpenClaw → RunPod F5-TTS
-- OpenClaw decide quale LLM RunPod endpoint chiamare (Llama 70B primary, Qwen small fast, vision se image)
-- OpenClaw fallback chain: RunPod → Brain V13 VPS → degraded mode
-
-**Deliverable**:
-- Edge Function aggiornata
-- `openclaw/api_router.py` (logic routing)
-- `docs/architecture/edge-openclaw-bridge.md`
-
-**Exit criteria**:
-- [ ] 100 chat test end-to-end via Edge → OpenClaw → RunPod
-- [ ] Latency p50 < 2s
-- [ ] Fallback test: kill RunPod → Brain V13 risponde < 30s switchover
-- [ ] Test live da elabtutor.school: risposta Principio Zero v3 preservata
-
-### Task 2.5 — Memoria multi-livello (4 tabelle Supabase)
-
-**Obiettivo**: UNLIM ricorda la classe, il docente, la scuola cross-session.
-
-**Action**:
-- **MODIFY** `supabase/functions/_shared/memory.ts`: aggiungi 3 funzioni per livelli
-- **NEW Supabase tables** (migration SQL):
-  - `student_memory` (GIÀ ESISTE) — riusa
-  - `class_memory` (pattern classe: errori frequenti, concetti masterati)
-  - `teacher_preferences` (stile docente, lingua preferita, ritmo)
-  - `school_context` (nome scuola, regione, indirizzo; privacy-safe)
-- OpenClaw carica tutti 4 livelli pre-prompt
-- Prompt injection: include riassunto memoria long-term nel system prompt
-
-**Deliverable**:
-- `supabase/migrations/2026-04-18-memory-multilevel.sql`
-- `supabase/functions/_shared/memory.ts` aggiornato
-- `openclaw/memory_loader.py`
-- `docs/features/unlim-memory-multilevel.md`
-
-**Exit criteria**:
-- [ ] 4 tabelle create con RLS policies
-- [ ] Test cross-session: "Ti ricordi quando 3 giorni fa..." funziona
-- [ ] GDPR: right-to-delete cancella da tutti 4 livelli
-
-### Task 2.6 — Neo4j Knowledge Graph (onniscienza concetti)
-
-**Obiettivo**: grafo concetti elettronica con prerequisites + correlations.
-
-**Action**:
-- Deploy Neo4j Community in docker-compose (su Hetzner CX52)
-- Script `openclaw/kg_seed.py`: carica 200+ concetti da volumi ELAB (LED, resistore, corrente, tensione, PWM, ADC, etc.)
-- Edge: `PREREQUISITE_OF`, `RELATED_TO`, `APPEARS_IN_EXP`, `TAUGHT_IN_CHAPTER`
-- OpenClaw query KG pre-prompt per scaffolding: se studente chiede "PWM" e non ha visto "corrente" → UNLIM ripassa corrente prima
-
-**Deliverable**:
-- `infrastructure/hetzner/neo4j-compose.yml`
-- `openclaw/kg_seed.py` + cypher queries
-- `docs/features/knowledge-graph.md`
-
-**Exit criteria**:
-- [ ] 200+ nodi + 500+ edges caricati
-- [ ] Query test 10 prerequisites traversal < 100ms
-- [ ] UNLIM prompt include "prerequisiti: X, Y" quando rilevante
-
-### Task 2.7 — Telegram bot docenti + comandi
-
-**Obiettivo**: docente può chiedere a UNLIM via Telegram stato classe, report, nudge.
-
-**Action**:
-- Bot `@ElabUnlimBot` (BotFather)
-- Comandi:
-  - `/classe <codice>` → stato classe corrente
-  - `/report <classe>` → PDF ultima sessione
-  - `/nudge <studente>` → invia nudge motivazionale
-  - `/lingua <it/en/fr/de/es/ar/zh>` → cambia lingua classe
-  - `/pausa <classe>` → ferma UNLIM per quella classe (break)
-  - `/report settimanale` → aggregato
-- Auth: docente si lega a OpenClaw via code pairing one-time
-
-**Deliverable**:
-- `openclaw/telegram_bot.py`
-- `docs/features/telegram-teachers.md`
-
-**Exit criteria**:
-- [ ] 6 comandi test verdi
-- [ ] Auth secure (no abuse da ragazzi)
-- [ ] Rate limit per user
-
-### Task 2.8 — Monitoring Prometheus + Grafana + alerting
-
-**Obiettivo**: observability completa infra UNLIM.
-
-**Action**:
-- Prometheus scrape OpenClaw + RunPod endpoints + Supabase Edge + Neo4j
-- Grafana Cloud Free dashboards (5 dashboard: uptime, latency, cost, errors, usage)
-- Alert rules:
-  - Latency p95 > 5s → Telegram alert
-  - Error rate > 1% → Telegram alert
-  - RunPod cost > €50/gg → Telegram alert + auto-throttle
-  - OpenClaw down → Telegram alert + attempt auto-restart
-- Sentry per errors frontend + backend
-
-**Deliverable**:
-- `infrastructure/monitoring/prometheus.yml`
-- `infrastructure/monitoring/grafana-dashboards/`
-- `docs/observability/setup-complete.md`
-
-**Exit criteria**:
-- [ ] 5 dashboard attive con dati reali
-- [ ] 4 alert rules test verified (trigger manuale)
-- [ ] Sentry riceve events
+**Architettura proposta: Python FastAPI custom su Hetzner CX52** (non OpenClaw, non Docker monolithic).
 
 ---
 
-## 🔬 Gate finale PDR #2
+## ⚖️ Regola 0 — riuso esistente
 
-- [ ] OpenClaw VPS Hetzner CX52 up, hardened, GDPR
-- [ ] 8 task completati con pattern 8-step
-- [ ] Edge Function bridge funziona end-to-end
-- [ ] Memoria multi-livello test verdi
-- [ ] KG Neo4j operativo
-- [ ] Telegram bot `@ElabUnlimBot` live
-- [ ] Monitoring attivo 24/7
-- [ ] Zero regressione baseline 12056
+**Riusa**:
+- `src/services/unlimMemory.js` → pattern memoria 3-tier
+- `src/services/unlimProactivity.js` → proactive diagnosis logic
+- `supabase/functions/_shared/memory.ts` → Supabase memory persistence
+- `supabase/functions/_shared/rag.ts` → RAG pgvector
+- `supabase/functions/unlim-chat/index.ts` → diventa bridge a Serving Layer
+- `src/data/rag-chunks.json` → 549 chunk espandibili
+
+**Nuovo**:
+- `unlim-serving/` repo separato OR `supabase/functions/unlim-router/` Edge extension
+- FastAPI Python app O Deno Edge Function estesa
+- Hetzner CX52 €32/mese O Supabase Edge serverless (più economico, già incluso Pro)
+
+---
+
+## 📋 Task (8 sub-task)
+
+### 2.1 — Decisione architettura (ADR)
+
+Scegliere tra:
+- **Option A**: FastAPI Python su Hetzner CX52 dedicato
+  - Pro: controllo totale, log custom, debug easy
+  - Con: +€32/mese, maintenance OS, più attack surface
+- **Option B**: Supabase Edge Function estesa `unlim-router`
+  - Pro: €0 extra (dentro Supabase Pro), auto-scale, GDPR
+  - Con: cold start, limiti Deno runtime, 10MB bundle max
+- **Option C**: Cloudflare Workers con DO (Durable Objects)
+  - Pro: global edge, KV + DO per state, €5/mese 10M req
+  - Con: setup complex, lock-in Cloudflare
+
+**Mia raccomandazione**: **Option B** per MVP. Scale a Option A solo se serve.
+
+Deliverable: `docs/decisions/2026-04-19-unlim-serving-architecture.md`
+
+### 2.2 — Schema memoria multi-livello Supabase
+
+Tabelle esistenti + nuove:
+- `student_memory` (esistente)
+- `class_memory` (pattern errori classe, concetti masterati)
+- `teacher_preferences` (stile, lingua, ritmo docente)
+- `school_context` (metadata scuola, privacy-safe)
+
+SQL migration: `supabase/migrations/2026-04-19-memory-multilevel.sql` con RLS policies.
+
+### 2.3 — UNLIM Router (core decision logic)
+
+File nuovo: `supabase/functions/_shared/unlim-router.ts`
+
+```typescript
+export async function routeRequest(req: UnlimRequest): Promise<UnlimResponse> {
+  // 1. Load multi-level memory
+  const ctx = await loadFullContext(req.sessionId, req.classId);
+  
+  // 2. Decide endpoint based on task
+  const endpoint = pickEndpoint(req); // llm | vision | tts | stt | embed
+  
+  // 3. Build prompt with Principio Zero v3 + memory
+  const prompt = buildSystemPrompt(ctx, req);
+  
+  // 4. Call RunPod with fallback chain
+  try {
+    return await callRunPod(endpoint, prompt);
+  } catch (err) {
+    return await callBrainV13Fallback(prompt);
+  }
+}
+```
+
+### 2.4 — Fallback chain
+
+Priority ordered:
+1. RunPod Amsterdam serverless (primary, €1.39/h A100)
+2. Brain V13 Ollama VPS Hostinger (already UP, CPU-only Qwen3.5-2B)
+3. Degraded mode ("UNLIM in riposo, riprova 30s")
+
+Circuit breaker 2-min auto-rollback se RunPod error rate > 5%.
+
+### 2.5 — Cost guard
+
+Supabase table `cost_tracking` + daily cap configurable.
+Telegram alert se burn > €1/h.
+Auto-throttle (reduce RunPod concurrent workers) se > €2/h.
+
+### 2.6 — Audit log
+
+Tutte request UNLIM loggate su Supabase `unlim_audit` con:
+- sessionId + classId (pseudonymized)
+- endpoint chiamato
+- latency
+- tokens in/out
+- fallback triggered?
+- error (se any)
+
+GDPR retention: 30gg, auto-delete cron.
+
+### 2.7 — Telegram bridge docenti (moved from OpenClaw misconception)
+
+Bot custom Python/Node `@ElabUnlimBot`:
+- `/status` stato classe
+- `/report <classe>` PDF ultima sessione
+- `/nudge <studente>` manda nudge motivazionale
+- `/lingua <it/en/...>` cambia lingua classe
+- Auth docente via code pairing one-time
+
+File: `scripts/telegram-teacher-bot.py` (Python) OR `openclaw_personal/` configurazione tua (se usi OpenClaw vero come personal tool).
+
+**Separazione critica**:
+- **Bot custom ELAB** → docenti usano per classi (parte prodotto)
+- **OpenClaw personal Andrea** → Andrea usa per meeting/personal (no integration prodotto)
+
+### 2.8 — Monitoring
+
+Prometheus + Grafana Cloud Free + Sentry (già menzionati).
+
+Dashboard UNLIM dedicato:
+- Uptime per endpoint
+- p50/p95/p99 latency
+- Cost burn daily
+- Fallback trigger rate
+- Error rate per model
+
+---
+
+## 🔬 Exit criteria
+
+- [ ] ADR architettura scelta + doc
+- [ ] 4 Supabase tables memoria multi-livello con RLS
+- [ ] UNLIM router funzionante end-to-end (Edge → Router → RunPod)
+- [ ] Fallback chain testata (kill RunPod → Brain V13 responde)
+- [ ] Cost guard test attivato via simulated burn
+- [ ] Audit log persiste tutte request
+- [ ] Telegram bot custom `@ElabUnlimBot` funzionante (non OpenClaw)
+- [ ] Monitoring Grafana dashboard live
+- [ ] Baseline 12081 preservato
+- [ ] Zero mention di "OpenClaw" come serving (correzione semantica)
 - [ ] Auditor APPROVE
-- [ ] Documentation completa `docs/infra/` + `docs/features/` + `docs/observability/`
-
-## 🚨 Rischi PDR #2
-
-| Rischio | Probabilità | Mitigation |
-|---------|-------------|------------|
-| OpenClaw CVE zero-day | Bassa | Auto-update weekly + Prometheus anomaly detection |
-| Hetzner CX52 waitlist | Media | Alternative Hyperstack / Scaleway FR / Nebius |
-| Telegram bot abuse da studenti | Media | Auth docente + rate limit per chat_id |
-| Neo4j memory footprint | Bassa | Neo4j Community gira in <2GB RAM, CX52 16GB margine |
-| Migration memoria esistente → multi-livello | Alta | Backward compatibility layer 30gg |
 
 ---
 
-**Governance compliance**: rispetta `docs/GOVERNANCE.md` Regola 0 + 5 regole ferree.
+## 🚨 Rischi
+
+| Rischio | Mitigation |
+|---------|------------|
+| Option B Supabase Edge: cold start | Pre-warming quando lesson aperta |
+| RunPod serverless idle latency | Flex workers idle=0, accept 5-15s cold start |
+| Memory query pesante (4 tables) | JOIN ottimizzato + cache Redis edge (future) |
+| Telegram bot abuse | Rate limit + auth token classe |
+
+---
+
+## 🎯 Summary
+
+**Vecchio PDR #2 (18/04) citava "OpenClaw" come serving** — sbagliato.
+**Nuovo PDR #2 (19/04)**: UNLIM Serving Layer custom Python/Deno su Supabase Edge (Option B raccomandata). OpenClaw resta solo tool personale Andrea, non integrato in prodotto.
+
+Governance 8-step rispettato. Regola 0 riuso codice esistente massimo.
