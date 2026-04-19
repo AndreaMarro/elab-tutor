@@ -798,45 +798,77 @@ export default function useGalileoChat() {
     action: () => handleSend(QUICK_ACTION_MESSAGES[qa.key]),
   }));
 
-  // ── Screenshot analysis ──
-  const handleScreenshot = useCallback(async () => {
-    const api = typeof window !== 'undefined' && window.__ELAB_API;
-// © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
-    if (!api?.captureScreenshot) return;
+  // ── Vision core: analizza images + aggiorna chat ──
+  const processVisionImages = useCallback(async (images, userMessage, displayDataUrl) => {
+    if (!Array.isArray(images) || images.length === 0) return;
     try {
       setIsLoading(true);
-      const dataUrl = await api.captureScreenshot();
-      if (dataUrl) {
-        const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
-        const images = [{ base64, mimeType: 'image/png' }];
+      setMessages(prev => [...prev, {
+        id: Date.now(), role: 'user',
+        content: userMessage || 'Analizza questa schermata del simulatore',
+        image: displayDataUrl || undefined,
+      }]);
+
+      const result = await analyzeImage(
+        images,
+        userMessage || 'Analizza questa schermata del simulatore e dimmi se vedi qualcosa di sbagliato o se va tutto bene.',
+        { circuitState: circuitStateRef.current }
+      );
+
+      if (result.success) {
+        const cleaned = sanitizeOutput(typeof result.response === 'string' ? result.response : JSON.stringify(result.response));
         setMessages(prev => [...prev, {
-          id: Date.now(), role: 'user',
-          content: 'Analizza questa schermata del simulatore',
-          image: dataUrl,
+          id: Date.now() + 1, role: 'assistant', content: capWords(stripTagsForDisplay(cleaned)),
         }]);
-
-        const result = await analyzeImage(images, 'Analizza questa schermata del simulatore e dimmi se vedi qualcosa di sbagliato o se va tutto bene.', {
-          circuitState: circuitStateRef.current,
-        });
-
-        if (result.success) {
-          const cleaned = sanitizeOutput(typeof result.response === 'string' ? result.response : JSON.stringify(result.response));
-          setMessages(prev => [...prev, {
-            id: Date.now() + 1, role: 'assistant', content: capWords(stripTagsForDisplay(cleaned)),
-          }]);
-        } else {
-          setMessages(prev => [...prev, {
-            id: Date.now() + 1, role: 'assistant',
-            content: 'Non sono riuscito ad analizzare la schermata. Riprova!', isError: true,
-          }]);
-        }
+      } else {
+        setMessages(prev => [...prev, {
+          id: Date.now() + 1, role: 'assistant',
+          content: 'Non sono riuscito ad analizzare la schermata. Riprova!', isError: true,
+        }]);
       }
     } catch (err) {
-      logger.warn('[Lavagna] Screenshot error:', err.message);
+      logger.warn('[Lavagna] Vision error:', err.message);
     } finally {
       setIsLoading(false);
     }
   }, []);
+
+  // ── Screenshot analysis ──
+  const handleScreenshot = useCallback(async () => {
+    const api = typeof window !== 'undefined' && window.__ELAB_API;
+    if (!api?.captureScreenshot) return;
+    try {
+      const dataUrl = await api.captureScreenshot();
+      if (!dataUrl) return;
+      const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, '');
+      await processVisionImages(
+        [{ base64, mimeType: 'image/png' }],
+        'Analizza questa schermata del simulatore',
+        dataUrl
+      );
+    } catch (err) {
+      logger.warn('[Lavagna] Screenshot error:', err.message);
+    }
+  }, [processVisionImages]);
+
+  // ── VisionButton bridge: ascolta CustomEvent 'elab-vision-capture' ──
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handler = (event) => {
+      const detail = event?.detail || {};
+      const { base64, mimeType } = detail;
+      if (!base64 || typeof base64 !== 'string') return;
+      const safeMime = mimeType || 'image/png';
+      const displayDataUrl = `data:${safeMime};base64,${base64}`;
+      processVisionImages(
+        [{ base64, mimeType: safeMime }],
+        'Guarda il mio circuito',
+        displayDataUrl
+      );
+    };
+    window.addEventListener('elab-vision-capture', handler);
+    return () => window.removeEventListener('elab-vision-capture', handler);
+  }, [processVisionImages]);
 
   return {
     messages,

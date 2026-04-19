@@ -22,6 +22,8 @@ import { HandWaveIcon, PartyIcon, FlaskIcon } from '../common/ElabIcons';
 import { isWakeWordSupported, startWakeWordListener, stopWakeWordListener } from '../../services/wakeWord';
 import LessonReader from './LessonReader';
 import LessonSelector from './LessonSelector';
+import VisionButton from '../tutor/VisionButton';
+import logger from '../../utils/logger';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -739,6 +741,22 @@ export default function LavagnaShell() {
     }
   }, [volumeOpen]);
 
+  // ── Vision (VisionButton → UNLIM) ──
+  const handleVisionResult = useCallback(({ base64, mimeType }) => {
+    if (!base64) return;
+    manualOverridesRef.current.galileo = true;
+    setGalileoOpen(true);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('elab-vision-capture', {
+        detail: { base64, mimeType: mimeType || 'image/png' },
+      }));
+    }
+  }, []);
+
+  const handleVisionError = useCallback((err) => {
+    logger.warn('[Lavagna] VisionButton error:', err?.message || err);
+  }, []);
+
   // ── Video toggle ──
   const toggleVideo = useCallback(() => {
     if (videoOpen && !videoMinimized) {
@@ -821,6 +839,13 @@ export default function LavagnaShell() {
               abovePanel={bottomPanelOpen}
               leftPanelOpen={leftPanelOpen}
             />
+
+            <div className={css.visionButtonSlot}>
+              <VisionButton
+                onVisionResult={handleVisionResult}
+                onError={handleVisionError}
+              />
+            </div>
           </main>
 
           {/* Right — UNLIM AI in FloatingWindow */}

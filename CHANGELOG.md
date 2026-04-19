@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- **Vision E2E v1** (`src/components/tutor/VisionButton.jsx` + `LavagnaShell` wire) — bottone "Guarda il mio circuito" in Lavagna top-right canvas. Click → `__ELAB_API.captureScreenshot()` → CustomEvent `elab-vision-capture` → `useGalileoChat.processVisionImages` (estratto da `handleScreenshot`, Regola 0 no-duplication) → `analyzeImage` (Supabase `unlim-chat` Edge Function, Gemini 2.5 Pro Vision). WCAG AA (44px touch, focus-visible orange ring, aria-label/aria-busy, prefers-reduced-motion). Principio Zero v3 verificato (no "Docente leggi" meta). 7 unit + 3 E2E PASS. Baseline 12081 → 12088. Docs: `docs/features/vision-e2e.md`. (branch: feature/vision-e2e-live)
 - **Lesson Reader v1 complete** (`src/components/lavagna/LessonSelector.jsx` + `LessonReader.jsx`) — LessonSelector grid 27 lezioni Vol1/Vol2/Vol3, integrato in LavagnaShell come tab "Lezioni". 5+ lezioni Vol1 complete con citazioni dirette pagine volume. 8 test E2E Playwright CoV 3/3 PASS. Principio Zero v3 compliant. (PR: feature/lesson-reader-complete-v1 #3)
 - **Lesson Reader MVP v0** (`src/components/lavagna/LessonReader.jsx`) — timeline narrativa capitolo con citazioni dirette dai volumi fisici ELAB. Riusa `lesson-groups.js` + `volume-references.js`. Principio Zero v3 compliant. 13 test unit. (PR: feature/lesson-reader-mvp #2)
 
