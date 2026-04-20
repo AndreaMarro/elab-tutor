@@ -114,3 +114,27 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Likely cause: workflow's `permissions:` block missing `pull-requests: write` for fork PRs OR branch-protection ruleset preventing PR comments from GitHub Actions. Check `.github/workflows/test.yml` permissions block. Non-blocking (informational comment, not gate).
 
 **Run**: post-deploy investigation | **Source**: watchdog-elab
+
+### 2026-04-20T02:55:26Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il tuo dispositivo sia correttamente collegato e alimentato prima di iniziare. Verifica che tutti i cavi siano inseriti saldamente nelle porte corrette.","sourc
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: test | **Source**: watchdog-elab
+
+### 2026-04-20T02:55:26Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED richiede una fonte di energia (tensione e corrente) per emettere luce.\n[COME CORREGGI:high
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: test | **Source**: watchdog-elab
+
+### 2026-04-20T02:55:26Z — ci_failure_burst
+
+**Detail**: 7 CI failures in last 2h
+
+**Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
+
+**Run**: test | **Source**: watchdog-elab
