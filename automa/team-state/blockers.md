@@ -8,13 +8,13 @@ Append-only log. Mai cancellare (storico).
 
 ## BLOCKER-001 — 2026-04-20 — JWT 401 Edge Function CLI
 
-**Status**: OPEN (Day 04 ADR planned)
+**Status**: CLOSED 2026-04-24 (Day 05)
 **Severity**: P0
 **Owner**: inline TPM
 **Impacted tasks**: T1-005 Dashboard, PZ v3 live curl verification
 **Description**: `curl https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/unlim-chat -H "apikey: $KEY"` ritorna 401 JWT invalid. Prod funziona (frontend OK), solo CLI bloccato.
 **Investigation**: header `apikey` solo non basta. Necessario anche `Authorization: Bearer <ANON_KEY>`.
-**Resolution**: (Day 04 in corso) scrivere ADR + script `scripts/cli-autonomous/verify-edge-function.sh` con entrambi header.
+**Resolution**: Day 04 commit `cf6f71a` — ADR-003 `docs/architectures/ADR-003-jwt-401-edge-function-auth.md` + script `scripts/cli-autonomous/verify-edge-function.sh` (executable). Canonical dual-header pattern documented. Pending live verify con SUPABASE_ANON_KEY (ADR Status: Proposed → Accepted post first PASS).
 **Learned**: Supabase Edge Function richiede dual-header anche per ANON calls se JWT verify enforced.
 
 ## BLOCKER-002 — 2026-04-21 — Velocity tracking day 3 entry missing
