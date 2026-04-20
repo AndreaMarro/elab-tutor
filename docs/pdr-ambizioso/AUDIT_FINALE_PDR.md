@@ -92,7 +92,7 @@
 
 ### 2.3 Cost path testing → GDPR
 
-- [x] Sett 1: €0 (solo Andrea + Tea volunteer + Max)
+- [x] Sett 1: €0 (solo Andrea + Tea Babbalea + Max)
 - [x] Sett 2-3: Together AI testing economico (~€40)
 - [x] Sett 4-5: parallel setup self-host (~€69)
 - [x] Sett 6-8: switch self-host EU GDPR (~€197)
@@ -246,8 +246,8 @@ Delta +3.23 in 7 giorni = molto ambizioso.
 
 ### 5.5 Tea ruolo: "co-developer" vs "volunteer"
 
-README: "Tea Lea (volunteer co-developer)".
-PDR_SETT_1: "Tea volunteer da merc 23/04".
+README: "Tea Lea Babbalea (co-developer)".
+PDR_SETT_1: "Tea Babbalea da merc 23/04".
 
 Coerente. Tea = volunteer + co-developer = stessa persona.
 

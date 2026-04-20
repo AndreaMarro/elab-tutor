@@ -3,7 +3,7 @@
 **Data redazione**: 2026-04-20
 **Periodo esecuzione**: lunedì 21/04/2026 → domenica 15/06/2026 (8 settimane = 56 giorni)
 **Owner principale**: Andrea Marro (lead dev)
-**Co-developer volunteer**: Tea Lea (path safe + glossario + UX schema)
+**Co-developer**: Tea Lea (path safe + glossario + UX schema)
 **Goal sintetico**: Release v1.0 ELAB Tutor con UNLIM ultraprofondo (onnipotenza + onniscienza + comprensione contesto) + Voice premium + Tea integrata + path testing economico → migration self-host EU GDPR completo.
 
 ---
@@ -179,7 +179,7 @@ Per scelta italiano-capable:
 - Cloudflare Whisper Turbo gratis
 - Edge Function bridge (current)
 - Supabase + Vercel (current)
-- Tea volunteer
+- Tea Babbalea
 
 **Costi**:
 | Voce | €/mese |
@@ -439,7 +439,7 @@ Questo passa al modello LLM principale come system context.
 
 ### Ruolo Tea
 
-Tea Lea = volunteer co-developer con focus:
+Tea Lea Babbalea = co-developer con focus:
 - Glossario termini tecnici (~55 → 100+)
 - Schema UX 3-zone (Lavagna + UNLIM + Volume)
 - Audit complessità 92 esperimenti vs kit fisico
@@ -573,7 +573,7 @@ Ogni task segue 8-step (no eccezioni):
 | PDF ingest manuali OCR errori | 40% | Basso | Verify chunk quality post-ingest manualmente |
 | CircuitSolver edge cases bug emerging | 30% | Alto | Test coverage extension + monitoring Sentry |
 | 8 settimane focus = burnout Andrea | 70% | Critico | Riposo weekend + Tea share carico + buffer week |
-| Tea volunteer disponibilità incerta | 50% | Medio | CODEOWNERS path safe = Tea autonomous, no Andrea bottleneck |
+| Tea Babbalea disponibilità incerta | 50% | Medio | CODEOWNERS path safe = Tea autonomous, no Andrea bottleneck |
 | Costi cumulativi 6 mesi = €700-1500 | Certo | Basso | Accept (mitigation: revenue scuole) |
 
 ### Rischi business
@@ -706,7 +706,7 @@ Ogni task segue 8-step (no eccezioni):
 1. ✅ Plan letto integralmente
 2. ✅ Conferma scope 8 settimane
 3. ✅ Conferma stack path testing → GDPR
-4. ✅ Tea volunteer comunicato (email/WhatsApp)
+4. ✅ Tea Babbalea comunicato (email/WhatsApp)
 5. ⏳ Together AI account creazione (per sett 1)
 6. ⏳ Telegram BotFather account (per sett 8)
 7. ⏳ Hetzner Cloud account (per sett 2)

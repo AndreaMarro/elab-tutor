@@ -2,7 +2,7 @@
 
 **Sett**: N (NOME_SETT)
 **Date**: DD/MM/2026
-**Owner**: Andrea Marro (lead) + Tea Lea (volunteer) + Team Opus
+**Owner**: Andrea Marro (lead) + Tea Lea Babbalea + Team Opus
 **Capacity**: Andrea 8h + Tea Xh + Team agenti dispatch
 
 ---

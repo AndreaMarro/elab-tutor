@@ -164,7 +164,7 @@ Più costi una-tantum:
 
 **Cumulative total**: **~€333** per 8 settimane = **~€42/settimana media**.
 
-vs cost stimato originale €5000+ → **-93% cost** grazie a path testing economico + Tea volunteer + Max subscription Andrea.
+vs cost stimato originale €5000+ → **-93% cost** grazie a path testing economico + Tea Babbalea + Max subscription Andrea.
 
 ---
 

@@ -1,7 +1,7 @@
 # PDR Settimana 1 — Stabilize + Tea Autoflow + 6 Prod Bugs T1
 
 **Periodo**: lunedì 21/04/2026 → domenica 27/04/2026 (7 giorni)
-**Owner**: Andrea Marro (lead) + Tea Lea (volunteer da merc 23/04)
+**Owner**: Andrea Marro (lead) + Tea Lea Babbalea (da merc 23/04)
 **Goal Settimanale**: Sistema stabilizzato + Tea autoflow attivo + 6 bug T1 prod risolti + Vol 3 P0 parity + 92 foto TRES JOLIE importate. **Score benchmark target fine settimana**: 6.0/10 (da 2.77/10 attuale).
 
 ---
@@ -633,7 +633,7 @@ NO eccezioni. Anche per fix bug:
 | Voce | Costo |
 |------|-------|
 | Claude Code Max (Andrea, già pagato annuale) | €0 |
-| Tea volunteer | €0 |
+| Tea Babbalea | €0 |
 | Vercel hobby (già attivo) | €0 |
 | Supabase free tier (già attivo) | €0 |
 | Render free (già attivo) | €0 |
@@ -641,7 +641,7 @@ NO eccezioni. Anche per fix bug:
 | GitHub Actions (free tier 2000 min) | €0 |
 | **TOTALE settimana 1** | **€0** |
 
-Settimana 1 = COSTO ZERO, solo lavoro Andrea + Tea volunteer + Opus tier (incluso Max).
+Settimana 1 = COSTO ZERO, solo lavoro Andrea + Tea Babbalea + Opus tier (incluso Max).
 
 ---
 

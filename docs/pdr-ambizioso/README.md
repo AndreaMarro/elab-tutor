@@ -1,7 +1,7 @@
 # PDR Ambizioso ELAB Tutor v1.0 — 8 Settimane Self-Host
 
 **Periodo**: lunedì 21/04/2026 → domenica 15/06/2026
-**Owner**: Andrea Marro (lead) + Tea Lea (volunteer co-developer)
+**Owner**: Andrea Marro (lead) + Tea Lea Babbalea (co-developer)
 **Goal**: Release v1.0 ELAB Tutor con UNLIM ultraprofondo + Voice premium + Stack 100% self-host EU + Tea integrata.
 
 ---
@@ -29,7 +29,7 @@
 
 ---
 
-## Onboarding Tea (volunteer co-developer)
+## Onboarding Tea (co-developer)
 
 ### Cosa devi fare per iniziare (lunedì 21/04 mattina)
 
