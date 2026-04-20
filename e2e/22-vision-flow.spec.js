@@ -36,16 +36,24 @@ async function stubVisionInfra(page) {
   }, TINY_PNG_DATA_URL);
 
   // Stub Supabase unlim-chat edge function response to avoid real AI call.
+  // Body shape must include `success: true` and `response` — tryNanobot() in
+  // src/services/api.js returns null otherwise (causing fallback cascade).
+  const stubBody = JSON.stringify({
+    success: true,
+    response: 'Ragazzi, il circuito sembra in ordine! LED collegato bene come spiega il Vol. 1.',
+    model: 'stub',
+    tokens: 0,
+  });
   await page.route(/.*functions\/v1\/unlim-chat.*/, async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        response: 'Ragazzi, il circuito sembra in ordine! LED collegato bene come spiega il Vol. 1.',
-        model: 'stub',
-        tokens: 0,
-      }),
-    });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: stubBody });
+  });
+  // Defensive: also stub Render fallback /chat and local server probe so the
+  // response cascade lands on our stub deterministically.
+  await page.route(/elab-galileo\.onrender\.com\/.*/, async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: stubBody });
+  });
+  await page.route(/localhost:8000\/.*/, async (route) => {
+    await route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
   });
 }
 
@@ -90,5 +98,46 @@ test.describe('Vision E2E — VisionButton → UNLIM', () => {
     expect(ariaLabel).toMatch(/Guarda il mio circuito/i);
     expect(ariaLabel).not.toMatch(/Docente,\s*leggi/i);
     expect(ariaLabel).not.toMatch(/Insegnante,\s*leggi/i);
+  });
+
+  test('captureScreenshot contract: returns data URL or null', async ({ page }) => {
+    await goToLavagna(page);
+    // Ensure VisionButton is mounted so __ELAB_API presence was already confirmed by the other specs
+    const btn = page.getByRole('button', { name: /Guarda il mio circuito/i });
+    await expect(btn).toBeVisible({ timeout: 15000 });
+    // Click dispatches capture (populates state), then we invoke captureScreenshot directly
+    await btn.click();
+    const result = await page.evaluate(async () => {
+      const api = window.__ELAB_API;
+      if (!api || typeof api.captureScreenshot !== 'function') return '__missing__';
+      try {
+        const out = await api.captureScreenshot();
+        return out === null || out === undefined ? null : String(out);
+      } catch {
+        return '__threw__';
+      }
+    });
+    // Documented contract: either a data URL string or null
+    if (result === null) {
+      expect(result).toBeNull();
+    } else {
+      expect(typeof result).toBe('string');
+      expect(result).toMatch(/^data:image\//);
+    }
+  });
+
+  test('mocked UNLIM response body renders in chat UI', async ({ page }) => {
+    await goToLavagna(page);
+    const btn = page.getByRole('button', { name: /Guarda il mio circuito/i });
+    await expect(btn).toBeVisible({ timeout: 15000 });
+    // Click triggers: capture event → useGalileoChat listener → analyzeImage → /unlim-chat (stubbed).
+    // LavagnaShell.handleVisionResult also opens the galileo panel so the ChatOverlay mounts.
+    await btn.click();
+    // Response text from stubVisionInfra L44 must surface in DOM within 10s
+    // If the current UI does not render the mocked response (backend/feature gap), this will
+    // fail with a clear Playwright timeout — we do NOT relax the assertion to fake green.
+    await expect(
+      page.getByText(/Ragazzi, il circuito/i).first()
+    ).toBeVisible({ timeout: 10000 });
   });
 });
