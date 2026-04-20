@@ -474,3 +474,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T20:57:27Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il file \"config.json\" sia presente nella stessa directory del tuo script Python. Questo file contiene le impostazioni necessarie per l'esecuzione dell'esperim
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T20:57:27Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Il circuito fornito è incompleto.\n\n1.  **Mancanza di alimentazione:** Non ci sono componenti che forniscano energia al circuito.\n2.  **Mancanza di connessioni:** Non c
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T20:57:27Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #12 docs(audit): live verify T1 2026-04-20 — 6 prod bugs
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T20:57:27Z — ci_failure_burst
+
+**Detail**: 5 CI failures in last 2h
+
+**Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
+
+**Run**: regular | **Source**: watchdog-elab
