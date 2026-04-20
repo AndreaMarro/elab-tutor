@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "sprint": "sett-1-stabilize",
+  "sprint_period": "2026-04-20_to_2026-04-26",
+  "created_at": "2026-04-22T09:00:00Z",
+  "updated_at": "2026-04-21T18:00:00Z",
+  "baseline_pre_sprint": {
+    "test_count": 12116,
+    "benchmark_score": 2.77,
+    "build_status": "PASS",
+    "commit_sha": "prior_to_day01"
+  },
+  "targets_end_sprint": {
+    "test_count_min": 12149,
+    "test_count_target": 12316,
+    "benchmark_score_min": 6.0,
+    "bugs_t1_closed_target": 6,
+    "pz_v3_violations_target": 0,
+    "commits_target_min": 40,
+    "commits_target_max": 60
+  },
+  "daily_metrics": [
+    {
+      "day": 1,
+      "date": "2026-04-20",
+      "day_of_week": "lun",
+      "commits": 12,
+      "test_count_end": 12149,
+      "test_delta": 33,
+      "benchmark_score_end": 4.06,
+      "benchmark_delta": 1.29,
+      "build_status": "PASS",
+      "build_time_s": 77,
+      "bugs_t1_closed": ["T1-001", "T1-002", "T1-009"],
+      "pz_v3_violations": 0,
+      "reviewer_verdict": "APPROVE",
+      "auditor_score": 6.5,
+      "dispatch_count": 7,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 2,
+      "unpushed_commits_end": 0,
+      "notes": "FOUNDATIONS-CLI + FOUNDATIONS-TOGETHER completati. Zero inflation detected."
+    },
+    {
+      "day": 2,
+      "date": "2026-04-21",
+      "day_of_week": "mar",
+      "commits": 3,
+      "test_count_end": 12164,
+      "test_delta": 15,
+      "benchmark_score_end": 4.29,
+      "benchmark_delta": 0.23,
+      "build_status": "PASS",
+      "build_time_s": 58,
+      "bugs_t1_closed": ["T1-003"],
+      "pz_v3_violations": 0,
+      "reviewer_verdict": "APPROVE",
+      "auditor_score": 7.2,
+      "dispatch_count": 4,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 0,
+      "unpushed_commits_end": 0,
+      "branch": "feature/t1-003-render-warmup",
+      "cov_runs": "3/3 PASS zero flaky",
+      "e2e_homepage": "3/3 PASS",
+      "commits_list": ["4a48138 T1-003 Render warmup cron", "c45504c reviewer-minor + supabase-ref canonicalize", "49c121c handoff + audit 7.2"],
+      "resolved_blockers": ["DAY02-SUPABASE-REF (MCP verify canonical=euqpdueopmlllqjmqnyb)", "DAY02-REVIEWER-MINOR (5 issues)", "DAY02-NO-REGRESSION-DRYRUN (false blocker)"],
+      "notes": "T1-003 Render warmup cron 10min + 5 reviewer-minor batch. Canonical Supabase ref risolto via MCP live verify."
+    },
+    {
+      "day": 3,
+      "date": "2026-04-22",
+      "day_of_week": "mer",
+      "commits": null,
+      "test_count_end": null,
+      "test_delta": null,
+      "benchmark_score_end": null,
+      "benchmark_delta": null,
+      "build_status": null,
+      "bugs_t1_closed": [],
+      "pz_v3_violations": null,
+      "reviewer_verdict": null,
+      "auditor_score": null,
+      "dispatch_count": null,
+      "dispatch_cap": 5,
+      "planned_tasks": ["T1-004 Vision E2E skeleton", "DAY02-JWT-401", "DAY02-VELOCITY update", "DAY02-BENCH-WRITE", "T1-005 Dashboard Supabase"],
+      "notes": "Standup Day 03 dispatched. team-dev T1-004 in background."
+    }
+  ],
+  "cumulative_trend": {
+    "commits_sprint_total": 15,
+    "test_delta_sprint_total": 48,
+    "benchmark_delta_sprint_total": 1.52,
+    "bugs_t1_closed_total": 4,
+    "days_logged": 2,
+    "days_remaining": 5,
+    "on_track_commits": true,
+    "on_track_benchmark": false,
+    "on_track_bugs": true
+  },
+  "hard_gates_sprint_1": {
+    "G1_test_count_min_12149": "PASSED_day02 (12164 >= 12149)",
+    "G2_build_PASS": "on_track (day02 PASS)",
+    "G3_CI_3_3_green": "pending_sprint_end",
+    "G4_PZ_v3_0_violations": "on_track (day02 = 0)",
+    "G5_benchmark_min_6": "at_risk_need_+1.71_in_5_days",
+    "G6_prod_live_200": "on_track (day02 200)",
+    "G7_E2E_smoke_5_5": "progress (homepage 3/3 Day 02)"
+  },
+  "retro_notes": {
+    "day01_went_well": [
+      "Zero inflation AUDITOR (self-corrected E2E false alarm honest)",
+      "Benchmark delta +1.29 reale e verificato",
+      "PZ v3 preserved byte-identical nel provider switch"
+    ],
+    "day01_improve": [
+      "Dispatch cap 5 superato (7 actual)",
+      "9 unpushed commits fino a fine giornata"
+    ],
+    "day02_went_well": [
+      "MCP live verify risolto dual-supabase-ref senza guess = production safety",
+      "Zero regressione 12164 CoV 3/3 consistent",
+      "Engine invariant + PZ v3 invariant preserved",
+      "Dispatch cap 5 rispettato (4 actual)",
+      "Branch pushed timely, no unpushed carryover"
+    ],
+    "day02_improve": [
+      "E2E spec modificato esercitato solo post-audit (should be pre-merge)",
+      "Velocity-tracking update ha richiesto Day 03 invece di live",
+      "Benchmark --write persist non ancora implementato (DAY02-BENCH-WRITE carry-over)"
+    ]
+  }
+}

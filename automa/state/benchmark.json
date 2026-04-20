@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-04-20T17:54:22.448Z",
+  "mode": "fast",
+  "score": 4.07,
+  "score_out_of": 10,
+  "metrics": {
+    "test_count": {
+      "value": 12164,
+      "observed": 12164,
+      "notes": "fast mode (read baseline file)",
+      "weight": 0.15,
+      "target": 14000,
+      "normalized": 8.69,
+      "contribution": 1.3
+    },
+    "build_size_kb": {
+      "value": 14615,
+      "observed": 14615,
+      "notes": "sum js+css in dist/",
+      "weight": 0.05,
+      "target": 3500,
+      "normalized": 0,
+      "contribution": 0
+    },
+    "e2e_pass_rate": {
+      "value": 0,
+      "observed": 0,
+      "notes": "no cached report",
+      "weight": 0.15,
+      "target": 0.95,
+      "normalized": 0,
+      "contribution": 0
+    },
+    "volume_ref_coverage": {
+      "value": 92,
+      "observed": 92,
+      "notes": "92/92 entries",
+      "weight": 0.15,
+      "target": 92,
+      "normalized": 10,
+      "contribution": 1.5
+    },
+    "dashboard_live": {
+      "value": 0,
+      "observed": false,
+      "notes": "component dir missing",
+      "weight": 0.05,
+      "target": 1,
+      "normalized": 0,
+      "contribution": 0
+    },
+    "unlim_latency_p95": {
+      "value": 0,
+      "observed": 0,
+      "notes": "no latency log",
+      "weight": 0.1,
+      "target": 3000,
+      "normalized": 0,
+      "contribution": 0
+    },
+    "git_hygiene": {
+      "value": 0.5333333333333333,
+      "observed": 16,
+      "notes": "16/30 commits have Test count",
+      "weight": 0.05,
+      "target": 0.9,
+      "normalized": 5.33,
+      "contribution": 0.27
+    },
+    "documentation": {
+      "value": 1,
+      "observed": 4,
+      "notes": "4/4 key docs present",
+      "weight": 0.1,
+      "target": 1,
+      "normalized": 10,
+      "contribution": 1
+    },
+    "accessibility_wcag": {
+      "value": 0,
+      "observed": false,
+      "notes": "no a11y tooling",
+      "weight": 0.1,
+      "target": 1,
+      "normalized": 0,
+      "contribution": 0
+    },
+    "worker_uptime": {
+      "value": 0,
+      "observed": 0,
+      "notes": "requires external uptime probe — TODO",
+      "weight": 0.1,
+      "target": 0.99,
+      "normalized": 0,
+      "contribution": 0
+    }
+  },
+  "commit_sha": "49c121cffab677c3e1e85f1c0406c90754c6821a",
+  "branch": "feature/t1-003-render-warmup",
+  "previous_score": 4.06,
+  "delta": 0.01
+}

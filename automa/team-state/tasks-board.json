@@ -1,15 +1,19 @@
 {
   "sprint": "sett-1-stabilize",
   "sprint_period": "2026-04-21_to_2026-04-27",
-  "updated_at": "2026-04-21T19:00:00Z",
+  "updated_at": "2026-04-21T18:30:00Z",
+  "current_day": "day-03",
   "owner": "Andrea Marro + Tea Lea (volunteer da mer 23/04)",
   "goal": "Score benchmark 2.77 -> 6.0+, 6/6 bug T1 fixed, Tea autoflow, Vol 3 P0 parity, 92 foto TRES JOLIE",
   "baseline": {
     "test_count": 12149,
     "benchmark_score": 4.06,
     "build_status": "PASS",
-    "branch": "feature/pdr-ambizioso-8-settimane"
+    "branch": "feature/pdr-ambizioso-8-settimane",
+    "last_commit": "109cb33",
+    "unpushed_commits": 0
   },
+  "sprint_contract_ref": "docs/sprints/sprint-1-contract.md",
   "columns": {
     "backlog": [
       {
@@ -26,7 +30,7 @@
         "priority": "P1",
         "estimated_hours": 2,
         "files_impacted": ["src/services/teacherDataService.js"],
-        "depends_on": []
+        "depends_on": ["DAY02-SUPABASE-REF"]
       },
       {
         "id": "T1-006",
@@ -59,44 +63,115 @@
         "estimated_hours": 1,
         "files_impacted": [],
         "depends_on": []
+      },
+      {
+        "id": "DAY02-DIRTY-TRIAGE",
+        "title": "152 dirty files triage (carry-over, nessuna regression)",
+        "priority": "P2",
+        "estimated_hours": 2,
+        "files_impacted": [],
+        "depends_on": []
+      },
+      {
+        "id": "DAY02-PRODUCT-BACKLOG",
+        "title": "Product backlog gerarchico (Epic -> Story -> Task)",
+        "priority": "P2",
+        "estimated_hours": 1,
+        "files_impacted": ["docs/pdr-ambizioso/BACKLOG.md"],
+        "depends_on": [],
+        "assigned_to": "tpm"
+      },
+      {
+        "id": "DAY02-NO-REGRESSION-DRYRUN",
+        "title": "no-regression-guard.sh --dry-run flag (ALREADY IMPLEMENTED)",
+        "priority": "P3",
+        "estimated_hours": 0,
+        "files_impacted": ["scripts/cli-autonomous/no-regression-guard.sh"],
+        "depends_on": [],
+        "status": "false_blocker_resolved",
+        "notes": "Verificato Day 02: --dry-run gia' supportato lines 46,69,89,102,113. Auditor/TPM mistake."
       }
     ],
     "todo": [
       {
         "id": "T1-003",
-        "title": "Bug T1 #3: Render cold start 18s warmup",
+        "title": "Bug T1 #3: Render cold start 18s warmup cron",
         "priority": "P0",
         "estimated_hours": 2,
-        "files_impacted": ["scripts/warmup.js"],
+        "files_impacted": ["scripts/warmup.js", ".github/workflows/render-warmup.yml"],
         "depends_on": [],
         "assigned_to": "dev",
-        "assigned_at": "2026-04-21T19:00:00Z",
+        "assigned_at": "2026-04-22T09:00:00Z",
         "day": "day-02",
-        "notes": "Cron warmup ping Render every 10min. P0 for day 02 mar 22/04."
+        "notes": "Cron warmup ping Render every 10min via GH Action o Supabase Edge scheduled. Verifica TTFT post-warmup < 3s.",
+        "acceptance": ["curl cold start <3s post-deploy warmup", "CI job green", "test count >= 12149"]
       },
       {
-        "id": "DAY02-PUSH",
-        "title": "Push 9 unpushed commits + CI watch",
+        "id": "DAY02-SUPABASE-REF",
+        "title": "Canonicalize Supabase project ref (BLOCKED-ANDREA)",
         "priority": "P0",
-        "estimated_hours": 0.5,
-        "files_impacted": [],
+        "estimated_hours": 0.2,
+        "files_impacted": ["src/services/api.js", "scripts/cli-autonomous/deploy-prod.sh", ".env.production", "CLAUDE.md"],
         "depends_on": [],
-        "assigned_to": "dev",
-        "assigned_at": "2026-04-21T19:00:00Z",
+        "assigned_to": "andrea",
+        "assigned_at": "2026-04-21T09:00:00Z",
         "day": "day-02",
-        "notes": "9 commits unpushed. git push + verify CI green. MUST before any other work."
+        "status": "BLOCKED-ANDREA",
+        "block_reason": "src/services/api.js = euqpdueopmlllqjmqnyb (PROD frontend LIVE); deploy-prod.sh + CLAUDE.md = vxvqalmxqtezvgiboxyv. Modificare ref senza verifica = rottura prod. Andrea DEVE confermare canonical.",
+        "andrea_action": "Check Supabase dashboard: quale project contiene dati reali (users, sessions, lessons)? Quel ref = canonical. Aggiornare tutti i file all'altro.",
+        "acceptance": ["grep 0 match ref non-canonical", "prod HTTP 200 post-change", "test count >= 12149", "build PASS"]
       },
       {
-        "id": "DAY02-BENCH",
-        "title": "Benchmark --write persist + tighten E2E assertions",
+        "id": "DAY02-JWT-401",
+        "title": "Resolve Supabase edge function JWT 401",
+        "priority": "P1",
+        "estimated_hours": 0.5,
+        "files_impacted": ["supabase/functions/_shared/*", "verify-llm-switch.sh"],
+        "depends_on": ["DAY02-SUPABASE-REF"],
+        "assigned_to": "dev",
+        "assigned_at": "2026-04-22T09:00:00Z",
+        "day": "day-02",
+        "notes": "JWT rotazione o legacy key retirement. Dashboard Supabase check. Enable PZ v3 live curl verification.",
+        "acceptance": ["curl unlim-chat 200 OK", "verify-llm-switch.sh 20/20 PZ v3 PASS"]
+      },
+      {
+        "id": "DAY02-VELOCITY",
+        "title": "velocity-tracking.json initial seed Day 01+02",
+        "priority": "P1",
+        "estimated_hours": 0.3,
+        "files_impacted": ["automa/state/velocity-tracking.json"],
+        "depends_on": [],
+        "assigned_to": "tpm",
+        "assigned_at": "2026-04-22T09:00:00Z",
+        "day": "day-02",
+        "notes": "Seed metrics: commits/day, tests_delta/day, benchmark_delta/day. Day 01 =12 commits/+33 test/+1.29 bench.",
+        "acceptance": ["file esiste con 2 entry Day 01+02 seed", "schema estensibile per Day 03-07"]
+      },
+      {
+        "id": "DAY02-BENCH-WRITE",
+        "title": "Benchmark --write persist + tighten E2E homepage assertions",
         "priority": "P1",
         "estimated_hours": 1,
         "files_impacted": ["automa/state/benchmark.json", "tests/e2e/01-homepage-loads.spec.js"],
-        "depends_on": ["DAY02-PUSH"],
+        "depends_on": [],
         "assigned_to": "dev",
-        "assigned_at": "2026-04-21T19:00:00Z",
+        "assigned_at": "2026-04-22T09:00:00Z",
         "day": "day-02",
-        "notes": "Persist benchmark.json with --write. Tighten homepage E2E assertions per reviewer feedback."
+        "notes": "node scripts/benchmark.cjs --write persist. Tighten homepage E2E da 'length > 0' a content check specifico (reviewer issue #4).",
+        "acceptance": ["benchmark.json aggiornato con SHA 109cb33", "E2E 01-homepage assertion >= 3 content check"]
+      },
+      {
+        "id": "DAY02-REVIEWER-MINOR",
+        "title": "Batch 5 reviewer minor issues non-blocking",
+        "priority": "P1",
+        "estimated_hours": 1,
+        "files_impacted": ["scripts/verify-llm-switch.sh", "docs/architectures/cli-autonomous-foundations.md", "supabase/functions/_shared/llm-client.ts"],
+        "depends_on": [],
+        "assigned_to": "dev",
+        "assigned_at": "2026-04-22T09:00:00Z",
+        "day": "day-02",
+        "notes": "1) hardcoded anon key -> env var  2) blueprint script names reconcile  3) vi.resetModules in integration tests  4) E2E content assertions (merge con DAY02-BENCH-WRITE)  5) TS explicit mapping withGeminiProvider.",
+        "acceptance": ["5/5 issues chiusi o con ADR differimento", "reviewer re-approva"]
       }
     ],
     "in_progress": [],
@@ -180,18 +255,33 @@
     ],
     "rework": []
   },
+  "day02_plan": {
+    "capacity_hours": 8,
+    "total_estimated_hours": 5,
+    "buffer_hours": 3,
+    "dispatch_cap": 5,
+    "p0_count": 2,
+    "p1_count": 4,
+    "p2_count": 3,
+    "p3_count": 1,
+    "critical_path": ["DAY02-SUPABASE-REF", "DAY02-JWT-401", "T1-003", "DAY02-BENCH-WRITE"],
+    "next_day_unblock_deps": ["DAY02-SUPABASE-REF -> T1-005 (Supabase resume)", "T1-003 -> T1-006 (Voice E2E)"]
+  },
   "notes": {
     "tea_onboarding": "mer 23/04 18:00 Zoom 1h pair programming Andrea",
     "weekly_call": "ven 18:00-19:00 Telegram voice",
     "dispatch_cap": 5,
     "ptc_enabled": true,
     "principio_zero_v3_immutable": true,
+    "sprint_contract": "docs/sprints/sprint-1-contract.md ratificato Day 02",
+    "velocity_tracking": "automa/state/velocity-tracking.json",
     "day01_results": {
       "commits": 12,
       "test_delta": "+33 (12116 -> 12149)",
       "benchmark_delta": "2.77 -> 4.06",
       "reviewer": "APPROVE",
-      "auditor": "6.5/10"
+      "auditor": "6.5/10",
+      "unpushed": 0
     }
   }
 }
