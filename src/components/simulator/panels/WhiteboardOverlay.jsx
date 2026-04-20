@@ -357,9 +357,10 @@ export default function WhiteboardOverlay({
   }, []);
 
   // ── Load saved drawing from localStorage ─────
+  // T1-002 fix: use fallback key 'elab_wb_sandbox' when experimentId is null
   useEffect(() => {
-    if (!experimentId || !canvasRef.current) return;
-    const key = `elab_wb_${experimentId}`;
+    if (!canvasRef.current) return;
+    const key = experimentId ? `elab_wb_${experimentId}` : 'elab_wb_sandbox';
     const saved = localStorage.getItem(key);
     if (!saved) return;
     try {
@@ -389,9 +390,10 @@ export default function WhiteboardOverlay({
   }, [experimentId, redrawCanvas]);
 
   // ── Save drawing to localStorage (V3 format) ─────
+  // T1-002 fix: use fallback key 'elab_wb_sandbox' when experimentId is null
   const saveToStorage = useCallback(() => {
-    if (!experimentId || !canvasRef.current) return;
-    const key = `elab_wb_${experimentId}`;
+    if (!canvasRef.current) return;
+    const key = experimentId ? `elab_wb_${experimentId}` : 'elab_wb_sandbox';
     try {
       // Evict oldest whiteboard entries if over cap (max 10)
       const MAX_WB_ENTRIES = 10;
@@ -449,6 +451,16 @@ export default function WhiteboardOverlay({
       }
     } catch { /* quota exceeded */ }
   }, [experimentId]);
+
+  // T1-002 fix: auto-save every 5s while whiteboard is active
+  // Protects against crash/close without explicit save
+  useEffect(() => {
+    if (!active) return;
+    const interval = setInterval(() => {
+      saveToStorage();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [active, saveToStorage]);
 
   // ── Get canvas coords from event ─────────────
   // S112: Pointer Events API — unified mouse/touch/stylus with pressure support

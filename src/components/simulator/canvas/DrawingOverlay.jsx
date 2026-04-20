@@ -189,6 +189,23 @@ export default function DrawingOverlay({
     setDrawingMode(prev => !prev);
   }, []);
 
+  // T1-002 edge case #8: flush current stroke before closing.
+  // If the user is mid-stroke (pointer down, no pointer up yet) when they
+  // press ESC or click ESCI, the in-progress path would be lost. This
+  // handler commits it to paths + localStorage before unmounting.
+  const handleClose = useCallback(() => {
+    if (isDrawing && currentPath) {
+      const newPath = { ...currentPath };
+      const updatedPaths = [...paths, newPath];
+      setPaths(updatedPaths);
+      saveDrawingPaths(updatedPaths, experimentId);
+      setIsDrawing(false);
+      setCurrentPath(null);
+      onPathsChange?.(updatedPaths);
+    }
+    onClose?.();
+  }, [isDrawing, currentPath, paths, experimentId, onPathsChange, onClose]);
+
   // Event handlers attached via JSX props (no useEffect timing issues)
 
   // Keyboard shortcuts for undo/redo
@@ -197,7 +214,7 @@ export default function DrawingOverlay({
     const handleKey = (e) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        onClose?.();
+        handleClose();
         return;
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
@@ -210,7 +227,7 @@ export default function DrawingOverlay({
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [drawingEnabled, handleUndo, handleRedo, onClose]);
+  }, [drawingEnabled, handleUndo, handleRedo, handleClose]);
 
   if (!drawingEnabled) return null;
 
@@ -382,7 +399,7 @@ export default function DrawingOverlay({
 
           {/* Exit drawing mode */}
           <button
-            onClick={() => onClose?.()}
+            onClick={handleClose}
             title="Esci dalla penna (ESC)"
             aria-label="Esci dalla modalità penna"
             style={{
