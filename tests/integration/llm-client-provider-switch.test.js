@@ -50,6 +50,13 @@ describe('llm-client.ts — Unified LLM Dispatcher', () => {
     mockEnv.set('LLM_PROVIDER', 'together');
     originalFetch = globalThis.fetch;
     vi.restoreAllMocks();
+    // Reviewer issue #3 (Day 01): ES module caching could mask provider-routing
+    // bugs. Without resetModules, the first dynamic import caches llm-client.ts
+    // and subsequent env changes (e.g. LLM_PROVIDER=gemini) might not re-read
+    // Deno.env if module-level constants were introduced. resetModules forces
+    // a fresh import per test so each assertion actually exercises the path
+    // under the CURRENT mockEnv — no vacuous pass.
+    vi.resetModules();
   });
 
   afterEach(() => {

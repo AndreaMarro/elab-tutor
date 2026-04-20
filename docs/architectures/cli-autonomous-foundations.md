@@ -111,7 +111,7 @@ Nessun gate puo essere saltato. Override solo Andrea con `[GOVERNANCE-OVERRIDE: 
 
 **Exit codes**: 0 = pass, 1 = test fail, 2 = build fail, 3 = critical file guard
 
-**Script**: `scripts/cli-autonomous/gate-1-precommit.sh`
+**Script**: `scripts/cli-autonomous/daily-preflight.sh` + `no-regression-guard.sh commit` (ex `gate-1-precommit.sh`)
 
 ### GATE-2: Pre-push
 
@@ -123,7 +123,7 @@ Nessun gate puo essere saltato. Override solo Andrea con `[GOVERNANCE-OVERRIDE: 
 
 **Exit codes**: 0 = pass, 1 = CoV fail run N, 2 = regression, 3 = no-verify detected
 
-**Script**: `scripts/cli-autonomous/gate-2-prepush.sh`
+**Script**: `scripts/cli-autonomous/push-safe.sh` + `no-regression-guard.sh push` (ex `gate-2-prepush.sh`)
 
 ### GATE-3: Pre-merge (CI)
 
@@ -137,7 +137,7 @@ Nessun gate puo essere saltato. Override solo Andrea con `[GOVERNANCE-OVERRIDE: 
 
 **Enforced**: branch protection rule `main` -- require CI + 1 approval
 
-**Script**: `scripts/cli-autonomous/gate-3-ci-check.sh` (local pre-check mirror)
+**Script**: inline in `.github/workflows/ci.yml` (no local mirror; pre-check via `daily-preflight.sh`)
 
 ### GATE-4: Pre-deploy
 
@@ -151,7 +151,7 @@ Nessun gate puo essere saltato. Override solo Andrea con `[GOVERNANCE-OVERRIDE: 
 
 **Exit codes**: 0 = pass, 1 = bundle regression, 2 = build fail, 3 = console.log found, 4 = CI not green
 
-**Script**: `scripts/cli-autonomous/gate-4-predeploy.sh`
+**Script**: inline in `deploy-preview.sh` / `deploy-prod.sh` (ex `gate-4-predeploy.sh`)
 
 ### GATE-5: Post-deploy
 
@@ -161,11 +161,11 @@ Nessun gate puo essere saltato. Override solo Andrea con `[GOVERNANCE-OVERRIDE: 
 2. `curl -s -o /dev/null -w "%{http_code}" https://www.elabtutor.school/manifest.json` = 200
 3. PZ v3 live check: `curl -s https://www.elabtutor.school | grep -c "Ragazzi"` > 0 (se applicabile)
 4. TTFB < 3s: `curl -w "%{time_starttransfer}" -s -o /dev/null https://www.elabtutor.school`
-5. Supabase Edge Function health: `curl -s https://vxvqalmxqtezvgiboxyv.supabase.co/functions/v1/health` = 200
+5. Supabase Edge Function health: `curl -s https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/health` = 200
 
 **Exit codes**: 0 = all pass, 1 = frontend down, 2 = manifest missing, 3 = PZ fail, 4 = TTFB slow, 5 = backend down
 
-**Script**: `scripts/cli-autonomous/gate-5-postdeploy.sh`
+**Script**: inline post-deploy in `deploy-preview.sh` / `deploy-prod.sh` (ex `gate-5-postdeploy.sh`)
 
 ### Gate flow diagram
 
@@ -209,7 +209,7 @@ Definition of Done settimanale. Scritto dal TPM ogni domenica sera in `docs/hand
 | 12 | Evidence inventory | ogni task done ha commit SHA + test link | 100% tracciabile |
 | 13 | Prod deploy (weekly) | GATE-4 + GATE-5 pass | solo se weekly gate pass |
 
-**Script verifica**: `scripts/cli-autonomous/weekly-dod-check.sh`
+**Script verifica**: `scripts/cli-autonomous/end-week-gate.sh`
 Output: JSON `automa/state/weekly-dod-weekN.json` con 13 boolean + summary pass/fail.
 
 ---
@@ -359,11 +359,11 @@ Rollback: `vercel rollback` se GATE-5 fail post-deploy prod.
 - **Scope**: Supabase Edge Function responses, API contract verification
 - **Tool**: vitest + `fetch` mock o curl scripts
 - **Esempi**:
-  - `curl https://vxvqalmxqtezvgiboxyv.supabase.co/functions/v1/unlim-chat` -- 200 + schema response
+  - `curl https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/unlim-chat` -- 200 + schema response
   - `curl .../unlim-diagnose` -- 200 + diagnosi format
   - `curl .../unlim-tts` -- 200 + audio/mpeg header
 - **Target sett 1**: 5 integration test (health + chat + diagnose + hints + tts)
-- **Script**: `scripts/cli-autonomous/integration-smoke.sh`
+- **Script**: `scripts/cli-autonomous/verify-llm-switch.sh` (LLM-scoped integration smoke, ex `integration-smoke.sh` planned)
 
 ### Layer 3: E2E Playwright (20 spec target)
 
@@ -395,8 +395,8 @@ Rollback: `vercel rollback` se GATE-5 fail post-deploy prod.
 ### Layer 4: Smoke (5 critical paths)
 
 Subset di E2E, eseguito OGNI deploy (preview + prod).
-Script: `scripts/cli-autonomous/smoke-5-paths.sh`
-Usa Playwright headless: navigate + assert + screenshot.
+Script: `tests/e2e/01-homepage-load.spec.js` ... `05-pz-v3-watchdog.spec.js` (5 smoke specs via Playwright).
+Eseguito headless: navigate + assert + screenshot. Il planned `smoke-5-paths.sh` wrapper non e' stato creato Day 01: l'invocazione diretta `npx playwright test tests/e2e/0[1-5]-*.spec.js` fa lo stesso lavoro senza layer shell intermedio.
 
 ### PZ v3 enforcement in test
 
@@ -485,71 +485,99 @@ Ref: `docs/pdr-ambizioso/HARNESS_DESIGN.md` (linee 303-320)
 
 ## 10. Script inventory
 
-Tutti in `scripts/cli-autonomous/`. Da creare come nuova directory.
+Tutti in `scripts/cli-autonomous/`. Directory creata Day 01.
 
-### 10.1 gate-1-precommit.sh
+> **Day 02 reconciliation (reviewer issue #2)**: i nomi originali planned
+> (`gate-1-precommit.sh`, `gate-2-prepush.sh`, ecc.) sono stati implementati
+> con nomi semantici piu' descrittivi durante Day 01. Il mapping gate -> file
+> reale e' documentato sotto. Nessun rename pianificato: i nomi correnti sono
+> canonical. La colonna "Ruolo gate" preserva il mapping concettuale 5-gate
+> hard system (sezione 3).
 
-**Purpose**: Pre-commit hook gate. Vitest + build + critical file guard.
-**Input**: nessuno (opera su staged files)
-**Output**: stdout log con PASS/FAIL per check
-**Exit codes**: 0=pass, 1=test fail, 2=build fail, 3=critical file violation
+### Mapping gate concettuale -> script reale
+
+| Gate (sezione 3) | Script reale | Note |
+|------------------|--------------|------|
+| GATE-1 pre-commit | `daily-preflight.sh` + `no-regression-guard.sh commit` | preflight = health baseline, guard = regression check |
+| GATE-2 pre-push | `push-safe.sh` + `no-regression-guard.sh push` | push-safe wrappa git push con CI verify, guard = CoV |
+| GATE-3 pre-merge CI | (inline in `.github/workflows/ci.yml`) | No script locale: CI GitHub Actions + branch protection |
+| GATE-4 pre-deploy | `deploy-preview.sh` / `deploy-prod.sh` (inline checks) | Bundle + build + CI status inline pre-vercel |
+| GATE-5 post-deploy | `deploy-preview.sh` / `deploy-prod.sh` (inline verify) | curl health + PZ + TTFB post-vercel |
+| Weekly DoD 13 | `end-week-gate.sh` | Same behavior, nome piu' corto |
+| Integration smoke | `verify-llm-switch.sh` | 20-prompt IT verification Edge Function |
+| Daily audit | `daily-audit.sh` | Aggiuntivo, non planned originale |
+| End-day handoff | `end-day-handoff.sh` | Aggiuntivo, template gen |
+
+### 10.1 daily-preflight.sh (era: gate-1-precommit.sh)
+
+**Purpose**: Pre-flight check sessione giornaliera. Vitest + build + critical file status.
+**Input**: nessuno (opera su working tree)
+**Output**: JSON stdout con stato progetto + PASS/FAIL per check
+**Exit codes**: 0=ready, 1=not ready
 **Dipendenze**: `npx vitest run`, `npm run build`, `scripts/guard-critical-files.sh`
 
-### 10.2 gate-2-prepush.sh
+### 10.2 push-safe.sh (era: gate-2-prepush.sh)
 
-**Purpose**: Pre-push hook gate. CoV 3x vitest + baseline check.
-**Input**: nessuno
-**Output**: stdout log con 3 run vitest + pass count comparison
-**Exit codes**: 0=pass, 1=CoV fail (run N), 2=regression (count < baseline), 3=no-verify detected
+**Purpose**: Push sicuro con verifica CI. Wrappa `git push` + controllo GitHub Actions post-push.
+**Input**: `$1` = branch name (default: current branch)
+**Output**: stdout log con push result + CI run status
+**Exit codes**: 0=push + CI success, 1=push fail o CI fail
+**Dipendenze**: `git`, `gh run list`, `no-regression-guard.sh push`
+
+### 10.3 no-regression-guard.sh (gate multi-fase)
+
+**Purpose**: Regression guard unificato per multi-fase (commit/push/merge/deploy/post-deploy).
+**Input**: `$1` = action (`commit`|`push`|`merge`|`deploy`|`post-deploy`), `--dry-run` optional
+**Output**: stdout verdict + detail on reject
+**Exit codes**: 0=via libera, 1=ABORT + detail why
 **Dipendenze**: `npx vitest run`, `automa/state/baseline.json`
 
-### 10.3 gate-3-ci-check.sh
+### 10.4 deploy-preview.sh (era: gate-4-predeploy + deploy-preview + gate-5-postdeploy)
 
-**Purpose**: Local mirror di CI check (per pre-PR validation).
-**Input**: nessuno
-**Output**: stdout simulated CI result
-**Exit codes**: 0=pass, 1=build fail, 2=test fail, 3=guard fail
-**Dipendenze**: `npm run build`, `npx vitest run`, `scripts/guard-critical-files.sh`
+**Purpose**: Deploy preview end-to-end con gate enforcement (pre + post).
+**Input**: `--dry-run` flag optional
+**Output**: `docs/deploy/preview-YYYY-MM-DD.md` con URL + HTTP status
+**Exit codes**: 0=deployed + 200, 1=fail
+**Dipendenze**: `npm run build`, `vercel`, `curl`
 
-### 10.4 gate-4-predeploy.sh
+### 10.5 deploy-prod.sh (era: gate-4+5 prod path)
 
-**Purpose**: Pre-deploy validation. Bundle size + console.log check + CI status.
-**Input**: `$1` = target ("preview" | "prod")
-**Output**: stdout log + `automa/state/predeploy-check.json`
-**Exit codes**: 0=pass, 1=bundle regression, 2=build fail, 3=console.log found, 4=CI not green
-**Dipendenze**: `npm run build`, `gh run list`, `automa/state/baseline.json`
+**Purpose**: Deploy produzione con approval gate esplicito.
+**Input**: richiede sentinel file `automa/state/APPROVE-DEPLOY-PROD.txt`
+**Output**: `docs/deploy/prod-YYYY-MM-DD.md`
+**Exit codes**: 0=all good, 1=fail
+**Dipendenze**: `deploy-preview.sh` infrastructure + approval sentinel
 
-### 10.5 gate-5-postdeploy.sh
-
-**Purpose**: Post-deploy verification. Health check + PZ + TTFB.
-**Input**: `$1` = URL da verificare
-**Output**: stdout log + `automa/state/postdeploy-check.json`
-**Exit codes**: 0=all pass, 1=frontend down, 2=manifest missing, 3=PZ fail, 4=TTFB slow, 5=backend down
-**Dipendenze**: `curl`
-
-### 10.6 weekly-dod-check.sh
+### 10.6 end-week-gate.sh (era: weekly-dod-check.sh)
 
 **Purpose**: Weekly Definition of Done 13 check.
 **Input**: `$1` = week number (1-8)
-**Output**: `automa/state/weekly-dod-weekN.json` (13 boolean + summary)
-**Exit codes**: 0=all 13 pass, 1=partial (N/13 pass)
-**Dipendenze**: tutti i gate scripts + `git status` + `tasks-board.json` parser
+**Output**: `docs/audit/week-N-gate-YYYY-MM-DD.md` + JSON stdout
+**Exit codes**: 0=ALL 13 pass, 1=any fail
+**Dipendenze**: tutti gli altri script + `git status` + `tasks-board.json` parser
 
-### 10.7 deploy-preview.sh
+### 10.7 verify-llm-switch.sh (era: integration-smoke.sh scoped to LLM)
 
-**Purpose**: Deploy preview con gate enforcement.
-**Input**: nessuno (usa branch corrente)
-**Output**: URL preview stampata + salvata in `claude-progress.txt`
-**Exit codes**: 0=deployed OK, 1=GATE-4 fail, 2=vercel fail, 3=GATE-5 fail
-**Dipendenze**: `gate-4-predeploy.sh`, `vercel`, `gate-5-postdeploy.sh`
+**Purpose**: 20-prompt Italian integration verification dell'Edge Function `unlim-chat`. Verifica Principio Zero v3 + response quality.
+**Input**: env `SUPABASE_ANON_KEY` (required), `EDGE_FUNCTION_URL` (optional)
+**Output**: `docs/audit/llm-switch-verify-YYYY-MM-DD.md`
+**Exit codes**: 0=PASS >=18/20, 1=altrimenti
+**Dipendenze**: `curl`, `python3` (JSON parse)
 
-### 10.8 integration-smoke.sh
+### 10.8 daily-audit.sh
 
-**Purpose**: Integration test Supabase Edge Functions via curl.
-**Input**: nessuno (usa URL prod/preview)
-**Output**: stdout log con endpoint + status code + response time
-**Exit codes**: 0=all pass, 1=N endpoint(s) fail
-**Dipendenze**: `curl`, endpoint URLs hardcoded
+**Purpose**: Audit giornaliero automatico (baseline + commits + blockers).
+**Input**: nessuno
+**Output**: `docs/audit/daily-YYYY-MM-DD.md`
+**Exit codes**: 0=all pass, 1=any issue
+**Dipendenze**: `git log`, `npx vitest run`, benchmark script
+
+### 10.9 end-day-handoff.sh
+
+**Purpose**: Genera template handoff giornaliero pre-filled (SHA, test count, branch).
+**Input**: nessuno
+**Output**: `docs/handoff/YYYY-MM-DD-end-day.md` pre-filled
+**Exit codes**: 0 sempre
 
 ---
 
@@ -593,7 +621,7 @@ Tutti in `scripts/cli-autonomous/`. Da creare come nuova directory.
 | R5 | GATE-2 CoV 3x troppo lento (3x vitest = 30+ min) | 60% | Medio | Usare `vitest run --reporter=json` per speed. Se >15min, ridurre a CoV 2x per push non-main. 3x solo pre-merge. |
 | R6 | AUDITOR troppo scettico -> rallenta pipeline | 30% | Basso | AUDITOR audit solo 1x/giorno (non per ogni PR). Task <1h esentati da audit formale. |
 | R7 | Vercel deploy fail per timeout/quota | 20% | Medio | Retry 1x automatico in `deploy-preview.sh`. Se 2x fail, log blocker + Andrea interviene. |
-| R8 | MCP Playwright non disponibile / broken | 30% | Alto | Fallback: curl-based smoke test (scripts/cli-autonomous/smoke-5-paths.sh senza Playwright). E2E degradato ma non bloccante. |
+| R8 | MCP Playwright non disponibile / broken | 30% | Alto | Fallback: curl-based smoke test in `deploy-preview.sh` (inline HTTP 200 + PZ check senza Playwright). E2E degradato ma non bloccante. |
 | R9 | 6 agenti Opus = alto consumo token Max subscription | 50% | Medio | Cap: max 5 dispatch/giorno sett 1. Scale a 10-15 dispatch/giorno sett 4+. Monitor quota in handoff. |
 | R10 | File critici engine modificati per errore da DEV | 20% | Critico | `scripts/guard-critical-files.sh` gia esiste (ref CLAUDE.md). GATE-1 lo invoca. Se bypass -> REVIEWER blocca PR. |
 
@@ -601,19 +629,22 @@ Tutti in `scripts/cli-autonomous/`. Da creare come nuova directory.
 
 ## File impact list (tutti nuovi file)
 
-### Scripts (da creare)
+### Scripts (implementati Day 01 — nomi canonical)
 
 ```
 scripts/cli-autonomous/
-  gate-1-precommit.sh
-  gate-2-prepush.sh
-  gate-3-ci-check.sh
-  gate-4-predeploy.sh
-  gate-5-postdeploy.sh
-  weekly-dod-check.sh
-  deploy-preview.sh
-  integration-smoke.sh
+  daily-preflight.sh        -- ex gate-1-precommit.sh
+  push-safe.sh              -- ex gate-2-prepush.sh
+  no-regression-guard.sh    -- multi-fase (commit|push|merge|deploy|post-deploy)
+  deploy-preview.sh         -- ex gate-4+5 (preview path)
+  deploy-prod.sh            -- ex gate-4+5 (prod path)
+  end-week-gate.sh          -- ex weekly-dod-check.sh
+  verify-llm-switch.sh      -- ex integration-smoke.sh (LLM-scoped)
+  daily-audit.sh            -- added Day 01
+  end-day-handoff.sh        -- added Day 01
 ```
+
+GATE-3 (pre-merge CI) non ha script locale: e' inline in `.github/workflows/ci.yml` + branch protection rules.
 
 ### State files (da creare)
 
@@ -636,8 +667,8 @@ docs/decisions/ADR-001-cli-autonomous-paradigm.md  -- prima ADR
 ### File esistenti da modificare
 
 ```
-.husky/pre-commit                         -- aggiungere invocazione gate-1-precommit.sh
-.husky/pre-push                           -- aggiungere invocazione gate-2-prepush.sh
+.husky/pre-commit                         -- aggiungere invocazione daily-preflight.sh + no-regression-guard.sh commit
+.husky/pre-push                           -- aggiungere invocazione push-safe.sh + no-regression-guard.sh push
 automa/state/baseline.json                -- aggiungere campo bundleSizeKB
 ```
 

@@ -174,14 +174,14 @@ window.__ELAB_API
 npm run build && npx vercel --prod --yes
 
 # Backend -> Supabase
-SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref vxvqalmxqtezvgiboxyv
+SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref euqpdueopmlllqjmqnyb
 ```
 
 ## Infrastruttura
 | Servizio | URL | Stato |
 |----------|-----|-------|
 | Frontend | https://www.elabtutor.school (Vercel) | OK |
-| Supabase | vxvqalmxqtezvgiboxyv.supabase.co | OK |
+| Supabase | euqpdueopmlllqjmqnyb.supabase.co | OK |
 | Nanobot AI | https://elab-galileo.onrender.com (Render) | OK (18s cold start, dice UNLIM) |
 | Compilatore | https://n8n.srv1022317.hstgr.cloud/compile (Hostinger) | OK |
 | Brain V13 | http://72.60.129.50:11434 (VPS, Qwen3.5-2B) | NON VERIFICATO |

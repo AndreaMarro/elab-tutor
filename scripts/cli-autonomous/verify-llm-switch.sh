@@ -7,8 +7,10 @@
 
 set -euo pipefail
 
-EDGE_URL="${EDGE_FUNCTION_URL:-https://vxvqalmxqtezvgiboxyv.supabase.co/functions/v1/unlim-chat}"
-ANON_KEY="${SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4dnFhbG14cXRlenZnaWJveHl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4Njk1NjAsImV4cCI6MjA4MzQ0NTU2MH0.FDBSCTOajfu0C3wWWfAQoM8qLQcmodxI5k6H_pkJOhQ}"
+EDGE_URL="${EDGE_FUNCTION_URL:-https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/unlim-chat}"
+# Reviewer issue #1 (Day 01): require SUPABASE_ANON_KEY from env, no hardcoded default.
+# Set via: export SUPABASE_ANON_KEY=<key>  (scope local only, never commit)
+ANON_KEY="${SUPABASE_ANON_KEY:?SUPABASE_ANON_KEY must be set in env before running verify-llm-switch.sh}"
 SESSION_ID="verify-llm-switch-$(date +%s)"
 DATE=$(date +%Y-%m-%d)
 AUDIT_DIR="docs/audit"

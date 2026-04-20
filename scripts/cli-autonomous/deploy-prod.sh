@@ -100,7 +100,7 @@ echo "" >> "$DEPLOY_FILE"
 echo "## Edge Functions Deploy" >> "$DEPLOY_FILE"
 if [[ -n "${SUPABASE_ACCESS_TOKEN:-}" ]]; then
   echo "Deploying Supabase Edge Functions..." >&2
-  if SUPABASE_ACCESS_TOKEN="$SUPABASE_ACCESS_TOKEN" npx supabase functions deploy --project-ref vxvqalmxqtezvgiboxyv >> "$DEPLOY_FILE" 2>&1; then
+  if SUPABASE_ACCESS_TOKEN="$SUPABASE_ACCESS_TOKEN" npx supabase functions deploy --project-ref euqpdueopmlllqjmqnyb >> "$DEPLOY_FILE" 2>&1; then
     echo "Edge Functions: PASS" >> "$DEPLOY_FILE"
   else
     echo "Edge Functions: FAIL (non-blocking)" >> "$DEPLOY_FILE"

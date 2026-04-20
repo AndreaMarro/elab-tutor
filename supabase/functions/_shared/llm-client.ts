@@ -181,11 +181,25 @@ export async function callLLM(options: LLMOptions): Promise<LLMResult> {
   const provider = (Deno.env.get('LLM_PROVIDER') || 'together').trim().toLowerCase();
   const hasImages = (options.images?.length ?? 0) > 0;
 
-  // Helper: wrap Gemini result with provider field
-  const withGeminiProvider = (result: LLMResult): LLMResult => ({
-    ...result,
-    provider: result.model === 'galileo-brain-v13' ? 'brain' : 'gemini',
-  });
+  // Reviewer issue #5 (Day 01): explicit LLMResult mapping for strict TS safety.
+  // callGemini returns a GeminiResult-shaped object; we coerce to LLMResult by
+  // mapping each field explicitly (text, model, tokensUsed, latencyMs) and
+  // overriding provider. This avoids relying on ...spread duck-typing which
+  // would silently break if GeminiResult gains incompatible fields.
+  const withGeminiProvider = (result: LLMResult): LLMResult => {
+    const provider: string = result.model === 'galileo-brain-v13' ? 'brain' : 'gemini';
+    const mapped: LLMResult = {
+      text: result.text,
+      model: result.model,
+      provider,
+      tokensUsed: {
+        input: result.tokensUsed?.input ?? 0,
+        output: result.tokensUsed?.output ?? 0,
+      },
+      latencyMs: result.latencyMs,
+    };
+    return mapped;
+  };
 
   // Vision: ALWAYS Gemini (Llama 70B has no vision support)
   if (hasImages) {
