@@ -234,3 +234,43 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T11:06:35Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"AI temporaneamente non disponibile. Riprova tra qualche secondo."}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T11:06:35Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Per il passo 1, assicurati di aver preparato correttamente tutti i materiali necessari. Una corretta preparazione iniziale è fondamentale per il successo dell'esperimento.","
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T11:06:35Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHE':highlight:id]: Un LED richiede una tensione e una corrente per accendersi.\n[CORREZIONE:highlight:id]: Aggiungi u
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T11:06:35Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #12 docs(audit): live verify T1 2026-04-20 — 6 prod bugs
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T11:06:35Z — ci_failure_burst
+
+**Detail**: 5 CI failures in last 2h
+
+**Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
+
+**Run**: regular | **Source**: watchdog-elab
