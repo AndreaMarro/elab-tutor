@@ -306,3 +306,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T14:16:37Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"error":"curl_failed"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T14:16:37Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il tuo dispositivo sia connesso a una rete Wi-Fi stabile. Verifica che il software del tuo dispositivo sia aggiornato all'ultima versione disponibile.","source"
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T14:16:37Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Analisi circuito:\n\n1.  **Cosa sbagliato:** Il LED non è collegato a nulla.\n    **Perché:** Un LED necessita di una sorgente di alimentazione (come una batteria o un a
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T14:16:37Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #12 docs(audit): live verify T1 2026-04-20 — 6 prod bugs
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
