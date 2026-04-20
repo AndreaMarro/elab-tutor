@@ -495,6 +495,181 @@ Single message:
 
 ---
 
-## 10. Forza ELAB. Harness operativo da sett 1.
+## 10. **HARNESS 2.0 — Anthropic Apr 2026 (ULTIMI ARTICOLI)**
 
-3 pattern + 6 team agenti Opus + PTC + benchmark oggettivo + Auditor onesto = production-grade harness per ELAB v1.0.
+### Fonti
+- [Harness design for long-running application development — Anthropic Apr 2026](https://www.anthropic.com/engineering/harness-design-long-running-apps)
+- [Scaling Managed Agents — Anthropic Apr 2026](https://www.anthropic.com/engineering/managed-agents)
+- [Anthropic Three-Agent Harness — InfoQ 04/2026](https://www.infoq.com/news/2026/04/anthropic-three-agent-harness-ai/)
+- [GAN-Style Agent Loop — Epsilla Blog](https://www.epsilla.com/blogs/anthropic-harness-engineering-multi-agent-gan-architecture)
+- [Anthropic Harness Engineering Two Agents Zero Context Overflow — Rick Hightower Mar 2026](https://medium.com/@richardhightower/anthropics-harness-engineering-two-agents-one-feature-list-zero-context-overflow-7c26eb02c807)
+- [5 Harness Layers Managed Agent — Han HELOIR Apr 2026](https://medium.com/data-science-collective/anthropic-just-shipped-three-of-the-five-harness-layers-for-managed-agent-and-the-other-two-are-on-14979cb4cf00)
+- [2025 Was Agents. 2026 Is Agent Harnesses — Aakash Gupta](https://aakashgupta.medium.com/2025-was-agents-2026-is-agent-harnesses-heres-why-that-changes-everything-073e9877655e)
+
+### Tre-Agent Harness (Planner + Generator + Evaluator) — GAN-style
+
+**Architettura**:
+- **Planner**: espande prompt → spec dettagliata, scope + direzione tecnica (NO granular implementation)
+- **Generator**: implementa feature iterativo dentro **sprint contracts**
+- **Evaluator**: testa via **Playwright MCP**, valida contro contracts, fornisce feedback
+
+**Key insight Anthropic**: "Every component in a harness encodes an assumption about what the model can't do on its own. Worth stress testing — remove components one at a time, identify load-bearing."
+
+### Sprint Contract Pattern (NUOVO)
+
+**Pre-implementation**, Generator + Evaluator **negoziano acceptance criteria**:
+- Feature definitions specifiche
+- Test conditions (esempio Anthropic: **27+ criteri per sprint**)
+- API endpoint specs
+- Edge case handling
+
+**ELAB application**:
+- Ogni task >2h sett 1-8 = sprint contract scritto in `automa/team-state/sprint-contracts/<task-id>.md`
+- DEV + TESTER + REVIEWER firmano contract PRIMA di code
+- AUDITOR finale verifica tutti criteri met (no skip)
+
+### Context Resets > Compaction (Sonnet 4.5 era)
+
+**Statement Anthropic**: "Context resets — clearing the context window entirely + structured handoff carrying previous agent state — addresses both context anxiety and coherence loss."
+
+**Opus 4.5+** (e successivi): "largely eliminated context anxiety natively" → reset meno critico ma handoff strutturato sempre obbligatorio.
+
+**ELAB rule**:
+- Sett 1-8: handoff doc + claude-progress.txt obbligatori
+- Reset preventivo se context >70% (vedi sezione 2 sopra)
+- Opus 4.7 (current Andrea) = context anxiety ridotto ma harness pattern still apply
+
+### claude-progress.txt — state recovery file
+
+**Pattern Anthropic**: file `claude-progress.txt` + git history = stato runtime recoverable da agente fresco con context vuoto.
+
+**Template ELAB** (`automa/state/claude-progress.txt`):
+```
+# Claude Progress — Last Updated: 2026-04-21T17:30:00Z
+
+## Current Sprint
+- Sprint: sett-1-stabilize
+- Day: 1
+- Last commit: <SHA>
+- Branch: feature/pdr-ambizioso-8-settimane
+
+## Completed Tasks (this session)
+- T1-001: bug T1 #1 lavagna empty fix (PR #N merged)
+- T1-002: ...
+
+## In-Progress Tasks
+- T1-003: ... (DEV started, blueprint at docs/architectures/...)
+
+## Carry-Over Tomorrow
+- T1-004: ...
+
+## Critical State
+- Test count: 12056 PASS
+- Build: PASS
+- Score: 5.4/10
+- Quota Max usage: 12% week
+
+## Next Action
+- Read PDR_GIORNO_02_MAR_22APR.md
+- Dispatch @team-tpm standup 9:00
+- Continue T1-003 ARCHITECT blueprint review
+```
+
+### 4 Grading Criteria Subjective (NUOVO)
+
+Per task **subjective** (no metric oggettiva immediata):
+1. **Design quality** (coherent visual identity)
+2. **Originality** (custom decisions vs templates)
+3. **Craft** (typography, spacing, color harmony)
+4. **Functionality** (usability, task completion)
+
+**ELAB application**:
+- UNLIM response evaluation: 4 criteri (Principio Zero compliance + linguaggio bambini + analogia quality + brevity)
+- Lavagna UX evaluation: 4 criteri (clarity + originality + craft + usability)
+- Report fumetto evaluation: 4 criteri (visual coherence + originality + craft + readability)
+
+**Evaluator tuning**: "must be tuned to be skeptical" — modelli tendono lenient self-assessment. ELAB AUDITOR già è "brutalmente onesto" pattern.
+
+### Brain/Hands Decoupling (Managed Agents Apr 2026)
+
+**3 componenti virtualizzati** (NON 5 layer come articolo Han HELOIR):
+1. **Session**: append-only log everything happened
+2. **Harness**: loop calls Claude + routes tool calls
+3. **Sandbox**: execution environment Claude runs code + edits files
+
+**Brain (Claude + Harness)** ≠ **Hands (Sandbox + Tools)**:
+- Harness stateless → sopravvive container failures
+- `wake(sessionId)` + `getSession(id)` per resume
+- Sandbox interchangeable via `execute(name, input)` interface
+- Failed container → tool-call error → Claude retry fresh provisioning
+- **Credentials NEVER reach sandboxes** (security boundary)
+
+**Performance impact decoupling**: TTFT **-60% p50, -90% p95** (eliminata container init delay).
+
+### Cosa Anthropic SHIPS vs USER IMPLEMENTS
+
+**Anthropic provides**:
+- Durable session logging
+- Resilient harness orchestration
+- Standardized tool/MCP integration interfaces
+- Credential isolation mechanisms
+
+**User implements** (= ELAB Andrea responsibility):
+- Task-specific harnesses (Claude Code agents)
+- Custom tools (33 tool ELAB sett 5)
+- Domain-specific context engineering (Principio Zero v3, RAG ELAB-specific)
+
+### Cost vs Quality Trade-off — numbers Anthropic
+
+**Retro Game Maker comparison**:
+| Approach | Time | Cost | Output |
+|----------|------|------|--------|
+| Solo run | 20 min | $9 | **Broken core functionality** |
+| Full harness | 6 h | $200 | **Complete, playable application** |
+
+**Multiplier**: 20x time + 22x cost → infinitely better quality.
+
+**DAW (Digital Audio Workstation) example**:
+- Total: 3h 50min, $124.70
+- Planner phase: 4.7 min, $0.46
+- 3 build/QA cycles, decreasing iterations
+
+**ELAB takeaway**: investire upfront in harness setup paga in qualità finale. Andrea's €333/8sett vs €5000 originale = già conservative per qualità target.
+
+### Iterative Simplification (NUOVO principio)
+
+**Anthropic guidance**: "Removing components one at a time to identify which remain load-bearing."
+
+**ELAB application sett 8 retro**:
+- Lista 6 team agenti
+- Per ognuno chiedi: "se rimuovo, cosa break?"
+- Se nothing break → remove (overhead non giustificato)
+- Se break → keep, document criticality
+
+### Aggiornamenti immediati ELAB Harness 2.0
+
+**Priorità ALTA (sett 1)**:
+1. ✅ Adottare `automa/state/claude-progress.txt` (NUOVO file)
+2. ✅ Adottare Sprint Contract pattern per task >2h
+3. ✅ AUDITOR usa 4 grading criteria (calibrato skeptical)
+4. ✅ Playwright MCP per Evaluator (già pianificato sett 1 audit)
+
+**Priorità MEDIA (sett 2-4)**:
+5. Brain/Hands decoupling: Edge Function = Brain, Cloudflare Worker/Hetzner container = Hands
+6. Session log persistente (Supabase tabella `agent_sessions`)
+7. Credential vault separato (Supabase secrets, NON in code)
+
+**Priorità BASSA (sett 5-8)**:
+8. Wake/getSession resume API
+9. Sandbox interchangeable interface
+10. Iterative simplification retro sett 8
+
+---
+
+## 11. Forza ELAB. Harness 2.0 operativo da sett 1.
+
+3 pattern originali + Harness 2.0 Apr 2026 + 6 team agenti Opus + Sprint Contract + claude-progress.txt + 4 grading criteria + Brain/Hands decoupling = production-grade harness 2.0 per ELAB v1.0.
+
+**Mantra Anthropic**: *"It wasn't a smarter model but a smarter environment around the model."*
+
+**Mantra ELAB**: *"Andrea + Tea + 6 Opus agenti + harness 2.0 = team production-grade. No solo developer."*
