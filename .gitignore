@@ -71,6 +71,7 @@ nanobot/sessions/tutor/
 # Playwright
 test-results/
 playwright-report/
+tests/e2e/results/
 
 # Logs
 *.log
