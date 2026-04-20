@@ -1,12 +1,13 @@
-last_commit: c45504c
-last_commit_subject: chore(review): Day 02 reviewer minor issues batch + Supabase ref canonicalize
+last_commit: 2a0efb3
+last_commit_subject: revert(day03): remove duplicate Vision E2E skeleton
 last_test_count: 12164
 cov_runs_day02: 3/3 PASS (12164 consistent, 0 flaky)
+cov_runs_day03: vitest baseline stable + E2E vision 3/3 live PASS
 last_build_time: 58s
-benchmark_score: 4.29
-ci_status: local-only (not pushed)
-unpushed_commits: 2
-next_task: Day 03 STEP 1 TPM standup (mer 23/04)
+benchmark_score: 4.07
+ci_status: local-only (day03 commits not pushed)
+unpushed_commits_day03: 3
+next_task: Day 04 STEP 1 TPM standup (gio 23/04, Tea onboarding 18:00)
 blockers_open:
   - P0: JWT 401 Edge Function CLI (Day 01 carry-over, dispatch mgmt)
   - P1: velocity-tracking.json seeded (Day 02 done, needs Day 02 data update)
@@ -21,14 +22,15 @@ blockers_resolved_day02:
   - P1: Sprint 1 contract retroactive (docs/sprints/sprint-1-contract.md)
   - P1: Reviewer 5 minor issues batch (c45504c)
   - T1-003: Render warmup cron 10min (4a48138)
-session_date: 2026-04-21
-sprint_day: 2
+session_date: 2026-04-22
+sprint_day: 3
 sprint: sett-1-stabilize
+reviewer_verdict_day03: APPROVE (on f5b071a, pre-revert)
+auditor_score_day03: 7.0/10 (post-fix, initial 6.8 NOT READY -> fixed same-session)
 reviewer_verdict_day02: APPROVE
 auditor_score_day02: 7.2/10
-delta_vs_day01: +0.7
-baseline_tests: 12149
-tests_delta_day02: +15
+baseline_tests: 12164
+tests_delta_day03: 0 net (skeleton reverted)
 principio_zero: v3 IMMUTABLE
 llm_provider: together-ai (default) + gemini (fallback)
 pz_v3_violations: 0
