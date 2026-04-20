@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-20T17:54:22.448Z",
+  "timestamp": "2026-04-20T23:04:48.615Z",
   "mode": "fast",
-  "score": 4.07,
+  "score": 3.8,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
@@ -14,8 +14,8 @@
       "contribution": 1.3
     },
     "build_size_kb": {
-      "value": 14615,
-      "observed": 14615,
+      "value": 14573,
+      "observed": 14573,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -59,13 +59,13 @@
       "contribution": 0
     },
     "git_hygiene": {
-      "value": 0.5333333333333333,
-      "observed": 16,
-      "notes": "16/30 commits have Test count",
+      "value": 0,
+      "observed": 0,
+      "notes": "0/30 commits have Test count",
       "weight": 0.05,
       "target": 0.9,
-      "normalized": 5.33,
-      "contribution": 0.27
+      "normalized": 0,
+      "contribution": 0
     },
     "documentation": {
       "value": 1,
@@ -95,8 +95,8 @@
       "contribution": 0
     }
   },
-  "commit_sha": "49c121cffab677c3e1e85f1c0406c90754c6821a",
+  "commit_sha": "cf6f71aa98c02ff532f7c6c0f5f9500ad5cb446c",
   "branch": "feature/t1-003-render-warmup",
-  "previous_score": 4.06,
-  "delta": 0.01
+  "previous_score": 4.07,
+  "delta": -0.27
 }

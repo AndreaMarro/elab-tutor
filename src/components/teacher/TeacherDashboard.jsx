@@ -32,7 +32,7 @@ const C = {
     orange: '#E8941C',
     cyan: '#00B4D8',
     text: 'var(--color-text-body, #1a1a2e)',
-    textMuted: 'var(--color-text-muted, #64748B)',
+    textMuted: 'var(--color-text-muted, #475569)',
     white: '#FFFFFF',
     border: 'var(--color-border, #E2E8F0)',
 };
@@ -646,7 +646,7 @@ export default function TeacherDashboard({ onNavigate }) {
                     <span style={{ fontSize: 24 }}>Info</span>
                     <div>
                         <strong>Nessun dato studente disponibile</strong>
-                        <p style={{ margin: '4px 0 0', color: '#64748B', fontSize: 14 }}>
+                        <p style={{ margin: '4px 0 0', color: '#475569', fontSize: 14 }}>
                             I dati appariranno automaticamente quando gli studenti useranno il simulatore su questo dispositivo.
                             Ogni esperimento aperto, compilazione e interazione viene tracciata in tempo reale.
                         </p>

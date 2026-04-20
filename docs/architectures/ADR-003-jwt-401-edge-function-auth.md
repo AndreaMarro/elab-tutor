@@ -1,6 +1,6 @@
 # ADR-003 — JWT 401 Edge Function curl auth
 
-**Status**: Accepted
+**Status**: Proposed (pending live verify-edge-function.sh execution with SUPABASE_ANON_KEY)
 **Date**: 2026-04-23
 **Sprint day**: 04
 **Owner**: Andrea Marro
