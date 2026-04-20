@@ -163,15 +163,23 @@ const NewElabSimulator = ({
   const [baudMismatch, setBaudMismatch] = useState(false);
   const [drawingEnabled, setDrawingEnabled] = useState(false);
 
+  // T1-001 fix: useRef to avoid stale closure on isDrawingEnabled
+  // and eliminate registration gap when drawingEnabled changes.
+  const drawingEnabledRef = useRef(drawingEnabled);
+  useEffect(() => { drawingEnabledRef.current = drawingEnabled; }, [drawingEnabled]);
+
   // Expose drawing toggle on __ELAB_API for Lavagna toolbar
   // Poll until API is available (it's created async by useSimulatorAPI)
+  // Registered ONCE ([] deps) -- no gap between cleanup and re-registration
   useEffect(() => {
-    const toggle = (enabled) => setDrawingEnabled(typeof enabled === 'boolean' ? enabled : (p) => !p);
+    const toggle = (enabled) => setDrawingEnabled(
+      typeof enabled === 'boolean' ? enabled : (p) => !p
+    );
     const check = setInterval(() => {
       const api = typeof window !== 'undefined' && window.__ELAB_API;
       if (api) {
         api.toggleDrawing = toggle;
-        api.isDrawingEnabled = () => drawingEnabled;
+        api.isDrawingEnabled = () => drawingEnabledRef.current;
         clearInterval(check);
       }
     }, 200);
@@ -180,7 +188,7 @@ const NewElabSimulator = ({
       const api = typeof window !== 'undefined' && window.__ELAB_API;
       if (api) { delete api.toggleDrawing; delete api.isDrawingEnabled; }
     };
-  }, [drawingEnabled]);
+  }, []); // stable -- registered once, cleaned up on unmount only
 
   // ─── Onboarding: welcome card per primo accesso ───
   const WELCOME_KEY = 'elab-sim-welcomed';
