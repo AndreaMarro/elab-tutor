@@ -12,6 +12,7 @@ export default function AppHeader({
   volumeOpen = false,
   onPercorsoToggle,
   percorsoOpen = false,
+  onFumettoOpen,
   activeTab = 'lavagna',
   onTabChange,
   showClasseTab = false,
@@ -118,6 +119,21 @@ export default function AppHeader({
               <path d="M14 8l4-2v8l-4-2V8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
             </svg>
             <span>Video</span>
+          </button>
+        )}
+        {onFumettoOpen && (
+          <button
+            className={`${css.btn} ${css.btnLabeled}`}
+            onClick={onFumettoOpen}
+            aria-label="Apri Fumetto Report della sessione"
+            title="Genera Fumetto Report"
+          >
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="2" y="3" width="7" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="11" y="3" width="7" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="2" y="11" width="16" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+            <span className={css.btnText}>Fumetto</span>
           </button>
         )}
       </div>
