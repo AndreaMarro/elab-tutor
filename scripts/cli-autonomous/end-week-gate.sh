@@ -121,7 +121,7 @@ fi
 check 6 "deploy_preview" "$PREVIEW_EXISTS" "$(ls docs/deploy/preview-*.md 2>/dev/null | tail -1 || echo 'none')"
 
 # 7. PZ v3 grep zero
-PZ_COUNT=$(grep -rn "Docente,\?\s*leggi\|Insegnante,\?\s*leggi" src/ 2>/dev/null | wc -l | tr -d ' ')
+PZ_COUNT=$( (grep -rn "Docente,\?\s*leggi\|Insegnante,\?\s*leggi" src/ 2>/dev/null || true) | wc -l | tr -d ' ')
 check 7 "pz_v3_clean" "$( [[ "$PZ_COUNT" -eq 0 ]] && echo true || echo false )" "${PZ_COUNT} violations"
 
 # 8. E2E smoke count
@@ -145,7 +145,8 @@ check 10 "handoff_exists" "$HANDOFF_EXISTS" "$(ls -t docs/handoff/*-end-day.md 2
 # 11. Zero open blockers P0
 P0_BLOCKERS=0
 if [[ -f automa/team-state/blockers.md ]]; then
-  P0_BLOCKERS=$(grep -c "OPEN.*P0\|P0.*OPEN" automa/team-state/blockers.md 2>/dev/null || echo 0)
+  P0_BLOCKERS=$( (grep -c "OPEN.*P0\|P0.*OPEN" automa/team-state/blockers.md 2>/dev/null || true) | tail -1)
+  P0_BLOCKERS=${P0_BLOCKERS:-0}
 fi
 check 11 "zero_p0_blockers" "$( [[ "$P0_BLOCKERS" -eq 0 ]] && echo true || echo false )" "${P0_BLOCKERS} P0 open"
 
