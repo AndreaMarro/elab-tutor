@@ -1,39 +1,52 @@
-last_commit: 2a0efb3
-last_commit_subject: revert(day03): remove duplicate Vision E2E skeleton
+last_commit: f25da24
+last_commit_subject: fix(day04): auditor must-fix P0 — inline #64748B residui + ADR status + benchmark fresh
 last_test_count: 12164
-cov_runs_day02: 3/3 PASS (12164 consistent, 0 flaky)
-cov_runs_day03: vitest baseline stable + E2E vision 3/3 live PASS
-last_build_time: 58s
-benchmark_score: 4.07
-ci_status: local-only (day03 commits not pushed)
-unpushed_commits_day03: 3
-next_task: Day 04 STEP 1 TPM standup (gio 23/04, Tea onboarding 18:00)
+cov_runs_day04: 5/5 PASS (12164 consistent per auditor live verify)
+last_build_time: 108s (Day 04 +50 vs Day 03, CSS re-bundle first-pass)
+benchmark_score: 3.8
+benchmark_delta: -0.27 (git_hygiene dip from missing "Test N" in 3 Day-04 msgs, forward discipline)
+ci_status: local-only (Day 04 5 commits pending push STEP 6)
+unpushed_commits_day04: 5
+next_task: STEP 6 push + gh run list verify + Day 05 (ven 24/04) SPRINT_DAY=5 transition
 blockers_open:
-  - P0: JWT 401 Edge Function CLI (Day 01 carry-over, dispatch mgmt)
-  - P1: velocity-tracking.json seeded (Day 02 done, needs Day 02 data update)
-  - P2: 152 dirty files triage
-  - P2: Product backlog gerarchico
+  - P0 STEP 6: push 5 commits + CI verify this session (inline)
+  - P1: Vision E2E live run 5/5 PASS (Day 05)
+  - P1: JWT 401 blocker OPEN → CLOSED in blockers.md (Day 05 post verify)
+  - P1: PZ v3 prod curl 50-prompt stress test Day 05 post-deploy
+  - P2: ADR-003 live verify + Status → Accepted (needs ANON key)
+  - P2: 152 dirty files triage (engine copyright noise + non-engine residue)
+  - P2: Product backlog gerarchico formal
+  - P3: Daily standup Day 01 retroactive
   - P3: no-regression-guard.sh --dry-run flag
-  - P3: Daily standup Day 01 formal retroactive
+  - P3: git commit message discipline "Test N" forward
   - POST-MERGE: workflow render-warmup.yml first run verify
   - POST-MERGE: grep canonical invariant on main
-blockers_resolved_day02:
-  - P0: dual-supabase-ref (RESOLVED via MCP verify, canonical=euqpdueopmlllqjmqnyb)
-  - P1: Sprint 1 contract retroactive (docs/sprints/sprint-1-contract.md)
-  - P1: Reviewer 5 minor issues batch (c45504c)
-  - T1-003: Render warmup cron 10min (4a48138)
-session_date: 2026-04-22
-sprint_day: 3
+blockers_resolved_day04:
+  - P0: Dashboard a11y Day 04 contract (already structurally compliant + contrast #64748B→#475569 in 21 loci)
+  - P0: JWT 401 ADR-003 + verify-edge-function.sh script (Day 01 carry-over resolved via docs)
+  - P0: Auditor Day 04 3x must-fix (jsx residui, ADR status, benchmark fresh) same-session
+  - P0: TPM standup + sprint contract + blockers reconcile + velocity day 3 (commit 640d015)
+session_date: 2026-04-23
+session_date_real: 2026-04-21
+sprint_day: 4
 sprint: sett-1-stabilize
-reviewer_verdict_day03: APPROVE (on f5b071a, pre-revert)
-auditor_score_day03: 7.0/10 (post-fix, initial 6.8 NOT READY -> fixed same-session)
-reviewer_verdict_day02: APPROVE
+sprint_day_next: 5
+reviewer_verdict_day04: APPROVE (on e197d37 scope, 5 minor cosmetic)
+auditor_score_day04: 7.5/10 PARTIAL → READY post 3 must-fix close
+auditor_score_day03: 7.0/10
 auditor_score_day02: 7.2/10
 baseline_tests: 12164
-tests_delta_day03: 0 net (skeleton reverted)
+tests_delta_day04: 0 net (E2E spec extended in-place, no new test runner count)
 principio_zero: v3 IMMUTABLE
 llm_provider: together-ai (default) + gemini (fallback)
 pz_v3_violations: 0
 e2e_spec_count: 12
-e2e_tests_homepage: 3/3 PASS (6.8s)
+e2e_vision_tests: 5 (3 original + 2 new: captureScreenshot contract + mocked render)
+e2e_tests_homepage: 3/3 PASS (6.8s Day 03)
+day04_commits: 5 (e197d37 640d015 83f90d2 cf6f71a f25da24)
+day04_scope_files: TeacherDashboard.{jsx,module.css} + ADR-003 + verify-edge-function.sh + 22-vision-flow.spec.js + benchmark.json + day-04-contract.md + 2026-04-23-day-04-standup.md
+day04_engine_diff_semantic: 0
 branch: feature/t1-003-render-warmup
+dashboard_a11y_status: compliant (role=img 3, scope=col 24, aria-live 2, caption >=1, contrast #475569 WCAG AAA 7.56:1)
+adr_003_status: Proposed (pending live verify with SUPABASE_ANON_KEY)
+timestamp: 2026-04-21T07:06:00+08:00
