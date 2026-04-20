@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-20T23:04:48.615Z",
+  "timestamp": "2026-04-20T23:20:31.594Z",
   "mode": "fast",
-  "score": 3.8,
+  "score": 3.95,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
@@ -14,8 +14,8 @@
       "contribution": 1.3
     },
     "build_size_kb": {
-      "value": 14573,
-      "observed": 14573,
+      "value": 14720,
+      "observed": 14720,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -41,13 +41,13 @@
       "contribution": 1.5
     },
     "dashboard_live": {
-      "value": 0,
+      "value": 0.3,
       "observed": false,
-      "notes": "component dir missing",
+      "notes": "1 files, supabase=false",
       "weight": 0.05,
       "target": 1,
-      "normalized": 0,
-      "contribution": 0
+      "normalized": 3,
+      "contribution": 0.15
     },
     "unlim_latency_p95": {
       "value": 0,
@@ -95,8 +95,8 @@
       "contribution": 0
     }
   },
-  "commit_sha": "cf6f71aa98c02ff532f7c6c0f5f9500ad5cb446c",
+  "commit_sha": "a1cafd0948a5ab83f88cda676c6c6df08cd44af4",
   "branch": "feature/t1-003-render-warmup",
-  "previous_score": 4.07,
-  "delta": -0.27
+  "previous_score": 3.8,
+  "delta": 0.15
 }

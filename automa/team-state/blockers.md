@@ -19,14 +19,14 @@ Append-only log. Mai cancellare (storico).
 
 ## BLOCKER-002 — 2026-04-21 — Velocity tracking day 3 entry missing
 
-**Status**: OPEN (Day 04 fix inline)
+**Status**: CLOSED 2026-04-25 (Day 06)
 **Severity**: P1
 **Owner**: inline TPM
 **Impacted tasks**: audit Harness 2.0
-**Description**: `automa/state/velocity-tracking.json` ha entries Day 01+Day 02 ma Day 03 absent
-**Investigation**: TPM Day 03 scrisse standup ma non velocity
-**Resolution**: append entry Day 03 inline this turn
-**Learned**: TPM checklist includere velocity entry obbligatorio end-of-day
+**Description**: `automa/state/velocity-tracking.json` ha entries Day 01+Day 02 ma Day 03 absent (poi anche Day 04 null + Day 05 mancante)
+**Investigation**: TPM Day 03 scrisse standup ma non velocity; Day 04 pianificato ma actuals non persistiti; Day 05 saltato inline
+**Resolution**: Day 06 STEP 1 standup inline ha backfilled Day 04 (6 commits, 7.5 auditor, -0.27 bench) + Day 05 (3 commits, 7.6 auditor, 0 delta) + Day 06 planned. Cumulative_trend riconciliato 27 commits 5 days_logged.
+**Learned**: TPM checklist end-of-day obbligatorio velocity entry. Backfill OK but ogni day N live-write previene drift.
 
 ## BLOCKER-003 — 2026-04-20 — 152 dirty files carry-over
 
