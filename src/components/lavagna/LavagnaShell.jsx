@@ -768,6 +768,28 @@ export default function LavagnaShell() {
     }
   }, [videoOpen, videoMinimized]);
 
+  // ── Fumetto Report open (Regola 0: riuso UnlimReport existing system) ──
+  const handleFumettoOpen = useCallback(async () => {
+    try {
+      const mod = await import('../unlim/UnlimReport');
+      const expId = currentExperiment?.id || null;
+      mod.openReportWindow(expId);
+    } catch (err) {
+      logger.warn('[Fumetto] Unable to open report window:', err?.message || err);
+    }
+  }, [currentExperiment]);
+
+  // ── Voice command integration: "crea il report" / "fumetto" ──
+  useEffect(() => {
+    const onVoiceCommand = (ev) => {
+      if (ev?.detail?.action === 'createReport') {
+        handleFumettoOpen();
+      }
+    };
+    window.addEventListener('elab-voice-command', onVoiceCommand);
+    return () => window.removeEventListener('elab-voice-command', onVoiceCommand);
+  }, [handleFumettoOpen]);
+
   return (
     <div className={css.shell}>
       <AppHeader
@@ -793,6 +815,7 @@ export default function LavagnaShell() {
           }
         }}
         percorsoOpen={galileoOpen && unlimTab === 'percorso'}
+        onFumettoOpen={handleFumettoOpen}
         activeTab={activeTab}
         onTabChange={setActiveTab}
         showLezioneTab={isDocente}
