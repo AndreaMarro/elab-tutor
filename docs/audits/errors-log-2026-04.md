@@ -410,3 +410,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T18:36:03Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che la tua squadra sia composta da personaggi con abilità complementari. Considera di assegnare ruoli specifici a ciascun membro per ottimizzare le sinergie.","sou
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T18:36:03Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED richiede corrente per accendersi, ma non ci sono fili collegati.\n[COME CORREGGERE:highligh
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T18:36:03Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #12 docs(audit): live verify T1 2026-04-20 — 6 prod bugs
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T18:36:03Z — ci_failure_burst
+
+**Detail**: 6 CI failures in last 2h
+
+**Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
+
+**Run**: regular | **Source**: watchdog-elab
