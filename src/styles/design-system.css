@@ -198,7 +198,7 @@
   --color-code-cursor: #F59E0B;
   --color-code-selection: rgba(124, 179, 66, 0.2);
   --color-code-line-active: rgba(124, 179, 66, 0.06);
-/* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
+/* © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   --color-code-gutter: #45475A;
   --color-code-comment: #6B7280;
 
@@ -264,7 +264,9 @@
   --color-pin-detail: #AAAABB;
   --color-error-red: #ef4444;
   --color-border-light: #E2E8F0;
-  --color-text-muted: #64748B;
+  /* ATOM-002 (2026-04-19): bumped from #64748B to #475569 (slate-600)
+     to reach ~5.5:1 contrast on #F0F4F8 background (WCAG 2.1 AA). */
+  --color-text-muted: #475569;
   --color-bg-hover: #F8FAFC;
   --color-bg-subtle: #F1F5F9;
   --color-bg-cool: #F0F4F8;
@@ -397,9 +399,9 @@
   background: var(--color-primary);
   color: var(--color-text-inverse);
   font-family: var(--font-sans);
+/* © Andrea Marro — 19/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-/* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   text-decoration: none;
   transition: top var(--transition-fast);

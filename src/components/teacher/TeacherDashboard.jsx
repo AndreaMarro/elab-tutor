@@ -709,13 +709,15 @@ export default function TeacherDashboard({ onNavigate }) {
             )}
 
             {/* Tabs */}
-            <div className={css.tabBar} role="tablist">
+            <div className={css.tabBar} role="tablist" aria-label="Sezioni dashboard docente">
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
                         role="tab"
                         aria-selected={activeTab === tab.id}
                         aria-controls={`tabpanel-${tab.id}`}
+                        id={`tab-${tab.id}`}
+                        tabIndex={activeTab === tab.id ? 0 : -1}
                         title={tab.title}
                         onClick={() => setActiveTab(tab.id)}
                         className={activeTab === tab.id ? css.tabActive : css.tab}
@@ -725,8 +727,22 @@ export default function TeacherDashboard({ onNavigate }) {
                 ))}
             </div>
 
+            {/* ATOM-002 P1-1: live region che annuncia la tab attiva agli screen reader. */}
+            <div role="status" aria-live="polite" className="sr-only">
+                {(() => {
+                    const t = tabs.find(x => x.id === activeTab);
+                    return t ? `Sezione ${t.label} attiva` : '';
+                })()}
+            </div>
+
             {/* Content */}
-            <div className={css.content} role="tabpanel" id={`tabpanel-${activeTab}`}>
+            <div
+                className={css.content}
+                role="tabpanel"
+                id={`tabpanel-${activeTab}`}
+                aria-labelledby={`tab-${activeTab}`}
+                tabIndex={0}
+            >
                 {/* ── TAB: Classe (Progressi + Giardino) ── */}
                 {activeTab === 'classe' && (
                     <>
@@ -1159,13 +1175,16 @@ function AttivitaTab({ users, allUsers, allData, classReport, formatTempo, volum
                 <h2 style={styles.sectionTitle}>Attività Settimanale</h2>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={styles.table}>
+                        <caption className="sr-only">
+                            Attività settimanale della classe: studente, sessioni svolte, tempo totale, esperimenti completati e stato di attività
+                        </caption>
                         <thead>
                             <tr>
-                                <th style={styles.th}>Studente</th>
-                                <th style={styles.th}>Sessioni</th>
-                                <th style={styles.th}>Tempo</th>
-                                <th style={styles.th}>Esperimenti</th>
-                                <th style={styles.th}>Stato</th>
+                                <th scope="col" style={styles.th}>Studente</th>
+                                <th scope="col" style={styles.th}>Sessioni</th>
+                                <th scope="col" style={styles.th}>Tempo</th>
+                                <th scope="col" style={styles.th}>Esperimenti</th>
+                                <th scope="col" style={styles.th}>Stato</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2108,6 +2127,9 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                 <h2 style={styles.sectionTitle}>Progresso Individuale</h2>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={styles.table}>
+                        <caption className="sr-only">
+                            Progresso individuale degli studenti suddiviso per volume del curriculum, con stato complessivo
+                        </caption>
                         <thead>
                             <tr>
                                 <th scope="col" style={styles.th}>Studente</th>
@@ -2196,21 +2218,24 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                 {showMatrix && (
                     <div style={{ overflowX: 'auto', maxHeight: 'min(500px, 60vh)', overflowY: 'auto' }}>
                         <table style={{ ...styles.table, fontSize: 14 }}>
+                            <caption className="sr-only">
+                                Matrice di completamento esperimenti: righe studenti, colonne esperimenti
+                            </caption>
                             <thead>
                                 <tr>
-                                    <th style={{ ...styles.th, position: 'sticky', left: 0, background: C.white, zIndex: 2, minWidth: 120 }}>
+                                    <th scope="col" style={{ ...styles.th, position: 'sticky', left: 0, background: C.white, zIndex: 2, minWidth: 120 }}>
                                         Studente
                                     </th>
                                     {visibleExps.map((exp, idx) => {
                                         const isVolStart = idx === 0 || visibleExps[idx - 1].volume !== exp.volume;
                                         return (
-                                        <th key={exp.id} style={{
+                                        <th scope="col" key={exp.id} style={{
                                             ...styles.th, fontSize: 14, padding: '6px 3px',
                                             writingMode: 'vertical-rl', textOrientation: 'mixed',
                                             whiteSpace: 'nowrap', maxWidth: 28, minWidth: 28,
                                             borderLeft: isVolStart ? `3px solid ${VOL_COLORS[exp.volume]}` : `1px solid ${C.border}`,
                                             color: VOL_COLORS[exp.volume],
-                                        }} title={`${exp.title} (Cap ${exp.chapter})`}>
+                                        }} title={`${exp.title} (Cap ${exp.chapter})`} aria-label={`${exp.title}, capitolo ${exp.chapter}`}>
                                             {exp.id.replace(/^v\d-/, '')}
                                         </th>);
                                     })}
@@ -2390,12 +2415,16 @@ function ProgressiTab({ users, allData, onSelectStudent, formatTempo }) {
                 ) : (
                     <div className={css.gridScrollContainer}>
                         <table style={{ ...styles.table, fontSize: 14, borderCollapse: 'separate', borderSpacing: 0 }}>
+                            <caption className="sr-only">
+                                Griglia di progressi studenti per capitolo ed esperimento
+                            </caption>
                             <thead>
                                 {/* Chapter group headers */}
                                 <tr>
-                                    <th className={css.stickyCornerTh} style={styles.th} />
+                                    <th scope="col" className={css.stickyCornerTh} style={styles.th} aria-label="Nome studente" />
                                     {chapters.map(ch => (
                                         <th
+                                            scope="colgroup"
                                             key={ch.key}
                                             colSpan={ch.count}
                                             className={css.chapterTh}
@@ -2411,18 +2440,18 @@ function ProgressiTab({ users, allData, onSelectStudent, formatTempo }) {
                                 </tr>
                                 {/* Experiment number headers */}
                                 <tr>
-                                    <th className={css.stickyStudentTh} style={styles.th}>
+                                    <th scope="col" className={css.stickyStudentTh} style={styles.th}>
                                         Studente
                                     </th>
                                     {visibleExps.map((exp, idx) => {
                                         const isChapStart = idx === 0 || visibleExps[idx - 1].chapter !== exp.chapter || visibleExps[idx - 1].volume !== exp.volume;
                                         const espNum = exp.id.match(/esp(\d+)/)?.[1] || exp.id.split('-').pop();
                                         return (
-                                            <th key={exp.id} className={css.expTh} style={{
+                                            <th scope="col" key={exp.id} className={css.expTh} style={{
                                                 ...styles.th,
                                                 borderLeft: isChapStart ? `2px solid ${VOL_COLORS[exp.volume]}` : `1px solid ${C.border}`,
                                                 color: C.textMuted,
-                                            }} title={`${exp.title} (Cap ${exp.chapter})`}>
+                                            }} title={`${exp.title} (Cap ${exp.chapter})`} aria-label={`${exp.title}, capitolo ${exp.chapter}`}>
                                                 {espNum}
                                             </th>
                                         );
@@ -2954,7 +2983,11 @@ function ReportTab({ users, allData, classReport, formatTempo }) {
                             <p style={{ color: C.textMuted, fontSize: 14, marginBottom: 12 }}>
                                 Numero cumulativo di esperimenti completati nel tempo
                             </p>
-                            <div style={{ width: '100%', height: 260 }}>
+                            <div
+                                role="img"
+                                aria-label={`Andamento esperimenti completati: da ${trendData[0]?.completati ?? 0} (${trendData[0]?.date ?? 'inizio'}) a ${trendData.at(-1)?.completati ?? 0} (${trendData.at(-1)?.date ?? 'fine'}) nel periodo osservato, ${trendData.length} punti dati`}
+                                style={{ width: '100%', height: 260 }}
+                            >
                                 <charts.ResponsiveContainer width="100%" height="100%">
                                     <charts.LineChart data={trendData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                                         <charts.CartesianGrid strokeDasharray="3 3" stroke={C.border} />
@@ -2982,7 +3015,11 @@ function ReportTab({ users, allData, classReport, formatTempo }) {
                     {charts && topCompleted.length > 0 && (
                         <div style={styles.section}>
                             <h2 style={styles.sectionTitle}>Top Esperimenti Più Completati</h2>
-                            <div style={{ width: '100%', height: Math.max(200, topCompleted.length * 36) }}>
+                            <div
+                                role="img"
+                                aria-label={`Top ${topCompleted.length} esperimenti più completati. ${topCompleted.slice(0, 3).map(t => `${t.name}: ${t.completamenti} completamenti`).join('; ')}${topCompleted.length > 3 ? '; ...' : ''}`}
+                                style={{ width: '100%', height: Math.max(200, topCompleted.length * 36) }}
+                            >
                                 <charts.ResponsiveContainer width="100%" height="100%">
                                     <charts.BarChart data={topCompleted} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                                         <charts.CartesianGrid strokeDasharray="3 3" stroke={C.border} horizontal={false} />
@@ -3007,7 +3044,11 @@ function ReportTab({ users, allData, classReport, formatTempo }) {
                     {charts && moodData.length > 0 && (
                         <div style={styles.section}>
                             <h2 style={styles.sectionTitle}>Distribuzione Mood Studenti</h2>
-                            <div style={{ width: '100%', height: 280, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div
+                                role="img"
+                                aria-label={`Distribuzione mood studenti: ${moodData.map(m => `${m.name} ${m.value}`).join(', ')}`}
+                                style={{ width: '100%', height: 280, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
                                 <charts.ResponsiveContainer width="100%" height="100%">
                                     <charts.PieChart>
                                         <charts.Pie
@@ -3088,11 +3129,14 @@ function ReportTab({ users, allData, classReport, formatTempo }) {
                         ) : (
                             <div style={{ overflowX: 'auto' }}>
                                 <table style={styles.table}>
+                                    <caption className="sr-only">
+                                        Tempo medio per esperimento e numero di tentativi registrati
+                                    </caption>
                                     <thead>
                                         <tr>
-                                            <th style={styles.th}>Esperimento</th>
-                                            <th style={{ ...styles.th, width: 100 }}>Tempo medio</th>
-                                            <th style={{ ...styles.th, width: 80 }}>Tentativi</th>
+                                            <th scope="col" style={styles.th}>Esperimento</th>
+                                            <th scope="col" style={{ ...styles.th, width: 100 }}>Tempo medio</th>
+                                            <th scope="col" style={{ ...styles.th, width: 80 }}>Tentativi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -3203,13 +3247,16 @@ function AuditTab() {
                 {logs.length > 0 && (
                     <div className={css.auditTableWrap}>
                         <table className={css.auditTable}>
+                            <caption className="sr-only">
+                                Audit log GDPR: timestamp, azione, endpoint, indirizzo IP e stato per ogni evento
+                            </caption>
                             <thead>
                                 <tr>
-                                    <th className={css.auditTh}>Timestamp</th>
-                                    <th className={css.auditTh}>Azione</th>
-                                    <th className={css.auditTh}>Endpoint</th>
-                                    <th className={css.auditTh}>IP</th>
-                                    <th className={css.auditTh}>Status</th>
+                                    <th scope="col" className={css.auditTh}>Timestamp</th>
+                                    <th scope="col" className={css.auditTh}>Azione</th>
+                                    <th scope="col" className={css.auditTh}>Endpoint</th>
+                                    <th scope="col" className={css.auditTh}>IP</th>
+                                    <th scope="col" className={css.auditTh}>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
