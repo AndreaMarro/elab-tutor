@@ -1,6 +1,10 @@
 {
-  "tests": "11501+114",
-  "testFiles": 180,
-  "updatedAt": "2026-04-16T15:05:00Z",
-  "note": "Ralph Loop iter 2: Principio Zero integrato. Linguaggio UNLIM riscritto con analogie. Test behavioral docente scenarios aggiunti. Running full suite..."
+  "test_count": 12137,
+  "test_files": 205,
+  "build_status": "pass",
+  "timestamp": "2026-04-20T11:07:45Z",
+  "git_sha": "129f37c",
+  "cov_3x": "3/3 PASS",
+  "branch": "feature/pdr-ambizioso-8-settimane",
+  "note": "Baseline after CLI autonomous foundations: 8 shell scripts + 12 E2E specs + 5 integration tests"
 }
