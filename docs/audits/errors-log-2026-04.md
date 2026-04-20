@@ -338,3 +338,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Review and either ready-for-review or close
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T15:54:48Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che tutti i componenti siano collegati correttamente prima di iniziare. Controlla due volte i collegamenti per evitare errori.","source":"flash-lite"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T15:54:48Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: led1 non è collegato.\n[PERCHÈ:highlight:id]: Un LED richiede una connessione ad un circuito per funzionare.\n[COME CORREGGERE:highlight:id]: Coll
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T15:54:48Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #12 docs(audit): live verify T1 2026-04-20 — 6 prod bugs
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-20T15:54:48Z — ci_failure_burst
+
+**Detail**: 5 CI failures in last 2h
+
+**Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
+
+**Run**: regular | **Source**: watchdog-elab
