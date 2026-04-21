@@ -610,3 +610,19 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T03:33:41Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati di aver caricato correttamente il tuo modello e di aver definito le variabili di input. Controlla anche che i dati di addestramento siano formattati come richiesto.
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T03:33:41Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED richiede una fonte di alimentazione (tensione e corrente) per emettere luce.\n[COME CORREGG
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
