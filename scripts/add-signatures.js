@@ -46,30 +46,19 @@ function addSignatures(filePath) {
     const signature = ext === '.css' ? CSS_SIGNATURE : JS_SIGNATURE;
 
     const content = fs.readFileSync(filePath, 'utf-8');
+
+    // Idempotent: if file already contains any signature marker, skip entirely.
+    // Preserves existing dates → zero re-stamp churn on repeated builds.
+    // Files only get stamped once, with the date they were first stamped.
+    if (content.includes(MARKER)) {
+        return false;
+    }
+
     const lines = content.split('\n');
-
-    // Remove old auto-signatures first (lines that are EXACTLY the signature pattern)
-    const cleaned = lines.filter(line => {
-        const trimmed = line.trim();
-        // Keep lines that contain © Andrea Marro if they're the ORIGINAL file header (first 10 lines)
-        // Remove only the auto-inserted ones (which match the full pattern)
-        return !(
-            trimmed.startsWith('// © Andrea Marro') &&
-            trimmed.includes('ELAB Tutor') &&
-            trimmed.includes('Tutti i diritti riservati')
-        ) && !(
-            trimmed.startsWith('/* © Andrea Marro') &&
-            trimmed.includes('ELAB Tutor') &&
-            trimmed.includes('Tutti i diritti riservati */')
-        );
-    });
-
-    // Insert signature every INTERVAL lines
     const result = [];
-    for (let i = 0; i < cleaned.length; i++) {
-        result.push(cleaned[i]);
-        // Every 200 lines (line 200, 400, 600...), insert signature
-        if ((i + 1) % INTERVAL === 0 && i + 1 < cleaned.length) {
+    for (let i = 0; i < lines.length; i++) {
+        result.push(lines[i]);
+        if ((i + 1) % INTERVAL === 0 && i + 1 < lines.length) {
             result.push(signature);
         }
     }
