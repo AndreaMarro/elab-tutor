@@ -1,10 +1,10 @@
-last_commit: 0413649 (docs(research): Karpathy LLM Wiki three-layer architecture evaluation)
-sprint: sett-3-stabilize-v3 (DAY 03 local, Day 17 cumulative)
-sprint_day_cumulative: 17
-sprint_day_local: 3 (sett-3 DAY 03)
+last_commit: 742ce9d (feat(dashboard): integrate useDashboardData into DashboardShell + 9 state tests)
+sprint: sett-3-stabilize-v3 (DAY 04 local, Day 18 cumulative)
+sprint_day_cumulative: 18
+sprint_day_local: 4 (sett-3 DAY 04)
 branch: feature/sett-3-stabilize-v3
 date: 2026-04-22
-status: DAY17_COMPLETE_PENDING_PUSH — sprint-3 Day 03 dashboard hook scaffold + git_hygiene unit test + trufflehog PR-only fix + research doc
+status: DAY18_COMPLETE_PENDING_STATE_PUSH — sprint-3 Day 04 DashboardShell hook integration + 9 new state tests (Day 17 P1 gap #1 closed)
 baseline_tests_main: 12166 (CoV Day 16)
 baseline_tests_sett3_day17_target: 12201 (12166 + 35 new: 25 git_hygiene + 10 useDashboardData)
 baseline_tests_sett3_day17_verified: 12201 (CoV 3x: 12201/12201/12201 PASS — deterministic)
@@ -40,11 +40,25 @@ day17_pending:
 preexisting_issues:
   - deploy-smoke manifest.json flaky (P2 carry from main)
   - E2E WelcomePage integrity (P2 pre-existing, orthogonal to Day 17)
-mcp_calls_direct_day17: 0 (honest gap — carry-over Day 18 target ≥15)
-last_day_update: 2026-04-22T06:10Z
+mcp_calls_direct_day17: 0 (carry-over closed Day 18)
+mcp_calls_direct_day18: 10 (7 claude-mem + 2 context7 + 1 serena; Sentry/Supabase skipped auth)
+last_day_update: 2026-04-22T06:25Z
 last_commit_day17: 0413649
+last_commit_day18: 742ce9d
 benchmark_day16_score: 4.14 (delta -0.03 honest post regex fix)
-benchmark_day17_score: 4.14 (delta 0 stable, persisted fast mode)
+benchmark_day17_score: 4.14 (delta 0 stable)
+benchmark_day18_score: 4.12 (delta -0.02 honest noise investigate Day 19)
 score_day17_self: 7.25/10 (design 7.5 originality 6.5 craft 8.0 functionality 7.0)
-next_action: DAY_18_START (sett-3 Day 04 — integrate hook + Edge Function + MCP catch-up)
-session_state: DAY17_COMPLETE_PENDING_PUSH_HANDOFF_READY
+score_day18_self: 7.625/10 (design 8.0 originality 6.0 craft 8.5 functionality 8.0) — +0.375 vs Day 17
+day18_scope_completed:
+  - DashboardShell useDashboardData integration (4-state rendering disabled/loading/error/ready)
+  - DashboardShell.module.css state styles (schemaBadge + error + retry 44px + grid + card)
+  - DashboardShell.test.jsx 11 tests (2 Day 10 baseline preserved + 9 Day 18 new)
+  - CoV 3x: 12210/12210/12210 PASS deterministic
+  - Day 17 P1 gap #1 (hook non integrato) CLOSED
+day18_pending:
+  - State + audit + handoff + benchmark commit + push
+  - Claude-mem observation end-day
+  - Day 19 kickoff (Edge Function real query OR route mount OR E2E fix)
+next_action: DAY_19_START (sett-3 Day 05)
+session_state: DAY18_COMPLETE_PENDING_STATE_PUSH
