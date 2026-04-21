@@ -12,7 +12,7 @@
 
 Day 13 executed debt-pivot continuation (NPM_DEPS_APPROVAL blocker still open, now 4 days). 3 P0 tasks landed + BLOCKER-010 (watermark restamp) ROOT-CAUSED at source (not just CI filter). CoV 3x pre-work = 12166/12166/12166 consistent. Build PASS 1m55s zero dirty files post-build. Engine semantic diff = 0. ADR-004 DashboardShell data source drafted (Option B Edge Function proxy, brain/hands decoupling).
 
-**Score**: {TBD}/10 (target ≥7.0).
+**Score**: 7.4/10 self (Harness 2.0 4-grading). Benchmark full-mode objective = **4.17/10** (Δ +0.22 vs 3.95 fast-mode).
 
 Key achievement Day 13: watermark restamp **root-caused, not mitigated**. Day 11 filter was necessary band-aid; Day 13 made it unnecessary via idempotent `add-signatures.js`. Build + pre-commit can now both run without touching working tree. Closes a class of false-positive blockers.
 
@@ -31,7 +31,7 @@ Key debt Day 13: NPM approval 4 days silent — handoff flag raised to Andrea ex
 | 5 | Build PASS | yes | = | yes | ✅ |
 | 6 | Bundle dist total | 78M | = | < 100M | ✅ |
 | 7 | Main chunk KB | ~2205 (gz 1037) | –1 | < 2500 | ✅ |
-| 8 | Benchmark full-mode | {TBD} | delta vs 3.95 fast | > 3.95 | {TBD} |
+| 8 | Benchmark full-mode | **4.17** | +0.22 vs 3.95 fast | > 3.95 | ✅ (improved) |
 | 9 | Engine semantic diff | 0 | = | 0 | ✅ |
 | 10 | PZ v3 source violations | 0 | = | 0 | ✅ |
 | 11 | E2E spec count | 14 | = | ≥ 14 | ✅ |
@@ -87,10 +87,12 @@ Post-build dirty count: **0** files (before Day 13 fix: 73). ROOT CAUSE CLOSED.
    - Covers auth (dual-header ADR-003), RLS, cache, error handling, offline
    - Phase 1/2/3 migration + 5 open questions for Andrea
 
-3. **Benchmark full-mode run** (Day 12 carry-over)
-   - Status: RUNNING (in progress ~25min expected, started 18:17)
-   - Will update automa/state/benchmark.json with commit SHA 8adb7d3
-   - Delta tracked vs 3.95 fast-mode baseline
+3. **Benchmark full-mode run** (Day 12 carry-over) — COMPLETED 18:50
+   - Score: **4.17/10** (Δ +0.22 vs 3.95 fast-mode baseline)
+   - Commit SHA: `c8903113da60cc8a7737620d10d41bd9687eb4eb`
+   - Contributions: e2e_pass_rate 1.5 (283/283) + volume_ref 1.5 (92/92) + documentation 1.0 (4/4) + dashboard_live 0.15 + test_count 0.02 + others 0
+   - Gaps quantified: unlim_latency_p95 (no log), git_hygiene (0/30 commits Test count match — unexpected), accessibility_wcag (0 tooling), worker_uptime (no probe)
+   - Run duration: ~33min (includes vitest + build + playwright 283 tests)
 
 ---
 
@@ -98,7 +100,7 @@ Post-build dirty count: **0** files (before Day 13 fix: 73). ROOT CAUSE CLOSED.
 
 1. **CoV 3x not 5x** (Day 12 did 5x). Rationale: budget time after benchmark-full kick. Still 3/3 PASS consistent. Not a deterioration of discipline, a tighter budget. (P3)
 
-2. **Benchmark full-mode still awaited at audit write time**. Score cell {TBD} filled post-run. Acceptable if final values replace placeholders before commit. Deficit if left. (P2)
+2. **Benchmark git_hygiene metric reports 0/30 commits with Test count tag** — unexpected because commits in last 30 explicitly include `[TEST 12166]` in messages. Benchmark.cjs may use regex mismatch (e.g. expects `Tests: N` not `[TEST N]`). Day 14 action: audit `scripts/benchmark.cjs` metric logic for false-negative + file issue. (P2)
 
 3. **NPM_DEPS_APPROVAL 4 days open**. Escalation overdue. Day 14 mandatory — write explicit Andrea question in handoff. (P1)
 

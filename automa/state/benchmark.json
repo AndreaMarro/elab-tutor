@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-04-21T08:02:41.368Z",
-  "mode": "fast",
-  "score": 3.95,
+  "timestamp": "2026-04-21T10:50:49.218Z",
+  "mode": "full",
+  "score": 4.17,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
-      "value": 12164,
-      "observed": 12164,
-      "notes": "fast mode (read baseline file)",
+      "value": 208,
+      "observed": 208,
+      "notes": "0 failed",
       "weight": 0.15,
       "target": 14000,
-      "normalized": 8.69,
-      "contribution": 1.3
+      "normalized": 0.15,
+      "contribution": 0.02
     },
     "build_size_kb": {
-      "value": 24379,
-      "observed": 24379,
+      "value": 14626,
+      "observed": 14626,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -23,13 +23,13 @@
       "contribution": 0
     },
     "e2e_pass_rate": {
-      "value": 0,
-      "observed": 0,
-      "notes": "no cached report",
+      "value": 1,
+      "observed": 283,
+      "notes": "283/283",
       "weight": 0.15,
       "target": 0.95,
-      "normalized": 0,
-      "contribution": 0
+      "normalized": 10,
+      "contribution": 1.5
     },
     "volume_ref_coverage": {
       "value": 92,
@@ -43,7 +43,7 @@
     "dashboard_live": {
       "value": 0.3,
       "observed": false,
-      "notes": "1 files, supabase=false",
+      "notes": "2 files, supabase=false",
       "weight": 0.05,
       "target": 1,
       "normalized": 3,
@@ -95,8 +95,8 @@
       "contribution": 0
     }
   },
-  "commit_sha": "d438ac97e59461655f80ac0785771b60f140d77b",
+  "commit_sha": "c8903113da60cc8a7737620d10d41bd9687eb4eb",
   "branch": "feature/sett-2-stabilize-v2",
   "previous_score": 3.95,
-  "delta": 0
+  "delta": 0.22
 }
