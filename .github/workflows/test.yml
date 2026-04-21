@@ -111,13 +111,18 @@ jobs:
         run: npm audit --audit-level=moderate
         continue-on-error: true
 
-      - name: Check for secrets
+      # Day 17 fix: trufflehog only on PR events (diff base→head has real range).
+      # On push-to-main, base=main and head=HEAD resolve to same SHA (post-merge commit
+      # IS main) → "BASE and HEAD commits are the same" error. Guard with event check +
+      # retain continue-on-error as belt-and-suspenders.
+      - name: Check for secrets (PR only)
+        if: github.event_name == 'pull_request'
         uses: trufflesecurity/trufflehog@main
-        continue-on-error: true  # Day 16: base:main head:HEAD on push-to-main → same SHA → error. Non-blocking (npm audit stays enforcement).
+        continue-on-error: true
         with:
           path: ./
-          base: main
-          head: HEAD
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
           extra_args: --debug --only-verified
 
   # ============================================
