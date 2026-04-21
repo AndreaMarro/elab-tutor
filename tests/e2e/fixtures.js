@@ -56,3 +56,31 @@ export function collectConsoleErrors(page) {
   });
   return errors;
 }
+
+/**
+ * Seed E2E bypass user into localStorage before first navigation.
+ * Skips WelcomePage license gate when running against a build where
+ * `import.meta.env.DEV` or `MODE === 'test'` is true (see AuthContext.jsx).
+ *
+ * Against production URL the override is dead-code-eliminated — no-op.
+ * Callers should `skipIfProd(baseURL)` first when the spec relies on bypass.
+ */
+export async function seedE2EBypass(page) {
+  await page.addInitScript(() => {
+    try {
+      window.localStorage.setItem(
+        'elab_e2e_user',
+        JSON.stringify({ id: 'e2e-user', email: 'e2e@elabtutor.school', role: 'admin' })
+      );
+    } catch (e) { /* storage disabled */ }
+  });
+}
+
+/**
+ * Skip current test when running against production URL, where the
+ * E2E auth bypass does not apply (dead-code-eliminated in prod build).
+ */
+export function skipIfProd(test, baseURL) {
+  const isProd = typeof baseURL === 'string' && /elabtutor\.school/.test(baseURL);
+  test.skip(isProd, 'License-accept automation not implemented for prod baseURL (sprint-3 Day 05 target)');
+}

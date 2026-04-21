@@ -1,25 +1,47 @@
-# Sprint 3 Contract — sett-3 (DRAFT SKELETON)
+# Sprint 3 Contract — sett-3-stabilize-v3 (FINAL Day 01)
 
 **Sprint**: 3/8 PDR 8-week
 **Period**: 2026-04-22 (mar) → 2026-04-28 (lun), 7 days
-**Branch**: `feature/sett-3-[name]` (final name sprint-3 Day 01 after Andrea NPM decision)
+**Branch**: `feature/sett-3-stabilize-v3`
 **Format**: Harness 2.0
-**Status**: DRAFT — finalize Day 01 after sett-2 merge + NPM decision
-**Based on**: sprint-2 retrospective action items A-301..A-308
+**Status**: FINAL — Option B locked (NPM pending → default)
+**Based on**: sprint-2 retrospective A-301..A-308 + Day 14 integrity finding
 
 ---
 
-## Sprint Goal Options (Andrea decides Day 01)
+## Sprint Goal (LOCKED Option B)
 
-### Option A — UNLIM Tool-Calls (IF NPM APPROVED)
-Integrate Vercel AI SDK 5 with tool-calling for UNLIM. Shipping: tool schema, backend wrapper, 3 demo tools (circuit inspection, code review, experiment lookup), E2E spec 15.
-Benchmark lift target: +0.5 (unlim_latency + feature)
+**Debt-safe benchmark lift + integrity remediation + dashboard Phase 1**.
 
-### Option B — Dashboard + Benchmark Lift (IF NPM DENIED OR DEFERRED)
-Ship Dashboard Phase 1 functional + close 4 benchmark gaps (git_hygiene, accessibility_wcag, worker_uptime, unlim_latency_p95).
-Benchmark lift target: +0.8 (pure instrumentation + feature)
+Rationale NPM denied-by-default: BLOCKER-011 5 days silent → no authorization Vercel AI SDK 5 install. Option B requires zero new deps.
 
-**Default (if Andrea silent Day 01)**: Option B (debt-safe, higher benchmark lift).
+---
+
+## Day 01 scope (2026-04-21, today)
+
+P0 fixes (no NPM needed):
+1. **CI e2e masking removal** — strip `|| echo "::warning..."` from `.github/workflows/e2e.yml` line 41. Job must fail honestly when specs fail.
+2. **Stale spec triage** — specs 01-10 predate WelcomePage gate (222b630). Quick fix: bypass license gate via localStorage fixture + adjust expectation.
+3. **Sprint-2 PR #17** created draft (HALT merge pending Andrea 4 decisions).
+
+Scope docs + state:
+4. Sprint-3 contract finalize Option B (this file)
+5. Blockers carry-over list updated
+6. claude-mem save observation Day 15
+
+---
+
+## 7-day Roadmap (Option B)
+
+| Day | Date | Focus | P0 |
+|-----|------|-------|-----|
+| 01 | mar 22/04 | Integrity fix + scope lock + kickoff | CI e2e masking removal, stale specs fix, sett-3 contract FINAL |
+| 02 | mer 23/04 | Scoring audit + Dashboard Edge Function stub | benchmark.cjs git_hygiene regex fix, Edge Function `dashboard-data` scaffold |
+| 03 | gio 24/04 | Accessibility tooling baseline | axe-core install (dep approved pre-sprint) + baseline audit homepage + lezione route |
+| 04 | ven 25/04 | Worker uptime probe + UNLIM latency log | probe script `scripts/worker-probe.sh`, unlim latency timestamps piped to Supabase `unlim_metrics` table |
+| 05 | sab 26/04 | Dashboard live data wiring | hook + component render real data from Edge Function, feature flag gated |
+| 06 | dom 27/04 | E2E spec 15 Dashboard + polish + benchmark | new spec `15-dashboard-live.spec.js`, audit Day 06 |
+| 07 | lun 28/04 | Sprint review + retro + PR + deploy | gate + merge sett-3 PR + stress test |
 
 ---
 
@@ -28,46 +50,33 @@ Benchmark lift target: +0.8 (pure instrumentation + feature)
 ### Blockers OPEN
 | ID | Severity | Age | Owner | Plan |
 |----|----------|-----|-------|------|
-| BLOCKER-011 | P0 | 5 days | Andrea | Day 01 mandatory decision |
-| BLOCKER-007 | P3 | ~2 weeks | DEV | render-warmup verify |
-| ADR-003 | P3 | ~1 week | Andrea | anon-key CLI verify |
+| BLOCKER-011 | P0 | 5 days | Andrea | Escalate Day 02 — no code change yet |
+| BLOCKER-007 | P3 | ~2 weeks | DEV | render-warmup verify Day 04 |
+| ADR-003 | P3 | ~1 week | Andrea | anon-key CLI verify Day 02 |
 
 ### Debt residual
-- Dashboard Phase 1 scaffold (Edge Function + hook)
-- Benchmark git_hygiene regex fix
-- Accessibility WCAG tooling (axe-core)
-- Worker uptime probe
-- UNLIM latency log pipeline
-- Bundle dynamic-import refactor
-- 5 ADR-004 open questions Andrea input pending
-
----
-
-## 7-day Roadmap (preliminary)
-
-| Day | Date | Focus | P0 |
-|-----|------|-------|-----|
-| 01 | mar 22/04 | Sprint planning + NPM decision + Scope lock | kickoff, scope decision doc |
-| 02 | mer 23/04 | Scoring script audit + Dashboard Phase 1 start | benchmark.cjs regex fix, Edge Function mock stub |
-| 03 | gio 24/04 | Accessibility tooling + worker probe | axe-core baseline, probe script |
-| 04 | ven 25/04 | UNLIM latency pipeline + bundle split | perf logs, dynamic imports |
-| 05 | sab 26/04 | Main scope day (tool-calls OR dashboard live) | feature logic |
-| 06 | dom 27/04 | E2E spec 15 + polish + audit | new spec, audit Day 06 |
-| 07 | lun 28/04 | Sprint review + retrospective + PR + deploy | gate + merge |
+- Dashboard Phase 1 scaffold (Day 02 Edge Function + Day 05 live)
+- Benchmark git_hygiene regex fix (Day 02)
+- Accessibility WCAG tooling (Day 03)
+- Worker uptime probe (Day 04)
+- UNLIM latency log pipeline (Day 04)
+- Bundle dynamic-import refactor (deferred sprint-4)
+- 5 ADR-004 open Qs Andrea input pending
 
 ---
 
 ## Success Metrics (Sprint end)
 
 - **Tests**: ≥ 12170 (target +4 minimum, +50 stretch)
-- **Benchmark**: ≥ 4.8/10 Option A | ≥ 5.0/10 Option B
+- **Benchmark**: ≥ 5.0/10 Option B
 - **Auditor avg**: ≥ 7.5/10 (sprint-2 miss remediated)
-- **Blockers closed**: 2/3 minimum (BLOCKER-011 mandatory, pick one other)
+- **Blockers closed**: 2/3 minimum
 - **Commits**: 25-35 atomic
-- **E2E spec**: 15+
+- **E2E spec**: 23+ (baseline 22 + spec 15)
+- **E2E CI honesty**: no masking `|| echo` patterns in workflow
 - **PZ v3 violations**: 0
 - **Engine semantic diff**: 0
-- **Dashboard live** (if Option B): functional mock → real data by Day 05
+- **Dashboard live**: functional mock → real data by Day 05
 
 ---
 
@@ -83,6 +92,8 @@ Benchmark lift target: +0.8 (pure instrumentation + feature)
 - [ ] PR body draft ready
 - [ ] Handoff sprint-3 complete
 - [ ] 2+ blockers closed
+- [ ] E2E CI no longer masks failures
+- [ ] Dashboard Edge Function + hook render real-looking data
 
 ---
 
@@ -92,6 +103,7 @@ Benchmark lift target: +0.8 (pure instrumentation + feature)
 - Supabase schema migrations (coordinate Andrea)
 - Deploy authorization (Andrea only)
 - Major UI redesign beyond Dashboard
+- Vercel AI SDK install (BLOCKER-011 pending)
 
 ---
 
@@ -107,16 +119,17 @@ Benchmark lift target: +0.8 (pure instrumentation + feature)
 ## 4-grading target (sprint avg)
 
 - Design: 7.5
-- Originality: 6.5 (Option A), 6.0 (Option B)
+- Originality: 6.0 (Option B conservative)
 - Craft: 8.0
 - Functionality: 7.5
-- **Target media**: 7.4/10
+- **Target media**: 7.25/10
 
 ---
 
-## Open Questions (Day 01 kickoff)
+## Open Questions (Andrea needed)
 
-1. NPM approval?
-2. Option A vs Option B scope decision?
-3. ADR-004 open Qs answered? (teacher JWT, cost attribution, multi-classroom, retention, CSV export)
-4. Priority if time compression: instrumentation OR feature?
+1. NPM approval? (blocks sprint-4 scope)
+2. Sprint-2 PR #17 merge OR keep as reference?
+3. Deploy timing sprint-2 (if merged)
+4. ADR-004 5 open Qs (teacher JWT, cost attribution, multi-classroom, retention, CSV export)
+5. axe-core install authorization (dev-dep only, low risk) — needed Day 03

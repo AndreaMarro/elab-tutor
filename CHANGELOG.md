@@ -1,3 +1,52 @@
+## [Sprint 3 sett-3-stabilize-v3] — 2026-04-22
+
+Sprint 3 closure — PR #18 open for merge. 25 atomic commits, baseline ratcheted 12164→12220 (+56 tests), benchmark 3.95→4.75 (+0.80), 3 blockers closed, engine lock preserved, zero regression.
+
+### Added
+- **Dashboard Phase 1 scaffold** — `useDashboardData` hook (10 vitest, Brain/Hands decoupling ADR-003), `DashboardShell` integration (4-state rendering + 9 state tests), `App.jsx` `?live=1` query flag parser.
+- **E2E spec 15** — `tests/e2e/15-dashboard-live.spec.js` dashboard live mode with Playwright network mocks.
+- **Worker probe script** — `scripts/worker-probe.sh` cross-platform health smoke (Nanobot, Edge-TTS, Supabase) emits `automa/state/worker-probe-latest.json`.
+- **UNLIM latency log** — `src/services/unlimLatencyLog.js` localStorage ring-buffer telemetry (10 vitest).
+- **Benchmark worker_uptime** — `scripts/benchmark.cjs` metric now reads probe state (was placeholder, +0.63 contribution Day 06).
+- **Benchmark regression guard** — `tests/unit/scripts/benchmark-git-hygiene.test.js` 25-case regex regression protection.
+- **CI trufflehog PR-only** — `.github/workflows/*` trufflehog restricted to `pull_request` events (eliminates self-diff false-positive).
+- **ADR-003** — `docs/architectures/ADR-003-jwt-401-edge-function-auth.md` Supabase Edge Function dual-header auth pattern.
+- **ADR-004 Accepted** — 5 Andrea decisions resolved (teacher JWT, cost attribution, multi-classroom, retention, CSV export).
+
+### Changed
+- **CI e2e honesty** — `.github/workflows/e2e.yml` line 41 stripped `|| echo "::warning..."` mask; job now fails on spec error.
+- **Stale specs skip-prod** — specs 01-10 predate WelcomePage gate, tagged skip-prod pending rewrite sprint-4.
+- **Dependencies approved** — `ai@6.0.168` + `zod@4.3.6` installed (BLOCKER-011 resolved).
+
+### Closed
+- **BLOCKER-001** JWT 401 Edge Function CLI — ADR-003 dual-header pattern + `scripts/cli-autonomous/verify-edge-function.sh`.
+- **BLOCKER-002** Velocity tracking Day 03-05 gap — backfilled in `automa/state/velocity-tracking-sett-2.json`.
+- **BLOCKER-011** NPM approval — Andrea authorized `ai@6.0.168 + zod@4.3.6` Day 02.
+
+### Deferred sprint-4 (3 stories, 5 SP)
+- Dashboard real Supabase data wiring (ADR-003 env provisioning pending Andrea)
+- `accessibility_wcag` metric (axe-core install Andrea Q5 pending)
+- `unlim_latency_p95` metric (runtime ingestion pipeline)
+
+### Documented
+- `docs/reviews/sprint-3-review.md` — demo + scoreboard + 14/17 stories accept
+- `docs/retrospectives/sprint-3-retrospective.md` — Keep/Stop/Start + 12 action items A-401..A-412
+- `docs/audit/day-07-sett-3-final-audit.md` — 20-dim matrix, CoV 5/5 PASS 12220 consistent
+- `docs/architectures/PR-BODY-DRAFT-sett-3.md` — PR body for #18
+- `automa/team-state/sprint-contracts/sett-4-sprint-contract.md` — sett-4 DRAFT kickoff
+
+### Metrics
+- Tests: 12164 → **12220** (CoV 5/5 deterministic)
+- Benchmark: 3.95 → **4.75** (Day 06), 4.74 Day 07 stable (-0.01 noise)
+- Auditor avg: 7.25 (sett-2) → **7.53** (sett-3)
+- Commits: **25** atomic (all `[TEST N]` tagged)
+- E2E specs: 12 → **15**
+- PZ v3 violations: **0**
+- Engine semantic diff: **0**
+- Blockers closed: **3**
+
+---
+
 ## [Sprint 2 sett-2-stabilize-v2 Day 09] — 2026-04-21
 
 ### Closed

@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { waitForPageReady, SELECTORS, TIMEOUTS } from './fixtures.js';
+import { waitForPageReady, SELECTORS, TIMEOUTS, seedE2EBypass, skipIfProd } from './fixtures.js';
 
 test.describe('UNLIM Chat', () => {
+  test.beforeEach(async ({ page, baseURL }) => {
+    skipIfProd(test, baseURL);
+    await seedE2EBypass(page);
+  });
+
   test('should have chat interface elements', async ({ page }) => {
     await page.goto('/');
     await waitForPageReady(page);

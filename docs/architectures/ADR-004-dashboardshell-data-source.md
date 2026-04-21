@@ -131,4 +131,40 @@ Phase 3 (sett-3): add cache layer + webhook invalidation, performance test with 
 4. **Historical retention** — sessions older than 90 days purged? Aggregated into monthly rollups?
 5. **Export CSV** — Dashboard CSV export in scope sett-2 or deferred?
 
-Answer these before Phase 2 implementation.
+## Decisions (Andrea, 2026-04-22)
+
+### Q1 — Teacher onboarding flow
+**Decision**: Supabase Auth UI sufficient per MVP (Phase 1 Day 14-17). Dedicated login page brandizzata deferred to Phase 2 post-revenue (≥5 classi paganti).
+
+**Rationale**: Supabase Auth UI funzionante out-of-the-box, riduce effort MVP. Branding custom non cruciale per pilot 5 classi. Se vendita Giovanni richiede login brandizzato → Phase 2 fix.
+
+### Q2 — Cost attribution
+**Decision**: Per-session tag metadata. Campo `teacher_id` iniettato in `unlim_chat.metadata` (JSON) ogni chiamata Edge Function. Aggregation SQL `SUM(cost_usd) GROUP BY metadata->>'teacher_id'` on Dashboard.
+
+**Rationale**: Minimo invasivo vs schema migration. Metadata esistente, zero schema change. Trade-off: index JSON lento (OK per <10K row tier Andrea-solo beta).
+
+### Q3 — Multi-classroom support
+**Decision**: UI grouping mandatory. Dropdown "Classroom" top Dashboard + sub-group `per_student[]` per classroom. Default view = first classroom alphabetical. Empty state se teacher ha 0 classroom.
+
+**Rationale**: 75 student flat list unusable UX. Dropdown + grouping = established pattern teacher (registri italiani fanno così). Phase 1 `per_student[]` → Phase 2 refactor to `per_classroom[] -> per_student[]` shape.
+
+### Q4 — Historical retention
+**Decision**: 90 giorni live data in `sessions` + `events` tabelle. Oltre 90gg → monthly rollup `sessions_monthly_rollup` (aggregato solo: totals per teacher/classroom/experiment, no event-level). Cron job Supabase Edge Function weekly (domenica notte) archive + purge.
+
+**Rationale**: GDPR minori = minimize retention. 90gg copre semester. Rollup preserva insights long-term per reporting (YoY growth) senza tenere raw event-level eternamente.
+
+### Q5 — Export CSV
+**Decision**: DEFERRED sett-3+. MVP Phase 1-2 = Dashboard JSON internal only. CSV export = sett-4+ quando chiaro use case (download docente per riunioni genitori? Export MePA reporting?).
+
+**Rationale**: Scope Phase 1 già denso (Edge Function + hook + UI grouping + cache). CSV senza use case chiaro = gold plating. Aspettiamo feedback pilot 5 classi.
+
+## Implementation path updated
+
+- **Phase 1** (Day 14-17): Edge Function mock + frontend hook + UI skeleton + classroom dropdown
+- **Phase 2** (Day 18-21): SQL aggregation real + RLS + teacher JWT validation + 90gg retention
+- **Phase 3** (sett-3): Monthly rollup cron + cache layer + performance test
+- **Phase 4** (sett-4+): CSV export (se validated da pilot)
+
+Answer these before Phase 2 implementation — **DONE 2026-04-22**.
+
+**Status**: Proposed → **Accepted** (post Andrea decisions).
