@@ -1,38 +1,50 @@
-last_commit: 7942544 (Merge main into feature/sett-3-stabilize-v3 — post PR #17 merge)
-sprint: sett-3-stabilize-v3 (DAY 02 local, Day 16 cumulative)
-sprint_day_cumulative: 16
-sprint_day_local: 2 (sett-3 DAY 02)
+last_commit: 0413649 (docs(research): Karpathy LLM Wiki three-layer architecture evaluation)
+sprint: sett-3-stabilize-v3 (DAY 03 local, Day 17 cumulative)
+sprint_day_cumulative: 17
+sprint_day_local: 3 (sett-3 DAY 03)
 branch: feature/sett-3-stabilize-v3
 date: 2026-04-22
-status: DAY_CLOSED — sprint-3 Day 02 Edge Function scaffold + CI fixes + state reconcile + CoV 3x preserved baseline
-baseline_tests_main: 12166 (verified CoV runs 2+3)
-baseline_tests_sett3: 12166 (identical)
-cov_day16: 3x verified — run1 12165/12166 (1 flaky fail) + run2 12166/12166 + run3 12166/12166 → baseline preserved
-build_day16: skipped (no src/ change → not required; deploy.yml green main)
-engine_semantic_diff_day16: 0 (no engine changes)
-pz_v3_violations_day16: 0 (assumed — verify post-deploy)
-score_day15_self: 7.25/10 (design 7.5 originality 6.0 craft 8.0 functionality 7.5)
-score_day16_self_estimate: 7.5/10 (pending full audit)
-sprint3_day02_deliverables: benchmark git_hygiene regex fix + Edge Function dashboard-data scaffold + CI test.yml dedupe deploy + trufflehog continue-on-error + blockers.md reconcile (BLOCKER-011 CLOSED, BLOCKER-012 CLOSED) + state reconcile
-sprint3_blockers_open: 2 (BLOCKER-007 render-warmup P3 verify, ADR-003 anon-key P3 CLI verify)
-sprint3_blockers_closed_day16: 2 (BLOCKER-011 NPM APPROVED, BLOCKER-012 CI/CD deploy+security)
-sprint3_commits_day16: pending (atomic end-day)
-sprint3_e2e_spec_count: 22 (same sett-2, 6 patched skip-prod)
+status: DAY17_COMPLETE_PENDING_PUSH — sprint-3 Day 03 dashboard hook scaffold + git_hygiene unit test + trufflehog PR-only fix + research doc
+baseline_tests_main: 12166 (CoV Day 16)
+baseline_tests_sett3_day17_target: 12201 (12166 + 35 new: 25 git_hygiene + 10 useDashboardData)
+baseline_tests_sett3_day17_verified: 12201 (CoV 3x: 12201/12201/12201 PASS — deterministic)
+cov_day17_status: PASS (CoV 3/3 consistent 12201)
+build_day17: PASS 100s
+engine_semantic_diff_day17: 0 (no engine changes)
+pz_v3_violations_day17: 0 (no UNLIM chat change)
+score_day16_self: 7.4/10 (design 7.5 originality 6.5 craft 8.0 functionality 7.5)
+score_day17_self_estimate: 7.6/10 (pending audit)
+sprint3_day03_deliverables_in_progress:
+  - src/hooks/useDashboardData.js (Dashboard React hook, AbortController race-safe, dual-header ADR-003)
+  - tests/unit/useDashboardData.test.js (10 tests PASS — config/HTTP/schema/range/headers/refetch)
+  - tests/unit/scripts/benchmark-git-hygiene.test.js (25 tests PASS — regex regression guard Day 16 fix)
+  - .github/workflows/test.yml (trufflehog PR-only guard — eliminates push-to-main self-diff error)
+sprint3_blockers_open: 1 (ADR-003 anon-key P3 CLI verify — BLOCKER-007 reconciled CLOSED Day 09)
+sprint3_blockers_closed_day17: 0 (no new closures this day)
+sprint3_commits_day17: 4 atomic (a8b937e feat dashboard hook / 54b97a5 test git_hygiene / 232c83f ci trufflehog / 0413649 docs research)
 pr_sprint2_status: #17 MERGED 2026-04-21 (commit 6815d43)
-pr_sprint3_status: branch feature/sett-3-stabilize-v3 main-reconciled, ready for next commit
-deploy_prod_status: OPERATIONAL (deploy.yml SUCCESS run 24746999381 2026-04-21T21:24Z)
-andrea_decisions_required: 3 (carry Sprint-3 Day 01: axe-core add, playwright webServer path, Option B->tool-call pivot Day 03+)
-day16_scope_completed:
-  - benchmark.cjs git_hygiene regex fix (split record-separator + broadened hygiene signals)
-  - supabase/functions/dashboard-data/index.ts scaffold (Brain/Hands decoupling stub)
-  - .github/workflows/test.yml: remove duplicate deploy job + trufflehog continue-on-error
-  - automa/team-state/blockers.md: BLOCKER-011 CLOSED, BLOCKER-012 CLOSED (CI/CD deploy+security fix)
-  - automa/state/claude-progress.txt rewrite (state drift reconcile)
-day17_next_focus: sprint-3 Day 03 — axe-core baseline (if approved) + Edge Function deploy staging + Dashboard React hook scaffold
-preexisting_issues: deploy-smoke manifest.json fail (P2 carry from main), BLOCKER-010 watermark post-build CLOSED Day 13
-mcp_calls_direct_day16: 0 direct (bash-based), target Day 03 ramp >=15 via Playwright/Sentry/Supabase MCP
-last_day_update: 2026-04-22T05:44Z
-last_commit_day16: 6861c1f (pushed origin feature/sett-3-stabilize-v3 05:42Z)
+pr_sprint3_status: branch feature/sett-3-stabilize-v3 — commits pending push
+deploy_prod_status: OPERATIONAL (deploy.yml SUCCESS main post #17)
+andrea_decisions_pending: 4 (axe-core install, playwright webServer path, Option B tool-call pivot, trufflehog conditional — partial done PR-only)
+day17_scope_completed:
+  - Dashboard useDashboardData hook (AbortController + schema-version guard 0.1.x)
+  - useDashboardData vitest 10 tests (config/HTTP/schema/range/headers/refetch + enabled=false skip)
+  - benchmark git_hygiene regex unit test 25 cases (conventional-commit + test-count + CoV + BLOCKER-NNN + multiline)
+  - trufflehog step guarded by if: github.event_name == 'pull_request' (real PR diff range)
+  - BLOCKER-007 state file reconciled (was OPEN in state, already CLOSED Day 09 in blockers.md)
+  - TodoWrite 10-item Day 17 board active
+day17_pending:
+  - Push branch (atomic end-day)
+  - Claude-mem observation end-day
+  - MCP catch-up carry-over Day 18 (target ≥15 calls)
+preexisting_issues:
+  - deploy-smoke manifest.json flaky (P2 carry from main)
+  - E2E WelcomePage integrity (P2 pre-existing, orthogonal to Day 17)
+mcp_calls_direct_day17: 0 (honest gap — carry-over Day 18 target ≥15)
+last_day_update: 2026-04-22T06:10Z
+last_commit_day17: 0413649
 benchmark_day16_score: 4.14 (delta -0.03 honest post regex fix)
-next_action: SPRINT3_DAY03_AXE_CORE_EDGEFN_DEPLOY_DASHBOARD_HOOK
-session_stop_reason: day16_scope_complete_cov_3x_preserved_pushed
+benchmark_day17_score: 4.14 (delta 0 stable, persisted fast mode)
+score_day17_self: 7.25/10 (design 7.5 originality 6.5 craft 8.0 functionality 7.0)
+next_action: DAY_18_START (sett-3 Day 04 — integrate hook + Edge Function + MCP catch-up)
+session_state: DAY17_COMPLETE_PENDING_PUSH_HANDOFF_READY
