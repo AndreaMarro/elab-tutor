@@ -1,6 +1,36 @@
 # Daily Standup — Team ELAB
 
-Prossimo standup: **Venerdi 24/04/2026 ore 9:00** (Day 05 sett-1)
+Prossimo standup: **Gio 23/04/2026 ore 9:00** (sprint-4 Day 01 kickoff IF gate PASS Day 07)
+
+---
+
+## Standup 2026-04-22 MATTINA — Day 07/56 FINAL sett-3 (mer 22/04 — Sprint sett-3 day 7/7 end-week-gate)
+
+**Baseline**: test 12220 PASS | build PASS | benchmark 4.75/10 (+0.63 Day 06) | 24 commits ahead origin/main pushed `2b818ea` | branch `feature/sett-3-stabilize-v3`
+**Sprint Contract**: `automa/team-state/sprint-contracts/sett-3-day-07-contract.md`
+**Dispatch cap**: 4 (gate day, focused)
+
+### Ieri Day 06 mar 21/04 (done verificato)
+- Benchmark uplift **+0.63** (4.12 → 4.75) via `worker_uptime` metric wiring → `automa/state/worker-probe-latest.json`
+- 2/3 worker live 200 (Nanobot + Edge TTS OK, Supabase 401 anon-key P3)
+- End-day atomic commit `2b818ea` state + audit + handoff + claude-mem obs queue
+- Day 05 deliverables consolidati: worker-probe.sh + unlimLatencyLog.js + E2E spec 15 Dashboard live
+- Zero regression 12220 baseline preserved
+
+### Oggi Day 07 FINAL (3 P0, end-week-gate, ~1.5h stima)
+- **P0-1 TPM**: Sprint 3 Review + Retrospective docs (`docs/reviews/sprint-3-review.md` + `docs/retrospectives/sprint-3-retrospective.md`)
+- **P0-2 TPM**: PR sett-3 create `gh pr create` base=main head=feature/sett-3-stabilize-v3 NO auto-merge
+- **P0-3 AUDITOR**: End-week gate verdict PASS/FAIL (`docs/audits/2026-04-22-sett-3-end-week-gate.md`) — CoV 3x+ vitest + build + benchmark --write + bundle check + E2E spec 15 parse
+
+### Blocker aperti carry-over
+- **0 OPEN** (13/13 storici CLOSED)
+- P3 residual doc-only: ADR-003 anon-key env provisioning pending Andrea (non-gate-blocking, carry sprint-4)
+
+### Note
+- Sprint-3 gate OGGI Day 07 — verdict binding for PR merge decision (Andrea only)
+- Sprint-4 kickoff domani Day 08 IFF gate PASS, else DEFER fix-forward
+- Benchmark 4.75 vs PDR target 8.0 → gap -3.25 (sprint-3 contribution +0.63 = 19% of closure needed)
+- 4-grading self target FINAL: 7.5 media (design 7.5 / originality 6.5 / craft 8.0 / functionality 8.0)
 
 ---
 
