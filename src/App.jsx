@@ -33,6 +33,7 @@ const Navbar = lazy(() => import('./components/social/Navbar'));
 const UnlimWrapper = lazy(() => import('./components/unlim/UnlimWrapper'));
 const LavagnaShell = lazy(() => import('./components/lavagna/LavagnaShell'));
 const VetrinaV2 = lazy(() => import('./components/lavagna/VetrinaV2'));
+const DashboardShell = lazy(() => import('./components/dashboard'));
 
 function LoadingFallback() {
     return (
@@ -55,7 +56,7 @@ function LoadingFallback() {
 }
 
 // Hash-based routing: maps hash fragments to page names (P0-6)
-const VALID_HASHES = ['tutor', 'admin', 'teacher', 'vetrina', 'vetrina2', 'login', 'register', 'dashboard', 'showcase', 'prova', 'lavagna'];
+const VALID_HASHES = ['tutor', 'admin', 'teacher', 'vetrina', 'vetrina2', 'login', 'register', 'dashboard', 'dashboard-v2', 'showcase', 'prova', 'lavagna'];
 
 function getPageFromHash() {
     const raw = window.location.hash.replace('#', '').split('?')[0].toLowerCase();
@@ -284,6 +285,7 @@ function AppRouter() {
                 <Navbar currentPage={currentPage} onNavigate={navigate} />
                 {currentPage === 'admin' && <ErrorBoundary><AdminPage onNavigate={navigate} /></ErrorBoundary>}
                 {currentPage === 'dashboard' && <RequireAuth onNavigate={navigate}><ErrorBoundary><StudentDashboard onNavigate={navigate} /></ErrorBoundary></RequireAuth>}
+                {currentPage === 'dashboard-v2' && <ErrorBoundary><DashboardShell onNavigate={navigate} /></ErrorBoundary>}
                 {currentPage === 'teacher' && <RequireAuth onNavigate={navigate}>{isDocente || isAdmin ? <ErrorBoundary><TeacherDashboard onNavigate={navigate} /></ErrorBoundary> : <AccessDeniedMessage onNavigate={navigate} />}</RequireAuth>}
             </div>
         </Suspense>
