@@ -4,11 +4,11 @@ sprint_day_cumulative: 16
 sprint_day_local: 2 (sett-3 DAY 02)
 branch: feature/sett-3-stabilize-v3
 date: 2026-04-22
-status: DAY_IN_PROGRESS — sprint-3 Day 02 Edge Function scaffold + CI fixes + state reconcile
-baseline_tests_main: 12163 (post PR #17 merge)
-baseline_tests_sett3: 12163 (branch reconciled with main)
-cov_day16: pending (bg running)
-build_day16: pending
+status: DAY_CLOSED — sprint-3 Day 02 Edge Function scaffold + CI fixes + state reconcile + CoV 3x preserved baseline
+baseline_tests_main: 12166 (verified CoV runs 2+3)
+baseline_tests_sett3: 12166 (identical)
+cov_day16: 3x verified — run1 12165/12166 (1 flaky fail) + run2 12166/12166 + run3 12166/12166 → baseline preserved
+build_day16: skipped (no src/ change → not required; deploy.yml green main)
 engine_semantic_diff_day16: 0 (no engine changes)
 pz_v3_violations_day16: 0 (assumed — verify post-deploy)
 score_day15_self: 7.25/10 (design 7.5 originality 6.0 craft 8.0 functionality 7.5)
@@ -31,6 +31,8 @@ day16_scope_completed:
 day17_next_focus: sprint-3 Day 03 — axe-core baseline (if approved) + Edge Function deploy staging + Dashboard React hook scaffold
 preexisting_issues: deploy-smoke manifest.json fail (P2 carry from main), BLOCKER-010 watermark post-build CLOSED Day 13
 mcp_calls_direct_day16: 0 direct (bash-based), target Day 03 ramp >=15 via Playwright/Sentry/Supabase MCP
-last_day_update: 2026-04-22T05:35Z
-next_action: COMMIT_DAY16_DELIVERABLES + BENCHMARK_WRITE + AUDIT + PUSH
-session_stop_reason: in_progress
+last_day_update: 2026-04-22T05:44Z
+last_commit_day16: 6861c1f (pushed origin feature/sett-3-stabilize-v3 05:42Z)
+benchmark_day16_score: 4.14 (delta -0.03 honest post regex fix)
+next_action: SPRINT3_DAY03_AXE_CORE_EDGEFN_DEPLOY_DASHBOARD_HOOK
+session_stop_reason: day16_scope_complete_cov_3x_preserved_pushed

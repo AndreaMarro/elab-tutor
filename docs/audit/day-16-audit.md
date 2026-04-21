@@ -96,8 +96,8 @@ deploy_prod_status, last_day_update).
 
 | # | Metric | Value | Delta vs Day 15 | Target | Status |
 |---|--------|-------|-----------------|--------|--------|
-| 1 | Vitest total | 12166 (12165 PASS + 1 pre-existing FAIL) | ±0 | +15/day (12181) | ⚠ below target |
-| 2 | Vitest baseline preserved | PASS | = | no regression | ✅ |
+| 1 | Vitest total | 12166 (run1 12165/1F, run2 12166/0F, run3 12166/0F) | ±0 | +15/day (12181) | ⚠ below target (flaky detected) |
+| 2 | Vitest baseline preserved | PASS CoV 3x | = | no regression | ✅ |
 | 3 | Build time | n/a (pending) | — | <60s | ⏳ |
 | 4 | Bundle size | n/a | — | <5000KB | ⏳ |
 | 5 | Benchmark score (fast) | 4.14/10 | -0.03 | +0.08/day (≥4.25) | ❌ below target |
