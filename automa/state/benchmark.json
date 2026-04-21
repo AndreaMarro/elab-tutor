@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-20T23:20:31.594Z",
+  "timestamp": "2026-04-21T02:52:34.313Z",
   "mode": "fast",
   "score": 3.95,
   "score_out_of": 10,
@@ -14,8 +14,8 @@
       "contribution": 1.3
     },
     "build_size_kb": {
-      "value": 14720,
-      "observed": 14720,
+      "value": 14666,
+      "observed": 14666,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -95,8 +95,8 @@
       "contribution": 0
     }
   },
-  "commit_sha": "a1cafd0948a5ab83f88cda676c6c6df08cd44af4",
-  "branch": "feature/t1-003-render-warmup",
-  "previous_score": 3.8,
-  "delta": 0.15
+  "commit_sha": "d064349cde535a1f9a8b2570dafe5d466e0a1d23",
+  "branch": "feature/sett-2-stabilize-v2",
+  "previous_score": 3.95,
+  "delta": 0
 }

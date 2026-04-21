@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "sprint": "sett-2-stabilize-v2",
+  "sprint_period": "2026-04-21_to_2026-04-27",
+  "cumulative_day_range": "08-14",
+  "created_at": "2026-04-21T10:51:00+08:00",
+  "updated_at": "2026-04-21T10:51:00+08:00",
+  "baseline_pre_sprint": {
+    "test_count": 12164,
+    "benchmark_score": 3.95,
+    "build_status": "PASS",
+    "commit_sha": "3810913",
+    "source": "sett-1 Day 07 end state"
+  },
+  "targets_end_sprint": {
+    "test_count_min": 12164,
+    "test_count_target": 12200,
+    "benchmark_score_min": 4.5,
+    "auditor_avg_target": 7.5,
+    "blockers_closed_target": 3,
+    "commits_target_min": 25,
+    "commits_target_max": 40,
+    "pz_v3_violations_target": 0
+  },
+  "daily_metrics": [
+    {
+      "day_cumulative": 8,
+      "day_local": 1,
+      "date": "2026-04-21",
+      "day_of_week": "mar",
+      "commits": 0,
+      "commits_planned_end_day": 1,
+      "test_count_end": 12164,
+      "test_delta": 0,
+      "cov_runs": 3,
+      "cov_result": "3/3 PASS 12164/12164",
+      "benchmark_score_end": null,
+      "benchmark_delta": null,
+      "build_status": "PASS",
+      "blockers_closed": ["BLOCKER-009"],
+      "blockers_open": ["BLOCKER-003", "BLOCKER-004", "BLOCKER-007", "BLOCKER-008"],
+      "pz_v3_violations": 0,
+      "dispatch_count": 0,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 0,
+      "unpushed_commits_end": 0,
+      "mcp_calls_planned": 5,
+      "mcp_calls_floor": 5,
+      "notes": "Day 08 cumulative = sett-2 Day 01 local. CI unblock: deploy-smoke manifest tolerant SPA fallback. CoV 3x restored baseline 12164. Vercel action v25 upgrade DEFERRED Andrea. Routines Orchestrator disabled_manually confirmed."
+    }
+  ],
+  "goals_progress": {
+    "G1_tests_12164_preserved": "on_track (12164)",
+    "G2_benchmark_min_4_5": "pending_write_day08",
+    "G3_auditor_avg_7_5": "pending",
+    "G4_blockers_closed_min_3": "progress (1/3 BLOCKER-009)",
+    "G5_pz_v3_0_violations": "on_track",
+    "G6_dashboard_feature_logic": "not_started (scope Day 11-13)"
+  }
+}

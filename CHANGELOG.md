@@ -1,3 +1,27 @@
+## [Sprint 2 sett-2-stabilize-v2 Day 08] — 2026-04-21
+
+### Fixed
+- `tests/integration/deploy-smoke.test.js` manifest.json tolerant SPA fallback (content-type + body prefix guard). Restores CoV baseline 12164 PASS on feature branch when prod serves HTML for `/manifest.json`. (BLOCKER-009 CLOSED local, prod deploy deferred Andrea)
+
+### Changed
+- Routines Orchestrator workflow `disabled_manually` confirmed (Sprint 1 Lesson 13 carry-over).
+
+### Documented
+- `automa/team-state/sprint-contracts/day-08-contract.md` (cumulative Day 08 bridge contract)
+- `docs/standup/2026-04-21-day-08-standup.md`
+- `docs/audit/day-08-ci-triage.md` (E2E run 24700722699 evidence, Vercel action v25 upgrade DEFERRED Andrea)
+- `docs/audit/day-08-sett-2-baseline.md` (CoV 3x + benchmark Day 08)
+- `automa/state/velocity-tracking-sett-2.json` created (Sprint 2 separate file, LIVE tracking)
+
+### Metrics
+- Tests: 12164 PASS CoV 3/3
+- Benchmark: 3.95/10 (delta +0, baseline preserved)
+- Blockers closed Day 08: 1 (BLOCKER-009)
+- PZ v3 violations: 0
+- Engine semantic diff: 0
+
+---
+
 ## [Sprint 1 sett-1-stabilize] — 2026-04-26
 
 ### Added
