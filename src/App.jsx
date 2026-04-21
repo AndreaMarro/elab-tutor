@@ -70,6 +70,19 @@ function getExpFromHash() {
     return match ? decodeURIComponent(match[1]) : null;
 }
 
+/** Dashboard-v2 live flag + teacher + range from hash query (E2E spec 15). */
+function getDashboardV2Params() {
+    if (typeof window === 'undefined') return { enabled: false };
+    const hash = window.location.hash || '';
+    const q = hash.split('?')[1] || '';
+    const params = new URLSearchParams(q);
+    return {
+        enabled: params.get('live') === '1',
+        teacherId: params.get('teacher') || undefined,
+        range: ['7d', '30d', '90d'].includes(params.get('range')) ? params.get('range') : '7d',
+    };
+}
+
 function SkipToContent() {
     return (
         <a href="#main-content" className="skip-to-content"
@@ -285,7 +298,10 @@ function AppRouter() {
                 <Navbar currentPage={currentPage} onNavigate={navigate} />
                 {currentPage === 'admin' && <ErrorBoundary><AdminPage onNavigate={navigate} /></ErrorBoundary>}
                 {currentPage === 'dashboard' && <RequireAuth onNavigate={navigate}><ErrorBoundary><StudentDashboard onNavigate={navigate} /></ErrorBoundary></RequireAuth>}
-                {currentPage === 'dashboard-v2' && <ErrorBoundary><DashboardShell onNavigate={navigate} /></ErrorBoundary>}
+                {currentPage === 'dashboard-v2' && (() => {
+                    const dp = getDashboardV2Params();
+                    return <ErrorBoundary><DashboardShell onNavigate={navigate} enabled={dp.enabled} teacherId={dp.teacherId} range={dp.range} /></ErrorBoundary>;
+                })()}
                 {currentPage === 'teacher' && <RequireAuth onNavigate={navigate}>{isDocente || isAdmin ? <ErrorBoundary><TeacherDashboard onNavigate={navigate} /></ErrorBoundary> : <AccessDeniedMessage onNavigate={navigate} />}</RequireAuth>}
             </div>
         </Suspense>
