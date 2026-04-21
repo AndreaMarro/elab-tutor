@@ -166,8 +166,29 @@ function metricAccessibility() {
 }
 
 function metricWorkerUptime() {
-  // Placeholder — requires uptime log. Default 0.
-  return { value: 0, observed: 0, notes: 'requires external uptime probe — TODO' };
+  // Reads automa/state/worker-probe-latest.json (written by scripts/worker-probe.sh).
+  // ok_rate = count(ok=true) / count(total). Returns 0 if file missing or malformed.
+  const probePath = path.join(STATE_DIR, 'worker-probe-latest.json');
+  if (!fs.existsSync(probePath)) {
+    return { value: 0, observed: 0, notes: 'worker-probe-latest.json not found — run scripts/worker-probe.sh' };
+  }
+  try {
+    const raw = fs.readFileSync(probePath, 'utf8').trim();
+    const entries = JSON.parse(raw);
+    if (!Array.isArray(entries) || entries.length === 0) {
+      return { value: 0, observed: 0, notes: 'probe file empty or non-array' };
+    }
+    const okCount = entries.filter((e) => e && e.ok === true).length;
+    const rate = okCount / entries.length;
+    return {
+      value: rate,
+      observed: okCount,
+      total: entries.length,
+      notes: `ok_rate from last probe: ${okCount}/${entries.length}`
+    };
+  } catch (e) {
+    return { value: 0, observed: 0, notes: `probe parse error: ${e.message}` };
+  }
 }
 
 // ───────────────────────────────────────────────────────────────

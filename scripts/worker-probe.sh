@@ -63,8 +63,8 @@ if [[ -n "${SUPABASE_ANON_KEY:-}" ]]; then
 fi
 
 results=()
-results+=("$(probe 'nanobot-render' 'https://elab-galileo.onrender.com/' 'GET')")
-results+=("$(probe 'edge-tts-vps' 'http://72.60.129.50:8880/tts' 'POST' '{"text":"probe","voice":"it-IT-IsabellaNeural"}')")
+results+=("$(probe 'nanobot-render' 'https://elab-galileo.onrender.com/health' 'GET')")
+results+=("$(probe 'edge-tts-vps' 'http://72.60.129.50:8880/health' 'GET')")
 results+=("$(probe 'supabase-unlim-chat' 'https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/unlim-chat' 'POST' '{"message":"probe"}' "$SB_AUTH")")
 
 # Build JSON array
