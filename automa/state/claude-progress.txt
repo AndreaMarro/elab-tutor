@@ -1,31 +1,30 @@
-last_commit: c890311 (audit+handoff+blockers Day 13) + upcoming (benchmark+velocity+state finalize)
-sprint: sett-2-stabilize-v2
-sprint_day_cumulative: 13
-sprint_day_local: 6
+last_commit: 973733a (Day 14 sprint gate contracts+review+retro+audit+handoff) + upcoming benchmark+state finalize
+sprint: sett-2-stabilize-v2 (END GATE)
+sprint_day_cumulative: 14
+sprint_day_local: 7 (sett-2 END)
 branch: feature/sett-2-stabilize-v2
 date: 2026-04-21
-status: COMPLETE Day 13
+status: PARTIAL CLOSE Day 14 — integrity finding surfaced, awaiting Andrea approvals
 baseline_tests_sett2: 12166
-cov_day13: 3x all 12166 PASS zero flaky
-benchmark_day13_fast_pre: 3.95/10 (Day 12 carry)
-benchmark_day13_full: 4.17/10 (real full-mode run; Δ +0.22)
-benchmark_day13_commit_sha: c8903113da60cc8a7737620d10d41bd9687eb4eb
-commits_day13: 2 pushed (8adb7d3 watermark+contract+ADR, c890311 audit+handoff+blockers) + 1 pending (benchmark.json + velocity + state)
-build_day13: PASS 1m55s (115s, +32s vs Day 12 83s due to watermark detection after fix + cache cold)
-blockers_open: 1 (BLOCKER-011 NPM_DEPS_APPROVAL 4 days silent)
-blockers_closed_day13: 1 (BLOCKER-010 WATERMARK_RESTAMP_POST_BUILD — root cause fixed at source)
-gaps_closed_day13: 3 fix-budget (watermark root cause + benchmark full-mode run + ADR-004 DashboardShell data)
-score_day13_self: 7.4/10 (design 7.5 originality 5.5 craft 8.5 functionality 8.0)
-score_day13_benchmark_objective: 4.17/10 (up from 3.95 fast)
-day14_next_focus: SPRINT GATE sett-2 Day 07 mandatory — CoV 5x + Playwright full + end-week-gate.sh + PR create + CI verify + merge + deploy prod + post-deploy stress 3.5.1-3.5.7 + Sprint Review + Retrospective + velocity close + Day 14 handoff + sett-3 kickoff. IF Andrea approves NPM during Day 14 → afternoon start Vercel AI SDK 5. ELSE continue debt-only (E2E spec 15 Dashboard data shape stub, /dashboard-data Edge Function mock, benchmark git_hygiene regex fix, accessibility WCAG tooling)
-day13_pivot_rationale: Day 11-12 blocker CLAUDE.md Rule 13 carry extended Day 13. Debt pivot deepened with root-cause fix (vs band-aid). WATERMARK closed permanently.
-engine_semantic_diff_day13: 0 (post watermark revert pre-work, idempotent fix post-push verified clean)
-pz_v3_violations_day13: 0
-mcp_calls_direct_day13: 3 confirmed (search x2 + get_observations hit via timeline priming). Below floor 10 — noted in audit auto-critica P1. Day 14 recovery priority.
-e2e_spec_count_day13: 14 (no change)
-e2e_test_count_playwright_benchmark: 283 (benchmark full-mode proxy — all pass)
-last_day_update: 2026-04-21T18:55Z
-next_action: DAY_14_SPRINT_GATE
-day13_blocker_carry_over: BLOCKER-011 NPM_DEPS_APPROVAL_PENDING (4 days open, escalation handoff note for Andrea)
-watermark_closure_evidence: add-signatures.js idempotent early-return on MARKER; build run 2x → 2nd "All 147 files already signed" zero diff; git status post-build = 0 dirty files
-session_stop_reason: day13_complete_benchmark_finalize_committed (natural stop, loop resumes Day 14 = SPRINT GATE next invocation)
+cov_day14: 5x all 12166 PASS zero flaky (5/5 consistency)
+build_day14: PASS 1m 2s zero dirty files post-build (watermark idempotent holds)
+engine_semantic_diff_day14: 0
+pz_v3_violations_day14: 0
+benchmark_day14_status: running (full-mode, exp ~20min total)
+benchmark_day14_expected: likely DOWN from 4.17 due to honest e2e_pass_rate (specs 01-10 stale vs WelcomePage)
+score_day14_self: 6.75/10 (design 7.0 originality 5.5 craft 8.5 functionality 6.0 — integrity finding penalty)
+sprint2_final_avg_self: 7.11/10 (target 7.5 miss −0.39)
+sprint2_blockers_closed: 5 (003, 004, 005, 008, 010)
+sprint2_blocker_open: BLOCKER-011 NPM_DEPS_APPROVAL_PENDING (5 days silent)
+sprint2_commits_total: 17 (16 pre-Day 14 + 1 Day 14 artifacts)
+sprint2_e2e_spec_count: 22 total specs (+8 vs sprint-1)
+e2e_integrity_finding: CRITICAL — specs 01-10 stale vs WelcomePage gate (commit 222b630 pre-sprint-2); CI e2e.yml masks failures via "|| echo warning"; prev benchmark e2e_pass_rate 1.0 FALSE; honest adjustment needed
+mcp_calls_direct_day14: TBD_end_of_session (target ≥10 recovery from Day 13 floor of 3)
+gates_day14: CoV ✅, Build ✅, Engine ✅, PZ ✅, Playwright ❌ integrity, Benchmark ⚠️ integrity-adjusted
+pr_status: draft body at docs/pr-drafts/sett-2-pr-body.md; PR create pending push of benchmark+state+velocity final commit
+deploy_prod_status: BLOCKED pending Andrea approval + E2E remediation plan
+andrea_decisions_required: 1) NPM 2) PR merge strategy 3) deploy timing 4) ADR-004 5 open Qs
+day15_next_focus: sprint-3 Day 01 kickoff — NPM decision + scope lock + scoring script audit + CI masking removal + stale spec fix OR Vercel AI SDK 5 (if NPM approved)
+last_day_update: 2026-04-21T19:15Z
+next_action: FINALIZE_BENCHMARK_THEN_PUSH_THEN_PR_CREATE_HALT_MERGE
+session_stop_reason: day14_gate_partial_close_integrity_finding_awaiting_andrea_approvals

@@ -254,15 +254,100 @@
         "claude-mem__get_observations (hit via timeline priming)"
       ],
       "notes": "WATERMARK restamp closed at source (not band-aid). ADR-004 ships Dashboard data decision (Edge Function proxy). NPM silence = handoff escalation Day 14. Benchmark full-mode still running at velocity-write time; will amend with score post-exit."
+    },
+    {
+      "day_cumulative": 14,
+      "day_local": 7,
+      "date": "2026-04-21",
+      "day_of_week": "mar",
+      "is_sprint_end": true,
+      "commits": 1,
+      "commits_pending_at_write": 1,
+      "test_count_end": 12166,
+      "test_delta": 0,
+      "cov_runs": 5,
+      "cov_result": "5/5 PASS 12166/12166 zero flaky",
+      "cov_durations_s": [121, 136, 48, 33, 40],
+      "build_status": "PASS",
+      "build_time_s": 62,
+      "build_dirty_files_post": 0,
+      "benchmark_score_end_full": "running_at_write",
+      "benchmark_score_integrity_adjusted_est": "likely ~3.2-3.5 (e2e_pass_rate honest)",
+      "bugs_t1_closed": [],
+      "blockers_closed": [],
+      "blockers_open_carry_over": ["BLOCKER-011 NPM_DEPS_APPROVAL_PENDING (5 days silent)"],
+      "pz_v3_violations": 0,
+      "engine_semantic_diff": 0,
+      "reviewer_verdict": "self-APPROVE with INTEGRITY FLAG (no peer)",
+      "auditor_score_self": {
+        "design_quality": 7.0,
+        "originality": 5.5,
+        "craft": 8.5,
+        "functionality": 6.0,
+        "media": 6.75,
+        "note": "penalty for integrity finding timing — should have surfaced Day 08"
+      },
+      "critical_finding_day14": {
+        "id": "INTEGRITY-001",
+        "severity": "P0",
+        "title": "E2E CI masking + stale specs — false e2e_pass_rate 1.0 claims sprint-1/2",
+        "root_cause_commit": "222b630 (WelcomePage landed)",
+        "ci_masking_file": ".github/workflows/e2e.yml line ~41 `|| echo warning`",
+        "stale_specs_confirmed": ["01-homepage-simulator", "03-unlim-chat", "04-teacher-dashboard", "06-simulator-experiments", "07-admin-security"],
+        "benchmark_inflation_pts_estimate": "0.6-1.0",
+        "remediation_sprint": "sprint-3 Day 01 P0"
+      },
+      "dispatch_count": 0,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 0,
+      "planned_tasks": [
+        "P0-1 State recovery + Day 14 contract",
+        "P0-2 CoV 5x gate",
+        "P0-3 Playwright full (exposed integrity)",
+        "P0-4 Build + Benchmark full",
+        "P0-5 Day 14 audit + 4-grading",
+        "P0-6 Sprint Review + Retrospective",
+        "P0-7 Sprint-3 kickoff contract skeleton",
+        "P0-8 PR body draft",
+        "P0-9 Handoff Day 14",
+        "P0-10 Commit + state update"
+      ],
+      "gate_verdict": "PARTIAL CLOSE — CoV/Build/Engine/PZ ✅, Playwright ❌ integrity, Benchmark ⚠️ adjusted, Merge+Deploy BLOCKED pending Andrea approval",
+      "sprint2_summary": {
+        "days_executed": 7,
+        "days_on_target": 5,
+        "avg_self_score": 7.11,
+        "target_self_score": 7.5,
+        "delta_self_score": -0.39,
+        "blockers_closed_total": 5,
+        "target_blockers_closed": 3,
+        "delta_blockers": "+2",
+        "commits_total": 17,
+        "commits_target_range": "25-40",
+        "delta_commits": "-8 below range",
+        "integrity_penalty_applied": true,
+        "verdict": "PARTIAL SUCCESS with integrity flag"
+      },
+      "andrea_decisions_required": [
+        "BLOCKER-011 NPM approval (5 days silent)",
+        "PR merge strategy (merge-with-disclosure OR block-until-sprint-3-fix)",
+        "Deploy prod timing (immediate-post-merge OR post-sprint-3-Day-02)",
+        "ADR-004 5 open questions"
+      ],
+      "mcp_calls_floor": 10,
+      "mcp_calls_count": "tracking (target >=10)",
+      "focus": "Sprint END gate with honest integrity finding surfaced",
+      "notes": "Sprint 2 closes PARTIAL. CoV 5x discipline held. Integrity finding flagged openly. 5 blockers closed (target 3). Avg 7.11 (target 7.5 miss -0.39). Zero NEW regressions; pre-existing E2E debt surfaced as systemic finding. PR create pending final commit + push. Merge + deploy halted pending Andrea."
     }
   ],
   "goals_progress": {
-    "G1_tests_12164_preserved": "on_track (Day 08-13 = 12164+ stable)",
-    "G2_benchmark_min_4_5": "progress (3.95 stable fast-mode, full-mode Day 13 pending)",
-    "G3_auditor_avg_7_5": "on_track (Day 13 self 7.4; sprint avg ~7.25)",
-    "G4_blockers_closed_min_3": "EXCEEDED (6/3 closed sett-2 Day 08-13: 009+003+004+007+008+010)",
-    "G5_pz_v3_0_violations": "on_track (0 across 6 days)",
-    "G6_dashboard_feature_logic": "progress (Day 10 scaffold + Day 11 route + Day 13 ADR-004 decision; Phase 1 scaffold Day 14+)",
-    "G7_e2e_spec_14": "MET (14 specs as of Day 12, +1 from Day 10 baseline)"
+    "G1_tests_12164_preserved": "MET (Day 08-14 = 12166 stable, +2 vs baseline)",
+    "G2_benchmark_min_4_5": "MISS (claimed 4.17, integrity-adjusted ~3.2-3.5 — target 4.5 NOT HIT)",
+    "G3_auditor_avg_7_5": "MISS (sprint avg 7.11, target 7.5, delta -0.39)",
+    "G4_blockers_closed_min_3": "EXCEEDED (5/3 closed sett-2)",
+    "G5_pz_v3_0_violations": "MET (0 across 7 days)",
+    "G6_dashboard_feature_logic": "PARTIAL (ADR-004 decision + scaffold shell + hash route; Phase 1 functional deferred sprint-3)",
+    "G7_e2e_spec_14": "EXCEEDED (22 specs, +8 vs target)",
+    "G8_integrity_surface": "NEW (Day 14 discovery; sprint-3 P0 remediation)"
   }
 }
