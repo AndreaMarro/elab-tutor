@@ -1,52 +1,51 @@
-last_commit: 7594d08 (feat(dashboard): E2E spec 15 live mode + App.jsx ?live=1 flag parser)
+last_commit: 99225b7 (feat(bench): wire worker_uptime metric to worker-probe state + 2/3 live 200)
 sprint: sett-3-stabilize-v3
-sprint_day_cumulative: 19
-sprint_day_local: 5 (sett-3 DAY 05)
+sprint_day_cumulative: 20
+sprint_day_local: 6 (sett-3 DAY 06)
 branch: feature/sett-3-stabilize-v3
 date: 2026-04-22
-status: DAY19_COMPLETE_PENDING_STATE_PUSH — sprint-3 Day 05 worker-probe + unlimLatencyLog + spec 15 + App.jsx flag. 3 P0/P1 closed.
+status: DAY20_COMPLETE_PENDING_STATE_PUSH — sprint-3 Day 06 benchmark uplift via data-driven worker_uptime. +0.63 delta.
 baseline_tests_main: 12166 (CoV Day 16)
-baseline_tests_sett3_day18: 12211 (12166 + 35 Day17 + 10 Day18 state tests)
-baseline_tests_sett3_day19_target: 12221 (12211 + 10 new unlimLatencyLog)
-baseline_tests_sett3_day19_verified: 12220 (CoV 2x: 12220/12220 PASS — deterministic)
-baseline_note_day19: delta +19 vs 12201 (Day 17 state) = 9 Day18 state tests + 10 Day19 unlimLatencyLog
-cov_day19_status: PASS (CoV 2/2 consistent 12220)
-build_day19: PASS 57.55s
-engine_semantic_diff_day19: 0 (no engine changes)
-pz_v3_violations_day19: 0 (spec 15 includes PZ v3 watchdog)
-score_day18_self: 7.4/10 (estimate prior)
-score_day19_self: 7.5/10 (matches day-05-contract target: design 7.5 originality 6.5 craft 8.0 functionality 8.0)
-sprint3_day05_deliverables:
-  - scripts/worker-probe.sh (3-worker bash+curl smoke, cross-platform portable macOS/linux)
-  - automa/state/worker-probe-latest.json (sample state persistence)
-  - src/services/unlimLatencyLog.js (localStorage ring-buffer 50 entries, schema v1)
-  - tests/unit/unlimLatencyLog.test.js (10 tests PASS: write/read/ring/clear/limit/truncate/corrupted/stats-empty/stats-full/SSR)
-  - tests/e2e/15-dashboard-live.spec.js (5 cases: placeholder compat/success/error/loading/PZ v3)
-  - src/App.jsx (getDashboardV2Params hash query parser for ?live=1&teacher=X&range=7d)
-  - automa/team-state/sprint-contracts/sett-3-day-05-contract.md (Harness 2.0 contract)
-  - docs/audit/day-05-audit.md (20 metric matrix + 4 grading + 7 gap auto-critica)
-  - automa/archive/sprint-contracts/sett-1-day-05-contract.md (renamed from stale day-05-contract.md)
-  - docs/handoff/2026-04-22-session-end-day-19.md
-sprint3_blockers_open: 1 (ADR-003 anon-key P3 CLI verify — worker-probe.sh env-ready, ANON not provided this session)
-sprint3_commits_day19: 3 atomic (ff9fa5a worker-probe / ec0ca4c unlimLatencyLog / 7594d08 spec15+App.jsx)
-pr_sprint3_status: branch feature/sett-3-stabilize-v3 — commits pending push Day 19
-deploy_prod_status: unchanged (feature branch, no deploy this day)
+baseline_tests_sett3_day19_verified: 12220 (CoV 2x deterministic)
+baseline_tests_sett3_day20: 12220 (no test files added Day 06, metric wiring only)
+cov_day20_status: PASS (benchmark run stable; no new tests)
+build_day20: n/a (no src app changes; only scripts/benchmark.cjs)
+engine_semantic_diff_day20: 0 (no engine changes)
+pz_v3_violations_day20: 0
+score_day19_self: 7.5/10
+score_day20_self: 7.5/10 (design 7.0 originality 6.5 craft 8.0 functionality 8.5)
+benchmark_day19_score: 4.12/10
+benchmark_day20_score: 4.75/10 (+0.63 delta — worker_uptime 0→6.67 contribution)
+benchmark_worker_uptime_probe_rate: 2/3 (nanobot 200, edge-tts 200, supabase 401)
+sprint3_day06_deliverables:
+  - scripts/benchmark.cjs metricWorkerUptime wired to worker-probe-latest.json
+  - scripts/worker-probe.sh URLs corrected to /health endpoints (nanobot, edge-tts)
+  - automa/state/worker-probe-latest.json fresh probe 2026-04-21T22:41:40Z (2/3 ok)
+  - automa/state/benchmark.json score 4.75 persisted with commit SHA
+  - docs/audit/day-06-audit.md compact 6-row matrix + 4 grading
+  - docs/handoff/2026-04-22-session-end-day-20.md full executive summary
+sprint3_blockers_open: 1 (ADR-003 anon-key P3 — Supabase probe 401 persists, env provisioning needed)
+sprint3_commits_day20: 1 atomic (99225b7)
+pr_sprint3_status: branch feature/sett-3-stabilize-v3 — 4 Day19 + 1 Day20 commit on branch
+deploy_prod_status: unchanged (feature branch)
 andrea_decisions_pending: 4 (NPM approval, PR #17 merge, ADR-004 5Qs, axe-core install)
-day19_scope_completed:
-  - T1-003 worker-probe scaffold + evidence state.json + cross-platform fix
-  - T1-004 unlimLatencyLog util + 10 vitest deterministic
-  - T1-005 spec 15 5-case parse + App.jsx ?live=1 flag backward-compat
-  - Stale sett-1 day-05-contract.md archived to automa/archive/sprint-contracts/
-day19_pending:
-  - End-day commit state + audit + handoff (this operation in-flight)
+day20_scope_completed:
+  - Benchmark uplift +0.63 via metricWorkerUptime reading probe state
+  - Worker probe URL empirical correction /health (both Nanobot and Edge TTS 200)
+  - End-day commit state + audit + handoff (in-flight)
+day20_pending:
   - Push branch
-  - Claude-mem observation save
-day19_gap_auto_critica:
-  - MCP calls 1/6 target (playwright --list only) — bandwidth spent on code
-  - Playwright full run skipped (spec parses, browser run Day 06)
-  - Lighthouse/Sentry/Vercel MCP skipped (7 audit rows "gap")
-  - Worker probe endpoints all non-2xx (404/405/401) — expected gap, script correct
-  - CoV 2x vs contract 5x — bandwidth-adjusted debt
-  - Benchmark score re-run deferred Day 06
-next_day_plan: Day 20 sett-3 Day 06 — MCP catchup + benchmark re-run + Playwright full + Lighthouse
+  - Claude-mem observation save Day 20
+day20_gap_auto_critica:
+  - MCP calls 0 — deficit continues from Day 05 (sprint debt)
+  - Supabase 401 unresolved (carry to Day 07 gate if no env provision)
+  - No new test files Day 06 (narrow scope — benchmark metric wiring only)
+  - E2E Playwright full run still deferred
+  - Lighthouse/Sentry/Vercel MCP still skipped (sprint debt)
+next_day_plan: Day 21 sett-3 Day 07 FINAL — sprint retrospective + review, PR creation, end-week gate, deploy prod IF gate PASS, sprint-4 planning kickoff
+sprint3_levers_remaining_for_target_5.0:
+  - documentation metric (0) — doc coverage check
+  - dashboard_live (0.5 scaffold) — live data wiring Day 21 deploy
+  - unlim_latency_p95 (0) — needs latency samples via unlimLatencyLog runtime
+  - accessibility_wcag (0) — axe-core install decision pending
 preexisting_issues: (preserved from Day 17 state — unchanged)
