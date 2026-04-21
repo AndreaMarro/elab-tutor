@@ -642,3 +642,27 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check Edge Function logs in Supabase dashboard
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T08:04:52Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"AI temporaneamente non disponibile. Riprova tra qualche secondo."}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T08:04:52Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il tuo dispositivo sia collegato a una rete Wi-Fi stabile. Verifica di avere installato l'ultima versione dell'applicazione sperimentale.","source":"flash-lite"
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T08:04:52Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED richiede una fonte di energia (tensione e corrente) per emettere luce.\n[COME CORREGGI:high
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
