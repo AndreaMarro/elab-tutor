@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-21T10:50:49.218Z",
+  "timestamp": "2026-04-21T11:18:01.662Z",
   "mode": "full",
   "score": 4.17,
   "score_out_of": 10,
@@ -14,8 +14,8 @@
       "contribution": 0.02
     },
     "build_size_kb": {
-      "value": 14626,
-      "observed": 14626,
+      "value": 14649,
+      "observed": 14649,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -24,8 +24,8 @@
     },
     "e2e_pass_rate": {
       "value": 1,
-      "observed": 283,
-      "notes": "283/283",
+      "observed": 17,
+      "notes": "17/17",
       "weight": 0.15,
       "target": 0.95,
       "normalized": 10,
@@ -95,8 +95,8 @@
       "contribution": 0
     }
   },
-  "commit_sha": "c8903113da60cc8a7737620d10d41bd9687eb4eb",
+  "commit_sha": "08f8ef4e97193a596700dca0ab22788e629eed7b",
   "branch": "feature/sett-2-stabilize-v2",
-  "previous_score": 3.95,
-  "delta": 0.22
+  "previous_score": 4.17,
+  "delta": 0
 }
