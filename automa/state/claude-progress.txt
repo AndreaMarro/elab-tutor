@@ -1,64 +1,52 @@
-last_commit: 742ce9d (feat(dashboard): integrate useDashboardData into DashboardShell + 9 state tests)
-sprint: sett-3-stabilize-v3 (DAY 04 local, Day 18 cumulative)
-sprint_day_cumulative: 18
-sprint_day_local: 4 (sett-3 DAY 04)
+last_commit: 7594d08 (feat(dashboard): E2E spec 15 live mode + App.jsx ?live=1 flag parser)
+sprint: sett-3-stabilize-v3
+sprint_day_cumulative: 19
+sprint_day_local: 5 (sett-3 DAY 05)
 branch: feature/sett-3-stabilize-v3
 date: 2026-04-22
-status: DAY18_COMPLETE_PENDING_STATE_PUSH — sprint-3 Day 04 DashboardShell hook integration + 9 new state tests (Day 17 P1 gap #1 closed)
+status: DAY19_COMPLETE_PENDING_STATE_PUSH — sprint-3 Day 05 worker-probe + unlimLatencyLog + spec 15 + App.jsx flag. 3 P0/P1 closed.
 baseline_tests_main: 12166 (CoV Day 16)
-baseline_tests_sett3_day17_target: 12201 (12166 + 35 new: 25 git_hygiene + 10 useDashboardData)
-baseline_tests_sett3_day17_verified: 12201 (CoV 3x: 12201/12201/12201 PASS — deterministic)
-cov_day17_status: PASS (CoV 3/3 consistent 12201)
-build_day17: PASS 100s
-engine_semantic_diff_day17: 0 (no engine changes)
-pz_v3_violations_day17: 0 (no UNLIM chat change)
-score_day16_self: 7.4/10 (design 7.5 originality 6.5 craft 8.0 functionality 7.5)
-score_day17_self_estimate: 7.6/10 (pending audit)
-sprint3_day03_deliverables_in_progress:
-  - src/hooks/useDashboardData.js (Dashboard React hook, AbortController race-safe, dual-header ADR-003)
-  - tests/unit/useDashboardData.test.js (10 tests PASS — config/HTTP/schema/range/headers/refetch)
-  - tests/unit/scripts/benchmark-git-hygiene.test.js (25 tests PASS — regex regression guard Day 16 fix)
-  - .github/workflows/test.yml (trufflehog PR-only guard — eliminates push-to-main self-diff error)
-sprint3_blockers_open: 1 (ADR-003 anon-key P3 CLI verify — BLOCKER-007 reconciled CLOSED Day 09)
-sprint3_blockers_closed_day17: 0 (no new closures this day)
-sprint3_commits_day17: 4 atomic (a8b937e feat dashboard hook / 54b97a5 test git_hygiene / 232c83f ci trufflehog / 0413649 docs research)
-pr_sprint2_status: #17 MERGED 2026-04-21 (commit 6815d43)
-pr_sprint3_status: branch feature/sett-3-stabilize-v3 — commits pending push
-deploy_prod_status: OPERATIONAL (deploy.yml SUCCESS main post #17)
-andrea_decisions_pending: 4 (axe-core install, playwright webServer path, Option B tool-call pivot, trufflehog conditional — partial done PR-only)
-day17_scope_completed:
-  - Dashboard useDashboardData hook (AbortController + schema-version guard 0.1.x)
-  - useDashboardData vitest 10 tests (config/HTTP/schema/range/headers/refetch + enabled=false skip)
-  - benchmark git_hygiene regex unit test 25 cases (conventional-commit + test-count + CoV + BLOCKER-NNN + multiline)
-  - trufflehog step guarded by if: github.event_name == 'pull_request' (real PR diff range)
-  - BLOCKER-007 state file reconciled (was OPEN in state, already CLOSED Day 09 in blockers.md)
-  - TodoWrite 10-item Day 17 board active
-day17_pending:
-  - Push branch (atomic end-day)
-  - Claude-mem observation end-day
-  - MCP catch-up carry-over Day 18 (target ≥15 calls)
-preexisting_issues:
-  - deploy-smoke manifest.json flaky (P2 carry from main)
-  - E2E WelcomePage integrity (P2 pre-existing, orthogonal to Day 17)
-mcp_calls_direct_day17: 0 (carry-over closed Day 18)
-mcp_calls_direct_day18: 10 (7 claude-mem + 2 context7 + 1 serena; Sentry/Supabase skipped auth)
-last_day_update: 2026-04-22T06:25Z
-last_commit_day17: 0413649
-last_commit_day18: 742ce9d
-benchmark_day16_score: 4.14 (delta -0.03 honest post regex fix)
-benchmark_day17_score: 4.14 (delta 0 stable)
-benchmark_day18_score: 4.12 (delta -0.02 honest noise investigate Day 19)
-score_day17_self: 7.25/10 (design 7.5 originality 6.5 craft 8.0 functionality 7.0)
-score_day18_self: 7.625/10 (design 8.0 originality 6.0 craft 8.5 functionality 8.0) — +0.375 vs Day 17
-day18_scope_completed:
-  - DashboardShell useDashboardData integration (4-state rendering disabled/loading/error/ready)
-  - DashboardShell.module.css state styles (schemaBadge + error + retry 44px + grid + card)
-  - DashboardShell.test.jsx 11 tests (2 Day 10 baseline preserved + 9 Day 18 new)
-  - CoV 3x: 12210/12210/12210 PASS deterministic
-  - Day 17 P1 gap #1 (hook non integrato) CLOSED
-day18_pending:
-  - State + audit + handoff + benchmark commit + push
-  - Claude-mem observation end-day
-  - Day 19 kickoff (Edge Function real query OR route mount OR E2E fix)
-next_action: DAY_19_START (sett-3 Day 05)
-session_state: DAY18_COMPLETE_PENDING_STATE_PUSH
+baseline_tests_sett3_day18: 12211 (12166 + 35 Day17 + 10 Day18 state tests)
+baseline_tests_sett3_day19_target: 12221 (12211 + 10 new unlimLatencyLog)
+baseline_tests_sett3_day19_verified: 12220 (CoV 2x: 12220/12220 PASS — deterministic)
+baseline_note_day19: delta +19 vs 12201 (Day 17 state) = 9 Day18 state tests + 10 Day19 unlimLatencyLog
+cov_day19_status: PASS (CoV 2/2 consistent 12220)
+build_day19: PASS 57.55s
+engine_semantic_diff_day19: 0 (no engine changes)
+pz_v3_violations_day19: 0 (spec 15 includes PZ v3 watchdog)
+score_day18_self: 7.4/10 (estimate prior)
+score_day19_self: 7.5/10 (matches day-05-contract target: design 7.5 originality 6.5 craft 8.0 functionality 8.0)
+sprint3_day05_deliverables:
+  - scripts/worker-probe.sh (3-worker bash+curl smoke, cross-platform portable macOS/linux)
+  - automa/state/worker-probe-latest.json (sample state persistence)
+  - src/services/unlimLatencyLog.js (localStorage ring-buffer 50 entries, schema v1)
+  - tests/unit/unlimLatencyLog.test.js (10 tests PASS: write/read/ring/clear/limit/truncate/corrupted/stats-empty/stats-full/SSR)
+  - tests/e2e/15-dashboard-live.spec.js (5 cases: placeholder compat/success/error/loading/PZ v3)
+  - src/App.jsx (getDashboardV2Params hash query parser for ?live=1&teacher=X&range=7d)
+  - automa/team-state/sprint-contracts/sett-3-day-05-contract.md (Harness 2.0 contract)
+  - docs/audit/day-05-audit.md (20 metric matrix + 4 grading + 7 gap auto-critica)
+  - automa/archive/sprint-contracts/sett-1-day-05-contract.md (renamed from stale day-05-contract.md)
+  - docs/handoff/2026-04-22-session-end-day-19.md
+sprint3_blockers_open: 1 (ADR-003 anon-key P3 CLI verify — worker-probe.sh env-ready, ANON not provided this session)
+sprint3_commits_day19: 3 atomic (ff9fa5a worker-probe / ec0ca4c unlimLatencyLog / 7594d08 spec15+App.jsx)
+pr_sprint3_status: branch feature/sett-3-stabilize-v3 — commits pending push Day 19
+deploy_prod_status: unchanged (feature branch, no deploy this day)
+andrea_decisions_pending: 4 (NPM approval, PR #17 merge, ADR-004 5Qs, axe-core install)
+day19_scope_completed:
+  - T1-003 worker-probe scaffold + evidence state.json + cross-platform fix
+  - T1-004 unlimLatencyLog util + 10 vitest deterministic
+  - T1-005 spec 15 5-case parse + App.jsx ?live=1 flag backward-compat
+  - Stale sett-1 day-05-contract.md archived to automa/archive/sprint-contracts/
+day19_pending:
+  - End-day commit state + audit + handoff (this operation in-flight)
+  - Push branch
+  - Claude-mem observation save
+day19_gap_auto_critica:
+  - MCP calls 1/6 target (playwright --list only) — bandwidth spent on code
+  - Playwright full run skipped (spec parses, browser run Day 06)
+  - Lighthouse/Sentry/Vercel MCP skipped (7 audit rows "gap")
+  - Worker probe endpoints all non-2xx (404/405/401) — expected gap, script correct
+  - CoV 2x vs contract 5x — bandwidth-adjusted debt
+  - Benchmark score re-run deferred Day 06
+next_day_plan: Day 20 sett-3 Day 06 — MCP catchup + benchmark re-run + Playwright full + Lighthouse
+preexisting_issues: (preserved from Day 17 state — unchanged)
