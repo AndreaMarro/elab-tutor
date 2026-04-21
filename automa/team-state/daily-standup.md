@@ -211,3 +211,34 @@ Prossimo standup: **Venerdi 24/04/2026 ore 9:00** (Day 05 sett-1)
 ### Blocker
 - [...]
 ```
+
+---
+
+## Standup 2026-04-21 — Day 10 cumulative (sett-2 Day 03)
+
+**Owner**: inline TPM (Andrea autopilot)
+**Branch**: feature/sett-2-stabilize-v2
+**Baseline**: 12164 test PASS, CoV 3x sett-2 Day 09, benchmark 3.95/10
+**Previous day**: 4 blockers CLOSED (003/004/007/008), engine lock preserved
+
+### Ieri (Day 09, chiuso)
+- TPM: 4 blocker closed + handoff
+- DEV: dirty files triage (152 → 0 semantic diff)
+- TESTER: CoV 3x 12164 PASS
+- AUDITOR: audit day-09 + blocker reconcile
+
+### Oggi (Day 10, 5 task P0)
+- TESTER: P0-1 Vision E2E spec scaffold (13-vision.spec.js) + CoV 3x
+- DEV: P0-3 Dashboard scaffold (src/components/dashboard/, shell only, zero feature)
+- TPM (inline): P0-2 MCP discipline log day-10 (10+ calls)
+- AUDITOR: P0-4 audit matrix 20-dim day-10
+- TPM (inline): P0-5 handoff + state + velocity Day 10
+
+### Blocker
+- Nessuno aperto sett-2 (Day 09 closed last 4)
+- Watermark noise auto-reverted start Day 10 (0 dirty)
+
+### Dispatch plan
+- Mattina: tester + dev parallel sync (~90min totale)
+- Pomeriggio: auditor (~20min) + handoff inline (~15min)
+- Totale: 3 dispatch Opus + inline work
