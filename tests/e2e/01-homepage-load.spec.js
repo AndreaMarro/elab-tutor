@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { waitForPageReady, collectConsoleErrors, TIMEOUTS } from './fixtures.js';
+import { waitForPageReady, collectConsoleErrors, TIMEOUTS, seedE2EBypass, skipIfProd } from './fixtures.js';
 
 test.describe('Homepage Load', () => {
+  test.beforeEach(async ({ page, baseURL }) => {
+    skipIfProd(test, baseURL);
+    await seedE2EBypass(page);
+  });
+
   test('should load homepage with correct title', async ({ page }) => {
     await page.goto('/');
     await waitForPageReady(page);

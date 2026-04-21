@@ -30,15 +30,14 @@ jobs:
       - name: Unit tests
         run: npx vitest run
       - name: E2E tests (smoke only)
-        # Eseguiamo solo la smoke suite in CI. Gli spec stress (13-20)
-        # richiedono >15min e vanno eseguiti in workflow dedicato con
-        # timeout piu' alto (TODO: e2e-stress.yml su schedule).
-        # Pattern: 01-12 + 21-22 (vision + a11y smoke).
-        # Esclusi: 13, 14, 15, 16, 17, 18, 19, 20 (mega/ultra stress).
+        # Smoke suite only in CI. Stress specs in dedicated workflow.
+        # Integrity fix Day 15 (sett-3): prior "|| echo warning" masked
+        # stale-spec failures (specs 01-10 vs WelcomePage gate 222b630)
+        # and inflated benchmark e2e_pass_rate=1.0 falsely. Failures now
+        # must fail the job. See docs/handoff/2026-04-26-sprint-end.md.
         run: |
           npx playwright test \
-            --grep-invert "150-test-reali|stress-6-utenti|mega-stress|ultra-stress|fifty-users-comprehensive" \
-            || echo "::warning::Some E2E tests failed or no specs matched"
+            --grep-invert "150-test-reali|stress-6-utenti|mega-stress|ultra-stress|fifty-users-comprehensive"
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

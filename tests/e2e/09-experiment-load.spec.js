@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { waitForPageReady, SELECTORS, EXPERIMENTS, TIMEOUTS } from './fixtures.js';
+import { waitForPageReady, SELECTORS, EXPERIMENTS, TIMEOUTS, seedE2EBypass, skipIfProd } from './fixtures.js';
 
 test.describe('Experiment Load', () => {
+  test.beforeEach(async ({ page, baseURL }) => {
+    skipIfProd(test, baseURL);
+    await seedE2EBypass(page);
+  });
+
   test('should load first experiment via hash', async ({ page }) => {
     await page.goto(`/#experiment=${EXPERIMENTS.first}`);
     await waitForPageReady(page);

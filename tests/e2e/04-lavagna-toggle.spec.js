@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { waitForPageReady, SELECTORS } from './fixtures.js';
+import { waitForPageReady, SELECTORS, seedE2EBypass, skipIfProd } from './fixtures.js';
 
 test.describe('Lavagna Toggle (T1-001)', () => {
+  test.beforeEach(async ({ page, baseURL }) => {
+    skipIfProd(test, baseURL);
+    await seedE2EBypass(page);
+  });
+
   test('should have toggle drawing button accessible', async ({ page }) => {
     await page.goto('/');
     await waitForPageReady(page);
