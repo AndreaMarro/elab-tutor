@@ -242,3 +242,32 @@ Prossimo standup: **Venerdi 24/04/2026 ore 9:00** (Day 05 sett-1)
 - Mattina: tester + dev parallel sync (~90min totale)
 - Pomeriggio: auditor (~20min) + handoff inline (~15min)
 - Totale: 3 dispatch Opus + inline work
+
+---
+
+## Standup 2026-04-21 — Day 11 cumulative (sett-2 Day 04)
+
+**Owner**: inline TPM (headless loop)
+**Branch**: feature/sett-2-stabilize-v2
+**Baseline**: 12166 test PASS Day 10, benchmark 3.95/10 fast-mode
+**Previous day**: Day 10 closed 7.25/10, 4 commits (vision + dashboard + contract + finalize)
+**Blocker carry-over**: NPM_DEPS_APPROVAL_PENDING (ai + zod) → **PIVOT DEBT-ONLY**
+
+### Ieri (Day 10, chiuso)
+- TPM: Sprint Contract Day 10 + standup + Audit + Handoff
+- DEV: Dashboard scaffold (DashboardShell shell only)
+- TESTER: Vision E2E spec 13-vision.spec.js scaffold
+- AUDITOR: audit 20-dim Day 10 (score 7.25/10)
+
+### Oggi (Day 11, 4 task P0 debt-only pivot)
+- DEV (inline): P0-1 Dashboard route wiring `#dashboard-v2` → DashboardShell
+- TPM (inline): P0-2 Velocity tracking sett-2 schema + Day 08-10 backfill
+- DEV (inline): P0-3 Pre-commit watermark filter script (BLOCKER-003 mitigation)
+- TPM+AUDITOR: P0-4 audit matrix 20-dim day-11 + handoff + state + CoV 5x
+
+### Blocker
+- OPEN: NPM_DEPS_APPROVAL (ai + zod) → Vercel AI SDK Day 12+ se approvato
+- Watermark hook P3 debt → mitigato da P0-3 script today
+
+### Pivot rationale
+Day 11 original: Vercel AI SDK 5 tools. Blocker Andrea approval in headless loop. Pivot 3 debt items (zero new deps) progressano T1-005 + process hygiene. Day 12 revisit SDK se approvato.

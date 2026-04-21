@@ -4,7 +4,7 @@
   "sprint_period": "2026-04-21_to_2026-04-27",
   "cumulative_day_range": "08-14",
   "created_at": "2026-04-21T10:51:00+08:00",
-  "updated_at": "2026-04-21T15:40:00+08:00",
+  "updated_at": "2026-04-21T17:05:00+08:00",
   "baseline_pre_sprint": {
     "test_count": 12164,
     "benchmark_score": 3.95,
@@ -72,14 +72,88 @@
       "mcp_calls_planned": 8,
       "mcp_calls_floor": 5,
       "notes": "4 Sprint 2 blockers CLOSED today (003 dirty triage copyright watermarker, 004 product-backlog.md verify, 007 render-warmup 3 cron runs success, 008 grep canonical invariant 2=2). Day 11 Vercel AI SDK plan seed written. Main merged into feature (d438ac9). Engine lock preserved via mass src/ revert (96%+ copyright noise)."
+    },
+    {
+      "day_cumulative": 10,
+      "day_local": 3,
+      "date": "2026-04-21",
+      "day_of_week": "mar",
+      "commits": 5,
+      "commits_planned_end_day": 4,
+      "test_count_end": 12166,
+      "test_delta": 2,
+      "cov_runs": 3,
+      "cov_result": "pre-agents 12164 + post-agents 12166 both PASS",
+      "benchmark_score_end": 3.95,
+      "benchmark_delta": 0,
+      "build_status": "PASS",
+      "build_time_s": 102,
+      "blockers_closed": [],
+      "blockers_open": ["NPM_DEPS_APPROVAL_PENDING (ai + zod Day 11)"],
+      "pz_v3_violations": 0,
+      "auditor_score": 7.25,
+      "grading_4": {
+        "design_quality": 7.5,
+        "originality": 5.5,
+        "craft": 8.0,
+        "functionality": 8.0
+      },
+      "dispatch_count": 3,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 0,
+      "unpushed_commits_end": 0,
+      "commits_list": [
+        "4f00b00 test(vision): E2E spec scaffold 13-vision.spec.js",
+        "63d6920 feat(dashboard): scaffold shell + import-smoke test",
+        "ed49e52 chore(sett-2-day-10): Sprint Contract + standup + 5 P0 tasks",
+        "5bc367a chore(sett-2-day-10): audit + MCP log + handoff + state",
+        "7ff1504 chore(sett-2-day-10): finalize state + Day 11 blocker flag"
+      ],
+      "mcp_calls_count": 14,
+      "notes": "Day 10 score 7.25/10 above target 6.75. Vision E2E scaffold + Dashboard scaffold (NOT wired yet) + MCP log 14 calls. Watermark hook re-triggered mid-session, reverted via checkout HEAD. Day 11 flagged blocker npm deps pending Andrea approval."
+    },
+    {
+      "day_cumulative": 11,
+      "day_local": 4,
+      "date": "2026-04-21",
+      "day_of_week": "mar",
+      "commits": null,
+      "commits_planned_end_day": 4,
+      "test_count_end": null,
+      "test_delta": null,
+      "cov_runs": 5,
+      "cov_result": null,
+      "benchmark_score_end": null,
+      "benchmark_delta": null,
+      "build_status": null,
+      "blockers_closed": [],
+      "blockers_open": ["NPM_DEPS_APPROVAL_PENDING (blocking Vercel AI SDK Day 12+)"],
+      "pz_v3_violations": null,
+      "auditor_score": null,
+      "dispatch_count": 0,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 0,
+      "unpushed_commits_end": null,
+      "planned_tasks": [
+        "P0-1 Dashboard route wiring #dashboard-v2 → DashboardShell (zero new deps)",
+        "P0-2 Velocity tracking sett-2 schema + Day 10-11 backfill (this file)",
+        "P0-3 Pre-commit watermark filter script (BLOCKER-003 mitigation, P3 debt)",
+        "P0-4 Audit 20-dim + CoV 5x + handoff + state persist"
+      ],
+      "pivot_applied": "debt-only (original Day 11 scope Vercel AI SDK 5 tools blocked on npm deps Andrea approval CLAUDE.md Rule 13)",
+      "focus": "Debt pivot: dashboard route + velocity schema + watermark filter + audit aumentato CoV 5x",
+      "mcp_calls_planned": 12,
+      "mcp_calls_floor": 10,
+      "notes": "Original Day 11 scope blocked by CLAUDE.md Rule 13 (no deps without Andrea approval). Pivoted to 3 debt items zero new deps. Day 12 revisit SDK se approvato."
     }
   ],
   "goals_progress": {
-    "G1_tests_12164_preserved": "on_track (12164 x 2 days)",
-    "G2_benchmark_min_4_5": "progress (3.95 stable, +0.55 gap)",
-    "G3_auditor_avg_7_5": "progress (Day 08 6.25 + Day 09 ~7.25 self-assess)",
-    "G4_blockers_closed_min_3": "EXCEEDED (5/3: 009+003+004+007+008)",
-    "G5_pz_v3_0_violations": "on_track",
-    "G6_dashboard_feature_logic": "not_started (scope Day 11-13)"
+    "G1_tests_12164_preserved": "on_track (Day 08=12164, Day 09=12164, Day 10=12166, Day 11 pending)",
+    "G2_benchmark_min_4_5": "progress (3.95 stable Day 08-10, +0.55 gap, Day 12+ feature needed)",
+    "G3_auditor_avg_7_5": "on_track (Day 10 auditor 7.25 + self-assess prior)",
+    "G4_blockers_closed_min_3": "EXCEEDED (5/3 closed Day 08+09: 009+003+004+007+008)",
+    "G5_pz_v3_0_violations": "on_track (0 across 3 days)",
+    "G6_dashboard_feature_logic": "progress (Day 10 scaffold + Day 11 route wiring = incremental)",
+    "G7_e2e_spec_14": "progress (Day 10 added 13-vision.spec.js = 13 total, +1 needed)"
   }
 }
