@@ -1,30 +1,36 @@
-last_commit: f715064 (Day 15 sprint-3 Day 01 — CI e2e masking removal + stale specs skip-prod + sprint-3 contract FINAL Option B)
-sprint: sett-3-stabilize-v3 (DAY 01)
-sprint_day_cumulative: 15
-sprint_day_local: 1 (sett-3 DAY 01)
+last_commit: 7942544 (Merge main into feature/sett-3-stabilize-v3 — post PR #17 merge)
+sprint: sett-3-stabilize-v3 (DAY 02 local, Day 16 cumulative)
+sprint_day_cumulative: 16
+sprint_day_local: 2 (sett-3 DAY 02)
 branch: feature/sett-3-stabilize-v3
-date: 2026-04-21
-status: DAY_CLOSED — sprint-3 Day 01 integrity-first kickoff complete
-baseline_tests_main: 12163 (branch from main)
-baseline_tests_sett2: 12166 (sett-2 awaiting PR #17 merge)
-cov_day15: 5x all 12163 PASS + 1 pre-existing fail consistent zero flaky
-build_day15: PASS 58.83s
-engine_semantic_diff_day15: 0 (no src/ changes)
-pz_v3_violations_day15: 0
+date: 2026-04-22
+status: DAY_IN_PROGRESS — sprint-3 Day 02 Edge Function scaffold + CI fixes + state reconcile
+baseline_tests_main: 12163 (post PR #17 merge)
+baseline_tests_sett3: 12163 (branch reconciled with main)
+cov_day16: pending (bg running)
+build_day16: pending
+engine_semantic_diff_day16: 0 (no engine changes)
+pz_v3_violations_day16: 0 (assumed — verify post-deploy)
 score_day15_self: 7.25/10 (design 7.5 originality 6.0 craft 8.0 functionality 7.5)
-sprint3_day01_deliverables: CI e2e masking removal + skipIfProd/seedE2EBypass helpers + 6 specs patched + sprint-3 contract FINAL + PR #17 Sprint-2 DRAFT created
-sprint3_blockers_open: 3 (BLOCKER-011 NPM P0, BLOCKER-007 render-warmup P3, ADR-003 anon-key P3)
-sprint3_blockers_closed_day15: 0
-sprint3_commits_day15: 1 atomic (f715064)
-sprint3_e2e_spec_count: 22 total (same sett-2), 6 patched skip-prod
-sprint3_fixtures_helpers: +2 (seedE2EBypass, skipIfProd)
-pr_sprint2_status: #17 DRAFT HALT pending Andrea 4 decisions
-pr_sprint3_day01_pushed: origin/feature/sett-3-stabilize-v3 (commit f715064)
-deploy_prod_status: BLOCKED pending sprint-2 merge + Andrea approval
-andrea_decisions_required: 7 (4 sprint-2 + 3 sprint-3: NPM, sprint-2 PR merge, deploy timing, ADR-004 5Qs, axe-core, playwright webServer path, Option B validation)
-day16_next_focus: sprint-3 Day 02 — benchmark full mode + git_hygiene regex fix + Edge Function dashboard-data scaffold + BLOCKER-011 escalation
-preexisting_issues: deploy-smoke manifest.json fail (P2 carry from main), BLOCKER-010 watermark post-build on main (P1 carry)
-mcp_calls_direct_day15: 4 (low — infrastructure day, Day 02 recovery via Supabase+Vercel+Sentry)
-last_day_update: 2026-04-21T20:15Z
-next_action: SPRINT3_DAY02_BENCHMARK_EDGEFN_REGEX
-session_stop_reason: day15_scope_complete_natural_close_pushed_pr17_draft_sprint3_day02_ready
+score_day16_self_estimate: 7.5/10 (pending full audit)
+sprint3_day02_deliverables: benchmark git_hygiene regex fix + Edge Function dashboard-data scaffold + CI test.yml dedupe deploy + trufflehog continue-on-error + blockers.md reconcile (BLOCKER-011 CLOSED, BLOCKER-012 CLOSED) + state reconcile
+sprint3_blockers_open: 2 (BLOCKER-007 render-warmup P3 verify, ADR-003 anon-key P3 CLI verify)
+sprint3_blockers_closed_day16: 2 (BLOCKER-011 NPM APPROVED, BLOCKER-012 CI/CD deploy+security)
+sprint3_commits_day16: pending (atomic end-day)
+sprint3_e2e_spec_count: 22 (same sett-2, 6 patched skip-prod)
+pr_sprint2_status: #17 MERGED 2026-04-21 (commit 6815d43)
+pr_sprint3_status: branch feature/sett-3-stabilize-v3 main-reconciled, ready for next commit
+deploy_prod_status: OPERATIONAL (deploy.yml SUCCESS run 24746999381 2026-04-21T21:24Z)
+andrea_decisions_required: 3 (carry Sprint-3 Day 01: axe-core add, playwright webServer path, Option B->tool-call pivot Day 03+)
+day16_scope_completed:
+  - benchmark.cjs git_hygiene regex fix (split record-separator + broadened hygiene signals)
+  - supabase/functions/dashboard-data/index.ts scaffold (Brain/Hands decoupling stub)
+  - .github/workflows/test.yml: remove duplicate deploy job + trufflehog continue-on-error
+  - automa/team-state/blockers.md: BLOCKER-011 CLOSED, BLOCKER-012 CLOSED (CI/CD deploy+security fix)
+  - automa/state/claude-progress.txt rewrite (state drift reconcile)
+day17_next_focus: sprint-3 Day 03 — axe-core baseline (if approved) + Edge Function deploy staging + Dashboard React hook scaffold
+preexisting_issues: deploy-smoke manifest.json fail (P2 carry from main), BLOCKER-010 watermark post-build CLOSED Day 13
+mcp_calls_direct_day16: 0 direct (bash-based), target Day 03 ramp >=15 via Playwright/Sentry/Supabase MCP
+last_day_update: 2026-04-22T05:35Z
+next_action: COMMIT_DAY16_DELIVERABLES + BENCHMARK_WRITE + AUDIT + PUSH
+session_stop_reason: in_progress

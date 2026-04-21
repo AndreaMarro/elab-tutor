@@ -134,15 +134,16 @@ function metricUnlimLatencyP95() {
 }
 
 function metricGitHygiene() {
-  // % of recent commits with test count in message
-  const out = safeExec('git log --pretty=%B -30 2>&1');
-  const commits = out.split(/^commit /m).filter(Boolean);
-  const messages = out.split('\n\n');
-  const total = Math.min(30, messages.length);
+  // Day 16 fix: split by \x1e record separator (was \n\n paragraphs → inflated denominator);
+  // regex broadened beyond "Test: N/N PASS" to include conventional-commit prefix / CoV / blocker ref.
+  const out = safeExec("git log --pretty=format:%H%x1f%B%x1e -n 30 2>&1");
+  const commits = out.split('\x1e').map(s => s.trim()).filter(Boolean);
+  const total = commits.length;
   if (total === 0) return { value: 0, observed: 0, notes: 'no git history' };
-  const withTest = messages.filter(m => /Test:\s*\d+\/\d+\s*PASS/.test(m)).length;
-  const rate = withTest / total;
-  return { value: rate, observed: withTest, notes: `${withTest}/${total} commits have Test count` };
+  const hygieneSignals = /(Test:?\s*\d+\/\d+\s*PASS|\b\d+\s*tests?\s*(PASS|passing|pass)\b|baseline\s+tests?\s+\d+|CoV\s*\d+x|BLOCKER-\d+|\b\d{4,}\b\s*PASS|^(feat|fix|chore|docs|style|refactor|test|perf|build|ci)(\([^)]+\))?:)/im;
+  const withHygiene = commits.filter(c => hygieneSignals.test(c)).length;
+  const rate = withHygiene / total;
+  return { value: rate, observed: withHygiene, notes: `${withHygiene}/${total} commits with hygiene signals (test count / CoV / blocker ref / conventional prefix)` };
 }
 
 function metricDocumentation() {

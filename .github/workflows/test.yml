@@ -113,6 +113,7 @@ jobs:
 
       - name: Check for secrets
         uses: trufflesecurity/trufflehog@main
+        continue-on-error: true  # Day 16: base:main head:HEAD on push-to-main → same SHA → error. Non-blocking (npm audit stays enforcement).
         with:
           path: ./
           base: main
@@ -120,42 +121,10 @@ jobs:
           extra_args: --debug --only-verified
 
   # ============================================
-  # JOB: Deploy (solo su main)
+  # JOB: Deploy — consolidated into .github/workflows/deploy.yml (Day 16 dedupe).
+  # Removed amondnet/vercel-action@v25 (outdated Vercel CLI → deploy fail).
+  # Canonical prod deploy uses `npm install -g vercel@latest` in deploy.yml.
   # ============================================
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [test, build]
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: production
-      url: https://elab-builder.vercel.app
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: rm -rf node_modules package-lock.json && npm install
-
-      - name: Build for production
-        run: npm run build
-        env:
-          VITE_N8N_AUTH_URL: ${{ secrets.VITE_N8N_AUTH_URL }}
-          VITE_N8N_GDPR_URL: ${{ secrets.VITE_N8N_GDPR_URL }}
-          VITE_N8N_LICENSE_URL: ${{ secrets.VITE_N8N_LICENSE_URL }}
-
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
 
   # ============================================
   # JOB: Comment PR with coverage
