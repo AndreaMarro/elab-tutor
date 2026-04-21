@@ -211,3 +211,98 @@ Prossimo standup: **Venerdi 24/04/2026 ore 9:00** (Day 05 sett-1)
 ### Blocker
 - [...]
 ```
+
+---
+
+## Standup 2026-04-21 — Day 10 cumulative (sett-2 Day 03)
+
+**Owner**: inline TPM (Andrea autopilot)
+**Branch**: feature/sett-2-stabilize-v2
+**Baseline**: 12164 test PASS, CoV 3x sett-2 Day 09, benchmark 3.95/10
+**Previous day**: 4 blockers CLOSED (003/004/007/008), engine lock preserved
+
+### Ieri (Day 09, chiuso)
+- TPM: 4 blocker closed + handoff
+- DEV: dirty files triage (152 → 0 semantic diff)
+- TESTER: CoV 3x 12164 PASS
+- AUDITOR: audit day-09 + blocker reconcile
+
+### Oggi (Day 10, 5 task P0)
+- TESTER: P0-1 Vision E2E spec scaffold (13-vision.spec.js) + CoV 3x
+- DEV: P0-3 Dashboard scaffold (src/components/dashboard/, shell only, zero feature)
+- TPM (inline): P0-2 MCP discipline log day-10 (10+ calls)
+- AUDITOR: P0-4 audit matrix 20-dim day-10
+- TPM (inline): P0-5 handoff + state + velocity Day 10
+
+### Blocker
+- Nessuno aperto sett-2 (Day 09 closed last 4)
+- Watermark noise auto-reverted start Day 10 (0 dirty)
+
+### Dispatch plan
+- Mattina: tester + dev parallel sync (~90min totale)
+- Pomeriggio: auditor (~20min) + handoff inline (~15min)
+- Totale: 3 dispatch Opus + inline work
+
+---
+
+## Standup 2026-04-21 — Day 11 cumulative (sett-2 Day 04)
+
+**Owner**: inline TPM (headless loop)
+**Branch**: feature/sett-2-stabilize-v2
+**Baseline**: 12166 test PASS Day 10, benchmark 3.95/10 fast-mode
+**Previous day**: Day 10 closed 7.25/10, 4 commits (vision + dashboard + contract + finalize)
+**Blocker carry-over**: NPM_DEPS_APPROVAL_PENDING (ai + zod) → **PIVOT DEBT-ONLY**
+
+### Ieri (Day 10, chiuso)
+- TPM: Sprint Contract Day 10 + standup + Audit + Handoff
+- DEV: Dashboard scaffold (DashboardShell shell only)
+- TESTER: Vision E2E spec 13-vision.spec.js scaffold
+- AUDITOR: audit 20-dim Day 10 (score 7.25/10)
+
+### Oggi (Day 11, 4 task P0 debt-only pivot)
+- DEV (inline): P0-1 Dashboard route wiring `#dashboard-v2` → DashboardShell
+- TPM (inline): P0-2 Velocity tracking sett-2 schema + Day 08-10 backfill
+- DEV (inline): P0-3 Pre-commit watermark filter script (BLOCKER-003 mitigation)
+- TPM+AUDITOR: P0-4 audit matrix 20-dim day-11 + handoff + state + CoV 5x
+
+### Blocker
+- OPEN: NPM_DEPS_APPROVAL (ai + zod) → Vercel AI SDK Day 12+ se approvato
+- Watermark hook P3 debt → mitigato da P0-3 script today
+
+### Pivot rationale
+Day 11 original: Vercel AI SDK 5 tools. Blocker Andrea approval in headless loop. Pivot 3 debt items (zero new deps) progressano T1-005 + process hygiene. Day 12 revisit SDK se approvato.
+
+---
+
+## Standup 2026-04-21 — Day 12 cumulative (sett-2 Day 05)
+
+**Owner**: inline TPM (headless loop)
+**Branch**: feature/sett-2-stabilize-v2
+**Baseline**: 12166 test PASS Day 11, benchmark 3.95/10 fast-mode, CoV 5x clean
+**Previous day**: Day 11 closed 7.1/10, 3 fix-budget commits (route + filter + velocity) + 1 finalize
+**Blocker carry-over**: NPM_DEPS_APPROVAL_PENDING (ai + zod) → **CONTINUE DEBT-ONLY PIVOT**
+
+### Ieri (Day 11, chiuso)
+- DEV inline: Dashboard `#dashboard-v2` route wiring (commit 297e969)
+- DEV inline: Pre-commit watermark filter script 126+65 lines (commit 8b97720)
+- TPM inline: Velocity sett-2 backfill Day 08-10 (commit 54513b3)
+- TPM+AUDITOR inline: audit 20-dim + handoff + state (commit ded2e19 + bdb1fa7)
+- Honest floor miss: MCP calls direct = 0 (target ≥10)
+
+### Oggi (Day 12, 4 task P0 debt + MCP discipline recovery)
+- DEV (inline): P0-1 Claude-mem MCP save wire helper script + doc → fix Day 11 floor miss
+- TESTER (inline): P0-2 E2E dashboard-v2 smoke spec Playwright 14 → sett-2 contract Day 05 alignment
+- DEV (inline): P0-3 Watermark filter CI integration analysis + doc
+- TPM+AUDITOR (inline): P0-4 audit 20-dim day-12 + CoV 5x + handoff + state + velocity
+
+### Blocker
+- OPEN: NPM_DEPS_APPROVAL (ai + zod) → Vercel AI SDK Day 13+ se approvato
+- Mitigation: debt pivot continues T1-005 progression + discipline hygiene
+
+### Focus
+Contract Day 05 "T1-005 Dashboard continue + E2E spec extension" matched by P0-2. MCP floor miss recovery P0-1. CI watermark enforcement path P0-3. Zero agent dispatch (inline, max-turns 200 budget).
+
+### Dispatch plan
+- All inline (TPM/DEV/TESTER/AUDITOR roles rotated)
+- Zero Opus agent dispatch → keep context lean
+- ~2h estimated total work

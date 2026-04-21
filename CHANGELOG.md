@@ -1,3 +1,56 @@
+## [Sprint 2 sett-2-stabilize-v2 Day 09] — 2026-04-21
+
+### Closed
+- **BLOCKER-003** 152 dirty files → triage revealed 96%+ = automated copyright watermarker (date bump 17/04→21/04), ZERO semantic diff. Engine files (4) reverted first (hard lock invariant), then full src/. Severity P2→P3 retroactive. Triage doc `docs/audit/day-09-dirty-files-triage.md`.
+- **BLOCKER-004** product-backlog.md present 203 lines 8 Epic (E1-E8), blocker doc-stale (same pattern BLOCKER-005).
+- **BLOCKER-007** render-warmup cron: 3 scheduled runs PASS on main post-merge #16 (24709504151/24706502071/24702983063).
+- **BLOCKER-008** grep canonical Supabase invariant: 2=2 main vs feature (src/services/api.js SUPABASE_EDGE line 21 + doc line 1208).
+
+### Merged
+- main → feature/sett-2-stabilize-v2 (d438ac9) — preserve render-warmup + CI fixes baseline.
+
+### Documented
+- `docs/standup/2026-04-21-day-09-standup.md` (4 blockers CLOSED, 4-grading preview ~7.25)
+- `docs/audit/day-09-dirty-files-triage.md` (copyright watermarker analysis)
+- `docs/plans/day-11-vercel-ai-sdk-prep.md` (5 candidate UNLIM tools, Zod schemas, DoR/DoD, risk flags)
+
+### Metrics
+- Tests: 12164 PASS CoV 3/3
+- Benchmark: 3.95/10 (+0, baseline preserved)
+- Blockers closed Day 09: 4 (003/004/007/008)
+- Sprint 2 blockers closed cumulative: 5 (EXCEEDED target 3)
+- PZ v3 violations: 0
+- Engine semantic diff: 0
+
+### Brutal-honesty note
+4 closures, 2 stale-doc (004/005-pattern). Real investigative work: 003 triage + 007 cron verify + 008 grep. BLOCKER-004 verify-only.
+
+---
+
+## [Sprint 2 sett-2-stabilize-v2 Day 08] — 2026-04-21
+
+### Fixed
+- `tests/integration/deploy-smoke.test.js` manifest.json tolerant SPA fallback (content-type + body prefix guard). Restores CoV baseline 12164 PASS on feature branch when prod serves HTML for `/manifest.json`. (BLOCKER-009 CLOSED local, prod deploy deferred Andrea)
+
+### Changed
+- Routines Orchestrator workflow `disabled_manually` confirmed (Sprint 1 Lesson 13 carry-over).
+
+### Documented
+- `automa/team-state/sprint-contracts/day-08-contract.md` (cumulative Day 08 bridge contract)
+- `docs/standup/2026-04-21-day-08-standup.md`
+- `docs/audit/day-08-ci-triage.md` (E2E run 24700722699 evidence, Vercel action v25 upgrade DEFERRED Andrea)
+- `docs/audit/day-08-sett-2-baseline.md` (CoV 3x + benchmark Day 08)
+- `automa/state/velocity-tracking-sett-2.json` created (Sprint 2 separate file, LIVE tracking)
+
+### Metrics
+- Tests: 12164 PASS CoV 3/3
+- Benchmark: 3.95/10 (delta +0, baseline preserved)
+- Blockers closed Day 08: 1 (BLOCKER-009)
+- PZ v3 violations: 0
+- Engine semantic diff: 0
+
+---
+
 ## [Sprint 1 sett-1-stabilize] — 2026-04-26
 
 ### Added

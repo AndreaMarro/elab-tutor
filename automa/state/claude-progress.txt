@@ -1,67 +1,30 @@
-last_commit: 3810913
-last_commit_subject: docs(day06): end-day handoff + self-audit 7.75/10 + CoV 3/3 PASS + Sprint Review prep
-last_test_count: 12164
-cov_runs_day04: 5/5 PASS (12164 consistent per auditor live verify)
-cov_runs_day06: 3/3 PASS 12164 consistent (33.34s/34.83s/35.12s, zero flaky)
-cov_runs_day07: anti-regression-gate PASS 12164, baseline ratcheted 11958→12164
-last_build_time: 198s (Day 05)
-benchmark_score: 3.95
-benchmark_delta_sprint: +1.18 (2.77 pre-sprint → 3.95 end)
-ci_status: Day 05 in_progress, Day 04 PASS 11m37s (Day 06 queued pending)
-unpushed_commits_day07: 1 pending (sprint-end closure batch)
-next_task: Day 07 commit sprint-end closure batch + push + LOOP STOP sett-end-gate
-loop_status: SPRINT_DAY=7 FINAL, sett-end-gate TRIGGERED, session close after final commit+push
-blockers_open:
-  - P1: Stress test prod 50-prompt post-deploy (pending Andrea)
-  - P1: BLOCKER-003 152 dirty files (deferred sett-2)
-  - P1: BLOCKER-004 Product backlog gerarchico (deferred sett-2)
-  - P2: BLOCKER-005 no-regression-guard.sh --dry-run (deferred sett-2)
-  - P2: BLOCKER-007 render-warmup.yml first run verify (pending post-merge)
-  - P2: BLOCKER-008 grep canonical invariant on main (pending post-merge)
-  - P2: ADR-003 Accepted promotion (needs SUPABASE_ANON_KEY env)
-blockers_closed_sprint:
-  - BLOCKER-001 JWT 401 (Day 05 via ADR-003)
-  - BLOCKER-002 velocity Day 03 (Day 06 via backfill)
-  - BLOCKER-006 standup Day 01 retroactive (Day 04)
-  - Dashboard a11y Day 04 contract + Auditor 3x must-fix (Day 04)
-session_date: 2026-04-26
-session_date_real: 2026-04-21
-sprint_day: 7
-sprint: sett-1-stabilize (CLOSED)
-sprint_day_next: sett-2 Day 1 (lun 27/04 post-merge)
-reviewer_verdict_day04: APPROVE
-auditor_score_day01: 6.5/10
-auditor_score_day02: 7.2/10
-auditor_score_day03: 7.0/10
-auditor_score_day04: 7.5/10 PARTIAL → READY post must-fix
-auditor_score_day05: 7.6/10
-auditor_score_day06: 7.75/10
-auditor_score_day07: 7.75/10 (sprint close, no dip = good discipline)
-auditor_avg_sprint: 7.35/10
-baseline_tests: 12164
-tests_delta_sprint: +48 (12116 → 12164)
-principio_zero: v3 IMMUTABLE
-llm_provider: together-ai (default) + gemini (fallback)
-pz_v3_violations: 0 (sprint-wide)
-e2e_spec_count: 12
-e2e_vision_live_run_day05: 5/5 PASS 20.6s
-e2e_tests_homepage: 3/3 PASS 6.8s
-day04_commits: 6
-day05_commits: 3
-day06_commits: 2
-day07_commits: 1 pending (sprint-end closure)
-sprint_commits_total: 29 (pre-final commit pending)
-engine_semantic_diff_sprint: 0
-branch: feature/t1-003-render-warmup
-dashboard_a11y_status: compliant (WCAG AAA 7.56:1 contrast)
-dashboard_scaffold_status: skeleton present (scaffold only, sett-2+)
-adr_003_status: Proposed
-sprint_review_prep_status: done (docs/reviews/sprint-1-review-prep.md)
-sprint_retrospective_status: done (docs/reviews/sprint-1-retrospective.md)
-pr_body_draft_status: done (docs/architectures/PR-BODY-DRAFT-sett-1.md)
-velocity_tracking_entries: 6/7 live (Day 07 TBD post-commit)
-anti_regression_gate_day07: PASS 12164, baseline ratcheted 11958→12164
-loop_session_days: 4 (Day 04, 05, 06, 07 consecutive)
-loop_stop_condition: sett-end-gate TRIGGERED (sprint close)
-production_safety: merge + deploy deferred to Andrea (memory invariant respected)
-timestamp: 2026-04-21T07:32:00+08:00
+last_commit: 973733a (Day 14 sprint gate contracts+review+retro+audit+handoff) + upcoming benchmark+state finalize
+sprint: sett-2-stabilize-v2 (END GATE)
+sprint_day_cumulative: 14
+sprint_day_local: 7 (sett-2 END)
+branch: feature/sett-2-stabilize-v2
+date: 2026-04-21
+status: PARTIAL CLOSE Day 14 — integrity finding surfaced, awaiting Andrea approvals
+baseline_tests_sett2: 12166
+cov_day14: 5x all 12166 PASS zero flaky (5/5 consistency)
+build_day14: PASS 1m 2s zero dirty files post-build (watermark idempotent holds)
+engine_semantic_diff_day14: 0
+pz_v3_violations_day14: 0
+benchmark_day14_status: running (full-mode, exp ~20min total)
+benchmark_day14_expected: likely DOWN from 4.17 due to honest e2e_pass_rate (specs 01-10 stale vs WelcomePage)
+score_day14_self: 6.75/10 (design 7.0 originality 5.5 craft 8.5 functionality 6.0 — integrity finding penalty)
+sprint2_final_avg_self: 7.11/10 (target 7.5 miss −0.39)
+sprint2_blockers_closed: 5 (003, 004, 005, 008, 010)
+sprint2_blocker_open: BLOCKER-011 NPM_DEPS_APPROVAL_PENDING (5 days silent)
+sprint2_commits_total: 17 (16 pre-Day 14 + 1 Day 14 artifacts)
+sprint2_e2e_spec_count: 22 total specs (+8 vs sprint-1)
+e2e_integrity_finding: CRITICAL — specs 01-10 stale vs WelcomePage gate (commit 222b630 pre-sprint-2); CI e2e.yml masks failures via "|| echo warning"; prev benchmark e2e_pass_rate 1.0 FALSE; honest adjustment needed
+mcp_calls_direct_day14: TBD_end_of_session (target ≥10 recovery from Day 13 floor of 3)
+gates_day14: CoV ✅, Build ✅, Engine ✅, PZ ✅, Playwright ❌ integrity, Benchmark ⚠️ integrity-adjusted
+pr_status: draft body at docs/pr-drafts/sett-2-pr-body.md; PR create pending push of benchmark+state+velocity final commit
+deploy_prod_status: BLOCKED pending Andrea approval + E2E remediation plan
+andrea_decisions_required: 1) NPM 2) PR merge strategy 3) deploy timing 4) ADR-004 5 open Qs
+day15_next_focus: sprint-3 Day 01 kickoff — NPM decision + scope lock + scoring script audit + CI masking removal + stale spec fix OR Vercel AI SDK 5 (if NPM approved)
+last_day_update: 2026-04-21T19:15Z
+next_action: FINALIZE_BENCHMARK_THEN_PUSH_THEN_PR_CREATE_HALT_MERGE
+session_stop_reason: day14_gate_partial_close_integrity_finding_awaiting_andrea_approvals
