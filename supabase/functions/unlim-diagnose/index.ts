@@ -6,7 +6,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
-import { callGemini, callBrainFallback } from '../_shared/gemini.ts';
+import { callLLM, callBrainFallback } from '../_shared/llm-client.ts';
 import { DIAGNOSE_PROMPT } from '../_shared/system-prompt.ts';
 import type { DiagnoseRequest, DiagnoseResponse } from '../_shared/types.ts';
 import { getCorsHeaders, getSecurityHeaders, checkRateLimitPersistent, sanitizeCircuitState, validateExperimentId, checkBodySize } from '../_shared/guards.ts';
@@ -72,9 +72,9 @@ serve(async (req: Request) => {
     let result = null;
     let source = 'flash';
 
-    // Try Flash first, then Flash-Lite fallback, then Brain
+    // Try LLM (Together/Gemini with auto-fallback), then Flash-Lite, then Brain
     try {
-      result = await callGemini({
+      result = await callLLM({
         model: 'gemini-2.5-flash',
         systemPrompt: DIAGNOSE_PROMPT,
         message,
@@ -83,12 +83,12 @@ serve(async (req: Request) => {
       });
     } catch (e1) {
       console.warn(JSON.stringify({
-        level: 'warn', event: 'diagnose_flash_failed',
+        level: 'warn', event: 'diagnose_primary_failed',
         error: e1 instanceof Error ? e1.message : 'unknown',
       }));
-      // Fallback to Flash-Lite
+      // Fallback to Flash-Lite tier
       try {
-        result = await callGemini({
+        result = await callLLM({
           model: 'gemini-2.5-flash-lite',
           systemPrompt: DIAGNOSE_PROMPT,
           message,
@@ -97,7 +97,7 @@ serve(async (req: Request) => {
         });
         source = 'flash-lite';
       } catch {
-        // Gemini completely failed — try Brain
+        // All LLM providers failed — try Brain
         result = await callBrainFallback(message, DIAGNOSE_PROMPT);
         source = 'brain';
       }

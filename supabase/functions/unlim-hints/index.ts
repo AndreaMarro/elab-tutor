@@ -6,7 +6,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
-import { callGemini, callBrainFallback } from '../_shared/gemini.ts';
+import { callLLM, callBrainFallback } from '../_shared/llm-client.ts';
 import { buildHintsPrompt } from '../_shared/system-prompt.ts';
 import type { HintsRequest, HintsResponse } from '../_shared/types.ts';
 import { getCorsHeaders, getSecurityHeaders, checkRateLimitPersistent, validateExperimentId, validateDifficulty, checkBodySize } from '../_shared/guards.ts';
@@ -67,7 +67,7 @@ serve(async (req: Request) => {
     const hintMessage = `Dammi un suggerimento per il passo ${safeStep + 1} dell'esperimento ${safeExpId}`;
     let result;
     try {
-      result = await callGemini({
+      result = await callLLM({
         model: 'gemini-2.5-flash-lite',
         systemPrompt,
         message: hintMessage,
@@ -75,6 +75,7 @@ serve(async (req: Request) => {
         temperature: 0.6,
       });
     } catch {
+      // All LLM providers failed — try Brain as last resort
       result = await callBrainFallback(hintMessage, systemPrompt);
       if (!result) {
         return new Response(JSON.stringify({

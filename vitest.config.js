@@ -59,6 +59,6 @@ export default defineConfig({
             ],
         },
         include: ['tests/**/*.{test,spec}.{js,jsx}'],
-        exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
+        exclude: ['node_modules', 'dist', '.idea', '.git', '.cache', 'tests/e2e'],
     },
 });

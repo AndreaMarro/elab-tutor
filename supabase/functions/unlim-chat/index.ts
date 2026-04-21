@@ -7,7 +7,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
-import { callGemini, callBrainFallback, getMetrics } from '../_shared/gemini.ts';
+import { callLLM, callBrainFallback, getMetrics } from '../_shared/llm-client.ts';
 import { routeModel, modelDisplayName } from '../_shared/router.ts';
 import { buildSystemPrompt } from '../_shared/system-prompt.ts';
 import { loadStudentContext, saveInteraction, checkConsent } from '../_shared/memory.ts';
@@ -228,10 +228,10 @@ serve(async (req: Request) => {
     // 4. Determine thinking level for Pro model
     const thinkingLevel = model === 'gemini-2.5-pro' ? 'medium' : undefined;
 
-    // 5. Call Gemini
+    // 5. Call LLM (Together default, Gemini fallback, Brain last resort)
     let result;
     try {
-      result = await callGemini({
+      result = await callLLM({
         model,
         systemPrompt,
         message: safeMessage,
@@ -240,11 +240,11 @@ serve(async (req: Request) => {
         temperature: 0.7,
         thinkingLevel,
       });
-    } catch (geminiError) {
-      // Gemini failed — try Brain fallback (structured log, no details to client)
+    } catch (llmError) {
+      // Both Together + Gemini failed — try Brain fallback
       console.warn(JSON.stringify({
-        level: 'warn', event: 'gemini_fallback',
-        error: geminiError instanceof Error ? geminiError.message : 'unknown',
+        level: 'warn', event: 'llm_fallback_brain',
+        error: llmError instanceof Error ? llmError.message : 'unknown',
         timestamp: new Date().toISOString(),
       }));
       result = await callBrainFallback(safeMessage, systemPrompt);
@@ -288,7 +288,9 @@ serve(async (req: Request) => {
       response: cappedText,
       source: modelDisplayName(model) || result.model,
       audio: audioUrl || undefined,
-      dataProcessing: result.model.startsWith('gemini') ? 'google-gemini' : 'local-brain',
+      dataProcessing: result.provider === 'together' ? 'together-ai'
+        : result.provider === 'brain' ? 'local-brain'
+        : 'google-gemini',
     };
 
     return new Response(JSON.stringify(response), {

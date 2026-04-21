@@ -1,3 +1,42 @@
+## [Sprint 1 sett-1-stabilize] — 2026-04-26
+
+### Added
+- T1-003 Render cold start warmup cron 10min (src/services/renderWarmup.js + .github/workflows/render-warmup.yml)
+- Vision E2E test extended +2 specs (5/5 PASS live)
+- LLM switch Gemini → Together AI (llm-client.ts unified dispatcher, 20/20 PZ v3)
+- Playwright E2E scaffold 12 specs (31 tests)
+- CLI autonomous loop-forever.sh + 9 scripts (stress-test, baseline-snapshot, end-week-gate, rollback, ecc)
+- ADR-001 Supabase ref canonical, ADR-002 Gemini→Together, ADR-003 JWT 401 edge auth
+- Dashboard scaffold WCAG AAA a11y (contrast #475569 7.56:1)
+- verify-edge-function.sh + verify-llm-switch.sh + verify-volume-parity.sh
+
+### Fixed
+- T1-001 Lavagna toggleDrawing stale closure (useRef pattern)
+- T1-002 Whiteboard persistenza sandbox + auto-save 5s
+- T1-009 Tea autoflow CODEOWNERS + GH Action auto-merge
+- BLOCKER-001 JWT 401 Edge Function CLI curl (SUPABASE_ANON_KEY pattern)
+- BLOCKER-002 velocity tracking Day 03+04 backfill
+
+### Changed
+- LLM provider default: Together AI Llama 3.3 70B Turbo (Gemini fallback)
+- Supabase canonical ref `euqpdueopmlllqjmqnyb` verified via MCP
+
+### Metrics
+- Tests: 12116 → 12164 (+48)
+- Benchmark: 2.77 → 3.95 (+1.18, target 6.0 miss -2.05)
+- Auditor avg: 7.35/10 (trend 6.5 → 7.75)
+- PZ v3 violations: 0
+- Engine semantic diff: 0
+- Commits: 29 atomic
+
+### Known issues (deferred sett-2)
+- Dashboard routing not wired
+- E2E spec target 14 (current 12, +2 debt)
+- ADR-003 live verify pending SUPABASE_ANON_KEY env
+- Product backlog gerarchico missing
+
+---
+
 # Changelog
 
 ## [Unreleased]

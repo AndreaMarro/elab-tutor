@@ -1,6 +1,11 @@
 {
-  "tests": "11501+114",
-  "testFiles": 180,
-  "updatedAt": "2026-04-16T15:05:00Z",
-  "note": "Ralph Loop iter 2: Principio Zero integrato. Linguaggio UNLIM riscritto con analogie. Test behavioral docente scenarios aggiunti. Running full suite..."
+  "test_count": 12164,
+  "test_files": 207,
+  "build_status": "pass",
+  "build_time_s": 58,
+  "timestamp": "2026-04-21T17:50:00Z",
+  "git_sha": "49c121c",
+  "cov_3x": "3/3 PASS",
+  "branch": "feature/t1-003-render-warmup",
+  "note": "Day 02 baseline: +15 tests (renderWarmup) vs Day 01 12149. Auditor 7.2/10, reviewer APPROVE, E2E homepage 3/3 PASS."
 }
