@@ -130,6 +130,28 @@ Append-only log. Mai cancellare (storico).
 **Resolution**: MCP verify → canonical `euqpdueopmlllqjmqnyb`. Documentato ADR-003.
 **Learned**: config ambiguity resolve pre-feature work mandatory.
 
+## BLOCKER-010 — 2026-04-21 — WATERMARK_RESTAMP_POST_BUILD
+
+**Status**: CLOSED 2026-04-21 (Day 13, sett-2 Day 06)
+**Severity**: P2
+**Owner**: inline DEV
+**Impacted tasks**: sett-2 baseline clean invariant, commit discipline
+**Description**: `npm run build` triggered `prebuild: node scripts/add-signatures.js` which stripped all existing `© Andrea Marro` watermark lines and re-inserted with current date. Result: 73 files re-stamped per build, polluting working tree with 73 watermark-only diffs. Pre-commit filter landed Day 11 caught staged but not post-build working tree. Day 12 flagged, Day 13 root-caused.
+**Investigation**: read `scripts/add-signatures.js` lines 44-83. `addSignatures()` filters out existing signature lines then re-adds with today's date. Non-idempotent by design (original intent: refresh dates). Actual need: IP proof-of-creation per-file, NOT per-build timestamp.
+**Resolution**: Day 13 commit `8adb7d3` — idempotent early-return: if `content.includes(MARKER)` skip file entirely. Files stamped once with original date, never re-bumped. New files still get stamped with today's date on first build after creation. Verified: `npm run build` 2nd run → zero dirty files (3-line diff scripts/add-signatures.js only).
+**Learned**: "refresh timestamp" pattern vs "proof of creation" pattern — different invariants. When in doubt, idempotent wins. Pre-commit hook is last line of defense, not first; fix at source.
+
+## BLOCKER-011 — 2026-04-21 — NPM_DEPS_APPROVAL_PENDING (carry-over)
+
+**Status**: OPEN — carry-over from Day 10
+**Severity**: P1 (non-blocking, scope limiter)
+**Owner**: Andrea decision
+**Impacted tasks**: Vercel AI SDK 5 integration (UNLIM tool-calls), depends on `ai` + `zod` npm packages
+**Description**: CLAUDE.md Rule 13 forbids adding npm deps without Andrea explicit approval. Blocks Day 11-13 UNLIM evolution toward tool-call architecture. Debt pivot sustained (watermark, E2E, ADRs) while awaiting.
+**Investigation**: PR comment thread, Andrea silent 3 days.
+**Workaround**: Debt pivot (closing other gaps, no new deps) — sustainable for 2-3 more days before running out of debt targets.
+**Learned**: explicit escalation needed when Andrea silence >3 days on blocking approval. Day 14 action: handoff note flagging 4-day-old open request.
+
 ## BLOCKER-006 — (vedi OPEN sez sopra, ora CLOSED)
 
 ---
