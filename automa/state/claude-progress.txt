@@ -1,51 +1,20 @@
-last_commit: 99225b7 (feat(bench): wire worker_uptime metric to worker-probe state + 2/3 live 200)
+last_commit: 9e1af66 (docs(changelog): Sprint 3 sett-3-stabilize-v3 entry — unblock Governance Rule 5 [TEST 12220])
 sprint: sett-3-stabilize-v3
-sprint_day_cumulative: 20
-sprint_day_local: 6 (sett-3 DAY 06)
-branch: feature/sett-3-stabilize-v3
-date: 2026-04-22
-status: DAY20_COMPLETE_PENDING_STATE_PUSH — sprint-3 Day 06 benchmark uplift via data-driven worker_uptime. +0.63 delta.
-baseline_tests_main: 12166 (CoV Day 16)
-baseline_tests_sett3_day19_verified: 12220 (CoV 2x deterministic)
-baseline_tests_sett3_day20: 12220 (no test files added Day 06, metric wiring only)
-cov_day20_status: PASS (benchmark run stable; no new tests)
-build_day20: n/a (no src app changes; only scripts/benchmark.cjs)
-engine_semantic_diff_day20: 0 (no engine changes)
-pz_v3_violations_day20: 0
-score_day19_self: 7.5/10
-score_day20_self: 7.5/10 (design 7.0 originality 6.5 craft 8.0 functionality 8.5)
-benchmark_day19_score: 4.12/10
-benchmark_day20_score: 4.75/10 (+0.63 delta — worker_uptime 0→6.67 contribution)
-benchmark_worker_uptime_probe_rate: 2/3 (nanobot 200, edge-tts 200, supabase 401)
-sprint3_day06_deliverables:
-  - scripts/benchmark.cjs metricWorkerUptime wired to worker-probe-latest.json
-  - scripts/worker-probe.sh URLs corrected to /health endpoints (nanobot, edge-tts)
-  - automa/state/worker-probe-latest.json fresh probe 2026-04-21T22:41:40Z (2/3 ok)
-  - automa/state/benchmark.json score 4.75 persisted with commit SHA
-  - docs/audit/day-06-audit.md compact 6-row matrix + 4 grading
-  - docs/handoff/2026-04-22-session-end-day-20.md full executive summary
-sprint3_blockers_open: 1 (ADR-003 anon-key P3 — Supabase probe 401 persists, env provisioning needed)
-sprint3_commits_day20: 1 atomic (99225b7)
-pr_sprint3_status: branch feature/sett-3-stabilize-v3 — 4 Day19 + 1 Day20 commit on branch
-deploy_prod_status: unchanged (feature branch)
-andrea_decisions_pending: 4 (NPM approval, PR #17 merge, ADR-004 5Qs, axe-core install)
-day20_scope_completed:
-  - Benchmark uplift +0.63 via metricWorkerUptime reading probe state
-  - Worker probe URL empirical correction /health (both Nanobot and Edge TTS 200)
-  - End-day commit state + audit + handoff (in-flight)
-day20_pending:
-  - Push branch
-  - Claude-mem observation save Day 20
-day20_gap_auto_critica:
-  - MCP calls 0 — deficit continues from Day 05 (sprint debt)
-  - Supabase 401 unresolved (carry to Day 07 gate if no env provision)
-  - No new test files Day 06 (narrow scope — benchmark metric wiring only)
-  - E2E Playwright full run still deferred
-  - Lighthouse/Sentry/Vercel MCP still skipped (sprint debt)
-next_day_plan: Day 21 sett-3 Day 07 FINAL — sprint retrospective + review, PR creation, end-week gate, deploy prod IF gate PASS, sprint-4 planning kickoff
-sprint3_levers_remaining_for_target_5.0:
-  - documentation metric (0) — doc coverage check
-  - dashboard_live (0.5 scaffold) — live data wiring Day 21 deploy
-  - unlim_latency_p95 (0) — needs latency samples via unlimLatencyLog runtime
-  - accessibility_wcag (0) — axe-core install decision pending
-preexisting_issues: (preserved from Day 17 state — unchanged)
+sprint_day_cumulative: 21
+sprint_day_local: 7
+sprint_status: SPRINT_3_CLOSED_PR18_OPEN_PENDING_ANDREA_MERGE
+pr_sprint3: #18 https://github.com/AndreaMarro/elab-tutor/pull/18
+gate_verdict: CONDITIONAL_PASS 11/13 (3 fail: housekeeping tasks-board + script vitest parser bug + CI in-flight)
+baseline_tests: 12220 (CoV 5/5 deterministic)
+benchmark_day21: 4.74 (stable -0.01 vs Day 06 4.75)
+auditor_avg_sett3: 7.53
+commits_sett3: 25 atomic
+blockers_open: 0 P0/P1 | 1 P3 carry-over (ADR-003 env)
+stories_accepted: 14/17 (82%)
+evidence_day07: docs/reviews/sprint-3-review.md, docs/retrospectives/sprint-3-retrospective.md, docs/audit/day-07-sett-3-final-audit.md, docs/audit/2026-04-22-sett-3-end-week-gate-verdict.md, docs/handoff/2026-04-22-sett-3-end-week-session.md, CHANGELOG.md, automa/team-state/sprint-contracts/sett-4-sprint-contract.md
+session_score_day07: 7.5/10
+session_end: 2026-04-22 07:50 GMT+8 (approx)
+stop_reason: sett-end-gate complete, Andrea merge decision required (safety memory honored — no auto-merge)
+next_action: await Andrea merge PR #18 + resolve 5 decisions (sprint-4 theme, axe-core, PR#17 triage, ADR-003 env, ADR-004 JWT) + kickoff feature/sett-4-intelligence-foundations
+sprint4_contract: DRAFT at automa/team-state/sprint-contracts/sett-4-sprint-contract.md (Option C default dual-track Intelligence Foundations + Dashboard Phase 2, ~29 SP, 4 Epics)
+debt_carry_sprint4: 10 items (benchmark <5.0, dashboard real data, a11y metric, latency_p95, PR#17, ADR-003 env, watchdog noise, gate script bug, MCP discipline, tasks-board tracking)
