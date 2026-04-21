@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-21T02:52:34.313Z",
+  "timestamp": "2026-04-21T08:02:41.368Z",
   "mode": "fast",
   "score": 3.95,
   "score_out_of": 10,
@@ -14,8 +14,8 @@
       "contribution": 1.3
     },
     "build_size_kb": {
-      "value": 14666,
-      "observed": 14666,
+      "value": 24379,
+      "observed": 24379,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -95,7 +95,7 @@
       "contribution": 0
     }
   },
-  "commit_sha": "d064349cde535a1f9a8b2570dafe5d466e0a1d23",
+  "commit_sha": "d438ac97e59461655f80ac0785771b60f140d77b",
   "branch": "feature/sett-2-stabilize-v2",
   "previous_score": 3.95,
   "delta": 0

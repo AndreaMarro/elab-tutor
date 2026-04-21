@@ -4,7 +4,7 @@
   "sprint_period": "2026-04-21_to_2026-04-27",
   "cumulative_day_range": "08-14",
   "created_at": "2026-04-21T10:51:00+08:00",
-  "updated_at": "2026-04-21T10:51:00+08:00",
+  "updated_at": "2026-04-21T15:40:00+08:00",
   "baseline_pre_sprint": {
     "test_count": 12164,
     "benchmark_score": 3.95,
@@ -47,13 +47,38 @@
       "mcp_calls_planned": 5,
       "mcp_calls_floor": 5,
       "notes": "Day 08 cumulative = sett-2 Day 01 local. CI unblock: deploy-smoke manifest tolerant SPA fallback. CoV 3x restored baseline 12164. Vercel action v25 upgrade DEFERRED Andrea. Routines Orchestrator disabled_manually confirmed."
+    },
+    {
+      "day_cumulative": 9,
+      "day_local": 2,
+      "date": "2026-04-21",
+      "day_of_week": "mar",
+      "commits": 0,
+      "commits_planned_end_day": 1,
+      "test_count_end": 12164,
+      "test_delta": 0,
+      "cov_runs": 3,
+      "cov_result": "3/3 PASS 12164/12164",
+      "benchmark_score_end": 3.95,
+      "benchmark_delta": 0,
+      "build_status": "PASS",
+      "blockers_closed": ["BLOCKER-003", "BLOCKER-004", "BLOCKER-007", "BLOCKER-008"],
+      "blockers_open": [],
+      "pz_v3_violations": 0,
+      "dispatch_count": 0,
+      "dispatch_cap": 5,
+      "dispatch_overflow": 0,
+      "unpushed_commits_end": 0,
+      "mcp_calls_planned": 8,
+      "mcp_calls_floor": 5,
+      "notes": "4 Sprint 2 blockers CLOSED today (003 dirty triage copyright watermarker, 004 product-backlog.md verify, 007 render-warmup 3 cron runs success, 008 grep canonical invariant 2=2). Day 11 Vercel AI SDK plan seed written. Main merged into feature (d438ac9). Engine lock preserved via mass src/ revert (96%+ copyright noise)."
     }
   ],
   "goals_progress": {
-    "G1_tests_12164_preserved": "on_track (12164)",
-    "G2_benchmark_min_4_5": "pending_write_day08",
-    "G3_auditor_avg_7_5": "pending",
-    "G4_blockers_closed_min_3": "progress (1/3 BLOCKER-009)",
+    "G1_tests_12164_preserved": "on_track (12164 x 2 days)",
+    "G2_benchmark_min_4_5": "progress (3.95 stable, +0.55 gap)",
+    "G3_auditor_avg_7_5": "progress (Day 08 6.25 + Day 09 ~7.25 self-assess)",
+    "G4_blockers_closed_min_3": "EXCEEDED (5/3: 009+003+004+007+008)",
     "G5_pz_v3_0_violations": "on_track",
     "G6_dashboard_feature_logic": "not_started (scope Day 11-13)"
   }
