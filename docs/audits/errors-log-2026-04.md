@@ -802,3 +802,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Review and either ready-for-review or close
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T18:15:01Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"AI temporaneamente non disponibile. Riprova tra qualche secondo."}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T18:15:01Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Prepara attentamente le tue soluzioni prima di iniziare. Assicurati che tutti gli strumenti siano puliti e pronti all'uso.","source":"flash-lite"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T18:15:01Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Il circuito è incompleto.\n\n1.  **Manca alimentazione:** Non c'è una sorgente di tensione per far funzionare il LED.\n2.  **Manca connessione:** Il LED non è collegato
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-21T18:15:01Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #17 sett-2-stabilize-v2 — Sprint 2 END (Day 08-14) PARTIAL CLOSE integrity flag
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
