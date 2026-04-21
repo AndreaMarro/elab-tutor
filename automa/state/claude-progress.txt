@@ -1,26 +1,27 @@
-last_commit: 5bc367a
+last_commit: pending_audit_handoff_commit
 sprint: sett-2-stabilize-v2
-sprint_day_cumulative: 10
-sprint_day_local: 3
+sprint_day_cumulative: 11
+sprint_day_local: 4
 branch: feature/sett-2-stabilize-v2
 date: 2026-04-21
-status: COMPLETE Day 10
+status: COMPLETE Day 11
 baseline_tests_sett2: 12166
-cov_day10: run1=12164PASS(pre) run2=12166PASS(post-both-agents-commits)
-benchmark_day10: 3.95/10 (+0 fast-mode, full-mode deferred Day 14)
-commits_day10: 4 (4f00b00 vision + 63d6920 dashboard + ed49e52 contract + pending audit)
-blockers_closed_day09_total: 4 (003/004/007/008)
-blockers_closed_day10: 0 new (carry-over clean)
-blockers_open: 0
-gaps_closed_day10: 5 (vision E2E scaffold + dashboard dir + MCP log + watermark revert + contract formal)
-score_day10: 7.25/10 (design 7.5 originality 5.5 craft 8.0 functionality 8.0)
-day11_next_focus: Vercel AI SDK integration (5 UNLIM tools) + Dashboard route wiring + Vision Gemini real E2E
-day11_prep: docs/plans/day-11-vercel-ai-sdk-prep.md (5 UNLIM tools + Zod schemas, Day 09 written)
-watermark_hook_note: re-triggered mid-session, reverted via git checkout, pre-commit filter debt P3
-last_day_update: 2026-04-21T16:48Z
-next_action: DAY_11
-day11_blocker: NPM_DEPS_APPROVAL_PENDING (ai + zod for Vercel AI SDK per CLAUDE.md rule 13)
-day11_blocker_prompt: Andrea approve `npm install ai zod` OR pivot Day 11 to debt-only (dashboard route + velocity schema + watermark filter)
-ci_status_post_push: E2E Tests in_progress (run triggered 5bc367a)
-session_stop_reason: day10_complete_handoff_pushed + day11_blocker_dep_approval
-push_hash_verified: 1b7f36d..5bc367a
+cov_day11: 5x all 12166 PASS zero flaky
+benchmark_day11: 3.95/10 (fast-mode stable, full-mode deferred Day 14)
+commits_day11: 3 (297e969 dashboard route + 8b97720 watermark filter + 54513b3 contract/velocity)
+blockers_closed_day10_total: 0 new Day 11 (Day 09 peak 4 closed)
+blockers_open: 1 (NPM_DEPS_APPROVAL)
+gaps_closed_day11: 3 fix-budget (route wiring + velocity schema + watermark filter)
+score_day11: 7.1/10 (design 7.0 originality 4.5 craft 8.0 functionality 8.0)
+day12_next_focus: IF Andrea approves npm install ai+zod -> Vercel AI SDK 5 UNLIM tools; ELSE debt continues (E2E dashboard-v2 smoke + benchmark full-mode + claude-mem save wire + watermark filter CI integration + DashboardShell data ADR)
+day11_pivot_rationale: Original Day 11 blocked CLAUDE.md Rule 13. Debt pivot zero-new-deps.
+watermark_filter_landed: yes, 126 lines script + 65 lines smoke test, production run cleaned 73 files successfully
+engine_semantic_diff_day11: 0
+pz_v3_violations_day11: 0
+mcp_calls_direct_day11: 0 (honest floor miss vs target 10)
+last_day_update: 2026-04-21T17:14Z
+next_action: DAY_12
+day11_blocker_carry_over: NPM_DEPS_APPROVAL_PENDING (ai + zod for Vercel AI SDK)
+ci_status_post_push: pending (push next after this state commit)
+session_stop_reason: day11_complete_handoff_pending_push
+push_hash_verified: 5bc367a (Day 10 end) -> needs verify post-Day-11-push
