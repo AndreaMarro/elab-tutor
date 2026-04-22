@@ -792,6 +792,14 @@ export default function LavagnaShell() {
 
   return (
     <div className={css.shell}>
+      {/*
+        Screen-reader heading — lavagna route previously had zero <h1> elements
+        (stress-test P2-007). Keep it visually hidden to preserve existing
+        design while giving assistive tech a proper document outline.
+      */}
+      <h1 className="visually-hidden">
+        {experimentName ? `Lavagna ELAB — ${experimentName}` : 'Lavagna ELAB'}
+      </h1>
       <AppHeader
         experimentName={experimentName}
         totalSteps={totalSteps}

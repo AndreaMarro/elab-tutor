@@ -58,6 +58,29 @@ Diff: 5 files, +256 / −0. CoV 3/3 PASS (12234 tests, 128s/316s/120s).
 
 ---
 
+## [Stress-test client fixes] — 2026-04-22
+
+Follow-up to the 2026-04-22 prod stress test (`docs/audits/2026-04-22-stress-test-findings.md`). Four surgical client-side fixes for the P1 and P2 findings that do not require a backend deploy. P0 (PWA stale precache) ships separately in `fix/p0-pwa-stale-precache`. Server-side P1s (Vision `/chat` 422, Principio Zero v3 prompt drift) tracked for dedicated backend sessions.
+
+### Fixed
+- **P1-003 SafeMarkdown double-escape** (`src/components/tutor/shared/SafeMarkdown.jsx`) — `escapeHtml` is now a no-op; React auto-escapes strings passed as children so the previous manual escape was double-encoding and showing `&quot;` as literal text in UNLIM responses.
+- **P2-001 WakeWord log flood** (`src/services/wakeWord.js`) — terminal-error set for `not-allowed` / `service-not-allowed`; the recognition loop logs once and stops auto-restarting instead of producing ~180 identical warnings per 30 s when mic permission is denied.
+- **P2-005 `/health` HEAD → 405** (`src/services/api.js`) — `warmupRender()` uses GET; Render rejected HEAD.
+- **P2-007 No `<h1>` on lavagna** (`src/components/lavagna/LavagnaShell.jsx`) — visually-hidden `<h1>` with the current experiment title using the existing `.visually-hidden` class.
+
+### Added
+- `docs/stress-tests/2026-04-22-playwright-prod.md` — 5 Playwright suites + honest numbers.
+- `docs/stress-tests/2026-04-22-chrome-audit-prod.md` — programmatic Chrome audit + score 5.0/10.
+- `docs/audits/2026-04-22-stress-test-findings.md` — 16 findings with severity, repro, fix pointers.
+- `docs/audits/2026-04-22-lessons-learned-sprint3.md` — process gaps + Sprint 5 DoD additions.
+- `docs/handoff/2026-04-22-stress-test-session.md` — session close-out.
+
+Diff: 4 src files (+36 / −8) + 5 docs.
+
+Verification: baseline 12220/12220, CoV 1/3 12220/12220, CoV 2/3 and 3/3 each hit the documented flaky `parallelismoVolumiReale.test.js > lessonPrepService exports` timeout (load-induced, pre-existing since 2026-04-17 — isolated run 102/102 PASS in 8.4 s proves it is not a regression).
+
+---
+
 ## [Sprint 3 sett-3-stabilize-v3] — 2026-04-22
 
 Sprint 3 closure — PR #18 open for merge. 25 atomic commits, baseline ratcheted 12164→12220 (+56 tests), benchmark 3.95→4.75 (+0.80), 3 blockers closed, engine lock preserved, zero regression.
