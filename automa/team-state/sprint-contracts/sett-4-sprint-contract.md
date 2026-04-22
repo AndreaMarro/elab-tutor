@@ -1,70 +1,85 @@
-# Sprint 4 Contract — sett-4-intelligence-foundations (DRAFT Day 01 kickoff)
+# Sprint 4 Contract — sett-4-intelligence-foundations (FINAL Option B)
 
 **Sprint**: 4/8 PDR 8-week
 **Period**: 2026-04-29 (mar) → 2026-05-05 (lun), 7 days cumulative Day 22-28
-**Branch**: `feature/sett-4-intelligence-foundations` (to create post sett-3 merge)
+**Branch**: `feature/sett-4-intelligence-foundations` (create from main post PR #18 merge)
 **Format**: Harness 2.0 + Agile Scrum
-**Status**: DRAFT — pending Andrea kickoff approval + 5 decision points resolution
+**Status**: **FINAL** — Andrea approved 2026-04-22 07:55 (5 decisions resolved)
 **Baseline**: sett-3 end state (tests 12220, benchmark 4.75, auditor avg 7.53)
+**Prod deployed**: 2026-04-22 07:58 — `dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe` (www.elabtutor.school HTTP 200 verified)
 
 ---
 
-## Sprint Theme
+## Sprint Theme — LOCKED Option B
 
-**INTELLIGENCE FOUNDATIONS** — first AI intelligence layer + deferred sprint-3 debt closure.
+**INTELLIGENCE FOUNDATIONS — Karpathy LLM Wiki Proof-of-Concept**
 
-Per PDR 8-week roadmap: sett-4 opens intelligence track (Karpathy three-layer LLM Wiki evaluated Day 03 sett-3). Combined with sprint-3 spillover (3 stories, 5 SP).
+Per PDR 8-week roadmap: sett-4 opens intelligence track. Karpathy three-layer LLM Wiki research committed Day 03 sett-3 (`0413649` research doc, evaluated ibrido RAG+Wiki). Sprint-4 implements POC to validate pattern before sprint-5 ONNIPOTENZA 33-tools integration.
+
+Dashboard real-data deferred sprint-5 when Tea onboarded (30/04 scheduled) for parallel track without split-focus penalty.
 
 ---
 
-## Sprint Goal Candidates (Andrea decision N4)
+## Andrea Decisions Resolution (2026-04-22 07:55)
 
-**Option A — Dashboard real-data first**: ship Phase 2 Dashboard with live Supabase data, defer Karpathy.
-**Option B — Karpathy LLM Wiki proof-of-concept**: three-layer architecture skeleton (data ingestion + RAG + generation), defer Dashboard real-data to sprint-5.
-**Option C — Both tracks parallel**: Dashboard DEV lane + Karpathy ARCHITECT lane (requires discipline, higher risk).
+1. **PR #18 merge + prod deploy** → ACCEPTED. PR merged `2b5bab7`. Deploy `dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe` LIVE. CoV 4x verified (3x pre-merge + 1x post-merge main).
+2. **axe-core install** → APPROVED. Add `@axe-core/playwright` as devDep sprint-4 Day 03 (S4.2.1).
+3. **PR #17 triage** → NO-OP. Already merged 2026-04-21T21:19:40Z as sett-2 closure, sprint-3 draft ref was stale.
+4. **Sprint-4 theme** → **Option B LOCKED**. Rationale below.
+5. **ADR-003 Supabase anon key provisioning** → DEFERRED sprint-5 (not needed for Option B track).
 
-**TPM recommendation**: **Option C** contingent on MCP enforcement + daily reconciliation. Falls back to Option A if Day 03 reveals resource contention.
+### Option B rationale (brutal honest)
+
+- **Aligns PDR original theme**: sett-4 = OMNISCIENCE in 8-week roadmap, Wiki IS knowledge consolidation pattern.
+- **Differentiator competitivo**: no competitor has LLM Wiki; Dashboard real-data is table-stakes.
+- **Sprint-3 lesson**: single concentrated track (Option B) delivered 11/13 gate vs sett-2 fragmented pattern.
+- **Tea onboarding 30/04**: Sprint-4 starts 29/04 = 1 day overlap. Without Tea Day 01, parallel Option C = split focus = worse. Tea starts Option A sprint-5 with Dashboard real-data clean track.
+- **PNRR deadline 30/06**: Dashboard MVP needed sprint-5/6 window, not sprint-4 urgency.
+- **Base sprint-5 ONNIPOTENZA**: wiki_query / wiki_ingest / wiki_lint become 3 of 33 tools.
 
 ---
 
 ## Sprint Scope (Option C default, to re-contract if A/B selected)
 
-### Epic 4.1 — Dashboard Phase 2 real data (5 SP carry-over + 3 new)
+### Epic 4.1 — Karpathy LLM Wiki POC (15 SP — MAIN TRACK)
+
+Reference: `docs/research/2026-04-22-karpathy-llm-wiki.md` (Day 03 research commit `0413649`)
 
 | Story | SP | Day target | Owner |
 |-------|----|-----------|-------|
-| S4.1.1 Supabase Edge Function `dashboard-data` deploy | 3 | Day 02 | DEV + Andrea env |
-| S4.1.2 useDashboardData hook point to live endpoint | 2 | Day 03 | DEV |
-| S4.1.3 E2E spec 15 adapt to live mode (vs mocks) | 2 | Day 04 | TEST |
-| S4.1.4 Teacher JWT auth flow (from ADR-004) | 3 | Day 05 | DEV + security |
+| S4.1.1 ADR-006 three-layer detail + SCHEMA.md wiki conventions | 3 | Day 01-02 | ARCHITECT |
+| S4.1.2 `docs/unlim-wiki/` skeleton (index.md + log.md + dirs) | 2 | Day 02 | DEV |
+| S4.1.3 Ingest script 92 esperimenti → `experiments/*.md` | 3 | Day 03-04 | DEV + Together AI |
+| S4.1.4 Ingest script 27 lezioni + 20-30 concetti | 3 | Day 04-05 | DEV + Together AI |
+| S4.1.5 Edge Function `unlim-wiki-query` (tool-use pattern) | 2 | Day 05-06 | DEV |
+| S4.1.6 Integration tests 10+ wiki pipeline | 2 | Day 06 | TEST |
 
 ### Epic 4.2 — Benchmark uplift levers (8 SP)
 
 | Story | SP | Day target | Owner |
 |-------|----|-----------|-------|
-| S4.2.1 axe-core install + Lighthouse a11y baseline | 3 | Day 03 IF Andrea Q5 approves | DEV + TEST |
-| S4.2.2 accessibility_wcag metric wire | 2 | Day 04 | DEV |
-| S4.2.3 unlim_latency_p95 runtime pipeline (Supabase `unlim_metrics` table) | 3 | Day 04-05 | DEV |
+| S4.2.1 axe-core `@axe-core/playwright` install + a11y baseline | 3 | Day 03 | DEV + TEST |
+| S4.2.2 accessibility_wcag metric wire to `benchmark.cjs` | 2 | Day 04 | DEV |
+| S4.2.3 unlim_latency_p95 runtime pipeline (Supabase `unlim_metrics` table + ring-buffer flush) | 3 | Day 04-05 | DEV |
 
-### Epic 4.3 — Karpathy LLM Wiki POC (8 SP)
-
-| Story | SP | Day target | Owner |
-|-------|----|-----------|-------|
-| S4.3.1 Architecture ADR-006 three-layer detail | 3 | Day 02 | ARCHITECT |
-| S4.3.2 Layer 1 data ingestion skeleton (volumi PDF → chunks) | 2 | Day 03-04 | DEV |
-| S4.3.3 Layer 2 RAG query interface (reuse `rag-chunks.json`) | 2 | Day 05 | DEV |
-| S4.3.4 Layer 3 generation prompt template + 5 integration tests | 1 | Day 06 | DEV + TEST |
-
-### Epic 4.4 — Process + Integrity (5 SP)
+### Epic 4.3 — Process + Integrity (3 SP)
 
 | Story | SP | Day target | Owner |
 |-------|----|-----------|-------|
-| S4.4.1 A-403 PR #17 sprint-2 triage | 1 | Day 01 | Andrea+TPM |
-| S4.4.2 A-401 PTC code_execution CoV 5x parallel | 1 | Day 01 | TPM |
-| S4.4.3 A-402 Velocity tracking sett-3 backfill | 1 | Day 01 | TPM |
-| S4.4.4 A-407 Watchdog noise suppression ADR-005 | 2 | Day 02 | DEV |
+| S4.3.1 A-401 PTC code_execution CoV 5x parallel | 1 | Day 01 | TPM |
+| S4.3.2 A-402 Velocity tracking sett-3 backfill + sett-4 file create | 1 | Day 01 | TPM |
+| S4.3.3 A-407 Watchdog noise suppression ADR-005 | 1 | Day 02 | DEV |
 
-**Total**: ~29 SP (committed range 25-35 SP, 3 sprint rolling avg 24.7 SP).
+### Deferred sprint-5 (Dashboard real data track)
+
+Triggered when Tea onboarded (30/04 scheduled, Day 02 sett-4):
+- S5.x.1 Supabase Edge Function `dashboard-data` real query + RLS
+- S5.x.2 useDashboardData hook live endpoint wiring (remove mock)
+- S5.x.3 E2E spec 15 adapt live mode
+- S5.x.4 Teacher JWT auth flow (ADR-004)
+- S5.x.5 ADR-003 Supabase anon key env provisioning (Vercel + Supabase dashboards)
+
+**Total sett-4**: ~26 SP (committed range 25-35 SP, 3 sprint rolling avg 24.7 SP).
 
 ---
 
