@@ -38,9 +38,17 @@ window.addEventListener('vite:preloadError', (event) => {
 // (see vite.config.js workbox.clientsClaim), the `controllerchange` event
 // fires. Reload once so the tab refetches the fresh index.html instead of
 // continuing to render under the previous SW's precached HTML.
-// sessionStorage guard prevents reload loops on SW handoff chains.
+//
+// Critical guard: only reload on SW *updates*, never on first install.
+// On a fresh browser profile there is no controller at module load; when
+// the first SW activates and claims the page, `controllerchange` fires
+// exactly once. Without the `hadController` check we would force every
+// brand-new user through an extra reload (caught in tests/e2e/12-stress-
+// insegnante-impreparato.spec.js:322 as a spurious pageerror).
 if ('serviceWorker' in navigator) {
+  const hadController = Boolean(navigator.serviceWorker.controller);
   navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController) return; // first install — nothing to replace, nothing to reload
     if (sessionStorage.getItem('elab-sw-reload') === '1') return;
     sessionStorage.setItem('elab-sw-reload', '1');
     window.location.reload();

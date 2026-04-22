@@ -1,3 +1,20 @@
+## [Hotfix P0 PWA stale precache] — 2026-04-22
+
+Post-deploy blank-page regression for returning users (stress test 2026-04-22, `docs/audits/2026-04-22-stress-test-findings.md#p0-001`). Workbox precache from a prior visit referenced chunk hashes that no longer existed on the origin; Vercel's SPA catch-all returned HTML for each missing `/assets/*.js`, browser aborted module loading, React never booted.
+
+### Fixed
+- **Inline safety net in `index.html`** — capture-phase window `error` listener (pre-module) unregisters the stale SW, purges all caches, reloads once. Only layer that runs when the module graph itself is broken.
+- **`controllerchange` reload in `src/main.jsx`** — when a new SW claims this tab, reload once. `hadController` guard prevents reloading first-install users (regression caught in `e2e/12-stress-insegnante-impreparato.spec.js`).
+- **Workbox hygiene in `vite.config.js`** — `skipWaiting` + `clientsClaim` + `cleanupOutdatedCaches` activate the new SW immediately and purge prior-deploy precache entries.
+
+### Added
+- `tests/unit/pwa-stale-precache-hotfix.test.js` — 15 regression asserts (each layer present + distinct sessionStorage keys + `hadController` guard).
+- `tests/e2e/16-pwa-stale-precache.spec.js` — opt-in smoke via `SMOKE_PWA=1` that forges a stale precache entry and asserts automatic recovery.
+
+Diff: 5 files, +256 / −0. CoV 3/3 PASS (12234 tests, 128s/316s/120s).
+
+---
+
 ## [Sprint 3 sett-3-stabilize-v3] — 2026-04-22
 
 Sprint 3 closure — PR #18 open for merge. 25 atomic commits, baseline ratcheted 12164→12220 (+56 tests), benchmark 3.95→4.75 (+0.80), 3 blockers closed, engine lock preserved, zero regression.

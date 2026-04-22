@@ -65,6 +65,14 @@ describe('P0 hotfix — PWA stale precache safety net', () => {
         it('reloads with window.location.reload (not replace, not href hack)', () => {
             expect(main).toMatch(/window\.location\.reload\(\)/);
         });
+
+        it('checks a prior controller so first-install users are not force-reloaded', () => {
+            // Without this guard every brand-new user is force-reloaded once when
+            // clientsClaim activates the SW. Caught in
+            // tests/e2e/12-stress-insegnante-impreparato.spec.js as a pageerror.
+            expect(main).toMatch(/hadController/);
+            expect(main).toMatch(/navigator\.serviceWorker\.controller/);
+        });
     });
 
     describe('Layer 1: workbox config in vite.config.js', () => {
