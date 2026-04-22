@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ELAB-specific watchdog checks. Sourced helpers from watchdog-run.sh:
-#   log_anomaly TYPE DETAIL [PATTERN_HINT]
+#   log_anomaly TYPE DETAIL [PATTERN_HINT] [SEVERITY=info|warn|error]
 #   log_ok CHECK [DETAIL]
+#   log_ok_streak CHECK [DETAIL]  # ADR-005 auto-close after 3× OK
 
 set -uo pipefail
 
@@ -25,7 +26,7 @@ if [ "$HTTP_CODE" = "200" ]; then
   log_ok "production_root" "$PROD_URL → 200"
 else
   log_anomaly "production_down" "$PROD_URL returned $HTTP_CODE (expected 200)" \
-    "Check Vercel deploys + service worker precache"
+    "Check Vercel deploys + service worker precache" "error"
 fi
 
 # === CHECK 2: Edge Functions CORS + content + Principio Zero v3 ===
@@ -48,7 +49,7 @@ while IFS= read -r fn_json; do
     log_ok "edge_${FN_NAME}_cors" "preflight $CORS_CODE"
   else
     log_anomaly "edge_cors_broken" "${FN_NAME} preflight returned $CORS_CODE" \
-      "Verify guards.ts Allow-Headers contains apikey + content-type"
+      "Verify guards.ts Allow-Headers contains apikey + content-type" "error"
   fi
 
   # POST content (only if anon key + payload available)
@@ -80,7 +81,7 @@ while IFS= read -r fn_json; do
         if [ "$FOUND_REQUIRED" = "false" ]; then
           log_anomaly "principio_zero_v3_required_missing" \
             "${FN_NAME} response missing all required patterns (Ragazzi/ragazzi)" \
-            "Re-read supabase/functions/_shared/system-prompt.ts BASE_PROMPT"
+            "Re-read supabase/functions/_shared/system-prompt.ts BASE_PROMPT" "error"
         fi
 
         # Forbidden patterns
@@ -89,7 +90,7 @@ while IFS= read -r fn_json; do
           if echo "$RESPONSE_TEXT" | grep -qiE "$forb"; then
             log_anomaly "principio_zero_v3_forbidden_found" \
               "${FN_NAME} response contains forbidden pattern: $forb" \
-              "BASE_PROMPT regression — verify deploy of system-prompt.ts"
+              "BASE_PROMPT regression — verify deploy of system-prompt.ts" "error"
           fi
         done <<< "$FORBIDDEN"
 
@@ -100,7 +101,7 @@ while IFS= read -r fn_json; do
     elif [ -n "$PAYLOAD" ]; then
       log_anomaly "edge_${FN_NAME}_content_failed" \
         "Response success=false or empty. Raw: $(echo "$RESP" | head -c 200)" \
-        "Check Edge Function logs in Supabase dashboard"
+        "Check Edge Function logs in Supabase dashboard" "warn"
     fi
   fi
 done <<< "$EDGE_FUNCS"
@@ -113,7 +114,7 @@ if command -v gh >/dev/null 2>&1; then
       ) | "#\(.number) \(.title)"')
   if [ -n "$STUCK_PRS" ]; then
     log_anomaly "pr_draft_stuck" "Draft PRs older than ${PR_STUCK_HOURS}h: $STUCK_PRS" \
-      "Review and either ready-for-review or close"
+      "Review and either ready-for-review or close" "warn"
   else
     log_ok "pr_draft_age" "No draft PRs older than ${PR_STUCK_HOURS}h"
   fi
@@ -127,7 +128,7 @@ if command -v gh >/dev/null 2>&1; then
       )] | length')
   if [ "$CI_FAILS" -gt 3 ]; then
     log_anomaly "ci_failure_burst" "$CI_FAILS CI failures in last ${CI_FAIL_HOURS}h" \
-      "Check workflow logs for common root cause (missing secret, dep change)"
+      "Check workflow logs for common root cause (missing secret, dep change)" "error"
   else
     log_ok "ci_failures_${CI_FAIL_HOURS}h" "$CI_FAILS failures (threshold 3)"
   fi
