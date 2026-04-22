@@ -117,6 +117,15 @@ Leggi CONTRIBUTING.md per le regole complete. In breve:
 5. Target: bambini 8-14 — testi semplici, bottoni grandi (44x44px min)
 6. WCAG AA: contrasto minimo 4.5:1, font minimo 13px
 
+## Automation hooks
+
+Il repository usa 2 hook automation attivi (opt-in, installati via `scripts/hooks/install-git-hooks.sh`):
+
+- **Post-commit claude-mem capture** (A-502, Sprint 5 Day 01): ogni commit genera un payload `automa/state/claude-mem-pending/commit-*.json` con SHA + subject + stats + sprint metadata per cross-session memory. Non-blocking (`set +e`). Doc: [`docs/workflows/claude-mem-automation.md`](docs/workflows/claude-mem-automation.md).
+- **Watchdog noise suppression** (ADR-005, Sprint 5 Day 02): `scripts/watchdog-run.sh` filtra GH issue creation con severity (info/warn/error) + threshold warn N=3 + cooldown error 2h / warn 24h + auto-close 3× OK streak. State in `automa/state/watchdog-{streaks,cooldown}.json` (gitignored). Test: `bash scripts/test-watchdog-suppression.sh`. ADR: [`docs/architectures/ADR-005-watchdog-noise-suppression.md`](docs/architectures/ADR-005-watchdog-noise-suppression.md).
+
+Per disattivare completamente gli hook: `bash scripts/hooks/install-git-hooks.sh --uninstall`.
+
 ## Licenza
 
 Proprietario. Andrea Marro 2026. Tutti i diritti riservati.

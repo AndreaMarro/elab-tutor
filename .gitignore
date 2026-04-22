@@ -29,6 +29,9 @@ models/*.pth
 # Runtime state (must NOT be reverted by git checkout -- .)
 automa/state/last-eval.json
 automa/state/cycle-snapshot.json
+# ADR-005 watchdog suppression state (regenerated per run)
+automa/state/watchdog-streaks.json
+automa/state/watchdog-cooldown.json
 
 # Environment files
 .env

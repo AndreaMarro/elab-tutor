@@ -1,8 +1,13 @@
 # ADR-005 — Watchdog noise suppression (severity + cooldown + threshold)
 
-**Status**: PROPOSED (sett-4 Day 02, 2026-04-23)
+**Status**: ACCEPTED (Day 30 Sprint 5 Day 02 bridge, 2026-04-22, impl SHA `d52ee87`)
+**Promoted from**: PROPOSED (sett-4 Day 02, 2026-04-23)
 **Supersedes**: none
-**Related**: ADR-006 (wiki ingest log will reuse severity taxonomy)
+**Related**: ADR-006 (wiki ingest log will reuse severity taxonomy), ADR-008 (schema formalization same Day 30)
+**Implementation evidence**:
+- `scripts/watchdog-run.sh` — 3-layer `log_anomaly()` + `log_ok_streak()` (commit d52ee87)
+- `scripts/watchdog-checks.sh` — severity tags on 7 call sites
+- `scripts/test-watchdog-suppression.sh` — 10 cases / 16/16 assertions PASS
 
 ---
 
