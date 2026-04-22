@@ -1,3 +1,15 @@
+## [CSP: re-enable inline safety-net script via SHA-256 hash] — 2026-04-22
+
+P0 follow-up. Post-deploy Playwright inspection of `https://www.elabtutor.school/` showed two CSP violations per page load: the inline safety-net `<script>` added by the P0 PWA hotfix was being refused because the meta-CSP only allowed `script-src 'self' https://cdnjs.cloudflare.com`. The safety net therefore never armed — exactly the users who most need it (returning with a stale workbox precache) were left unprotected.
+
+### Fixed
+- `index.html` — added `'sha256-IoG5e951ZhtoqUSOrWp82pkf4xxhD8DeTe0m9yH2cb8='` (the browser-reported hash of the current inline body) to `script-src` so the safety net executes. `'unsafe-inline'` intentionally kept out.
+
+### Rationale
+A hash is stricter than `'unsafe-inline'`: any tamper with the inline body invalidates the hash and the browser refuses to run it. Regression protection works with the existing `tests/unit/pwa-stale-precache-hotfix.test.js` (asserts body still contains the key strings). Additionally a live Playwright smoke run surfaces the CSP error in the console log within seconds.
+
+---
+
 ## [CI: deploy.yml uses vercel build (env baked)] — 2026-04-22
 
 Fixes a silent deploy gap discovered during the Supabase hardening rollout. The previous workflow ran `npm run build` on the GitHub runner, which never received Vercel dashboard env vars. The production bundle for the Supabase-primary switch therefore shipped without the `X-Elab-Api-Key` header, and every live chat request returned 401 Unauthorized.
