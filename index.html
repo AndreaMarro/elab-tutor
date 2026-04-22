@@ -77,6 +77,47 @@
 
 <body>
   <div id="root"></div>
+  <!--
+    P0 safety net (2026-04-22 hotfix, fix/p0-pwa-stale-precache):
+    When the workbox precache from a prior deploy serves a stale index.html
+    that references chunk hashes no longer present on the origin, each missing
+    /assets/*.js returns HTML (Vercel SPA rewrite) and the browser aborts the
+    module load with "Expected a JavaScript-or-Wasm module script". React
+    never boots. Main.jsx cannot register its own handler because it is
+    inside the failed module graph.
+    This inline capture-phase listener fires during the load failure window,
+    unregisters the stale service worker, purges all caches, and reloads
+    exactly once (sessionStorage guard prevents loops). After reload, the
+    browser hits the origin directly and receives the fresh index.html.
+  -->
+  <script>
+    (function () {
+      var RELOAD_KEY = 'elab-stale-module-reload';
+      if (sessionStorage.getItem(RELOAD_KEY) === '1') return;
+      window.addEventListener('error', function (event) {
+        var target = event && event.target;
+        if (!target || target === window) return;
+        var tag = target.tagName;
+        if (tag !== 'SCRIPT' && tag !== 'LINK') return;
+        var src = target.src || target.href || '';
+        if (src.indexOf('/assets/') === -1) return;
+        sessionStorage.setItem(RELOAD_KEY, '1');
+        var cleanup = Promise.resolve();
+        if ('serviceWorker' in navigator) {
+          cleanup = navigator.serviceWorker.getRegistrations()
+            .then(function (regs) { return Promise.all(regs.map(function (r) { return r.unregister(); })); })
+            .catch(function () { /* best effort */ });
+        }
+        cleanup = cleanup.then(function () {
+          if (typeof caches === 'undefined') return null;
+          return caches.keys().then(function (names) {
+            return Promise.all(names.map(function (n) { return caches.delete(n); }));
+          });
+        }).catch(function () { /* best effort */ });
+        cleanup.then(function () { window.location.reload(); });
+      }, true);
+    })();
+  </script>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

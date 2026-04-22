@@ -88,6 +88,20 @@ export default defineConfig(({ mode }) => ({
             },
             workbox: {
                 maximumFileSizeToCacheInBytes: 2500 * 1024, // 2.5MB max per file — increased for lesson-paths JSON (94 files)
+                // P0 hotfix 2026-04-22 (fix/p0-pwa-stale-precache):
+                // - skipWaiting: new SW activates immediately instead of waiting for
+                //   all tabs to close. Combined with clientsClaim, this narrows the
+                //   window during which a stale precache could serve a mismatched
+                //   index.html after a deploy.
+                // - clientsClaim: new SW takes control of uncontrolled tabs on
+                //   activate, firing `controllerchange` which main.jsx uses to
+                //   trigger a single automatic reload onto the fresh HTML.
+                // - cleanupOutdatedCaches: purge old workbox-precache-v* entries
+                //   so a stale precache from a prior deploy cannot serve stale
+                //   HTML on the next navigation.
+                skipWaiting: true,
+                clientsClaim: true,
+                cleanupOutdatedCaches: true,
                 // G11: Only precache critical path — NOT all chunks
                 // Lazy chunks (react-pdf, mammoth, admin, games) cached at runtime
                 globPatterns: [
