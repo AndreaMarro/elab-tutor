@@ -1,43 +1,77 @@
-last_commit: 2b5bab7 (Merge Sprint 3 sett-3-stabilize-v3 — benchmark 3.95→4.75, 25 commits, 3 blockers closed)
-sprint: sett-3-stabilize-v3 MERGED + PROD DEPLOYED -> sett-4 Option B LOCKED pending kickoff
+last_commit: 6d2f4e6 (docs prompt next session stress test parallel playwright+chrome prod audit)
+sprint: sett-4-intelligence-foundations (Option B Karpathy LLM Wiki POC — LOCKED)
 sprint_day_cumulative: 22
-sprint_day_local: 08 (sett-3 closed + sett-4 kickoff prep)
-sprint_status: SETT3_CLOSED_PROD_LIVE -> SETT4_OPTION_B_FINAL ready kickoff Day 01
-pr_sprint3: #18 MERGED 2026-04-22 07:56 GMT+8 (Andrea explicit approval via "PRENDI TUTTE LE SCELTE MIGLIORI MASSIMA ONESTA")
+sprint_day_local: 01
+sprint_status: SETT4_DAY01_KICKOFF_FOUNDATIONS_LAID
+pr_sprint3: #18 MERGED 2026-04-22 07:56 GMT+8 (2b5bab7)
 prod_deploy: dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe LIVE www.elabtutor.school HTTP 200 1.33s verified 2026-04-22 07:59
-gate_verdict_sett3: CONDITIONAL_PASS 11/13
-baseline_tests: 12220 (CoV 4x verified this session: 3x pre-merge + 1x post-merge main)
-cov_this_session: 4x (run1 155s, run2 165s, run3 137s, run4 post-merge 48s) all 12220/12220 PASS 211 files zero flaky
-benchmark_day21: 4.74 (stable)
-auditor_avg_sett3: 7.53
-commits_sett3: 25 atomic + merge commit
-blockers_open: 0 P0/P1 | 1 P3 (ADR-003 env deferred sprint-5 Tea onboard)
-stories_accepted: 14/17 (82%)
-andrea_decisions_resolved_day22: 5/5
-  1. PR18_merge_deploy: APPROVED — merged 2b5bab7 + deploy prod dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe
-  2. axe-core_install: APPROVED — sprint-4 Day 03 S4.2.1 @axe-core/playwright devDep
-  3. PR17_triage: NO-OP — already merged 2026-04-21T21:19:40Z sett-2 closure
-  4. sprint4_theme: OPTION B LOCKED — Karpathy LLM Wiki POC main track
-  5. ADR003_supabase_anon: DEFERRED sprint-5 — not needed Option B track
-sprint4_contract: FINAL automa/team-state/sprint-contracts/sett-4-sprint-contract.md (Option B 26 SP, 3 Epics)
-sprint4_theme: INTELLIGENCE FOUNDATIONS — Karpathy LLM Wiki POC (three-layer: raw/wiki/schema)
-sprint4_branch: feature/sett-4-intelligence-foundations (create from main Day 01)
-sprint4_day01_p0:
-  - ADR-006 Karpathy three-layer detail + SCHEMA.md
-  - docs/unlim-wiki/ skeleton (index.md + log.md + dirs)
-  - baseline snapshot sett-4-day-01
-  - velocity tracking sett-3 backfill + sett-4 file
-sprint5_deferred: Dashboard real data track (5 stories, Tea onboard 30/04 mer)
-build_main_post_merge: PASS 2m17s (2 chunks >1MB warning, PWA 32 precache)
-session_score_day22: 8.5/10 (Andrea 5 decisions resolved + merged + deployed + state updated with CoV discipline)
-session_start_day22: 2026-04-22 07:40 GMT+8
-session_end_day22: 2026-04-22 08:05 GMT+8 est
-stop_reason: sett-3 closure complete + sett-4 contract FINAL Option B + prod LIVE; ready relaunch loop for sett-4 Day 01 kickoff
-next_action: SETT4_DAY01_KICKOFF_OPTION_B_KARPATHY_LLM_WIKI_POC
-evidence_day22:
-  - PR #18 merge commit 2b5bab7
-  - Vercel deploy dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe
-  - automa/team-state/sprint-contracts/sett-4-sprint-contract.md FINAL Option B
-  - this file
-safety_memory_honored: true (explicit Andrea approval before deploy via "PRENDI TUTTE LE SCELTE MIGLIORI")
-mcp_calls_day22: 8 (gh x3, git x3, curl smoke x2) + failed supabase auth expired
+baseline_tests: 12220 (CoV 1x fresh this session 102.79s, 211 files, PASS zero regression)
+benchmark_day22: 4.77 (+0.02 delta vs 4.75 sett-3 close, fast mode)
+blockers_open: 0 P0/P1 | 1 P3 (ADR-003 env deferred sprint-5)
+
+day01_work_completed_this_session:
+  - baseline_snapshot: automa/state/baseline-sett-4-day-01.json
+  - ADR-006: docs/architectures/ADR-006-karpathy-llm-wiki-three-layer.md (three-layer detail, 10 sections, POC acceptance gates)
+  - SCHEMA: docs/unlim-wiki/SCHEMA.md v0.1.0 (conventions, PZ v3 rules, ingest/query/lint workflows)
+  - index.md: docs/unlim-wiki/index.md (catalog LLM reads first, 6 sections)
+  - log.md: docs/unlim-wiki/log.md (append-only audit init)
+  - dirs: concepts/ experiments/ lessons/ students/ classrooms/ errors/
+  - velocity_sett3: automa/state/velocity-tracking-sett-3.json (aggregate backfill, closure actuals vs targets)
+  - velocity_sett4: automa/state/velocity-tracking-sett-4.json (init + Day 01 entry + epic tracking)
+  - gitignore: privacy rules students/*.md classrooms/*.md except SCHEMA.md
+  - daily_standup: Day 22 entry automa/team-state/daily-standup.md appended
+
+sprint4_stories_progress_day01:
+  - S4.1.1 ADR-006 three-layer detail + SCHEMA.md: DONE
+  - S4.1.2 docs/unlim-wiki/ skeleton: DONE
+  - S4.3.2 A-402 velocity tracking sett-3 backfill + sett-4: DONE
+  - S4.1.3 ingest experiments: pending Day 03-04
+  - S4.1.4 ingest lessons+concepts: pending Day 04-05
+  - S4.1.5 Edge Function unlim-wiki-query: pending Day 05-06
+  - S4.1.6 integration tests wiki pipeline: pending Day 06
+  - S4.2.1 axe-core install: pending Day 03
+  - S4.2.2 accessibility_wcag metric wire: pending Day 04
+  - S4.2.3 unlim_latency_p95 pipeline: pending Day 04-05
+  - S4.3.1 PTC CoV 5x code_execution: pending Day 01 end (ideal now)
+  - S4.3.3 Watchdog noise ADR-005: pending Day 02
+
+sp_delivered_day01: 5 of 26 (S4.1.1=3 + S4.1.2=2 + S4.3.2=1 partial)
+sp_remaining_sprint4: 21 of 26 (81%)
+
+day01_honest_gaps_to_address:
+  - PTC CoV 5x code_execution NOT YET executed (should do Day 01 close or Day 02)
+  - MCP calls this session = 0 (target >= 15/day, need recovery Day 02 via claude-mem + context7 + serena)
+  - daily-standup.md end-day 4-grading TBD (pending audit)
+  - docs/unlim-wiki/students/SCHEMA.md + classrooms/SCHEMA.md templates not yet written (deferred sprint-5 Tea onboard scope)
+  - errors/common-misconceptions.md + errors/frequent-patterns.md seed not yet created (deferred Day 06 opt)
+  - Daily standup 4-grading subjective Harness 2.0 TBD
+
+next_action_day02:
+  - standup Day 02
+  - S4.3.3 ADR-005 watchdog noise suppression
+  - S4.1.2 skeleton polish (students/SCHEMA template if Tea early onboard)
+  - research doc Day 02: Together AI batch ingest patterns for wiki generation
+  - pre-ingest validation script (PZ v3 grep + front-matter schema)
+  - MCP discipline recovery: claude-mem search/save + context7 docs lookup + serena semantic
+
+sett4_budget_remaining:
+  - ingest cost: $10 budget, $0 spent
+  - days: 6 remaining (Day 02-07 sett-4 local = cumulative Day 23-28)
+  - SP remaining: 21 of 26
+
+safety_memory_honored: true (Andrea approved sprint-4 theme + no destructive ops)
+headless_mode_rules_honored: true (no background agents dispatched, foreground sync only)
+caveman_mode_honored: true (terse inline updates)
+
+session_start_day22: 2026-04-22 08:10 GMT+8
+session_day01_foundations_end: 2026-04-22 08:25 GMT+8 est
+stop_reason_if_triggered: pending — will commit+push+claude-mem then continue Day 02 if context budget permits OR natural stop
+
+mcp_calls_day22: 0 (HONEST GAP — Day 02 recover target >=15)
+evidence_day22_kickoff:
+  - 4 wiki files written (SCHEMA ADR-006 index log)
+  - 6 wiki dirs created
+  - 3 velocity files (baseline + sett-3 backfill + sett-4 init)
+  - 1 gitignore append
+  - 1 standup append
+  - Vitest 12220 CoV 1x PASS (zero regression foundations-only changes)

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "snapshot_label": "sett-4-day-01",
+  "snapshot_at": "2026-04-22T08:13:48+08:00",
+  "sprint_cumulative_day": 22,
+  "sprint_local_day": 1,
+  "sprint_number": 4,
+  "sprint_theme": "INTELLIGENCE FOUNDATIONS — Karpathy LLM Wiki POC (Option B)",
+  "branch": "feature/sett-4-intelligence-foundations",
+  "commit_sha": "6d2f4e6794445a3dc8a78efa0e088cb448560bff",
+  "tests": {
+    "count": 12220,
+    "files": 211,
+    "duration_s": 102.79,
+    "cov_method": "1x fresh this snapshot",
+    "status": "PASS"
+  },
+  "benchmark": {
+    "score": 4.77,
+    "delta_vs_prev": 0.02,
+    "mode": "fast",
+    "previous_score": 4.75
+  },
+  "blockers_open": 0,
+  "blockers_open_p3": 1,
+  "source_pz_v3_violations": 0,
+  "sprint3_closure_state": {
+    "pr": 18,
+    "merge_sha": "2b5bab7",
+    "deploy_id": "dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe",
+    "prod_status": "HTTP 200",
+    "stories_accepted": "14/17",
+    "auditor_avg": 7.53
+  }
+}

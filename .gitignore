@@ -107,3 +107,12 @@ homepage_*.png
 
 # agency-agents (226 md files, local only)
 .claude/external-agents/agency-agents/
+
+# UNLIM Wiki POC (sett-4 ADR-006) — privacy layers
+# Students + classrooms gitignored EXCEPT SCHEMA.md template (GDPR compliance)
+docs/unlim-wiki/students/*.md
+!docs/unlim-wiki/students/SCHEMA.md
+docs/unlim-wiki/classrooms/*.md
+!docs/unlim-wiki/classrooms/SCHEMA.md
+# Lint reports generated
+docs/unlim-wiki/lint-report-*.md

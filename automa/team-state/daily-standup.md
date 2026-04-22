@@ -336,3 +336,57 @@ Contract Day 05 "T1-005 Dashboard continue + E2E spec extension" matched by P0-2
 - All inline (TPM/DEV/TESTER/AUDITOR roles rotated)
 - Zero Opus agent dispatch → keep context lean
 - ~2h estimated total work
+
+---
+
+## Standup 2026-04-22 — Day 22 cumulative (sett-4 Day 01 KICKOFF Option B)
+
+**Owner**: inline TPM (headless loop, --print --max-turns 200)
+**Branch**: feature/sett-4-intelligence-foundations (created post PR#18 merge)
+**Baseline**: 12220 test PASS CoV 1x fresh (102.79s), benchmark 4.77/10 fast-mode
+**Previous sprint closure**: sett-3 merged 2b5bab7, prod dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe HTTP 200 1.33s
+**Blocker carry-over**: 0 P0/P1, 1 P3 (ADR-003 env provisioning deferred sprint-5)
+
+### Ieri (sett-3 closure Day 21)
+- Sprint Review inline 14/17 stories accepted
+- Retrospective Keep/Stop/Start + 12 action items sprint-4
+- PR #18 merged commit 2b5bab7 prod deploy LIVE
+- CoV 4x sequence discipline (3 pre-merge + 1 post-merge)
+- Andrea 5 decisions resolved: PR merge/deploy APPROVED, axe-core APPROVED Day 03, PR17 NO-OP, sprint-4 OPTION B LOCKED, ADR-003 DEFERRED sprint-5
+
+### Oggi (Day 01 kickoff, 5 P0 Option B foundations)
+- ARCHITECT inline: **S4.1.1 ADR-006 three-layer + SCHEMA.md** → docs/architectures/ADR-006-karpathy-llm-wiki-three-layer.md + docs/unlim-wiki/SCHEMA.md v0.1.0 (DONE)
+- DEV inline: **S4.1.2 wiki skeleton** → docs/unlim-wiki/{concepts,experiments,lessons,students,classrooms,errors}/ dirs + index.md + log.md init (DONE)
+- TPM inline: **A-402 velocity tracking** → velocity-tracking-sett-3.json backfill (aggregate-level) + velocity-tracking-sett-4.json init Day 01 entry (DONE)
+- DEV inline: **privacy gitignore** → students/*.md + classrooms/*.md except SCHEMA.md (DONE, GDPR alignment)
+- TPM inline: **baseline snapshot** → baseline-sett-4-day-01.json (DONE, 12220 tests 4.77 benchmark commit 6d2f4e6)
+
+### Blocker
+- 0 P0/P1 open (clean start sett-4)
+- 1 P3: ADR-003 Supabase anon env provisioning deferred sprint-5 (Tea onboard 30/04)
+- Note: wiki ingest Together AI cost ~$8 budget Day 03-05 (within sprint budget)
+
+### Focus
+Option B LOCKED: Karpathy LLM Wiki POC main track. Sett-4 validates pattern before sprint-5 ONNIPOTENZA 33-tools integration. Day 01 foundations → Day 02 skeleton polish + ADR-005 watchdog → Day 03-05 batch ingest experiments+lessons+concepts → Day 06 minimal `unlim-wiki-query` Edge Function + 10 integration tests.
+
+### Dispatch plan
+- All inline Day 01 (foundations = file writes, no agent spawn needed)
+- Day 03-05 agent dispatch: team-dev for ingest script, team-tester for integration tests
+- Zero Opus agent dispatch Day 01 → context lean for Day 02 standup
+
+### Acceptance gates Day 01
+- [x] ADR-006 exists with 10 sections
+- [x] SCHEMA.md v0.1.0 exists with PZ v3 rules + conventions + workflow
+- [x] docs/unlim-wiki/ skeleton 6 dirs + 3 top-level files
+- [x] Velocity sett-3 backfill + sett-4 init
+- [x] Baseline snapshot captured
+- [x] Privacy gitignore rules active
+- [x] Vitest CoV 1x 12220 PASS (zero regression, baseline preserved)
+- [ ] Commit atomic + push + state update (IN PROGRESS)
+- [ ] Claude-mem save observation (IN PROGRESS)
+
+### Grading Harness 2.0 (4 subjective 1-10)
+- Design quality: TBD (end-day audit)
+- Originality: TBD
+- Craft: TBD
+- Functionality: TBD (sett-4 Day 01 = foundations, no feature delivery expected)
