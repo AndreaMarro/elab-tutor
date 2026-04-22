@@ -1,0 +1,25 @@
+{
+  "sprint_ref": {
+    "number": 5,
+    "name": "sett-5-test",
+    "period_start": "2026-04-21",
+    "period_end": "2026-04-27",
+    "contract_path": "x.md"
+  },
+  "updated_at": "2026-04-22T14:30:00Z",
+  "current_day": {"sprint_day": 3, "cumulative_day": 31, "date": "2026-04-22"},
+  "owner": {"primary": "andrea"},
+  "columns": {
+    "backlog": [
+      {
+        "id": "BAD-ID-FORMAT",
+        "title": "Invalid id pattern + bad owner + bad status + bad SP",
+        "status": "FROZEN",
+        "owner": "DEV",
+        "story_points": 4
+      }
+    ],
+    "in_progress": [],
+    "done": []
+  }
+}

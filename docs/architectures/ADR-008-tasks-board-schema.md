@@ -106,7 +106,7 @@ Introduce a JSON Schema (draft-07) contract for `automa/team-state/tasks-board.j
       "required": ["id", "title", "status", "owner", "story_points"],
       "additionalProperties": false,
       "properties": {
-        "id": { "type": "string", "pattern": "^(T|S|A)[0-9]+(-[0-9]+)*$" },
+        "id": { "type": "string", "pattern": "^(T|S|A)-?[0-9]+(-[0-9]+)*$" },
         "title": { "type": "string", "maxLength": 140 },
         "status": { "enum": ["backlog", "in_progress", "blocked", "review", "done"] },
         "owner": { "enum": ["team-architect", "team-dev", "team-tester", "team-reviewer", "team-auditor", "team-tpm", "andrea", "tea"] },

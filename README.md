@@ -122,7 +122,7 @@ Leggi CONTRIBUTING.md per le regole complete. In breve:
 Il repository usa 2 hook automation attivi (opt-in, installati via `scripts/hooks/install-git-hooks.sh`):
 
 - **Post-commit claude-mem capture** (A-502, Sprint 5 Day 01): ogni commit genera un payload `automa/state/claude-mem-pending/commit-*.json` con SHA + subject + stats + sprint metadata per cross-session memory. Non-blocking (`set +e`). Doc: [`docs/workflows/claude-mem-automation.md`](docs/workflows/claude-mem-automation.md).
-- **Watchdog noise suppression** (ADR-005, Sprint 5 Day 02): `scripts/watchdog-run.sh` filtra GH issue creation con severity (info/warn/error) + threshold warn N=3 + cooldown error 2h / warn 24h + auto-close 3× OK streak. State in `automa/state/watchdog-{streaks,cooldown}.json` (gitignored). Test: `bash scripts/test-watchdog-suppression.sh`. ADR: [`docs/architectures/ADR-005-watchdog-noise-suppression.md`](docs/architectures/ADR-005-watchdog-noise-suppression.md).
+- **Watchdog noise suppression** (ADR-005, Sprint 5 Day 02): `scripts/watchdog-run.sh` filtra GH issue creation con severity (info/warn/error) + threshold warn N=3 + cooldown error 2h / warn 24h + auto-close 3× OK streak. State in `automa/state/watchdog-{streaks,cooldown}.json` (gitignored). Test: `bash scripts/test-watchdog-suppression.sh`. ADR: [`docs/architectures/ADR-005-watchdog-noise-suppression.md`](docs/architectures/ADR-005-watchdog-noise-suppression.md). Operations guide: [`docs/operations/watchdog-guide.md`](docs/operations/watchdog-guide.md).
 
 Per disattivare completamente gli hook: `bash scripts/hooks/install-git-hooks.sh --uninstall`.
 

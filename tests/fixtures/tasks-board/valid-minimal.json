@@ -1,0 +1,60 @@
+{
+  "sprint_ref": {
+    "number": 5,
+    "name": "sett-5-intelligence-reliability",
+    "period_start": "2026-04-21",
+    "period_end": "2026-04-27",
+    "contract_path": "docs/sprints/sprint-5-contract.md"
+  },
+  "updated_at": "2026-04-22T14:30:00Z",
+  "current_day": {
+    "sprint_day": 3,
+    "cumulative_day": 31,
+    "date": "2026-04-22"
+  },
+  "owner": {
+    "primary": "andrea",
+    "collaborators": ["tea"]
+  },
+  "goal": "Tech-debt bridge: ADR-005 + ADR-008 acceptance",
+  "baseline": {
+    "test_count": 12371,
+    "benchmark_score": 5.34,
+    "build_status": "PASS",
+    "branch": "feature/sett-4-intelligence-foundations",
+    "last_commit": "4a05303",
+    "unpushed_commits": 0
+  },
+  "columns": {
+    "backlog": [
+      {
+        "id": "T1-100",
+        "title": "Example backlog task",
+        "status": "backlog",
+        "owner": "team-dev",
+        "story_points": 3,
+        "acceptance_criteria": ["Task is schema-compliant"]
+      }
+    ],
+    "in_progress": [
+      {
+        "id": "A-503",
+        "title": "ADR-008 validator jq fallback",
+        "status": "in_progress",
+        "owner": "team-dev",
+        "story_points": 2,
+        "linked_adr": "ADR-008"
+      }
+    ],
+    "done": [
+      {
+        "id": "A-502",
+        "title": "claude-mem post-commit hook",
+        "status": "done",
+        "owner": "team-dev",
+        "story_points": 3,
+        "linked_commit": "4427ba3"
+      }
+    ]
+  }
+}
