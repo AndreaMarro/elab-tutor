@@ -33,6 +33,20 @@ window.addEventListener('vite:preloadError', (event) => {
   event.preventDefault();
 });
 
+// P0 hotfix (2026-04-22 fix/p0-pwa-stale-precache):
+// When a new service worker activates after a deploy and claims this tab
+// (see vite.config.js workbox.clientsClaim), the `controllerchange` event
+// fires. Reload once so the tab refetches the fresh index.html instead of
+// continuing to render under the previous SW's precached HTML.
+// sessionStorage guard prevents reload loops on SW handoff chains.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (sessionStorage.getItem('elab-sw-reload') === '1') return;
+    sessionStorage.setItem('elab-sw-reload', '1');
+    window.location.reload();
+  });
+}
+
 // Anti-tampering (solo produzione)
 initCodeProtection()
 
