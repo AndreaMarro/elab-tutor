@@ -1,0 +1,18 @@
+{
+  "event": "commit",
+  "timestamp": "2026-04-22T14:40:35+08:00",
+  "title": "Commit cdf5b1c on feature/sett-4-intelligence-foundations",
+  "content": "Commit SHA: cdf5b1c8b940235f5e7677db87f831a75846618b\nBranch: feature/sett-4-intelligence-foundations\nMessage: feat(sett-5-day-03-bridge): ADR-008 jq validator + 77 drift enumerated + watchdog-guide [TEST 12371]\nStats: 11 files, +614/-2\nTest count baseline: 12371\nSprint: sprint-5-day-02-bridge day 30",
+  "tags": "commit,sprint-sprint-5-day-02-bridge,day-30,post-commit-hook",
+  "sha": "cdf5b1c8b940235f5e7677db87f831a75846618b",
+  "branch": "feature/sett-4-intelligence-foundations",
+  "subject": "feat(sett-5-day-03-bridge): ADR-008 jq validator + 77 drift enumerated + watchdog-guide [TEST 12371]",
+  "sprint": "sprint-5-day-02-bridge",
+  "sprint_day": "30",
+  "test_count_baseline": "12371",
+  "stats": {
+    "files_changed": 11,
+    "insertions": 614,
+    "deletions": 2
+  }
+}

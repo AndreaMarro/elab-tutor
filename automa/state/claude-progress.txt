@@ -1,17 +1,18 @@
-last_commit: c672bca (chore day-30 TPM contract + standup + post-commit hook pending flush [TEST 12371]) committed 2026-04-22 GMT+8
-sprint: sprint-5-day-02-bridge
-sprint_day_cumulative: 30
+last_commit: cdf5b1c (feat sett-5-day-03-bridge ADR-008 jq validator + 77 drift enumerated + watchdog-guide [TEST 12371]) committed 2026-04-22 GMT+8
+sprint: sprint-5-day-03-bridge
+sprint_day_cumulative: 31
 branch: feature/sett-4-intelligence-foundations
 baseline_tests: 12371
-cov_3x_last_run: 12371 / 12371 / 12371 PASS (Day 30 verified, 116s / 88s / 76s)
-build_last_run: PASS (2m33s, PWA v1.2.0 generateSW 32 precache)
-benchmark_last_persisted: 5.34 (2026-04-22, fast mode, delta 0 vs Day 29)
-day_30_commits: ea73423 (kickoff) + d52ee87 (ADR-005 impl) + ed23d9b (docs ADR-005 ACCEPTED + ADR-008 draft + README) + c672bca (TPM contract)
-adr_005_status: ACCEPTED (impl SHA d52ee87, 3-layer suppression, test 16/16 PASS)
-adr_008_status: PROPOSED (draft, awaiting Andrea Ajv dep approval)
-a_502_status: operational (4/4 commits Day 30 emitted claude-mem payloads)
-andrea_gate_open: 5 Sprint 5 Contract decisions + ADR-008 Ajv dep approval
-day_30_audit_score: 9.05/10 composite, 8 honest gaps enumerated
-day_30_handoff: docs/handoff/2026-04-22-day-30-end.md
-next_day_candidate: Day 31 theme-agnostic — watchdog shadow 5-run, tasks-board validator jq fallback, watchdog-guide.md, worker_uptime investigation
-stop_reason: loop active, Day 30 EOD packaged, Day 31 next per STEP 6 default
+cov_3x_last_run: 12371 / 12371 / 12371 PASS (Day 31 verified, 126s / 119s / 93s)
+build_last_run: PASS (3m9s, PWA v1.2.0 generateSW 32 precache)
+benchmark_last_persisted: 5.34 (Day 30, fast mode, delta 0 across Day 30-31)
+day_31_commits: cdf5b1c (ADR-008 jq validator + drift + watchdog-guide)
+adr_005_status: ACCEPTED + §5 operations guide ✓ (POC gate 5-run shadow still pending)
+adr_008_status: PROPOSED + Phase 1 validator ready (jq fallback), 77 violations on live file, migration Phase 2 Day 32+
+a_502_status: operational (5/5 commits Day 30-31 emitted claude-mem payloads)
+andrea_gate_open: Sprint 5 theme + ADR-008 Ajv dep approval (both still OPEN Day 31 EOD)
+day_31_audit_score: 9.05/10 composite, 6 honest gaps
+day_31_handoff: docs/handoff/2026-04-22-day-31-end.md
+day_31_drift_report: docs/audit/tasks-board-drift-day-31.md (77 violations categorized)
+next_day_candidate: Day 32 theme-agnostic — ADR-005 POC 5-run shadow, ADR-008 Phase 2 migration draft (gated), worker_uptime root cause, team-reviewer dispatch
+stop_reason: loop active, Day 31 EOD packaged, Day 32 next per STEP 6 default
