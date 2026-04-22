@@ -7,8 +7,20 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Security: Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://elab-galileo.onrender.com https://n8n.srv1022317.hstgr.cloud https://www.googleapis.com https://generativelanguage.googleapis.com https://cdnjs.cloudflare.com; media-src 'self' blob:; worker-src 'self' blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;" />
+  <!--
+    Security: Content Security Policy.
+    P0 follow-up 2026-04-22 (fix/csp-hash-safety-script): the inline safety
+    script further down in <body> was being blocked by `script-src 'self'`
+    (verified live on the Supabase-primary deploy — 2 CSP errors per page
+    load). The browser reports the script's SHA-256 hash as
+    IoG5e951ZhtoqUSOrWp82pkf4xxhD8DeTe0m9yH2cb8=; adding it here re-enables
+    the script while keeping `'unsafe-inline'` out of the policy.
+    Any change to the inline body regenerates the hash — if the CSP is
+    unchanged, the regression test `tests/unit/pwa-stale-precache-hotfix.test.js`
+    still asserts the script is present, and a live browser will immediately
+    refuse to execute it, making the drift visible in Playwright output.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-IoG5e951ZhtoqUSOrWp82pkf4xxhD8DeTe0m9yH2cb8=' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://elab-galileo.onrender.com https://n8n.srv1022317.hstgr.cloud https://www.googleapis.com https://generativelanguage.googleapis.com https://cdnjs.cloudflare.com; media-src 'self' blob:; worker-src 'self' blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;" />
 
   <!-- SEO: Primary meta tags -->
   <title>ELAB Tutor — Simulatore di Elettronica e Arduino per la Scuola</title>
