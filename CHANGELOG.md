@@ -1,3 +1,17 @@
+## [CI: deploy.yml uses vercel build (env baked)] — 2026-04-22
+
+Fixes a silent deploy gap discovered during the Supabase hardening rollout. The previous workflow ran `npm run build` on the GitHub runner, which never received Vercel dashboard env vars. The production bundle for the Supabase-primary switch therefore shipped without the `X-Elab-Api-Key` header, and every live chat request returned 401 Unauthorized.
+
+### Changed
+- `.github/workflows/deploy.yml` — replaces the raw `npm run build + cp dist/` sequence with `vercel pull` + `vercel build --prod` + `vercel deploy --prebuilt`. `vercel build` injects the dashboard env at build time so `VITE_*` values (including `VITE_NANOBOT_URL` and `VITE_ELAB_API_KEY`) end up in the bundle.
+- Moved `VERCEL_TOKEN` to the `env:` block and switched to `"$VERCEL_TOKEN"` interpolation in `run:` steps per GitHub Actions injection-hardening guidance.
+
+### Verified
+- Previous prod bundle `index-B5F-vzDS.js` searched for 16-char prefix of `VITE_ELAB_API_KEY` → NOT FOUND. Confirms env was missing.
+- After merge: redeployed bundle should contain the key prefix OR (safer) an obfuscated-chunked version that produces a valid `X-Elab-Api-Key` header on network requests. Live verify via Playwright UNLIM chat → expect 200 (not 401) from Supabase Edge Function.
+
+---
+
 ## [Security: Supabase primary + X-Elab-Api-Key enforcement] — 2026-04-22
 
 Shifts UNLIM chat from Render-primary to Supabase-primary and adds a server-only secret gate (\`X-Elab-Api-Key\`) that only legitimate ELAB builds carry. Closes P1-002 (Principio Zero v3 live prod drift) by routing chat to the Supabase Edge Function whose \`BASE_PROMPT\` enforces plural inclusive "Ragazzi" per Principio Zero v3.
