@@ -152,9 +152,9 @@ function parseInlineFormatting(text, lineKey = 0) {
 }
 
 function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  // NOTE: React auto-escapes strings rendered as children, so manual HTML entity
+  // escaping here double-encodes (e.g. `"` → `&quot;` becomes visible literal text
+  // in the UI). Returning raw text lets React's reconciler handle XSS safety.
+  // Callers keep using this name to preserve diff surface.
+  return text;
 }

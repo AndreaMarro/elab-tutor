@@ -1231,12 +1231,16 @@ export function preloadExperiment(experimentId) {
 
 /**
  * Warm up the Render backend to eliminate the 37s cold start.
- * Called once on app load via a lightweight HEAD request.
+ * Called once on app load via a lightweight GET request.
  * Fire-and-forget — never blocks the UI.
+ *
+ * NOTE: HEAD returns 405 on Render's /health route (observed 2026-04-22
+ * stress-test P2-005). GET is lightweight enough and the response body is
+ * discarded, so the warm-up still only pays TCP + TLS + one TTFB.
  */
 export function warmupRender() {
     fetch(`${RENDER_FALLBACK}/health`, {
-        method: 'HEAD',
+        method: 'GET',
         signal: AbortSignal.timeout(60000), // 60s max, Render wakes in ~37s
     }).catch(() => { }); // Silently ignore errors (service may be sleeping)
 }

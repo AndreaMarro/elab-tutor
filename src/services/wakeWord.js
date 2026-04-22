@@ -120,8 +120,23 @@ export function startWakeWordListener({ onWake, onCommand, lang = 'it-IT' } = {}
     }
   };
 
+  // Terminal errors: mic permission denied by user or by browser policy.
+  // Retrying cannot recover from these without user action, so we stop listening
+  // and log ONCE to avoid the log-flood observed in production (~180 warnings
+  // per 30 s). Non-terminal errors follow the original back-off path.
+  const TERMINAL_ERRORS = new Set(['not-allowed', 'service-not-allowed']);
+  let terminalErrorLogged = false;
+
   recognition.onerror = (event) => {
     if (event.error === 'no-speech' || event.error === 'aborted') return;
+    if (TERMINAL_ERRORS.has(event.error)) {
+      if (!terminalErrorLogged) {
+        logger.warn('[WakeWord] Permission denied:', event.error, '— disabling wake word until next page load');
+        terminalErrorLogged = true;
+      }
+      isListening = false;
+      return;
+    }
     logger.warn('[WakeWord] Error:', event.error);
     // Auto-restart on non-fatal errors
     if (event.error === 'network' || event.error === 'audio-capture') {
@@ -134,7 +149,8 @@ export function startWakeWordListener({ onWake, onCommand, lang = 'it-IT' } = {}
   };
 
   recognition.onend = () => {
-    // Auto-restart — continuous listening
+    // Auto-restart — continuous listening. If a terminal error flipped
+    // `isListening` to false, the restart is skipped and the loop exits.
     if (isListening) {
       try { recognition.start(); } catch { /* already started */ }
     }
