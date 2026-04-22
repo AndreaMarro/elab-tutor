@@ -20,6 +20,12 @@ import { getExperimentGroupContext } from '../data/lesson-groups';
 // Nanobot: Supabase Edge Functions (SOLO Gemini — directive 11/04/2026)
 const _SUPABASE_EDGE = (import.meta.env.VITE_SUPABASE_EDGE_URL || 'https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1').trim();
 const _SUPABASE_ANON = (import.meta.env.VITE_SUPABASE_EDGE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1cXBkdWVvcG1sbGxxam1xbnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNDI3MDksImV4cCI6MjA5MDcxODcwOX0.289s8NklODdiXDVc_sXBb_Y7SGMgWSOss70iKQRVpjQ').trim();
+// P1-002 fix (2026-04-22): custom API key shared with Supabase Edge Function
+// (stored there as the `ELAB_API_KEY` secret). Complements the bundle-visible
+// anon JWT with a server-only secret that only legit ELAB builds carry. The
+// Edge Function fails open when the secret isn't set, so a missing
+// VITE_ELAB_API_KEY during rollout doesn't break production.
+const _ELAB_API_KEY = (import.meta.env.VITE_ELAB_API_KEY || '').trim();
 const NANOBOT_URL = (import.meta.env.VITE_NANOBOT_URL || '').trim() || _SUPABASE_EDGE; // Supabase Edge primary, Render legacy
 const RENDER_FALLBACK = 'https://elab-galileo.onrender.com'; // Fallback se Edge e webhook falliscono
 const CHAT_WEBHOOK = (import.meta.env.VITE_N8N_CHAT_URL || '').trim();
@@ -144,6 +150,12 @@ function nanobotHeaders() {
     if (_isSupabaseEdge && _SUPABASE_ANON) {
         h['apikey'] = _SUPABASE_ANON;
         h['Authorization'] = `Bearer ${_SUPABASE_ANON}`;
+    }
+    // Custom API key — Edge Function enforces via verifyElabApiKey (fail-open
+    // when ELAB_API_KEY secret not set). Shipped only for Supabase Edge; Render
+    // ignores this header.
+    if (_ELAB_API_KEY) {
+        h['X-Elab-Api-Key'] = _ELAB_API_KEY;
     }
     return h;
 }

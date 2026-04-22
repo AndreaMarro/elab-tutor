@@ -47,6 +47,45 @@ export function getSecurityHeaders(req: Request): Record<string, string> {
   };
 }
 
+// ── ELAB Custom API Key Verification (defense-in-depth) ──
+/**
+ * Verify the `X-Elab-Api-Key` header against the `ELAB_API_KEY` secret.
+ * Complements Supabase's anon-JWT gateway check (which is browser-bundle-visible
+ * and therefore scrapeable) with a server-only secret that only legit ELAB
+ * builds carry.
+ *
+ * Fail-open semantics when the secret is not configured: this lets the code
+ * ship before the secret is rolled out in all environments. Set the secret
+ * with:
+ *   npx supabase secrets set ELAB_API_KEY=<value> --project-ref <ref>
+ * Once set, requests missing or mismatching the header return 401.
+ *
+ * @returns { ok: true } when authorized OR when fail-open triggers.
+ *          { ok: false, reason } when explicit mismatch.
+ */
+export function verifyElabApiKey(req: Request): { ok: boolean; reason?: string } {
+  const expected = Deno.env.get('ELAB_API_KEY');
+  if (!expected) {
+    // Fail-open: secret not yet configured. Deployment is still backward-
+    // compatible for any Edge Function that hasn't been updated to enforce.
+    return { ok: true };
+  }
+  const provided = req.headers.get('X-Elab-Api-Key') || '';
+  if (!provided) {
+    return { ok: false, reason: 'missing X-Elab-Api-Key header' };
+  }
+  // Constant-time-ish equality: length check + per-byte loop. Not as strict as
+  // Node's timingSafeEqual but avoids a length-leak in the common case.
+  if (provided.length !== expected.length) {
+    return { ok: false, reason: 'bad api key' };
+  }
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) {
+    diff |= provided.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return diff === 0 ? { ok: true } : { ok: false, reason: 'bad api key' };
+}
+
 // ── Supabase Client (lazy, for persistent rate limiting) ──
 let _dbClient: SupabaseClient | null = null;
 function getDbClient(): SupabaseClient | null {
