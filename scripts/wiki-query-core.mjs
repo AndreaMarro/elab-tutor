@@ -7,7 +7,7 @@
  * Day 27 (S4.1.6): swap SEED_CORPUS for data/wiki/*.md entries + embedding scoring.
  */
 
-export const VERSION = 'scaffold-0.1.0-day26';
+export const VERSION = 'scaffold-0.2.0-day27';
 export const MAX_TOP_K = 20;
 export const DEFAULT_TOP_K = 5;
 export const MAX_QUERY_LEN = 500;
@@ -155,16 +155,61 @@ export async function retrieveWikiEntries(req) {
  * @param {WikiQueryRequest} req
  * @param {WikiEntry[]} entries
  * @param {number} startedAt
+ * @param {{ source?: string, corpus_size?: number }} [meta]
  */
-export function buildResponse(req, entries, startedAt) {
+export function buildResponse(req, entries, startedAt, meta = {}) {
   return {
     results: entries,
     metrics: {
       latency_ms: Date.now() - startedAt,
-      source: 'mock-day26',
+      source: meta.source || 'mock-day26',
       source_count: entries.length,
+      corpus_size: typeof meta.corpus_size === 'number' ? meta.corpus_size : undefined,
     },
     version: VERSION,
     query: req.query,
   };
+}
+
+/**
+ * Factory producing a retriever bound to a custom corpus. Day 27 (ADR-007)
+ * extraction — enables swapping SEED_CORPUS for a real loader output without
+ * touching query-core logic or its unit tests.
+ *
+ * @param {Array<{ id: string, title: string, volume?: 1|2|3, chapter?: string, page?: number, content: string }>} corpus
+ * @returns {{
+ *   retrieve: (req: WikiQueryRequest) => Promise<WikiEntry[]>,
+ *   size: number
+ * }}
+ */
+export function makeRetriever(corpus) {
+  if (!Array.isArray(corpus)) {
+    throw new TypeError('makeRetriever expects array corpus');
+  }
+  const docs = corpus.filter(
+    (d) => d && typeof d.id === 'string' && typeof d.title === 'string' && typeof d.content === 'string'
+  );
+
+  async function retrieve(req) {
+    const qTokens = tokens(req.query);
+    const filterVolume = req.filter?.volume;
+    const scored = [];
+    for (const doc of docs) {
+      if (filterVolume !== undefined && doc.volume !== filterVolume) continue;
+      const score = scoreDoc(qTokens, doc);
+      if (score > 0) scored.push({ doc, score });
+    }
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, req.topK).map(({ doc, score }) => ({
+      id: doc.id,
+      title: doc.title,
+      volume: doc.volume,
+      chapter: doc.chapter,
+      page: doc.page,
+      excerpt: doc.content.slice(0, 160),
+      score: Math.round(score * 1000) / 1000,
+    }));
+  }
+
+  return { retrieve, size: docs.length };
 }

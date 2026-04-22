@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-22T03:12:16.887Z",
+  "timestamp": "2026-04-22T03:52:43.878Z",
   "mode": "fast",
-  "score": 5.32,
+  "score": 5.34,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
@@ -14,8 +14,8 @@
       "contribution": 1.32
     },
     "build_size_kb": {
-      "value": 14743,
-      "observed": 14743,
+      "value": 14658,
+      "observed": 14658,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -59,13 +59,13 @@
       "contribution": 0
     },
     "git_hygiene": {
-      "value": 0.36666666666666664,
-      "observed": 11,
-      "notes": "11/30 commits with hygiene signals (test count / CoV / blocker ref / conventional prefix)",
+      "value": 0.4,
+      "observed": 12,
+      "notes": "12/30 commits with hygiene signals (test count / CoV / blocker ref / conventional prefix)",
       "weight": 0.05,
       "target": 0.9,
-      "normalized": 3.67,
-      "contribution": 0.18
+      "normalized": 4,
+      "contribution": 0.2
     },
     "documentation": {
       "value": 1,
@@ -97,8 +97,8 @@
       "contribution": 0.67
     }
   },
-  "commit_sha": "764610558a18d0833242cf46897a99597d9c2d0e",
+  "commit_sha": "f7a8be5c685da355fc77bc8852e2d8a87e1f5c29",
   "branch": "feature/sett-4-intelligence-foundations",
-  "previous_score": 5.31,
-  "delta": 0.01
+  "previous_score": 5.32,
+  "delta": 0.02
 }

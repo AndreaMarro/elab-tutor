@@ -21,7 +21,7 @@ import {
 
 describe('wiki-query-core constants', () => {
   it('exposes scaffold version + sane defaults', () => {
-    expect(VERSION).toMatch(/scaffold.*day26/);
+    expect(VERSION).toMatch(/scaffold.*day\d+/);
     expect(DEFAULT_TOP_K).toBe(5);
     expect(MAX_TOP_K).toBe(20);
     expect(MAX_QUERY_LEN).toBe(500);
