@@ -1,0 +1,18 @@
+{
+  "event": "commit",
+  "timestamp": "2026-04-22T16:13:21+08:00",
+  "title": "Commit 7cb7d5f on feature/sett-4-intelligence-foundations",
+  "content": "Commit SHA: 7cb7d5f07da28df60cfbe2842fd62186a05c546c\nBranch: feature/sett-4-intelligence-foundations\nMessage: chore(pause-bundle): consolidate 4 paused-respect turns Day 36 [TEST 12371]\nStats: 6 files, +279/-1\nTest count baseline: 12371\nSprint: sprint-5-sett-gate-CLOSED day 35",
+  "tags": "commit,sprint-sprint-5-sett-gate-CLOSED,day-35,post-commit-hook",
+  "sha": "7cb7d5f07da28df60cfbe2842fd62186a05c546c",
+  "branch": "feature/sett-4-intelligence-foundations",
+  "subject": "chore(pause-bundle): consolidate 4 paused-respect turns Day 36 [TEST 12371]",
+  "sprint": "sprint-5-sett-gate-CLOSED",
+  "sprint_day": "35",
+  "test_count_baseline": "12371",
+  "stats": {
+    "files_changed": 6,
+    "insertions": 279,
+    "deletions": 1
+  }
+}
