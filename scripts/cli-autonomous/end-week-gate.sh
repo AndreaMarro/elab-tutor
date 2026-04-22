@@ -94,7 +94,8 @@ if [[ "$DRY_RUN" == "true" ]]; then
   check 4 "vitest_baseline" "true" "dry-run skipped"
 else
   VITEST_OUT=$(npx vitest run --reporter=dot 2>&1 || true)
-  TEST_COUNT=$(echo "$VITEST_OUT" | grep -oE '[0-9]+ passed' | grep -oE '[0-9]+' || echo 0)
+  TEST_COUNT=$(echo "$VITEST_OUT" | grep -oE 'Tests[[:space:]]+[0-9]+ passed' | grep -oE '[0-9]+' | tail -1 || echo 0)
+  TEST_COUNT=${TEST_COUNT:-0}
   BASELINE_COUNT=12131
   if [[ -f automa/state/baseline.json ]]; then
     BASELINE_COUNT=$(python3 -c "import json; print(json.load(open('automa/state/baseline.json')).get('test_count', 12131))" 2>/dev/null || echo 12131)

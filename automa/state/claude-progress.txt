@@ -1,62 +1,77 @@
-last_commit: 61d547d (feat sett-4 Day 06 wiki-corpus-loader + makeRetriever + ADR-007 + integration tests [TEST 12371]) pushed 2026-04-22 11:57 GMT+8
-sprint: sett-4-intelligence-foundations (Option B Karpathy LLM Wiki POC — LOCKED)
-sprint_day_cumulative: 27
-sprint_day_local: 06
-sprint_status: SETT4_DAY06_WIKI_CORPUS_LOADER_MAKERETRIEVER_ADR007_INTEGRATION_BENCH534_COV3X_12371
+last_commit_pending: Day 28 ceremony commit to write end of session (will update after commit)
+sprint: sett-4-intelligence-foundations CLOSED (Option B Karpathy LLM Wiki POC — gate 13/13 PASS)
+sprint_day_cumulative: 28
+sprint_day_local: 07 END-WEEK GATE
+sprint_status: SETT4_DAY07_END_WEEK_GATE_13_OF_13_PASS_CEREMONY_COMPLETE_AWAITING_ANDREA_MAIN_MERGE
 pr_sprint3: #18 MERGED 2026-04-22 07:56 GMT+8 (2b5bab7)
-prod_deploy: dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe LIVE www.elabtutor.school HTTP 200 1.33s verified 2026-04-22 07:59 (Day 22 carry)
-baseline_tests: 12371 (CoV 3x Day 27 verified 11:40-11:48 GMT+8, 220 files, 3/3 runs identical PASS zero flaky, +43 vs Day 26 12328)
-baseline_tests_previous: 12328 (carry Day 26)
-benchmark_day27: 5.34 (+0.02 vs previous_score 5.32, written commit_sha f7a8be5 stale-base, test_count_contribution 1.32 refreshed)
-benchmark_day26: 5.32 (+0.01 vs 5.31)
-benchmark_day25: 5.31 (+0.56 vs 4.75, written sha 946aafb)
-benchmark_day24: 4.79 (state-file recall)
-blockers_open: 0 P0/P1 | 2 P2 deferred (S4.1.4c Together live gate + GAP-DAY24-04 E2E chromium baseline) | 1 P3 (ADR-003 env Sprint 5)
-npm_audit: 0 high / 0 critical (carry Day 26 — fresh Day 27 not re-run)
+pr_sprint4: NOT_OPENED — Andrea decision gate required
+prod_deploy: dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe LIVE www.elabtutor.school HTTP 200 1.33s verified 2026-04-22 07:59 (Day 22 carry, Sprint 4 NOT deployed yet)
+baseline_tests: 12371 (CoV 3x Day 28 verified 12:13-12:18 GMT+8, 220 files, 3/3 runs identical PASS zero flaky, held from Day 27)
+baseline_tests_previous: 12371 (Day 27)
+benchmark_day28: 5.34 (fresh write Day 28 12:25 GMT+8, delta +0 vs Day 27, commit_sha 4c246b5 captured)
+benchmark_day27: 5.34
+benchmark_day26: 5.32
+benchmark_day25: 5.31
+benchmark_day24: 4.79
+sprint4_entry_benchmark: 4.75 (sett-3 end, Day 21)
+sprint4_benchmark_delta: +0.59
+blockers_open: 0 P0/P1 | 2 P2 (S4.1.4c Together live gate, GAP-DAY24-04 E2E chromium A-501) | 3 P3 (ADR-003 anon key env, S4.2.3 latency pipeline, ADR-005 watchdog impl)
+npm_audit: 0 high / 0 critical (carry Day 26 — Day 28 endpoint down network issue)
 
-day06_work_completed_this_session:
-  - Day 27 sprint contract Harness 2.0: automa/team-state/sprint-contracts/day-27-contract.md (3 stories + rollback + 4-grading targets)
-  - ADR-007 module extraction pattern: docs/architectures/ADR-007-module-extraction-pattern.md (148 lines, Accepted) codifies Deno+Node shared-core pattern validated twice Day 26
-  - S4.1.5b scripts/wiki-corpus-loader.mjs (176 LOC pure ESM — parseSimpleYaml + parseWikiMarkdown + normaliseEntry + collectMarkdownFiles + loadCorpus) with graceful degradation on missing dir / empty dir / malformed files
-  - S4.1.5b refactor scripts/wiki-query-core.mjs: added makeRetriever(corpus) factory preserving retrieveWikiEntries for back-compat; VERSION bumped scaffold-0.1.0-day26 to scaffold-0.2.0-day27; buildResponse accepts optional meta { source, corpus_size }
-  - tests/unit/wiki-corpus-loader.test.js (29 cases 100% PASS: YAML 8 + markdown 5 + normalise 5 + collect 5 + load 6)
-  - tests/unit/wiki-query-make-retriever.test.js (7 cases 100% PASS: factory contract + retrieval + filter + topK + VERSION)
-  - S4.1.6 tests/integration/wiki-pipeline.test.js (7 cases 100% PASS: build-input round-trip 2 + loader+retriever round-trip 2 + fallback 1 + validator agreement 2)
-  - In-flight fix: tests/unit/wiki-query-core.test.js VERSION regex loosened /scaffold.*day26/ to /scaffold.*day\d+/
-  - Edge Function supabase/functions/unlim-wiki-query/index.ts UNCHANGED (import surface preserved, zero production path impact)
-  - CoV 3x full vitest 12371 PASS 3/3 identical, zero flaky, +43 ratchet vs baseline 12328
-  - automa/baseline-tests.txt reconciled 12328 to 12371
-  - benchmark --fast --write captured 5.34 (+0.02 vs 5.32 previous_score)
-  - docs/audit/cov-3x-day-27.md (evidence)
-  - docs/audit/day-27-sett-4-day-06-audit.md (20-dim matrix, Harness 2.0 4-grading 8.08/10 +0.08 vs Day 26)
-  - docs/handoff/2026-04-22-day-27-end.md
+day07_work_completed_this_session_day28:
+  - Day 28 Sprint Contract Harness 2.0: automa/team-state/sprint-contracts/day-28-contract.md (110 lines, 5 acceptance criteria, 4-grading target 7.88)
+  - Sprint 4 Review: docs/reviews/sprint-4-review.md (225 lines — 22 stories status, 10 commits, 4-grading composite 7.69, 11/11 DoD, demo manifest, risks, debt residual, MCP aggregate 152 calls, comparison vs Sprint 3)
+  - Sprint 4 Retrospective: docs/retrospectives/sprint-4-retrospective.md (220 lines — start/stop/continue 18 items, 3 action items A-501/502/503 with owners + due + acceptance + evidence path, A-401..A-412 audit 8/12 complete, honest criticism 5 near-miss + 5 fragile + 3 learnings candidate)
+  - Velocity tracking refactor: automa/state/velocity-tracking.json schema_version 1 → 2 canonical multi-sprint format (4 sprints entries, rolling_avg_last_3 21.33, trend up, projection sprint-5)
+  - Sprint 5 Contract DRAFT: automa/team-state/sprint-contracts/sett-5-sprint-contract.md (185 lines — Option A ONNIPOTENZA 5 tools / Option B Dashboard Tea / A+B parallel, 5 open questions Andrea, pre-loaded 8 SP Sprint 4 carry, A-501/502/503 carry, Harness 2.0 4-grading target composite 7.83, DoD preliminary, stop conditions)
+  - Day 28 Audit: docs/audit/day-28-sett-4-day-07-audit.md (230 lines — 20-dim matrix 10 green / 8 yellow / 1 red bundle / 1 pending, CoV 3x evidence table, fresh bench 5.34, MCP Day 28 35 tool calls, Harness 4-grading Day 28 8.10, auto-critica 10 gaps, fix budget 3/3 met, blockers 0P0/P1 2P2 3P3)
+  - Tasks-board reconciled: automa/team-state/tasks-board.json added flat tasks[] array with 22 Sprint 4 tasks truthful status (17 done, 2 pending, 1 blocked S4.1.4c, 1 spec GAP-DAY24-04, 1 drafted ADR-005) alongside legacy columns
+  - Gate script bug fix: scripts/cli-autonomous/end-week-gate.sh line 97 grep pattern fixed — was capturing both "Test Files 220 passed" and "Tests 12371 passed" → now extracts tests count only via "Tests[[:space:]]+[0-9]+ passed" + tail -1
+  - End-week gate 4 real run: 13/13 PASS (first full green sprint) — docs/audit/week-4-gate-2026-04-22.md evidence
+  - Day 28 handoff: docs/handoff/2026-04-22-day-28-end.md (executive summary, evidence inventory, risks, debt, recommendations Andrea, next actions, next session checklist)
+  - This state file update
 
-sprint4_stories_progress_day06:
-  - S4.1.1 ADR-006 + SCHEMA.md: DONE Day 01
-  - S4.1.2 wiki skeleton: DONE Day 01
-  - S4.3.2 velocity tracking: DONE Day 01
-  - S4.3.3 ADR-005 watchdog noise: DRAFTED Day 02 (implementation Day 06-07)
-  - Research Day 02 Together AI batch: DONE
-  - S4.1.3a wiki-build-batch-input: DONE Day 03
-  - S4.1.3b wiki-validate-file: DONE Day 03
-  - S4.2.1 axe-core devDep + helper stub: DONE Day 03
-  - S4.1.4a wiki-dispatch-batch: DONE Day 04
-  - S4.1.4b dispatcher unit tests: DONE Day 04
-  - GAP-DAY24-02 npm audit fix: DONE Day 04 (0 high Day 26)
-  - GAP-DAY24-04 E2E smoke + axe integration: SPEC Day 04 (browser run deferred Day 28 — blocker chromium install + BASE_URL)
-  - GAP-DAY24-05 benchmark write: DONE Day 04
-  - S4.1.5 unlim-wiki-query scaffold + core + tests: DONE Day 26
-  - S4.2.2 accessibility_wcag metric live wire + tests: DONE Day 26
-  - S4.2.2b generate-axe-baseline.mjs CLI + tests: DONE Day 26
-  - S4.1.5b wiki-corpus-loader + makeRetriever factory + tests: DONE Day 27
-  - S4.1.6 integration tests wiki pipeline round-trip: DONE Day 27
-  - D27-DOC ADR-007 module extraction pattern: DONE Day 27
-  - S4.1.4c Together live dispatch: AWAITING Andrea gate
-  - S4.1.5c real wiki corpus wire (data/wiki/*.md from batch output): pending Day 28 (gate-dependent)
-  - S4.2.3 unlim_latency_p95 pipeline: pending Day 28
+sprint4_final_scorecard:
+  committed_SP_core: 26
+  delivered_SP_core: 25 (96%)
+  expanded_backlog_SP: 35
+  delivered_SP_expanded: 27 (77%)
+  stories_done: 17 of 22
+  tests_delivered: +151 (12220 to 12371)
+  benchmark_delta: +0.59 (4.75 to 5.34)
+  auditor_avg_6_days: 7.69
+  day28_harness_composite: 8.10
+  sprint4_7day_avg_composite: 7.75
+  commits: 10 atomic (all feature branch, zero main direct, zero force-push, zero --no-verify)
+  blockers_closed_sprint4: 2 (GAP-DAY24-02 npm audit 13 to 4, ADR-007 extraction pattern codified)
+  pz_v3_violations: 0 (28 days consecutive)
+  engine_semantic_diff: 0
+  gate_result: 13 of 13 PASS (first full-green sprint ELAB history)
 
-sp_delivered_day06: 4 (D27-DOC 1 SP + S4.1.5b 2 SP + S4.1.6 1 SP)
-sp_delivered_cumulative_sett4: 25 of 26 (96%)
+next_action: ANDREA_DECISION_GATE_SPRINT4_MERGE_MAIN_AND_PRODDEPLOY_PLUS_SPRINT5_5_QUESTIONS_PICK_A_OR_B_OR_PARALLEL
+stop_reason: session_end_natural_day28_sprint4_ceremony_complete_awaiting_andrea_main_merge_and_sprint5_theme_decision
 
-next_action: SPRINT4_DAY07_GATE_REQUIRES_ANDREA_CONFIRM_BEFORE_MAIN_MERGE_PROD_DEPLOY
-stop_reason: session_end_natural_day27_complete_sprint4_end_gate_needs_confirm
+sprint5_carry_load_SP: 8 (S4.1.4c 1, S4.1.5c 1, S4.2.3 3, GAP-DAY24-04 2, ADR-005 impl 1)
+sprint5_new_scope_budget_option_A: ~18 SP (26 committed - 8 carry)
+sprint5_new_scope_budget_option_B: ~15 SP (23 committed - 8 carry)
+sprint5_new_scope_budget_option_AB: ~27 SP (35 committed - 8 carry — RED ZONE above rolling avg 21.33)
+
+tpm_recommendation_next_session:
+  1. Andrea reads docs/reviews/sprint-4-review.md first
+  2. Merge Sprint 4 to main (13/13 gate + 0 regressions = safe)
+  3. Prod deploy Vercel auto via Git main push
+  4. Sprint 5 Option A solo Days 29-32 + Option B Tea onboarded 30/04 parallel owner-split
+  5. Together AI auth unlocks 5 SP (1 Sprint 4 carry + 4 Sprint 5 T2)
+
+verified_metrics_day28:
+  cov_3x: 12371 / 12371 / 12371 (100% identical, zero flaky)
+  build_pass: exit 0 (~25s)
+  git_unpushed: 0 (pre-Day-28-commit)
+  git_dirty_pre_commit: only automa/state/heartbeat (harmless)
+  pz_v3_grep_source: 0
+  zero_p0_blockers: true
+  ci_last_run: success
+  benchmark_fresh_write: 5.34 captured to automa/state/benchmark.json
+
+timestamp: 2026-04-22T12:35:00+08:00
+session_context: autonomous headless loop-forever.sh --print --max-turns 200

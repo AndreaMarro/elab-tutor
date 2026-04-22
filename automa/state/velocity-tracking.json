@@ -1,25 +1,92 @@
 {
-  "schema_version": 1,
-  "sprint": "sett-1-stabilize",
-  "sprint_period": "2026-04-20_to_2026-04-26",
-  "created_at": "2026-04-22T09:00:00Z",
-  "updated_at": "2026-04-21T07:25:00+08:00",
-  "baseline_pre_sprint": {
-    "test_count": 12116,
-    "benchmark_score": 2.77,
-    "build_status": "PASS",
-    "commit_sha": "prior_to_day01"
+  "schema_version": 2,
+  "updated_at": "2026-04-22T04:34:25.107073+00:00",
+  "sprints": [
+    {
+      "number": 1,
+      "name": "sett-1-stabilize",
+      "period": "2026-04-20_to_2026-04-26",
+      "committed_points": 18,
+      "completed_points": 14,
+      "velocity": 14,
+      "spillover": 4,
+      "retrospective_actions_completed": null,
+      "retrospective_actions_total": null,
+      "notes": "Legacy Sprint 1 \u2014 bench 2.77\u21924.06. Carry legacy details in `legacy_daily_metrics_sett1` key if needed."
+    },
+    {
+      "number": 2,
+      "name": "sett-2-consolidate",
+      "period": "2026-04-27_to_2026-05-03",
+      "committed_points": 22,
+      "completed_points": 18,
+      "velocity": 18,
+      "spillover": 4,
+      "retrospective_actions_completed": 3,
+      "retrospective_actions_total": 5,
+      "notes": "Fragmented pattern per Sprint 4 contract rationale"
+    },
+    {
+      "number": 3,
+      "name": "sett-3-concentrated-track",
+      "period": "2026-04-15_to_2026-04-21",
+      "committed_points": 24,
+      "completed_points": 21,
+      "velocity": 21,
+      "spillover": 3,
+      "retrospective_actions_completed": 9,
+      "retrospective_actions_total": 12,
+      "gate_pass_count": "11/13",
+      "notes": "Single-track focus lesson; PR #18 merged + prod deploy 2b5bab7 2026-04-22"
+    },
+    {
+      "number": 4,
+      "name": "sett-4-intelligence-foundations",
+      "period": "2026-04-16_to_2026-04-22",
+      "committed_points": 26,
+      "completed_points": 25,
+      "velocity": 25,
+      "spillover": 1,
+      "retrospective_actions_completed": 8,
+      "retrospective_actions_total": 12,
+      "gate_pass_count": "13/13",
+      "tests_delivered": 151,
+      "tests_end": 12371,
+      "benchmark_end": 5.34,
+      "benchmark_delta": 0.59,
+      "auditor_avg": 7.69,
+      "harness_4grading": {
+        "design": 7.78,
+        "originality": 7.23,
+        "craft": 8.03,
+        "functionality": 7.72,
+        "composite": 7.69
+      },
+      "commits": 10,
+      "blockers_closed": 2,
+      "pz_v3_violations": 0,
+      "engine_diff": 0,
+      "stretch_sp_delivered": 2,
+      "stretch_sp_carry_sprint5": 2,
+      "notes": "First 13/13 gate. Option B Karpathy Wiki POC. ADR-007 extraction codified. Awaiting Andrea main merge."
+    }
+  ],
+  "rolling_avg_last_3": 21.33,
+  "trend": "up",
+  "trend_analysis": [
+    "Sprint 1 \u2192 2: +4 SP velocity (fragmented pattern absorbed shape)",
+    "Sprint 2 \u2192 3: +3 SP velocity (single-track Karpathy research payoff)",
+    "Sprint 3 \u2192 4: +4 SP velocity (single-track execution scale + Harness 2.0)"
+  ],
+  "projection_sprint5": {
+    "committed_hint": "22-28 SP (preserve 3-sprint rolling avg 21.33 center)",
+    "risk_factors": [
+      "Tea onboarding 30/04 parallel track Dashboard \u2014 split-focus cost",
+      "ONNIPOTENZA 33-tools scope size may exceed atomic-chunk pattern",
+      "S4.1.4c Together live + S4.1.5c real corpus wire = blocking carry 2 SP"
+    ]
   },
-  "targets_end_sprint": {
-    "test_count_min": 12149,
-    "test_count_target": 12316,
-    "benchmark_score_min": 6.0,
-    "bugs_t1_closed_target": 6,
-    "pz_v3_violations_target": 0,
-    "commits_target_min": 40,
-    "commits_target_max": 60
-  },
-  "daily_metrics": [
+  "legacy_sett1_daily_metrics_archive": [
     {
       "day": 1,
       "date": "2026-04-20",
@@ -31,7 +98,11 @@
       "benchmark_delta": 1.29,
       "build_status": "PASS",
       "build_time_s": 77,
-      "bugs_t1_closed": ["T1-001", "T1-002", "T1-009"],
+      "bugs_t1_closed": [
+        "T1-001",
+        "T1-002",
+        "T1-009"
+      ],
       "pz_v3_violations": 0,
       "reviewer_verdict": "APPROVE",
       "auditor_score": 6.5,
@@ -52,7 +123,9 @@
       "benchmark_delta": 0.23,
       "build_status": "PASS",
       "build_time_s": 58,
-      "bugs_t1_closed": ["T1-003"],
+      "bugs_t1_closed": [
+        "T1-003"
+      ],
       "pz_v3_violations": 0,
       "reviewer_verdict": "APPROVE",
       "auditor_score": 7.2,
@@ -63,8 +136,16 @@
       "branch": "feature/t1-003-render-warmup",
       "cov_runs": "3/3 PASS zero flaky",
       "e2e_homepage": "3/3 PASS",
-      "commits_list": ["4a48138 T1-003 Render warmup cron", "c45504c reviewer-minor + supabase-ref canonicalize", "49c121c handoff + audit 7.2"],
-      "resolved_blockers": ["DAY02-SUPABASE-REF (MCP verify canonical=euqpdueopmlllqjmqnyb)", "DAY02-REVIEWER-MINOR (5 issues)", "DAY02-NO-REGRESSION-DRYRUN (false blocker)"],
+      "commits_list": [
+        "4a48138 T1-003 Render warmup cron",
+        "c45504c reviewer-minor + supabase-ref canonicalize",
+        "49c121c handoff + audit 7.2"
+      ],
+      "resolved_blockers": [
+        "DAY02-SUPABASE-REF (MCP verify canonical=euqpdueopmlllqjmqnyb)",
+        "DAY02-REVIEWER-MINOR (5 issues)",
+        "DAY02-NO-REGRESSION-DRYRUN (false blocker)"
+      ],
       "notes": "T1-003 Render warmup cron 10min + 5 reviewer-minor batch. Canonical Supabase ref risolto via MCP live verify."
     },
     {
@@ -89,9 +170,15 @@
       "branch": "feature/t1-003-render-warmup",
       "cov_runs": "3/3 PASS stable",
       "e2e_homepage": "3/3 PASS 6.8s",
-      "commits_list": ["8c9a0eb TPM+velocity+baseline 12164", "f5b071a Vision E2E skeleton 3 cases", "2a0efb3 revert duplicate Vision skeleton", "a4dc901 handoff day 03 + audit 7.0", "e197d37 extend Vision flow screenshot contract"],
+      "commits_list": [
+        "8c9a0eb TPM+velocity+baseline 12164",
+        "f5b071a Vision E2E skeleton 3 cases",
+        "2a0efb3 revert duplicate Vision skeleton",
+        "a4dc901 handoff day 03 + audit 7.0",
+        "e197d37 extend Vision flow screenshot contract"
+      ],
       "resolved_blockers": [],
-      "notes": "Discovery: Vision E2E skeleton duplicato con e2e/22-vision-flow.spec.js → revert onesto zero inflation. Auditor 6.8 initial NOT READY → fix same-session → 7.0 READY. Benchmark -0.22 regression da expected (da 4.29 Day 02 a 4.07 Day 03 fast mode re-eval)."
+      "notes": "Discovery: Vision E2E skeleton duplicato con e2e/22-vision-flow.spec.js \u2192 revert onesto zero inflation. Auditor 6.8 initial NOT READY \u2192 fix same-session \u2192 7.0 READY. Benchmark -0.22 regression da expected (da 4.29 Day 02 a 4.07 Day 03 fast mode re-eval)."
     },
     {
       "day": 4,
@@ -113,9 +200,20 @@
       "unpushed_commits_end": 0,
       "branch": "feature/t1-003-render-warmup",
       "cov_runs": "baseline 12164 preserved (no full run Day 04)",
-      "commits_list": ["e197d37 Vision E2E extend", "640d015 TPM standup sprint-contract", "83f90d2 Dashboard a11y contrast", "cf6f71a ADR-003 JWT 401 + verify script", "f25da24 auditor must-fix P0", "c378af0 end-day handoff"],
-      "resolved_blockers": ["Dashboard a11y contract", "JWT 401 ADR-003", "Auditor 3x must-fix"],
-      "notes": "Day 04 gio 23/04. Auditor 7.5/10 PARTIAL→READY post-fix 3x must-fix same-session. Benchmark regression -0.27 da git_hygiene (Test N marker missing nei commit precedenti)."
+      "commits_list": [
+        "e197d37 Vision E2E extend",
+        "640d015 TPM standup sprint-contract",
+        "83f90d2 Dashboard a11y contrast",
+        "cf6f71a ADR-003 JWT 401 + verify script",
+        "f25da24 auditor must-fix P0",
+        "c378af0 end-day handoff"
+      ],
+      "resolved_blockers": [
+        "Dashboard a11y contract",
+        "JWT 401 ADR-003",
+        "Auditor 3x must-fix"
+      ],
+      "notes": "Day 04 gio 23/04. Auditor 7.5/10 PARTIAL\u2192READY post-fix 3x must-fix same-session. Benchmark regression -0.27 da git_hygiene (Test N marker missing nei commit precedenti)."
     },
     {
       "day": 5,
@@ -128,7 +226,9 @@
       "benchmark_delta": 0,
       "build_status": "PASS",
       "build_time_s": 198,
-      "bugs_t1_closed": ["T1-005 scaffold"],
+      "bugs_t1_closed": [
+        "T1-005 scaffold"
+      ],
       "pz_v3_violations": 0,
       "reviewer_verdict": "N/A (self-audit)",
       "auditor_score": 7.6,
@@ -138,8 +238,14 @@
       "branch": "feature/t1-003-render-warmup",
       "cov_runs": "NOT_EXECUTED (debt Day 06)",
       "e2e_vision_live": "5/5 PASS 20.6s",
-      "commits_list": ["92c763e TPM standup + BLOCKER-001 CLOSED + Day 01 retroactive", "7acf0a0 T1-005 Dashboard scaffold skeleton", "a1cafd0 end-day handoff + self-audit 7.6 + Vision E2E doc"],
-      "resolved_blockers": ["BLOCKER-001 JWT 401 CLOSED via ADR-003 + cf6f71a"],
+      "commits_list": [
+        "92c763e TPM standup + BLOCKER-001 CLOSED + Day 01 retroactive",
+        "7acf0a0 T1-005 Dashboard scaffold skeleton",
+        "a1cafd0 end-day handoff + self-audit 7.6 + Vision E2E doc"
+      ],
+      "resolved_blockers": [
+        "BLOCKER-001 JWT 401 CLOSED via ADR-003 + cf6f71a"
+      ],
       "notes": "Day 05 ven 24/04. Sprint Contract 4/4 DONE. Vision E2E live verify 5/5. Self-audit 7.6 stabilizing."
     },
     {
@@ -158,51 +264,14 @@
       "auditor_score": null,
       "dispatch_count": null,
       "dispatch_cap": 3,
-      "planned_tasks": ["Benchmark fresh --fast --write", "Vitest CoV 3x baseline verify", "Sprint Review Day 07 demo script", "Self-audit Day 06 20-dim matrix", "BLOCKER-002 velocity Day 03 close (done inline Day 06 standup)"],
-      "notes": "Day 06 sab 25/04. Benchmark fresh eseguito early: 3.95/10 (+0.15). BLOCKER-002 closed inline (Day 03 entry rimane historical Day 04 had null → ora backfill completo)."
+      "planned_tasks": [
+        "Benchmark fresh --fast --write",
+        "Vitest CoV 3x baseline verify",
+        "Sprint Review Day 07 demo script",
+        "Self-audit Day 06 20-dim matrix",
+        "BLOCKER-002 velocity Day 03 close (done inline Day 06 standup)"
+      ],
+      "notes": "Day 06 sab 25/04. Benchmark fresh eseguito early: 3.95/10 (+0.15). BLOCKER-002 closed inline (Day 03 entry rimane historical Day 04 had null \u2192 ora backfill completo)."
     }
-  ],
-  "cumulative_trend": {
-    "commits_sprint_total": 27,
-    "test_delta_sprint_total": 48,
-    "benchmark_delta_sprint_total": 1.18,
-    "bugs_t1_closed_total": 5,
-    "days_logged": 5,
-    "days_remaining": 2,
-    "on_track_commits": true,
-    "on_track_benchmark": false,
-    "on_track_bugs": true
-  },
-  "hard_gates_sprint_1": {
-    "G1_test_count_min_12149": "PASSED_day02 (12164 >= 12149)",
-    "G2_build_PASS": "on_track (day02 PASS)",
-    "G3_CI_3_3_green": "pending_sprint_end",
-    "G4_PZ_v3_0_violations": "on_track (day02 = 0)",
-    "G5_benchmark_min_6": "at_risk_need_+1.71_in_5_days",
-    "G6_prod_live_200": "on_track (day02 200)",
-    "G7_E2E_smoke_5_5": "progress (homepage 3/3 Day 02)"
-  },
-  "retro_notes": {
-    "day01_went_well": [
-      "Zero inflation AUDITOR (self-corrected E2E false alarm honest)",
-      "Benchmark delta +1.29 reale e verificato",
-      "PZ v3 preserved byte-identical nel provider switch"
-    ],
-    "day01_improve": [
-      "Dispatch cap 5 superato (7 actual)",
-      "9 unpushed commits fino a fine giornata"
-    ],
-    "day02_went_well": [
-      "MCP live verify risolto dual-supabase-ref senza guess = production safety",
-      "Zero regressione 12164 CoV 3/3 consistent",
-      "Engine invariant + PZ v3 invariant preserved",
-      "Dispatch cap 5 rispettato (4 actual)",
-      "Branch pushed timely, no unpushed carryover"
-    ],
-    "day02_improve": [
-      "E2E spec modificato esercitato solo post-audit (should be pre-merge)",
-      "Velocity-tracking update ha richiesto Day 03 invece di live",
-      "Benchmark --write persist non ancora implementato (DAY02-BENCH-WRITE carry-over)"
-    ]
-  }
+  ]
 }

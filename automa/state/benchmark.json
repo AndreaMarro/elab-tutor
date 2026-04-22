@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-04-22T03:52:43.878Z",
+  "timestamp": "2026-04-22T04:29:32.521Z",
   "mode": "fast",
   "score": 5.34,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
-      "value": 12328,
-      "observed": 12328,
+      "value": 12371,
+      "observed": 12371,
       "notes": "fast mode (read baseline file)",
       "weight": 0.15,
       "target": 14000,
-      "normalized": 8.81,
-      "contribution": 1.32
+      "normalized": 8.84,
+      "contribution": 1.33
     },
     "build_size_kb": {
-      "value": 14658,
-      "observed": 14658,
+      "value": 14693,
+      "observed": 14693,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -97,8 +97,8 @@
       "contribution": 0.67
     }
   },
-  "commit_sha": "f7a8be5c685da355fc77bc8852e2d8a87e1f5c29",
+  "commit_sha": "4c246b56807cff588cb7bf00f6b8386fbc588c36",
   "branch": "feature/sett-4-intelligence-foundations",
-  "previous_score": 5.32,
-  "delta": 0.02
+  "previous_score": 5.34,
+  "delta": 0
 }
