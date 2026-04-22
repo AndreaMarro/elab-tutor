@@ -11,7 +11,7 @@ import { callLLM, callBrainFallback, getMetrics } from '../_shared/llm-client.ts
 import { routeModel, modelDisplayName } from '../_shared/router.ts';
 import { buildSystemPrompt } from '../_shared/system-prompt.ts';
 import { loadStudentContext, saveInteraction, checkConsent } from '../_shared/memory.ts';
-import { checkRateLimitPersistent, validateChatInput, sanitizeMessage, sanitizeCircuitState, validateExperimentId, validateMimeType, getCorsHeaders, getSecurityHeaders, checkBodySize, validateSessionId } from '../_shared/guards.ts';
+import { checkRateLimitPersistent, validateChatInput, sanitizeMessage, sanitizeCircuitState, validateExperimentId, validateMimeType, getCorsHeaders, getSecurityHeaders, checkBodySize, validateSessionId, verifyElabApiKey } from '../_shared/guards.ts';
 import type { ChatRequest, ChatResponse, CircuitState } from '../_shared/types.ts';
 import { retrieveVolumeContext } from '../_shared/rag.ts';
 
@@ -106,6 +106,19 @@ serve(async (req: Request) => {
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ success: false, error: 'Method not allowed' }), {
       status: 405,
+      headers: getSecurityHeaders(req),
+    });
+  }
+
+  // ── Defense-in-depth: custom ELAB API key check ──
+  // Supabase anon JWT is shipped in the browser bundle and therefore scrapeable;
+  // the X-Elab-Api-Key header gates the Edge Function with a server-only secret
+  // that only legitimate ELAB builds carry. Fail-open when ELAB_API_KEY isn't
+  // set so the deployment stays backward-compatible during rollout.
+  const apiKeyCheck = verifyElabApiKey(req);
+  if (!apiKeyCheck.ok) {
+    return new Response(JSON.stringify({ success: false, error: 'unauthorized', reason: apiKeyCheck.reason }), {
+      status: 401,
       headers: getSecurityHeaders(req),
     });
   }
