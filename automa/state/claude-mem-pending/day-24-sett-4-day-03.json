@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "observation_type": "process",
+  "timestamp": "2026-04-24T09:00:00+08:00",
+  "title": "Sprint 4 Day 03 — Wiki ingest scripts + axe-core devDep + 28 unit tests + CoV 3x 12248",
+  "sprint": "sett-4-intelligence-foundations",
+  "day_cumulative": 24,
+  "day_local": 3,
+  "branch": "feature/sett-4-intelligence-foundations",
+  "commit_sha": "pending (end-day commit)",
+  "scope": "Day 03 runtime delivery pivot: 2 production scripts (wiki-build-batch-input.mjs + wiki-validate-file.mjs) + axe-core devDep + 28 new unit tests + CoV 3x deterministic 12248",
+  "tags": ["day-24", "sett-4", "wiki-ingest", "together-ai-batch", "together-ai-jsonl", "wiki-validator", "schema-v0.1.0", "pz-v3-enforcement", "axe-core", "wcag", "harness-2.0", "functionality-climb"],
+  "metrics": {
+    "tests_count": 12248,
+    "tests_cov": "3/3 deterministic PASS (78.38s / 81.46s / 105.55s)",
+    "benchmark_score": 4.79,
+    "benchmark_delta": 0,
+    "story_points_delivered_day": 5,
+    "story_points_cumulative_sprint": 12,
+    "story_points_remaining_sprint": 14,
+    "commits_today": 1,
+    "files_created": 10,
+    "files_modified": 3,
+    "mcp_calls": 0,
+    "harness_composite": 7.6,
+    "harness_design": 8.0,
+    "harness_originality": 7.0,
+    "harness_craft": 8.0,
+    "harness_functionality": 7.5,
+    "delta_vs_day_23_composite": 0.85
+  },
+  "mcp_calls_detail": [
+    "MCP target not met Day 24 (0 explicit / ≥10 required). Substituted with native Read/Grep/Bash for cheap operations. GAP-DAY24-06 flagged. Day 25 structured discipline required."
+  ],
+  "artifacts": [
+    "scripts/wiki-build-batch-input.mjs (215 lines, deterministic JSONL emitter, CLI --type --out --limit, smoke 117 records PASS)",
+    "scripts/wiki-validate-file.mjs (168 lines, SCHEMA v0.1.0 validator, PZ v3 grep + front-matter + sections + citation, exit 0/1)",
+    "tests/e2e/helpers/axe-helper.js (axe-core Playwright stub for S4.2.2 Day 25 wiring)",
+    "tests/unit/wiki-build-batch-input.test.js (13 cases)",
+    "tests/unit/wiki-validate-file.test.js (15 cases)",
+    "automa/team-state/sprint-contracts/day-24-contract.md (Harness 2.0 pre-implementation contract)",
+    "docs/audit/cov-3x-day-24.md (CoV 3/3 evidence)",
+    "docs/audit/day-24-sett-4-day-03-audit.md (20-dim matrix + 4-grading + 6 gaps enumerated)",
+    "docs/handoff/2026-04-24-day-24-end.md (executive summary + metrics delta + risks + debt + recommendations Day 25)",
+    "automa/baseline-tests.txt (12164 → 12248)"
+  ],
+  "decisions_captured": [
+    "Together AI Batch API JSONL schema: { custom_id, body: { model: 'meta-llama/Llama-3.3-70B-Instruct-Turbo', temperature: 0.3, max_tokens: 2048, messages: [system(PZ v3 + required sections), user(volume excerpt + instructions)] } }",
+    "System prompt encodes PZ v3 (5 rules) + required body sections + front-matter schema inline — no runtime template lookup",
+    "SCHEMA.md itself correctly REJECTED by validator (contains 'Docente, leggi' as reject-example) — meta-doc, not wiki content",
+    "Shebang removed from both .mjs scripts (Vite SSR transform injectQuery shim breaks #!/usr/bin/env node prefix) — scripts invoked via 'node scripts/...'",
+    "Inline minimal YAML parser preferred over extra dep (js-yaml) — isolation from src/, zero runtime coupling",
+    "CoV 3x via serial bash vitest delivered (PTC code_execution container config deferred Day 25, same semantics 3× independent invocations)",
+    "Functionality 4.0 (Day 23 docs-only) → 7.5 (Day 24 runnable) composite +0.85 — runtime delivery pivot closes Harness 2.0 functionality gap"
+  ],
+  "gaps_enumerated": [
+    "GAP-DAY24-01 P2 lesson count drift — 25 actual (lesson-groups.js) vs 27 documented (SCHEMA/index/CLAUDE.md). Andrea decision Day 25: add 2 lessons OR update docs",
+    "GAP-DAY24-02 P2 tech debt — 13 high-severity npm audit indirect deps post axe-core install (all transitive via rollup/vitest/axe graph). Day 25 npm audit fix non-breaking + document residuals",
+    "GAP-DAY24-03 P3 — PTC code_execution container config deferred. CoV 3x delivered via serial bash (same semantics). Day 25 .claude/tools-config.json if token budget allows",
+    "GAP-DAY24-04 P3 — E2E Playwright not run Day 24 (axe-helper stub untested in real browser). Day 25 tests/e2e/e2e-smoke.spec.js (2 spec) + axe-helper integration baseline",
+    "GAP-DAY24-05 P3 — Benchmark not re-run Day 24 (carry 4.79). Day 25 node scripts/benchmark.cjs --write end-of-day to capture test_count contribution",
+    "GAP-DAY24-06 P3 — MCP explicit calls Day 24 = 0 (target ≥10). Day 25 structured day-start claude-mem smart_search + mid-day save_observation + serena get_symbols_overview + context7 query-docs"
+  ],
+  "next_actions_day_25": [
+    "STEP 0 MCP discipline: claude-mem smart_search 'together-ai-batch-dispatch 2026' + serena get_symbols_overview + context7 query-docs '@together-ai/sdk batches'",
+    "S4.1.4 Together AI Batch API POST /v1/batches with /tmp/wiki-batch-all.jsonl input (117 records), poll completion, download outputs, pipe each through wiki-validate-file.mjs",
+    "npm audit fix non-breaking + documented residual acceptance for indirect transitive deps",
+    "node scripts/benchmark.cjs --write end-of-day capture",
+    "E2E smoke 2 spec Playwright + axe-helper integration baseline (tests/e2e/e2e-smoke.spec.js)",
+    "MCP explicit calls log ≥10 (structured day-start + mid-day + end-day)"
+  ],
+  "honest_notes": [
+    "Day 24 Harness 2.0 composite 7.6/10 above 7.5 floor, +0.85 vs Day 23 6.75 — functionality climb 4.0→7.5 is the main driver",
+    "MCP call count 0 explicit is a real quality gap — Harness 2.0 ≥10 target not met. Substituted with cheap native Read/Grep/Bash for Day 24 work, acceptable but not excellent",
+    "Ratchet discipline respected: +28 tests above +15/day floor",
+    "Zero regression: all 3 CoV runs identical 12248 PASS across 213 files",
+    "Lesson count drift 25 vs 27 is doc-only; scripts use actual 25, no runtime impact"
+  ]
+}

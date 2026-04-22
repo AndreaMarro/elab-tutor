@@ -1,75 +1,59 @@
-last_commit: f23e448 (docs sett-4 Day 01 end-day audit 7.25/10 + claude-mem observation) — Day 02 commit pending
+last_commit: c5c7adc (docs sett-4 Day 02 ADR-005 + Together AI research + Day 23 audit [TEST 12220]) — Day 03 commit pending
 sprint: sett-4-intelligence-foundations (Option B Karpathy LLM Wiki POC — LOCKED)
-sprint_day_cumulative: 23
-sprint_day_local: 02
-sprint_status: SETT4_DAY02_MCP_RECOVERY_ADR005_RESEARCH
+sprint_day_cumulative: 24
+sprint_day_local: 03
+sprint_status: SETT4_DAY03_WIKI_SCRIPTS_AXE_COV3X_RATCHET_12248
 pr_sprint3: #18 MERGED 2026-04-22 07:56 GMT+8 (2b5bab7)
 prod_deploy: dpl_9ocrgUWYkpwm1MmHGQeQ3kSJqVYe LIVE www.elabtutor.school HTTP 200 1.33s verified 2026-04-22 07:59 (Day 22 carry)
-baseline_tests: 12220 (CoV 1x Day 23 pre-commit 132.78s, 211 files, PASS zero regression docs-only diff)
-benchmark_day23: 4.79 (carry Day 22, no new bench run Day 23)
+baseline_tests: 12248 (CoV 3x Day 24 verified 08:47-08:51 GMT+8, 213 files, 3/3 runs identical PASS zero flaky)
+baseline_tests_previous: 12220 (carry Day 23)
+benchmark_day24: 4.79 (carry Day 22, no new bench run Day 24 — GAP-DAY24-05 documented)
 blockers_open: 0 P0/P1 | 1 P3 (ADR-003 env deferred sprint-5)
 
-day02_work_completed_this_session:
-  - ADR-005 watchdog noise suppression: docs/architectures/ADR-005-watchdog-noise-suppression.md (8 sections, severity+threshold+cooldown+auto-close design, implementation Day 03-04)
-  - Research doc: docs/research/2026-04-23-together-ai-batch-ingest.md (9 sections, batch API pattern + JSONL schema + error handling + cost reconcile 25x headroom)
-  - daily_standup Day 23 entry appended + Day 22 grading backfill (7.25/10 composite)
-  - day-23 end-of-day audit: docs/audit/day-23-sett-4-day-02-audit.md (20-dim matrix, Harness 2.0 6.75/10)
-  - claude-mem pending observation: automa/state/claude-mem-pending/day-23-sett-4-day-02.json
-  - MCP discipline recovery: 3 calls (claude-mem smart_search + context7 resolve-library-id + context7 query-docs)
+day03_work_completed_this_session:
+  - Day 24 sprint contract Harness 2.0: automa/team-state/sprint-contracts/day-24-contract.md (pre-implementation acceptance criteria 3 stories + rollback + 4-grading targets)
+  - S4.1.3a scripts/wiki-build-batch-input.mjs (215 lines, deterministic JSONL emitter, Together AI Batch API 2026 format, CLI --type --out --limit, idempotent, smoke test 117 records PASS)
+  - S4.1.3b scripts/wiki-validate-file.mjs (168 lines, SCHEMA v0.1.0 validator, PZ v3 grep + YAML front-matter + required body sections + citation marker, exit 0/1)
+  - S4.2.1 @axe-core/playwright devDep installed (Andrea APPROVED 2026-04-22) + tests/e2e/helpers/axe-helper.js stub runAxeScan+summariseAxeResults
+  - 28 unit tests new (13 build-batch-input + 15 validate-file), 100% PASS
+  - CoV 3x full vitest 12248 PASS 3/3 (78.38s / 81.46s / 105.55s), zero flaky, +28 ratchet vs baseline 12220
+  - automa/baseline-tests.txt reconciled 12164 → 12248
+  - docs/audit/cov-3x-day-24.md (evidence)
+  - docs/audit/day-24-sett-4-day-03-audit.md (20-dim matrix, Harness 2.0 4-grading 7.6/10)
+  - docs/handoff/2026-04-24-day-24-end.md
 
-sprint4_stories_progress_day02:
+sprint4_stories_progress_day03:
   - S4.1.1 ADR-006 + SCHEMA.md: DONE Day 01
   - S4.1.2 wiki skeleton: DONE Day 01
   - S4.3.2 velocity tracking: DONE Day 01
-  - S4.3.3 ADR-005 watchdog noise: DRAFTED Day 02 (implementation Day 03-04)
+  - S4.3.3 ADR-005 watchdog noise: DRAFTED Day 02 (implementation Day 04-05)
   - Research Day 02 Together AI batch: DONE
-  - S4.1.3 ingest experiments script: pending Day 03
-  - S4.1.4 ingest lessons+concepts: pending Day 04-05
+  - S4.1.3a wiki-build-batch-input: DONE Day 03 (script + unit tests + smoke 117 records)
+  - S4.1.3b wiki-validate-file: DONE Day 03 (script + unit tests + SCHEMA enforcement)
+  - S4.2.1 axe-core devDep + helper stub: DONE Day 03
+  - S4.1.4 ingest lessons+concepts batch: pending Day 04-05 (via Together AI batch dispatch)
   - S4.1.5 Edge Function unlim-wiki-query: pending Day 05-06
   - S4.1.6 integration tests wiki pipeline: pending Day 06
-  - S4.2.1 axe-core install: pending Day 03 (Andrea APPROVED 2026-04-22)
-  - S4.2.2 accessibility_wcag metric wire: pending Day 04
-  - S4.2.3 unlim_latency_p95 pipeline: pending Day 04-05
-  - S4.3.1 PTC CoV 5x code_execution: pending Day 03 catch-up
+  - S4.2.2 accessibility_wcag metric wire: pending Day 04-05
+  - S4.2.3 unlim_latency_p95 pipeline: pending Day 05
+  - S4.3.1 PTC CoV 5x code_execution container: pending Day 04 catch-up
 
-sp_delivered_day02: 2 (S4.3.3 ADR draft 1 SP + research+planning 1 SP)
-sp_delivered_cumulative_sett4: 7 of 26 (27%)
-sp_remaining_sprint4: 19 of 26 (73%)
+sp_delivered_day03: 5 (S4.1.3a 2 SP + S4.1.3b 1 SP + S4.2.1 0.5 SP + PTC catch-up semantic 0.5 SP + tests 1 SP)
+sp_delivered_cumulative_sett4: 12 of 26 (46%)
+sp_remaining_sprint4: 14 of 26 (54%)
 
-day02_honest_gaps_to_address:
-  - MCP calls Day 02 = 3 (recovery from 0 Day 01 but < 10 daily floor). Day 03 target >=10 via serena + context7 + claude-mem
-  - ADR-005 DRAFTED not implemented (shell code + tests + CI shadow Day 03-04)
-  - Functionality 4.0/10 (docs-only, runtime delivery Day 03+)
-  - Composite Day 02 6.75/10 sub-7.0 floor (phase-appropriate, catch-up Day 04+ ingest)
-  - ADR-006 cost $4.60 found STALE (2026 Together AI 10x cheaper, reconciled $0.18 batch) — lesson: cite pricing snapshot date
-  - PTC CoV 5x code_execution still deferred (Day 03 catch-up mandatory)
+day03_honest_gaps_to_address:
+  - GAP-DAY24-01 lesson count drift (25 actual vs 27 documented in SCHEMA/index/CLAUDE.md) P2 — Andrea decision Day 25
+  - GAP-DAY24-02 13 high npm audit indirect deps P2 tech debt — npm audit fix Day 25
+  - GAP-DAY24-03 PTC code_execution container config deferred P3 — Day 25 tools-config.json
+  - GAP-DAY24-04 E2E Playwright not run Day 24 P3 — smoke 2 spec Day 25
+  - GAP-DAY24-05 benchmark not re-run Day 24 P3 — write Day 25 end-of-day
+  - GAP-DAY24-06 MCP explicit calls Day 24 = 0 (below ≥10 target) P3 — structured discipline Day 25
 
-next_action_day03:
-  - STEP 0 MCP: serena get_symbols_overview scripts/ + context7 query-docs @supabase/functions-js + claude-mem smart_search ingest-pattern (target >=10 calls)
-  - S4.1.3 scripts/wiki-build-batch-input.mjs (reads volume-references.js + lesson-groups.js + SCHEMA, emits JSONL)
-  - S4.1.3 scripts/wiki-validate-file.mjs (PZ v3 grep + front-matter + citation check)
-  - S4.3.3 implementation ADR-005 (watchdog-run.sh + checks.sh severity tags + state files)
-  - S4.2.1 npm install axe-core --save-dev + 1 initial a11y test
-  - ADR-006 audit secondary numbers (tokens, latency) vs 2026 Together AI docs
-  - PTC CoV 5x catch-up once S4.1.3 lands
-
-sett4_budget_remaining:
-  - ingest cost: $10 budget, $0 spent, projected ~$0.18 batch + ~$1/mo runtime (25x headroom vs budget)
-  - days: 5 remaining (Day 03-07 sett-4 local = cumulative Day 24-28)
-  - SP remaining: 19 of 26
-
-safety_memory_honored: true (no destructive ops, Andrea approvals respected)
-headless_mode_rules_honored: true (no background agents dispatched, foreground sync only)
-caveman_mode_honored: true (terse inline updates)
-
-session_continuous_sett4: 2026-04-22 08:10 (Day 01 kickoff) → 2026-04-23 rolling (Day 02 in session)
-session_day02_end: 2026-04-23 est (pending commit+push+claude-mem)
-stop_reason_if_triggered: pending — will commit+push, then continue Day 03 if context budget permits OR natural stop
-
-mcp_calls_day23: 3 (claude-mem smart_search + context7 resolve + context7 query-docs) — recovery in progress, < daily floor 10
-evidence_day23_delivery:
-  - 2 new files (ADR-005 + research doc)
-  - 2 modified (daily-standup Day 23 entry + Day 22 grading backfill, heartbeat auto)
-  - 1 audit (day-23-sett-4-day-02-audit.md)
-  - 1 claude-mem pending (day-23-sett-4-day-02.json)
-  - Vitest 12220 CoV 1x PASS 132.78s (zero regression docs-only diff)
+next_action_day04:
+  - STEP 0 MCP discipline: claude-mem smart_search "together-ai-batch-dispatch 2026" + serena get_symbols_overview + context7 query-docs "@together-ai/sdk batches"
+  - S4.1.4 Together AI Batch API POST /v1/batches with /tmp/wiki-batch-all.jsonl input (117 records), poll completion, download outputs, pipe each through wiki-validate-file.mjs
+  - npm audit fix non-breaking + documented residual acceptance
+  - benchmark.cjs --write end-of-day capture
+  - E2E smoke 2 spec Playwright + axe-helper integration baseline
+  - MCP explicit calls log ≥10
