@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-04-21T22:41:48.156Z",
+  "timestamp": "2026-04-22T01:24:14.257Z",
   "mode": "fast",
-  "score": 4.75,
+  "score": 5.31,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
-      "value": 12164,
-      "observed": 12164,
+      "value": 12248,
+      "observed": 12248,
       "notes": "fast mode (read baseline file)",
       "weight": 0.15,
       "target": 14000,
-      "normalized": 8.69,
-      "contribution": 1.3
+      "normalized": 8.75,
+      "contribution": 1.31
     },
     "build_size_kb": {
-      "value": 14623,
-      "observed": 14623,
+      "value": 14743,
+      "observed": 14743,
       "notes": "sum js+css in dist/",
       "weight": 0.05,
       "target": 3500,
@@ -59,13 +59,13 @@
       "contribution": 0
     },
     "git_hygiene": {
-      "value": 0.26666666666666666,
-      "observed": 8,
-      "notes": "8/30 commits with hygiene signals (test count / CoV / blocker ref / conventional prefix)",
+      "value": 0.36666666666666664,
+      "observed": 11,
+      "notes": "11/30 commits with hygiene signals (test count / CoV / blocker ref / conventional prefix)",
       "weight": 0.05,
       "target": 0.9,
-      "normalized": 2.67,
-      "contribution": 0.13
+      "normalized": 3.67,
+      "contribution": 0.18
     },
     "documentation": {
       "value": 1,
@@ -77,13 +77,13 @@
       "contribution": 1
     },
     "accessibility_wcag": {
-      "value": 0,
-      "observed": false,
-      "notes": "no a11y tooling",
+      "value": 0.5,
+      "observed": true,
+      "notes": "axe installed (run required)",
       "weight": 0.1,
       "target": 1,
-      "normalized": 0,
-      "contribution": 0
+      "normalized": 5,
+      "contribution": 0.5
     },
     "worker_uptime": {
       "value": 0.6666666666666666,
@@ -96,8 +96,8 @@
       "contribution": 0.67
     }
   },
-  "commit_sha": "069735f7357468441f52d9a604ca1a2bc4354350",
-  "branch": "feature/sett-3-stabilize-v3",
-  "previous_score": 4.12,
-  "delta": 0.63
+  "commit_sha": "946aafb0852853b1be31ae7e67bc4693b5e4ac85",
+  "branch": "feature/sett-4-intelligence-foundations",
+  "previous_score": 4.75,
+  "delta": 0.56
 }

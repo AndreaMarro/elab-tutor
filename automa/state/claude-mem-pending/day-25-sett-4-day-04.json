@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "observation_type": "process",
+  "timestamp": "2026-04-25T09:45:00+08:00",
+  "title": "Sprint 4 Day 04 — Together AI dispatcher (zero-dep) + npm audit 13→4 + benchmark 5.31 + axe E2E spec",
+  "sprint": "sett-4-intelligence-foundations",
+  "day_cumulative": 25,
+  "day_local": 4,
+  "branch": "feature/sett-4-intelligence-foundations",
+  "commit_sha": "pending (end-day commit)",
+  "scope": "Day 04 runtime delivery: S4.1.4 Together AI Batch dispatcher (native fetch, DRY-RUN default, zero-dep) + 19 unit tests + E2E wiki-smoke+axe spec + npm audit fix -9 high + benchmark write 4.75→5.31",
+  "tags": ["day-25", "sett-4", "wiki-dispatch", "together-ai-batch-api", "zero-dep", "native-fetch", "dry-run-guard", "npm-audit", "benchmark-lift", "axe-integration", "e2e-smoke", "harness-2.0", "mcp-partial-recovery"],
+  "metrics": {
+    "tests_count": 12267,
+    "tests_cov": "3/3 pending run 3 completion (runs 1-2 identical 12267)",
+    "benchmark_score": 5.31,
+    "benchmark_delta": 0.56,
+    "benchmark_previous": 4.75,
+    "story_points_delivered_day": 5,
+    "story_points_cumulative_sprint": 17,
+    "story_points_remaining_sprint": 9,
+    "commits_today": 1,
+    "files_created": 7,
+    "files_modified": 4,
+    "mcp_calls": 5,
+    "npm_audit_high_before": 13,
+    "npm_audit_high_after": 4,
+    "harness_composite": 8.1,
+    "harness_design": 8.5,
+    "harness_originality": 7.5,
+    "harness_craft": 8.5,
+    "harness_functionality": 8.0,
+    "delta_vs_day_24_composite": 0.5
+  },
+  "mcp_calls_detail": [
+    "mcp__plugin_claude-mem_mcp-search__smart_search query='together-ai-batch-dispatch' (output too large; redirected via file)",
+    "mcp__plugin_serena_serena__activate_project 'elab-builder' (required before get_symbols_overview)",
+    "mcp__plugin_serena_serena__get_symbols_overview scripts/wiki-build-batch-input.mjs (failed pre-activate; re-attemptable Day 26)",
+    "mcp__plugin_context7_context7__resolve-library-id 'Together AI' -> /togethercomputer/together-typescript benchmark 36.5",
+    "mcp__plugin_context7_context7__query-docs batch API surface (client.batches.create / files.upload / error codes 400/401/403/404/422/429/5xx confirmed)"
+  ],
+  "artifacts": [
+    "scripts/wiki-dispatch-batch.mjs (260 lines, zero-dep native fetch dispatcher DRY-RUN default)",
+    "tests/unit/wiki-dispatch-batch.test.js (19 cases 100% PASS)",
+    "tests/e2e/16-wiki-smoke-axe.spec.js (2 specs syntax validated; browser run deferred Day 26)",
+    "automa/team-state/sprint-contracts/day-25-contract.md (Harness 2.0 pre-implementation)",
+    "docs/audit/cov-3x-day-25.md (2/3 runs identical 12267)",
+    "docs/audit/day-25-sett-4-day-04-audit.md (20-dim matrix + 4-grading 8.1 + 6 gaps)",
+    "docs/handoff/2026-04-25-day-25-end.md",
+    "automa/state/benchmark.json (5.31, +0.56)",
+    "automa/baseline-tests.txt (12248 → 12267)"
+  ],
+  "decisions_captured": [
+    "Together AI integration uses native Node built-in fetch + FormData + Blob (no 'together-ai' npm install) — respects CLAUDE.md rule 13 'MAI aggiungere dipendenze senza approvazione'",
+    "DRY-RUN default (exit code 2) + --execute flag required for paid POST = safety guard against accidental paid dispatch",
+    "Cost estimator verified live: 117 records × 2048 max_tokens = 239616 output tokens + ~78913 input tokens = $0.14 USD total batch pricing (Llama 3.3 70B Instruct Turbo $0.44/1M tokens batch rate per ADR-005)",
+    "Error taxonomy matches Together TypeScript SDK exactly (400/401/403/404/422/429/5xx) — verified via context7 query-docs",
+    "npm audit fix non-breaking only: 13 high → 4 high (-9); residuals all in vite-plugin-pwa major chain (Andrea gate required for --force)",
+    "isDirectRun detection must use fileURLToPath (not new URL().pathname) for paths containing spaces (VOLUME 3 bug caught+fixed)",
+    "Benchmark previous_score in state file 4.79 drifts from actual benchmark.json 4.75 — reconcile Day 26 (GAP-DAY25-03)"
+  ],
+  "gaps_enumerated": [
+    "GAP-DAY25-01 P3 E2E Playwright spec not browser-executed Day 25 (syntax PASS, browser run Day 26 against prod)",
+    "GAP-DAY25-02 P2 vite-plugin-pwa major bump (4 high audit residuals) — Andrea decision gate",
+    "GAP-DAY25-03 P3 benchmark previous_score drift 4.75 (truth) vs 4.79 (state file recall)",
+    "GAP-DAY25-04 P2 lesson count drift 25 vs 27 — carry from Day 24 GAP-DAY24-01, Andrea decision",
+    "GAP-DAY25-05 P3 build time 434s >> 60s target (PWA precache dominates)",
+    "GAP-DAY25-06 P3 bundle size 14623 → 14743 KB (+120 post audit-fix dep updates)"
+  ],
+  "next_actions_day_26": [
+    "Andrea gates: (a) vite-plugin-pwa major go/no-go (b) Together AI live dispatch $0.14 go/no-go (c) lesson count 25 vs 27 reconcile",
+    "E2E browser run: npx playwright test tests/e2e/16-wiki-smoke-axe.spec.js against prod (captures axe baseline summary)",
+    "If Together AI approved: node scripts/wiki-dispatch-batch.mjs --input /tmp/wiki-batch-all.jsonl --execute + poll + download + validate",
+    "S4.1.5 Edge Function unlim-wiki-query design day (Supabase + OpenRouter-compat fallback)",
+    "Bundle analyze attack 14743 KB regression",
+    "MCP discipline ≥10/day target Day 26 (structured day-start + mid-day save_observation + end-day)"
+  ],
+  "honest_notes": [
+    "Composite Harness 2.0 8.1/10 above 7.7 target, +0.5 vs Day 24 7.6 — functionality 8.0 maintained",
+    "MCP explicit calls 5 is partial recovery from Day 24 zero — still below ≥10 target",
+    "Ratchet +19 tests above +15/day floor — tight margin (only +4)",
+    "Native-fetch choice zero-dep was right call: axe-core alone added 13 high audits (post-fix 4); adding together-ai package would have grown indirect audit surface",
+    "$0.14 cost estimate is well under $1/day budget per ADR-005 research — Together Batch API economics as predicted",
+    "All Day 24 gaps addressed except GAP-DAY24-01 (lesson count, Andrea gate) and GAP-DAY24-03 (PTC container, Day 26+)"
+  ]
+}
