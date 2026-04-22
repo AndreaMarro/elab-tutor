@@ -1,3 +1,32 @@
+## [Security: Supabase primary + X-Elab-Api-Key enforcement] — 2026-04-22
+
+Shifts UNLIM chat from Render-primary to Supabase-primary and adds a server-only secret gate (\`X-Elab-Api-Key\`) that only legitimate ELAB builds carry. Closes P1-002 (Principio Zero v3 live prod drift) by routing chat to the Supabase Edge Function whose \`BASE_PROMPT\` enforces plural inclusive "Ragazzi" per Principio Zero v3.
+
+### Added
+- **\`verifyElabApiKey()\` helper** (\`supabase/functions/_shared/guards.ts\`) — constant-time comparison vs \`ELAB_API_KEY\` Supabase secret. Fail-open when the secret is not configured so the rollout is backward-compatible.
+- **Supabase secret \`ELAB_API_KEY\`** set via \`supabase secrets set\` on project \`euqpdueopmlllqjmqnyb\`.
+- **Vercel env \`VITE_ELAB_API_KEY\`** added on \`elab-tutor\` production, same value as Supabase secret.
+- **Docs**: \`docs/audits/2026-04-22-supabase-security-hardening-plan.md\` (4-phase rollout + rollback procedures).
+
+### Changed
+- **\`supabase/functions/unlim-chat/index.ts\`** — enforcement hook right after POST dispatch. Missing or mismatched \`X-Elab-Api-Key\` returns 401. No effect on CORS preflight or health GET.
+- **\`src/services/api.js\`** — \`nanobotHeaders()\` sends \`X-Elab-Api-Key\` when \`VITE_ELAB_API_KEY\` is set. Only attached for Supabase-Edge requests; Render fallback ignores the header.
+- **Vercel env \`VITE_NANOBOT_URL\`** rotated from \`https://elab-galileo.onrender.com\\n\` (Render legacy, trailing newline) to \`https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1\`. Supabase Edge now primary; Render remains automatic fallback via the existing chain in \`src/services/api.js\`.
+
+### Verified (server-side, pre-merge)
+- Edge Function \`unlim-chat\` deployed with \`verifyElabApiKey\` active:
+  - WITH correct key → 200 \"Ciao! Pronto per esplorare...\" (Gemini Flash-Lite)
+  - WITHOUT key → 401 \"missing X-Elab-Api-Key header\"
+  - WRONG key → 401 \"bad api key\"
+
+### Deferred (follow-up PR)
+- Rotate legacy anon JWT (currently visible in bundle) after this PR soaks 24h.
+- Playwright \`tests/e2e/live-prod/principio-zero-v3.spec.js\` asserting \"Ragazzi\" token presence.
+
+Diff: 4 files, +326 / −1.
+
+---
+
 ## [Hotfix P0 PWA stale precache] — 2026-04-22
 
 Post-deploy blank-page regression for returning users (stress test 2026-04-22, `docs/audits/2026-04-22-stress-test-findings.md#p0-001`). Workbox precache from a prior visit referenced chunk hashes that no longer existed on the origin; Vercel's SPA catch-all returned HTML for each missing `/assets/*.js`, browser aborted module loading, React never booted.
