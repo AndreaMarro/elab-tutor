@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "sprint": 5,
+  "period": "2026-04-23_to_2026-04-29_proposed",
+  "source": "docs/retrospectives/sprint-4-retrospective.md",
+  "last_updated": "2026-04-22T13:10:00+08:00",
+  "actions": [
+    {
+      "id": "A-501",
+      "title": "Install Playwright chromium + E2E smoke BASE_URL prod",
+      "owner": "DEV",
+      "due_day_cumulative": 30,
+      "due_sprint_day": 2,
+      "story_points": 1,
+      "status": "pending",
+      "acceptance_criteria": [
+        "npx playwright install chromium succeeds in CI env",
+        "BASE_URL=https://www.elabtutor.school npx playwright test tests/e2e/ exits 0",
+        "At least 1 spec loads homepage + asserts visible heading",
+        "CI workflow runs E2E on PR to main"
+      ],
+      "evidence_paths": [
+        "tests/e2e/ (target 1+ spec file)",
+        "package.json scripts.test:e2e",
+        ".github/workflows/e2e.yml (if CI wire)"
+      ],
+      "blockers": ["local chromium install memory/disk", "A-501 not yet in Sprint 5 scope if Option B picked"],
+      "notes": "Carry from Sprint 4 Retrospective."
+    },
+    {
+      "id": "A-502",
+      "title": "Automate claude-mem observation save on post-commit hook",
+      "owner": "DEV",
+      "due_day_cumulative": 29,
+      "due_sprint_day": 1,
+      "story_points": 1,
+      "status": "done",
+      "completion_date": "2026-04-22",
+      "completion_sprint_day": 1,
+      "completion_cumulative_day": 29,
+      "acceptance_criteria_met": [
+        ".githooks/post-commit tracked + executable + non-blocking (set +e)",
+        "scripts/hooks/install-git-hooks.sh tracked + executable + --status + --uninstall",
+        "scripts/cli-autonomous/claude-mem-save.sh enhanced with stats (files_changed, insertions, deletions) + JSON-safe subject",
+        "scripts/cli-autonomous/test-claude-mem-save.sh extended 36/36 PASS (covers stats numeric typing + hook non-blocking + installer)",
+        "docs/workflows/claude-mem-automation.md written (~180 lines flow + install + uninstall + schema + rationale)",
+        "Smoke test Day 29: 5 empty commits on feature branch, 5/5 payloads written in automa/state/claude-mem-pending/, 0 reject rate, 0 commit failure",
+        "Empty-commit pipefail bug detected + fixed ({ ... } || true wrappers around grep extraction)"
+      ],
+      "evidence_paths": [
+        ".githooks/post-commit",
+        "scripts/hooks/install-git-hooks.sh",
+        "scripts/cli-autonomous/claude-mem-save.sh",
+        "scripts/cli-autonomous/test-claude-mem-save.sh",
+        "docs/workflows/claude-mem-automation.md",
+        "automa/team-state/sprint-contracts/day-29-contract.md"
+      ],
+      "smoke_test_evidence": {
+        "pre_count_payloads": 1,
+        "post_count_payloads": 6,
+        "delta": 5,
+        "shas_distinct": 5,
+        "reject_rate": 0,
+        "commit_failure_count": 0,
+        "log_file": "automa/state/claude-mem-pending/post-commit-hook.log"
+      },
+      "notes": "Core.hooksPath activated during smoke, kept activated as A-502 outcome. Future clones run install-git-hooks.sh once."
+    },
+    {
+      "id": "A-503",
+      "title": "Deprecate tasks-board.json columnar OR migrate to flat schema",
+      "owner": "TPM",
+      "due_day_cumulative": 31,
+      "due_sprint_day": 3,
+      "story_points": 1,
+      "status": "pending",
+      "acceptance_criteria": [
+        "ADR-008 written (deprecate vs migrate decision)",
+        "If migrate: single flat tasks[] schema with status/sprint/owner fields",
+        "end-week-gate.sh queries flat schema only",
+        "Legacy columnar format removed or marked deprecated in README"
+      ],
+      "evidence_paths": [
+        "docs/architectures/ADR-008-tasks-board-schema.md (pending)",
+        "automa/team-state/tasks-board.json (Day 28 reconciled, schema decision pending)"
+      ],
+      "notes": "Carry from Sprint 4 Retrospective STOP #4."
+    }
+  ],
+  "sprint_4_carry_actions_other": [
+    {
+      "id": "A-401_through_A-412",
+      "description": "Sprint 4 A-401..A-412 audit action items (8 of 12 complete per Day 28 audit)",
+      "status": "4_open_carry",
+      "source": "docs/audit/day-28-sett-4-day-07-audit.md"
+    }
+  ],
+  "summary": {
+    "total_actions": 3,
+    "done": 1,
+    "pending": 2,
+    "blocked": 0,
+    "on_time_rate": "1/1 completed by due date (A-502 Day 29 = due Day 29)"
+  }
+}

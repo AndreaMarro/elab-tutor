@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+#
+# .githooks/post-commit — automate claude-mem observation payload write
+#                         on every commit. Non-blocking: never fails commit.
+#
+# Enabled via: git config core.hooksPath .githooks
+# Installer:   scripts/hooks/install-git-hooks.sh
+# Uninstaller: git config --unset core.hooksPath
+#
+# Flow:
+#   commit created → post-commit fires → claude-mem-save.sh commit → JSON payload
+#   in automa/state/claude-mem-pending/ → Claude CLI dispatches MCP save on next turn.
+#
+# Rationale: Sprint 4 Retrospective A-502 — ad-hoc saves missed 3 decisions.
+# Retro acceptance: 0 reject rate over 5 commits. Hook must NEVER abort commit.
+
+# Intentionally NOT set -e: hook failure must not block commit.
+set +e
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [ -z "$REPO_ROOT" ]; then
+  exit 0  # detached worktree or bare repo — skip silently
+fi
+
+SAVE_SCRIPT="$REPO_ROOT/scripts/cli-autonomous/claude-mem-save.sh"
+
+if [ ! -x "$SAVE_SCRIPT" ]; then
+  # Script missing or not executable — log silently, do not fail commit
+  echo "[post-commit] claude-mem-save.sh not found or not executable — skipped" >&2
+  exit 0
+fi
+
+# Dispatch save script. Redirect output to log to avoid polluting git output.
+LOG_DIR="$REPO_ROOT/automa/state/claude-mem-pending"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/post-commit-hook.log"
+
+{
+  echo "--- $(date -Iseconds) post-commit fired ---"
+  "$SAVE_SCRIPT" commit post-commit-hook 2>&1
+  echo ""
+} >> "$LOG_FILE" 2>&1
+
+# Always exit 0 — hook failure must not block commit
+exit 0

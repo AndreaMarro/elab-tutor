@@ -62,11 +62,29 @@ cd "$ROOT_DIR"
 
 SHA="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
 BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"
-LAST_MSG="$(git log -1 --pretty=%s 2>/dev/null || echo unknown)"
+LAST_MSG_RAW="$(git log -1 --pretty=%s 2>/dev/null || echo unknown)"
+# JSON-safe escape for subject (handles " \ newline)
+LAST_MSG="$(printf '%s' "$LAST_MSG_RAW" | sed 's/\\/\\\\/g; s/"/\\"/g')"
 
 if [ "$SHA" = "unknown" ]; then
   echo "ERROR: not in a git repo or no commits" >&2
   exit 2
+fi
+
+# Commit stats (for commit event enrichment). Graceful root-commit handling.
+STATS_FILES=0
+STATS_INSERTIONS=0
+STATS_DELETIONS=0
+if git rev-parse HEAD~1 >/dev/null 2>&1; then
+  SHORTSTAT="$(git diff --shortstat HEAD~1..HEAD 2>/dev/null || true)"
+  # Defensive extraction — empty commits yield empty shortstat, grep no-match
+  # under pipefail would abort. Wrap each || true to survive.
+  STATS_FILES="$({ echo "$SHORTSTAT" | grep -oE '[0-9]+ files? changed' | grep -oE '[0-9]+' | head -1; } || true)"
+  STATS_INSERTIONS="$({ echo "$SHORTSTAT" | grep -oE '[0-9]+ insertions?' | grep -oE '[0-9]+' | head -1; } || true)"
+  STATS_DELETIONS="$({ echo "$SHORTSTAT" | grep -oE '[0-9]+ deletions?' | grep -oE '[0-9]+' | head -1; } || true)"
+  [ -z "$STATS_FILES" ] && STATS_FILES=0
+  [ -z "$STATS_INSERTIONS" ] && STATS_INSERTIONS=0
+  [ -z "$STATS_DELETIONS" ] && STATS_DELETIONS=0
 fi
 
 TEST_COUNT_LAST=""
@@ -89,7 +107,7 @@ TAGS=""
 case "$EVENT" in
   commit)
     TITLE="Commit ${SHA:0:7} on $BRANCH"
-    CONTENT="Commit SHA: $SHA\nBranch: $BRANCH\nMessage: $LAST_MSG\nTest count baseline: $TEST_COUNT_LAST\nSprint: $SPRINT day $SPRINT_DAY"
+    CONTENT="Commit SHA: $SHA\nBranch: $BRANCH\nMessage: $LAST_MSG\nStats: ${STATS_FILES} files, +${STATS_INSERTIONS}/-${STATS_DELETIONS}\nTest count baseline: $TEST_COUNT_LAST\nSprint: $SPRINT day $SPRINT_DAY"
     TAGS="commit,sprint-$SPRINT,day-$SPRINT_DAY"
     ;;
   end-day)
@@ -134,9 +152,15 @@ cat > "$OUT_FILE" <<EOF
   "tags": "$TAGS",
   "sha": "$SHA",
   "branch": "$BRANCH",
+  "subject": "$LAST_MSG",
   "sprint": "$SPRINT",
   "sprint_day": "$SPRINT_DAY",
-  "test_count_baseline": "$TEST_COUNT_LAST"
+  "test_count_baseline": "$TEST_COUNT_LAST",
+  "stats": {
+    "files_changed": $STATS_FILES,
+    "insertions": $STATS_INSERTIONS,
+    "deletions": $STATS_DELETIONS
+  }
 }
 EOF
 

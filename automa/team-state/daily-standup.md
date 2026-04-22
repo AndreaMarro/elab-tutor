@@ -441,3 +441,53 @@ MCP recovery hit (STEP 0 mandatory). ADR-005 drafted ready implementation Day 03
 - Craft: 8.5 (research doc has concrete JSONL schema + error handling + cost reconcile vs ADR-006 outdated estimate — honest correction caught)
 - Functionality: 4.0 (still foundations, zero runtime delivered — intended per ADR-006 phased plan)
 - Composite: 6.75/10 self-report (under 7.0 floor — day 02 low by design, catch-up via Day 03+ ingest delivery)
+
+---
+
+## Standup Day 29 — 2026-04-22 (Sprint 5 Day 01 bridge, autonomous continuation)
+
+### Ieri (Day 28 Sprint 4 Day 07 END-WEEK GATE)
+- Sprint 4 ceremony complete: contract + review + retrospective + Sprint 5 DRAFT + velocity v2 + audit + handoff
+- End-week gate 4: **13/13 PASS** (first full-green sprint ELAB history)
+- 3 bug fixes: gate script grep line 97, tasks-board.json reconcile, velocity schema v1→v2
+- Commits: cc462e0 (ceremony) + d14c13a (state refresh)
+- Andrea decision gate required: Sprint 4 main merge + Sprint 5 theme (Option A/B/A+B) + 5 open questions
+
+### Oggi (Day 29 bridge — autonomous headless continuation, theme-independent)
+- **Sprint 5 NOT started** (theme TBD Andrea gate)
+- **Sprint 4 stays feature branch** (no auto-merge main per production-safety memory)
+- **Carry-over work only**: A-502 post-commit claude-mem hook (1 SP, DEV owner, due Day 29 per retro)
+- **Approach**: TDD RED-GREEN-REFACTOR on existing `scripts/cli-autonomous/claude-mem-save.sh` + wire `.githooks/post-commit` + installer + docs + 5-commit smoke test
+
+### Blocker
+- 0 P0/P1 open (carry Day 28)
+- 2 P2 carry (S4.1.4c Together live gate blocked Andrea, GAP-DAY24-04 E2E chromium A-501 Day 30)
+- 3 P3 carry (ADR-003 anon key env, S4.2.3 latency pipeline, ADR-005 watchdog impl)
+- 0 new blocker
+
+### Focus
+Single task hyper-focused: A-502 post-commit hook. Addresses Sprint 4 Retrospective gap "3 decisions missed claude-mem save Days 22/24/27". Pattern: hook → claude-mem-save.sh commit → pending payload → Claude CLI dispatches MCP next turn.
+
+### Dispatch plan
+- All inline Day 29 (infrastructure work, no agent spawn — small scope 1 SP)
+- Zero Opus agent (context lean)
+
+### Acceptance gates Day 29
+- [ ] `.githooks/post-commit` tracked + executable + non-blocking
+- [ ] `scripts/hooks/install-git-hooks.sh` tracked + sets core.hooksPath
+- [ ] `scripts/cli-autonomous/claude-mem-save.sh` enhanced with stats fields (files/insertions/deletions)
+- [ ] `scripts/cli-autonomous/test-claude-mem-save.sh` extended tests pass
+- [ ] 5-commit smoke test: 5/5 payloads written, 0 reject, 0 commit failure
+- [ ] `docs/workflows/claude-mem-automation.md` written (~100 lines)
+- [ ] `automa/team-state/sprint-5-actions-tracker.json` A-502 DONE
+- [ ] CoV 3x vitest 12371/12371/12371
+- [ ] Build PASS
+- [ ] Atomic commit + push feature branch
+- [ ] Audit Day 29 20-dim
+
+### Grading Harness 2.0 Day 29 (self-report pre-audit target)
+- Design: 7.5 (hook non-invasive, installable, reversible)
+- Originality: 7.0 (shared .githooks tracked pattern — Husky alternative no npm dep)
+- Craft: 8.0 (TDD + smoke + docs + rollback)
+- Functionality: 8.0 (5/5 smoke target)
+- Composite: 7.63 self-report
