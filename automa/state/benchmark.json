@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-04-22T01:24:14.257Z",
+  "timestamp": "2026-04-22T03:12:16.887Z",
   "mode": "fast",
-  "score": 5.31,
+  "score": 5.32,
   "score_out_of": 10,
   "metrics": {
     "test_count": {
-      "value": 12248,
-      "observed": 12248,
+      "value": 12328,
+      "observed": 12328,
       "notes": "fast mode (read baseline file)",
       "weight": 0.15,
       "target": 14000,
-      "normalized": 8.75,
-      "contribution": 1.31
+      "normalized": 8.81,
+      "contribution": 1.32
     },
     "build_size_kb": {
       "value": 14743,
@@ -79,7 +79,8 @@
     "accessibility_wcag": {
       "value": 0.5,
       "observed": true,
-      "notes": "axe installed (run required)",
+      "source": "devDep-probe",
+      "notes": "axe installed (baseline not yet generated)",
       "weight": 0.1,
       "target": 1,
       "normalized": 5,
@@ -96,8 +97,8 @@
       "contribution": 0.67
     }
   },
-  "commit_sha": "946aafb0852853b1be31ae7e67bc4693b5e4ac85",
+  "commit_sha": "764610558a18d0833242cf46897a99597d9c2d0e",
   "branch": "feature/sett-4-intelligence-foundations",
-  "previous_score": 4.75,
-  "delta": 0.56
+  "previous_score": 5.31,
+  "delta": 0.01
 }

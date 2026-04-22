@@ -156,13 +156,10 @@ function metricDocumentation() {
   return { value: present / files.length, observed: present, notes: `${present}/${files.length} key docs present` };
 }
 
+const { metricAccessibility: metricAccessibilityImpl } = require('./benchmark-metrics/accessibility.cjs');
+
 function metricAccessibility() {
-  // Placeholder — would require axe-cli run. For now: check if @axe-core is in devDeps.
-  const pkg = readJson(path.join(ROOT, 'package.json'));
-  if (!pkg) return { value: 0, observed: 0, notes: 'no package.json' };
-  const allDeps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
-  const hasAxe = Object.keys(allDeps).some(k => k.includes('axe'));
-  return { value: hasAxe ? 0.5 : 0, observed: hasAxe, notes: hasAxe ? 'axe installed (run required)' : 'no a11y tooling' };
+  return metricAccessibilityImpl({ rootDir: ROOT, readJson });
 }
 
 function metricWorkerUptime() {
