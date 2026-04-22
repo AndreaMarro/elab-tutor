@@ -1,6 +1,6 @@
 # ADR-005 — Watchdog noise suppression (severity + cooldown + threshold)
 
-**Status**: ACCEPTED (Day 30 Sprint 5 Day 02 bridge, 2026-04-22, impl SHA `d52ee87`)
+**Status**: ACCEPTED — pending 5-run POC observation gate (Day 30 Sprint 5 Day 02 bridge, 2026-04-22, impl SHA `d52ee87`; POC plan in `docs/operations/watchdog-guide.md` §7; Day 33 peer-review flag 2 correction)
 **Promoted from**: PROPOSED (sett-4 Day 02, 2026-04-23)
 **Supersedes**: none
 **Related**: ADR-006 (wiki ingest log will reuse severity taxonomy), ADR-008 (schema formalization same Day 30)
