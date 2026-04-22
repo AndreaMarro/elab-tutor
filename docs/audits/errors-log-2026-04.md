@@ -970,3 +970,19 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check workflow logs for common root cause (missing secret, dep change)
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T03:31:36Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati di aver compreso bene la differenza tra \"essere\" e \"stare\" e le loro diverse funzioni. Ripassa le regole di coniugazione dei verbi al presente indicativo.","sou
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T03:31:36Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Il circuito è incompleto.\n\n1.  **Cosa sbagliato:** Manca una fonte di alimentazione e un resistore.\n2.  **Perché:** Un LED richiede una tensione e una corrente specif
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
