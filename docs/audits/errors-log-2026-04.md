@@ -1246,3 +1246,95 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Detail**: y
 
 **Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:12Z — build_failed [error]
+
+**Detail**: npm build exit 1
+
+**Pattern hint**: check vite.config
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:12Z — flaky_latency [warn]
+
+**Detail**: 420ms
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:12Z — flaky_latency [warn]
+
+**Detail**: 450ms
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:12Z — bench_delta [warn]
+
+**Detail**: -0.05
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:12Z — bench_delta [warn]
+
+**Detail**: -0.06
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:12Z — bench_delta [warn]
+
+**Detail**: -0.04
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — prod_5xx [error]
+
+**Detail**: HTTP 502
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — prod_5xx [error]
+
+**Detail**: HTTP 503
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — disk_full [error]
+
+**Detail**: 95%
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — disk_full [error]
+
+**Detail**: 96%
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — noisy_info [warn]
+
+**Detail**: detail
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — type_a [warn]
+
+**Detail**: x
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — type_b [warn]
+
+**Detail**: y
+
+**Severity**: warn | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — tight_window [error]
+
+**Detail**: x
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-22T07:21:13Z — tight_window [error]
+
+**Detail**: y
+
+**Severity**: error | **Run**: regular | **Source**: watchdog-elab
