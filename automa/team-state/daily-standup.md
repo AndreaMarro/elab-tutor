@@ -386,7 +386,58 @@ Option B LOCKED: Karpathy LLM Wiki POC main track. Sett-4 validates pattern befo
 - [ ] Claude-mem save observation (IN PROGRESS)
 
 ### Grading Harness 2.0 (4 subjective 1-10)
-- Design quality: TBD (end-day audit)
-- Originality: TBD
-- Craft: TBD
-- Functionality: TBD (sett-4 Day 01 = foundations, no feature delivery expected)
+- Design quality: 8.0 (three-layer hybrid RAG+Wiki clean, SCHEMA rigorous PZ v3)
+- Originality: 7.5 (Karpathy adapted to ELAB context, not copy-paste)
+- Craft: 8.5 (YAML strict, cross-ref machine-parseable, privacy preempted)
+- Functionality: 5.0 (foundations-only, expected low for kickoff day)
+- Composite: 7.25/10 (above 7.0 auditor floor)
+
+---
+
+## Standup 2026-04-23 — Day 23 cumulative (sett-4 Day 02 RESEARCH + WATCHDOG)
+
+**Owner**: inline TPM (headless loop continuation, --print --max-turns 200)
+**Branch**: feature/sett-4-intelligence-foundations (Day 01 pushed f23e448, Day 02 pending commit)
+**Baseline carry**: 12220 test PASS, benchmark 4.79 fast-mode
+**Blocker carry**: 0 P0/P1, 1 P3 (ADR-003 env deferred sprint-5)
+
+### Ieri (Day 22 sett-4 Day 01 kickoff)
+- ARCHITECT inline: ADR-006 + SCHEMA.md v0.1.0
+- DEV inline: wiki skeleton 6 dirs + index.md + log.md + gitignore privacy
+- TPM inline: velocity sett-3 backfill + sett-4 init + baseline snapshot
+- Commits: a450b85 (foundations) + f23e448 (audit)
+- Honest gaps: MCP 0 calls floor miss, PTC CoV 5x not executed
+
+### Oggi (Day 02 MCP recovery + S4.3.3 ADR-005 + research Together AI)
+- TPM inline STEP 0: **MCP discipline recovery** → claude-mem smart_search (watchdog noise anomaly) + context7 resolve-library-id (Together AI → /togethercomputer/together-py 85.5 benchmark) + context7 query-docs (batch API + async + error handling) + serena available (deferred to Day 03 ingest script work) — **≥3 MCP calls executed Day 23**
+- ARCHITECT inline: **S4.3.3 ADR-005 watchdog noise suppression** → docs/architectures/ADR-005-watchdog-noise-suppression.md (8 sections, severity taxonomy + threshold + cooldown + auto-close, implementation Day 03-04)
+- RESEARCHER inline: **Day 02 research doc** → docs/research/2026-04-23-together-ai-batch-ingest.md (9 sections, batch API pattern, JSONL schema, error handling, content-addressable cache, cost reconciliation ~$0.18 batch vs $4.60 old estimate = 25x headroom)
+
+### Blocker
+- 0 P0/P1 open
+- 1 P3 carry (ADR-003 sprint-5)
+- No new blocker emerged Day 02
+
+### Focus
+MCP recovery hit (STEP 0 mandatory). ADR-005 drafted ready implementation Day 03. Research doc positions Day 03-05 ingest work with concrete API patterns + validation pipeline + cost guard. Zero new code (docs only Day 02, no regression risk).
+
+### Dispatch plan
+- All inline Day 02 (research + ADR = doc work, no agent spawn)
+- Day 03 dispatch window: team-dev for scripts/wiki-build-batch-input.mjs + scripts/wiki-validate-file.mjs, team-tester for pre-ingest unit coverage
+- Zero Opus agent Day 02 → context lean for ingest Day 03+
+
+### Acceptance gates Day 02
+- [x] ADR-005 drafted with 8 sections + severity + cooldown + threshold
+- [x] Research doc Together AI 9 sections + cost sheet
+- [x] MCP calls ≥3 executed (claude-mem + context7 resolve + context7 query-docs)
+- [x] Zero code change, zero regression risk
+- [ ] Commit atomic Day 02 (IN PROGRESS)
+- [ ] End-day audit Day 23 (IN PROGRESS)
+- [ ] Claude-mem observation queued (IN PROGRESS)
+
+### Grading Harness 2.0 Day 02 (4 subjective 1-10, self-report pre-audit)
+- Design quality: 8.0 (ADR-005 3-layer suppression design coherent, reversible, data-backed)
+- Originality: 6.5 (watchdog patterns well-known SRE, my contribution = ELAB context calibration)
+- Craft: 8.5 (research doc has concrete JSONL schema + error handling + cost reconcile vs ADR-006 outdated estimate — honest correction caught)
+- Functionality: 4.0 (still foundations, zero runtime delivered — intended per ADR-006 phased plan)
+- Composite: 6.75/10 self-report (under 7.0 floor — day 02 low by design, catch-up via Day 03+ ingest delivery)
