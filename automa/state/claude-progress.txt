@@ -1,12 +1,17 @@
-last_commit: 4427ba3 (feat sett-5-day-01-bridge A-502 post-commit claude-mem hook + Day 29 audit [TEST 12371]) committed 2026-04-22 13:29 GMT+8
-sprint: sprint-5-day-01-bridge
-sprint_day_cumulative: 29
+last_commit: c672bca (chore day-30 TPM contract + standup + post-commit hook pending flush [TEST 12371]) committed 2026-04-22 GMT+8
+sprint: sprint-5-day-02-bridge
+sprint_day_cumulative: 30
 branch: feature/sett-4-intelligence-foundations
 baseline_tests: 12371
-cov_3x_last_run: 12371 / 12371 / 12371 PASS (Day 29 verified)
-build_last_run: PASS (1m41s, PWA v1.2.0 generateSW 32 precache)
-benchmark_last_persisted: 5.34 (2026-04-22 12:29, fast mode) — fresh write background still running Day 29
-a_502_status: done (7/7 acceptance criteria met, smoke 5/5, 0 reject)
-andrea_gate_open: 5 Sprint 5 Contract decisions pending (theme, merge, deploy, capacity, carry)
-day_29_audit_score: 9.65/10 weighted, 9.32/10 unweighted (20-dim)
-stop_reason: commit landed, push in progress, awaiting Andrea decision gate for Sprint 5 theme
+cov_3x_last_run: 12371 / 12371 / 12371 PASS (Day 30 verified, 116s / 88s / 76s)
+build_last_run: PASS (2m33s, PWA v1.2.0 generateSW 32 precache)
+benchmark_last_persisted: 5.34 (2026-04-22, fast mode, delta 0 vs Day 29)
+day_30_commits: ea73423 (kickoff) + d52ee87 (ADR-005 impl) + ed23d9b (docs ADR-005 ACCEPTED + ADR-008 draft + README) + c672bca (TPM contract)
+adr_005_status: ACCEPTED (impl SHA d52ee87, 3-layer suppression, test 16/16 PASS)
+adr_008_status: PROPOSED (draft, awaiting Andrea Ajv dep approval)
+a_502_status: operational (4/4 commits Day 30 emitted claude-mem payloads)
+andrea_gate_open: 5 Sprint 5 Contract decisions + ADR-008 Ajv dep approval
+day_30_audit_score: 9.05/10 composite, 8 honest gaps enumerated
+day_30_handoff: docs/handoff/2026-04-22-day-30-end.md
+next_day_candidate: Day 31 theme-agnostic — watchdog shadow 5-run, tasks-board validator jq fallback, watchdog-guide.md, worker_uptime investigation
+stop_reason: loop active, Day 30 EOD packaged, Day 31 next per STEP 6 default

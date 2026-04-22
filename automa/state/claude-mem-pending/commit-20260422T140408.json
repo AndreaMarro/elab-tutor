@@ -1,0 +1,18 @@
+{
+  "event": "commit",
+  "timestamp": "2026-04-22T14:04:08+08:00",
+  "title": "Commit ed23d9b on feature/sett-4-intelligence-foundations",
+  "content": "Commit SHA: ed23d9bce2d0deb8b65729bf5d07cc77d0b65f36\nBranch: feature/sett-4-intelligence-foundations\nMessage: docs(day-30): ADR-005 ACCEPTED (impl d52ee87) + ADR-008 draft + README automation hooks [TEST 12371]\nStats: 4 files, +270/-2\nTest count baseline: 12371\nSprint: sprint-5-day-01-bridge day 29",
+  "tags": "commit,sprint-sprint-5-day-01-bridge,day-29,post-commit-hook",
+  "sha": "ed23d9bce2d0deb8b65729bf5d07cc77d0b65f36",
+  "branch": "feature/sett-4-intelligence-foundations",
+  "subject": "docs(day-30): ADR-005 ACCEPTED (impl d52ee87) + ADR-008 draft + README automation hooks [TEST 12371]",
+  "sprint": "sprint-5-day-01-bridge",
+  "sprint_day": "29",
+  "test_count_baseline": "12371",
+  "stats": {
+    "files_changed": 4,
+    "insertions": 270,
+    "deletions": 2
+  }
+}
