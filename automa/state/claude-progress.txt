@@ -25,3 +25,4 @@ sprint_5_audit_progression: self 9.05/9.05/9.35/8.85/9.15/9.4 ; peer-adjusted Da
 loop_status: PAUSED at sett-gate per Harness 2.0 — control returns to Andrea
 stop_reason: Day 35 sett-gate HARD STOP executed per spec. Autonomous continuation ends.
 next_resume_conditions: Andrea provides theme gate decision OR overrides TASK-30-03b OR approves worker-probe URL OR resolves ADR-008 Ajv OR explicitly unpauses loop
+last_resume_attempt: 2026-04-22T16:15 GMT+8 — 4th paused-respect turn, consolidation bundle. Handoff docs/handoff/2026-04-22-session-resume-paused-4.md. Prod 200 0.19s, CI success, andrea-directives.md still NO unpause. Committed 4 pause artifacts as atomic bundle (reduce churn). Diminishing returns flagged: further pause turns = pure churn, zero delta. Escalation to Andrea: 3 explicit options documented (theme gate | loop kill | theme-agnostic bridge auth). Prior: 15:48, 15:54, 16:10.
