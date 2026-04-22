@@ -4,6 +4,35 @@ Prossimo standup: **Gio 23/04/2026 ore 9:00** (sprint-4 Day 01 kickoff IF gate P
 
 ---
 
+## Standup 2026-04-22 — Day 30 cumulative (Sprint 5 Day 02 bridge, theme-agnostic)
+
+**Baseline**: test 12371 CoV 3x PASS | build PASS 1m41s PWA v1.2.0 | benchmark 5.34 fast (Day 29 fresh write pending re-verify) | branch `feature/sett-4-intelligence-foundations` | local `ea73423` ahead remote `0c7c114` 1 unpushed
+**Sprint Contract**: `automa/team-state/sprint-contracts/day-30-contract.md`
+**Dispatch cap**: 4 (bridge day, Andrea gate still OPEN on Sprint 5 theme — scope stays safe under any pick)
+
+### Ieri Day 29 mer 22/04 (done verificato)
+- A-502 post-commit claude-mem hook shipped commit `4427ba3` — automated observation capture post-every-commit
+- Day 29 audit 9.65/10 (docs/audits/2026-04-22-day-29-bridge.md) — craft + process pillars
+- Test 12371 CoV 3x stable, zero regression
+- State refresh `0c7c114` pushed, handoff `docs/handoff/2026-04-22-day-29-bridge-end.md`
+- ADR-005 still PROPOSED (implementation carry to Day 30)
+
+### Oggi Day 30 (3 P0 tasks, ~3 SP, theme-agnostic)
+- **P0-1 DEV**: TASK-30-01 ADR-005 watchdog noise suppression impl (`scripts/watchdog-run.sh` log_anomaly() + `scripts/test-watchdog-suppression.sh` ≥8 cases + ADR promotion PROPOSED→ACCEPTED)
+- **P0-2 DEV**: TASK-30-02 ADR-008 tasks-board.json schema formal draft (`docs/architectures/ADR-008-tasks-board-schema.md`, status Proposed, JSON Schema draft-07 + deprecation path)
+- **P0-3 DEV+TESTER**: TASK-30-03 README `## Automation hooks` cross-link (0.5 SP DEV) + watchdog-suppression unit tests ≥15 (0.5 SP TESTER, target 12386+)
+
+### Blocker aperti carry-over
+- **0 OPEN** (BLOCKER-000..012 all CLOSED, consistent with Day 29)
+- **Andrea gate OPEN** on Sprint 5 theme (5 decisions unanswered) — NON-BLOCKER for Day 30, scope designed safe under Option A/B/mix
+
+### Note
+- Sprint 5 actions tracker: A-501 A-503 A-401..A-412 still open — Day 30 closes A-503 (ADR-008 draft) + Sprint 4 P3 ADR-005 carry
+- 4-grading target Day 30: design 7.5 / originality 7.5 / craft 8.0 / functionality 7.5 → composite floor 7.5
+- CoV 3x preserve 12371+ MANDATORY — any flake → investigate, NOT hide
+
+---
+
 ## Standup 2026-04-22 MATTINA — Day 07/56 FINAL sett-3 (mer 22/04 — Sprint sett-3 day 7/7 end-week-gate)
 
 **Baseline**: test 12220 PASS | build PASS | benchmark 4.75/10 (+0.63 Day 06) | 24 commits ahead origin/main pushed `2b818ea` | branch `feature/sett-3-stabilize-v3`

@@ -1,0 +1,18 @@
+{
+  "event": "commit",
+  "timestamp": "2026-04-22T14:00:13+08:00",
+  "title": "Commit d52ee87 on feature/sett-4-intelligence-foundations",
+  "content": "Commit SHA: d52ee87e9f5aaac49dea43fcf7d1311bf5d55673\nBranch: feature/sett-4-intelligence-foundations\nMessage: feat(watchdog): ADR-005 noise suppression 3-layer (severity + threshold + cooldown + auto-close) [TEST 12371]\nStats: 3 files, +347/-15\nTest count baseline: 12371\nSprint: sprint-5-day-01-bridge day 29",
+  "tags": "commit,sprint-sprint-5-day-01-bridge,day-29,post-commit-hook",
+  "sha": "d52ee87e9f5aaac49dea43fcf7d1311bf5d55673",
+  "branch": "feature/sett-4-intelligence-foundations",
+  "subject": "feat(watchdog): ADR-005 noise suppression 3-layer (severity + threshold + cooldown + auto-close) [TEST 12371]",
+  "sprint": "sprint-5-day-01-bridge",
+  "sprint_day": "29",
+  "test_count_baseline": "12371",
+  "stats": {
+    "files_changed": 3,
+    "insertions": 347,
+    "deletions": 15
+  }
+}
