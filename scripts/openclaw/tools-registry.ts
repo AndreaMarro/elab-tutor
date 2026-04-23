@@ -704,6 +704,58 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     pz_v3_sensitive: false,
     since: '2026-04',
   },
+
+  // ── Layer A: editor/code (batch 2) ────────────────────────────────
+  {
+    name: 'getEditorMode',
+    category: 'read',
+    handler: 'getEditorMode',
+    params: {},
+    returns: 'string "arduino" | "scratch" | "code"',
+    effect: 'modo editor corrente (Arduino C++ o Scratch/Blockly)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'setEditorMode',
+    category: 'code',
+    handler: 'setEditorMode',
+    params: {
+      mode: { type: 'string', required: true, enum: ['arduino', 'scratch', 'code'], description: 'modo editor' },
+    },
+    effect: 'passa tra Arduino e Scratch nel pannello codice',
+    pz_v3_sensitive: true,
+    since: '2026-04',
+  },
+  {
+    name: 'resetEditorCode',
+    category: 'code',
+    handler: 'resetEditorCode',
+    params: {},
+    effect: 'ripristina codice editor al template originale dell esperimento',
+    pz_v3_sensitive: true,
+    since: '2026-04',
+  },
+  {
+    name: 'getExperimentOriginalCode',
+    category: 'read',
+    handler: 'getExperimentOriginalCode',
+    params: {},
+    returns: 'string codice sorgente template esperimento corrente',
+    effect: 'codice originale esperimento (per diff con stato utente)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'isEditorVisible',
+    category: 'read',
+    handler: 'isEditorVisible',
+    params: {},
+    returns: 'boolean true se pannello editor aperto',
+    effect: 'flag visibilita pannello editor (per decisioni showBom vs showCode)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
 ];
 
 // Export counts for sanity check
