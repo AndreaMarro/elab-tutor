@@ -756,6 +756,57 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     pz_v3_sensitive: false,
     since: '2026-04',
   },
+
+  // ── Layer A: UI tool mode + context aggregator (batch 3) ──────────
+  {
+    name: 'setToolMode',
+    category: 'ui',
+    handler: 'setToolMode',
+    params: {
+      mode: { type: 'string', required: true, enum: ['select', 'wire', 'pen'], description: 'modalita strumento canvas' },
+    },
+    effect: 'cambia modalita cursore canvas (select | wire | pen disegno)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'getToolMode',
+    category: 'read',
+    handler: 'getToolMode',
+    params: {},
+    returns: 'string "select" | "wire" | "pen"',
+    effect: 'modalita cursore canvas corrente',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'hideEditor',
+    category: 'ui',
+    handler: 'hideEditor',
+    params: {},
+    effect: 'nasconde pannello editor (libera spazio per breadboard)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'hideBom',
+    category: 'ui',
+    handler: 'hideBom',
+    params: {},
+    effect: 'chiude Bill of Materials (lista componenti)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'getSimulatorContext',
+    category: 'read',
+    handler: 'getSimulatorContext',
+    params: {},
+    returns: 'bundle full state { experiment, circuit, editor, sim, tool }',
+    effect: 'snapshot completo contesto simulatore (usato da state-snapshot-aggregator)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
 ];
 
 // Export counts for sanity check
