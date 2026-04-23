@@ -510,6 +510,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'speakTTS',
     category: 'voice',
     handler: 'unlim.speakTTS',
+    status: 'live', // Sprint 6 Day 37: wired to voiceService Kokoro→Edge→Nanobot chain
     params: {
       text: { type: 'string', required: true, description: 'testo da pronunciare (MUST pass PZ v3 validator)' },
       voice: { type: 'string', required: false, enum: ['francesca-it', 'emma-en', 'lucia-es', 'celine-fr', 'kathrin-de'], description: 'voce locale' },
@@ -524,6 +525,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'listenSTT',
     category: 'voice',
     handler: 'unlim.listenSTT',
+    status: 'live', // Sprint 6 Day 37: wired to voiceService startRecording/stopRecording/sendVoiceChat
     params: {
       timeout: { type: 'number', required: false, description: 'timeout ms, default 8000' },
     },
@@ -541,6 +543,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'saveSessionMemory',
     category: 'memory',
     handler: 'unlim.saveSessionMemory',
+    status: 'live', // Sprint 6 Day 37: wired to projectHistoryService localStorage layer (Supabase pgvector pending Day 38)
     params: {
       summary: { type: 'string', required: true, description: 'riassunto testuale ciò che è stato fatto' },
       concepts_learned: { type: 'array', required: false, description: 'array di concetti assimilati' },
@@ -555,6 +558,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'recallPastSession',
     category: 'memory',
     handler: 'unlim.recallPastSession',
+    status: 'live', // Sprint 6 Day 37: wired to projectHistoryService.getTimeline + getStory
     params: {
       student_hash: { type: 'string', required: true, description: 'hash anonimo studente' },
       n: { type: 'number', required: false, description: 'quante ultime sessioni (default 5)' },
@@ -573,6 +577,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'showNudge',
     category: 'meta',
     handler: 'unlim.showNudge',
+    status: 'live', // Sprint 6 Day 37: wired to nudgeService.sendNudge (localStorage + BroadcastChannel + Supabase if configured)
     params: {
       type: { type: 'string', required: true, enum: ['hint', 'warning', 'celebration', 'retry'], description: 'tipo nudge' },
       message: { type: 'string', required: true, description: 'messaggio nudge (pass PZ v3)' },
@@ -586,6 +591,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'generateQuiz',
     category: 'meta',
     handler: 'unlim.generateQuiz',
+    status: 'live', // Sprint 6 Day 37: emits quizRequested event (QuizPanel listener subscribes — Day 38 wires actual generation)
     params: {
       topic: { type: 'string', required: true, description: 'argomento es "legge Ohm"' },
       n: { type: 'number', required: false, description: 'numero domande (default 3)' },
@@ -601,6 +607,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'exportFumetto',
     category: 'meta',
     handler: 'unlim.exportFumetto',
+    status: 'live', // Sprint 6 Day 37: emits fumettoExportRequested event (UnlimReport subscribes — Day 38 wires)
     params: {
       session_id: { type: 'string', required: false, description: 'sessione da esportare (default: current)' },
     },
@@ -614,6 +621,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'videoLoad',
     category: 'meta',
     handler: 'unlim.videoLoad',
+    status: 'live', // Sprint 6 Day 37: emits videoLoadRequested event (video component Day 38)
     params: {
       youtubeId: { type: 'string', required: true, description: 'YouTube video ID' },
       startAt: { type: 'number', required: false, description: 'secondo partenza' },
@@ -627,6 +635,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'alertDocente',
     category: 'meta',
     handler: 'unlim.alertDocente',
+    status: 'live', // Sprint 6 Day 37: wired to nudgeService inverted channel (system → docente)
     params: {
       reason: { type: 'string', required: true, description: 'motivo alert (es "studente bloccato su esperimento")' },
       urgency: { type: 'string', required: false, enum: ['low', 'medium', 'high'], description: 'default medium' },

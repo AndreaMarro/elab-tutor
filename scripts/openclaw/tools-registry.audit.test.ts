@@ -24,10 +24,18 @@ describe('auditRegistry against mock __ELAB_API', () => {
     expect(report.composite).toBeGreaterThanOrEqual(1);
   });
 
-  it('reports at least 9 todo_sett5 handlers (Sprint-5 baseline)', () => {
+  it('Sprint 6 Day 37: all 9 added_in_sprint="sprint-6" handlers wired live (zero todo_sett5 among them)', () => {
+    const sprint6 = OPENCLAW_TOOLS_REGISTRY.filter(t => t.added_in_sprint === 'sprint-6');
+    expect(sprint6.length).toBe(9);
+    const stillTodo = sprint6.filter(t => resolveStatus(t) === 'todo_sett5');
+    expect(stillTodo).toEqual([]);
+  });
+
+  it('total todo_sett5 count bounded (toggleDrawing still pending separate work)', () => {
     const api = buildFullMockApi();
     const report = auditRegistry(api, OPENCLAW_TOOLS_REGISTRY);
-    expect(report.todo).toBeGreaterThanOrEqual(9);
+    // Post Day 37: only toggleDrawing (added_in_sprint: 'sett5') remains.
+    expect(report.todo).toBeLessThanOrEqual(2);
   });
 
   it('majority of tools are live (≥60% live_ok post-fix)', () => {
@@ -36,8 +44,14 @@ describe('auditRegistry against mock __ELAB_API', () => {
     expect(report.live_ok / report.total).toBeGreaterThanOrEqual(0.6);
   });
 
-  it('no live handler points to unlim.X when X is not in {highlightComponent, highlightPin, clearHighlights, serialWrite, getCircuitState}', () => {
-    const realUnlimMethods = new Set(['highlightComponent', 'highlightPin', 'clearHighlights', 'serialWrite', 'getCircuitState']);
+  it('no live handler points to unlim.X when X not in real surface (Sprint-5 + Sprint-6 Day 37 wired set)', () => {
+    const realUnlimMethods = new Set([
+      // Sprint-5 base (5)
+      'highlightComponent', 'highlightPin', 'clearHighlights', 'serialWrite', 'getCircuitState',
+      // Sprint-6 Day 37 wired (9)
+      'speakTTS', 'listenSTT', 'saveSessionMemory', 'recallPastSession',
+      'showNudge', 'generateQuiz', 'exportFumetto', 'videoLoad', 'alertDocente',
+    ]);
     const offenders: string[] = [];
     for (const spec of OPENCLAW_TOOLS_REGISTRY) {
       if (resolveStatus(spec) !== 'live') continue;
