@@ -54,7 +54,7 @@ Include:
 4. **Goal-driven**: ogni riga deve servire un goal esplicito. Se non sai perché la stai scrivendo, non scriverla
 
 ## Regola anti-inflazione numerica (CoV — Chain of Verification)
-- **Mai inventare numeri**: se dici "12056 test" devi averli appena visti in `vitest run` output, non ricordati a memoria
+- **Mai inventare numeri**: se citi test count, deve essere appena visto in `vitest run` output o letto da `automa/baseline-tests.txt`, non ricordato a memoria
 - **Mai inflazionare progress**: "quasi pronto" = 0%, "funziona" = testato live con utente reale
 - **Mai self-rate**: il benchmark `node scripts/benchmark.cjs` è l'unico score valido. I claim del generator non valgono
 - **CoV su ogni PR**: 3 volte `npx vitest run` prima di dichiarare "test passano" — se uno dei 3 fallisce → indaga flakiness, non nascondere
