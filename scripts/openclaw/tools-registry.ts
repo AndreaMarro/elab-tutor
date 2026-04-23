@@ -1,29 +1,119 @@
 /**
- * OpenClaw Tools Registry — declarative list of all 52 static tools
+ * OpenClaw Tools Registry — declarative list of onnipotenza primitives
  *
- * These are the ONNIPOTENZA primitives. OpenClaw's LLM plan generator
- * receives this schema and composes plans using only these tools (L1).
- * Generated morphic tools (L2/L3) are stored separately in tool-memory.ts.
+ * Architettura (post-audit 2026-04-23):
+ *   Layer A = base API reflection (verifica al mount via ensureHandlerResolves)
+ *   Layer B = semantic overlay (questo file): category, pz_v3_sensitive, effect, params
+ *   Layer C = morphic generated (runtime, persisted in openclaw_tool_memory)
  *
  * Contract:
- *   - Each tool has a `handler` path into window.__ELAB_API
- *   - Params are JSON-schema validated at runtime
- *   - Effect describes observable state change
- *   - pz_v3_sensitive: true → requires accompanying `speak` action per PZ v3
+ *   - `handler` è un dot-path risolto contro window.__ELAB_API
+ *     - senza dot        → metodo flat (es. "addComponent" → __ELAB_API.addComponent)
+ *     - con "unlim.X"    → namespace UNLIM (es. "unlim.highlightComponent")
+ *   - `status` indica se l'handler è già operativo
+ *     - "live"      → esiste su __ELAB_API oggi
+ *     - "todo_sett5"→ da implementare in Sprint 6 Day 37 (vedi added_in_sprint)
+ *     - "composite" → non è un handler diretto, è una composizione L1 (morphic)
+ *   - `pz_v3_sensitive: true` → l'azione cambia cosa vede la classe, DEVE essere
+ *     accompagnata da un'azione speakTTS che spiega ai RAGAZZI quello che accade
+ *   - `params` è JSON-Schema-like (no Zod per mantenere file leggibile a LLM)
  *
- * (c) ELAB Tutor — 2026-04-22
+ * Mappatura namespace (verificata su src/services/simulator-api.js 22/04/2026):
+ *   FLAT (60+ metodi):   addComponent, removeComponent, connectWire, removeWire,
+ *                        setComponentValue, moveComponent, interact, clearCircuit,
+ *                        getCircuitDescription, getCurrentExperiment, play, pause,
+ *                        reset, compile, setEditorCode, getEditorCode,
+ *                        appendEditorCode, loadScratchWorkspace, nextStep, prevStep,
+ *                        mountExperiment, setBuildMode, captureScreenshot,
+ *                        showBom, hideBom, showSerialMonitor, undo, redo, ...
+ *   UNLIM (5 metodi):    unlim.highlightComponent, unlim.highlightPin,
+ *                        unlim.clearHighlights, unlim.serialWrite,
+ *                        unlim.getCircuitState
+ *   TODO_SETT5:          unlim.speakTTS, unlim.listenSTT, unlim.saveSessionMemory,
+ *                        unlim.recallPastSession, unlim.showNudge,
+ *                        unlim.generateQuiz, unlim.exportFumetto,
+ *                        unlim.videoLoad, unlim.alertDocente
+ *   COMPOSITE:           unlim.analyzeImage (captureScreenshot + Gemini Vision POST),
+ *                        unlim.toggleDrawing (pen mode, da aggiungere come flat)
+ *
+ * (c) ELAB Tutor — 2026-04-22, audited 2026-04-23
  */
+
+export type HandlerStatus = 'live' | 'todo_sett5' | 'composite';
 
 export interface ToolSpec {
   name: string;
   category: 'circuit' | 'read' | 'simulate' | 'visual' | 'code' | 'navigate' | 'vision' | 'ui' | 'voice' | 'memory' | 'meta';
-  handler: string; // dot-path into window.__ELAB_API
+  handler: string; // dot-path into window.__ELAB_API (see namespace mapping above)
+  status?: HandlerStatus; // default resolved from added_in_sprint (see resolveStatus)
   params: Record<string, { type: string; required?: boolean; enum?: string[]; description: string }>;
   returns?: string;
   effect: string;
   pz_v3_sensitive: boolean; // true = must be paired with a speakTTS action explaining to class
   since: string;
   added_in_sprint?: string;
+  composite_of?: string[]; // solo per status='composite': tool che compongono questo
+}
+
+/**
+ * Risolve lo status effettivo: se non esplicito, deriva da metadata.
+ * Regole default:
+ *   - added_in_sprint === 'sett5' → 'todo_sett5'
+ *   - handler include "." (namespace) E non è unlim.*  → lascia 'live' (assume esiste)
+ *   - resto → 'live'
+ */
+export function resolveStatus(spec: ToolSpec): HandlerStatus {
+  if (spec.status) return spec.status;
+  if (spec.added_in_sprint === 'sett5') return 'todo_sett5';
+  return 'live';
+}
+
+/**
+ * Runtime validator: verifica che l'handler sia risolvibile sull'API attuale.
+ * Usato dal mount di OpenClaw per catchare drift registry↔API.
+ *
+ * Ritorna { resolved: boolean, reason?: string } per ogni tool.
+ * - status='live'      → deve risolvere, altrimenti ERROR
+ * - status='todo_sett5'→ può non risolvere (ancora TODO), warning soft
+ * - status='composite' → mai testato qui, verificato in morphic-generator L1
+ */
+export function ensureHandlerResolves(spec: ToolSpec, api: Record<string, unknown>): { resolved: boolean; reason?: string } {
+  if (spec.status === 'composite') return { resolved: true }; // L1 layer verifies
+  const path = spec.handler.split('.');
+  let cur: unknown = api;
+  for (const seg of path) {
+    if (cur == null || typeof cur !== 'object') {
+      return { resolved: false, reason: `path breaks at segment "${seg}" (prev=${typeof cur})` };
+    }
+    cur = (cur as Record<string, unknown>)[seg];
+  }
+  if (typeof cur !== 'function') {
+    return { resolved: false, reason: `handler "${spec.handler}" is not a function (got ${typeof cur})` };
+  }
+  return { resolved: true };
+}
+
+/**
+ * Smoke-test runner: esegue ensureHandlerResolves su tutti i tool.
+ * Ritorna summary per logging/dashboard + lista dei broken da fixare.
+ */
+export function auditRegistry(api: Record<string, unknown>, registry: ToolSpec[]): {
+  total: number;
+  live_ok: number;
+  live_broken: Array<{ name: string; reason: string }>;
+  todo: number;
+  composite: number;
+} {
+  const result = { total: registry.length, live_ok: 0, live_broken: [] as Array<{ name: string; reason: string }>, todo: 0, composite: 0 };
+  for (const spec of registry) {
+    const s = resolveStatus(spec);
+    if (s === 'todo_sett5') { result.todo++; continue; }
+    if (s === 'composite') { result.composite++; continue; }
+    const check = ensureHandlerResolves(spec, api);
+    if (check.resolved) result.live_ok++;
+    else result.live_broken.push({ name: spec.name, reason: check.reason || 'unknown' });
+  }
+  return result;
 }
 
 export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
@@ -33,7 +123,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'addComponent',
     category: 'circuit',
-    handler: 'unlim.addComponent',
+    handler: 'addComponent',
     params: {
       type: { type: 'string', required: true, enum: ['led', 'resistor', 'button', 'battery9v', 'potentiometer', 'buzzer', 'ldr', 'reed', 'capacitor', 'diode', 'transistor', 'servo'], description: 'tipo componente' },
       x: { type: 'number', required: false, description: 'posizione X breadboard (default auto)' },
@@ -47,7 +137,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'removeComponent',
     category: 'circuit',
-    handler: 'unlim.removeComponent',
+    handler: 'removeComponent',
     params: {
       id: { type: 'string', required: true, description: 'id componente da rimuovere' },
     },
@@ -58,7 +148,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'addWire',
     category: 'circuit',
-    handler: 'unlim.connectWire',
+    handler: 'connectWire',
     params: {
       from: { type: 'string', required: true, description: 'formato comp:pin, es "led1:anode"' },
       to: { type: 'string', required: true, description: 'formato comp:pin, es "r1:pin1"' },
@@ -70,7 +160,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'removeWire',
     category: 'circuit',
-    handler: 'unlim.removeWire',
+    handler: 'removeWire',
     params: { id: { type: 'string', required: true, description: 'id filo' } },
     effect: 'rimuove filo',
     pz_v3_sensitive: false,
@@ -79,7 +169,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'setComponentValue',
     category: 'circuit',
-    handler: 'unlim.setComponentValue',
+    handler: 'setComponentValue',
     params: {
       id: { type: 'string', required: true, description: 'id componente' },
       param: { type: 'string', required: true, description: 'nome parametro (resistance, voltage, value, position, ...)' },
@@ -92,7 +182,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'moveComponent',
     category: 'circuit',
-    handler: 'unlim.moveComponent',
+    handler: 'moveComponent',
     params: {
       id: { type: 'string', required: true, description: 'id' },
       x: { type: 'number', required: true, description: 'X target' },
@@ -105,7 +195,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'interact',
     category: 'circuit',
-    handler: 'unlim.interact',
+    handler: 'interact',
     params: {
       id: { type: 'string', required: true, description: 'id componente' },
       action: { type: 'string', required: true, enum: ['press', 'release', 'rotate', 'toggle'], description: 'azione' },
@@ -118,7 +208,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'clearCircuit',
     category: 'circuit',
-    handler: 'unlim.clearCircuit',
+    handler: 'clearCircuit',
     params: {},
     effect: 'pulisce intera breadboard',
     pz_v3_sensitive: true,
@@ -141,7 +231,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'getCircuitDescription',
     category: 'read',
-    handler: 'unlim.getCircuitDescription',
+    handler: 'getCircuitDescription',
     params: {},
     returns: 'string descrizione linguaggio naturale',
     effect: 'descrizione testuale del circuito corrente',
@@ -151,7 +241,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'getCurrentExperiment',
     category: 'read',
-    handler: 'unlim.getCurrentExperiment',
+    handler: 'getCurrentExperiment',
     params: {},
     returns: 'oggetto con {id, title, chapter, buildSteps}',
     effect: 'metadata esperimento corrente',
@@ -161,7 +251,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'getBuildStepIndex',
     category: 'read',
-    handler: 'unlim.getBuildStepIndex',
+    handler: 'getBuildStepIndex',
     params: {},
     returns: 'number indice passo corrente (0-based) o -1 se non in modalità guidata',
     effect: 'indice step build corrente',
@@ -171,7 +261,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'getSimulationStatus',
     category: 'read',
-    handler: 'unlim.getSimulationStatus',
+    handler: 'getSimulationStatus',
     params: {},
     returns: 'string: "running" | "paused" | "stopped"',
     effect: 'stato simulazione',
@@ -185,7 +275,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'play',
     category: 'simulate',
-    handler: 'unlim.play',
+    handler: 'play',
     params: {},
     effect: 'avvia simulazione',
     pz_v3_sensitive: true,
@@ -194,7 +284,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'pause',
     category: 'simulate',
-    handler: 'unlim.pause',
+    handler: 'pause',
     params: {},
     effect: 'mette in pausa simulazione',
     pz_v3_sensitive: false,
@@ -203,7 +293,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'reset',
     category: 'simulate',
-    handler: 'unlim.reset',
+    handler: 'reset',
     params: {},
     effect: 'reset circuito a stato iniziale esperimento',
     pz_v3_sensitive: true,
@@ -251,7 +341,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'compile',
     category: 'code',
-    handler: 'unlim.compile',
+    handler: 'compile',
     params: {},
     returns: 'object {success, hex, errors, warnings}',
     effect: 'compila codice editor Arduino corrente',
@@ -261,7 +351,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'setEditorCode',
     category: 'code',
-    handler: 'unlim.setEditorCode',
+    handler: 'setEditorCode',
     params: {
       code: { type: 'string', required: true, description: 'codice Arduino C++ completo' },
     },
@@ -272,7 +362,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'getEditorCode',
     category: 'code',
-    handler: 'unlim.getEditorCode',
+    handler: 'getEditorCode',
     params: {},
     returns: 'string codice corrente',
     effect: 'ritorna codice editor',
@@ -282,7 +372,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'appendEditorCode',
     category: 'code',
-    handler: 'unlim.appendEditorCode',
+    handler: 'appendEditorCode',
     params: {
       code: { type: 'string', required: true, description: 'codice da aggiungere in fondo' },
     },
@@ -293,7 +383,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'loadScratchWorkspace',
     category: 'code',
-    handler: 'unlim.loadScratchWorkspace',
+    handler: 'loadScratchWorkspace',
     params: {
       xml: { type: 'string', required: true, description: 'Blockly XML workspace' },
     },
@@ -308,7 +398,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'nextStep',
     category: 'navigate',
-    handler: 'unlim.nextStep',
+    handler: 'nextStep',
     params: {},
     effect: 'avanza al prossimo step del build guidato',
     pz_v3_sensitive: true,
@@ -317,7 +407,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'prevStep',
     category: 'navigate',
-    handler: 'unlim.prevStep',
+    handler: 'prevStep',
     params: {},
     effect: 'torna indietro di uno step',
     pz_v3_sensitive: true,
@@ -326,7 +416,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'mountExperiment',
     category: 'navigate',
-    handler: 'unlim.mountExperiment',
+    handler: 'mountExperiment',
     params: {
       id: { type: 'string', required: true, description: 'es "v1-cap6-esp1"' },
     },
@@ -337,7 +427,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'setBuildMode',
     category: 'navigate',
-    handler: 'unlim.setBuildMode',
+    handler: 'setBuildMode',
     params: {
       mode: { type: 'string', required: true, enum: ['complete', 'guided', 'sandbox'], description: 'modalità build' },
     },
@@ -352,7 +442,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'captureScreenshot',
     category: 'vision',
-    handler: 'unlim.captureScreenshot',
+    handler: 'captureScreenshot',
     params: {},
     returns: 'string base64 PNG',
     effect: 'cattura screenshot corrente breadboard',
@@ -363,11 +453,13 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     name: 'analyzeImage',
     category: 'vision',
     handler: 'unlim.analyzeImage',
+    status: 'composite',
+    composite_of: ['captureScreenshot', 'postToVisionEndpoint'],
     params: {
       image: { type: 'string', required: true, description: 'base64 PNG' },
     },
     returns: 'string analisi Vision LLM',
-    effect: 'analizza immagine con Qwen VL',
+    effect: 'analizza immagine con Qwen VL (composite: screenshot + POST a /unlim-vision)',
     pz_v3_sensitive: false,
     since: '2026-04',
   },
@@ -378,7 +470,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'showBom',
     category: 'ui',
-    handler: 'unlim.showBom',
+    handler: 'showBom',
     params: {},
     effect: 'mostra Bill of Materials (lista componenti)',
     pz_v3_sensitive: false,
@@ -387,7 +479,7 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'showSerialMonitor',
     category: 'ui',
-    handler: 'unlim.showSerialMonitor',
+    handler: 'showSerialMonitor',
     params: {},
     effect: 'apre Serial Monitor',
     pz_v3_sensitive: false,
@@ -396,11 +488,13 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
   {
     name: 'toggleDrawing',
     category: 'ui',
-    handler: 'unlim.toggleDrawing',
+    handler: 'toggleDrawing',
+    status: 'todo_sett5',
+    added_in_sprint: 'sett5',
     params: {
       enabled: { type: 'boolean', required: true, description: 'true=abilita penna, false=disabilita' },
     },
-    effect: 'abilita/disabilita modalità disegno su lavagna',
+    effect: 'abilita/disabilita modalità disegno su lavagna (da implementare Sprint 6 Day 37)',
     pz_v3_sensitive: false,
     since: '2026-04',
   },
