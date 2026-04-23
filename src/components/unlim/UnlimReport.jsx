@@ -543,6 +543,15 @@ ${photoScript(volCol, SVG_X)}
 
 // ─── Public API ─────────────────────────────────────────────────────
 
+/**
+ * Open Fumetto report in new window.
+ * @returns {'ok'|'downloaded'|'no-session'|'no-content'|'error'}
+ *   ok         — popup opened successfully
+ *   downloaded — popup blocked, fallback .html download triggered
+ *   no-session — localStorage "elab_unlim_sessions" is empty (new user)
+ *   no-content — session exists but has 0 messages AND 0 errors (nothing to report)
+ *   error      — unexpected runtime error
+ */
 export function openReportWindow(experimentId) {
   let session;
   if (experimentId) {
@@ -551,29 +560,32 @@ export function openReportWindow(experimentId) {
   }
   if (!session) session = getLastSession();
 
-  if (!session || (!session.messages?.length && !session.errors?.length)) {
-    return false;
+  if (!session) return 'no-session';
+  if (!session.messages?.length && !session.errors?.length) return 'no-content';
+
+  try {
+    const lessonPath = getLessonPath(session.experimentId);
+    const screenshot = captureSimulatorScreenshot();
+    const html = buildReportHTML(session, lessonPath, screenshot);
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const popup = window.open(url, '_blank');
+
+    if (!popup) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fumetto-elab-${session.experimentId || 'sessione'}.html`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      return 'downloaded';
+    }
+
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    return 'ok';
+  } catch {
+    return 'error';
   }
-
-  const lessonPath = getLessonPath(session.experimentId);
-  const screenshot = captureSimulatorScreenshot();
-  const html = buildReportHTML(session, lessonPath, screenshot);
-
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const popup = window.open(url, '_blank');
-
-  if (!popup) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `fumetto-elab-${session.experimentId || 'sessione'}.html`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-    return 'downloaded';
-  }
-
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-  return true;
 }
 
 export function isReportCommand(text) {

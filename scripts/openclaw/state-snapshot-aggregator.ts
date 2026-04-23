@@ -320,17 +320,41 @@ export async function buildStateSnapshot(
 
 /**
  * Serialize a snapshot into a compact prompt fragment for the LLM.
+ *
+ * IMPORTANT DESIGN CHOICE (Andrea feedback 2026-04-23):
+ *   Il RAG NON deve essere usato letteralmente (copia-incolla estratti).
+ *   Deve essere usato come ANCORA per:
+ *     - Citazione Vol.X pag.Y (autorevolezza fonte fisica)
+ *     - Topic anchor (quale concetto trattare)
+ *     - Disambiguazione (stesso nome, contesti diversi)
+ *
+ *   Il modello LLM USA la sua conoscenza generale + contesto runtime
+ *   (circuito live, screenshot, memoria classe) + RAG come anchor.
+ *   Sintetizza, NON cita verbatim.
+ *
+ *   Questa funzione quindi passa ANCHORS compatti (titoli, citazioni brevi,
+ *   refs), non dump completi, e istruisce esplicitamente il modello a
+ *   "ragionare, non ripetere".
+ *
  * Principio Zero v3: the LLM MUST address the class ("Ragazzi, ..."),
  * cite Vol.X pag.Y when present, never "Docente leggi".
- *
- * The prompt is intentionally concise. Full circuit dumps are omitted —
- * only description + counts are included. The LLM can call `getCircuitState`
- * as a tool if it needs the raw topology.
  */
 export function snapshotToPromptFragment(snap: StateSnapshot, userMsg: string): string {
   const lines: string[] = [];
 
-  lines.push('=== CONTESTO ELAB TUTOR (Principio Zero v3: parla ai Ragazzi, cita Vol/pag) ===');
+  lines.push('=== SISTEMA: come usare il contesto ===');
+  lines.push('Sei UNLIM, tutor ELAB. Hai 4 fonti:');
+  lines.push('  (1) la tua CONOSCENZA GENERALE del dominio elettronica');
+  lines.push('  (2) LIVE STATE: circuito, esperimento, eventuali screenshot');
+  lines.push('  (3) MEMORIA: sessioni precedenti della classe');
+  lines.push('  (4) ANCHOR testuali: citazioni brevi dai volumi ELAB (RAG + Wiki)');
+  lines.push('');
+  lines.push('REGOLA D\'ORO: mescola le 4 fonti. NON copiare verbatim dagli anchor.');
+  lines.push('Gli anchor servono per citare Vol.X pag.Y correttamente e non contraddire il libro.');
+  lines.push('La spiegazione concreta, l\'analogia, il livello-linguaggio nascono da TE.');
+  lines.push('');
+
+  lines.push('=== LIVE STATE ===');
   lines.push(`Locale: ${snap.student.locale}`);
 
   if (snap.experiment.id) {
@@ -342,54 +366,68 @@ export function snapshotToPromptFragment(snap: StateSnapshot, userMsg: string): 
   if (snap.circuit) {
     lines.push(`Circuito: ${snap.circuit.components?.length || 0} componenti, ${snap.circuit.wires?.length || 0} fili${snap.circuit.isRunning ? ', SIMULAZIONE ATTIVA' : ''}`);
     if (snap.circuitDescription) {
-      lines.push(`Descrizione: ${snap.circuitDescription.slice(0, 300)}${snap.circuitDescription.length > 300 ? '...' : ''}`);
+      lines.push(`Descrizione runtime: ${snap.circuitDescription.slice(0, 300)}${snap.circuitDescription.length > 300 ? '...' : ''}`);
     }
   } else {
     lines.push('Circuito: [nessuno caricato]');
   }
 
-  if (snap.wiki.length > 0) {
+  if (snap.vision?.description) {
     lines.push('');
-    lines.push('=== RIFERIMENTI VOLUMI (Wiki LLM) ===');
-    snap.wiki.forEach((h, i) => {
-      const ref = [h.volume && `Vol. ${h.volume}`, h.page && `pag. ${h.page}`].filter(Boolean).join(', ');
-      lines.push(`${i + 1}. ${h.title}${ref ? ` — ${ref}` : ''} (score ${h.score})`);
-      lines.push(`   "${h.excerpt.slice(0, 180)}"`);
-    });
-  }
-
-  if (snap.rag.length > 0) {
-    lines.push('');
-    lines.push('=== RAG CHUNKS OFFLINE ===');
-    snap.rag.slice(0, 3).forEach((c, i) => {
-      lines.push(`${i + 1}. ${c.source || c.id}: "${c.text.slice(0, 150)}"`);
-    });
+    lines.push('=== VISIONE (screenshot Gemini Vision) ===');
+    lines.push(`[ground truth visiva] ${snap.vision.description.slice(0, 500)}`);
+    lines.push('Usa questa descrizione per verificare lo stato vero del circuito contro ciò che pensano i ragazzi.');
   }
 
   if (snap.pastSessions.length > 0) {
     lines.push('');
-    lines.push('=== SESSIONI PRECEDENTI DELLA CLASSE ===');
+    lines.push('=== MEMORIA CLASSE (sessioni precedenti) ===');
     snap.pastSessions.slice(0, 3).forEach((s) => {
       const diag = s.diagnosis?.length ? ` [diagnosi: ${s.diagnosis.slice(0, 2).join('; ')}]` : '';
       lines.push(`- ${s.startedAt.slice(0, 10)}: ${s.experimentId || 'unk'} (${s.durationSec}s)${diag}`);
     });
+    lines.push('Ricorda dove la classe ha già avuto difficoltà. Non ripetere spiegazioni inutilmente.');
   }
 
-  if (snap.vision?.description) {
+  if (snap.wiki.length > 0 || snap.rag.length > 0) {
     lines.push('');
-    lines.push(`=== VISIONE CIRCUITO (screenshot) ===`);
-    lines.push(snap.vision.description.slice(0, 500));
+    lines.push('=== ANCHOR (citazioni brevi ELAB, NON copiare verbatim) ===');
+    lines.push('Usa questi SOLO per:');
+    lines.push('  a) citare Vol.X pag.Y esatto quando spieghi concetti core');
+    lines.push('  b) rispettare terminologia e progressione didattica del libro');
+    lines.push('  c) non contraddire esempi/valori dai volumi');
+
+    if (snap.wiki.length > 0) {
+      lines.push('');
+      lines.push('[wiki L2 — concetti LLM-owned]');
+      snap.wiki.forEach((h, i) => {
+        const ref = [h.volume && `Vol.${h.volume}`, h.page && `pag.${h.page}`].filter(Boolean).join(', ');
+        lines.push(`${i + 1}. ${h.title}${ref ? ` (${ref})` : ''} — "${h.excerpt.slice(0, 100)}"`);
+      });
+    }
+
+    if (snap.rag.length > 0) {
+      lines.push('');
+      lines.push('[rag L1 — chunks raw dai PDF volumi]');
+      snap.rag.slice(0, 3).forEach((c, i) => {
+        const ref = c.volume && c.page ? ` (Vol.${c.volume} pag.${c.page})` : '';
+        lines.push(`${i + 1}. ${c.source || c.id}${ref}: "${c.text.slice(0, 100)}..."`);
+      });
+    }
   }
 
   lines.push('');
   lines.push('=== DOMANDA UTENTE ===');
   lines.push(userMsg);
   lines.push('');
-  lines.push('=== VINCOLI RISPOSTA ===');
-  lines.push('- Parla ai RAGAZZI (plurale), mai al docente');
-  lines.push('- Max 60 parole, 3 frasi + 1 analogia');
-  lines.push('- Cita SEMPRE Vol.X pag.Y quando spieghi un concetto chiave (LED, resistore, ecc.)');
-  lines.push('- Se devi fare azioni (highlight, aggiungi componente), usa tool-calls oltre al testo');
+  lines.push('=== VINCOLI RISPOSTA (Principio Zero v3) ===');
+  lines.push('- Rivolgiti ai RAGAZZI in plurale, MAI al docente');
+  lines.push('- Max 60 parole, massimo 3 frasi + 1 analogia concreta');
+  lines.push('- Se usi un concetto chiave (LED, resistenza, Ohm, potenziometro...), CITA Vol.X pag.Y');
+  lines.push('- Se il circuito live mostra qualcosa di specifico, menzionalo (diagnosi concreta)');
+  lines.push('- Se vuoi eseguire azioni (highlight componente, aggiungi resistenza, avvia simulazione), usa tool-call strutturato OLTRE al testo — non confondere i due canali');
+  lines.push('- Linguaggio bambino 8-14: niente gergo tecnico non spiegato, analogie concrete');
+  lines.push('- NON copiare frasi intere dagli anchor sopra — riformula nel tuo stile adatto alla classe');
 
   return lines.join('\n');
 }

@@ -773,7 +773,18 @@ export default function LavagnaShell() {
     try {
       const mod = await import('../unlim/UnlimReport');
       const expId = currentExperiment?.id || null;
-      mod.openReportWindow(expId);
+      const result = mod.openReportWindow(expId);
+      // Feedback UX: avoid silent failure that was masking "nothing happens" bug
+      const toast = await import('../common/Toast').catch(() => null);
+      if (result === 'no-session') {
+        toast?.showToast?.('Nessuna sessione salvata. Fai almeno un esperimento prima di generare il Fumetto.', 'info');
+      } else if (result === 'no-content') {
+        toast?.showToast?.('La sessione corrente non ha ancora contenuto. Interagisci con UNLIM o completa un esperimento.', 'info');
+      } else if (result === 'error') {
+        toast?.showToast?.('Errore nella generazione del Fumetto. Riprova.', 'error');
+      } else if (result === 'downloaded') {
+        toast?.showToast?.('Fumetto scaricato come file HTML (popup bloccato dal browser).', 'success');
+      }
     } catch (err) {
       logger.warn('[Fumetto] Unable to open report window:', err?.message || err);
     }
