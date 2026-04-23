@@ -6,7 +6,7 @@ import urllib.request
 import urllib.error
 import time
 
-SUPABASE_TOKEN = 'sbp_86f828bce8ea9f09acde59a942986c9fd55098c0'
+SUPABASE_TOKEN = 'sbp_REVOKED_20260423_REDACTED'
 PROJECT_REF = 'euqpdueopmlllqjmqnyb'
 CHUNKS_FILE = '/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/data/rag/all-chunks.json'
 EMBEDDINGS_FILE = '/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/data/rag/embeddings-cache.json'

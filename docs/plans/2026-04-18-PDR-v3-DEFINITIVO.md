@@ -408,7 +408,7 @@ Come Task 3 ma con potenziometro + Serial.begin(9600) + Serial.println.
 
 **MCP utili:**
 - Claude Preview (dev server)
-- Supabase CLI (token `sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084`)
+- Supabase CLI (token `sbp_REVOKED_20260423_REDACTED`)
 
 **Istruzione alla nuova sessione:** se questi MCP non sono connessi all'avvio, FERMATI e chiedi ad Andrea di connetterli prima di procedere con i task UI/E2E/ricerca. Procedere senza di loro = compromesso inaccettabile.
 
@@ -418,7 +418,7 @@ Come Task 3 ma con potenziometro + Serial.begin(9600) + Serial.println.
 
 | Servizio | URL/Token | Status |
 |----------|-----------|--------|
-| Supabase Management | `sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084` | VALID 17/04 |
+| Supabase Management | `sbp_REVOKED_20260423_REDACTED` | VALID 17/04 |
 | Supabase ghost-tutor | `vxvqalmxqtezvgiboxyv` | VIVO 25 tab |
 | Supabase elab-unlim | `euqpdueopmlllqjmqnyb` | Edge funcs |
 | Compiler n8n | `https://n8n.srv1022317.hstgr.cloud/compile` POST | 200 |

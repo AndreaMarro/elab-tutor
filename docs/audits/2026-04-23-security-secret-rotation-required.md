@@ -9,7 +9,7 @@
 
 ## Finding
 
-Secret pattern `sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084` (Supabase Access Token format) found in git-tracked files:
+Secret pattern `sbp_REVOKED_20260423_REDACTED` (Supabase Access Token format) found in git-tracked files:
 
 ```
 docs/SESSION-COMPLETE-02-APR-2026.md
@@ -48,7 +48,7 @@ Questo significa che anche se removiamo dalle HEAD, il token è ancora estraibil
 ```
 Login Supabase dashboard →
   Account Settings → Access Tokens →
-  Revoke sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084 →
+  Revoke sbp_REVOKED_20260423_REDACTED →
   Generate new token
 ```
 
@@ -71,7 +71,7 @@ vercel env add SUPABASE_ACCESS_TOKEN
 Per ogni file elencato sopra:
 ```bash
 cd "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder"
-sed -i '' 's/sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084/sbp_REDACTED_ROTATED/g' <file>
+sed -i '' 's/sbp_REVOKED_20260423_REDACTED/sbp_REDACTED_ROTATED/g' <file>
 git add <file>
 ```
 Poi commit + PR: `security: remove leaked SUPABASE_ACCESS_TOKEN from docs (rotated upstream)`.
@@ -84,7 +84,7 @@ Solo se decisi che serve pulire completamente (complica la history, force-push s
 brew install bfg
 cd /tmp && git clone --mirror git@github.com:AndreaMarro/elab-tutor.git
 cd elab-tutor.git
-bfg --replace-text <(echo 'sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084==>sbp_REDACTED') .
+bfg --replace-text <(echo 'sbp_REVOKED_20260423_REDACTED==>sbp_REDACTED') .
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
 git push --force
 ```

@@ -66,7 +66,7 @@ Ralph Loop max 30 iter, completion promise: quando tutti i task del PDR sono com
 - [ ] **WebSearch / WebFetch disponibili** (OBBLIGATORI per ricerca TTS/LLM 2026, Porcupine pricing, competitor)
 - [ ] **Playwright MCP connesso** (OBBLIGATORIO per test E2E)
 - [ ] **Control Chrome / Claude-in-Chrome** (OBBLIGATORIO per test docente impreparato su produzione)
-- [ ] Supabase token `sbp_eaa2d1aa71c2fce087fb66038ed4c3719794d084` valido
+- [ ] Supabase token `sbp_REVOKED_20260423_REDACTED` valido
 - [ ] `/tmp/vol1.txt`, `vol2.txt`, `vol3.txt` presenti (se no: `pdftotext` da VOLUME 3/CONTENUTI/volumi-pdf/)
 - [ ] Skills attive: `superpowers:executing-plans`, `superpowers:systematic-debugging`, `superpowers:verification-before-completion`, `superpowers:test-driven-development`
 - [ ] Ralph Loop plugin disponibile
