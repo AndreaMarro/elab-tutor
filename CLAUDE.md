@@ -29,7 +29,7 @@ Include:
 
 ## Stack tecnico
 - React 19 + Vite 7 (NO react-router — routing custom con useState e hash)
-- Vitest (**12056 test PASS baseline verificata 18/04/2026** — vedi `automa/baseline-tests.txt`, target 14000)
+- Vitest — **baseline**: unica fonte di verità `automa/baseline-tests.txt` (aggiornata automaticamente). Target 14000 entro Sprint 8. NON citare numeri a mano, usa sempre il file.
 - Deploy: Vercel (frontend) + Supabase (backend DB)
 - Nanobot AI: Render (https://elab-galileo.onrender.com)
 - Compilatore: n8n su Hostinger (https://n8n.srv1022317.hstgr.cloud/compile)
@@ -94,7 +94,7 @@ Include:
 
 ### Qualita'
 6. `npm run build` deve passare prima di ogni deploy
-7. `npx vitest run` deve passare prima di ogni commit (9846+ test)
+7. `npx vitest run` deve passare prima di ogni commit. Baseline in `automa/baseline-tests.txt` — pre-commit hook confronta delta
 8. Font minimo 13px testi, 10px label secondarie
 9. Touch target minimo 44x44px per bottoni interattivi
 10. Contrasto WCAG AA: 4.5:1 testo, 3:1 grafici
@@ -188,25 +188,36 @@ SUPABASE_ACCESS_TOKEN=sbp_... npx supabase functions deploy --project-ref euqpdu
 | Kokoro TTS | localhost:8881 | SOLO LOCALE |
 | Edge TTS | http://72.60.129.50:8880 | OK (verificato 16/04, /tts → 200) |
 
-## Bug aperti prioritari (18/04/2026 sera)
-1. ~~**Parallelismo volumi ASSENTE**~~ **RISOLTO** — 92/92 esperimenti con bookText, integrati in UI e UNLIM prompt
-2. ~~**UNLIM backend scatola nera**~~ **RISOLTO v3 VERIFICATO LIVE (18/04 sera)** — Principio Zero v3 in BASE_PROMPT: UNLIM PREPARA contenuto (non parla), docente veicola naturalmente. Commit: 4d12f33 (iniziale parziale) -> 44677ff (tono classe parziale) -> 250364a (v3 completo). Deploy Supabase OK. Test live: risposta "Ragazzi, come spiega il Vol. 1 a pagina 29...470 Ohm...ingredienti ricetta speciale!" per v1-cap6-esp1. Zero meta-istruzioni "Docente leggi". CoV 3/3 PASS (12056 test). Audit onesto: docs/audits/2026-04-18-cov-principio-zero-v3.md.
-11. **Esperimenti non fattibili** (audit pending) — alcuni esperimenti tipo "robot" non oggettivamente realizzabili con kit ELAB fisico. Richiede sessione dedicata Andrea+Omaric per lista componenti effettivi, poi audit 92 esperimenti vs kit → rimpiazzo alternative realistic.
-3. **Kokoro TTS non in produzione** — Edge TTS VPS UP (200 OK) come alternativa, CORS da verificare
-4. **Vision non testata live** — trigger implementato ma mai verificato end-to-end
-5. **Dashboard pochi dati reali** — Supabase probabilmente PAUSED (401), serve resume manuale
-6. ~~**Voce non testata E2E**~~ **PARZIALE** — Edge TTS VPS OK, apostrophe bug fixato, 320 test voice
-7. **Render cold start 18s** — warmup automatico aggiunto ma prima risposta ancora lenta
-8. ~~**RAG generico**~~ **MIGLIORATO** — short-phrase fallback per bambini ("non va" ora funziona)
-9. **Dashboard docente NON esiste** (verificato 18/04: `src/components/dashboard/` vuoto) — target PDR #2 progettibelli
-10. **Playwright 0 spec** (verificato 18/04: config presente, `tests/e2e/` vuoto) — target PDR #1 Fase 4
+## Bug/gap aperti (aggiornamento 23/04/2026)
 
-## Triade agent (Planner / Generator / Evaluator)
-Operativa da 18/04/2026 via `.claude/agents/`:
-- `planner.md` — opus, legge stato, produce 1 task atomico in `automa/tasks/pending/`
-- `generator-app.md` — sonnet, implementa UI/services, commit atomici con Test count
-- `generator-test.md` — sonnet, scrive vitest + playwright, mai codice applicativo
-- `evaluator.md` — haiku (scetticismo calibrato, no self-eval bias), verdetto in `automa/evals/`
+Fonte dinamica: `automa/tasks/pending/*.md` + `docs/audits/`. Lista breve sintetica:
+
+1. **Dashboard docente** — `src/components/dashboard/` ancora vuoto
+2. **Playwright E2E** — 0 spec in `tests/e2e/` (target Sprint 6 Day 40: primo spec)
+3. **Vision live** — trigger ok, E2E end-to-end non verificato
+4. **Kokoro TTS prod** — Edge TTS VPS OK come alternativa
+5. **Esperimenti non fattibili** — audit 92 vs kit fisico pending con Omaric
+6. **Render cold start 18s** — warmup automatico presente, prima call lenta
+7. **OpenClaw 11 handler TODO** — speakTTS, listenSTT, etc. (Sprint 6 Day 37)
+8. **Supabase migrations non applicate** — `openclaw_tool_memory` + `together_audit_log` (Day 38)
+
+Issue tracker autorevole: `automa/tasks/pending/`. Elenco qui è cache.
+
+## Team agent — 8 ruoli (3 attivi + 5 roadmap Sprint 6+)
+
+Attivi via `.claude/agents/`:
+- **planner** opus → task atomici in `automa/tasks/pending/`
+- **generator-app** sonnet → `src/**`, `supabase/functions/**`, commit atomici con test count
+- **generator-test** sonnet → `tests/**`, `scripts/openclaw/*.test.ts`, mai src code
+- **evaluator** haiku → `automa/evals/*.json`, scetticismo calibrato, no self-eval bias
+
+Roadmap (plan `docs/superpowers/plans/2026-04-30-agent-team-cli-orchestration.md`):
+- **architect** opus → `docs/architectures/`, `docs/adrs/`, read-only sul codice
+- **security-auditor** opus → `docs/audits/security-*.md`, OWASP+GDPR+dati minori
+- **performance-engineer** sonnet → `docs/audits/performance-*.md`, `scripts/bench/**`
+- **scribe** sonnet → `docs/sunti/`, `docs/retrospectives/`
+
+Team charter + handoff protocol: `automa/team-charter.md` + `automa/hand-off-protocol.md` (da creare Sprint 6).
 
 **Lancio tipico** (da Claude CLI in sessione lunga):
 ```
@@ -215,6 +226,8 @@ Operativa da 18/04/2026 via `.claude/agents/`:
 @evaluator verifica HEAD, verdetto PASS/WARN/FAIL
 ```
 
+Dashboard team: `npm run team:dashboard` (roadmap).
+
 ## Benchmark oggettivo
 - Script: `scripts/benchmark.cjs` (10 metriche pesate, score 0-10)
 - Output: `automa/state/benchmark.json` con commit SHA + delta vs run precedente
@@ -222,6 +235,58 @@ Operativa da 18/04/2026 via `.claude/agents/`:
 - **Baseline 18/04/2026 fast mode**: 2.77/10 (onesta, sotto i claim passati di 7-8)
 - Fast mode: `node scripts/benchmark.cjs --fast` (legge artifact cache, no vitest/build)
 - Full mode: `node scripts/benchmark.cjs --write` (gira tutto, scrive state)
+
+## Test organization (filosofia: molti test ordinati)
+
+**Regola**: ogni commit aumenta baseline o è refactor puro dichiarato. Pre-commit hook verifica delta.
+
+**Struttura**:
+```
+tests/
+├── unit/             # Vitest — <50ms, isolati
+│   ├── services/     # api.js, unlimMemory, unlimContext
+│   ├── components/   # React via @testing-library
+│   ├── engine/       # CircuitSolver, AVRBridge, PlacementEngine
+│   └── openclaw/     # OpenClaw dispatcher (Sprint 6+)
+├── integration/      # Vitest — cross-module, <500ms
+│   ├── supabase/     # Edge Function contracts
+│   └── wiki/         # Wiki retriever + corpus
+└── e2e/              # Playwright — browser, <10s/spec
+    └── NN-*.spec.js  # Numbered per execution order
+
+scripts/openclaw/*.test.ts  # OpenClaw unit (vitest.openclaw.config.ts)
+```
+
+**Command cheat-sheet**:
+```bash
+npx vitest run                                      # Tutti
+npx vitest run tests/unit/services/                 # Un layer
+npx vitest run -c vitest.openclaw.config.ts         # OpenClaw only
+npx vitest --watch                                  # Dev loop
+npx playwright test                                 # E2E tutti
+npx playwright test tests/e2e/NN-*.spec.js          # Uno E2E
+```
+
+**Coverage target**:
+- `src/services/**` → 70% entro Sprint 7
+- `scripts/openclaw/**` → 80% entro Sprint 6 Day 42
+- `src/components/**` → 50% entro Sprint 8
+
+Long-form: `docs/test-organization.md`.
+
+## Worktree convention
+
+Feature major su worktree isolato `elab-builder-<slug>/`. Dopo merge: `git worktree remove <path>`.
+
+| Worktree                   | Branch                                              | Stato         |
+|----------------------------|-----------------------------------------------------|---------------|
+| `elab-builder/`            | `main`                                              | Primary       |
+| `elab-builder-openclaw/`   | `feature/pdr-sett5-openclaw-onnipotenza-morfica-v4` | PR #25 aperto |
+| `elab-builder-watchdog/`   | watchdog work                                       | Sprint 4 eredità |
+| `elab-builder-csp/`        | CSP hardening                                       | Merged, rimuovere |
+| `elab-builder-wireup/`     | wire-up feature                                     | Merged, rimuovere |
+| `elab-builder-fumetto/`    | fumetto feature                                     | Merged, rimuovere |
+| `elab-builder-final/`      | CoV integration runs                                | Scratch       |
 
 ## OpenClaw "Onnipotenza Morfica v4" — Sett 5 architettura (22/04/2026)
 Branch: `feature/pdr-sett5-openclaw-onnipotenza-morfica-v4` (worktree `elab-builder-openclaw/`).
