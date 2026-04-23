@@ -1,3 +1,71 @@
+## [OpenClaw Sett 5 + Sprint 6 Day 36 + onniscenza ampliata + security sanitize] — 2026-04-23
+
+Sprint 5 architettura "Onnipotenza Morfica v4" + Sprint 6 Day 36 eseguito + RAG ampliato + Wiki L2 seed + Fumetto silent-failure fix + Together AI GDPR gate + coherence check + autonomous loop airplane-safe + 2 leaked Supabase PAT sanitize.
+
+### Added
+- `scripts/openclaw/tools-registry.ts` — 42 ToolSpec con status enum (live/todo_sett5/composite) + auditRegistry runtime verifier
+- `scripts/openclaw/morphic-generator.ts` — L1 composition + L2 template + L3 DEV-FLAG only (Web Worker sandbox, static regex safety)
+- `scripts/openclaw/pz-v3-validator.ts` — Principio Zero v3 enforcement 5 locale (IT production, EN/ES/FR/DE beta)
+- `scripts/openclaw/tool-memory.ts` — Supabase pgvector cache + BGE-M3 embed + GC daily cron + SHA-256 content hash idempotency
+- `scripts/openclaw/state-snapshot-aggregator.ts` — parallel fetch (circuit + Wiki + RAG + memory + vision) con prompt ibrido "anchor non verbatim"
+- `scripts/openclaw/together-teacher-mode.ts` — GDPR gate 4 modi (batch/teacher/emergency + BLOCK student runtime), anonymizePayload, budget cap €5/mese
+- `scripts/openclaw/rag-retriever.ts` — hybrid ranking (Jaccard + tfIdf-lite + metadata bonus) + MMR diversification λ=0.7
+- `scripts/openclaw/*.test.ts` + `__mocks__/` — 6 test file, 102 test PASS (vitest.openclaw.config.ts)
+- `scripts/rag-rechunk.mjs` — dual-pass re-chunker (fine 200/50 + coarse 640/120)
+- `scripts/coherence-check.mjs` — 8 checks (baseline SOT, wiki index sync, registry dupes, RAG IDs unique, secret scan, plan refs, branch protection, task YAML)
+- `scripts/git-hooks/pre-commit-secret-scan.sh` — blocks commit con pattern sbp_/sk-ant/sk-proj/eyJ/AKIA/ghp_
+- `src/data/rag-chunks-v2.json` — 1849 chunks (+237% da 549), dual-granularity + type classification
+- `docs/unlim-wiki/` — Karpathy three-layer L2 seed (SCHEMA + index + log + 3 concept: LED, resistenza, legge-ohm)
+- `docs/superpowers/plans/2026-04-23-openclaw-sprint6-l1-live.md` — 16 Task TDD bite-sized
+- `docs/superpowers/plans/2026-04-26-gpu-vps-weekend-benchmark.md` — 6 Task benchmark <=€25
+- `docs/superpowers/plans/2026-04-30-agent-team-cli-orchestration.md` — 9 Task team v2 (8 agent, charter, dashboard)
+- `docs/architectures/pdr-sett5-openclaw-onnipotenza-morfica-v4.md` — master architettura
+- `docs/architectures/openclaw-registry-v2-3-layer.md` — Layer A+B+C (reflection, semantic, morphic)
+- `docs/business/revenue-model-elab-2026.md` — break-even Stage 2b 8-10 scuole (PNRR path)
+- `docs/business/gpu-vps-decision-framework.md` — quando SI/NO GPU mensile
+- `docs/workflows/autonomous-airplane-safe-loop.md` — Mac Mini + GH Actions cron backup
+- `docs/test-organization.md` — struttura test tanti+ordinati + coverage target per Sprint
+- `docs/audits/2026-04-22-openclaw-plan-honest-check.md` — audit onesto 7.2/10
+- `docs/audits/2026-04-23-security-secret-rotation-required.md` — leaked token + actions
+- `docs/sunti/2026-04-23-sunto-sessione-openclaw.md` — sunto 22-23 apr
+- `.github/workflows/sprint-6-autonomous-loop.yml` — cron 6h airplane-safe (dry-run sans ANTHROPIC_API_KEY)
+- `vitest.openclaw.config.ts` — config isolata node env per script/openclaw
+
+### Changed
+- `src/components/unlim/UnlimReport.jsx` — openReportWindow ora return enum ('ok'|'downloaded'|'no-session'|'no-content'|'error')
+- `src/components/lavagna/LavagnaShell.jsx` — handleFumettoOpen legge result + Toast feedback (no silent failure)
+- `CLAUDE.md` — baseline SOT single source, test organization section, worktree map, agent team 8 ruoli, bug list sintetica, rimossi numeri stale
+- `scripts/openclaw/tools-registry.ts` — 42 handler path corretti post-audit (unlim.X → X flat per metodi verificati su simulator-api.js)
+- `scripts/openclaw/pz-v3-validator.ts` — 3 bug onesti fix: citationPattern \d+ (era \d matchava 1 cifra), "resistenza" in IT concepts, detectLocale word-boundary (non String.includes)
+
+### Fixed
+- Fumetto silent failure per nuovo utente senza session → Toast feedback "Nessuna sessione salvata..."
+- RAG uso letterale → prompt builder istruisce LLM a mescolare 4 fonti (knowledge + live + memory + anchor), non copiare verbatim
+- 42 handler `unlim.*` sbagliati → flat o marked todo_sett5 / composite
+- 3 regex bug PZ v3 validator IT (citation + resistenza + locale detection)
+
+### Security
+- Sanitize 2 leaked Supabase PAT da 12 file tracked (`sbp_eaa2d1aa...` + `sbp_86f828bce...`) → placeholder `sbp_REVOKED_20260423_REDACTED`
+- Token già revocati upstream (Andrea verificato dashboard), leak ora impotente
+- Pre-commit secret scanner installato per prevenzione futura
+
+### Verified
+- 102 OpenClaw test PASS (scripts/openclaw/, 1.17s)
+- Baseline regressione zero: 12235 tests locale pre-push hook
+- Coherence check POST sanitize: 0 errors, 2 warnings (legacy task format tolerato)
+- Nessun main push, nessun deploy prod, nessuna dipendenza npm nuova
+- Test coverage 70.88% statements (pass > 60% soglia)
+
+### Not done (by design — require Andrea decision)
+- PR #25 merge — human decision
+- Supabase migrations staging apply — require production token
+- 11 TODO Sprint-5 handler implementation in src/services/simulator-api.js — Sprint 6 Day 37 loop
+- Registry espansione 42→80 — Sprint 6 Day 38 loop
+- GitHub Actions cron attivazione — require ANTHROPIC_API_KEY secret
+- GPU VPS mensile — NO oggi (0 scuole paganti)
+
+---
+
 ## [CSP: re-enable inline safety-net script via SHA-256 hash] — 2026-04-22
 
 P0 follow-up. Post-deploy Playwright inspection of `https://www.elabtutor.school/` showed two CSP violations per page load: the inline safety-net `<script>` added by the P0 PWA hotfix was being refused because the meta-CSP only allowed `script-src 'self' https://cdnjs.cloudflare.com`. The safety net therefore never armed — exactly the users who most need it (returning with a stale workbox precache) were left unprotected.
