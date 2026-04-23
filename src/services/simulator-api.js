@@ -22,6 +22,9 @@ import { findExperimentById, EXPERIMENTS_VOL1, EXPERIMENTS_VOL2, EXPERIMENTS_VOL
 import { sendChat, analyzeImage, compileCode } from './api';
 import { logError } from './unlimContextCollector';
 import { captureWhiteboardScreenshot } from '../utils/whiteboardScreenshot';
+import * as voiceService from './voiceService';
+import { sendNudge } from './nudgeService';
+import projectHistoryService from './projectHistoryService';
 
 /**
  * Internal reference to the simulator instance (set by NewElabSimulator)
@@ -715,12 +718,188 @@ function createPublicAPI() {
         return _simulatorRef?.getCircuitState?.() || _simulatorRef?.getComponentStates?.() || {};
       },
 
-      version: '1.0.0',
+      // ─── Sprint 6 Day 37 — OpenClaw declared handlers ───
+      // Each handler returns a documented shape. Wired = delegates to real
+      // service. Event-stub = emits __ELAB_EVENTS for UI listeners (Day 38+).
+
+      /**
+       * Speak text via TTS chain (Kokoro → Edge → Nanobot).
+       * @param {{text:string}|string} arg
+       * @returns {Promise<{ok:boolean, error?:string}>}
+       */
+      async speakTTS(arg) {
+        const text = typeof arg === 'string' ? arg : arg?.text;
+        if (!text) return { ok: false, error: 'empty text' };
+        try {
+          const audio = await voiceService.synthesizeSpeech(text);
+          await voiceService.playAudio(audio);
+          return { ok: true };
+        } catch (e) {
+          return { ok: false, error: e?.message || String(e) };
+        }
+      },
+
+      /**
+       * Start microphone recording. Returns control object with stop()/cancel().
+       * @param {{sessionId?:string, experimentId?:string}} opts
+       * @returns {{ok:boolean, stop:()=>Promise<object>, cancel:()=>Promise<void>}}
+       */
+      listenSTT(opts = {}) {
+        let started = true;
+        const ready = voiceService.startRecording().then((ok) => { started = ok; return ok; });
+        return {
+          ready,
+          get ok() { return started; },
+          async stop() {
+            await ready;
+            if (!started) return { ok: false, error: 'mic denied' };
+            const blob = await voiceService.stopRecording();
+            if (!blob) return { ok: false, error: 'no audio' };
+            const result = await voiceService.sendVoiceChat(blob, opts);
+            return { ok: true, ...result };
+          },
+          async cancel() {
+            await ready;
+            voiceService.cancelRecording();
+          },
+        };
+      },
+
+      /**
+       * Persist a session snapshot (code + note) per project.
+       * Wraps projectHistoryService.saveSnapshot (localStorage layer).
+       * @param {{projectId:string, code?:string, note?:string, experimentId?:string, volume?:string|number, chapter?:string|number}} payload
+       * @returns {{ok:boolean, projectId?:string, error?:string}}
+       */
+      saveSessionMemory(payload = {}) {
+        if (!payload.projectId) return { ok: false, error: 'projectId required' };
+        try {
+          projectHistoryService.saveSnapshot(payload.projectId, {
+            code: payload.code || '',
+            note: payload.note || '',
+            experimentId: payload.experimentId || payload.projectId,
+            volume: payload.volume || null,
+            chapter: payload.chapter || null,
+          });
+          return { ok: true, projectId: payload.projectId };
+        } catch (e) {
+          return { ok: false, error: e?.message || String(e) };
+        }
+      },
+
+      /**
+       * Recall past session timeline + narrative for a project.
+       * @param {{projectId:string, limit?:number}} opts
+       * @returns {{ok:boolean, snapshots?:Array, story?:string, error?:string}}
+       */
+      recallPastSession(opts = {}) {
+        if (!opts.projectId) return { ok: false, error: 'projectId required' };
+        try {
+          let snapshots = projectHistoryService.getTimeline(opts.projectId) || [];
+          if (typeof opts.limit === 'number' && opts.limit >= 0) {
+            snapshots = snapshots.slice(0, opts.limit);
+          }
+          const story = projectHistoryService.getStory(opts.projectId);
+          return { ok: true, snapshots, story };
+        } catch (e) {
+          return { ok: false, error: e?.message || String(e) };
+        }
+      },
+
+      /**
+       * Send a nudge from teacher to a specific student.
+       * @param {{studentId:string, studentName?:string, message:string, classId?:string, teacherId?:string}} payload
+       * @returns {{ok:boolean, id?:string, error?:string}}
+       */
+      showNudge(payload = {}) {
+        if (!payload.studentId || !payload.message) {
+          return { ok: false, error: 'studentId + message required' };
+        }
+        try {
+          const result = sendNudge(
+            payload.studentId,
+            payload.studentName || '',
+            payload.message,
+            { classId: payload.classId, teacherId: payload.teacherId }
+          );
+          return { ok: true, id: result?.id, timestamp: result?.timestamp };
+        } catch (e) {
+          return { ok: false, error: e?.message || String(e) };
+        }
+      },
+
+      /**
+       * Alert teacher about session anomaly (re-uses nudge channel inverted).
+       * @param {{severity?:'info'|'warning'|'critical', message:string, studentId?:string, context?:object}} payload
+       */
+      alertDocente(payload = {}) {
+        const severity = payload.severity || 'info';
+        const message = payload.message || 'alert';
+        try {
+          sendNudge(
+            payload.studentId || 'teacher_alert',
+            'docente',
+            `[${severity.toUpperCase()}] ${message}`,
+            { teacherId: 'system', classId: payload.context?.classId }
+          );
+          return { ok: true, severity };
+        } catch (e) {
+          return { ok: false, severity, error: e?.message || String(e) };
+        }
+      },
+
+      /**
+       * Request quiz generation. Event-stub: QuizPanel listener wires Day 38+.
+       * @param {{experimentId:string, count?:number, difficulty?:string}} opts
+       */
+      generateQuiz(opts = {}) {
+        const requestId = 'q_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        const payload = {
+          requestId,
+          experimentId: opts.experimentId || null,
+          count: typeof opts.count === 'number' ? opts.count : 3,
+          difficulty: opts.difficulty || 'easy',
+        };
+        emitSimulatorEvent('quizRequested', payload);
+        return { ok: true, requestId };
+      },
+
+      /**
+       * Request fumetto export. Event-stub: UnlimReport listener wires Day 38+.
+       * @param {{sessionData?:object, format?:'pdf'|'png'}} opts
+       */
+      exportFumetto(opts = {}) {
+        const payload = {
+          sessionData: opts.sessionData || {},
+          format: opts.format || 'pdf',
+          requestedAt: new Date().toISOString(),
+        };
+        emitSimulatorEvent('fumettoExportRequested', payload);
+        return { ok: true, format: payload.format };
+      },
+
+      /**
+       * Request video load. Event-stub: video component listener Day 38+.
+       * @param {{url:string, autoplay?:boolean, mute?:boolean}} opts
+       */
+      videoLoad(opts = {}) {
+        if (!opts.url) return { ok: false, error: 'url required' };
+        const payload = {
+          url: opts.url,
+          autoplay: opts.autoplay !== false,
+          mute: !!opts.mute,
+        };
+        emitSimulatorEvent('videoLoadRequested', payload);
+        return { ok: true };
+      },
+
+      version: '1.1.0',
       info: {
         name: 'ELAB Simulator — UNLIM Bridge',
         author: 'Andrea Marro',
         modes: ['circuit', 'avr'],
         totalExperiments,
+        sprint6Handlers: 9,
       },
     },
 

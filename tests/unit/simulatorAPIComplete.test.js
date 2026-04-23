@@ -246,7 +246,7 @@ describe('1. API Initialization', () => {
 
   it('unlim.version is set', () => {
     registerSimulatorInstance(createMockSimulator());
-    expect(window.__ELAB_API.unlim.version).toBe('1.0.0');
+    expect(window.__ELAB_API.unlim.version).toBe('1.1.0');
   });
 });
 

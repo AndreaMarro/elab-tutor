@@ -1,3 +1,26 @@
+## [Sprint 6 Day 37 + Day 38 kickoff — OpenClaw 9 unlim handlers wired + shape snapshot guard] — 2026-04-23
+
+Sprint 6 Day 37 closes OpenClaw Sprint 5 infrastructure debt: 9 `unlim.*` handlers bridged in `window.__ELAB_API.unlim` (6 fully wired via voice/nudge/projectHistory services, 3 event-stub awaiting UI listeners Day 38+). Day 38 kickoff adds shape-snapshot regression guard. Baseline 12220 → 12290 (+70).
+
+### Added
+- `src/services/simulator-api.js` — 9 OpenClaw `unlim.*` handlers (+181 LOC, 947 total): `speakTTS`, `listenSTT`, `saveSessionMemory`, `recallPastSession`, `showNudge`, `alertDocente` wired to real services; `generateQuiz`, `exportFumetto`, `videoLoad` emit `__ELAB_EVENTS` for Day 38+ UI subscribers
+- `tests/unit/services/simulator-api-unlim-handlers.test.js` — 32 test blocks (exposure, delegation via `vi.mock` spies, error branches, event emission)
+- `tests/unit/services/simulator-api-unlim-shape-snapshot.test.js` — 23 test blocks (Day 38 kickoff, closes Day 37 audit gap G6): regression guard for 14 handlers + 2 meta = 16 expected keys on `__ELAB_API.unlim`
+- `automa/team-state/sprint-contracts/sprint-6-day-37-contract.md` — Harness 2.0 sprint contract (10 AC, TDD strategy, 4-grading)
+- `docs/audit/day-37-audit-2026-04-23.md` — 20-metric matrix + 7 gaps enumerated (G1-G7) + 4-grading median 7.0/10
+- `docs/handoff/2026-04-23-day-37-handoff.md` — audit-firm style executive summary, evidence inventory, risks, debt residual, Andrea next actions
+
+### Changed
+- `scripts/openclaw/tools-registry.ts` — 9 entries `status: 'todo_sett5'` → `status: 'live'` with honest inline comments disclosing event-stub nature for `generateQuiz`/`exportFumetto`/`videoLoad` (partial AC-5 divergence, documented)
+- `scripts/openclaw/tools-registry.audit.test.ts` — updated to recognize wired 6 via mocked `__ELAB_API`
+- `automa/baseline-tests.txt` — 12220 → 12267 (Day 37 +47) → 12290 (Day 38 +23)
+- `tests/unit/simulatorAPIComplete.test.js` — minor shape adjustment for new handlers
+
+### Honest caveats
+- 3/9 handlers marked `status:'live'` are event-emitter-only; UI subscribers (QuizPanel, UnlimReport, video component) pending Day 38-39 wiring (~9h)
+- Supabase migrations `openclaw_tool_memory` + `together_audit_log` still NOT applied (blocked by safety-memory Andrea-confirmation requirement)
+- Benchmark 4.73 (-0.02 worker_uptime probe noise, below sett-1 target 4.9)
+
 ## [OpenClaw Sett 5 + Sprint 6 Day 36 + onniscenza ampliata + security sanitize] — 2026-04-23
 
 Sprint 5 architettura "Onnipotenza Morfica v4" + Sprint 6 Day 36 eseguito + RAG ampliato + Wiki L2 seed + Fumetto silent-failure fix + Together AI GDPR gate + coherence check + autonomous loop airplane-safe + 2 leaked Supabase PAT sanitize.
