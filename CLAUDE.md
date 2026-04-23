@@ -222,3 +222,32 @@ Operativa da 18/04/2026 via `.claude/agents/`:
 - **Baseline 18/04/2026 fast mode**: 2.77/10 (onesta, sotto i claim passati di 7-8)
 - Fast mode: `node scripts/benchmark.cjs --fast` (legge artifact cache, no vitest/build)
 - Full mode: `node scripts/benchmark.cjs --write` (gira tutto, scrive state)
+
+## OpenClaw "Onnipotenza Morfica v4" — Sett 5 architettura (22/04/2026)
+Branch: `feature/pdr-sett5-openclaw-onnipotenza-morfica-v4` (worktree `elab-builder-openclaw/`).
+
+**NON DUPLICA il lavoro Sett-4 POC — lo integra come Layer 1 di OpenClaw.**
+
+- **Sett-4 eredità (già presente su main)**:
+  - `scripts/wiki-query-core.mjs` — `makeRetriever(corpus)` keyword-based scaffold
+  - `scripts/wiki-corpus-loader.mjs` — markdown+front-matter reader
+  - `supabase/functions/unlim-wiki-query/` — Deno edge runtime sibling
+  - 7 wiki test files + ADR-007 module extraction pattern
+
+- **Sett-5 aggiunta (branch feature)** in `scripts/openclaw/`:
+  1. `tools-registry.ts` — 52 ToolSpec declarative (JSON schema per LLM tool-use)
+  2. `morphic-generator.ts` — L1 composition + L2 template + L3 flag-DEV-ONLY (Web Worker sandbox)
+  3. `pz-v3-validator.ts` — Principio Zero v3 enforcement IT primary + EN/ES/FR/DE stub
+  4. `tool-memory.ts` — Supabase pgvector cache + GC con `MIGRATION_SQL` 4 RPC
+  5. `state-snapshot-aggregator.ts` — orchestratore parallelo (circuit + Wiki + RAG + memoria + vision)
+  6. `together-teacher-mode.ts` — GDPR-gated fallback (batch/teacher/emergency, BLOCK su student runtime)
+
+- **Deliverable docs**:
+  - `docs/architectures/pdr-sett5-openclaw-onnipotenza-morfica-v4.md` (master doc)
+  - `docs/business/revenue-model-elab-2026.md` (break-even onesto Stage 2b = 8-10 scuole)
+
+**Decisione onesta:**
+- L3 dynamic JS generation NON attiva in produzione. Flag `VITE_ENABLE_MORPHIC_L3=true` solo DEV.
+- GPU VPS mensile premature optimization. GPU orarie €15-20/weekend per benchmark.
+- Together AI solo per batch-ingest Wiki LLM una-tantum ($0,07) + teacher-context con consenso.
+- Student runtime chat SEMPRE EU-only (Gemini EU / Mistral FR / Qwen locale su Hetzner).
