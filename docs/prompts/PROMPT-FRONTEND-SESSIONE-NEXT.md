@@ -239,7 +239,7 @@ Docente scrive "Come accendo il LED?"
 
 ```
 Admin: #admin → ELAB2026-Andrea!
-Supabase: euqpdueopmlllqjmqnyb | Token: sbp_86f828bce8ea9f09acde59a942986c9fd55098c0
+Supabase: euqpdueopmlllqjmqnyb | Token: sbp_REVOKED_20260423_REDACTED
 Gemini: AIzaSyB3IjfrHeG9u_yscwHamo7lT1zoWJ0ii1g
 VPS: 72.60.129.50
 Anon Key: (in supabase/DEPLOY-GUIDE.md)

@@ -189,7 +189,7 @@ pip install gtts
 
 ## CREDENZIALI
 ```
-Supabase:      euqpdueopmlllqjmqnyb / sbp_86f828bce8ea9f09acde59a942986c9fd55098c0
+Supabase:      euqpdueopmlllqjmqnyb / sbp_REVOKED_20260423_REDACTED
 Gemini:        AIzaSyB3IjfrHeG9u_yscwHamo7lT1zoWJ0ii1g
 VPS:           72.60.129.50 (Ollama :11434 ✓, Voxtral :8880 ✗)
 Admin:         #admin → ELAB2026-Andrea!

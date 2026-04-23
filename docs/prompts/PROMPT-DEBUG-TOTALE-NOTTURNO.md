@@ -357,7 +357,7 @@ PLAYWRIGHT_BASE_URL=https://elab-builder.vercel.app npx playwright test
 ```
 Supabase Project:  euqpdueopmlllqjmqnyb
 Supabase URL:      https://euqpdueopmlllqjmqnyb.supabase.co
-Supabase Token:    sbp_86f828bce8ea9f09acde59a942986c9fd55098c0
+Supabase Token:    sbp_REVOKED_20260423_REDACTED
 Gemini API Key:    AIzaSyB3IjfrHeG9u_yscwHamo7lT1zoWJ0ii1g
 VPS:               72.60.129.50 (Ollama :11434, Voxtral :8880)
 Admin:             #admin → ELAB2026-Andrea!
