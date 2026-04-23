@@ -58,13 +58,17 @@ export interface ToolSpec {
 /**
  * Risolve lo status effettivo: se non esplicito, deriva da metadata.
  * Regole default:
- *   - added_in_sprint === 'sett5' → 'todo_sett5'
- *   - handler include "." (namespace) E non è unlim.*  → lascia 'live' (assume esiste)
- *   - resto → 'live'
+ *   - status esplicito → usa quello
+ *   - added_in_sprint definito → 'todo_sett5' (semantica: "verrà aggiunto nello sprint X",
+ *     quindi al momento non è live)
+ *   - altrimenti → 'live' (assume handler esiste su __ELAB_API)
+ *
+ * NOTE: Una volta che l'handler viene implementato in Sprint 6 Day 37, rimuovere il
+ * campo `added_in_sprint` dall'entry per marcarlo 'live' (vedi Task 11 del plan).
  */
 export function resolveStatus(spec: ToolSpec): HandlerStatus {
   if (spec.status) return spec.status;
-  if (spec.added_in_sprint === 'sett5') return 'todo_sett5';
+  if (spec.added_in_sprint) return 'todo_sett5';
   return 'live';
 }
 

@@ -57,8 +57,8 @@ const RULES: Record<string, LocaleRules> = {
       /\bprova\s+tu\b/i,
     ],
     conceptsRequiringCitation:
-      /\b(LED|resistore|condensatore|diodo|transistor|Ohm|capacit[aà]|potenziometro|PWM|Arduino|MOSFET|relay|rel[eè]|servo|breadboard)\b/i,
-    citationPattern: /\b(Vol\.?\s*\d|Volume\s*\d|pag\.?\s*\d|pagina\s*\d|Capitolo\s*\d|cap\.?\s*\d)\b/i,
+      /\b(LED|resistor[ei]|resistenza|condensatore|diodo|transistor|Ohm|capacit[aà]|potenziometro|PWM|Arduino|MOSFET|relay|rel[eè]|servo|breadboard)\b/i,
+    citationPattern: /\b(Vol\.?\s*\d+|Volume\s*\d+|pag\.?\s*\d+|pagina\s*\d+|Capitolo\s*\d+|cap\.?\s*\d+)\b/i,
     maxWords: 80,
     localeName: 'Italiano',
   },
@@ -80,7 +80,7 @@ const RULES: Record<string, LocaleRules> = {
     ],
     conceptsRequiringCitation:
       /\b(LED|resistor|capacitor|diode|transistor|Ohm|potentiometer|PWM|Arduino|MOSFET|relay|servo|breadboard)\b/i,
-    citationPattern: /\b(Vol\.?\s*\d|Volume\s*\d|p\.?\s*\d|page\s*\d|Chapter\s*\d|chap\.?\s*\d)\b/i,
+    citationPattern: /\b(Vol\.?\s*\d+|Volume\s*\d+|p\.?\s*\d+|page\s*\d+|Chapter\s*\d+|chap\.?\s*\d+)\b/i,
     maxWords: 80,
     localeName: 'English',
   },
@@ -96,7 +96,7 @@ const RULES: Record<string, LocaleRules> = {
     ],
     forbiddenSingular: [/\bhas\s+hecho\b/i, /\btu\s+LED\b/i, /\bdebes\s+pensar\b/i],
     conceptsRequiringCitation: /\b(LED|resistor|condensador|diodo|transistor|Ohm|potenci[oó]metro|PWM|Arduino)\b/i,
-    citationPattern: /\b(Vol\.?\s*\d|Volumen\s*\d|p[aá]g\.?\s*\d|p[aá]gina\s*\d|Cap[ií]tulo\s*\d)\b/i,
+    citationPattern: /\b(Vol\.?\s*\d+|Volumen\s*\d+|p[aá]g\.?\s*\d+|p[aá]gina\s*\d+|Cap[ií]tulo\s*\d+)\b/i,
     maxWords: 80,
     localeName: 'Espa\u00f1ol',
   },
@@ -112,7 +112,7 @@ const RULES: Record<string, LocaleRules> = {
     ],
     forbiddenSingular: [/\btu\s+as\s+fait\b/i, /\bton\s+LED\b/i, /\btu\s+dois\b/i],
     conceptsRequiringCitation: /\b(LED|r[eé]sistance|condensateur|diode|transistor|Ohm|potentiom[eè]tre|PWM|Arduino)\b/i,
-    citationPattern: /\b(Vol\.?\s*\d|Volume\s*\d|p\.?\s*\d|page\s*\d|Chapitre\s*\d)\b/i,
+    citationPattern: /\b(Vol\.?\s*\d+|Volume\s*\d+|p\.?\s*\d+|page\s*\d+|Chapitre\s*\d+)\b/i,
     maxWords: 80,
     localeName: 'Fran\u00e7ais',
   },
@@ -129,7 +129,7 @@ const RULES: Record<string, LocaleRules> = {
     forbiddenSingular: [/\bdu\s+hast\s+gemacht\b/i, /\bdein\s+LED\b/i, /\bdu\s+musst\b/i],
     conceptsRequiringCitation:
       /\b(LED|Widerstand|Kondensator|Diode|Transistor|Ohm|Potentiometer|PWM|Arduino|Schaltung)\b/i,
-    citationPattern: /\b(Vol\.?\s*\d|Band\s*\d|S\.?\s*\d|Seite\s*\d|Kapitel\s*\d)\b/i,
+    citationPattern: /\b(Vol\.?\s*\d+|Band\s*\d+|S\.?\s*\d+|Seite\s*\d+|Kapitel\s*\d+)\b/i,
     maxWords: 80,
     localeName: 'Deutsch',
   },
@@ -210,7 +210,9 @@ export function listSupportedLocales(): string[] {
 }
 
 export function detectLocale(text: string): string {
-  // Simple heuristic — for robust detection use franc or CLD3 at runtime.
+  // Word-boundary heuristic — avoids false matches inside larger words
+  // (e.g. "and" inside "random" should NOT score English).
+  // For robust detection use franc or CLD3 at runtime.
   const samples = [
     { loc: 'it', hits: ['ragazzi', 'vediamo', 'insieme', 'provate', 'ricordate', 'è', 'come'] },
     { loc: 'en', hits: ['kids', 'class', 'together', 'remember', 'the', 'and'] },
@@ -219,7 +221,11 @@ export function detectLocale(text: string): string {
     { loc: 'de', hits: ['kinder', 'klasse', 'zusammen', 'schauen', 'der', 'die'] },
   ];
   const lower = text.toLowerCase();
-  const scores = samples.map(s => ({ loc: s.loc, score: s.hits.filter(h => lower.includes(h)).length }));
+  function wordBoundaryMatch(needle: string, haystack: string): boolean {
+    const re = new RegExp(`\\b${needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'u');
+    return re.test(haystack);
+  }
+  const scores = samples.map(s => ({ loc: s.loc, score: s.hits.filter(h => wordBoundaryMatch(h, lower)).length }));
   scores.sort((a, b) => b.score - a.score);
   return scores[0].score > 0 ? scores[0].loc : 'it';
 }
