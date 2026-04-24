@@ -2082,3 +2082,36 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Review and either ready-for-review or close
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T23:57:10Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T23:57:10Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati di aver compreso appieno l'obiettivo del passo 1 prima di iniziare. Rileggi attentamente le istruzioni per evitare errori comuni.","source":"flash-lite"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T23:57:10Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED richiede una fonte di energia per accendersi.\n[CORREZIONE:highlight:id]: Aggiungi una batt
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T23:57:10Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #35 feat(q1): schema Capitolo narrative-preserving + migration 94->37 + service (TDD)
+#34 docs(sprint-q0): tresjolie volumi analysis + tutor mapping audit
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
