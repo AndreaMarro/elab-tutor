@@ -1,216 +1,198 @@
-# Audit Q0 — Tresjolie volumi vs tutor lesson-paths mapping
+# Audit Q0 — Tresjolie volumi vs tutor lesson-paths mapping (v1.1 body-verified)
 
 **Data:** 2026-04-24
 **Sprint:** Q0 (precede Q1 refactor Capitolo)
 **Branch:** `feat/sprint-q0-tresjolie-analysis-2026-04-24`
-**Artefatto dati:** `docs/data/volume-structure.json`
-**Onestà:** massima. Numeri verificati CoV. Nessuna inflazione.
+**Artefatto dati:** `docs/data/volume-structure.json` v1.1
+**Onestà:** massima. Numeri doppio-verificati body-grep + cross-check tutor. Errori v1.0 corretti.
 
 ---
 
-## TL;DR
+## TL;DR (v1.1 corrections)
 
-- **3 volumi reali**: Vol1=14 Cap, Vol2=12 Cap, Vol3=12 Cap (**38 Capitoli totali**, non 68 come stimato nel PDR Sprint Q handoff).
-- **Vol3 canonico = ODT** (pandoc). PDF V0.8.1 tronca Cap 9-12 titoli.
-- **Vol3 incompleto**: Cap 9-12 stub senza body. Cap 3 body senza header esplicito. **5 Cap su 38 sono WIP/deboli**.
-- **Tutor lesson-paths**: 94 file JSON (v1=38, v2=27, v3=29).
-- **Capitoli tutor coperti**: 22/38 = **58% coverage**. Gap prevalentemente **legittimo** (teoria + WIP Vol3).
-- **Match volume↔tutor quasi perfetto** su Cap sperimentali Vol1/Vol2 (markers 1:1).
-- **Q1 migration target ridotto**: 68 file Capitolo → **38 file** (-44%). Timeline favorevole.
-
----
-
-## 1. Correzione numeri handoff PDR Sprint Q
-
-Il PDR Sprint Q stimava:
-- Vol1 = 14 Cap ✓
-- Vol2 = 27 Cap ✗ (reale: **12**)
-- Vol3 = 27 Cap ✗ (reale: **12** dichiarati, 8 scritti completi)
-
-**Impatto reale**:
-- Q1 `src/data/capitoli/` target: ~~68 file~~ → **38 file**
-- Timeline Q1 riduzione ~30-40% probabile
-- CapitoloPicker UI (Q2) riduce complessità grid
-
-Motivo dell'errore handoff: probabile confusione tra Capitoli (unità pedagogica) ed esperimenti/numero pagine totali.
-
-## 2. Struttura reale 3 volumi (CoV verificata)
-
-### Vol1 — Laboratorio Elettronica Base (14 Cap, 37 ESPERIMENTO markers PDF)
-
-| Cap | Titolo | Pag | Tipo | Esp | Tutor files |
-|-----|--------|-----|------|-----|-------------|
-| 1 | Storia dell'Elettronica | 5-8 | theory | 0 | - |
-| 2 | Grandezze elettriche + Ohm | 9-12 | theory | 0 | - |
-| 3 | Cos'è un resistore? | 13-20 | theory | 0 | - |
-| 4 | Cos'è la breadboard? | 21-24 | theory | 0 | - |
-| 5 | Cosa sono le batterie? | 25-26 | theory | 0 | - |
-| 6 | **Cos'è il diodo LED?** | 27-34 | experiment | 3 | v1-cap6-esp1..3 |
-| 7 | **Cos'è il LED RGB?** | 35-42 | experiment | 6 | v1-cap7-esp1..6 |
-| 8 | **Cos'è un pulsante?** | 43-56 | experiment | 5 | v1-cap8-esp1..5 |
-| 9 | **Cos'è un potenziometro?** | 57-80 | experiment | 9 | v1-cap9-esp1..9 |
-| 10 | **Cos'è un fotoresistore?** | 81-92 | experiment | 6 | v1-cap10-esp1..6 |
-| 11 | **Cos'è un cicalino?** | 93-96 | experiment | 2 | v1-cap11-esp1..2 |
-| 12 | **Interruttore magnetico** | 97-102 | experiment | 4 | v1-cap12-esp1..4 |
-| 13 | **Cos'è l'elettropongo?** | 103-106 | experiment | 2 | v1-cap13-esp1..2 |
-| 14 | **Primo robot** | 107-112 | project | 1 | v1-cap14-esp1 |
-
-**Tutor v1 = 38 file**. Volume ESPERIMENTO markers PDF = 37 (robot cap14 senza marker esplicito, conteggio coerente).
-
-### Vol2 — Elettronica Avanzata (12 Cap, 26 ESPERIMENTO markers PDF)
-
-| Cap | Titolo | Pag | Tipo | Esp | Tutor files |
-|-----|--------|-----|------|-----|-------------|
-| 1 | Cenni storia | 5-8 | theory | 0 | - |
-| 2 | Cos'è l'elettricità? | 9-12 | theory | 0 | - |
-| 3 | **Il Multimetro** | 13-36 | experiment | 4 | v2-cap3-esp1..4 |
-| 4 | **Approfondiamo resistenze** | 37-46 | experiment | 3 | v2-cap4-esp1..3 |
-| 5 | **Approfondiamo Batterie** | 47-52 | experiment | 2 | v2-cap5-esp1..2 |
-| 6 | **Approfondiamo Led** | 53-62 | experiment | 4 | v2-cap6-esp1..4 |
-| 7 | **Cosa sono i condensatori?** | 63-74 | experiment | 4 | v2-cap7-esp1..4 |
-| 8 | **Cosa sono i Transistor?** | 75-84 | experiment | 3 | v2-cap8-esp1..3 (PDF typo ESP 2 duplicato) |
-| 9 | **Cosa sono i fototransistor?** | 85-92 | experiment | 2 | v2-cap9-esp1..2 |
-| 10 | **Motore corrente continua** | 93-102 | experiment | 4 | v2-cap10-esp1..4 |
-| 11 | I diodi | 103-108 | **theory_or_demo** | 0 | **GAP DA VERIFICARE** |
-| 12 | **Robot marciante** | 109-114 | project | 1 | v2-cap12-esp1 |
-
-**Tutor v2 = 27 file**. Volume markers = 26.
-**Gap questionable Cap 11 Diodi**: volume ha contenuto ma no ESPERIMENTO marker. Tutor non copre. **Flag per Tea**: previsto esperimento hands-on o solo teoria?
-
-### Vol3 — Arduino/Programmazione (12 Cap dichiarati, **5 WIP**)
-
-| Cap | Titolo | Pag | Tipo | Esp | Tutor files |
-|-----|--------|-----|------|-----|-------------|
-| 1 | Storia programmazione | 5-8 | theory | 0 | - |
-| 2 | Cos'è la programmazione | 9-12 | theory | 0 | - |
-| 3 | Hardware e Software | 13-36 | theory | 0 | - (body senza header esplicito) |
-| 4 | Introduciamo Arduino/IDE | 37-46 | theory | 0 | - |
-| 5 | **Primo programma (Blink)** | 47-52 | experiment | 2 | v3-cap5-esp1..2 |
-| 6 | **Pin digitali** | 53-62 | experiment | 7 | v3-cap6-esp1..7 + **morse + semaforo** (9 file!) |
-| 7 | **Pin analogici** | 63-74 | experiment | 5 formali | v3-cap7-esp1..8 + mini (9 file!) |
-| 8 | **Pin analogici avanzati (Serial)** | 75-84 | experiment | 4 | v3-cap8-esp1..5 + serial (6 file) |
-| 9 | **(senza titolo - WIP)** | 85-92 | wip | 0 | - |
-| 10 | **(senza titolo - WIP)** | 93-102 | wip | 0 | - |
-| 11 | **(senza titolo - WIP)** | 103-108 | wip | 0 | - |
-| 12 | **(senza titolo - WIP)** | 109-114 | wip | 0 | - |
-
-**Tutor v3 = 29 file**. Volume esperimenti formali inferiti = **18**. **Overcoverage tutor**: tutor ha variant e sub-esperimenti che il volume non esplicita.
-
-Inoltre 3 file `v3-extra-*`:
-- `v3-extra-lcd-hello.json` — ipotesi LCD display
-- `v3-extra-servo-sweep.json` — ipotesi Servo
-- `v3-extra-simon.json` — ipotesi Simon game
-
-Questi 3 **non mappano a Cap volumi** — freestyle bonus progetti.
+- **3 volumi reali**: Vol1=14 Cap, Vol2=12 Cap, **Vol3=9 Cap** (ODT canonical). Totale **35 Cap** (non 38 come v1.0, non 68 come handoff PDR).
+- **Vol3 PDF V0.8.1 ha 3 Cap PHANTOM nel TOC** (10, 11, 12) mai esistiti in ODT canonical. Artefatto export InDesign 20.5.
+- **Vol2 Cap 11 Diodi = TEORIA pura** (body verificato PDF pag 98-102), non phantom come ipotizzato v1.0. NO ESPERIMENTO markers. Gap tutor legittimo.
+- **Vol3 ESERCIZIO** (non ESPERIMENTO): 22 markers esplicit + 2 anomalie editoriali (6.4 duplicato, 7.8 implicito) = **24 esercizi reali**.
+- **22 Cap con esperimenti/progetti** → **100% coverage tutor** (tutti coperti).
+- **12 Cap teoria** → 0% coverage tutor (legittimo).
+- **1 Cap WIP** (Vol3 Cap 9 stub) → candidato fill con `v3-extra-simon.json` (chapter=99, capstone).
+- **Coverage strutturale: 22/35 = 62.9%**. Legittima: **100%**.
+- **Q1 migration target: 35 file Capitolo** (non 68 stimato handoff, non 38 v1.0 → **-48% vs handoff, -8% vs v1.0**).
 
 ---
 
-## 3. Coverage analisi onesta
+## 1. Errori corretti v1.0 → v1.1
 
-### Strutturale per Capitolo
-- Capitoli totali dichiarati (TOC): **38**
-- Capitoli con esperimenti tutor: **22**
-- **Coverage strutturale: 22/38 = 57,9%**
+| Claim v1.0 | Realtà v1.1 | Motivo |
+|------------|-------------|--------|
+| Vol3 = 12 Cap | Vol3 = **9 Cap ODT canonical** | ODT TOC ha solo 9 entry (Cap 1-7 titled + Cap 8,9 stub). Cap 10-12 phantom PDF |
+| Totale 38 Cap | Totale **35 Cap** | -3 phantom Vol3 |
+| Vol2 Cap 11 "questionable gap" | Vol2 Cap 11 = **teoria** | Body PDF pag 98-102 verificato: titolo "I DIODI", contenuto vigile traffico+flyback. No ESPERIMENTO markers. Gap legittimo. |
+| Vol3 WIP = 4 Cap | Vol3 WIP = **1 Cap** (solo Cap 9) | Cap 10-12 non erano mai pianificati |
+| Vol3 esperimenti 18 inferred | Vol3 ESERCIZIO **22 + 2 anomalie = 24** | Pattern ODT usa "ESERCIZIO N.M" non "ESPERIMENTO N". Grep precedente mismatch. |
 
-### Legittimità del gap
-- Gap legittimi (teoria pura Vol1/2/3 + WIP Vol3): **15 Cap**
-- Gap questionable (Vol2 Cap 11 diodi): **1 Cap**
-- Gap tutor non giustificato: **0 Cap**
+## 2. Bug editoriali scoperti (da flaggare Tea)
 
-**Coverage "utile" (escluso gap legittimi): 22/23 = 95,7%**.
+### 2.1 Vol3 ESERCIZIO 6.4 duplicato (MEDIUM)
+- ODT line 2113: "ESERCIZIO 6.4 — Due LED che si alternano"
+- ODT line 2176: "ESERCIZIO 6.4 — Costruiamo un semaforo"
+- 2 esercizi distinti con stesso numero. Seconda probabilmente dovrebbe essere 6.5.
+- Impatto: shift numerazione 6.5-6.7 → 6.6-6.8.
+- Tutor `v3-cap6-semaforo.json` mappa al "6.4 semaforo" (forma dedicata variant).
 
-### Per esperimenti
-- Esperimenti volume espliciti Vol1+Vol2 PDF markers: 63 (37+26)
-- Esperimenti Vol3 ODT inferiti: 18
-- **Totale volumi: ~81 esperimenti**
-- Tutor files: **94**
-- Overcoverage: +13 files (variant v3 + 3 extras)
+### 2.2 Vol3 ESERCIZIO 7.8 marker mancante (LOW)
+- ODT line 3814: "Sketch_Capitolo_7.8" referenziato.
+- Nessun marker "ESERCIZIO 7.8" esplicito in body.
+- Contenuto probabilmente corrisponde a tutor `v3-cap7-esp8.json` (debounce).
+- Fix: aggiungere marker ESERCIZIO 7.8 davanti al passaggio debounce.
 
----
+### 2.3 Vol3 PDF V0.8.1 phantom TOC (HIGH)
+- PDF ha 12 entry TOC con Cap 10-12 vuoti.
+- ODT canonical ha 9 entry TOC (Cap 8, 9 stub).
+- Impatto: chiunque legge PDF V0.8.1 pensa che Vol3 abbia 12 Cap pianificati.
+- Fix: rigenerare PDF da ODT aggiornato (o aggiornare ODT se 12 Cap erano pianificati davvero).
 
-## 4. Gap & azioni
+### 2.4 Vol2 PDF Cap 8 Transistor ESPERIMENTO 2 duplicato (LOW)
+- Lines 2242 + 2252 entrambi marcati "ESPERIMENTO 2" in Cap 8.
+- Correzione editoriale su ristampa.
 
-### 4.1 Gap legittimi — NO azione
-- Vol1 Cap 1-5: teoria base (storia, Ohm, resistore, breadboard, batterie)
-- Vol2 Cap 1-2: teoria (storia, elettricità)
-- Vol3 Cap 1-4: teoria (storia, programmazione, HW/SW, IDE)
-- Vol3 Cap 9-12: **WIP volume** (non tutor)
+## 3. Struttura volumi definitiva (v1.1)
 
-### 4.2 Gap questionable — flag Andrea/Tea
-- **Vol2 Cap 11 (Diodi)**: volume ha contenuto pag 103-108 ma no tutor. Decisione richiesta:
-  - (a) Creare tutor lesson-paths v2-cap11-esp{1..N} (se previsti esperimenti)
-  - (b) Lasciare gap se Cap 11 è solo teoria approfondita
+### Vol1 — Laboratorio Base (14 Cap, 37 ESPERIMENTO PDF markers)
 
-### 4.3 Vol3 WIP — flag Andrea/Tea
-Vol3 Cap 9-12 senza contenuto scritto. **Dipendenze**:
-- Blocca copertura completa Q1 (4/38 Cap mancano = -10,5% maturità)
-- Dipende da Tea/team contenuti
-- Opzioni:
-  - (a) Completare Vol3 ODT con Tea prima di Q1
-  - (b) Q1 migra solo 34 Cap, placeholder WIP per gli altri 4
+| Cap | Titolo | Pag | Tipo | Esp | Tutor | Coverage |
+|-----|--------|-----|------|-----|-------|----------|
+| 1 | Storia Elettronica | 5-8 | theory | 0 | - | legittimo |
+| 2 | Grandezze + Ohm | 9-12 | theory | 0 | - | legittimo |
+| 3 | Resistore | 13-20 | theory | 0 | - | legittimo |
+| 4 | Breadboard | 21-24 | theory | 0 | - | legittimo |
+| 5 | Batterie | 25-26 | theory | 0 | - | legittimo |
+| 6 | **LED** | 27-34 | exp | 3 | 3 | full |
+| 7 | **LED RGB** | 35-42 | exp | 6 | 6 | full |
+| 8 | **Pulsante** | 43-56 | exp | 5 | 5 | full |
+| 9 | **Potenziometro** | 57-80 | exp | 9 | 9 | full |
+| 10 | **Fotoresistore** | 81-92 | exp | 6 | 6 | full |
+| 11 | **Cicalino** | 93-96 | exp | 2 | 2 | full |
+| 12 | **Interruttore magnetico** | 97-102 | exp | 4 | 4 | full |
+| 13 | **Elettropongo** | 103-106 | exp | 2 | 2 | full |
+| 14 | **Robot primo** | 107-112 | project | 1 | 1 | full |
 
-### 4.4 Vol3 extras — decisione architetturale Q1
-3 file `v3-extra-*` non mappano a Cap. Opzioni:
-- (a) Merge in Cap6/7/8 come "esperimenti variant" (aggiunge flessibilità)
-- (b) Nuova categoria Capitolo "progetti capstone" in Vol3
-- (c) Spostare in sezione dedicata "Creatività libera"
+### Vol2 — Elettronica Avanzata (12 Cap, 26 ESPERIMENTO PDF markers)
 
-### 4.5 Errori PDF noti
-- Vol2 PDF: ESPERIMENTO 2 duplicato in Cap 8 Transistor (lines 2242 + 2252), typo da correggere se ripubblicazione
-- Vol3 PDF V0.8.1: titolo Cap 8 corrotto (`LE UANTIT` invece di `LE QUANTITA`), Cap 9-12 titoli completamente mancanti
+| Cap | Titolo | Pag | Tipo | Esp | Tutor | Coverage |
+|-----|--------|-----|------|-----|-------|----------|
+| 1 | Cenni storia | 5-8 | theory | 0 | - | legittimo |
+| 2 | Elettricità | 9-12 | theory | 0 | - | legittimo |
+| 3 | **Multimetro** | 13-36 | exp | 4 | 4 | full |
+| 4 | **Resistenze approfondite** | 37-46 | exp | 3 | 3 | full |
+| 5 | **Batterie approfondite** | 47-52 | exp | 2 | 2 | full |
+| 6 | **Led approfonditi** | 53-62 | exp | 4 | 4 | full |
+| 7 | **Condensatori** | 63-74 | exp | 4 | 4 | full |
+| 8 | **Transistor** | 75-84 | exp | 3 | 3 | full |
+| 9 | **Fototransistor** | 85-92 | exp | 2 | 2 | full |
+| 10 | **Motore DC** | 93-97 | exp | 4 | 4 | full |
+| 11 | **Diodi** | 98-102 | **theory** | 0 | - | **legittimo** (body verificato) |
+| 12 | **Robot Segui Luce** | 103-114 | project | 1 | 1 | full |
 
----
+### Vol3 — Arduino/Programmazione (9 Cap planned ODT, 22+2 ESERCIZIO markers)
 
-## 5. Q1 migration target corretto
+| Cap | Titolo | Tipo | Esc | Tutor | Coverage |
+|-----|--------|------|-----|-------|----------|
+| 1 | Storia programmazione | theory | 0 | - | legittimo |
+| 2 | Programmazione | theory | 0 | - | legittimo |
+| 3 | Hardware e Software | theory | 0 | - | legittimo |
+| 4 | IDE Arduino | theory | 0 | - | legittimo |
+| 5 | **Blink** | exp | 2 (5-1, 5.2) | 2 | full |
+| 6 | **Pin digitali** | exp | 8* (6-1..6.7 +dup 6.4) | 9** | full+variant |
+| 7 | **Pin analogici** | exp | 8* (7.1..7.7 + 7.8 implicit) | 9** | full+variant |
+| 8 | **Pin analogici Serial** | exp | 6 (8.1..8.6) | 6 | full |
+| 9 | **(stub ODT WIP)** | wip | 0 | 0 | WIP fill candidate simon |
 
-Base dati per Q1 schema Capitolo migration:
+\* include anomalie editoriali (6.4 dup, 7.8 implicit)
+\** +variant (morse, semaforo Cap 6; mini Cap 7; serial Cap 8)
 
-| Tier | Count | Descrizione | Note |
-|------|-------|-------------|------|
-| 1 | 22 | Cap con esperimenti + tutor full coverage | migrazione diretta lesson-paths → capitoli |
-| 2 | 11 | Cap teoria pura (Vol1 1-5, Vol2 1-2, Vol3 1-4) | `Capitolo` con solo `theory{}`, no `esperimenti[]` |
-| 3 | 4 | Vol3 Cap 9-12 WIP | placeholder da completare post-Tea |
-| 4 | 1 | Vol2 Cap 11 Diodi (questionable) | attesa decisione Andrea |
-| **Totale** | **38** | | |
+**Phantom (PDF V0.8.1 TOC only, NOT ODT)**: Cap 10, 11, 12 — rimossi dal count reale.
 
-**Target concreto Q1**: 38 file `src/data/capitoli/{v1-cap1..v1-cap14, v2-cap1..v2-cap12, v3-cap1..v3-cap12}.json`.
+**Extras tutor-only standalone** (chapter!=Cap numbered):
+- `v3-extra-lcd-hello` — LCD display hello
+- `v3-extra-servo-sweep` — Servo motor sweep
+- `v3-extra-simon` — Simon Says capstone (chapter=99, "PROGETTO FINALE Vol3" self-declared)
 
-**Extras**: decidere cosa fare dei 3 `v3-extra-*` (tier separato o integrazione).
+## 4. Coverage onesta
 
----
+| Dimensione | Valore | Note |
+|-----------|--------|------|
+| Cap totali reali | 35 | 14 + 12 + 9 |
+| Cap experiments/project | 22 | 9 + 9 + 4 |
+| Cap theory | 12 | 5 + 3 + 4 |
+| Cap WIP | 1 | Vol3 Cap 9 |
+| Coverage tutor su Cap experiments | **22/22 = 100%** | Tutti coperti |
+| Coverage tutor strutturale totale | **22/35 = 62,9%** | Teoria + WIP esclusi |
+| Coverage "utile" (escluso legitimate gap) | **22/22 = 100%** | Nessun gap ingiustificato |
+| Tutor files totali | 94 | 38 + 27 + 29 |
+| Tutor files cap-mapped | 91 | -3 v3-extras |
+| Tutor overcoverage Vol3 variants | 4 | morse + semaforo + mini + serial |
 
-## 6. Metodologia estrazione
+## 5. Q1 migration target definitivo
 
-1. `pdftotext -layout` Vol1 + Vol2 PDF TRES JOLIE → /tmp/vol{1,2}-tresjolie.txt
-2. `pandoc -f odt -t plain` Vol3 ODT → /tmp/vol3-odt.txt (canonico, PDF incompleto)
-3. Grep pattern:
-   - `^[[:space:]]*Capitolo\s+[0-9]+` per header Cap (solo TOC match in Vol1/2)
-   - `^\s*ESPERIMENTO\s+\d+` per markers Vol1/2
-   - "In questo esperimento" per inferire esperimenti Vol3 ODT
-4. `ls src/data/lesson-paths/` + `sed`/sort per count per Cap tutor
-5. Cross-check numerico: tutor count ≈ volume markers + progetti finali
+35 file `src/data/capitoli/` da creare:
 
-## 7. CoV (Chain of Verification)
+| Tier | Count | File list | Action |
+|------|-------|-----------|--------|
+| 1 | 22 | v1-cap6..14, v2-cap3..10+12, v3-cap5..8 | migrazione diretta lesson-paths → Capitolo (aggrega esperimenti per Cap) |
+| 2 | 12 | v1-cap1..5, v2-cap1,2,11, v3-cap1..4 | Capitolo teoria-only, `esperimenti: []`, solo `theory{}` |
+| 3 | 1 | v3-cap9 | placeholder WIP, candidato fill v3-extra-simon |
 
-| Check | Atteso | Reale | Risultato |
-|-------|--------|-------|-----------|
-| Totale Cap TOC | 38 | 38 | ✓ |
-| Totale tutor files | 94 | 94 | ✓ |
-| Vol1 tutor vs markers | 37 markers + 1 robot = 38 tutor | 38 | ✓ |
-| Vol2 tutor vs markers | 26 markers + 1 robot = 27 tutor | 27 | ✓ |
-| Vol3 tutor vs volume | 18 vol + variants + 3 extras | 29 | ✓ overcoverage giustificato |
-| JSON schema valid | parseable | parseable | ✓ |
+Extras v3 decision:
+- **Opzione A** (consigliata): simon → Cap 9 Vol3 fill, lcd+servo → categoria "Creatività libera" standalone
+- Opzione B: tutti 3 in categoria nuova "Progetti freestyle"
+- Opzione C: status quo (3 file JSON fuori struttura)
+
+**Timeline Q1 stimata**: -30-40% vs PDR originale (68 file → 35 file, -48%).
+
+## 6. CoV (Chain of Verification) v1.1
+
+| Check | Metodo | Risultato |
+|-------|--------|-----------|
+| Body CAPITOLO uppercase Vol1 | `grep -nE "^\s*CAPITOLO\s+[0-9]+"` → 14 unique | PASS (14 Cap body confirmed) |
+| Body CAPITOLO uppercase Vol2 | grep → 12 unique | PASS (12 Cap body confirmed) |
+| Body Vol3 ODT Cap 10-12 | grep → 0 results | PASS (phantom removed) |
+| ESPERIMENTO markers Vol1 | 37 grep matches | PASS |
+| ESPERIMENTO markers Vol2 | 26 grep matches | PASS |
+| ESERCIZIO markers Vol3 ODT | 22 explicit + 2 anomalies | PASS |
+| Vol2 Cap 11 body | PDF pag 98-102 lidi + body title "I DIODI" | PASS (teoria confirmed) |
+| tutor v3-cap7-esp8 title = debounce | JSON read | PASS |
+| tutor v3-extra-simon.chapter=99 | JSON read | PASS capstone |
+| Filesystem match 94 files | Python set compare | PASS |
+| JSON v1.1 schema valido | python json.load | PASS |
+
+## 7. Decisioni pendenti per Andrea (aggiornate v1.1)
+
+1. **Vol3 Cap 9 WIP fill**:
+   - (A) Promuovere `v3-extra-simon` a Cap 9 (Simon Says = capstone naturale)
+   - (B) Scrivere nuovo Cap 9 con Tea (scope nuovo)
+   - (C) Lasciare placeholder, Tea decide dopo
+
+2. **v3-extras placement (lcd, servo)**:
+   - (A) Categoria "Creatività libera" standalone
+   - (B) Cap extras sotto Vol3 senza numerazione ("Vol3-X")
+   - (C) Merge in Cap più vicino come variant
+
+3. **Bug editoriali flag**:
+   - Vol3 ESERCIZIO 6.4 dup: fix Tea
+   - Vol3 ESERCIZIO 7.8 marker: fix Tea
+   - Vol3 PDF V0.8.1 phantom TOC: rigenerare da ODT
+   - Vol2 ESPERIMENTO 2 Cap 8 dup: fix ristampa
 
 ## 8. Prossimi passi
 
-1. **Subito**: commit + PR draft volume-structure.json + questo audit
-2. **Andrea decide**:
-   - Vol2 Cap 11 Diodi: creare tutor o gap?
-   - Vol3 Cap 9-12: completare con Tea prima di Q1 o placeholder?
-   - Vol3 extras: tier separato o integrazione?
-3. **Al gate Q0→Q1 PASS**: partire Q1 schema Capitolo con target 38 (non 68).
+1. **Subito**: amend commit + push PR #34 con v1.1 corrections
+2. **Andrea decide**: 3 decisioni pendenti sopra
+3. **Gate Q0 → Q1 PASS**: partire Q1 schema Capitolo con target 35 file (non 68, non 38)
+4. **Flag Tea**: 4 bug editoriali per fix volumi
 
 ---
 
-**Verdetto gate Q0**: **PASS con 3 decisioni pendenti**. Dati affidabili per Q1 migration.
-Pass rate: 22/22 check sperimentali match volume↔tutor = **100% su Cap coperti**.
+**Verdetto gate Q0 v1.1**: **PASS**. Dati affidabili body-verified per Q1.
+Pass rate: 22/22 Cap sperimentali match volume↔tutor = **100%**. Coverage legittima **100%**.
