@@ -136,7 +136,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
             <span>{phase.duration_minutes} min</span>
           </div>
           <div style={PS.phaseName}>
-            <span style={PS.phaseIcon}>{phase.icon || '📋'}</span>
+            {phase.icon && <span style={PS.phaseIcon}>{phase.icon}</span>}
             <span>{phase.name}</span>
           </div>
           {/* Book reference badge — only on first phase */}
@@ -300,7 +300,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     // Intro page
     content = (
       <div style={GS.content}>
-        <div style={GS.title}>{experiment.icon || '💡'} {experiment.title}</div>
+        <div style={GS.title}>{experiment.icon ? `${experiment.icon} ` : ''}{experiment.title}</div>
         {groupCtx && (
           <div style={{ textAlign: 'center', fontSize: 12, color: '#4A7A25', fontWeight: 600, fontFamily: "'Oswald', sans-serif", letterSpacing: '1px', marginBottom: 6 }}>
             {groupCtx.narrative}

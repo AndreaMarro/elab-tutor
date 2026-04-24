@@ -341,3 +341,30 @@ export function FlaskIcon(props) {
     </Icon>
   );
 }
+
+export function FootstepsIcon(props) {
+  return (
+    <Icon {...props}>
+      <ellipse cx="8" cy="9" rx="3" ry="4" />
+      <circle cx="6.5" cy="4" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="8.5" cy="3.5" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="10" cy="4" r="0.8" fill="currentColor" stroke="none" />
+      <ellipse cx="16" cy="17" rx="3" ry="4" />
+      <circle cx="14.5" cy="12" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="16.5" cy="11.5" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="12" r="0.8" fill="currentColor" stroke="none" />
+    </Icon>
+  );
+}
+
+export function PaletteIcon(props) {
+  return (
+    <Icon {...props}>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.1 0 2-.9 2-2 0-.5-.2-1-.6-1.3-.4-.4-.6-.8-.6-1.3 0-1.1.9-2 2-2h2.3c2.5 0 4.5-2 4.5-4.5C22 6.1 17.5 2 12 2Z" />
+      <circle cx="7" cy="10" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="11" cy="7" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="8" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="12" r="1.4" fill="currentColor" stroke="none" />
+    </Icon>
+  );
+}

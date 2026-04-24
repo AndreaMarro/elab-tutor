@@ -60,6 +60,7 @@ import QuizPanel from './panels/QuizPanel';
 import RotateDeviceOverlay from './overlays/RotateDeviceOverlay';
 import Annotation from './components/Annotation';
 import { useSessionRecorder } from '../../context/SessionRecorderContext';
+import { WrenchIcon, FootstepsIcon, PaletteIcon } from '../common/ElabIcons';
 import './ElabSimulator.css';
 import lyStyles from './layout.module.css';
 import { translateCompilationErrors } from './utils/errorTranslator';
@@ -840,12 +841,13 @@ const NewElabSimulator = ({
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, padding: '8px 16px', background: 'var(--color-bg-secondary, #F7F8FA)', borderBottom: '1px solid var(--color-border, #E5E5E5)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <div style={{ display: 'flex', gap: 3, background: 'var(--color-bg-tertiary, #ECECF0)', borderRadius: 12, padding: 4 }}>
             {[
-              { key: 'complete', label: 'Già Montato', icon: '\uD83D\uDD27', color: 'var(--color-primary, #1E4D8C)', title: 'Circuito già pronto — osserva e sperimenta' },
-              { key: 'guided', label: 'Passo Passo', icon: '\uD83D\uDC63', color: 'var(--color-accent, #4A7A25)', title: 'Costruisci il circuito un pezzo alla volta' },
-              { key: 'sandbox', label: 'Libero', icon: '\uD83C\uDFA8', color: 'var(--color-primary, #1E4D8C)', title: 'Breadboard libera — sperimenta come vuoi' },
+              { key: 'complete', label: 'Già Montato', Icon: WrenchIcon, color: 'var(--color-primary, #1E4D8C)', title: 'Circuito già pronto — osserva e sperimenta' },
+              { key: 'guided', label: 'Passo Passo', Icon: FootstepsIcon, color: 'var(--color-accent, #4A7A25)', title: 'Costruisci il circuito un pezzo alla volta' },
+              { key: 'sandbox', label: 'Libero', Icon: PaletteIcon, color: 'var(--color-primary, #1E4D8C)', title: 'Breadboard libera — sperimenta come vuoi' },
             ].map(m => {
               const isActive = (m.key === 'complete' && !currentExperiment.buildMode) || currentExperiment.buildMode === m.key;
-              return (<button key={m.key} onClick={() => handleBuildModeSwitch(m.key)} title={m.title} aria-label={m.title} aria-pressed={isActive} style={{ border: 'none', borderRadius: 'var(--radius-md, 10px)', padding: '8px 24px', fontSize: 15, fontWeight: isActive ? 700 : 500, fontFamily: "var(--font-sans)", background: isActive ? m.color : 'transparent', color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-secondary, #6B6B80)', cursor: 'pointer', transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)', display: 'flex', alignItems: 'center', gap: 8, minHeight: 'var(--touch-min, 56px)', boxShadow: isActive ? 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03))' : 'none', letterSpacing: isActive ? '0.3px' : '0', transform: isActive ? 'scale(1.02)' : 'scale(1)' }}><span style={{ fontSize: 17 }}>{m.icon}</span>{m.label}</button>);
+              const Icon = m.Icon;
+              return (<button key={m.key} onClick={() => handleBuildModeSwitch(m.key)} title={m.title} aria-label={m.title} aria-pressed={isActive} style={{ border: 'none', borderRadius: 'var(--radius-md, 10px)', padding: '8px 24px', fontSize: 15, fontWeight: isActive ? 700 : 500, fontFamily: "var(--font-sans)", background: isActive ? m.color : 'transparent', color: isActive ? 'var(--color-text-inverse, #fff)' : 'var(--color-text-secondary, #6B6B80)', cursor: 'pointer', transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)', display: 'flex', alignItems: 'center', gap: 8, minHeight: 'var(--touch-min, 56px)', boxShadow: isActive ? 'var(--shadow-md, 0 4px 8px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03))' : 'none', letterSpacing: isActive ? '0.3px' : '0', transform: isActive ? 'scale(1.02)' : 'scale(1)' }}><Icon size={18} />{m.label}</button>);
             })}
           </div>
         </div>
