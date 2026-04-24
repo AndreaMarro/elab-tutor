@@ -58,10 +58,11 @@ describe('tools-registry invariants', () => {
     expect(resolveStatus(mock)).toBe('composite');
   });
 
-  it('registry total ≥ 40 ToolSpec (post-Sprint-5 baseline, target 80 Sprint 6)', () => {
-    // Honest count verified 2026-04-23: 42 ToolSpec in registry.
-    // Sprint 6 Day 38 expands to ~80 (see docs/superpowers/plans/2026-04-23-openclaw-sprint6-l1-live.md Task 11).
-    expect(OPENCLAW_TOOLS_REGISTRY.length).toBeGreaterThanOrEqual(40);
+  it('registry total ≥ 55 ToolSpec (post-Sprint-6 Day 38 Layer A expansion, target 80 Sprint 6 end)', () => {
+    // Honest count verified 2026-04-23: 57 ToolSpec in registry.
+    // Sprint 6 Day 38 added 15 Layer A tools (read + editor + UI) mirroring __ELAB_API flat surface.
+    // Remaining path to 80: composite L1 tools (Day 39+) + vision/voice extensions.
+    expect(OPENCLAW_TOOLS_REGISTRY.length).toBeGreaterThanOrEqual(55);
   });
 });
 

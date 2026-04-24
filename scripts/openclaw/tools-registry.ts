@@ -645,6 +645,168 @@ export const OPENCLAW_TOOLS_REGISTRY: ToolSpec[] = [
     since: '2026-05',
     added_in_sprint: 'sprint-6',
   },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // LAYER A EXPANSION — Sprint 6 Day 38 (reflect full __ELAB_API surface)
+  // Target: dispatcher completeness (docs/architectures/openclaw-registry-v2-3-layer.md §3)
+  // All handlers verified on src/services/simulator-api.js + mock API 2026-04-23
+  // ═══════════════════════════════════════════════════════════════════
+
+  // ── Layer A: navigation + read (batch 1) ──────────────────────────
+  {
+    name: 'loadExperiment',
+    category: 'navigate',
+    handler: 'loadExperiment',
+    params: {
+      id: { type: 'string', required: true, description: 'id esperimento, es "v1-cap6-primo-circuito"' },
+    },
+    effect: 'carica esperimento (flat API, alias semantico di mountExperiment)',
+    pz_v3_sensitive: true,
+    since: '2026-04',
+  },
+  {
+    name: 'getComponentPositions',
+    category: 'read',
+    handler: 'getComponentPositions',
+    params: {},
+    returns: 'mappa { [id]: { x, y } } posizioni correnti sulla breadboard',
+    effect: 'posizioni attuali di tutti i componenti (serve a L1 composizione spatial)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'getLayout',
+    category: 'read',
+    handler: 'getLayout',
+    params: {},
+    returns: 'oggetto layout esportabile (componenti + wire + zoom/pan)',
+    effect: 'struttura completa del layout correnta, serializzabile',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'getSelectedComponent',
+    category: 'read',
+    handler: 'getSelectedComponent',
+    params: {},
+    returns: 'oggetto componente selezionato o null',
+    effect: 'componente attualmente selezionato in UI (per context-aware help)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'isSimulating',
+    category: 'read',
+    handler: 'isSimulating',
+    params: {},
+    returns: 'boolean true se simulazione in esecuzione',
+    effect: 'flag se la simulazione sta girando (piu granulare di getSimulationStatus)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+
+  // ── Layer A: editor/code (batch 2) ────────────────────────────────
+  {
+    name: 'getEditorMode',
+    category: 'read',
+    handler: 'getEditorMode',
+    params: {},
+    returns: 'string "arduino" | "scratch" | "code"',
+    effect: 'modo editor corrente (Arduino C++ o Scratch/Blockly)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'setEditorMode',
+    category: 'code',
+    handler: 'setEditorMode',
+    params: {
+      mode: { type: 'string', required: true, enum: ['arduino', 'scratch', 'code'], description: 'modo editor' },
+    },
+    effect: 'passa tra Arduino e Scratch nel pannello codice',
+    pz_v3_sensitive: true,
+    since: '2026-04',
+  },
+  {
+    name: 'resetEditorCode',
+    category: 'code',
+    handler: 'resetEditorCode',
+    params: {},
+    effect: 'ripristina codice editor al template originale dell esperimento',
+    pz_v3_sensitive: true,
+    since: '2026-04',
+  },
+  {
+    name: 'getExperimentOriginalCode',
+    category: 'read',
+    handler: 'getExperimentOriginalCode',
+    params: {},
+    returns: 'string codice sorgente template esperimento corrente',
+    effect: 'codice originale esperimento (per diff con stato utente)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'isEditorVisible',
+    category: 'read',
+    handler: 'isEditorVisible',
+    params: {},
+    returns: 'boolean true se pannello editor aperto',
+    effect: 'flag visibilita pannello editor (per decisioni showBom vs showCode)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+
+  // ── Layer A: UI tool mode + context aggregator (batch 3) ──────────
+  {
+    name: 'setToolMode',
+    category: 'ui',
+    handler: 'setToolMode',
+    params: {
+      mode: { type: 'string', required: true, enum: ['select', 'wire', 'pen'], description: 'modalita strumento canvas' },
+    },
+    effect: 'cambia modalita cursore canvas (select | wire | pen disegno)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'getToolMode',
+    category: 'read',
+    handler: 'getToolMode',
+    params: {},
+    returns: 'string "select" | "wire" | "pen"',
+    effect: 'modalita cursore canvas corrente',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'hideEditor',
+    category: 'ui',
+    handler: 'hideEditor',
+    params: {},
+    effect: 'nasconde pannello editor (libera spazio per breadboard)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'hideBom',
+    category: 'ui',
+    handler: 'hideBom',
+    params: {},
+    effect: 'chiude Bill of Materials (lista componenti)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
+  {
+    name: 'getSimulatorContext',
+    category: 'read',
+    handler: 'getSimulatorContext',
+    params: {},
+    returns: 'bundle full state { experiment, circuit, editor, sim, tool }',
+    effect: 'snapshot completo contesto simulatore (usato da state-snapshot-aggregator)',
+    pz_v3_sensitive: false,
+    since: '2026-04',
+  },
 ];
 
 // Export counts for sanity check
