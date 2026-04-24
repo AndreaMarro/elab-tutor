@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.1",
+    "version": "1.2",
     "generated": "2026-04-24",
     "generated_by": "Sprint Q0 Tresjolie analysis (body-deep-verified)",
     "sources": {
@@ -21,6 +21,13 @@
       "v1: totale 38 Cap → CORRETTO: 35 Cap reali",
       "BUG EDITORIALE trovato Vol3: ESERCIZIO 6.4 duplicato (stesso numero su 2 esercizi diversi)",
       "BUG EDITORIALE trovato Vol3: Sketch_Capitolo_7.8 referenziato ma marker ESERCIZIO 7.8 mancante"
+    ],
+    "extensions_v1.1_to_v1.2": [
+      "Aggiunto decisions_operative_q0_q1 con 6 decisioni autonome per Q1 schema Capitolo narrative-preserving",
+      "Mapping v3-extra-simon → v3-cap9 (promotion capstone)",
+      "Mapping v3-extra-lcd-hello + servo-sweep → nuovo tier 'progetti_bonus_vol3'",
+      "Reference narrative-progression analysis: docs/audits/2026-04-24-narrative-progression-analysis.md",
+      "Vol3 Cap 9 ora marked 'wip_with_capstone_candidate' invece di puro WIP"
     ],
     "notes": [
       "Grep pattern originale usava `Capitolo` lowercase = solo TOC. Body usa `CAPITOLO` uppercase = caught now.",
@@ -169,6 +176,65 @@
     "v1": { "files_total": 38, "capitoli_covered": [6, 7, 8, 9, 10, 11, 12, 13, 14], "capitoli_theory": [1, 2, 3, 4, 5], "coverage_experimental_pct": 100 },
     "v2": { "files_total": 27, "capitoli_covered": [3, 4, 5, 6, 7, 8, 9, 10, 12], "capitoli_theory": [1, 2, 11], "coverage_experimental_pct": 100 },
     "v3": { "files_total": 29, "capitoli_covered": [5, 6, 7, 8], "capitoli_theory": [1, 2, 3, 4], "capitoli_wip": [9], "capitoli_phantom_excluded": [10, 11, 12], "coverage_experimental_pct": 100, "notes": "Overcoverage tutor-side: 4 variants (morse, semaforo, mini, serial) + 3 standalone extras (lcd, servo, simon)" }
+  },
+  "decisions_operative_q0_q1": {
+    "_source": "docs/audits/2026-04-24-narrative-progression-analysis.md",
+    "_authority": "Andrea explicit delegation 2026-04-24: 'prendi tu le decisioni operativamente migliori'",
+    "decision_1_schema_narrative_preserving": {
+      "rationale": "Volume insegna variazioni progressive stesso tema; tutor attuale UI surface card isolate. Schema Capitolo deve esplicitare narrative_flow + classe_display/docente_sidebar duality.",
+      "schema_extensions": [
+        "theory.testo_classe (narrativo stile volume)",
+        "theory.citazioni_volume[] (testo esatto + pag)",
+        "narrative_flow.transitions[] (tra esperimenti stesso Cap)",
+        "esperimenti[].build_circuit.mode (from_scratch | incremental_from_prev)",
+        "esperimenti[].build_circuit.incremental_delta.operations",
+        "esperimenti[].phases[].classe_display (display centrale)",
+        "esperimenti[].phases[].docente_sidebar (sidebar colpo d'occhio)"
+      ]
+    },
+    "decision_2_vol3_cap9_fill": {
+      "action": "promote v3-extra-simon to v3-cap9-esp1",
+      "rationale": "Pattern coerente: Vol1 Cap14 Robot primo, Vol2 Cap12 Robot segui luce, Vol3 Cap9 Simon Says = capstone finale per volume. simon.chapter=99 già self-declared 'PROGETTO FINALE Vol3'.",
+      "migration_steps": [
+        "Rename file v3-extra-simon.json → v3-cap9-esp1.json",
+        "Update chapter: 99 → 9",
+        "Add volume_ref: { page_start: 85, page_end: 92, note: 'body volume WIP ODT' }",
+        "Preserve 'PROGETTO FINALE Vol3' in title"
+      ]
+    },
+    "decision_3_v3_extras_bonus_tier": {
+      "action": "create tier progetti_bonus_vol3 for lcd-hello + servo-sweep",
+      "rationale": "LCD e Servo sono HW breakout Nano ELAB ma non coperti in ODT volume. Tier separato evita forzarli in Cap 5-8 o trattarli come WIP.",
+      "tier_schema": {
+        "type": "bonus",
+        "volume": 3,
+        "capitolo": null,
+        "order": "1 (lcd), 2 (servo)",
+        "ui_placement": "Libero mode → sezione 'Progetti Bonus' sotto Cap numerati",
+        "narrative_flow": null
+      }
+    },
+    "decision_4_passo_passo_incremental": {
+      "component": "BuildModeGuide.jsx",
+      "action": "add prop mode: 'from_scratch' | 'incremental_from_prev'",
+      "behavior": "Se incremental: NON clear canvas, applica delta operations. UI mostra 'Da qui: [snapshot] Sostituisci X con Y'",
+      "migration_infer": "Script confronta build_circuit.intent esp N vs N-1. Delta ≤2 componenti + stessa breadboard = incremental. Override manuale per edge cases."
+    },
+    "decision_5_percorso_capitolo_view": {
+      "component": "PercorsoCapitoloView.jsx (NEW) + DocenteSidebar.jsx (NEW)",
+      "replaces": "PercorsoPanel.jsx (per-esperimento)",
+      "layout": "Display centrale 70% (classe 24px+ narrativo) + Sidebar destra 25% sticky (docente colpo d'occhio, reactive scroll)",
+      "content_flow": "Teoria intro → Esperimento 1 (passo-passo inline) → Transizione narrativa → Esperimento 2 → ... → Quiz finale",
+      "language_duality": {
+        "display_centrale": "classe_display (hook, volume_quote, observation, analogies)",
+        "sidebar_docente": "docente_sidebar (ora_fai imperativo, chiedi_alla_classe, attenzione_a, common_mistakes_short)"
+      },
+      "citation_inline": "badge (Vol.N pag.M) cliccabile → VolumeViewer"
+    },
+    "decision_6_bugs_editorial_flag_no_block": {
+      "action": "flag Tea con 4 bug (vedi bugs_editorial_found[])",
+      "rationale": "Bug volume-side, non tutor-side. Q1 procede con volume-structure.json v1.2 body-verified. Fix Tea asincrono next ODT release."
+    }
   },
   "q1_migration_plan": {
     "total_capitoli_to_create": 35,
