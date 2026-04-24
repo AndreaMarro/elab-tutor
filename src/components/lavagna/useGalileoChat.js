@@ -870,6 +870,20 @@ export default function useGalileoChat() {
     return () => window.removeEventListener('elab-vision-capture', handler);
   }, [processVisionImages]);
 
+  // ── External send bridge: ascolta CustomEvent 'elab-unlim-send' ──
+  // Used by wake word, percorso panel, error toast, experiment picker.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handler = (event) => {
+      const text = event?.detail?.text;
+      if (typeof text === 'string' && text.trim()) {
+        handleSend(text);
+      }
+    };
+    window.addEventListener('elab-unlim-send', handler);
+    return () => window.removeEventListener('elab-unlim-send', handler);
+  }, [handleSend]);
+
   return {
     messages,
     setMessages,

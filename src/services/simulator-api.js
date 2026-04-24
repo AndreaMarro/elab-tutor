@@ -893,6 +893,17 @@ function createPublicAPI() {
         return { ok: true };
       },
 
+      /**
+       * Send a text message to the UNLIM chat from outside the chat UI.
+       * Used by wake word, percorso panel, error toast, experiment picker.
+       * Dispatches a window event; useGalileoChat listens and invokes handleSend.
+       * @param {string} text
+       */
+      sendMessage(text) {
+        if (typeof window === 'undefined' || !text) return;
+        window.dispatchEvent(new CustomEvent('elab-unlim-send', { detail: { text } }));
+      },
+
       version: '1.1.0',
       info: {
         name: 'ELAB Simulator — UNLIM Bridge',

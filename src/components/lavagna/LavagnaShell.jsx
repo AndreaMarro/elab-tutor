@@ -432,8 +432,8 @@ export default function LavagnaShell() {
       },
       onCommand: (text) => {
         const api = typeof window !== 'undefined' && window.__ELAB_API;
-        if (api?.galileo?.sendMessage) {
-          api.galileo.sendMessage(text);
+        if (api?.unlim?.sendMessage) {
+          api.unlim.sendMessage(text);
         }
       },
     });
@@ -990,7 +990,7 @@ export default function LavagnaShell() {
         onAskUnlim={(msg) => {
           setGalileoOpen(true);
           const api = typeof window !== 'undefined' && window.__ELAB_API;
-          if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+          if (api?.unlim?.sendMessage) api.unlim.sendMessage(msg);
         }}
       />
 
@@ -1019,7 +1019,7 @@ export default function LavagnaShell() {
         onAskUnlim={(msg) => {
           setGalileoOpen(true);
           const api = typeof window !== 'undefined' && window.__ELAB_API;
-          if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+          if (api?.unlim?.sendMessage) api.unlim.sendMessage(msg);
         }}
         onFreeMode={() => {
           const api = typeof window !== 'undefined' && window.__ELAB_API;
