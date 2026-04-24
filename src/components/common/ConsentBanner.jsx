@@ -29,6 +29,7 @@ import gdprService from '../../services/gdprService';
 import studentTracker from '../../services/studentTracker';
 import { showToast } from './Toast';
 import useFocusTrap from '../../hooks/useFocusTrap';
+import { markOverlayDismissed } from '../../hooks/useOverlayQueue';
 import styles from './ConsentBanner.module.css';
 
 const CONSENT_KEY = 'elab_consent_v2';
@@ -128,6 +129,7 @@ export default function ConsentBanner() {
     // GDPR Art.7: attivare tracking SOLO dopo consenso esplicito
     studentTracker.initAfterConsent();
     setVisible(false);
+    markOverlayDismissed();
   };
 
   /** Rifiuta consenso */
@@ -143,6 +145,7 @@ export default function ConsentBanner() {
       // ignore
     }
     setVisible(false);
+    markOverlayDismissed();
   };
 
   /** Invio richiesta consenso parentale */
