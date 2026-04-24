@@ -285,13 +285,6 @@ function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
   }
   const { profile, suggestion } = dataRef.current;
 
-  // First-time users: auto-load first experiment after 2s
-  useEffect(() => {
-    if (!visible || !profile.isFirstTime || !suggestion) return;
-    const timer = setTimeout(() => onStart(suggestion), 2000);
-    return () => clearTimeout(timer);
-  }, [visible, profile.isFirstTime, suggestion, onStart]);
-
   if (!visible) return null;
 
   // First-time flow
