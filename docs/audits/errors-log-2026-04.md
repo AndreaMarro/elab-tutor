@@ -1922,3 +1922,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Review and either ready-for-review or close
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T19:14:27Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T19:14:27Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il tuo ambiente di sviluppo sia correttamente configurato con tutte le librerie necessarie. Controlla attentamente la documentazione per verificare i requisiti 
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T19:14:27Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED richiede una fonte di energia (tensione e corrente) per emettere luce.\n[CORREZIONE:highlig
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T19:14:27Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #34 docs(sprint-q0): tresjolie volumi analysis + tutor mapping audit
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
