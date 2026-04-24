@@ -11,6 +11,7 @@ import TutorSidebar, { MobileBottomTabs } from './TutorSidebar';
 import ChatOverlay from './ChatOverlay';
 import KeyboardManager, { ShortcutsPanel } from './KeyboardManager';
 import { useUnlimMode } from '../unlim/UnlimModeSwitch';
+import useOverlayQueue, { markOverlayDismissed } from '../../hooks/useOverlayQueue';
 import './tutor-responsive.css';
 
 const ONBOARDING_KEY = 'elab_onboarding_seen';
@@ -166,6 +167,7 @@ export default function TutorLayout({
     const [chatExpanded, setChatExpanded] = useState(false);
     const [showShortcuts, setShowShortcuts] = useState(false);
     const [showOnboarding, setShowOnboarding] = useState(false);
+    const welcomeAllowed = useOverlayQueue('welcome');
 
     useEffect(() => {
         if (!localStorage.getItem(ONBOARDING_KEY)) setShowOnboarding(true);
@@ -308,14 +310,16 @@ export default function TutorLayout({
                 onClose={() => setShowShortcuts(false)}
             />
 
-            {/* G39: Onboarding docente — 3 scelte chiare, primo login */}
-            {showOnboarding && (
+            {/* G39: Onboarding docente — 3 scelte chiare, primo login.
+                Serializzato: attende ConsentBanner dismesso prima di comparire. */}
+            {showOnboarding && welcomeAllowed && (
                 <OnboardingTooltip
-                    onDismiss={() => { setShowOnboarding(false); localStorage.setItem(ONBOARDING_KEY, '1'); }}
+                    onDismiss={() => { setShowOnboarding(false); localStorage.setItem(ONBOARDING_KEY, '1'); markOverlayDismissed(); }}
                     onNavigate={onTabChange}
                     onGoToDashboard={() => {
                         setShowOnboarding(false);
                         localStorage.setItem(ONBOARDING_KEY, '1');
+                        markOverlayDismissed();
                         window.location.hash = '#teacher';
                     }}
                 />

@@ -19,6 +19,7 @@ import ErrorToast from './ErrorToast';
 import { soundTick, soundPlay, soundPause } from './lavagnaSounds';
 import { buildClassProfile, getNextLessonSuggestion } from '../../services/classProfile';
 import { HandWaveIcon, PartyIcon, FlaskIcon } from '../common/ElabIcons';
+import useOverlayQueue, { markOverlayDismissed } from '../../hooks/useOverlayQueue';
 import { isWakeWordSupported, startWakeWordListener, stopWakeWordListener } from '../../services/wakeWord';
 import LessonReader from './LessonReader';
 import LessonSelector from './LessonSelector';
@@ -415,6 +416,10 @@ export default function LavagnaShell() {
     try { return localStorage.getItem('elab_skip_bentornati') !== 'true'; } catch { return true; }
   });
   const [wakeWordActive, setWakeWordActive] = useState(false);
+  // F2.B: serializzazione primo-accesso. ConsentBanner (se presente) ha
+  // priorità su Bentornati/Picker. ExperimentPicker parte ultimo.
+  const bentornatiAllowed = useOverlayQueue('bentornati');
+  const pickerAllowed = useOverlayQueue('picker');
 
   // "Ehi UNLIM" wake word — ascolta in background, apre UNLIM e manda il comando
   useEffect(() => {
@@ -710,6 +715,7 @@ export default function LavagnaShell() {
   // Bentornati: teacher clicks "Scegli altro" → dismiss overlay, open picker
   const handleBentornatiPickExperiment = useCallback(() => {
     setBentornatiVisible(false);
+    markOverlayDismissed();
     setPickerOpen(true);
   }, []);
 
@@ -997,16 +1003,17 @@ export default function LavagnaShell() {
         mascotSrc="/assets/mascot/logo-senza-sfondo.png"
       />
 
-      {/* Bentornati Overlay — Principio Zero: auto-propose next experiment */}
+      {/* Bentornati Overlay — Principio Zero: auto-propose next experiment.
+          Serializzato: attende ConsentBanner dismesso (route student-facing). */}
       <BentornatiOverlay
-        visible={bentornatiVisible && !hasExperiment}
+        visible={bentornatiVisible && !hasExperiment && bentornatiAllowed}
         onStart={handleBentornatiStart}
         onPickExperiment={handleBentornatiPickExperiment}
       />
 
-      {/* Experiment Picker Modal */}
+      {/* Experiment Picker Modal — ultimo in coda: evita stacking con Bentornati. */}
       <ExperimentPicker
-        open={pickerOpen}
+        open={pickerOpen && pickerAllowed && !bentornatiVisible}
         onClose={handlePickerClose}
         onSelect={handleExperimentSelect}
         onAskUnlim={(msg) => {
