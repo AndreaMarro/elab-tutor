@@ -2018,3 +2018,35 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Review and either ready-for-review or close
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T22:04:35Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T22:04:35Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che tutti i componenti siano collegati correttamente, seguendo attentamente lo schema fornito. Verifica che la polarità dei componenti sensibili sia rispettata per
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T22:04:35Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE 1:highlight:id]\n(1) Il LED non è collegato a nulla.\n(2) Un LED necessita di essere alimentato per accendersi.\n(3) [AZIONE:highlight:id]Aggiungi un filo che col
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-24T22:04:35Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #34 docs(sprint-q0): tresjolie volumi analysis + tutor mapping audit
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
