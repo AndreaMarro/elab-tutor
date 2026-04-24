@@ -27,7 +27,6 @@ const ReverseEngineeringLab = lazy(() => import('./ReverseEngineeringLab'));
 const CircuitReview = lazy(() => import('./CircuitReview'));
 // (projectHistoryService rimosso — usato solo da handleCompile eliminato)
 import studentService from '../../services/studentService';
-import ConsentBanner from '../common/ConsentBanner';
 import { useConfirmModal } from '../common/ConfirmModal';
 import TutorLayout from './TutorLayout';
 import useIsMobile from '../../hooks/useIsMobile';
@@ -2752,8 +2751,6 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                     />
                 )}
 
-                {/* GDPR: Analytics Consent Banner */}
-                <ConsentBanner />
                 {/* S99: Custom confirmation modal */}
                 <ConfirmDialog />
             </div>

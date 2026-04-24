@@ -352,6 +352,36 @@ function AccessDeniedMessage({ onNavigate }) {
     );
 }
 
+/**
+ * Route-aware ConsentBanner gate.
+ * Skip on B2B landings (/scuole/*) and teacher workspace (#lavagna) —
+ * consent is a minor-facing flow, not needed there. Also ensures a single
+ * mount at app root (duplicates removed from ElabTutorV4 + NewElabSimulator).
+ */
+function GatedConsentBanner() {
+    const [allowed, setAllowed] = useState(() => isConsentRouteAllowed());
+    useEffect(() => {
+        const sync = () => setAllowed(isConsentRouteAllowed());
+        window.addEventListener('hashchange', sync);
+        window.addEventListener('popstate', sync);
+        return () => {
+            window.removeEventListener('hashchange', sync);
+            window.removeEventListener('popstate', sync);
+        };
+    }, []);
+    if (!allowed) return null;
+    return <ConsentBanner />;
+}
+
+function isConsentRouteAllowed() {
+    if (typeof window === 'undefined') return true;
+    const pRoute = getPathnameRoute();
+    if (pRoute === 'scuole') return false;
+    const page = getPageFromHash();
+    if (page === 'lavagna' || page === 'tutor') return false;
+    return true;
+}
+
 function OfflineBanner() {
     const isOnline = useOnlineStatus();
     if (isOnline) return null;
@@ -384,7 +414,7 @@ function App() {
                 <OfflineBanner />
                 <AppRouter />
 
-                <ConsentBanner />
+                <GatedConsentBanner />
                 <ToastContainer />
             </AuthProvider>
         </ErrorBoundary>

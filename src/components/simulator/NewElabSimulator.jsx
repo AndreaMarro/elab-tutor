@@ -64,7 +64,6 @@ import './ElabSimulator.css';
 import lyStyles from './layout.module.css';
 import { translateCompilationErrors } from './utils/errorTranslator';
 import { buildPinComponentMap } from './utils/pinComponentMap';
-import ConsentBanner from '../common/ConsentBanner';
 import logger from '../../utils/logger';
 import __useDisclosureLevel from './hooks/useDisclosureLevel';
 
@@ -1022,7 +1021,6 @@ const NewElabSimulator = ({
       {ldrOverlay && (<LdrOverlay value={ldrOverlay.value} onValueChange={handleLdrValueChange} onClose={() => setLdrOverlay(null)} />)}
       {propsPanel && (<PropertiesPanel comp={propsPanel} onValueChange={handlePropChange} onClose={() => setPropsPanel(null)} />)}
       {showShortcuts && (<ShortcutsPanel onClose={() => setShowShortcuts(false)} />)}
-      <ConsentBanner />
     </div>
   );
 };
