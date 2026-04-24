@@ -285,13 +285,6 @@ function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
   }
   const { profile, suggestion } = dataRef.current;
 
-  // First-time users: auto-load first experiment after 2s
-  useEffect(() => {
-    if (!visible || !profile.isFirstTime || !suggestion) return;
-    const timer = setTimeout(() => onStart(suggestion), 2000);
-    return () => clearTimeout(timer);
-  }, [visible, profile.isFirstTime, suggestion, onStart]);
-
   if (!visible) return null;
 
   // First-time flow
@@ -432,8 +425,8 @@ export default function LavagnaShell() {
       },
       onCommand: (text) => {
         const api = typeof window !== 'undefined' && window.__ELAB_API;
-        if (api?.galileo?.sendMessage) {
-          api.galileo.sendMessage(text);
+        if (api?.unlim?.sendMessage) {
+          api.unlim.sendMessage(text);
         }
       },
     });
@@ -990,7 +983,7 @@ export default function LavagnaShell() {
         onAskUnlim={(msg) => {
           setGalileoOpen(true);
           const api = typeof window !== 'undefined' && window.__ELAB_API;
-          if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+          if (api?.unlim?.sendMessage) api.unlim.sendMessage(msg);
         }}
       />
 
@@ -1019,7 +1012,7 @@ export default function LavagnaShell() {
         onAskUnlim={(msg) => {
           setGalileoOpen(true);
           const api = typeof window !== 'undefined' && window.__ELAB_API;
-          if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+          if (api?.unlim?.sendMessage) api.unlim.sendMessage(msg);
         }}
         onFreeMode={() => {
           const api = typeof window !== 'undefined' && window.__ELAB_API;

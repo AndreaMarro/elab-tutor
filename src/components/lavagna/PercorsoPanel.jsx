@@ -51,7 +51,7 @@ export default function PercorsoPanel({ visible = false, onClose, experiment: pr
 
   const handleSendToUNLIM = useCallback((msg) => {
     const api = typeof window !== 'undefined' && window.__ELAB_API;
-    if (api?.galileo?.sendMessage) api.galileo.sendMessage(msg);
+    if (api?.unlim?.sendMessage) api.unlim.sendMessage(msg);
   }, []);
 
   const handleLoadExperiment = useCallback((id) => {
