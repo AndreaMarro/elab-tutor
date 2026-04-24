@@ -1,0 +1,140 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "generated": "2026-04-24",
+    "generated_by": "Sprint Q0 Tresjolie analysis",
+    "sources": {
+      "vol1": "/Users/andreamarro/VOLUME 3/ELAB - TRES JOLIE/1 ELAB VOLUME UNO/2 MANUALE VOLUME 1/MANUALE VOLUME 1 ITALIANO.pdf",
+      "vol2": "/Users/andreamarro/VOLUME 3/ELAB - TRES JOLIE/2 ELAB VOLUME DUE/2 MANUALE VOLUME  2/MANUALE VOLUME 2 ITALIANO.pdf",
+      "vol3": "/Users/andreamarro/VOLUME 3/ELAB - TRES JOLIE/3 ELAB VOLUME TRE/2 MANUALE VOLUME 3/MANUALE VOLUME 3 WORD.odt"
+    },
+    "extraction_tools": {
+      "vol1": "pdftotext -layout (poppler 26.04.0)",
+      "vol2": "pdftotext -layout (poppler 26.04.0)",
+      "vol3": "pandoc -f odt -t plain (ODT canonico, PDF V0.8.1 incompleto Cap 9-12)"
+    },
+    "notes": [
+      "Cap page ranges derivati dal TOC, verificati parzialmente via body marker scan",
+      "ESPERIMENTO markers in Vol1/Vol2 PDF hanno pattern uppercase standalone line",
+      "Vol3 ODT narrativa continua, NO marker ESPERIMENTO N uppercase: esperimenti inferiti via frase 'In questo esperimento...'",
+      "Vol3 ODT Cap 3 body presente (linee ~500-843) ma senza header 'Capitolo 3 –' esplicito",
+      "Vol3 ODT Cap 9-12 in indice ma body assente/stub (WIP)",
+      "Cap 1-5 Vol1 e Cap 1-2 Vol2 e Vol3 sono teoria pura: zero esperimenti = gap tutor LEGITTIMO"
+    ],
+    "correction_vs_handoff_pdr": {
+      "handoff_estimate": "14+27+27 = 68 Capitoli totali",
+      "actual_measured": "14+12+12 = 38 Capitoli totali (33 scritti + 4 WIP Vol3 + 1 Cap3 Vol3 senza header body)",
+      "impact": "Q1 migration target riduce da 68 file Capitolo -> 38 file (-44%). Timeline Q1 impatto positivo."
+    }
+  },
+  "totals": {
+    "capitoli_toc_declared": 38,
+    "capitoli_written_complete": 33,
+    "capitoli_wip_incomplete": 4,
+    "capitoli_with_experiments": 22,
+    "capitoli_theory_only": 13,
+    "capitoli_project": 2,
+    "capitoli_wip": 4,
+    "esperimenti_volume_markers_pdf": 63,
+    "esperimenti_vol3_inferred": 18,
+    "esperimenti_per_cap_sum_including_projects": 83,
+    "esperimenti_tutor_files": 94,
+    "tutor_extra_non_cap_numbered": 3,
+    "coverage_capitoli_pct": 57.9,
+    "coverage_capitoli_numerator": 22,
+    "coverage_capitoli_denominator": 38,
+    "coverage_legitimate_gap_pct": 95.7,
+    "coverage_legitimate_gap_numerator": 22,
+    "coverage_legitimate_gap_denominator": 23,
+    "consistency_note": "esperimenti_per_cap_sum 83 (volume formali) = 38 v1 + 27 v2 + 18 v3 inferred. Diff vs volume_markers_pdf 63 dovuto a: Cap14/Cap12 progetti senza marker ESPERIMENTO esplicito (+2 sul PDF) + Vol3 ODT inferito (+18). Tutor_files 94 = 91 cap-mapped + 3 v3-extras. V3 tutor overcoverage: 8 file extra (variants morse/semaforo/mini/serial etc.) oltre count formale volume Vol3."
+  },
+  "volumes": {
+    "vol1": {
+      "titolo": "Laboratorio STEM di Elettronica - Volume 1",
+      "capitoli_toc": 14,
+      "esperimenti_total_markers": 37,
+      "pages_span": "5-112",
+      "status": "complete",
+      "capitoli": [
+        { "num": 1, "id": "v1-cap1", "titolo": "La Storia dell'Elettronica: Un Viaggio nel Tempo", "page_start": 5, "page_end": 8, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "reason": "teoria pura storia" },
+        { "num": 2, "id": "v1-cap2", "titolo": "Le grandezze elettriche e la legge di Ohm", "page_start": 9, "page_end": 12, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "reason": "teoria Ohm" },
+        { "num": 3, "id": "v1-cap3", "titolo": "Cos'è un resistore?", "page_start": 13, "page_end": 20, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "reason": "teoria resistore" },
+        { "num": 4, "id": "v1-cap4", "titolo": "Cos'è la breadboard?", "page_start": 21, "page_end": 24, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "reason": "teoria breadboard" },
+        { "num": 5, "id": "v1-cap5", "titolo": "Cosa sono le batterie?", "page_start": 25, "page_end": 26, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "reason": "teoria batterie" },
+        { "num": 6, "id": "v1-cap6", "titolo": "Cos'è il diodo LED?", "page_start": 27, "page_end": 34, "type": "experiment", "esperimenti_count": 3, "tutor_coverage": "full", "tutor_files": ["v1-cap6-esp1", "v1-cap6-esp2", "v1-cap6-esp3"] },
+        { "num": 7, "id": "v1-cap7", "titolo": "Cos'è il LED RGB?", "page_start": 35, "page_end": 42, "type": "experiment", "esperimenti_count": 6, "tutor_coverage": "full", "tutor_files": ["v1-cap7-esp1", "v1-cap7-esp2", "v1-cap7-esp3", "v1-cap7-esp4", "v1-cap7-esp5", "v1-cap7-esp6"] },
+        { "num": 8, "id": "v1-cap8", "titolo": "Cos'è un pulsante?", "page_start": 43, "page_end": 56, "type": "experiment", "esperimenti_count": 5, "tutor_coverage": "full", "tutor_files": ["v1-cap8-esp1", "v1-cap8-esp2", "v1-cap8-esp3", "v1-cap8-esp4", "v1-cap8-esp5"] },
+        { "num": 9, "id": "v1-cap9", "titolo": "Cos'è un potenziometro?", "page_start": 57, "page_end": 80, "type": "experiment", "esperimenti_count": 9, "tutor_coverage": "full", "tutor_files": ["v1-cap9-esp1", "v1-cap9-esp2", "v1-cap9-esp3", "v1-cap9-esp4", "v1-cap9-esp5", "v1-cap9-esp6", "v1-cap9-esp7", "v1-cap9-esp8", "v1-cap9-esp9"] },
+        { "num": 10, "id": "v1-cap10", "titolo": "Cos'è un fotoresistore?", "page_start": 81, "page_end": 92, "type": "experiment", "esperimenti_count": 6, "tutor_coverage": "full", "tutor_files": ["v1-cap10-esp1", "v1-cap10-esp2", "v1-cap10-esp3", "v1-cap10-esp4", "v1-cap10-esp5", "v1-cap10-esp6"] },
+        { "num": 11, "id": "v1-cap11", "titolo": "Cos'è un cicalino?", "page_start": 93, "page_end": 96, "type": "experiment", "esperimenti_count": 2, "tutor_coverage": "full", "tutor_files": ["v1-cap11-esp1", "v1-cap11-esp2"] },
+        { "num": 12, "id": "v1-cap12", "titolo": "L'interruttore magnetico", "page_start": 97, "page_end": 102, "type": "experiment", "esperimenti_count": 4, "tutor_coverage": "full", "tutor_files": ["v1-cap12-esp1", "v1-cap12-esp2", "v1-cap12-esp3", "v1-cap12-esp4"] },
+        { "num": 13, "id": "v1-cap13", "titolo": "Cos'è l'elettropongo?", "page_start": 103, "page_end": 106, "type": "experiment", "esperimenti_count": 2, "tutor_coverage": "full", "tutor_files": ["v1-cap13-esp1", "v1-cap13-esp2"] },
+        { "num": 14, "id": "v1-cap14", "titolo": "Costruiamo il nostro primo robot", "page_start": 107, "page_end": 112, "type": "project", "esperimenti_count": 1, "tutor_coverage": "full", "tutor_files": ["v1-cap14-esp1"], "notes": "Progetto finale senza marker ESPERIMENTO espliciti nel PDF" }
+      ]
+    },
+    "vol2": {
+      "titolo": "Laboratorio STEM di Elettronica - Volume 2",
+      "capitoli_toc": 12,
+      "esperimenti_total_markers": 26,
+      "pages_span": "5-114",
+      "status": "complete",
+      "capitoli": [
+        { "num": 1, "id": "v2-cap1", "titolo": "Altri cenni di storia dell'elettronica", "page_start": 5, "page_end": 8, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true },
+        { "num": 2, "id": "v2-cap2", "titolo": "Cos'è l'elettricità?", "page_start": 9, "page_end": 12, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true },
+        { "num": 3, "id": "v2-cap3", "titolo": "Il Multimetro", "page_start": 13, "page_end": 36, "type": "experiment", "esperimenti_count": 4, "tutor_coverage": "full", "tutor_files": ["v2-cap3-esp1", "v2-cap3-esp2", "v2-cap3-esp3", "v2-cap3-esp4"] },
+        { "num": 4, "id": "v2-cap4", "titolo": "Approfondiamo le resistenze", "page_start": 37, "page_end": 46, "type": "experiment", "esperimenti_count": 3, "tutor_coverage": "full", "tutor_files": ["v2-cap4-esp1", "v2-cap4-esp2", "v2-cap4-esp3"] },
+        { "num": 5, "id": "v2-cap5", "titolo": "Approfondiamo le Batterie", "page_start": 47, "page_end": 52, "type": "experiment", "esperimenti_count": 2, "tutor_coverage": "full", "tutor_files": ["v2-cap5-esp1", "v2-cap5-esp2"] },
+        { "num": 6, "id": "v2-cap6", "titolo": "Approfondiamo i Led", "page_start": 53, "page_end": 62, "type": "experiment", "esperimenti_count": 4, "tutor_coverage": "full", "tutor_files": ["v2-cap6-esp1", "v2-cap6-esp2", "v2-cap6-esp3", "v2-cap6-esp4"] },
+        { "num": 7, "id": "v2-cap7", "titolo": "Cosa sono i condensatori?", "page_start": 63, "page_end": 74, "type": "experiment", "esperimenti_count": 4, "tutor_coverage": "full", "tutor_files": ["v2-cap7-esp1", "v2-cap7-esp2", "v2-cap7-esp3", "v2-cap7-esp4"] },
+        { "num": 8, "id": "v2-cap8", "titolo": "Cosa sono i Transistor?", "page_start": 75, "page_end": 84, "type": "experiment", "esperimenti_count": 3, "tutor_coverage": "full", "tutor_files": ["v2-cap8-esp1", "v2-cap8-esp2", "v2-cap8-esp3"], "notes": "PDF ha typo ESPERIMENTO 2 duplicato line 2242+2252, count reale 3" },
+        { "num": 9, "id": "v2-cap9", "titolo": "Cosa sono i fototransistor?", "page_start": 85, "page_end": 92, "type": "experiment", "esperimenti_count": 2, "tutor_coverage": "full", "tutor_files": ["v2-cap9-esp1", "v2-cap9-esp2"] },
+        { "num": 10, "id": "v2-cap10", "titolo": "Il motore a corrente continua", "page_start": 93, "page_end": 102, "type": "experiment", "esperimenti_count": 4, "tutor_coverage": "full", "tutor_files": ["v2-cap10-esp1", "v2-cap10-esp2", "v2-cap10-esp3", "v2-cap10-esp4"] },
+        { "num": 11, "id": "v2-cap11", "titolo": "I diodi", "page_start": 103, "page_end": 108, "type": "theory_or_demo", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": "questionable", "notes": "Volume ha contenuto ma no marker ESPERIMENTO esplicito. Tutor non copre. Verificare con Tea se progetti hands-on previsti." },
+        { "num": 12, "id": "v2-cap12", "titolo": "Costruiamo il nostro primo Robot marciante!", "page_start": 109, "page_end": 114, "type": "project", "esperimenti_count": 1, "tutor_coverage": "full", "tutor_files": ["v2-cap12-esp1"] }
+      ]
+    },
+    "vol3": {
+      "titolo": "Laboratorio STEM di Elettronica - Volume 3 (Arduino/Programmazione)",
+      "capitoli_toc": 12,
+      "esperimenti_total_markers_inferred": 14,
+      "pages_span": "5-114",
+      "status": "WIP (Cap 9-12 incomplete, Cap 3 body senza header)",
+      "source_canonical": "ODT (PDF V0.8.1 tronca Cap 9-12 titoli)",
+      "capitoli": [
+        { "num": 1, "id": "v3-cap1", "titolo": "Un viaggio nella storia della programmazione", "page_start": 5, "page_end": 8, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true },
+        { "num": 2, "id": "v3-cap2", "titolo": "Cos'è la programmazione", "page_start": 9, "page_end": 12, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true },
+        { "num": 3, "id": "v3-cap3", "titolo": "Hardware e Software", "page_start": 13, "page_end": 36, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "notes": "ODT body content presente linee ~500-843 ma senza header esplicito 'Capitolo 3'" },
+        { "num": 4, "id": "v3-cap4", "titolo": "Introduciamo Arduino", "page_start": 37, "page_end": 46, "type": "theory", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "notes": "Teoria IDE + installazione" },
+        { "num": 5, "id": "v3-cap5", "titolo": "Il nostro primo programma (Blink)", "page_start": 47, "page_end": 52, "type": "experiment", "esperimenti_count": 2, "tutor_coverage": "full", "tutor_files": ["v3-cap5-esp1", "v3-cap5-esp2"], "notes": "Blink + modifica tempi" },
+        { "num": 6, "id": "v3-cap6", "titolo": "Il mondo discreto: i pin digitali", "page_start": 53, "page_end": 62, "type": "experiment", "esperimenti_count": 7, "tutor_coverage": "full_plus_extras", "tutor_files": ["v3-cap6-esp1", "v3-cap6-esp2", "v3-cap6-esp3", "v3-cap6-esp4", "v3-cap6-esp5", "v3-cap6-esp6", "v3-cap6-esp7", "v3-cap6-morse", "v3-cap6-semaforo"], "notes": "7 esp std + 2 variant (morse, semaforo) = 9 tutor files" },
+        { "num": 7, "id": "v3-cap7", "titolo": "Il mondo continuo: i pin analogici", "page_start": 63, "page_end": 74, "type": "experiment", "esperimenti_count": 5, "tutor_coverage": "full_plus_extras", "tutor_files": ["v3-cap7-esp1", "v3-cap7-esp2", "v3-cap7-esp3", "v3-cap7-esp4", "v3-cap7-esp5", "v3-cap7-esp6", "v3-cap7-esp7", "v3-cap7-esp8", "v3-cap7-mini"], "notes": "Tutor ha 8 esp std + 1 mini = 9 files; volume formalmente ~5 esperimenti espliciti" },
+        { "num": 8, "id": "v3-cap8", "titolo": "PIN ANALOGICI - ARDUINO IMPARA A SENTIRE LE QUANTITA' (Serial)", "page_start": 75, "page_end": 84, "type": "experiment", "esperimenti_count": 4, "tutor_coverage": "full_plus_extras", "tutor_files": ["v3-cap8-esp1", "v3-cap8-esp2", "v3-cap8-esp3", "v3-cap8-esp4", "v3-cap8-esp5", "v3-cap8-serial"], "notes": "Vol3 PDF titolo corrotto: 'LE UANTIT' = 'LE QUANTITA'. ODT più chiaro. 5 esp std + 1 serial = 6 tutor files" },
+        { "num": 9, "id": "v3-cap9", "titolo": "(senza titolo - WIP)", "page_start": 85, "page_end": 92, "type": "wip", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true, "notes": "Indice presente, body non scritto" },
+        { "num": 10, "id": "v3-cap10", "titolo": "(senza titolo - WIP)", "page_start": 93, "page_end": 102, "type": "wip", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true },
+        { "num": 11, "id": "v3-cap11", "titolo": "(senza titolo - WIP)", "page_start": 103, "page_end": 108, "type": "wip", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true },
+        { "num": 12, "id": "v3-cap12", "titolo": "(senza titolo - WIP)", "page_start": 109, "page_end": 114, "type": "wip", "esperimenti_count": 0, "tutor_coverage": "none", "gap_legitimate": true }
+      ],
+      "tutor_extras_not_mapped_to_cap": [
+        { "file": "v3-extra-lcd-hello", "hypothesis": "LCD/display esperimento freestyle" },
+        { "file": "v3-extra-servo-sweep", "hypothesis": "Servo control esperimento freestyle" },
+        { "file": "v3-extra-simon", "hypothesis": "Simon game progetto ampliato" }
+      ]
+    }
+  },
+  "tutor_map": {
+    "v1": { "files_total": 38, "capitoli_covered": [6, 7, 8, 9, 10, 11, 12, 13, 14], "capitoli_not_covered": [1, 2, 3, 4, 5], "coverage_pct": 64, "coverage_legitimate_pct": 100, "notes": "Cap 1-5 sono teoria = gap legittimo" },
+    "v2": { "files_total": 27, "capitoli_covered": [3, 4, 5, 6, 7, 8, 9, 10, 12], "capitoli_not_covered": [1, 2, 11], "coverage_pct": 75, "coverage_legitimate_pct": 92, "notes": "Cap 1-2 teoria OK; Cap 11 diodi gap da verificare" },
+    "v3": { "files_total": 29, "capitoli_covered": [5, 6, 7, 8], "capitoli_not_covered": [1, 2, 3, 4, 9, 10, 11, 12], "capitoli_wip_volume": [9, 10, 11, 12], "coverage_pct": 33, "coverage_legitimate_pct": 100, "notes": "Cap 1-4 teoria OK; Cap 9-12 WIP volume = gap volume-side, non tutor-side. 3 extras fuori cap." }
+  },
+  "q1_migration_targets": {
+    "capitoli_with_experiments": 22,
+    "capitoli_theory_only": 11,
+    "capitoli_wip": 4,
+    "capitoli_project": 2,
+    "capitoli_total_to_create": 38,
+    "priority_tier_1": "22 capitoli con esperimenti + tutor coverage full -> migrazione diretta lesson-paths->capitoli",
+    "priority_tier_2": "11 capitoli teoria -> Capitolo senza esperimenti, solo theory{} section",
+    "priority_tier_3": "4 Vol3 WIP -> placeholder Capitolo da completare con Tea/team",
+    "priority_tier_4": "3 v3-extras -> decisione: merge in cap6/7/8 come variant OR nuovo progetto capstone"
+  }
+}
