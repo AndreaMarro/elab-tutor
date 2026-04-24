@@ -373,12 +373,29 @@ function GatedConsentBanner() {
     return <ConsentBanner />;
 }
 
+/**
+ * Route pattern dove ConsentBanner NON deve mostrarsi (flussi docente/admin,
+ * landing B2B, auth). Feature-map 2026-04-24 §ATTRITO critico: banner
+ * "Quanti anni hai?" blocca docenti su /scuole/pnrr, #dashboard-v2, #lavagna.
+ */
+const CONSENT_SKIP_HASHES = new Set([
+    'lavagna',
+    'tutor',
+    'dashboard',
+    'dashboard-v2',
+    'teacher',
+    'admin',
+    'account',
+    'login',
+    'register',
+]);
+
 function isConsentRouteAllowed() {
     if (typeof window === 'undefined') return true;
     const pRoute = getPathnameRoute();
     if (pRoute === 'scuole') return false;
     const page = getPageFromHash();
-    if (page === 'lavagna' || page === 'tutor') return false;
+    if (page && CONSENT_SKIP_HASHES.has(page)) return false;
     return true;
 }
 

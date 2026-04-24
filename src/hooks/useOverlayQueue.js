@@ -27,13 +27,18 @@ const ONBOARDING_KEY = 'elab_onboarding_seen';
  * True se ConsentBanner deve mostrarsi ORA (route student-facing + consenso
  * pending). Allineato con isConsentRouteAllowed in App.jsx.
  */
+const CONSENT_SKIP_HASHES = new Set([
+  'lavagna', 'tutor', 'dashboard', 'dashboard-v2',
+  'teacher', 'admin', 'account', 'login', 'register',
+]);
+
 export function isConsentBannerPending() {
   if (typeof window === 'undefined') return false;
   try {
     const path = window.location.pathname || '';
     if (path.startsWith('/scuole')) return false;
     const hash = (window.location.hash.replace('#', '').split('?')[0] || '').toLowerCase();
-    if (hash === 'lavagna' || hash === 'tutor') return false;
+    if (CONSENT_SKIP_HASHES.has(hash)) return false;
     const raw = window.localStorage.getItem(CONSENT_STORAGE_KEY);
     if (!raw) return true;
     const parsed = JSON.parse(raw);
