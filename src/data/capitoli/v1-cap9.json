@@ -129,12 +129,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono il potenziometro — una resistenza con la manopola. Il piedino centrale è il cursore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi scoprono il potenziometro — una resistenza con la manopola. Il piedino centrale è il cursore.",
+            "spunto_per_classe": null,
+            "note": [
               "Inizia chiedendo: 'Finora la resistenza era sempre uguale. Come fareste a cambiare la luminosità SENZA cambiare resistore?' Lascia che pensino."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -148,12 +148,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il potenziometro: 3 piedini. Quello centrale è il cursore che regola la resistenza.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione il potenziometro: 3 piedini. Quello centrale è il cursore che regola la resistenza.",
+            "spunto_per_classe": null,
+            "note": [
               "Il potenziometro ha 3 piedini: VCC (entrata), Signal (uscita regolabile), GND (massa). Collegare VCC al +, Signal al resistore, GND al −."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp1]"
@@ -169,23 +169,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira la manopola e osserva: cosa succede? La luminosità cambia gradualmente!",
-            "chiedi_alla_classe": "Secondo voi, cosa c'è dentro il potenziometro che lo fa funzionare come un dimmer?",
-            "attenzione_a": [
+            "step_corrente": "Gira la manopola e osserva: cosa succede? La luminosità cambia gradualmente!",
+            "spunto_per_classe": "Domanda: 'Secondo voi, cosa c'è dentro il potenziometro che lo fa funzionare come un dimmer?'",
+            "note": [
               "Se il LED non cambia, probabilmente sono collegati i due piedini esterni senza il centrale. Il cursore non è nel circuito."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Collegano solo 2 piedini del pot",
-                "fix": "Serve il piedino centrale + uno degli estremi. È come un rubinetto: ha l'entrata, l'uscita, e la manopola che regola."
+                "problema": "Collegano solo 2 piedini del pot",
+                "soluzione_neutra": "Serve il piedino centrale + uno degli estremi. È come un rubinetto: ha l'entrata, l'uscita, e la manopola che regola."
               },
               {
-                "mistake": "Il LED non cambia luminosità girando",
-                "fix": "Probabilmente collegati i due piedini esterni senza il centrale — il cursore non è nel circuito."
+                "problema": "Il LED non cambia luminosità girando",
+                "soluzione_neutra": "Probabilmente collegati i due piedini esterni senza il centrale — il cursore non è nel circuito."
               },
               {
-                "mistake": "Il LED si brucia girando il pot al minimo",
-                "fix": "Serve la resistenza fissa di protezione! Il pot da solo può arrivare a 0. La resistenza fissa è il limitatore di sicurezza."
+                "problema": "Il LED si brucia girando il pot al minimo",
+                "soluzione_neutra": "Serve la resistenza fissa di protezione! Il pot da solo può arrivare a 0. La resistenza fissa è il limitatore di sicurezza."
               }
             ]
           },
@@ -212,12 +212,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e gira la manopola del potenziometro. Il LED cambia luminosità gradualmente!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e gira la manopola del potenziometro. Il LED cambia luminosità gradualmente!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il potenziometro. Chiedi: 'Vedete? Girando la manopola, la resistenza cambia e la luminosità del LED pure!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -235,12 +235,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il potenziometro — una resistenza che puoi regolare con una manopola, come un dimmer!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Dove avete visto dei dimmer nella vita reale?' (volume TV, luminosità dello schermo, volume cuffie)"
+            "step_corrente": "Oggi abbiamo scoperto il potenziometro — una resistenza che puoi regolare con una manopola, come un dimmer!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Dove avete visto dei dimmer nella vita reale?' (volume TV, luminosità dello schermo, volume cuffie)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -386,12 +386,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi scopriamo un trucco: scambiando i pin laterali del potenziometro, la rotazione si inverte! Giri a destra e il LED si spegne!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi scopriamo un trucco: scambiando i pin laterali del potenziometro, la rotazione si inverte! Giri a destra e il LED si spegne!",
+            "spunto_per_classe": null,
+            "note": [
               "Stesso circuito dell'esperimento 1, ma con il positivo collegato al pin GND del potenziometro e il negativo al pin VCC. Il signal resta al centro."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -405,12 +405,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra che l'unica differenza è lo scambio dei fili: il positivo va al pin che prima era il negativo, e viceversa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione che l'unica differenza è lo scambio dei fili: il positivo va al pin che prima era il negativo, e viceversa.",
+            "spunto_per_classe": null,
+            "note": [
               "Prima di collegare, chiedi ai ragazzi di prevedere cosa succederà. È un ottimo esercizio di ragionamento."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp2]"
@@ -426,19 +426,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira la manopola a destra: il LED si spegne! A sinistra: si accende! È il contrario!",
-            "chiedi_alla_classe": "Come è possibile invertire il comportamento cambiando solo DUE fili?",
-            "attenzione_a": [
+            "step_corrente": "Gira la manopola a destra: il LED si spegne! A sinistra: si accende! È il contrario!",
+            "spunto_per_classe": "Domanda: 'Come è possibile invertire il comportamento cambiando solo DUE fili?'",
+            "note": [
               "Se il LED non cambia, verificare che il positivo sia al pin GND e il negativo al pin VCC — è proprio lo scambio che crea l'inversione."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED non cambia luminosità",
-                "fix": "Verifica che siano davvero scambiati i pin laterali. Il signal (centrale) resta collegato al resistore."
+                "problema": "Il LED non cambia luminosità",
+                "soluzione_neutra": "Verifica che siano davvero scambiati i pin laterali. Il signal (centrale) resta collegato al resistore."
               },
               {
-                "mistake": "Non capiscono perché si inverte",
-                "fix": "Il cursore divide il potenziometro in due parti: scambiando i pin, la parte che 'cresce' diventa quella che 'diminuisce'."
+                "problema": "Non capiscono perché si inverte",
+                "soluzione_neutra": "Il cursore divide il potenziometro in due parti: scambiando i pin, la parte che 'cresce' diventa quella che 'diminuisce'."
               }
             ]
           },
@@ -465,12 +465,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e gira la manopola: la rotazione è invertita! Il potenziometro è simmetrico — i pin laterali si possono scambiare.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e gira la manopola: la rotazione è invertita! Il potenziometro è simmetrico — i pin laterali si possono scambiare.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il potenziometro. Spiega che il cursore è come un puntatore che si muove tra i due estremi: scambiando gli estremi, il puntatore va nella direzione opposta."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -488,12 +488,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che il potenziometro è simmetrico — scambiando i pin laterali, la rotazione si inverte!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Dove potrebbe servire un controllo invertito nella vita reale?' (freno = più premi più frena, gas = più premi più accelera)"
+            "step_corrente": "Oggi abbiamo scoperto che il potenziometro è simmetrico — scambiando i pin laterali, la rotazione si inverte!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Dove potrebbe servire un controllo invertito nella vita reale?' (freno = più premi più frena, gas = più premi più accelera)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -639,12 +639,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi cambiamo il LED: da rosso a verde. Si accenderà allo stesso punto della manopola? Scopriamolo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi cambiamo il LED: da rosso a verde. Si accenderà allo stesso punto della manopola? Scopriamolo!",
+            "spunto_per_classe": null,
+            "note": [
               "Stesso circuito dell'esperimento 1 ma con LED verde. Il verde ha bisogno di più corrente per accendersi, quindi la manopola dovrà essere girata di più."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -658,12 +658,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Stesso circuito del dimmer, ma con LED verde. Mostra dove si accende rispetto al rosso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Stesso circuito del dimmer, ma con LED verde. Mostra dove si accende rispetto al rosso.",
+            "spunto_per_classe": null,
+            "note": [
               "Se possibile, tieni montato anche il circuito con il LED rosso per un confronto diretto."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp3]"
@@ -679,19 +679,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira la manopola lentamente: a che punto si accende il LED verde? È prima o dopo rispetto al rosso?",
-            "chiedi_alla_classe": "Perché il LED verde ha bisogno di più corrente per accendersi? Dipende dal colore?",
-            "attenzione_a": [
+            "step_corrente": "Gira la manopola lentamente: a che punto si accende il LED verde? È prima o dopo rispetto al rosso?",
+            "spunto_per_classe": "Domanda: 'Perché il LED verde ha bisogno di più corrente per accendersi? Dipende dal colore?'",
+            "note": [
               "Il verde si accende dopo rispetto al rosso. Se i ragazzi non notano la differenza, suggerisci di girare molto lentamente e segnare il punto di accensione."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non notano la differenza con il rosso",
-                "fix": "Gira molto lentamente e nota il punto esatto in cui il LED si illumina. Confronta con il ricordo del rosso."
+                "problema": "Non notano la differenza con il rosso",
+                "soluzione_neutra": "Gira molto lentamente e nota il punto esatto in cui il LED si illumina. Confronta con il ricordo del rosso."
               },
               {
-                "mistake": "Pensano che il LED sia difettoso",
-                "fix": "Il LED funziona! Ogni colore ha una soglia diversa — il verde ha bisogno di più corrente per accendersi."
+                "problema": "Pensano che il LED sia difettoso",
+                "soluzione_neutra": "Il LED funziona! Ogni colore ha una soglia diversa — il verde ha bisogno di più corrente per accendersi."
               }
             ]
           },
@@ -718,12 +718,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e gira la manopola: il LED verde si accende più tardi del rosso! Ogni colore ha la sua soglia.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e gira la manopola: il LED verde si accende più tardi del rosso! Ogni colore ha la sua soglia.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED e il potenziometro. Spiega: 'Ogni colore di LED ha bisogno di una quantità diversa di corrente per illuminarsi.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -741,12 +741,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che ogni colore di LED ha una soglia diversa — il verde ha bisogno di più corrente del rosso!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E il blu? Sarà come il rosso o come il verde?' (il blu ha la soglia più alta di tutti)."
+            "step_corrente": "Oggi abbiamo scoperto che ogni colore di LED ha una soglia diversa — il verde ha bisogno di più corrente del rosso!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E il blu? Sarà come il rosso o come il verde?' (il blu ha la soglia più alta di tutti)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -911,12 +911,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi un solo potenziometro controlla DUE colori insieme: verde e blu. Il risultato? Il CIANO, un azzurrino brillante!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi un solo potenziometro controlla DUE colori insieme: verde e blu. Il risultato? Il CIANO, un azzurrino brillante!",
+            "spunto_per_classe": null,
+            "note": [
               "Il segnale del potenziometro si divide in due rami, ciascuno con il suo resistore. Un ramo va al canale verde, l'altro al canale blu."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -930,12 +930,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito: dal potenziometro partono due fili — uno verso il resistore del verde, uno verso il resistore del blu.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che il segnale del potenziometro è come un fiume che si divide in due: entrambi i rami ricevono la stessa 'quantità' di corrente."
+            "step_corrente": "Visualizzazione il circuito: dal potenziometro partono due fili — uno verso il resistore del verde, uno verso il resistore del blu.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che il segnale del potenziometro è come un fiume che si divide in due: entrambi i rami ricevono la stessa 'quantità' di corrente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp4]"
@@ -951,19 +951,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira la manopola: il colore ciano (azzurrino) cambia intensità! Cosa succede se giri al massimo? E al minimo?",
-            "chiedi_alla_classe": "Se il potenziometro controlla due canali insieme, come fa il colore a essere sempre lo stesso (ciano)?",
-            "attenzione_a": [
+            "step_corrente": "Gira la manopola: il colore ciano (azzurrino) cambia intensità! Cosa succede se giri al massimo? E al minimo?",
+            "spunto_per_classe": "Domanda: 'Se il potenziometro controlla due canali insieme, come fa il colore a essere sempre lo stesso (ciano)?'",
+            "note": [
               "Se il colore sembra solo verde o solo blu, controllare i collegamenti dei due rami dal segnale del potenziometro."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Solo un colore si accende",
-                "fix": "Controlla che il segnale del potenziometro sia collegato a ENTRAMBI i resistori: uno per il verde e uno per il blu."
+                "problema": "Solo un colore si accende",
+                "soluzione_neutra": "Controllo che il segnale del potenziometro sia collegato a ENTRAMBI i resistori: uno per il verde e uno per il blu."
               },
               {
-                "mistake": "Il colore non è ciano",
-                "fix": "Il ciano è verde + blu. Se vedi viola, probabilmente il filo va al canale rosso invece che al verde."
+                "problema": "Il colore non è ciano",
+                "soluzione_neutra": "Il ciano è verde + blu. Se vedi viola, probabilmente il filo va al canale rosso invece che al verde."
               }
             ]
           },
@@ -990,12 +990,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e gira la manopola: ciano brillante! Verde + Blu = Ciano, come il colore del mare tropicale!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e gira la manopola: ciano brillante! Verde + Blu = Ciano, come il colore del mare tropicale!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il potenziometro e il LED RGB. Spiega: 'Un solo controllo per due colori — il ciano cambia intensità senza cambiare tinta.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1013,12 +1013,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo creato il ciano con un solo potenziometro che controlla due canali. Verde + Blu = Ciano!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se il potenziometro potesse MISCELRE tra due colori? Da un lato rosso, dall'altro blu?' Anticipa l'esperimento 5."
+            "step_corrente": "Oggi abbiamo creato il ciano con un solo potenziometro che controlla due canali. Verde + Blu = Ciano!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se il potenziometro potesse MISCELRE tra due colori? Da un lato rosso, dall'altro blu?' Anticipa l'esperimento 5."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1178,12 +1178,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi il potenziometro diventa un MISCELATORE! Collegando la corrente al pin centrale, i due pin laterali alimentano i due colori.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi il potenziometro diventa un MISCELATORE! Collegando la corrente al pin centrale, i due pin laterali alimentano i due colori.",
+            "spunto_per_classe": null,
+            "note": [
               "Collegamento speciale: la corrente entra dal pin centrale (signal) del potenziometro. I due pin laterali vanno ciascuno a un resistore e poi a un canale del LED RGB."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1197,12 +1197,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il collegamento speciale: il positivo entra dal pin centrale. I due pin laterali vanno ai canali rosso e blu dell'RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione il collegamento speciale: il positivo entra dal pin centrale. I due pin laterali vanno ai canali rosso e blu dell'RGB.",
+            "spunto_per_classe": null,
+            "note": [
               "Questo è un circuito invertito rispetto al solito: il pin centrale riceve la corrente e la 'distribuisce' tra i due estremi. Come un rubinetto a due vie."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp5]"
@@ -1218,19 +1218,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira la manopola lentamente: il colore sfuma dal blu al rosso! Nel mezzo appare il viola!",
-            "chiedi_alla_classe": "Come fa un solo potenziometro a dare più corrente al blu E meno al rosso contemporaneamente?",
-            "attenzione_a": [
+            "step_corrente": "Gira la manopola lentamente: il colore sfuma dal blu al rosso! Nel mezzo appare il viola!",
+            "spunto_per_classe": "Domanda: 'Come fa un solo potenziometro a dare più corrente al blu E meno al rosso contemporaneamente?'",
+            "note": [
               "Se non vedono la transizione, assicurarsi che l'ambiente non sia troppo illuminato. La differenza si vede meglio al buio."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Vedono solo un colore",
-                "fix": "Controlla che i due pin laterali del potenziometro siano collegati ciascuno a un resistore diverso. Il pin centrale riceve il positivo."
+                "problema": "Vedono solo un colore",
+                "soluzione_neutra": "Controllo che i due pin laterali del potenziometro siano collegati ciascuno a un resistore diverso. Il pin centrale riceve il positivo."
               },
               {
-                "mistake": "Il viola non appare nel mezzo",
-                "fix": "A metà rotazione la corrente si divide equamente: rosso e blu insieme fanno viola. Se non appare, gira molto lentamente intorno al centro."
+                "problema": "Il viola non appare nel mezzo",
+                "soluzione_neutra": "A metà rotazione la corrente si divide equamente: rosso e blu insieme fanno viola. Se non appare, gira molto lentamente intorno al centro."
               }
             ]
           },
@@ -1257,12 +1257,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e gira: il colore sfuma! Tutto blu → viola → tutto rosso. Il potenziometro mescola i colori!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e gira: il colore sfuma! Tutto blu → viola → tutto rosso. Il potenziometro mescola i colori!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il potenziometro. Spiega: 'Il cursore divide la corrente: più va verso un lato, più quel colore domina.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1280,12 +1280,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo trasformato il potenziometro in un miscelatore di colori! Da blu a rosso passando per il viola.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se aveste 3 manopole, una per ogni colore? Potreste creare QUALSIASI colore!'"
+            "step_corrente": "Oggi abbiamo trasformato il potenziometro in un miscelatore di colori! Da blu a rosso passando per il viola.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se aveste 3 manopole, una per ogni colore? Potreste creare QUALSIASI colore!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1500,12 +1500,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi costruiamo la lampada RGB completa! Tre manopole controllano tre colori indipendentemente — come i pixel del telefono!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi costruiamo la lampada RGB completa! Tre manopole controllano tre colori indipendentemente — come i pixel del telefono!",
+            "spunto_per_classe": null,
+            "note": [
               "Il circuito è il più grande finora: 3 potenziometri, 3 resistori, 1 LED RGB. Ogni potenziometro controlla un canale indipendente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1519,12 +1519,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra i 3 potenziometri affiancati: pot1 controlla il rosso, pot2 il verde, pot3 il blu. Ogni canale è indipendente.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione i 3 potenziometri affiancati: pot1 controlla il rosso, pot2 il verde, pot3 il blu. Ogni canale è indipendente.",
+            "spunto_per_classe": null,
+            "note": [
               "Il circuito è simmetrico: ogni blocco pot→resistore→canale RGB ha la stessa struttura. Mostra un blocco e spiega che gli altri sono identici."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp6]"
@@ -1540,19 +1540,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira le manopole una alla volta: ogni colore si regola indipendentemente! Poi prova combinazioni per trovare il tuo colore preferito.",
-            "chiedi_alla_classe": "Con i pulsanti si potevano fare 7 colori. Con 3 manopole graduate, quanti colori si possono creare?",
-            "attenzione_a": [
+            "step_corrente": "Gira le manopole una alla volta: ogni colore si regola indipendentemente! Poi prova combinazioni per trovare il tuo colore preferito.",
+            "spunto_per_classe": "Domanda: 'Con i pulsanti si potevano fare 7 colori. Con 3 manopole graduate, quanti colori si possono creare?'",
+            "note": [
               "Se un canale non funziona, controllare il collegamento specifico pot→resistore→canale. I tre blocchi sono indipendenti, quindi il problema è nel singolo blocco."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Un canale non risponde",
-                "fix": "Controlla il collegamento: il segnale del potenziometro deve arrivare al resistore, e il resistore al canale corrispondente del LED RGB."
+                "problema": "Un canale non risponde",
+                "soluzione_neutra": "Controllo il collegamento: il segnale del potenziometro deve arrivare al resistore, e il resistore al canale corrispondente del LED RGB."
               },
               {
-                "mistake": "Tutti i colori si accendono/spengono insieme",
-                "fix": "I potenziometri devono avere alimentazione separata dal bus positivo. Se condividono il segnale, non sono indipendenti."
+                "problema": "Tutti i colori si accendono/spengono insieme",
+                "soluzione_neutra": "I potenziometri devono avere alimentazione separata dal bus positivo. Se condividono il segnale, non sono indipendenti."
               }
             ]
           },
@@ -1579,12 +1579,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e sperimenta! 3 manopole = controllo TOTALE del colore. Come i pixel degli schermi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e sperimenta! 3 manopole = controllo TOTALE del colore. Come i pixel degli schermi!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i 3 potenziometri. Chiedi di creare colori specifici: arancione (tanto rosso, poco verde, zero blu), rosa (rosso + poco blu), ecc."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1603,12 +1603,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo costruito la lampada RGB completa — 3 manopole per creare qualsiasi colore, come gli schermi dei dispositivi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Riesci a creare il bianco? E il giallo? E il rosa?' Sfida creativa con i colori."
+            "step_corrente": "Oggi abbiamo costruito la lampada RGB completa — 3 manopole per creare qualsiasi colore, come gli schermi dei dispositivi!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Riesci a creare il bianco? E il giallo? E il rosa?' Sfida creativa con i colori."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1777,12 +1777,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Sfida! Aggiungete un pulsante prima del potenziometro: il pulsante fa da ON/OFF, il potenziometro regola la luminosità.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Sfida! Aggiungete un pulsante prima del potenziometro: il pulsante fa da ON/OFF, il potenziometro regola la luminosità.",
+            "spunto_per_classe": null,
+            "note": [
               "Il circuito mostra un esempio per il canale rosso. La sfida è pensare come estenderlo a tutti e 3 i canali."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1796,12 +1796,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito esempio: pulsante → potenziometro → resistore → canale rosso dell'RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega la catena di controllo: il pulsante è il primo cancello (ON/OFF), il potenziometro è il secondo (quanto). Due livelli di controllo."
+            "step_corrente": "Visualizzazione il circuito esempio: pulsante → potenziometro → resistore → canale rosso dell'RGB.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione la catena di controllo: il pulsante è il primo cancello (ON/OFF), il potenziometro è il secondo (quanto). Due livelli di controllo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp7]"
@@ -1817,19 +1817,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi il pulsante E gira la manopola: due livelli di controllo! Come fareste a replicare questo per tutti e 3 i canali?",
-            "chiedi_alla_classe": "Se il pulsante è PRIMA del potenziometro, cosa succede? E se lo metti DOPO?",
-            "attenzione_a": [
+            "step_corrente": "Pressione il pulsante E gira la manopola: due livelli di controllo! Come fareste a replicare questo per tutti e 3 i canali?",
+            "spunto_per_classe": "Domanda: 'Se il pulsante è PRIMA del potenziometro, cosa succede? E se lo metti DOPO?'",
+            "note": [
               "La sfida è pensare, non necessariamente costruire tutto. Se qualcuno ci prova, aiutarlo ma lasciare che ragionino prima."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED non si accende premendo",
-                "fix": "Verifica la catena: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED RGB."
+                "problema": "Il LED non si accende premendo",
+                "soluzione_neutra": "Verifica la catena: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED RGB."
               },
               {
-                "mistake": "Non capiscono la catena di controllo",
-                "fix": "Pensa alla catena: il pulsante decide SE accendere, il potenziometro decide QUANTO. Come un rubinetto con un interruttore!"
+                "problema": "Non capiscono la catena di controllo",
+                "soluzione_neutra": "Pensa alla catena: il pulsante decide SE accendere, il potenziometro decide QUANTO. Come un rubinetto con un interruttore!"
               }
             ]
           },
@@ -1856,12 +1856,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: il pulsante è l'ON/OFF, la manopola regola la luminosità. Due livelli di controllo sullo stesso canale!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: il pulsante è l'ON/OFF, la manopola regola la luminosità. Due livelli di controllo sullo stesso canale!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia pulsante e potenziometro. Chiedi: 'Cosa succede se giri la manopola al massimo ma non premi il pulsante?' (niente!)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1879,12 +1879,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi avete combinato pulsante e manopola: due livelli di controllo! Riuscireste a fare lo stesso per 3 canali?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi avete combinato pulsante e manopola: due livelli di controllo! Riuscireste a fare lo stesso per 3 canali?",
+            "spunto_per_classe": null,
+            "note": [
               "Lascia la sfida aperta: 'Per la prossima volta, provate a disegnare su carta il circuito completo con 3 pulsanti e 3 manopole!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -2064,12 +2064,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Sfida! Due potenziometri controllano rosso e blu indipendentemente. Combinazione degli esperimenti 5 e 6!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Sfida! Due potenziometri controllano rosso e blu indipendentemente. Combinazione degli esperimenti 5 e 6!",
+            "spunto_per_classe": null,
+            "note": [
               "Ogni potenziometro ha il suo resistore e il suo canale: pot1→r1→rosso, pot2→r2→blu. La sfida è aggiungere un terzo pot per il verde."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -2083,12 +2083,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito: due blocchi pot→resistore, uno collegato al canale rosso, l'altro al blu dell'RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che combinare circuiti è il cuore dell'elettronica: si prendono pezzi che funzionano e si uniscono."
+            "step_corrente": "Visualizzazione il circuito: due blocchi pot→resistore, uno collegato al canale rosso, l'altro al blu dell'RGB.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che combinare circuiti è il cuore dell'elettronica: si prendono pezzi che funzionano e si uniscono."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp8]"
@@ -2104,19 +2104,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira le due manopole: una controlla il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
-            "chiedi_alla_classe": "Come fareste ad aggiungere il canale verde a questo circuito? Di cosa avete bisogno?",
-            "attenzione_a": [
+            "step_corrente": "Gira le due manopole: una controlla il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
+            "spunto_per_classe": "Domanda: 'Come fareste ad aggiungere il canale verde a questo circuito? Di cosa avete bisogno?'",
+            "note": [
               "Il canale verde resta spento: la sfida è progettare dove aggiungere il terzo potenziometro. Chiedi di disegnare prima su carta."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Un canale non risponde",
-                "fix": "Controlla il collegamento specifico: il segnale del potenziometro deve arrivare al resistore, e dal resistore al canale corrispondente."
+                "problema": "Un canale non risponde",
+                "soluzione_neutra": "Controllo il collegamento specifico: il segnale del potenziometro deve arrivare al resistore, e dal resistore al canale corrispondente."
               },
               {
-                "mistake": "Non sanno dove aggiungere il terzo canale",
-                "fix": "Serve un terzo blocco identico: potenziometro→resistore→canale verde. Collegalo allo stesso LED RGB e alla stessa batteria."
+                "problema": "Non sanno dove aggiungere il terzo canale",
+                "soluzione_neutra": "Serve un terzo blocco identico: potenziometro→resistore→canale verde. Collegalo allo stesso LED RGB e alla stessa batteria."
               }
             ]
           },
@@ -2143,12 +2143,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e sperimenta: rosso e blu insieme fanno viola! Ma il verde è spento — la sfida è aggiungerlo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e sperimenta: rosso e blu insieme fanno viola! Ma il verde è spento — la sfida è aggiungerlo!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i due potenziometri. Spiega che combinare circuiti che funzionano è più facile che costruire tutto da zero."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -2166,12 +2166,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi avete combinato due circuiti precedenti in uno solo! Questa è la vera sfida dell'elettronica: combinare pezzi che funzionano.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Quanti potenziometri servirebbero per una lampada completa?' (3) 'E se aggiungessimo anche i pulsanti?' (6 componenti di controllo)"
+            "step_corrente": "Oggi avete combinato due circuiti precedenti in uno solo! Questa è la vera sfida dell'elettronica: combinare pezzi che funzionano.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Quanti potenziometri servirebbero per una lampada completa?' (3) 'E se aggiungessimo anche i pulsanti?' (6 componenti di controllo)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -2330,12 +2330,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Sfida finale del capitolo! Pulsante → Manopola → Resistore → LED. Una catena di controllo completa!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Sfida finale del capitolo! Pulsante → Manopola → Resistore → LED. Una catena di controllo completa!",
+            "spunto_per_classe": null,
+            "note": [
               "Il pulsante è il primo stadio (ON/OFF), il potenziometro è il secondo (regolazione), il resistore è la protezione. Tre ruoli diversi in catena."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -2349,12 +2349,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra la catena: dal positivo si passa prima dal pulsante, poi dal potenziometro, poi dal resistore, poi dal LED.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega ogni componente come un 'posto di controllo' nella catena: il pulsante è il cancello, la manopola è il rubinetto, il resistore è il limitatore."
+            "step_corrente": "Visualizzazione la catena: dal positivo si passa prima dal pulsante, poi dal potenziometro, poi dal resistore, poi dal LED.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione ogni componente come un 'posto di controllo' nella catena: il pulsante è il cancello, la manopola è il rubinetto, il resistore è il limitatore."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap9-esp9]"
@@ -2370,19 +2370,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi il pulsante E gira la manopola. Cosa succede se giri al massimo ma NON premi? E se premi ma la manopola è al minimo?",
-            "chiedi_alla_classe": "Cosa cambia se metti il pulsante DOPO la manopola invece che prima? Il circuito funziona lo stesso?",
-            "attenzione_a": [
+            "step_corrente": "Pressione il pulsante E gira la manopola. Cosa succede se giri al massimo ma NON premi? E se premi ma la manopola è al minimo?",
+            "spunto_per_classe": "Domanda: 'Cosa cambia se metti il pulsante DOPO la manopola invece che prima? Il circuito funziona lo stesso?'",
+            "note": [
               "Se non premono il pulsante, nessuna corrente passa — la manopola non fa niente. Questo è il concetto chiave della catena di controllo."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED non si accende",
-                "fix": "Controlla la catena completa: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED."
+                "problema": "Il LED non si accende",
+                "soluzione_neutra": "Controllo la catena completa: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED."
               },
               {
-                "mistake": "Confondono l'ordine dei componenti",
-                "fix": "L'ordine è: pulsante (ON/OFF) → manopola (regolazione) → resistore (protezione) → LED. Come una catena di montaggio!"
+                "problema": "Confondono l'ordine dei componenti",
+                "soluzione_neutra": "L'ordine è: pulsante (ON/OFF) → manopola (regolazione) → resistore (protezione) → LED. Come una catena di montaggio!"
               }
             ]
           },
@@ -2409,12 +2409,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: pulsante = ON/OFF, manopola = luminosità, resistore = protezione. Ogni componente ha un ruolo preciso!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: pulsante = ON/OFF, manopola = luminosità, resistore = protezione. Ogni componente ha un ruolo preciso!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia ogni componente uno alla volta. Chiedi: 'Quale toglieresti se potessi toglierne solo uno?' (il resistore NO — il LED si brucia!)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -2433,12 +2433,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Sfida completata! Avete costruito una catena di controllo completa. Ogni componente ha un ruolo diverso e importante.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Sfida completata! Avete costruito una catena di controllo completa. Ogni componente ha un ruolo diverso e importante.",
+            "spunto_per_classe": null,
+            "note": [
               "Riassumi il capitolo: 'Dal semplice dimmer alla catena di controllo — i componenti si combinano come i LEGO!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

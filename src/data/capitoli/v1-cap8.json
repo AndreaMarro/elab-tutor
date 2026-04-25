@@ -138,12 +138,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono il pulsante — un componente che apre e chiude il circuito. Il LED si accende solo quando premi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi scoprono il pulsante — un componente che apre e chiude il circuito. Il LED si accende solo quando premi!",
+            "spunto_per_classe": null,
+            "note": [
               "Il pulsante ha 4 piedini — i due sulla stessa fila sono collegati internamente. Va a cavallo della scanalatura centrale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -157,12 +157,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito con il pulsante. Il LED è collegato al resistore, e il pulsante chiude il circuito verso il negativo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra prima il circuito SENZA pulsante (LED sempre acceso). Poi aggiungi il pulsante: 'Cosa pensate che succeda?'"
+            "step_corrente": "Visualizzazione il circuito con il pulsante. Il LED è collegato al resistore, e il pulsante chiude il circuito verso il negativo.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione prima il circuito SENZA pulsante (LED sempre acceso). Poi aggiungi il pulsante: 'Cosa pensate che succeda?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap8-esp1]"
@@ -178,23 +178,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Cosa succede quando premi? E quando rilasci? Perché?",
-            "chiedi_alla_classe": "Quando premi il pulsante, il circuito è aperto o chiuso? E quando lo rilasci?",
-            "attenzione_a": [
+            "step_corrente": "Cosa succede quando premi? E quando rilasci? Perché?",
+            "spunto_per_classe": "Domanda: 'Quando premi il pulsante, il circuito è aperto o chiuso? E quando lo rilasci?'",
+            "note": [
               "Se il LED resta sempre acceso o sempre spento, il pulsante potrebbe essere girato di 90 gradi. Fai ruotare e riprovare."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pulsante sulle stesse file della breadboard",
-                "fix": "Il pulsante deve stare a cavallo della scanalatura centrale, come un ponte che collega due sponde."
+                "problema": "Pulsante sulle stesse file della breadboard",
+                "soluzione_neutra": "Il pulsante deve stare a cavallo della scanalatura centrale, come un ponte che collega due sponde."
               },
               {
-                "mistake": "Collegano i piedini sbagliati",
-                "fix": "I piedini opposti (diagonali) sono quelli che si collegano premendo. Prova a ruotarlo di 90 gradi."
+                "problema": "Collegano i piedini sbagliati",
+                "soluzione_neutra": "I piedini opposti (diagonali) sono quelli che si collegano premendo. Prova a ruotarlo di 90 gradi."
               },
               {
-                "mistake": "LED resta sempre acceso o sempre spento",
-                "fix": "Controlla se il pulsante è inserito nel verso giusto — prova a ruotarlo di 90 gradi."
+                "problema": "LED resta sempre acceso o sempre spento",
+                "soluzione_neutra": "Controllo se il pulsante è inserito nel verso giusto — prova a ruotarlo di 90 gradi."
               }
             ]
           },
@@ -221,12 +221,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi premi il pulsante: il LED si accende! Rilascia: si spegne. Circuito aperto e chiuso!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi premi il pulsante: il LED si accende! Rilascia: si spegne. Circuito aperto e chiuso!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il pulsante e il LED. Chiedi: 'Vedete? Premendo, il circuito si chiude e la corrente passa.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -244,12 +244,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il pulsante — un componente che apre e chiude il circuito.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Cosa fareste se voleste che il LED resti acceso senza tenere premuto?' Anticipa il concetto di interruttore che resta in posizione."
+            "step_corrente": "Oggi abbiamo scoperto il pulsante — un componente che apre e chiude il circuito.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Cosa fareste se voleste che il LED resti acceso senza tenere premuto?' Anticipa il concetto di interruttore che resta in posizione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -404,12 +404,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Stessa configurazione dell'esperimento 1, ma con LED verde e resistore da 220Ω.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Cosa cambierà usando un resistore più piccolo e un LED di colore diverso?'"
+            "step_corrente": "Stessa configurazione dell'esperimento 1, ma con LED verde e resistore da 220Ω.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Cosa cambierà usando un resistore più piccolo e un LED di colore diverso?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -423,12 +423,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito è identico a prima — cambia solo il LED (verde) e il resistore (220Ω).",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il circuito è identico a prima — cambia solo il LED (verde) e il resistore (220Ω).",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia che l'architettura del circuito è la STESSA. Solo i componenti cambiano. Il pulsante funziona allo stesso modo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap8-esp2]"
@@ -444,19 +444,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Confronta con l'esperimento 1: LED blu con 470Ω vs LED verde con 220Ω.",
-            "chiedi_alla_classe": "Il LED verde con un resistore più piccolo sarà più luminoso o meno luminoso del LED blu di prima?",
-            "attenzione_a": [
-              "Chiedi: 'Il LED verde con 220Ω sarà più luminoso o meno luminoso del blu con 470Ω?' Ricorda il capitolo 6!"
+            "step_corrente": "Confronta con l'esperimento 1: LED blu con 470Ω vs LED verde con 220Ω.",
+            "spunto_per_classe": "Domanda: 'Il LED verde con un resistore più piccolo sarà più luminoso o meno luminoso del LED blu di prima?'",
+            "note": [
+              "Domanda: 'Il LED verde con 220Ω sarà più luminoso o meno luminoso del blu con 470Ω?' Ricorda il capitolo 6!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non ricorda la relazione resistenza/luminosità",
-                "fix": "Ricorda il capitolo 6: resistore più piccolo = più corrente = LED più luminoso!"
+                "problema": "Non ricorda la relazione resistenza/luminosità",
+                "soluzione_neutra": "Ricorda il capitolo 6: resistore più piccolo = più corrente = LED più luminoso!"
               },
               {
-                "mistake": "Il pulsante non sembra funzionare",
-                "fix": "Controlla che il pulsante sia posizionato a cavallo della scanalatura centrale della breadboard. I pin vanno uno sopra e uno sotto la scanalatura. Se sono sulla stessa metà, il pulsante è sempre collegato!"
+                "problema": "Il pulsante non sembra funzionare",
+                "soluzione_neutra": "Controllo che il pulsante sia posizionato a cavallo della scanalatura centrale della breadboard. I pin vanno uno sopra e uno sotto la scanalatura. Se sono sulla stessa metà, il pulsante è sempre collegato!"
               }
             ]
           },
@@ -483,12 +483,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi il pulsante: LED verde più luminoso del blu! Il resistore 220Ω fa passare più corrente.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione il pulsante: LED verde più luminoso del blu! Il resistore 220Ω fa passare più corrente.",
+            "spunto_per_classe": null,
+            "note": [
               "Momento di connessione tra capitoli: il concetto di resistenza dal cap 6 si applica anche qui con il pulsante."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -505,12 +505,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Lo stesso circuito con componenti diversi dà risultati diversi. La regola della resistenza funziona sempre!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se potessimo cambiare la luminosità SENZA cambiare il resistore? Con una manopola?' Anticipazione per il prossimo capitolo."
+            "step_corrente": "Lo stesso circuito con componenti diversi dà risultati diversi. La regola della resistenza funziona sempre!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se potessimo cambiare la luminosità SENZA cambiare il resistore? Con una manopola?' Anticipazione per il prossimo capitolo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -678,12 +678,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi combinano il pulsante con il LED RGB! Premendo il pulsante si accendono rosso e blu insieme — e il colore che esce è il VIOLA!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi combinano il pulsante con il LED RGB! Premendo il pulsante si accendono rosso e blu insieme — e il colore che esce è il VIOLA!",
+            "spunto_per_classe": null,
+            "note": [
               "Due resistori separati proteggono i canali rosso e blu. Il catodo comune del LED RGB è collegato al pulsante: premendo si chiude il circuito per entrambi i canali."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -697,12 +697,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito: due resistori portano corrente ai canali rosso e blu del LED RGB. Il catodo comune è collegato al pulsante.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che i due resistori sono come due strade separate che portano corrente a due canali diversi del LED RGB. Il pulsante è il 'cancello' comune."
+            "step_corrente": "Visualizzazione il circuito: due resistori portano corrente ai canali rosso e blu del LED RGB. Il catodo comune è collegato al pulsante.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che i due resistori sono come due strade separate che portano corrente a due canali diversi del LED RGB. Il pulsante è il 'cancello' comune."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap8-esp3]"
@@ -718,23 +718,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi il pulsante: che colore vedete? Perché non è né rosso né blu ma un colore nuovo?",
-            "chiedi_alla_classe": "Con un solo pulsante riusciamo a controllare DUE colori contemporaneamente. Come è possibile?",
-            "attenzione_a": [
+            "step_corrente": "Pressione il pulsante: che colore vedete? Perché non è né rosso né blu ma un colore nuovo?",
+            "spunto_per_classe": "Domanda: 'Con un solo pulsante riusciamo a controllare DUE colori contemporaneamente. Come è possibile?'",
+            "note": [
               "Se vedono solo rosso o solo blu, uno dei due resistori potrebbe non essere collegato. Controllare entrambi i rami."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Vedono solo un colore (rosso o blu)",
-                "fix": "Controlla che entrambi i resistori siano collegati: uno al canale rosso e uno al canale blu del LED RGB."
+                "problema": "Vedono solo un colore (rosso o blu)",
+                "soluzione_neutra": "Controllo che entrambi i resistori siano collegati: uno al canale rosso e uno al canale blu del LED RGB."
               },
               {
-                "mistake": "Il LED RGB non si accende",
-                "fix": "Verifica che il catodo comune sia collegato al pulsante e che il pulsante sia collegato al negativo della batteria."
+                "problema": "Il LED RGB non si accende",
+                "soluzione_neutra": "Verifica che il catodo comune sia collegato al pulsante e che il pulsante sia collegato al negativo della batteria."
               },
               {
-                "mistake": "Confondono i piedini del LED RGB",
-                "fix": "Il piedino più lungo è il catodo comune. Rosso, catodo, verde, blu — in quest'ordine."
+                "problema": "Confondono i piedini del LED RGB",
+                "soluzione_neutra": "Il piedino più lungo è il catodo comune. Rosso, catodo, verde, blu — in quest'ordine."
               }
             ]
           },
@@ -761,12 +761,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e poi premi il pulsante: il LED diventa VIOLA! Rosso + Blu = Viola nella luce!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e poi premi il pulsante: il LED diventa VIOLA! Rosso + Blu = Viola nella luce!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED RGB e il pulsante. Spiega: 'I colori della luce si mescolano in modo diverso dai colori a tempera!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -784,12 +784,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto la sintesi additiva: mescolando rosso e blu nella luce si ottiene il VIOLA!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Secondo voi, cosa succede se accendiamo tutti e tre i colori insieme?' (bianco!) — anticipa l'esperimento 4."
+            "step_corrente": "Oggi abbiamo scoperto la sintesi additiva: mescolando rosso e blu nella luce si ottiene il VIOLA!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Secondo voi, cosa succede se accendiamo tutti e tre i colori insieme?' (bianco!) — anticipa l'esperimento 4."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -966,12 +966,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi ogni colore ha il suo pulsante! Un pulsante per il rosso, uno per il verde, uno per il blu. Premendo combinazioni si creano 7 colori!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi ogni colore ha il suo pulsante! Un pulsante per il rosso, uno per il verde, uno per il blu. Premendo combinazioni si creano 7 colori!",
+            "spunto_per_classe": null,
+            "note": [
               "Tre pulsanti separati, tre resistori, un LED RGB. Ogni pulsante controlla un canale indipendente. Il catodo comune va direttamente al negativo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -985,12 +985,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra i 3 pulsanti separati: ognuno è collegato a un resistore che va a un canale diverso del LED RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione i 3 pulsanti separati: ognuno è collegato a un resistore che va a un canale diverso del LED RGB.",
+            "spunto_per_classe": null,
+            "note": [
               "Il circuito è più grande ma il principio è semplice: 3 circuiti indipendenti che condividono lo stesso LED RGB e la stessa batteria."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap8-esp4]"
@@ -1006,23 +1006,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Prova ogni pulsante singolarmente. Poi prova a premerne due insieme. E tutti e tre?",
-            "chiedi_alla_classe": "Con 3 pulsanti che possono essere accesi o spenti, quante combinazioni diverse esistono?",
-            "attenzione_a": [
+            "step_corrente": "Prova ogni pulsante singolarmente. Poi prova a premerne due insieme. E tutti e tre?",
+            "spunto_per_classe": "Domanda: 'Con 3 pulsanti che possono essere accesi o spenti, quante combinazioni diverse esistono?'",
+            "note": [
               "Se un colore non si accende, controllare il collegamento tra quel pulsante e il suo resistore, e tra il resistore e il canale RGB corrispondente."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Un colore non si accende",
-                "fix": "Controllare il collegamento: pulsante → resistore → canale RGB. Ogni percorso deve essere completo."
+                "problema": "Un colore non si accende",
+                "soluzione_neutra": "Controllare il collegamento: pulsante → resistore → canale RGB. Ogni percorso deve essere completo."
               },
               {
-                "mistake": "I colori non si mescolano come previsto",
-                "fix": "Nella luce rosso + verde = giallo, non marrone! La sintesi additiva è diversa dai colori a tempera."
+                "problema": "I colori non si mescolano come previsto",
+                "soluzione_neutra": "Nella luce rosso + verde = giallo, non marrone! La sintesi additiva è diversa dai colori a tempera."
               },
               {
-                "mistake": "Confusione su quale pulsante controlla quale colore",
-                "fix": "Segui i fili: ogni pulsante ha un filo colorato che va al suo resistore e poi al canale corrispondente del LED RGB."
+                "problema": "Confusione su quale pulsante controlla quale colore",
+                "soluzione_neutra": "Segui i fili: ogni pulsante ha un filo colorato che va al suo resistore e poi al canale corrispondente del LED RGB."
               }
             ]
           },
@@ -1049,12 +1049,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e prova le combinazioni: R+G=giallo, R+B=viola, G+B=ciano, R+G+B=bianco!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e prova le combinazioni: R+G=giallo, R+B=viola, G+B=ciano, R+G+B=bianco!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i pulsanti uno alla volta. Chiedi ai ragazzi di prevedere il colore PRIMA di premere la combinazione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1073,12 +1073,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il controllo indipendente: ogni pulsante controlla un colore, e le combinazioni creano 7 colori diversi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'I pulsanti sono acceso/spento. E se poteste regolare QUANTO è luminoso ogni colore?' Anticipa il prossimo capitolo."
+            "step_corrente": "Oggi abbiamo scoperto il controllo indipendente: ogni pulsante controlla un colore, e le combinazioni creano 7 colori diversi!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'I pulsanti sono acceso/spento. E se poteste regolare QUANTO è luminoso ogni colore?' Anticipa il prossimo capitolo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1265,12 +1265,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono che cambiando i resistori cambiano le sfumature! Ogni canale avrà un resistore di valore diverso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi scoprono che cambiando i resistori cambiano le sfumature! Ogni canale avrà un resistore di valore diverso.",
+            "spunto_per_classe": null,
+            "note": [
               "Resistore piccolo = più corrente = colore più luminoso. Resistore grande = meno corrente = colore più fioco. Tre valori diversi creano sfumature uniche."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1284,12 +1284,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Stesso circuito dell'esperimento 4, ma con resistori di valori diversi: 220Ω (rosso), 470Ω (verde), 1kΩ (blu).",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra i 3 resistori prima di montare il circuito. Chiedi: 'Quale colore sarà il più luminoso? Quale il più fioco?'"
+            "step_corrente": "Stesso circuito dell'esperimento 4, ma con resistori di valori diversi: 220Ω (rosso), 470Ω (verde), 1kΩ (blu).",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione i 3 resistori prima di montare il circuito. Chiedi: 'Quale colore sarà il più luminoso? Quale il più fioco?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap8-esp5]"
@@ -1305,23 +1305,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi ogni pulsante singolarmente: noti la differenza di luminosità? Poi prova le combinazioni!",
-            "chiedi_alla_classe": "Se il rosso è più luminoso del blu, come cambiano i colori misti? Il viola sarà più rosso o più blu?",
-            "attenzione_a": [
+            "step_corrente": "Pressione ogni pulsante singolarmente: noti la differenza di luminosità? Poi prova le combinazioni!",
+            "spunto_per_classe": "Domanda: 'Se il rosso è più luminoso del blu, come cambiano i colori misti? Il viola sarà più rosso o più blu?'",
+            "note": [
               "Se i ragazzi non notano la differenza, chiedi di confrontare il rosso (luminoso) con il blu (fioco) uno dopo l'altro."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non notano la differenza di luminosità",
-                "fix": "Premi prima solo il rosso, poi solo il blu. Confronta: il rosso è molto più luminoso perché ha il resistore più piccolo."
+                "problema": "Non notano la differenza di luminosità",
+                "soluzione_neutra": "Pressione prima solo il rosso, poi solo il blu. Confronta: il rosso è molto più luminoso perché ha il resistore più piccolo."
               },
               {
-                "mistake": "Pensano che il resistore cambi il colore",
-                "fix": "Il resistore non cambia il colore, cambia la luminosità! Un resistore più piccolo lascia passare più corrente."
+                "problema": "Pensano che il resistore cambi il colore",
+                "soluzione_neutra": "Il resistore non cambia il colore, cambia la luminosità! Un resistore più piccolo lascia passare più corrente."
               },
               {
-                "mistake": "Confondono i valori dei resistori",
-                "fix": "Ricorda: il numero più piccolo = più corrente = più luminoso. 220 < 470 < 1000."
+                "problema": "Confondono i valori dei resistori",
+                "soluzione_neutra": "Ricorda: il numero più piccolo = più corrente = più luminoso. 220 < 470 < 1000."
               }
             ]
           },
@@ -1348,12 +1348,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e prova le combinazioni: il rosso domina perché il suo resistore è il più piccolo. Le sfumature sono diverse dall'esperimento 4!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e prova le combinazioni: il rosso domina perché il suo resistore è il più piccolo. Le sfumature sono diverse dall'esperimento 4!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i resistori e chiedi di confrontare R+B di questo esperimento con R+B dell'esperimento 3: il viola è diverso, più rosso!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1372,12 +1372,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che cambiando i resistori cambiano le sfumature: un resistore più piccolo rende il colore più luminoso!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se potessi cambiare la luminosità GRADUALMENTE, senza cambiare resistore?' Anticipa il prossimo capitolo."
+            "step_corrente": "Oggi abbiamo scoperto che cambiando i resistori cambiano le sfumature: un resistore più piccolo rende il colore più luminoso!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se potessi cambiare la luminosità GRADUALMENTE, senza cambiare resistore?' Anticipa il prossimo capitolo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

@@ -80,12 +80,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi niente breadboard! Usiamo la PLASTILINA per costruire circuiti. L'elettropongo conduce la corrente come un filo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Distribuisci l'elettropongo. Fai toccare e plasmare — i ragazzi devono sentire che è plastilina normale. La sorpresa è che conduce corrente!"
+            "step_corrente": "Oggi niente breadboard! Usiamo la PLASTILINA per costruire circuiti. L'elettropongo conduce la corrente come un filo!",
+            "spunto_per_classe": null,
+            "note": [
+              "Distribuzione l'elettropongo. Fai toccare e plasmare — i ragazzi devono sentire che è plastilina normale. La sorpresa è che conduce corrente!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -99,12 +99,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Forma due strisce separate di elettropongo. Metti un piedino del LED in ogni striscia. Collega la batteria alle strisce.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Forma due strisce separate di elettropongo. Metti un piedino del LED in ogni striscia. Collega la batteria alle strisce.",
+            "spunto_per_classe": null,
+            "note": [
               "IMPORTANTE: le due strisce NON devono toccarsi! Altrimenti la corrente salta il LED e fa un cortocircuito. Spiega con un disegno alla lavagna."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap13-esp1]"
@@ -120,19 +120,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il LED si accende con la plastilina! Come fa la corrente a passare attraverso qualcosa di morbido?",
-            "chiedi_alla_classe": "La plastilina normale non conduce. Cosa c'è di speciale nell'elettropongo? Perché la corrente riesce a passare?",
-            "attenzione_a": [
-              "Spiega che l'elettropongo contiene materiali conduttivi (come il sale). La corrente trova una strada attraverso questi materiali. Non tutta la plastilina conduce — solo quella speciale!"
+            "step_corrente": "Il LED si accende con la plastilina! Come fa la corrente a passare attraverso qualcosa di morbido?",
+            "spunto_per_classe": "Domanda: 'La plastilina normale non conduce. Cosa c'è di speciale nell'elettropongo? Perché la corrente riesce a passare?'",
+            "note": [
+              "Spiegazione che l'elettropongo contiene materiali conduttivi (come il sale). La corrente trova una strada attraverso questi materiali. Non tutta la plastilina conduce — solo quella speciale!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Le strisce di elettropongo si toccano e il LED non si accende",
-                "fix": "Le due strisce devono restare SEPARATE! Se si toccano, la corrente prende una scorciatoia e salta il LED. Separa bene le due zone!"
+                "problema": "Le strisce di elettropongo si toccano e il LED non si accende",
+                "soluzione_neutra": "Le due strisce devono restare SEPARATE! Se si toccano, la corrente prende una scorciatoia e salta il LED. Separa bene le due zone!"
               },
               {
-                "mistake": "Pensano che tutta la plastilina conduca",
-                "fix": "Solo l'elettropongo conduce! La plastilina normale no. L'elettropongo ha materiali speciali dentro che lasciano passare la corrente."
+                "problema": "Pensano che tutta la plastilina conduca",
+                "soluzione_neutra": "Solo l'elettropongo conduce! La plastilina normale no. L'elettropongo ha materiali speciali dentro che lasciano passare la corrente."
               }
             ]
           },
@@ -159,12 +159,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: il LED si accende! L'elettropongo conduce la corrente dalla batteria al LED e ritorno. Niente fili, niente breadboard!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: il LED si accende! L'elettropongo conduce la corrente dalla batteria al LED e ritorno. Niente fili, niente breadboard!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED. Spiega: 'La corrente parte dal + della batteria, attraversa la striscia, passa nel LED, attraversa l'altra striscia e torna al −. Circuito chiuso!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -181,12 +181,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che la corrente può passare attraverso la plastilina! L'elettropongo è un materiale conduttivo che possiamo modellare con le mani.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi abbiamo scoperto che la corrente può passare attraverso la plastilina! L'elettropongo è un materiale conduttivo che possiamo modellare con le mani.",
+            "spunto_per_classe": null,
+            "note": [
               "Anticipa il prossimo esperimento: 'E se usassimo l'elettropongo per creare FORME artistiche con tanti LED?' La creatività incontra l'elettronica!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -303,12 +303,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi creiamo ARTE con l'elettronica! Usate l'elettropongo per fare forme creative e accendere più LED.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Distribuisci abbastanza elettropongo per forme grandi. Ricorda la regola d'oro: zona positiva e zona negativa devono restare SEPARATE. Per il resto, libertà creativa totale!"
+            "step_corrente": "Oggi creiamo ARTE con l'elettronica! Usate l'elettropongo per fare forme creative e accendere più LED.",
+            "spunto_per_classe": null,
+            "note": [
+              "Distribuzione abbastanza elettropongo per forme grandi. Ricorda la regola d'oro: zona positiva e zona negativa devono restare SEPARATE. Per il resto, libertà creativa totale!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -322,12 +322,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Crea una zona positiva e una zona negativa con l'elettropongo. Inserisci i LED con l'anodo nella zona + e il catodo nella zona −.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra prima un esempio semplice: due strisce parallele con 3 LED in mezzo. Poi lascia che i ragazzi inventino le proprie forme. L'unica regola: + e − separati!"
+            "step_corrente": "Crea una zona positiva e una zona negativa con l'elettropongo. Inserisci i LED con l'anodo nella zona + e il catodo nella zona −.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione prima un esempio semplice: due strisce parallele con 3 LED in mezzo. Poi lascia che i ragazzi inventino le proprie forme. L'unica regola: + e − separati!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap13-esp2]"
@@ -343,19 +343,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Tre LED nella stessa plastilina! La corrente si divide e passa attraverso tutti. Cosa succede se le zone + e − si toccano?",
-            "chiedi_alla_classe": "Se aggiungi un quarto LED, gli altri diventano più deboli? La corrente basta per tutti?",
-            "attenzione_a": [
+            "step_corrente": "Tre LED nella stessa plastilina! La corrente si divide e passa attraverso tutti. Cosa succede se le zone + e − si toccano?",
+            "spunto_per_classe": "Domanda: 'Se aggiungi un quarto LED, gli altri diventano più deboli? La corrente basta per tutti?'",
+            "note": [
               "Se qualcuno fa toccare le zone: la corrente prende la scorciatoia e i LED si spengono! Usa questo come momento di apprendimento, non come errore."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Le zone + e − si toccano e i LED si spengono",
-                "fix": "La corrente ha preso una scorciatoia! È come un fiume: se apri un canale diretto, l'acqua non passa più dai mulini (LED). Separa le zone!"
+                "problema": "Le zone + e − si toccano e i LED si spengono",
+                "soluzione_neutra": "La corrente ha preso una scorciatoia! È come un fiume: se apri un canale diretto, l'acqua non passa più dai mulini (LED). Separa le zone!"
               },
               {
-                "mistake": "Un LED è al contrario e non si accende",
-                "fix": "Controlla la polarità: il piedino lungo (anodo) va nella zona positiva, il corto (catodo) nella negativa. Gira il LED!"
+                "problema": "Un LED è al contrario e non si accende",
+                "soluzione_neutra": "Controllo la polarità: il piedino lungo (anodo) va nella zona positiva, il corto (catodo) nella negativa. Gira il LED!"
               }
             ]
           },
@@ -382,12 +382,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: tutti i LED si accendono! La corrente della batteria si distribuisce tra tutti i LED attraverso la plastilina.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: tutti i LED si accendono! La corrente della batteria si distribuisce tra tutti i LED attraverso la plastilina.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i LED. Fai osservare: 'Ogni LED ha il suo percorso tra zona + e zona −. La corrente trova la strada da sola!' Celebra le creazioni artistiche dei ragazzi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -406,12 +406,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete creato circuiti artistici con la plastilina! L'elettronica può essere creativa — non solo fili e breadboard!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete creato circuiti artistici con la plastilina! L'elettronica può essere creativa — non solo fili e breadboard!",
+            "spunto_per_classe": null,
+            "note": [
               "Se possibile, esponi le creazioni come una 'galleria d'arte elettronica'. Poi anticipa il gran finale: 'Il prossimo è il PROGETTO FINALE: costruiamo un ROBOT!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

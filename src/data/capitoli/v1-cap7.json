@@ -118,12 +118,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono il LED RGB — un componente con 3 LED dentro! Il LED RGB ha 4 piedini: il più lungo è il catodo (GND), gli altri 3 sono rosso, verde, blu.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra il LED RGB reale alla classe. Chiedi: 'Quanti piedini ha? Perché 4 e non 2 come il LED normale?' Lascia che osservino e facciano ipotesi prima di spiegare."
+            "step_corrente": "Oggi i ragazzi scoprono il LED RGB — un componente con 3 LED dentro! Il LED RGB ha 4 piedini: il più lungo è il catodo (GND), gli altri 3 sono rosso, verde, blu.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il LED RGB reale alla classe. Chiedi: 'Quanti piedini ha? Perché 4 e non 2 come il LED normale?' Lascia che osservino e facciano ipotesi prima di spiegare."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -137,12 +137,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito sulla LIM. Solo il canale rosso è collegato — gli altri 2 piedini (verde, blu) restano liberi.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Usa il Passo Passo. Quando appare il LED RGB, fai notare i 4 piedini. Spiega: 'Il piedino più lungo è il catodo — va al negativo. Il primo piedino corto è il rosso.' Disegna lo schema sulla lavagna se serve."
+            "step_corrente": "Visualizzazione il circuito sulla LIM. Solo il canale rosso è collegato — gli altri 2 piedini (verde, blu) restano liberi.",
+            "spunto_per_classe": null,
+            "note": [
+              "Uso il Passo Passo. Quando appare il LED RGB, fai notare i 4 piedini. Spiega: 'Il piedino più lungo è il catodo — va al negativo. Il primo piedino corto è il rosso.' Disegna lo schema sulla lavagna se serve."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap7-esp1]"
@@ -158,23 +158,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi discutano.",
-            "chiedi_alla_classe": "Se dentro ci sono 3 LED, possiamo accenderli tutti insieme? Che colore verrebbe fuori?",
-            "attenzione_a": [
+            "step_corrente": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi discutano.",
+            "spunto_per_classe": "Domanda: 'Se dentro ci sono 3 LED, possiamo accenderli tutti insieme? Che colore verrebbe fuori?'",
+            "note": [
               "Se collegano il piedino sbagliato, NON correggerli. Chiedi: 'Quale piedino avete collegato? Il rosso è il primo a sinistra del catodo.' Se dimenticano la resistenza, ricorda l'esperimento 6.2!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Collegano il piedino sbagliato (verde o blu invece del rosso)",
-                "fix": "Mostra il datasheet semplificato: piedino lungo = catodo, poi R, G, B. 'Come una forchetta — il manico è il catodo, i rebbi sono i colori.'"
+                "problema": "Collegano il piedino sbagliato (verde o blu invece del rosso)",
+                "soluzione_neutra": "Visualizzazione il datasheet semplificato: piedino lungo = catodo, poi R, G, B. 'Come una forchetta — il manico è il catodo, i rebbi sono i colori.'"
               },
               {
-                "mistake": "Dimenticano il resistore",
-                "fix": "Ricorda l'esperimento 6.2! 'Cosa succede senza resistore?' Il LED RGB costa di più — meglio proteggerlo!"
+                "problema": "Dimenticano il resistore",
+                "soluzione_neutra": "Ricorda l'esperimento 6.2! 'Cosa succede senza resistore?' Il LED RGB costa di più — meglio proteggerlo!"
               },
               {
-                "mistake": "Collegano catodo al + invece che al −",
-                "fix": "Ricorda: catodo = piedino più lungo = va al polo negativo (−). 'Come il LED normale, il piedino lungo va al meno.'"
+                "problema": "Collegano catodo al + invece che al −",
+                "soluzione_neutra": "Ricorda: catodo = piedino più lungo = va al polo negativo (−). 'Come il LED normale, il piedino lungo va al meno.'"
               }
             ]
           },
@@ -201,12 +201,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e osserva. Il LED RGB si accende di ROSSO! Solo il canale rosso è alimentato.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e osserva. Il LED RGB si accende di ROSSO! Solo il canale rosso è alimentato.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED RGB sul simulatore. Chiedi: 'Di che colore si accende? Perché proprio rosso?' Poi: 'Secondo voi, come facciamo ad accendere il verde?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -223,12 +223,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che il LED RGB contiene 3 LED in 1! Ha 4 piedini: catodo comune (il più lungo) e 3 anodi per rosso, verde e blu.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi a un ragazzo di ripetere con parole sue. Poi chiedi: 'Se collegassimo anche il verde, che succede? E se li collegassimo tutti e 3?' Seminare la curiosità per gli esperimenti successivi."
+            "step_corrente": "Oggi abbiamo scoperto che il LED RGB contiene 3 LED in 1! Ha 4 piedini: catodo comune (il più lungo) e 3 anodi per rosso, verde e blu.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: a un ragazzo di ripetere con parole sue. Poi chiedi: 'Se collegassimo anche il verde, che succede? E se li collegassimo tutti e 3?' Seminare la curiosità per gli esperimenti successivi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -364,12 +364,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Stessa configurazione dell'esperimento precedente. L'unica differenza: questa volta colleghiamo il pin VERDE del LED RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'L'ultima volta abbiamo acceso il rosso. Secondo voi, come accendiamo il verde?'"
+            "step_corrente": "Stessa configurazione dell'esperimento precedente. L'unica differenza: questa volta colleghiamo il pin VERDE del LED RGB.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'L'ultima volta abbiamo acceso il rosso. Secondo voi, come accendiamo il verde?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -383,12 +383,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito sulla LIM. L'unica differenza dal rosso è quale pin del LED RGB colleghiamo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione il circuito sulla LIM. L'unica differenza dal rosso è quale pin del LED RGB colleghiamo.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia che il circuito è IDENTICO — cambia solo il filo che va al pin verde (F4) invece che al rosso (F2)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap7-esp2]"
@@ -404,19 +404,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Chiedi alla classe cosa è cambiato rispetto al circuito del rosso.",
-            "chiedi_alla_classe": "Cosa è cambiato nel circuito rispetto al rosso? Solo una cosa!",
-            "attenzione_a": [
+            "step_corrente": "Domanda: alla classe cosa è cambiato rispetto al circuito del rosso.",
+            "spunto_per_classe": "Domanda: 'Cosa è cambiato nel circuito rispetto al rosso? Solo una cosa!'",
+            "note": [
               "La risposta attesa: 'Solo il filo va a un pin diverso'. Il circuito è lo stesso! Ogni canale è indipendente."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensa che serva un circuito completamente diverso",
-                "fix": "Mostra i due circuiti affiancati: l'unica differenza è il filo che va al pin verde invece che al rosso."
+                "problema": "Pensa che serva un circuito completamente diverso",
+                "soluzione_neutra": "Visualizzazione i due circuiti affiancati: l'unica differenza è il filo che va al pin verde invece che al rosso."
               },
               {
-                "mistake": "Collega il filo al pin sbagliato",
-                "fix": "Ricorda l'ordine: Rosso (F2), Catodo comune (F3), Verde (F4), Blu (F5). Il verde è il terzo!"
+                "problema": "Collega il filo al pin sbagliato",
+                "soluzione_neutra": "Ricorda l'ordine: Rosso (F2), Catodo comune (F3), Verde (F4), Blu (F5). Il verde è il terzo!"
               }
             ]
           },
@@ -443,12 +443,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e osserva: il LED si accende VERDE! Stesso circuito, colore diverso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Quanti colori possiamo fare con questo LED?' Prepara i ragazzi per gli esperimenti di mescolanza."
+            "step_corrente": "Pressione Play e osserva: il LED si accende VERDE! Stesso circuito, colore diverso.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Quanti colori possiamo fare con questo LED?' Prepara i ragazzi per gli esperimenti di mescolanza."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -465,12 +465,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Abbiamo scoperto che ogni canale del LED RGB funziona come un LED singolo. Basta cambiare quale pin colleghiamo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Se possiamo accendere rosso e verde separatamente... possiamo accenderli INSIEME?'"
+            "step_corrente": "Abbiamo scoperto che ogni canale del LED RGB funziona come un LED singolo. Basta cambiare quale pin colleghiamo!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Se possiamo accendere rosso e verde separatamente... possiamo accenderli INSIEME?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -604,12 +604,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Stessa configurazione. Questa volta colleghiamo il pin BLU (F5) del LED RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Avete notato differenze tra rosso e verde? Il blu sarà uguale?' (spoiler: il blu ha bisogno di più energia)"
+            "step_corrente": "Stessa configurazione. Questa volta colleghiamo il pin BLU (F5) del LED RGB.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Avete notato differenze tra rosso e verde? Il blu sarà uguale?' (spoiler: il blu ha bisogno di più energia)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -623,12 +623,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito. Filo blu dal resistore al pin blu (F5) del LED RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione il circuito. Filo blu dal resistore al pin blu (F5) del LED RGB.",
+            "spunto_per_classe": null,
+            "note": [
               "Dopo aver montato, chiedi: 'Notate qualcosa di diverso rispetto al rosso?' Il blu potrebbe sembrare leggermente meno luminoso con lo stesso resistore."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap7-esp3]"
@@ -644,19 +644,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il blu ha bisogno di più energia per accendersi. Chiedi se notano differenze.",
-            "chiedi_alla_classe": "Il blu sembra diverso dal rosso e dal verde? Secondo voi perché?",
-            "attenzione_a": [
+            "step_corrente": "Il blu ha bisogno di più energia per accendersi. Chiedi se notano differenze.",
+            "spunto_per_classe": "Domanda: 'Il blu sembra diverso dal rosso e dal verde? Secondo voi perché?'",
+            "note": [
               "Il LED blu ha una 'porta' più alta da superare — serve più energia per farlo accendere. NON dire termini tecnici avanzati."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non nota la differenza di luminosità",
-                "fix": "Prova a confrontare rosso e blu con lo stesso resistore fianco a fianco."
+                "problema": "Non nota la differenza di luminosità",
+                "soluzione_neutra": "Tentativo confrontare rosso e blu con lo stesso resistore fianco a fianco."
               },
               {
-                "mistake": "Pensa che il blu sia rotto",
-                "fix": "No! Il blu ha bisogno di più energia. È come una porta più alta da superare."
+                "problema": "Pensa che il blu sia rotto",
+                "soluzione_neutra": "No! Il blu ha bisogno di più energia. È come una porta più alta da superare."
               }
             ]
           },
@@ -683,12 +683,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Il LED si accende BLU! Ogni colore ha una 'soglia' diversa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il LED si accende BLU! Ogni colore ha una 'soglia' diversa.",
+            "spunto_per_classe": null,
+            "note": [
               "Spiega: il blu ha bisogno di più energia. Come una porta più alta: serve più forza per aprirla."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -705,12 +705,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Abbiamo completato i 3 colori base! Ogni colore ha bisogno di una quantità diversa di energia.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Abbiamo completato i 3 colori base! Ogni colore ha bisogno di una quantità diversa di energia.",
+            "spunto_per_classe": null,
+            "note": [
               "Anticipazione: 'Ora che sappiamo accendere ogni colore singolarmente... cosa succede se ne accendiamo DUE insieme?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -860,12 +860,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi servono DUE resistori — uno per il canale rosso e uno per il blu. Ogni canale ha il suo resistore di protezione.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Quanti resistori servono se vogliamo accendere 2 colori?' La risposta è 2 — uno per ogni canale."
+            "step_corrente": "Oggi servono DUE resistori — uno per il canale rosso e uno per il blu. Ogni canale ha il suo resistore di protezione.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Quanti resistori servono se vogliamo accendere 2 colori?' La risposta è 2 — uno per ogni canale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -879,12 +879,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito con 2 resistori: R1→pin rosso, R2→pin blu. Il catodo comune è lo stesso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione il circuito con 2 resistori: R1→pin rosso, R2→pin blu. Il catodo comune è lo stesso.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia che sono come DUE circuiti separati che condividono la batteria e il catodo. Ogni colore ha la sua 'strada'."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap7-esp4]"
@@ -900,19 +900,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Prima di premere Play, chiedi alla classe che colore si aspettano.",
-            "chiedi_alla_classe": "Se accendo rosso e blu insieme, che colore vedremo? Rosso? Blu? O qualcosa di completamente diverso?",
-            "attenzione_a": [
+            "step_corrente": "Prima di premere Play, chiedi alla classe che colore si aspettano.",
+            "spunto_per_classe": "Domanda: 'Se accendo rosso e blu insieme, che colore vedremo? Rosso? Blu? O qualcosa di completamente diverso?'",
+            "note": [
               "La maggior parte dei bambini dirà 'rosso e blu' o 'non lo so'. Pochi diranno 'viola'. NON dare la risposta — fai premere Play!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensa che i colori restino separati",
-                "fix": "Con la luce i colori si mescolano! È diverso dalla pittura."
+                "problema": "Pensa che i colori restino separati",
+                "soluzione_neutra": "Con la luce i colori si mescolano! È diverso dalla pittura."
               },
               {
-                "mistake": "Dimentica uno dei due resistori",
-                "fix": "Ogni canale del LED ha bisogno del suo resistore di protezione. Come ogni appartamento ha bisogno della sua porta."
+                "problema": "Dimentica uno dei due resistori",
+                "soluzione_neutra": "Ogni canale del LED ha bisogno del suo resistore di protezione. Come ogni appartamento ha bisogno della sua porta."
               }
             ]
           },
@@ -939,12 +939,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: rosso + blu = VIOLA! La luce si mescola in modo diverso dalla pittura.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: rosso + blu = VIOLA! La luce si mescola in modo diverso dalla pittura.",
+            "spunto_per_classe": null,
+            "note": [
               "Momento wow! La luce si mescola in modo diverso dai colori a tempera. Con i pennarelli rosso+blu = marrone. Con la LUCE = viola!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -961,12 +961,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Abbiamo creato il viola mescolando rosso e blu! La luce si mescola in modo diverso dalla pittura.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Se rosso+blu=viola, cosa faranno TUTTI E TRE insieme?' Preparali per il prossimo esperimento."
+            "step_corrente": "Abbiamo creato il viola mescolando rosso e blu! La luce si mescola in modo diverso dalla pittura.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Se rosso+blu=viola, cosa faranno TUTTI E TRE insieme?' Preparali per il prossimo esperimento."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1131,12 +1131,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi servono TRE resistori — uno per ogni canale. Il circuito è più complesso ma il principio è lo stesso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Rosso+blu fa viola. Cosa farà rosso+verde+blu?' Raccogli le ipotesi PRIMA di costruire."
+            "step_corrente": "Oggi servono TRE resistori — uno per ogni canale. Il circuito è più complesso ma il principio è lo stesso.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Rosso+blu fa viola. Cosa farà rosso+verde+blu?' Raccogli le ipotesi PRIMA di costruire."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1150,12 +1150,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito con 3 resistori. Ogni canale ha la sua 'strada' dalla batteria al LED RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che sono come 3 circuiti paralleli che condividono batteria e catodo. Ogni colore funziona indipendentemente."
+            "step_corrente": "Visualizzazione il circuito con 3 resistori. Ogni canale ha la sua 'strada' dalla batteria al LED RGB.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che sono come 3 circuiti paralleli che condividono batteria e catodo. Ogni colore funziona indipendentemente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap7-esp5]"
@@ -1171,19 +1171,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Chiedi le ipotesi prima di premere Play. Che colore sarà R+G+B?",
-            "chiedi_alla_classe": "Rosso + Verde + Blu tutti insieme: che colore vedrete? (Suggerimento: NON è quello che pensate!)",
-            "attenzione_a": [
+            "step_corrente": "Domanda: le ipotesi prima di premere Play. Che colore sarà R+G+B?",
+            "spunto_per_classe": "Domanda: 'Rosso + Verde + Blu tutti insieme: che colore vedrete? (Suggerimento: NON è quello che pensate!)'",
+            "note": [
               "La maggior parte dirà 'marrone' o 'arcobaleno'. Quasi nessuno dirà 'bianco'. L'effetto sorpresa è potentissimo!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Si aspetta marrone (come coi pennarelli)",
-                "fix": "La luce si mescola diversamente dalla pittura! Con la pittura R+G+B fa marrone, con la LUCE fa bianco!"
+                "problema": "Si aspetta marrone (come coi pennarelli)",
+                "soluzione_neutra": "La luce si mescola diversamente dalla pittura! Con la pittura R+G+B fa marrone, con la LUCE fa bianco!"
               },
               {
-                "mistake": "Collega 3 resistori ma dimentica un filo al canale",
-                "fix": "Ogni resistore deve essere collegato al suo canale specifico: R1→rosso, R2→verde, R3→blu."
+                "problema": "Collega 3 resistori ma dimentica un filo al canale",
+                "soluzione_neutra": "Ogni resistore deve essere collegato al suo canale specifico: R1→rosso, R2→verde, R3→blu."
               }
             ]
           },
@@ -1210,12 +1210,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: R+G+B = BIANCO! Gli schermi dei nostri dispositivi funzionano proprio così.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: R+G+B = BIANCO! Gli schermi dei nostri dispositivi funzionano proprio così.",
+            "spunto_per_classe": null,
+            "note": [
               "Momento WOW della lezione. Spiega: ogni pixel del telefono è un mini LED RGB. Milioni di pixel fanno le foto!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1232,12 +1232,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "R+G+B = Bianco. Ogni schermo che usate funziona con questo principio!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se cambiassimo i resistori per fare più rosso e meno verde? Che colore verrebbe?'"
+            "step_corrente": "R+G+B = Bianco. Ogni schermo che usate funziona con questo principio!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se cambiassimo i resistori per fare più rosso e meno verde? Che colore verrebbe?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1407,12 +1407,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi sperimentano in libertà. Partono dal circuito RGB e cambiano i valori dei resistori.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi sperimentano in libertà. Partono dal circuito RGB e cambiano i valori dei resistori.",
+            "spunto_per_classe": null,
+            "note": [
               "L'obiettivo è esplorare. Nessuna risposta giusta. Chiedi: 'Che colore volete creare? Come potreste farlo?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1426,12 +1426,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Parti dal circuito con R1=220Ω (rosso), R2=470Ω (verde), R3=470Ω (blu). Il rosso è più intenso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra che con R1 più piccolo (220Ω), il canale rosso è più luminoso. Poi lascia che i ragazzi cambino nel simulatore."
+            "step_corrente": "Parti dal circuito con R1=220Ω (rosso), R2=470Ω (verde), R3=470Ω (blu). Il rosso è più intenso.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione che con R1 più piccolo (220Ω), il canale rosso è più luminoso. Poi lascia che i ragazzi cambino nel simulatore."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap7-esp6]"
@@ -1447,19 +1447,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Lascia sperimentare liberamente. Chiedi: 'Che colore stai cercando di creare?'",
-            "chiedi_alla_classe": "Se il rosso è più forte degli altri, il colore finale sarà più caldo o più freddo? Provate!",
-            "attenzione_a": [
+            "step_corrente": "Lascia sperimentare liberamente. Chiedi: 'Che colore stai cercando di creare?'",
+            "spunto_per_classe": "Domanda: 'Se il rosso è più forte degli altri, il colore finale sarà più caldo o più freddo? Provate!'",
+            "note": [
               "Ogni gruppo può avere un obiettivo diverso. Suggerisci: provate a cambiare UN resistore alla volta per capire l'effetto."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Mette resistori sotto 100Ω",
-                "fix": "Attenzione! Mai sotto 100Ω — troppa corrente può danneggiare il LED. Il resistore è lì per proteggerlo!"
+                "problema": "Mette resistori sotto 100Ω",
+                "soluzione_neutra": "Attenzione! Mai sotto 100Ω — troppa corrente può danneggiare il LED. Il resistore è lì per proteggerlo!"
               },
               {
-                "mistake": "Non capisce perché il colore cambia",
-                "fix": "Resistore piccolo = più corrente = colore più forte. Resistore grande = meno corrente = colore più debole."
+                "problema": "Non capisce perché il colore cambia",
+                "soluzione_neutra": "Resistore piccolo = più corrente = colore più forte. Resistore grande = meno corrente = colore più debole."
               }
             ]
           },
@@ -1486,12 +1486,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Ogni gruppo mostra il colore creato. Confrontate le diverse tonalità!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai un 'concorso di colori'. Chiedi: 'Chi ha fatto il giallo? L'arancione? Il rosa?'"
+            "step_corrente": "Ogni gruppo mostra il colore creato. Confrontate le diverse tonalità!",
+            "spunto_per_classe": null,
+            "note": [
+              "un 'concorso di colori'. Chiedi: 'Chi ha fatto il giallo? L'arancione? Il rosa?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1511,12 +1511,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Abbiamo capito come creare qualsiasi colore con 3 LED e 3 resistori. Questo è il principio di tutti gli schermi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Abbiamo capito come creare qualsiasi colore con 3 LED e 3 resistori. Questo è il principio di tutti gli schermi!",
+            "spunto_per_classe": null,
+            "note": [
               "Riepilogo capitolo 7: singolo colore → mescolanza 2 colori → mescolanza 3 colori → colore personalizzato. Un percorso progressivo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

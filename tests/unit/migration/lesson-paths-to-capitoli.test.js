@@ -13,6 +13,7 @@ import {
   inferIncrementalMode,
   buildCapitoloFromLessonPaths,
   migrateAll,
+  nominalize,
 } from '../../../scripts/migrate-lesson-paths-to-capitoli.lib.js';
 import { CapitoloSchema } from '../../../src/data/schemas/Capitolo.js';
 
@@ -64,26 +65,66 @@ describe('extractClasseDisplay', () => {
   });
 });
 
-describe('extractDocenteSidebar', () => {
-  it('extracts docente-facing fields from phase', () => {
+describe('extractDocenteSidebar (PRINCIPIO ZERO neutro)', () => {
+  it('extracts docente-facing fields with neutral language', () => {
     const result = extractDocenteSidebar(SAMPLE_PHASE);
-    expect(result.ora_fai).toBeTruthy();
-    expect(result.ora_fai.length).toBeGreaterThan(5);
-    expect(result.chiedi_alla_classe).toBe(null);
-    expect(Array.isArray(result.attenzione_a)).toBe(true);
+    expect(result.step_corrente).toBeTruthy();
+    expect(result.step_corrente.length).toBeGreaterThan(5);
+    expect(result.spunto_per_classe).toBe(null);
+    expect(Array.isArray(result.note)).toBe(true);
   });
 
-  it('extracts chiedi from provocative_question', () => {
+  it('extracts spunto_per_classe wrapped as Domanda from provocative_question', () => {
     const phase = { ...SAMPLE_PHASE, provocative_question: 'Se giro il LED, si accende?' };
     const result = extractDocenteSidebar(phase);
-    expect(result.chiedi_alla_classe).toBe('Se giro il LED, si accende?');
+    expect(result.spunto_per_classe).toBe("Domanda: 'Se giro il LED, si accende?'");
   });
 
-  it('maps common_mistakes to common_mistakes_short', () => {
+  it('maps common_mistakes to errori_tipici (problema + soluzione_neutra)', () => {
     const result = extractDocenteSidebar(SAMPLE_PHASE);
-    expect(result.common_mistakes_short).toHaveLength(1);
-    expect(result.common_mistakes_short[0].mistake).toBe('LED al contrario');
-    expect(result.common_mistakes_short[0].fix).toContain('gira il LED');
+    expect(result.errori_tipici).toHaveLength(1);
+    expect(result.errori_tipici[0].problema).toBe('LED al contrario');
+    expect(result.errori_tipici[0].soluzione_neutra).toBeTruthy();
+  });
+});
+
+describe('nominalize transformer', () => {
+  it('converts Distribuisci -> Distribuzione', () => {
+    expect(nominalize('Distribuisci i kit')).toBe('Distribuzione i kit');
+  });
+
+  it('converts Togli -> Rimozione', () => {
+    expect(nominalize('Togli il resistore')).toBe('Rimozione il resistore');
+  });
+
+  it('converts Chiedi -> Domanda', () => {
+    expect(nominalize('Chiedi: cosa succede?')).toBe('Domanda: cosa succede?');
+  });
+
+  it('converts Mostra -> Visualizzazione', () => {
+    expect(nominalize('Mostra alla LIM')).toBe('Visualizzazione alla LIM');
+  });
+
+  it('converts Premi -> Pressione', () => {
+    expect(nominalize('Premi il pulsante')).toBe('Pressione il pulsante');
+  });
+
+  it('converts Non dare -> Differire', () => {
+    expect(nominalize('Non dare il resistore subito')).toBe('Differire: il resistore subito');
+  });
+
+  it('strips Fai/Fate prefix', () => {
+    expect(nominalize('Fai vedere il circuito')).toBe('vedere il circuito');
+  });
+
+  it('preserves text without imperative pattern', () => {
+    expect(nominalize('Il LED è polarizzato')).toBe('Il LED è polarizzato');
+  });
+
+  it('handles empty/null input', () => {
+    expect(nominalize('')).toBe('');
+    expect(nominalize(null)).toBe('');
+    expect(nominalize(undefined)).toBe('');
   });
 });
 

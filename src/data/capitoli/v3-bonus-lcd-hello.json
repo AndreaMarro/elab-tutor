@@ -118,12 +118,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora abbiamo controllato LED singoli. Oggi passiamo a un vero display: l'LCD 16x2 può mostrare 16 caratteri per 2 righe, proprio come gli schermi delle calcolatrici o delle casse del supermercato! Arduino lo controlla con 6 pin usando una libreria chiamata LiquidCrystal.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra dove si trovano display LCD 16x2 nella vita reale: calcolatrici, microonde, vecchie casse del supermercato, stazioni meteo. La libreria LiquidCrystal è come un 'traduttore': noi diciamo lcd.print(\"ciao\") e lei si occupa di inviare tutti i segnali giusti al display."
+            "step_corrente": "Finora abbiamo controllato LED singoli. Oggi passiamo a un vero display: l'LCD 16x2 può mostrare 16 caratteri per 2 righe, proprio come gli schermi delle calcolatrici o delle casse del supermercato! Arduino lo controlla con 6 pin usando una libreria chiamata LiquidCrystal.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione dove si trovano display LCD 16x2 nella vita reale: calcolatrici, microonde, vecchie casse del supermercato, stazioni meteo. La libreria LiquidCrystal è come un 'traduttore': noi diciamo lcd.print(\"ciao\") e lei si occupa di inviare tutti i segnali giusti al display."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -137,12 +137,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il display LCD usa 6 pin di dati (RS, E, D4-D7) più VCC e GND. RS e E sono i pin di controllo, D4-D7 sono i pin dati in modalità 4-bit. Il codice viene caricato automaticamente. Nel setup, lcd.begin(16,2) inizializza il display, lcd.setCursor(0,0) posiziona il cursore, lcd.print() scrive il testo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega il concetto di libreria: 'Una libreria è come un libro di istruzioni già scritte. Invece di scrivere centinaia di righe di codice per controllare l'LCD, usiamo la libreria LiquidCrystal che lo fa per noi. Il codice diventa brevissimo!' Poi spiega setCursor: 'Le coordinate partono da 0 in alto a sinistra. (0,0) = prima colonna, prima riga. (0,1) = prima colonna, seconda riga.'"
+            "step_corrente": "Il display LCD usa 6 pin di dati (RS, E, D4-D7) più VCC e GND. RS e E sono i pin di controllo, D4-D7 sono i pin dati in modalità 4-bit. Il codice viene caricato automaticamente. Nel setup, lcd.begin(16,2) inizializza il display, lcd.setCursor(0,0) posiziona il cursore, lcd.print() scrive il testo.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione il concetto di libreria: 'Una libreria è come un libro di istruzioni già scritte. Invece di scrivere centinaia di righe di codice per controllare l'LCD, usiamo la libreria LiquidCrystal che lo fa per noi. Il codice diventa brevissimo!' Poi spiega setCursor: 'Le coordinate partono da 0 in alto a sinistra. (0,0) = prima colonna, prima riga. (0,1) = prima colonna, seconda riga.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-extra-lcd-hello]"
@@ -158,19 +158,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il display è collegato e il codice è pronto. Il testo viene scritto nel setup(), non nel loop(). Perché? E quanti caratteri possiamo scrivere su ogni riga?",
-            "chiedi_alla_classe": "Il codice scrive solo nel setup() e il loop() è vuoto. Se volessimo far lampeggiare il testo ogni secondo, dove dovremmo mettere il codice? Nel setup() o nel loop()? E cosa dovremmo aggiungere?",
-            "attenzione_a": [
+            "step_corrente": "Il display è collegato e il codice è pronto. Il testo viene scritto nel setup(), non nel loop(). Perché? E quanti caratteri possiamo scrivere su ogni riga?",
+            "spunto_per_classe": "Domanda: 'Il codice scrive solo nel setup() e il loop() è vuoto. Se volessimo far lampeggiare il testo ogni secondo, dove dovremmo mettere il codice? Nel setup() o nel loop()? E cosa dovremmo aggiungere?'",
+            "note": [
               "Il testo viene scritto solo una volta nel setup perché non cambia mai. Se il testo cambiasse continuamente (es. un orologio), andrebbe aggiornato nel loop. Riguardo ai caratteri: 16 per riga. Se proviamo a scrivere di più, il testo va fuori schermo silenziosamente."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il display non mostra nulla o mostra solo quadratini neri",
-                "fix": "Controlla tutti i 6 collegamenti dei pin dati (RS, E, D4-D7). Basta un filo mancante o invertito perché il display non funzioni. Verifica anche VCC e GND del display!"
+                "problema": "Il display non mostra nulla o mostra solo quadratini neri",
+                "soluzione_neutra": "Controllo tutti i 6 collegamenti dei pin dati (RS, E, D4-D7). Basta un filo mancante o invertito perché il display non funzioni. Verifica anche VCC e GND del display!"
               },
               {
-                "mistake": "Il testo appare sulla riga sbagliata o fuori posizione",
-                "fix": "Controlla setCursor(colonna, riga): le coordinate partono da 0! setCursor(0,0) = prima riga, setCursor(0,1) = seconda riga. Attenzione: NON è setCursor(riga, colonna) ma setCursor(colonna, riga)!"
+                "problema": "Il testo appare sulla riga sbagliata o fuori posizione",
+                "soluzione_neutra": "Controllo setCursor(colonna, riga): le coordinate partono da 0! setCursor(0,0) = prima riga, setCursor(0,1) = seconda riga. Attenzione: NON è setCursor(riga, colonna) ma setCursor(colonna, riga)!"
               }
             ]
           },
@@ -197,12 +197,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il display LCD si illumina e compare il testo: 'Hello World!' sulla prima riga e 'ELAB Simulator' sulla seconda. Il codice si esegue una volta nel setup() e rimane fermo lì!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play! Il display LCD si illumina e compare il testo: 'Hello World!' sulla prima riga e 'ELAB Simulator' sulla seconda. Il codice si esegue una volta nel setup() e rimane fermo lì!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il display LCD. Fai notare che il testo appare quasi istantaneamente perché il codice è semplice. Chiedi: 'Quanti caratteri ci sono in Hello World!? (12). Quante colonne ha il display? (16). Quante colonne rimangono vuote? (4).' Questo aiuta a capire la griglia 16x2."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -219,12 +219,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Ottimo! Avete imparato a usare un display LCD con Arduino. Con la libreria LiquidCrystal, controllare un display da 32 caratteri richiede solo poche righe di codice!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Ottimo! Avete imparato a usare un display LCD con Arduino. Con la libreria LiquidCrystal, controllare un display da 32 caratteri richiede solo poche righe di codice!",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: 'lcd.begin(16,2) = inizializza il display 16 colonne, 2 righe. lcd.setCursor(col,riga) = posiziona il cursore. lcd.print() = scrive il testo. Tutto nel setup() se il testo non cambia, nel loop() se deve aggiornarsi.' Il LCD è la base per molti progetti: orologio, stazione meteo, menu interattivo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

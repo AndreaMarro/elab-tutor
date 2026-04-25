@@ -264,12 +264,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Questo è il PROGETTO FINALE del Volume 3! Costruiamo Simon Says — il classico gioco di memoria con luci e suoni. Arduino genera una sequenza di colori e note musicali sempre più lunga. Voi la ripetete premendo i pulsanti giusti. Se sbagliate, tutti i LED lampeggiano e il gioco ricomincia!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai un recap di tutto il Volume 3: 'Abbiamo imparato i pin OUTPUT (semaforo), i pin INPUT (pulsante), i pin analogici (potenziometro), il display LCD, il servomotore. Oggi usiamo TUTTO insieme!' Questo è il momento di celebrare il percorso fatto."
+            "step_corrente": "Questo è il PROGETTO FINALE del Volume 3! Costruiamo Simon Says — il classico gioco di memoria con luci e suoni. Arduino genera una sequenza di colori e note musicali sempre più lunga. Voi la ripetete premendo i pulsanti giusti. Se sbagliate, tutti i LED lampeggiano e il gioco ricomincia!",
+            "spunto_per_classe": null,
+            "note": [
+              "un recap di tutto il Volume 3: 'Abbiamo imparato i pin OUTPUT (semaforo), i pin INPUT (pulsante), i pin analogici (potenziometro), il display LCD, il servomotore. Oggi usiamo TUTTO insieme!' Questo è il momento di celebrare il percorso fatto."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -283,12 +283,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito ha 4 rami LED (resistore + LED + GND), 4 pulsanti INPUT_PULLUP, e un cicalino. Pin LED: D9 rosso, D10 verde, D11 blu, D12 giallo. Pin pulsanti: D3, D5, D6, D13. Buzzer su D8. Il codice viene caricato automaticamente! Ogni colore ha la sua nota: rosso=Do(262Hz), verde=Mi(330Hz), blu=Sol(392Hz), giallo=Do alto(523Hz).",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega il codice a livello concettuale: 'Il codice usa gli ARRAY — liste di valori. LED[] è la lista dei 4 pin LED, BTN[] dei 4 pulsanti, NOTE[] delle 4 note. mostraSequenza() accende ogni LED della sequenza con la sua nota. leggiPulsante() aspetta che il giocatore prema un pulsante entro 3 secondi. gameOver() fa lampeggiare tutti i LED con un suono grave.' Non serve spiegare la sintassi C++ dettagliata."
+            "step_corrente": "Il circuito ha 4 rami LED (resistore + LED + GND), 4 pulsanti INPUT_PULLUP, e un cicalino. Pin LED: D9 rosso, D10 verde, D11 blu, D12 giallo. Pin pulsanti: D3, D5, D6, D13. Buzzer su D8. Il codice viene caricato automaticamente! Ogni colore ha la sua nota: rosso=Do(262Hz), verde=Mi(330Hz), blu=Sol(392Hz), giallo=Do alto(523Hz).",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione il codice a livello concettuale: 'Il codice usa gli ARRAY — liste di valori. LED[] è la lista dei 4 pin LED, BTN[] dei 4 pulsanti, NOTE[] delle 4 note. mostraSequenza() accende ogni LED della sequenza con la sua nota. leggiPulsante() aspetta che il giocatore prema un pulsante entro 3 secondi. gameOver() fa lampeggiare tutti i LED con un suono grave.' Non serve spiegare la sintassi C++ dettagliata."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-extra-simon]"
@@ -304,19 +304,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il gioco è montato! Prima di provarlo, ragioniamo sulla logica. Il programma deve RICORDARE la sequenza per tutta la partita. Come fa? E se il giocatore non preme nessun pulsante entro 3 secondi, cosa dovrebbe succedere?",
-            "chiedi_alla_classe": "Il gioco usa randomSeed(analogRead(A0)) per generare sequenze diverse ogni partita. Se non ci fosse randomSeed, la sequenza sarebbe sempre la stessa ogni volta che si riaccende Arduino. Perché è importante che la sequenza sia diversa ad ogni partita?",
-            "attenzione_a": [
+            "step_corrente": "Il gioco è montato! Prima di provarlo, ragioniamo sulla logica. Il programma deve RICORDARE la sequenza per tutta la partita. Come fa? E se il giocatore non preme nessun pulsante entro 3 secondi, cosa dovrebbe succedere?",
+            "spunto_per_classe": "Domanda: 'Il gioco usa randomSeed(analogRead(A0)) per generare sequenze diverse ogni partita. Se non ci fosse randomSeed, la sequenza sarebbe sempre la stessa ogni volta che si riaccende Arduino. Perché è importante che la sequenza sia diversa ad ogni partita?'",
+            "note": [
               "Guida verso gli array: 'Il codice usa un array seq[] che può contenere fino a 100 elementi. Ogni turno aggiunge un nuovo numero (0,1,2,3) che corrisponde a un colore. Alla fine del turno, l'array ricorda tutta la sequenza!' Sul timeout: 'leggiPulsante() aspetta 3 secondi — se non premi nulla, restituisce -1 che il codice interpreta come errore e chiama gameOver().'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "I LED si accendono ma il cicalino non suona",
-                "fix": "Controlla il collegamento del cicalino: il pin positivo (+) deve andare al foro collegato a D8, e il negativo (-) a GND. Il cicalino piezo ha una polarità!"
+                "problema": "I LED si accendono ma il cicalino non suona",
+                "soluzione_neutra": "Controllo il collegamento del cicalino: il pin positivo (+) deve andare al foro collegato a D8, e il negativo (-) a GND. Il cicalino piezo ha una polarità!"
               },
               {
-                "mistake": "Il gioco va subito in game over appena parte",
-                "fix": "Il pulsante potrebbe essere premuto involontariamente al momento dell'avvio, oppure c'è un rimbalzo. Aspetta qualche secondo dopo aver premuto Play prima di toccare i pulsanti — c'è un delay di avvio nel setup!"
+                "problema": "Il gioco va subito in game over appena parte",
+                "soluzione_neutra": "Il pulsante potrebbe essere premuto involontariamente al momento dell'avvio, oppure c'è un rimbalzo. Aspetta qualche secondo dopo aver premuto Play prima di toccare i pulsanti — c'è un delay di avvio nel setup!"
               }
             ]
           },
@@ -343,12 +343,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Tutti e 4 i LED lampeggiano insieme con un suono acuto: è il lampeggio di avvio. Poi si accende un LED con la sua nota: è il primo elemento della sequenza. Premi il pulsante dello stesso colore! Se indovini, la sequenza si allunga di un elemento. Quanti livelli riuscite a fare?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play! Tutti e 4 i LED lampeggiano insieme con un suono acuto: è il lampeggio di avvio. Poi si accende un LED con la sua nota: è il primo elemento della sequenza. Premi il pulsante dello stesso colore! Se indovini, la sequenza si allunga di un elemento. Quanti livelli riuscite a fare?",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i 4 LED, i 4 pulsanti e il cicalino. Fai giocare tutta la classe insieme: la lavagna mostra la sequenza, i ragazzi la ripetono. Fai notare che il cicalino aiuta la memoria: puoi ricordare la sequenza sia per colori che per melodia! Il game over suona un tono grave e basso — molto diverso dalle note del gioco."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -373,12 +373,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "COMPLIMENTI! Avete completato il Volume 3 e costruito Simon Says — il progetto più complesso dell'intero volume! Dal semaforo (3 LED in sequenza) al gioco interattivo con suoni, memoria e logica di gioco. Che salto!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "COMPLIMENTI! Avete completato il Volume 3 e costruito Simon Says — il progetto più complesso dell'intero volume! Dal semaforo (3 LED in sequenza) al gioco interattivo con suoni, memoria e logica di gioco. Che salto!",
+            "spunto_per_classe": null,
+            "note": [
               "Questo è un momento da celebrare! Fai un recap del viaggio del Volume 3: 'Cap 6: semaforo (OUTPUT, sequenza). Cap 7: toggle pulsante (INPUT, variabili). Cap 8: potenziometro + Serial Monitor (analogRead). Extra: LCD, Servo, Simon Says. Avete imparato a programmare Arduino!' Chiedi: 'Che altro progetto vorreste costruire con quello che sapete ora?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

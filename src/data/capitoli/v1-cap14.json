@@ -257,12 +257,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "È il PROGETTO FINALE del Volume 1! Costruiamo un robot con occhi verdi, mano colorata e sensore magnetico. Tutto quello che avete imparato converge qui!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai un recap dei componenti: 'Reed switch (cap 12) per accendere il robot col magnete. Potenziometri (cap 9) per controllare i colori. LED (cap 6-7) per occhi e mano. Tutto insieme!' Usa la breadboard grande (full-size)."
+            "step_corrente": "È il PROGETTO FINALE del Volume 1! Costruiamo un robot con occhi verdi, mano colorata e sensore magnetico. Tutto quello che avete imparato converge qui!",
+            "spunto_per_classe": null,
+            "note": [
+              "un recap dei componenti: 'Reed switch (cap 12) per accendere il robot col magnete. Potenziometri (cap 9) per controllare i colori. LED (cap 6-7) per occhi e mano. Tutto insieme!' Usa la breadboard grande (full-size)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -276,12 +276,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il robot ha 3 sezioni: OCCHI (2 LED verdi), MANO (LED RGB + 3 pot), INTERRUTTORE (reed switch). Il magnete accende tutto!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra il circuito sezione per sezione: prima il reed switch (ON/OFF), poi gli occhi (2 LED verdi con resistori), poi la mano (3 pot → 3 resistori → RGB). Ogni sezione usa un concetto già imparato!"
+            "step_corrente": "Il robot ha 3 sezioni: OCCHI (2 LED verdi), MANO (LED RGB + 3 pot), INTERRUTTORE (reed switch). Il magnete accende tutto!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il circuito sezione per sezione: prima il reed switch (ON/OFF), poi gli occhi (2 LED verdi con resistori), poi la mano (3 pot → 3 resistori → RGB). Ogni sezione usa un concetto già imparato!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap14-esp1]"
@@ -297,19 +297,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il robot ha occhi, mano colorata e un interruttore magnetico. Quanti concetti diversi ci sono in questo circuito?",
-            "chiedi_alla_classe": "Quanti capitoli servono per costruire un robot? Contate tutti i componenti: quanti concetti avete usato?",
-            "attenzione_a": [
+            "step_corrente": "Il robot ha occhi, mano colorata e un interruttore magnetico. Quanti concetti diversi ci sono in questo circuito?",
+            "spunto_per_classe": "Domanda: 'Quanti capitoli servono per costruire un robot? Contate tutti i componenti: quanti concetti avete usato?'",
+            "note": [
               "Conta insieme alla classe: LED (cap 6), resistori (cap 7), potenziometri (cap 9), reed switch (cap 12). TUTTO il Volume 1 in un solo progetto!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il circuito sembra troppo complesso",
-                "fix": "Dividiamolo in sezioni! Occhi = 2 LED verdi (cap 6-7). Mano = RGB + 3 pot (cap 8-9). ON/OFF = reed switch (cap 12). Ogni sezione la conoscete già!"
+                "problema": "Il circuito sembra troppo complesso",
+                "soluzione_neutra": "Dividiamolo in sezioni! Occhi = 2 LED verdi (cap 6-7). Mano = RGB + 3 pot (cap 8-9). ON/OFF = reed switch (cap 12). Ogni sezione la conoscete già!"
               },
               {
-                "mistake": "Il LED RGB non cambia colore con i potenziometri",
-                "fix": "Ogni potenziometro controlla UN canale: rosso, verde o blu. Gira una manopola alla volta per vedere quale colore cambia!"
+                "problema": "Il LED RGB non cambia colore con i potenziometri",
+                "soluzione_neutra": "Ogni potenziometro controlla UN canale: rosso, verde o blu. Gira una manopola alla volta per vedere quale colore cambia!"
               }
             ]
           },
@@ -336,12 +336,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, avvicina il magnete: il robot si accende! Occhi verdi brillano, la mano cambia colore girando le manopole!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, avvicina il magnete: il robot si accende! Occhi verdi brillano, la mano cambia colore girando le manopole!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia tutto: reed switch, LED verdi, potenziometri, LED RGB. Fai girare le 3 manopole: rosso, verde, blu. Ogni combinazione è un colore diverso! Celebra il momento — è il traguardo del Volume 1!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -364,12 +364,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "COMPLIMENTI! Avete completato il Volume 1 e costruito il vostro primo robot! Dal LED singolo al robot completo — che viaggio incredibile!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "COMPLIMENTI! Avete completato il Volume 1 e costruito il vostro primo robot! Dal LED singolo al robot completo — che viaggio incredibile!",
+            "spunto_per_classe": null,
+            "note": [
               "Questo è un momento da celebrare! Fai un recap del viaggio: cap 6 (LED), cap 7 (resistore), cap 8 (RGB), cap 9 (potenziometro), cap 10 (LDR), cap 11 (buzzer), cap 12 (reed switch), cap 13 (elettropongo), cap 14 (robot). Se possibile, fai una foto del robot sulla LIM!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

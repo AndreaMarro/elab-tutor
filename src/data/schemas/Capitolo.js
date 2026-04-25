@@ -98,16 +98,27 @@ const ClasseDisplaySchema = z.object({
   analogies: z.array(AnalogySchema),
 });
 
-const CommonMistakeShortSchema = z.object({
-  mistake: z.string(),
-  fix: z.string(),
+const ErroreTipicoSchema = z.object({
+  problema: z.string(),
+  soluzione_neutra: z.string(),
 });
 
+/**
+ * DocenteSidebar — sidebar laterale colpo d'occhio.
+ *
+ * PRINCIPIO ZERO: linguaggio NEUTRO sostantivo/infinito impersonale, NON imperativo.
+ * Il docente la legge in silenzio per CAPIRE stato corrente, NON la riceve come ordine.
+ *
+ * step_corrente: sostantivo nominalizzato ("Distribuzione kit", "Montaggio circuito", "Visualizzazione LIM")
+ * spunto_per_classe: citazione testuale o "Domanda: '...'" (non "Chiedi alla classe...")
+ * note: descrittive nominali ("Resistore necessario", "Polarità LED rispettata")
+ * errori_tipici: { problema, soluzione_neutra } entrambi nominali
+ */
 const DocenteSidebarSchema = z.object({
-  ora_fai: z.string(),
-  chiedi_alla_classe: z.string().nullable(),
-  attenzione_a: z.array(z.string()),
-  common_mistakes_short: z.array(CommonMistakeShortSchema),
+  step_corrente: z.string(),
+  spunto_per_classe: z.string().nullable(),
+  note: z.array(z.string()),
+  errori_tipici: z.array(ErroreTipicoSchema),
 });
 
 const PhaseSchema = z.object({

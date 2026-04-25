@@ -119,12 +119,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Non dare il resistore subito — lascia che provino con batteria + LED + fili. L'emozione del 'si accende!' viene PRIMA di qualsiasi teoria."
+            "step_corrente": "Oggi i ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
+            "spunto_per_classe": null,
+            "note": [
+              "Differire: il resistore subito — lascia che provino con batteria + LED + fili. L'emozione del 'si accende!' viene PRIMA di qualsiasi teoria."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -138,12 +138,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito sulla LIM. I ragazzi vedono i componenti apparire uno alla volta.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Usa il Passo Passo del simulatore — i componenti appaiono progressivamente. Ogni passo è un momento per chiedere 'cosa pensate che succeda adesso?'"
+            "step_corrente": "Visualizzazione il circuito sulla LIM. I ragazzi vedono i componenti apparire uno alla volta.",
+            "spunto_per_classe": null,
+            "note": [
+              "Uso il Passo Passo del simulatore — i componenti appaiono progressivamente. Ogni passo è un momento per chiedere 'cosa pensate che succeda adesso?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap6-esp1]"
@@ -159,23 +159,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi discutano.",
-            "chiedi_alla_classe": "Se giro il LED al contrario, secondo voi si accende ancora? Perché sì o perché no?",
-            "attenzione_a": [
+            "step_corrente": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi discutano.",
+            "spunto_per_classe": "Domanda: 'Se giro il LED al contrario, secondo voi si accende ancora? Perché sì o perché no?'",
+            "note": [
               "Se il LED non si accende al primo tentativo, NON correre a correggerli. Chiedi: 'Cosa potremmo provare a cambiare?' La risposta attesa è girare il LED."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "LED inserito al contrario",
-                "fix": "Non correggerli. Chiedi: 'Cosa succede se lo giri?'"
+                "problema": "LED inserito al contrario",
+                "soluzione_neutra": "Non correggerli. Chiedi: 'Cosa succede se lo giri?'"
               },
               {
-                "mistake": "Fili non nella stessa riga della breadboard",
-                "fix": "Mostra come i fori della stessa riga sono collegati sotto"
+                "problema": "Fili non nella stessa riga della breadboard",
+                "soluzione_neutra": "Visualizzazione come i fori della stessa riga sono collegati sotto"
               },
               {
-                "mistake": "Batteria con polarità invertita",
-                "fix": "Nessun danno — semplicemente non si accende. Fai notare i simboli + e −"
+                "problema": "Batteria con polarità invertita",
+                "soluzione_neutra": "Nessun danno — semplicemente non si accende. Fai notare i simboli + e −"
               }
             ]
           },
@@ -202,12 +202,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e osserva cosa succede. Il LED si accende! Ora prova a girarlo — si spegne.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e osserva cosa succede. Il LED si accende! Ora prova a girarlo — si spegne.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED sul simulatore per attirare l'attenzione. Chiedi: 'Vedete la luce? Perché secondo voi funziona solo in un verso?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -224,12 +224,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto due cose: il circuito deve essere CHIUSO per funzionare, e il LED ha un verso giusto — il piedino lungo va al +.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi a un ragazzo di ripetere con parole sue. L'effetto Protégé: chi spiega, impara di più."
+            "step_corrente": "Oggi abbiamo scoperto due cose: il circuito deve essere CHIUSO per funzionare, e il LED ha un verso giusto — il piedino lungo va al +.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: a un ragazzo di ripetere con parole sue. L'effetto Protégé: chi spiega, impara di più."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -356,12 +356,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono cosa succede se il LED non è protetto. IMPORTANTE: nel simulatore il LED non si brucia davvero, ma nel mondo reale SÌ.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi scoprono cosa succede se il LED non è protetto. IMPORTANTE: nel simulatore il LED non si brucia davvero, ma nel mondo reale SÌ.",
+            "spunto_per_classe": null,
+            "note": [
               "Prepara un LED bruciato vero da mostrare alla classe — l'impatto visivo vale più di mille spiegazioni. Non dare il resistore: l'obiettivo è che capiscano DA SOLI che serve."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -375,12 +375,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito sulla LIM. Il LED è collegato direttamente alla batteria SENZA resistore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Usa il Passo Passo. Quando appare il circuito senza resistore, chiedi: 'Vi sembra che manchi qualcosa rispetto alla volta scorsa?' Lascia che notino l'assenza del resistore."
+            "step_corrente": "Visualizzazione il circuito sulla LIM. Il LED è collegato direttamente alla batteria SENZA resistore.",
+            "spunto_per_classe": null,
+            "note": [
+              "Uso il Passo Passo. Quando appare il circuito senza resistore, chiedi: 'Vi sembra che manchi qualcosa rispetto alla volta scorsa?' Lascia che notino l'assenza del resistore."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap6-esp2]"
@@ -396,23 +396,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi ragionino.",
-            "chiedi_alla_classe": "La batteria manda troppa energia al LED. Cosa succede quando la corrente è troppo forte per un componente così piccolo?",
-            "attenzione_a": [
+            "step_corrente": "È il momento della domanda provocatoria. NON dare la risposta — lascia che i ragazzi ragionino.",
+            "spunto_per_classe": "Domanda: 'La batteria manda troppa energia al LED. Cosa succede quando la corrente è troppo forte per un componente così piccolo?'",
+            "note": [
               "Dopo aver fatto vedere che il LED lampeggia e si 'brucia' nel simulatore, mostra il LED bruciato reale. L'effetto WOW è garantito. Chiedi: 'Come potremmo proteggere il LED?'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non capisce perché il LED si brucia",
-                "fix": "Usa l'analogia del rubinetto: troppa acqua in un tubo piccolo lo rompe. Troppa corrente nel LED lo brucia."
+                "problema": "Non capisce perché il LED si brucia",
+                "soluzione_neutra": "Uso l'analogia del rubinetto: troppa acqua in un tubo piccolo lo rompe. Troppa corrente nel LED lo brucia."
               },
               {
-                "mistake": "Pensa che il simulatore sia sbagliato perché non distrugge il LED",
-                "fix": "Spiega che il simulatore avvisa ma non distrugge. 'Nel mondo reale succede davvero — ecco il LED bruciato!'"
+                "problema": "Pensa che il simulatore sia sbagliato perché non distrugge il LED",
+                "soluzione_neutra": "Spiegazione che il simulatore avvisa ma non distrugge. 'Nel mondo reale succede davvero — ecco il LED bruciato!'"
               },
               {
-                "mistake": "Propone di usare meno batteria",
-                "fix": "Ottima intuizione! Ma non sempre possiamo scegliere la batteria. Serve qualcosa che limiti la corrente senza cambiare batteria."
+                "problema": "Propone di usare meno batteria",
+                "soluzione_neutra": "Ottima intuizione! Ma non sempre possiamo scegliere la batteria. Serve qualcosa che limiti la corrente senza cambiare batteria."
               }
             ]
           },
@@ -439,12 +439,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e osserva. Il LED lampeggia e si brucia! La corrente è troppo alta senza protezione.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e osserva. Il LED lampeggia e si brucia! La corrente è troppo alta senza protezione.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED sul simulatore. Chiedi: 'Vedete l'avviso? Il LED ha ricevuto troppa corrente.' Poi confronta con l'esperimento precedente: 'La volta scorsa il LED era protetto — da cosa?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -461,12 +461,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che il LED è fragile: senza qualcosa che limiti la corrente, si brucia. La prossima volta scopriremo COSA può proteggerlo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi a un ragazzo di ripetere con parole sue cosa è successo. Poi chiedi: 'Secondo voi, cosa potremmo aggiungere al circuito per proteggere il LED?' Non dare la risposta — la scopriranno nel prossimo capitolo!"
+            "step_corrente": "Oggi abbiamo scoperto che il LED è fragile: senza qualcosa che limiti la corrente, si brucia. La prossima volta scopriremo COSA può proteggerlo.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: a un ragazzo di ripetere con parole sue cosa è successo. Poi chiedi: 'Secondo voi, cosa potremmo aggiungere al circuito per proteggere il LED?' Non dare la risposta — la scopriranno nel prossimo capitolo!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -613,12 +613,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
+            "spunto_per_classe": null,
+            "note": [
               "Prepara 3 resistori con valori diversi (220Ω, 470Ω, 1kΩ). NON dire i valori — i ragazzi devono osservare l'effetto sulla luminosità."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -632,12 +632,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito con il resistore da 220Ω. Poi chiedi ai ragazzi di provare gli altri.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Usa il Passo Passo del simulatore. Dopo aver montato con 220Ω, chiedi: 'Provate a cambiare il valore del resistore nel simulatore — cosa succede?'"
+            "step_corrente": "Visualizzazione il circuito con il resistore da 220Ω. Poi chiedi ai ragazzi di provare gli altri.",
+            "spunto_per_classe": null,
+            "note": [
+              "Uso il Passo Passo del simulatore. Dopo aver montato con 220Ω, chiedi: 'Provate a cambiare il valore del resistore nel simulatore — cosa succede?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap6-esp3]"
@@ -653,23 +653,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Fai provare le 3 resistenze una alla volta. Chiedi di metterle in ordine dalla più luminosa alla meno luminosa.",
-            "chiedi_alla_classe": "Se metto una resistenza grandissima, il LED si spegne del tutto? E se ne metto una piccolissima?",
-            "attenzione_a": [
+            "step_corrente": "provare le 3 resistenze una alla volta. Chiedi di metterle in ordine dalla più luminosa alla meno luminosa.",
+            "spunto_per_classe": "Domanda: 'Se metto una resistenza grandissima, il LED si spegne del tutto? E se ne metto una piccolissima?'",
+            "note": [
               "NON introdurre formule. L'obiettivo è che scoprano da soli: 'resistenza grande = LED meno luminoso'. Chiedi: 'Secondo voi, perché cambia?'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensa che la resistenza consumi corrente",
-                "fix": "La resistenza non consuma, LIMITA. Come un rubinetto non beve l'acqua, la controlla."
+                "problema": "Pensa che la resistenza consumi corrente",
+                "soluzione_neutra": "La resistenza non consuma, LIMITA. Come un rubinetto non beve l'acqua, la controlla."
               },
               {
-                "mistake": "Confonde resistenza grande con LED più luminoso",
-                "fix": "Fai riprovare e osservare. 'Resistenza grande = tubo stretto = meno acqua = meno luce'"
+                "problema": "Confonde resistenza grande con LED più luminoso",
+                "soluzione_neutra": "riprovare e osservare. 'Resistenza grande = tubo stretto = meno acqua = meno luce'"
               },
               {
-                "mistake": "Non inserisce la resistenza correttamente",
-                "fix": "Rassicura: la resistenza funziona in entrambi i versi, non come il LED!"
+                "problema": "Non inserisce la resistenza correttamente",
+                "soluzione_neutra": "Rassicura: la resistenza funziona in entrambi i versi, non come il LED!"
               }
             ]
           },
@@ -696,12 +696,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play con ogni resistore e confronta. Con 220Ω il LED è più luminoso, con 1kΩ è più fioco.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi ai ragazzi di ordinare le resistenze dalla più luminosa alla meno luminosa. Se lo fanno correttamente, hanno capito!"
+            "step_corrente": "Pressione Play con ogni resistore e confronta. Con 220Ω il LED è più luminoso, con 1kΩ è più fioco.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: ai ragazzi di ordinare le resistenze dalla più luminosa alla meno luminosa. Se lo fanno correttamente, hanno capito!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -718,12 +718,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che cambiando la resistenza cambia quanta corrente arriva al LED, e quindi quanta luce fa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi a un ragazzo di ripetere con parole sue. Se dice 'la resistenza frena la corrente' → concetto chiave acquisito!"
+            "step_corrente": "Oggi abbiamo scoperto che cambiando la resistenza cambia quanta corrente arriva al LED, e quindi quanta luce fa.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: a un ragazzo di ripetere con parole sue. Se dice 'la resistenza frena la corrente' → concetto chiave acquisito!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

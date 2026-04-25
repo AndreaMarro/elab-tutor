@@ -67,12 +67,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi colleghiamo DUE batterie da 9V in serie: il polo negativo della prima al polo positivo della seconda. La tensione totale si somma!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra le pile della torcia: sono in serie! Il + di una tocca il - della successiva. La torcia funziona a 3V (2 pile da 1.5V in serie) o 4.5V (3 pile)."
+            "step_corrente": "Oggi colleghiamo DUE batterie da 9V in serie: il polo negativo della prima al polo positivo della seconda. La tensione totale si somma!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione le pile della torcia: sono in serie! Il + di una tocca il - della successiva. La torcia funziona a 3V (2 pile da 1.5V in serie) o 4.5V (3 pile)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -86,12 +86,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Colleghiamo le due batterie: il negativo (-) della prima al positivo (+) della seconda. Poi misuriamo tra il + della prima e il - della seconda con il multimetro.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai il parallelo con le pile nella torcia: si infilano in modo che il + di una tocchi il - dell'altra. Questa e la serie!"
+            "step_corrente": "Colleghiamo le due batterie: il negativo (-) della prima al positivo (+) della seconda. Poi misuriamo tra il + della prima e il - della seconda con il multimetro.",
+            "spunto_per_classe": null,
+            "note": [
+              "il parallelo con le pile nella torcia: si infilano in modo che il + di una tocchi il - dell'altra. Questa e la serie!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap5-esp1]"
@@ -107,15 +107,15 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Due batterie da 9V in serie: la tensione totale sara 9V (resta uguale), 18V (si somma), o 4.5V (si dimezza)? Perche?",
-            "chiedi_alla_classe": "Se tre pile da 1.5V fanno 4.5V, quante pile da 1.5V servono per arrivare a 9V? E se ne mettessimo 100?",
-            "attenzione_a": [
+            "step_corrente": "Due batterie da 9V in serie: la tensione totale sara 9V (resta uguale), 18V (si somma), o 4.5V (si dimezza)? Perche?",
+            "spunto_per_classe": "Domanda: 'Se tre pile da 1.5V fanno 4.5V, quante pile da 1.5V servono per arrivare a 9V? E se ne mettessimo 100?'",
+            "note": [
               "La risposta e 18V. In serie le tensioni si sommano, come i piani di un palazzo: piano 1 + piano 2 = 2 piani di altezza. Ogni batteria 'spinge' la corrente con la sua forza, e le spinte si sommano."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Batterie collegate con lo stesso polo (+ con + o - con -)",
-                "fix": "Cosi non e serie! Per la serie, il - di una deve andare al + dell'altra. Se collegate + con +, le batterie si 'combattono' e la tensione diminuisce."
+                "problema": "Batterie collegate con lo stesso polo (+ con + o - con -)",
+                "soluzione_neutra": "Cosi non e serie! Per la serie, il - di una deve andare al + dell'altra. Se collegate + con +, le batterie si 'combattono' e la tensione diminuisce."
               }
             ]
           },
@@ -137,12 +137,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Il multimetro mostra circa 18V! Due batterie da 9V in serie danno il doppio della tensione. Le 'spinte' si sommano.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il multimetro mostra circa 18V! Due batterie da 9V in serie danno il doppio della tensione. Le 'spinte' si sommano.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia entrambe le batterie. Se le batterie non sono nuove, il valore sara un po meno di 18V (es. 17.8V). Spiega che e normale: le batterie usate hanno meno tensione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -160,12 +160,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "In serie le tensioni si sommano! 9V + 9V = 18V. E cosi che funzionano le torce, i giocattoli e tanti dispositivi: pile in serie per ottenere la tensione giusta.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "In serie le tensioni si sommano! 9V + 9V = 18V. E cosi che funzionano le torce, i giocattoli e tanti dispositivi: pile in serie per ottenere la tensione giusta.",
+            "spunto_per_classe": null,
+            "note": [
               "Domanda di chiusura: 'Quante pile AA da 1.5V servono per avere 9V?' Risposta: 6 pile (6 x 1.5 = 9V). Esiste proprio il portapile da 6!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -239,12 +239,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "La volta scorsa le batterie in serie sommavano le tensioni. Oggi le colleghiamo AL CONTRARIO: polo + con polo +. Cosa succedera? Le tensioni si annullano!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "La volta scorsa le batterie in serie sommavano le tensioni. Oggi le colleghiamo AL CONTRARIO: polo + con polo +. Cosa succedera? Le tensioni si annullano!",
+            "spunto_per_classe": null,
+            "note": [
               "Antiserie e quando le due batterie 'spingono' in direzioni opposte. Con due batterie uguali da 9V, le forze si annullano: 9V - 9V = 0V."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -258,12 +258,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Colleghiamo le batterie al contrario: positivo (+) con positivo (+). Poi misuriamo la tensione totale con il multimetro tra i due negativi.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Colleghiamo le batterie al contrario: positivo (+) con positivo (+). Poi misuriamo la tensione totale con il multimetro tra i due negativi.",
+            "spunto_per_classe": null,
+            "note": [
               "ATTENZIONE: non lasciare le batterie in antiserie per molto tempo! Le batterie si 'combattono' e potrebbero scaldarsi. Misura velocemente e poi scollega."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap5-esp2]"
@@ -279,15 +279,15 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Due batterie da 9V collegate al contrario. Il multimetro mostrera 18V, 9V, o 0V? Perche?",
-            "chiedi_alla_classe": "Se avete una batteria da 9V e una da 6V in antiserie, qual e la tensione totale? E quale delle due 'vince'?",
-            "attenzione_a": [
+            "step_corrente": "Due batterie da 9V collegate al contrario. Il multimetro mostrera 18V, 9V, o 0V? Perche?",
+            "spunto_per_classe": "Domanda: 'Se avete una batteria da 9V e una da 6V in antiserie, qual e la tensione totale? E quale delle due 'vince'?'",
+            "note": [
               "La risposta e 0V (o quasi 0V). Le due batterie spingono in direzioni opposte con la stessa forza e si annullano. Se una fosse da 9V e l'altra da 6V, il risultato sarebbe 3V."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Confondere antiserie con serie inversa (scambiare i terminali del multimetro)",
-                "fix": "In antiserie sono le BATTERIE ad essere collegate al contrario, non il multimetro! Positivo con positivo. Il multimetro resta collegato normalmente."
+                "problema": "Confondere antiserie con serie inversa (scambiare i terminali del multimetro)",
+                "soluzione_neutra": "In antiserie sono le BATTERIE ad essere collegate al contrario, non il multimetro! Positivo con positivo. Il multimetro resta collegato normalmente."
               }
             ]
           },
@@ -309,12 +309,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Il multimetro mostra circa 0V! Le due batterie da 9V si annullano completamente. E come un tiro alla fune dove nessuno vince.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il multimetro mostra circa 0V! Le due batterie da 9V si annullano completamente. E come un tiro alla fune dove nessuno vince.",
+            "spunto_per_classe": null,
+            "note": [
               "Se il valore non e esattamente 0V (es. 0.2V), e perche le due batterie non hanno esattamente la stessa carica. Una batteria piu nuova 'vince' leggermente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -332,12 +332,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "In antiserie le tensioni si SOTTRAGGONO. Due batterie uguali: 9V - 9V = 0V. Se fossero diverse (es. 9V e 6V): 9V - 6V = 3V dalla parte della batteria piu forte.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "In antiserie le tensioni si SOTTRAGGONO. Due batterie uguali: 9V - 9V = 0V. Se fossero diverse (es. 9V e 6V): 9V - 6V = 3V dalla parte della batteria piu forte.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap del capitolo: Serie → tensioni si sommano. Antiserie → tensioni si sottraggono. Parallelo → la tensione resta uguale ma la capacita aumenta (per batterie future)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

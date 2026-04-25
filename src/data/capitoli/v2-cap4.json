@@ -78,12 +78,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi scopriamo cosa succede mettendo due resistori in parallelo: non si sommano, come ci si aspetterebbe! La resistenza totale e MENO di ciascuno dei due.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi scopriamo cosa succede mettendo due resistori in parallelo: non si sommano, come ci si aspetterebbe! La resistenza totale e MENO di ciascuno dei due.",
+            "spunto_per_classe": null,
+            "note": [
               "Analogia chiave: due porte d'uscita affiancate fanno passare piu persone di una sola porta. Due percorsi paralleli per la corrente riducono la resistenza."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -97,12 +97,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mettiamo i due resistori da 1kohm in parallelo sulla breadboard: entrambi collegati tra le stesse due righe. Poi misuriamo la resistenza totale con il multimetro.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra chiaramente che in parallelo i terminali sono collegati agli stessi punti. Il multimetro in modalita ohmmetro (circuito SPENTO!) misura la resistenza totale."
+            "step_corrente": "Mettiamo i due resistori da 1kohm in parallelo sulla breadboard: entrambi collegati tra le stesse due righe. Poi misuriamo la resistenza totale con il multimetro.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione chiaramente che in parallelo i terminali sono collegati agli stessi punti. Il multimetro in modalita ohmmetro (circuito SPENTO!) misura la resistenza totale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap4-esp1]"
@@ -118,15 +118,15 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Due resistori da 1kohm in parallelo: la resistenza totale sara 2kohm (si sommano), 1kohm (resta uguale), o 500ohm (si dimezza)? Ragionate e fate la vostra previsione!",
-            "chiedi_alla_classe": "Se in serie le resistenze si sommano, perche in parallelo non succede lo stesso? Cosa cambia nel percorso della corrente?",
-            "attenzione_a": [
+            "step_corrente": "Due resistori da 1kohm in parallelo: la resistenza totale sara 2kohm (si sommano), 1kohm (resta uguale), o 500ohm (si dimezza)? Ragionate e fate la vostra previsione!",
+            "spunto_per_classe": "Domanda: 'Se in serie le resistenze si sommano, perche in parallelo non succede lo stesso? Cosa cambia nel percorso della corrente?'",
+            "note": [
               "La risposta e 500ohm. La formula: 1/Rtot = 1/R1 + 1/R2 = 1/1000 + 1/1000 = 2/1000. Rtot = 500ohm. Per resistori uguali e semplice: Rtot = R/n."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensare che resistenze in parallelo si sommano",
-                "fix": "In parallelo la corrente ha PIU percorsi, quindi la resistenza totale DIMINUISCE. E l'opposto della serie!"
+                "problema": "Pensare che resistenze in parallelo si sommano",
+                "soluzione_neutra": "In parallelo la corrente ha PIU percorsi, quindi la resistenza totale DIMINUISCE. E l'opposto della serie!"
               }
             ]
           },
@@ -148,12 +148,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Misurate con il multimetro: la resistenza totale e circa 500ohm! Due resistori da 1kohm in parallelo danno esattamente la meta.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Misurate con il multimetro: la resistenza totale e circa 500ohm! Due resistori da 1kohm in parallelo danno esattamente la meta.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia entrambi i resistori. Fai la dimostrazione fisica: togli un resistore e misura di nuovo — torna a 1kohm. Rimettilo — dimezza a 500ohm. L'effetto e immediato e visibile."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -171,12 +171,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "In parallelo la resistenza diminuisce! Con 2 resistori uguali, Rtot = R/2. Con 3, Rtot = R/3. Piu resistori in parallelo, meno resistenza totale.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "In parallelo la resistenza diminuisce! Con 2 resistori uguali, Rtot = R/2. Con 3, Rtot = R/3. Piu resistori in parallelo, meno resistenza totale.",
+            "spunto_per_classe": null,
+            "note": [
               "Formula generale: 1/Rtot = 1/R1 + 1/R2 + ... Per resistori uguali: Rtot = R/n. Per due diversi: Rtot = (R1*R2)/(R1+R2)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -277,12 +277,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "L'ultima volta i resistori in parallelo dimezzavano la resistenza. Oggi li mettiamo in serie: uno dietro l'altro. Cosa succede alla resistenza totale?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "L'ultima volta i resistori in parallelo dimezzavano la resistenza. Oggi li mettiamo in serie: uno dietro l'altro. Cosa succede alla resistenza totale?",
+            "spunto_per_classe": null,
+            "note": [
               "In serie le resistenze si sommano: e intuitivo come sommare le lunghezze di tre tubi in fila. 1kohm + 1kohm + 1kohm = 3kohm."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -296,12 +296,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Montiamo i tre resistori in serie sulla breadboard: l'uscita del primo va all'ingresso del secondo, l'uscita del secondo all'ingresso del terzo. Un percorso unico!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai tracciare il percorso con il dito: la corrente deve attraversare tutti e tre i resistori, uno dopo l'altro. Non ci sono scorciatoie!"
+            "step_corrente": "Montiamo i tre resistori in serie sulla breadboard: l'uscita del primo va all'ingresso del secondo, l'uscita del secondo all'ingresso del terzo. Un percorso unico!",
+            "spunto_per_classe": null,
+            "note": [
+              "tracciare il percorso con il dito: la corrente deve attraversare tutti e tre i resistori, uno dopo l'altro. Non ci sono scorciatoie!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap4-esp2]"
@@ -317,15 +317,15 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Tre resistori da 1kohm in serie: quanto vale la resistenza totale? E se uno dei tre si rompesse (circuito aperto), cosa succederebbe alla corrente?",
-            "chiedi_alla_classe": "In parallelo con 2 resistori la resistenza dimezzava. In serie con 3 resistori, triplica? Perche in serie le resistenze si sommano ma in parallelo no?",
-            "attenzione_a": [
+            "step_corrente": "Tre resistori da 1kohm in serie: quanto vale la resistenza totale? E se uno dei tre si rompesse (circuito aperto), cosa succederebbe alla corrente?",
+            "spunto_per_classe": "Domanda: 'In parallelo con 2 resistori la resistenza dimezzava. In serie con 3 resistori, triplica? Perche in serie le resistenze si sommano ma in parallelo no?'",
+            "note": [
               "Rtot = 1k + 1k + 1k = 3kohm. Se uno si rompe, il circuito si interrompe completamente (come le luci di Natale vecchie!)."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Confondere serie e parallelo nella disposizione sulla breadboard",
-                "fix": "In serie: i resistori sono in FILA, l'uscita di uno va all'ingresso del successivo. In parallelo: i terminali sono collegati agli STESSI punti."
+                "problema": "Confondere serie e parallelo nella disposizione sulla breadboard",
+                "soluzione_neutra": "In serie: i resistori sono in FILA, l'uscita di uno va all'ingresso del successivo. In parallelo: i terminali sono collegati agli STESSI punti."
               }
             ]
           },
@@ -347,12 +347,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Misurate con il multimetro tra il primo e l'ultimo terminale: circa 3kohm! Provate a rimuovere un resistore e rimisurare: 2kohm. La somma funziona!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Misurate con il multimetro tra il primo e l'ultimo terminale: circa 3kohm! Provate a rimuovere un resistore e rimisurare: 2kohm. La somma funziona!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia tutti e tre i resistori. Fai il confronto diretto: 1 resistore = 1kohm, 2 in serie = 2kohm, 3 in serie = 3kohm. La proporzionalita e evidente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -371,12 +371,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "In serie: Rtot = R1 + R2 + R3. Tre da 1kohm = 3kohm. In parallelo (lezione scorsa) la resistenza diminuisce. Ora conoscete entrambe le configurazioni!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "In serie: Rtot = R1 + R2 + R3. Tre da 1kohm = 3kohm. In parallelo (lezione scorsa) la resistenza diminuisce. Ora conoscete entrambe le configurazioni!",
+            "spunto_per_classe": null,
+            "note": [
               "Tabella di confronto: Serie: Rtot = R1+R2+R3 (aumenta). Parallelo: 1/Rtot = 1/R1+1/R2+1/R3 (diminuisce). La prossima volta combinano le due!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -486,12 +486,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi facciamo un esperimento elegante: con 3 resistori da 1kohm in serie e una batteria da 9V, creiamo 3 punti a tensione diversa: 3V, 6V e 9V. E il partitore di tensione!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi facciamo un esperimento elegante: con 3 resistori da 1kohm in serie e una batteria da 9V, creiamo 3 punti a tensione diversa: 3V, 6V e 9V. E il partitore di tensione!",
+            "spunto_per_classe": null,
+            "note": [
               "Il partitore e fondamentale in elettronica: e il modo piu semplice per ottenere una tensione diversa da quella della batteria. Si usa ovunque!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -505,12 +505,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito: batteria 9V → R1 (1kohm) → R2 (1kohm) → R3 (1kohm) → massa. Tra ogni resistore c'e un punto con una tensione diversa. Misuriamo con il voltmetro!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il circuito: batteria 9V → R1 (1kohm) → R2 (1kohm) → R3 (1kohm) → massa. Tra ogni resistore c'e un punto con una tensione diversa. Misuriamo con il voltmetro!",
+            "spunto_per_classe": null,
+            "note": [
               "Identifica i 4 nodi: 9V (prima di R1), 6V (tra R1 e R2), 3V (tra R2 e R3), 0V (dopo R3). Il multimetro in modalita voltmetro, puntale nero a massa."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap4-esp3]"
@@ -526,15 +526,15 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "9V diviso equamente tra 3 resistori uguali: quanta tensione cade su ciascuno? E se un resistore fosse da 2kohm e gli altri da 1kohm, come cambierebbe la divisione?",
-            "chiedi_alla_classe": "Possiamo ottenere esattamente 5V dalla nostra batteria da 9V usando solo resistori? Come scegliereste i valori?",
-            "attenzione_a": [
+            "step_corrente": "9V diviso equamente tra 3 resistori uguali: quanta tensione cade su ciascuno? E se un resistore fosse da 2kohm e gli altri da 1kohm, come cambierebbe la divisione?",
+            "spunto_per_classe": "Domanda: 'Possiamo ottenere esattamente 5V dalla nostra batteria da 9V usando solo resistori? Come scegliereste i valori?'",
+            "note": [
               "Con resistori uguali: 9V/3 = 3V ciascuno. Con uno da 2k e due da 1k (totale 4k): il 2k prende 4.5V, ciascun 1k prende 2.25V. La tensione si divide in proporzione alla resistenza."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Misurare la tensione ai capi di un solo resistore con i puntali invertiti",
-                "fix": "Per misurare la caduta su R2, il puntale rosso va al nodo superiore di R2 e il nero al nodo inferiore. Se leggi un valore negativo, inverti i puntali!"
+                "problema": "Misurare la tensione ai capi di un solo resistore con i puntali invertiti",
+                "soluzione_neutra": "Per misurare la caduta su R2, il puntale rosso va al nodo superiore di R2 e il nero al nodo inferiore. Se leggi un valore negativo, inverti i puntali!"
               }
             ]
           },
@@ -556,12 +556,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Misurate le tensioni in ogni punto! Tra batteria+ e massa: 9V. Tra R1-R2 e massa: circa 6V. Tra R2-R3 e massa: circa 3V. Ogni resistore 'mangia' 3V!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai compilare una tabella: Punto | Tensione attesa | Tensione misurata. I valori dovrebbero corrispondere quasi esattamente."
+            "step_corrente": "Misurate le tensioni in ogni punto! Tra batteria+ e massa: 9V. Tra R1-R2 e massa: circa 6V. Tra R2-R3 e massa: circa 3V. Ogni resistore 'mangia' 3V!",
+            "spunto_per_classe": null,
+            "note": [
+              "compilare una tabella: Punto | Tensione attesa | Tensione misurata. I valori dovrebbero corrispondere quasi esattamente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -580,12 +580,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il partitore di tensione e uno dei circuiti piu importanti dell'elettronica! Con resistori in serie, potete creare qualsiasi tensione intermedia dalla vostra batteria.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il partitore di tensione e uno dei circuiti piu importanti dell'elettronica! Con resistori in serie, potete creare qualsiasi tensione intermedia dalla vostra batteria.",
+            "spunto_per_classe": null,
+            "note": [
               "Formula: Vout = Vin * R2/(R1+R2) per un partitore a 2 resistori. Usata ovunque: sensori, interfacce, alimentatori."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

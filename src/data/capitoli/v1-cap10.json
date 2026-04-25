@@ -128,12 +128,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi i ragazzi scoprono la fotoresistenza — un componente che cambia resistenza DA SOLO in base alla luce!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi i ragazzi scoprono la fotoresistenza — un componente che cambia resistenza DA SOLO in base alla luce!",
+            "spunto_per_classe": null,
+            "note": [
               "Ricorda il potenziometro: 'La manopola cambiava la resistenza. Ma se il componente reagisse alla LUCE da solo, senza manopola?' La fotoresistenza non ha polarità."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -147,12 +147,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra la fotoresistenza: 2 piedini, senza polarità. Va collegata uno dopo l'altro con il LED e il resistore di protezione.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione la fotoresistenza: 2 piedini, senza polarità. Va collegata uno dopo l'altro con il LED e il resistore di protezione.",
+            "spunto_per_classe": null,
+            "note": [
               "Dai la fotoresistenza prima di montare il circuito. Chiedi: 'Cosa notate quando la coprite con la mano?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap10-esp1]"
@@ -168,23 +168,23 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Cosa succede al LED quando copri la fotoresistenza con la mano? E quando la illumini con la torcia del telefono?",
-            "chiedi_alla_classe": "Il circuito può 'sentire' se c'è luce o buio? Come fa la fotoresistenza a sapere?",
-            "attenzione_a": [
+            "step_corrente": "Cosa succede al LED quando copri la fotoresistenza con la mano? E quando la illumini con la torcia del telefono?",
+            "spunto_per_classe": "Domanda: 'Il circuito può 'sentire' se c'è luce o buio? Come fa la fotoresistenza a sapere?'",
+            "note": [
               "Serve un ambiente non troppo illuminato per vedere la differenza. Coprire completamente con la mano, poi illuminare con torcia."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non vedono differenza di luminosità",
-                "fix": "Serve una stanza non troppo illuminata. Coprire completamente con la mano, poi illuminare con torcia del telefono."
+                "problema": "Non vedono differenza di luminosità",
+                "soluzione_neutra": "Serve una stanza non troppo illuminata. Coprire completamente con la mano, poi illuminare con torcia del telefono."
               },
               {
-                "mistake": "Fotoresistenza al posto sbagliato",
-                "fix": "Va collegata nella stessa fila del LED, come una resistenza normale. È come il potenziometro, ma la manopola è la luce stessa."
+                "problema": "Fotoresistenza al posto sbagliato",
+                "soluzione_neutra": "Va collegata nella stessa fila del LED, come una resistenza normale. È come il potenziometro, ma la manopola è la luce stessa."
               },
               {
-                "mistake": "LED sempre spento o sempre acceso",
-                "fix": "Controllare il valore della resistenza fissa — se troppo alto, il LED non si accende mai."
+                "problema": "LED sempre spento o sempre acceso",
+                "soluzione_neutra": "Controllare il valore della resistenza fissa — se troppo alto, il LED non si accende mai."
               }
             ]
           },
@@ -211,12 +211,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e muovi il cursore luminosità sulla fotoresistenza. Con luce il LED si accende, al buio si spegne!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e muovi il cursore luminosità sulla fotoresistenza. Con luce il LED si accende, al buio si spegne!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia la fotoresistenza. Spiega: 'Con luce, la porta si apre e la corrente passa. Al buio, la porta si chiude.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -234,12 +234,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il primo SENSORE — un componente che reagisce al mondo esterno senza che lo tocchiamo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Dove ci sono sensori di luce nella vita reale?' (lampioni, luci auto, telefono). E: 'Possiamo farlo al contrario? LED acceso AL BUIO?'"
+            "step_corrente": "Oggi abbiamo scoperto il primo SENSORE — un componente che reagisce al mondo esterno senza che lo tocchiamo!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Dove ci sono sensori di luce nella vita reale?' (lampioni, luci auto, telefono). E: 'Possiamo farlo al contrario? LED acceso AL BUIO?'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -384,12 +384,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi cambiamo il LED: da rosso a blu. Serve la stessa quantità di luce per accenderlo? Scopriamolo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi cambiamo il LED: da rosso a blu. Serve la stessa quantità di luce per accenderlo? Scopriamolo!",
+            "spunto_per_classe": null,
+            "note": [
               "Stesso circuito dell'esperimento 1 ma con LED blu. Il blu ha bisogno di più corrente, quindi serve più luce sulla fotoresistenza."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -403,12 +403,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Stesso circuito dell'esperimento 1, ma con LED blu. Muovi il cursore luce e confronta il punto di accensione.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Stesso circuito dell'esperimento 1, ma con LED blu. Muovi il cursore luce e confronta il punto di accensione.",
+            "spunto_per_classe": null,
+            "note": [
               "Se possibile, mostra il confronto: prima carica l'esperimento 1 (LED rosso), poi questo (LED blu). La differenza è visibile."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap10-esp2]"
@@ -424,19 +424,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Muovi il cursore luce: il LED blu si accende con più luce del rosso! Perché?",
-            "chiedi_alla_classe": "Se il blu si accende con più luce, quale colore di LED si accenderebbe per primo in una stanza che si illumina lentamente?",
-            "attenzione_a": [
+            "step_corrente": "Muovi il cursore luce: il LED blu si accende con più luce del rosso! Perché?",
+            "spunto_per_classe": "Domanda: 'Se il blu si accende con più luce, quale colore di LED si accenderebbe per primo in una stanza che si illumina lentamente?'",
+            "note": [
               "Il LED blu ha bisogno di più corrente per accendersi. La fotoresistenza deve avere una resistenza più bassa (=più luce) per fornire abbastanza corrente."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non vedono differenza con il rosso",
-                "fix": "Confronta con il ricordo dell'esperimento 1: il rosso si accendeva con meno luce. Il blu ha bisogno di più luce."
+                "problema": "Non vedono differenza con il rosso",
+                "soluzione_neutra": "Confronta con il ricordo dell'esperimento 1: il rosso si accendeva con meno luce. Il blu ha bisogno di più luce."
               },
               {
-                "mistake": "Pensano che il LED sia difettoso",
-                "fix": "Il LED funziona! Ogni colore ha bisogno di una quantità diversa di corrente. Il blu è il più 'esigente'."
+                "problema": "Pensano che il LED sia difettoso",
+                "soluzione_neutra": "Il LED funziona! Ogni colore ha bisogno di una quantità diversa di corrente. Il blu è il più 'esigente'."
               }
             ]
           },
@@ -463,12 +463,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e muovi il cursore: il LED blu si accende con più luce del rosso! Ogni colore ha la sua soglia.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e muovi il cursore: il LED blu si accende con più luce del rosso! Ogni colore ha la sua soglia.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia la fotoresistenza e il LED. Spiega: 'Il blu è più esigente — ha bisogno che la fotoresistenza lasci passare più corrente.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -486,12 +486,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto che ogni colore di LED ha una soglia diversa con la fotoresistenza. Il blu è il più esigente!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se mettessimo 3 fotoresistenze, una per ogni colore del LED RGB?' Anticipa l'esperimento 3."
+            "step_corrente": "Oggi abbiamo scoperto che ogni colore di LED ha una soglia diversa con la fotoresistenza. Il blu è il più esigente!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se mettessimo 3 fotoresistenze, una per ogni colore del LED RGB?' Anticipa l'esperimento 3."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -683,12 +683,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi 3 fotoresistenze controllano i 3 colori del LED RGB! Copri o illumina ogni sensore per cambiare colore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi 3 fotoresistenze controllano i 3 colori del LED RGB! Copri o illumina ogni sensore per cambiare colore.",
+            "spunto_per_classe": null,
+            "note": [
               "Tre canali indipendenti: LDR1→R1→rosso, LDR2→R2→verde, LDR3→R3→blu. Ogni fotoresistenza controlla un solo canale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -702,12 +702,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra i 3 blocchi: ogni fotoresistenza è collegata a un resistore che va a un canale diverso del LED RGB.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione i 3 blocchi: ogni fotoresistenza è collegata a un resistore che va a un canale diverso del LED RGB.",
+            "spunto_per_classe": null,
+            "note": [
               "Il circuito è grande ma modulare: 3 blocchi identici (LDR→R→canale) che condividono lo stesso LED RGB."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap10-esp3]"
@@ -723,19 +723,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Copri una fotoresistenza alla volta: quale colore si spegne? Illuminale tutte: il LED diventa bianco!",
-            "chiedi_alla_classe": "Come fareste a creare il viola usando solo le mani e le fotoresistenze? (copri il verde!)",
-            "attenzione_a": [
+            "step_corrente": "Copri una fotoresistenza alla volta: quale colore si spegne? Illuminale tutte: il LED diventa bianco!",
+            "spunto_per_classe": "Domanda: 'Come fareste a creare il viola usando solo le mani e le fotoresistenze? (copri il verde!)'",
+            "note": [
               "Se un canale non risponde, controllare il collegamento specifico LDR→R→canale. Ogni blocco è indipendente."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Un canale non risponde alla luce",
-                "fix": "Controlla il collegamento: la fotoresistenza deve essere collegata al resistore, e il resistore al canale corrispondente."
+                "problema": "Un canale non risponde alla luce",
+                "soluzione_neutra": "Controllo il collegamento: la fotoresistenza deve essere collegata al resistore, e il resistore al canale corrispondente."
               },
               {
-                "mistake": "Tutti i colori si accendono/spengono insieme",
-                "fix": "Le 3 fotoresistenze devono avere ognuna il proprio collegamento al bus positivo. Non devono condividere il segnale."
+                "problema": "Tutti i colori si accendono/spengono insieme",
+                "soluzione_neutra": "Le 3 fotoresistenze devono avere ognuna il proprio collegamento al bus positivo. Non devono condividere il segnale."
               }
             ]
           },
@@ -762,12 +762,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e sperimenta con la luce! Ogni fotoresistenza controlla un colore. Copri il verde: resta rosso+blu = viola!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e sperimenta con la luce! Ogni fotoresistenza controlla un colore. Copri il verde: resta rosso+blu = viola!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia le 3 fotoresistenze. Chiedi di creare colori specifici coprendo le giuste combinazioni."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -786,12 +786,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo costruito un circuito con 3 sensori indipendenti — il circuito 'vede' la luce da 3 punti!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Dove si usano più sensori di luce nella vita reale?' (telecamere, robot, sensori di parcheggio)"
+            "step_corrente": "Oggi abbiamo costruito un circuito con 3 sensori indipendenti — il circuito 'vede' la luce da 3 punti!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Dove si usano più sensori di luce nella vita reale?' (telecamere, robot, sensori di parcheggio)"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -966,12 +966,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi un LED ne accende un altro! Il LED bianco illumina la fotoresistenza, che accende il LED blu. Una catena di luce!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi un LED ne accende un altro! Il LED bianco illumina la fotoresistenza, che accende il LED blu. Una catena di luce!",
+            "spunto_per_classe": null,
+            "note": [
               "Due circuiti separati che comunicano attraverso la luce. Il LED bianco è nel circuito 1 (sopra), la fotoresistenza e il LED blu nel circuito 2 (sotto)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -985,12 +985,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra i due circuiti: sopra il LED bianco con il suo resistore, sotto la fotoresistenza con il LED blu.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che i due circuiti non hanno fili in comune (tranne la batteria). Comunicano solo attraverso la luce!"
+            "step_corrente": "Visualizzazione i due circuiti: sopra il LED bianco con il suo resistore, sotto la fotoresistenza con il LED blu.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che i due circuiti non hanno fili in comune (tranne la batteria). Comunicano solo attraverso la luce!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap10-esp4]"
@@ -1006,19 +1006,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il LED bianco è acceso: il LED blu si accende? Copri la fotoresistenza con la mano: cosa succede?",
-            "chiedi_alla_classe": "I due circuiti non hanno fili in comune. Come fa il LED bianco a 'parlare' con il LED blu?",
-            "attenzione_a": [
+            "step_corrente": "Il LED bianco è acceso: il LED blu si accende? Copri la fotoresistenza con la mano: cosa succede?",
+            "spunto_per_classe": "Domanda: 'I due circuiti non hanno fili in comune. Come fa il LED bianco a 'parlare' con il LED blu?'",
+            "note": [
               "Se il LED blu non si accende, la fotoresistenza potrebbe essere troppo lontana dal LED bianco. Devono essere vicini."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED blu non si accende",
-                "fix": "La fotoresistenza deve essere illuminata dal LED bianco. Avvicina i due componenti o aumenta la luminosità."
+                "problema": "Il LED blu non si accende",
+                "soluzione_neutra": "La fotoresistenza deve essere illuminata dal LED bianco. Avvicina i due componenti o aumenta la luminosità."
               },
               {
-                "mistake": "Pensano che i circuiti siano collegati",
-                "fix": "Guarda bene: non ci sono fili tra il LED bianco e la fotoresistenza. Comunicano solo attraverso la luce!"
+                "problema": "Pensano che i circuiti siano collegati",
+                "soluzione_neutra": "Guarda bene: non ci sono fili tra il LED bianco e la fotoresistenza. Comunicano solo attraverso la luce!"
               }
             ]
           },
@@ -1045,12 +1045,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: il LED bianco illumina la fotoresistenza che accende il LED blu! Luce → sensore → luce!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: il LED bianco illumina la fotoresistenza che accende il LED blu! Luce → sensore → luce!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED bianco e la fotoresistenza. Spiega: 'Questo è un accoppiamento ottico — due circuiti che parlano con la luce.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1069,12 +1069,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto l'accoppiamento ottico: due circuiti che comunicano attraverso la luce, senza fili!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se potessi regolare la luminosità del LED bianco con una manopola?' Anticipa l'esperimento 5."
+            "step_corrente": "Oggi abbiamo scoperto l'accoppiamento ottico: due circuiti che comunicano attraverso la luce, senza fili!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se potessi regolare la luminosità del LED bianco con una manopola?' Anticipa l'esperimento 5."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1269,12 +1269,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi aggiungiamo il potenziometro al circuito! La manopola regola il LED bianco, che a sua volta controlla il LED blu attraverso la fotoresistenza.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi aggiungiamo il potenziometro al circuito! La manopola regola il LED bianco, che a sua volta controlla il LED blu attraverso la fotoresistenza.",
+            "spunto_per_classe": null,
+            "note": [
               "Catena a 3 livelli: potenziometro → LED bianco → luce → fotoresistenza → LED blu. Ogni livello influenza il successivo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1288,12 +1288,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito: il potenziometro controlla il LED bianco (sopra). La fotoresistenza e il LED blu sono sotto.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega la catena: 'Girando la manopola, regoli il LED bianco. Il LED bianco illumina la fotoresistenza. La fotoresistenza accende il LED blu.'"
+            "step_corrente": "Visualizzazione il circuito: il potenziometro controlla il LED bianco (sopra). La fotoresistenza e il LED blu sono sotto.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione la catena: 'Girando la manopola, regoli il LED bianco. Il LED bianco illumina la fotoresistenza. La fotoresistenza accende il LED blu.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap10-esp5]"
@@ -1309,19 +1309,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Gira la manopola: il LED bianco cambia luminosità. Cosa succede al LED blu?",
-            "chiedi_alla_classe": "Stai girando una manopola, ma il LED blu cambia luminosità senza essere collegato alla manopola. Come è possibile?",
-            "attenzione_a": [
+            "step_corrente": "Gira la manopola: il LED bianco cambia luminosità. Cosa succede al LED blu?",
+            "spunto_per_classe": "Domanda: 'Stai girando una manopola, ma il LED blu cambia luminosità senza essere collegato alla manopola. Come è possibile?'",
+            "note": [
               "Se il LED blu non cambia, la fotoresistenza potrebbe non ricevere abbastanza luce. Avvicinare LED bianco e fotoresistenza."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED blu non risponde alla manopola",
-                "fix": "Controlla che il LED bianco sia abbastanza vicino alla fotoresistenza. La luce del LED bianco deve colpire il sensore."
+                "problema": "Il LED blu non risponde alla manopola",
+                "soluzione_neutra": "Controllo che il LED bianco sia abbastanza vicino alla fotoresistenza. La luce del LED bianco deve colpire il sensore."
               },
               {
-                "mistake": "Non capiscono la catena indiretta",
-                "fix": "La manopola non è collegata al LED blu! La catena è: manopola → LED bianco → luce → fotoresistenza → LED blu."
+                "problema": "Non capiscono la catena indiretta",
+                "soluzione_neutra": "La manopola non è collegata al LED blu! La catena è: manopola → LED bianco → luce → fotoresistenza → LED blu."
               }
             ]
           },
@@ -1348,12 +1348,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e gira la manopola: il LED bianco cambia, e il LED blu lo segue! Controllo indiretto a catena!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e gira la manopola: il LED bianco cambia, e il LED blu lo segue! Controllo indiretto a catena!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il potenziometro e il LED blu. Spiega: 'Giri la manopola ma controlli il LED blu indirettamente, attraverso la luce.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1372,12 +1372,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il controllo indiretto: la manopola controlla il LED blu attraverso una catena di luce!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se aggiungessimo un pulsante ON/OFF prima di tutto?' Anticipa l'esperimento 6."
+            "step_corrente": "Oggi abbiamo scoperto il controllo indiretto: la manopola controlla il LED blu attraverso una catena di luce!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se aggiungessimo un pulsante ON/OFF prima di tutto?' Anticipa l'esperimento 6."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1536,12 +1536,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi aggiungiamo un pulsante al circuito con la fotoresistenza. Servono DUE condizioni per accendere il LED!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi aggiungiamo un pulsante al circuito con la fotoresistenza. Servono DUE condizioni per accendere il LED!",
+            "spunto_per_classe": null,
+            "note": [
               "Pulsante e fotoresistenza sono nella stessa catena: la corrente deve passare da entrambi. Se uno dei due 'dice no', il LED resta spento."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1555,12 +1555,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra la catena: batteria → pulsante → fotoresistenza → resistore → LED → batteria. Entrambi devono 'dire sì'!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che il pulsante e la fotoresistenza sono come due porte in fila: devi aprire ENTRAMBE per passare."
+            "step_corrente": "Visualizzazione la catena: batteria → pulsante → fotoresistenza → resistore → LED → batteria. Entrambi devono 'dire sì'!",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che il pulsante e la fotoresistenza sono come due porte in fila: devi aprire ENTRAMBE per passare."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap10-esp6]"
@@ -1576,19 +1576,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi il pulsante senza luce: LED spento. Illumina senza premere: LED spento. Premi E illumina: LED acceso!",
-            "chiedi_alla_classe": "Quante condizioni servono per accendere il LED? Una sola basta?",
-            "attenzione_a": [
-              "Fai provare tutte e 4 le combinazioni: (no pulsante, no luce), (pulsante, no luce), (no pulsante, luce), (pulsante, luce). Solo l'ultima accende."
+            "step_corrente": "Pressione il pulsante senza luce: LED spento. Illumina senza premere: LED spento. Premi E illumina: LED acceso!",
+            "spunto_per_classe": "Domanda: 'Quante condizioni servono per accendere il LED? Una sola basta?'",
+            "note": [
+              "provare tutte e 4 le combinazioni: (no pulsante, no luce), (pulsante, no luce), (no pulsante, luce), (pulsante, luce). Solo l'ultima accende."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED si accende senza premere il pulsante",
-                "fix": "Il pulsante potrebbe non essere nel circuito correttamente. La corrente non deve poter passare senza il pulsante premuto."
+                "problema": "Il LED si accende senza premere il pulsante",
+                "soluzione_neutra": "Il pulsante potrebbe non essere nel circuito correttamente. La corrente non deve poter passare senza il pulsante premuto."
               },
               {
-                "mistake": "Non capiscono perché servono entrambe le condizioni",
-                "fix": "Il pulsante e la fotoresistenza sono come due porte: devi aprire ENTRAMBE per far passare la corrente."
+                "problema": "Non capiscono perché servono entrambe le condizioni",
+                "soluzione_neutra": "Il pulsante e la fotoresistenza sono come due porte: devi aprire ENTRAMBE per far passare la corrente."
               }
             ]
           },
@@ -1615,12 +1615,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: servono DUE condizioni — pulsante premuto E luce sulla fotoresistenza. Come una porta con due serrature!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: servono DUE condizioni — pulsante premuto E luce sulla fotoresistenza. Come una porta con due serrature!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia pulsante e fotoresistenza. Spiega: 'Questa è la logica AND — entrambe le condizioni devono essere vere!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1639,12 +1639,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto la logica AND: servono DUE condizioni contemporaneamente per accendere il LED!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi abbiamo scoperto la logica AND: servono DUE condizioni contemporaneamente per accendere il LED!",
+            "spunto_per_classe": null,
+            "note": [
               "Riassumi il capitolo: 'Dalla fotoresistenza singola alla catena ottica al doppio controllo — il sensore reagisce al mondo esterno!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

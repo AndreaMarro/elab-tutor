@@ -236,12 +236,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "È il PROGETTO FINALE del Volume 2! Costruiamo un robot che segue la luce da solo, senza alcuna istruzione scritta — solo con componenti elettronici collegati in modo intelligente!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai un recap di tutto quello che gli studenti hanno imparato: 'Fototransistor (cap 9): sente la luce. MOSFET (cap 9): interruttore comandato da tensione. Motore DC (cap 10): trasforma corrente in rotazione. Diodo (cap 11): lascia passare la corrente in una sola direzione. Oggi usiamo tutto insieme!'"
+            "step_corrente": "È il PROGETTO FINALE del Volume 2! Costruiamo un robot che segue la luce da solo, senza alcuna istruzione scritta — solo con componenti elettronici collegati in modo intelligente!",
+            "spunto_per_classe": null,
+            "note": [
+              "un recap di tutto quello che gli studenti hanno imparato: 'Fototransistor (cap 9): sente la luce. MOSFET (cap 9): interruttore comandato da tensione. Motore DC (cap 10): trasforma corrente in rotazione. Diodo (cap 11): lascia passare la corrente in una sola direzione. Oggi usiamo tutto insieme!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -255,12 +255,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il robot ha 3 sezioni: OCCHI (2 fototransistor), MUSCOLI (2 MOSFET), GAMBE (2 motori). Il segreto è la cross-connection: l'occhio destro controlla la gamba sinistra e viceversa!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega la cross-connection con una dimostrazione: 'Se la luce viene da destra, l'occhio destro (pt1) si attiva. Il suo segnale va, a X, al MOSFET sinistro (mos2), che fa girare il motore sinistro. Il robot gira verso destra, cioè verso la luce!' Disegna la X sulla lavagna. I diodi proteggono i MOSFET quando i motori si fermano (forza controelettromotrice)."
+            "step_corrente": "Il robot ha 3 sezioni: OCCHI (2 fototransistor), MUSCOLI (2 MOSFET), GAMBE (2 motori). Il segreto è la cross-connection: l'occhio destro controlla la gamba sinistra e viceversa!",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione la cross-connection con una dimostrazione: 'Se la luce viene da destra, l'occhio destro (pt1) si attiva. Il suo segnale va, a X, al MOSFET sinistro (mos2), che fa girare il motore sinistro. Il robot gira verso destra, cioè verso la luce!' Disegna la X sulla lavagna. I diodi proteggono i MOSFET quando i motori si fermano (forza controelettromotrice)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap12-esp1]"
@@ -276,19 +276,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il robot usa 4 tipi diversi di componenti lavorando insieme. Riuscite a tracciare il percorso del segnale dalla luce fino al motore?",
-            "chiedi_alla_classe": "Perché il robot usa la cross-connection (a X) invece di collegare direttamente occhio destro al motore destro? Cosa succederebbe se collegassimo occhio destro al motore destro?",
-            "attenzione_a": [
-              "Chiedi agli studenti di spiegare il percorso del segnale: 'La luce entra nel fototransistor (collettore → emettitore). Il segnale dall'emettitore va, a X, al Gate del MOSFET opposto. Il Gate apre il MOSFET e la corrente scorre dal bus+ attraverso il motore verso il Source del MOSFET.' Fai disegnare la X sulla lavagna."
+            "step_corrente": "Il robot usa 4 tipi diversi di componenti lavorando insieme. Riuscite a tracciare il percorso del segnale dalla luce fino al motore?",
+            "spunto_per_classe": "Domanda: 'Perché il robot usa la cross-connection (a X) invece di collegare direttamente occhio destro al motore destro? Cosa succederebbe se collegassimo occhio destro al motore destro?'",
+            "note": [
+              "Domanda: agli studenti di spiegare il percorso del segnale: 'La luce entra nel fototransistor (collettore → emettitore). Il segnale dall'emettitore va, a X, al Gate del MOSFET opposto. Il Gate apre il MOSFET e la corrente scorre dal bus+ attraverso il motore verso il Source del MOSFET.' Fai disegnare la X sulla lavagna."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il robot gira nella direzione sbagliata rispetto alla luce",
-                "fix": "Controlla la cross-connection! Se pt1 (sinistra) è collegato a mos1 (sinistra) invece che a mos2 (destra), il robot si allontana dalla luce invece di avvicinarsi. La X è fondamentale: ogni occhio controlla il motore OPPOSTO!"
+                "problema": "Il robot gira nella direzione sbagliata rispetto alla luce",
+                "soluzione_neutra": "Controllo la cross-connection! Se pt1 (sinistra) è collegato a mos1 (sinistra) invece che a mos2 (destra), il robot si allontana dalla luce invece di avvicinarsi. La X è fondamentale: ogni occhio controlla il motore OPPOSTO!"
               },
               {
-                "mistake": "I motori si avviano e poi il MOSFET si brucia (nel reale) o smette di funzionare",
-                "fix": "Ecco perché ci sono i diodi! Quando un motore si ferma, genera una piccola tensione inversa (forza controelettromotrice) che può danneggiare il MOSFET. Il diodo blocca questa tensione inversa, proteggendo il circuito."
+                "problema": "I motori si avviano e poi il MOSFET si brucia (nel reale) o smette di funzionare",
+                "soluzione_neutra": "Ecco perché ci sono i diodi! Quando un motore si ferma, genera una piccola tensione inversa (forza controelettromotrice) che può danneggiare il MOSFET. Il diodo blocca questa tensione inversa, proteggendo il circuito."
               }
             ]
           },
@@ -315,12 +315,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi usa il cursore della luce sui fototransistor: aumenta la luce su pt1 e guarda mot2 avviarsi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi usa il cursore della luce sui fototransistor: aumenta la luce su pt1 e guarda mot2 avviarsi!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i componenti nell'ordine del segnale: pt1 → filo verde a X → mos2 (Gate) → mot2. Poi ripeti per pt2 → mos1 → mot1. Mostra come i diodi d1 e d2 sono collegati 'al contrario' (catodo verso il positivo) per protezione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -344,12 +344,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "COMPLIMENTI! Avete costruito il Robot Segui Luce e completato il Volume 2! Un robot intelligente fatto solo con fototransistor, MOSFET, motori e diodi — zero istruzioni scritte!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "COMPLIMENTI! Avete costruito il Robot Segui Luce e completato il Volume 2! Un robot intelligente fatto solo con fototransistor, MOSFET, motori e diodi — zero istruzioni scritte!",
+            "spunto_per_classe": null,
+            "note": [
               "Celebra il momento! Fai un recap del viaggio del Volume 2: 'Avete imparato i fototransistor (cap 9), il MOSFET (cap 9), i motori DC (cap 10), i diodi (cap 11), e ora avete messo tutto insieme in un robot che pensa con l'elettronica!' Anticipa il Volume 3: circuiti ancora più intelligenti!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

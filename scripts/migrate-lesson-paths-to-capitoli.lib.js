@@ -42,23 +42,72 @@ export function extractClasseDisplay(phase) {
 }
 
 /**
+ * Trasforma testo imperativo (seconda persona / comando) in forma neutra nominale.
+ * PRINCIPIO ZERO: docente_sidebar non comanda, descrive.
+ *
+ * Heuristic regex transforms:
+ *   "Distribuisci/Distribuite X" -> "Distribuzione X"
+ *   "Togli/Rimuovi X" -> "Rimozione X"
+ *   "Chiedi/Domanda X" -> "Domanda: X"
+ *   "Mostra X" -> "Visualizzazione X"
+ *   "Non dare/fare X" -> "X: differire"
+ *   "Premi X" -> "Pressione X"
+ *   "Collega X" -> "Collegamento X"
+ *   imperativi -are/-ere/-ire generici -> rimuove "tu" e usa fallback descrittivo
+ */
+export function nominalize(text) {
+  if (!text || typeof text !== 'string') return text ?? '';
+  let s = text.trim();
+  // Pattern specifici comuni
+  const patterns = [
+    [/^Distribu(isci|ite|isce)\s+/i, 'Distribuzione '],
+    [/^(Togli|Togliete|Rimuovi|Rimuovete|Rimuove)\s+/i, 'Rimozione '],
+    [/^(Chiedi|Chiedete)\s*:?\s*/i, 'Domanda: '],
+    [/^(Mostra|Mostrate)\s+/i, 'Visualizzazione '],
+    [/^(Premi|Premete)\s+/i, 'Pressione '],
+    [/^(Collega|Collegate)\s+/i, 'Collegamento '],
+    [/^(Inserisci|Inserite)\s+/i, 'Inserimento '],
+    [/^(Osserva|Osservate)\s+/i, 'Osservazione '],
+    [/^(Spiega|Spiegate)\s+/i, 'Spiegazione '],
+    [/^(Fai|Fate)\s+/i, ''],
+    [/^Prova\s+a\s+/i, 'Tentativo '],
+    [/^(Non\s+dare|Non\s+fare)\s+/i, 'Differire: '],
+    [/^Usa\s+/i, 'Uso '],
+    [/^Apri\s+/i, 'Apertura '],
+    [/^Chiudi\s+/i, 'Chiusura '],
+    [/^Verifica\s+/i, 'Verifica '],
+    [/^Controlla\s+/i, 'Controllo '],
+  ];
+  for (const [re, repl] of patterns) {
+    if (re.test(s)) {
+      s = s.replace(re, repl);
+      break;
+    }
+  }
+  return s;
+}
+
+/**
  * Extract docente-facing sidebar fields from a lesson-path phase.
- * Maps: teacher_message -> ora_fai (truncated), provocative_question -> chiedi_alla_classe,
- * teacher_tip -> attenzione_a[0], common_mistakes -> common_mistakes_short.
+ * Tutti i campi neutri/nominali (PRINCIPIO ZERO).
  */
 export function extractDocenteSidebar(phase) {
-  const oraFaiRaw = phase.teacher_message ?? phase.teacher_tip ?? 'Procedi con lo step.';
-  const attenzioneA = [];
-  if (phase.teacher_tip) attenzioneA.push(phase.teacher_tip);
-  const commonMistakesShort = (phase.common_mistakes ?? []).map((cm) => ({
-    mistake: cm.mistake ?? 'errore',
-    fix: cm.teacher_response ?? cm.fix ?? 'Correggi',
+  const stepRaw = phase.teacher_message ?? phase.teacher_tip ?? 'Step in corso.';
+  const stepCorrente = nominalize(stepRaw);
+  const note = [];
+  if (phase.teacher_tip) note.push(nominalize(phase.teacher_tip));
+  const erroriTipici = (phase.common_mistakes ?? []).map((cm) => ({
+    problema: cm.mistake ?? 'errore',
+    soluzione_neutra: nominalize(cm.teacher_response ?? cm.fix ?? 'correzione'),
   }));
+  const spunto = phase.provocative_question
+    ? `Domanda: '${phase.provocative_question}'`
+    : null;
   return {
-    ora_fai: oraFaiRaw,
-    chiedi_alla_classe: phase.provocative_question ?? null,
-    attenzione_a: attenzioneA,
-    common_mistakes_short: commonMistakesShort,
+    step_corrente: stepCorrente,
+    spunto_per_classe: spunto,
+    note,
+    errori_tipici: erroriTipici,
   };
 }
 

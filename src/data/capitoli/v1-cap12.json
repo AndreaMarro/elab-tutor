@@ -123,12 +123,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi scopriamo un interruttore MAGICO! Il reed switch si attiva avvicinando un magnete — senza toccarlo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra un reed switch reale alla classe: è un tubicino di vetro con due lamelle metalliche dentro. Avvicina un magnete e fai sentire il 'click'. L'effetto WOW è garantito!"
+            "step_corrente": "Oggi scopriamo un interruttore MAGICO! Il reed switch si attiva avvicinando un magnete — senza toccarlo!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione un reed switch reale alla classe: è un tubicino di vetro con due lamelle metalliche dentro. Avvicina un magnete e fai sentire il 'click'. L'effetto WOW è garantito!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -142,12 +142,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito: batteria → reed switch → resistore → LED → batteria. Il reed switch è come un pulsante, ma si chiude con il magnete!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai notare che la struttura è identica al circuito LED + pulsante: cambia solo il tipo di interruttore. Il reed switch va nei fori C5 e C11."
+            "step_corrente": "Visualizzazione il circuito: batteria → reed switch → resistore → LED → batteria. Il reed switch è come un pulsante, ma si chiude con il magnete!",
+            "spunto_per_classe": null,
+            "note": [
+              "notare che la struttura è identica al circuito LED + pulsante: cambia solo il tipo di interruttore. Il reed switch va nei fori C5 e C11."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap12-esp1]"
@@ -163,19 +163,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avvicina il magnete al reed switch: LED acceso! Allontana: LED spento. Come funziona questo interruttore invisibile?",
-            "chiedi_alla_classe": "Il reed switch funziona senza toccarlo. Come fa a sapere che il magnete è vicino? Cosa c'è dentro?",
-            "attenzione_a": [
-              "Fai provare: avvicina lentamente il magnete e fai trovare la distanza minima. 'A che distanza si accende? Provate a trovare il punto esatto!'"
+            "step_corrente": "Avvicina il magnete al reed switch: LED acceso! Allontana: LED spento. Come funziona questo interruttore invisibile?",
+            "spunto_per_classe": "Domanda: 'Il reed switch funziona senza toccarlo. Come fa a sapere che il magnete è vicino? Cosa c'è dentro?'",
+            "note": [
+              "provare: avvicina lentamente il magnete e fai trovare la distanza minima. 'A che distanza si accende? Provate a trovare il punto esatto!'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED non si accende con il magnete",
-                "fix": "Controlla che il magnete sia abbastanza vicino al reed switch. Prova a ruotarlo: un lato del magnete è più forte dell'altro!"
+                "problema": "Il LED non si accende con il magnete",
+                "soluzione_neutra": "Controllo che il magnete sia abbastanza vicino al reed switch. Prova a ruotarlo: un lato del magnete è più forte dell'altro!"
               },
               {
-                "mistake": "Non capiscono come funziona senza contatto",
-                "fix": "Dentro il reed switch ci sono due lamelle metalliche. Il magnete le attira e le fa toccare, chiudendo il circuito. È come un ponte levatoio che si abbassa!"
+                "problema": "Non capiscono come funziona senza contatto",
+                "soluzione_neutra": "Dentro il reed switch ci sono due lamelle metalliche. Il magnete le attira e le fa toccare, chiudendo il circuito. È come un ponte levatoio che si abbassa!"
               }
             ]
           },
@@ -202,12 +202,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi avvicina il magnete al reed switch: il LED si accende! Le lamelle dentro si toccano e chiudono il circuito.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi avvicina il magnete al reed switch: il LED si accende! Le lamelle dentro si toccano e chiudono il circuito.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il reed switch e il LED. Spiega: 'Dentro il tubicino di vetro ci sono due lamelle. Quando il magnete è vicino, le attira e si toccano — il circuito si chiude!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -225,12 +225,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il reed switch: un interruttore magnetico invisibile! Usato nei sensori di porte, finestre e allarmi.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Dove potremmo usare un interruttore che funziona senza toccarlo? Un allarme per la porta? Un gioco?' Stimola l'immaginazione!"
+            "step_corrente": "Oggi abbiamo scoperto il reed switch: un interruttore magnetico invisibile! Usato nei sensori di porte, finestre e allarmi.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Dove potremmo usare un interruttore che funziona senza toccarlo? Un allarme per la porta? Un gioco?' Stimola l'immaginazione!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -371,12 +371,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi usiamo lo stesso circuito con il reed switch, ma proviamo a cambiare il resistore. Come cambia la luminosità del LED?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi usiamo lo stesso circuito con il reed switch, ma proviamo a cambiare il resistore. Come cambia la luminosità del LED?",
+            "spunto_per_classe": null,
+            "note": [
               "Prepara resistori di valore diverso. L'idea è che il reed switch è l'interruttore ON/OFF, ma il resistore controlla QUANTA corrente passa."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -390,12 +390,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito è lo stesso dell'esperimento precedente. Questa volta sperimentiamo cambiando il valore del resistore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai montare il circuito base, poi chiedi di provare resistori diversi. Ogni volta: avvicina il magnete e osserva la luminosità."
+            "step_corrente": "Il circuito è lo stesso dell'esperimento precedente. Questa volta sperimentiamo cambiando il valore del resistore.",
+            "spunto_per_classe": null,
+            "note": [
+              "montare il circuito base, poi chiedi di provare resistori diversi. Ogni volta: avvicina il magnete e osserva la luminosità."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap12-esp2]"
@@ -411,19 +411,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Prova resistori diversi: con quale il LED è più luminoso? Con quale è più fioco? Perché?",
-            "chiedi_alla_classe": "Se il resistore è molto piccolo, il LED è fortissimo. Se è molto grande, il LED è debolissimo. Il resistore è come una manopola di luminosità?",
-            "attenzione_a": [
+            "step_corrente": "Prova resistori diversi: con quale il LED è più luminoso? Con quale è più fioco? Perché?",
+            "spunto_per_classe": "Domanda: 'Se il resistore è molto piccolo, il LED è fortissimo. Se è molto grande, il LED è debolissimo. Il resistore è come una manopola di luminosità?'",
+            "note": [
               "Guida la scoperta: 'Resistore piccolo = più corrente = più luce. Resistore grande = meno corrente = meno luce.' Come il rubinetto aperto o chiuso a metà."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Non vedono differenza di luminosità",
-                "fix": "Prova con valori molto diversi: 220 e 10000. La differenza sarà evidente! Con il valore piccolo il LED è molto più forte."
+                "problema": "Non vedono differenza di luminosità",
+                "soluzione_neutra": "Prova con valori molto diversi: 220 e 10000. La differenza sarà evidente! Con il valore piccolo il LED è molto più forte."
               },
               {
-                "mistake": "Confondono il reed switch con il resistore",
-                "fix": "Sono due cose diverse! Il reed switch è l'interruttore (ON/OFF con il magnete). Il resistore controlla QUANTA corrente passa quando è acceso."
+                "problema": "Confondono il reed switch con il resistore",
+                "soluzione_neutra": "Sono due cose diverse! Il reed switch è l'interruttore (ON/OFF con il magnete). Il resistore controlla QUANTA corrente passa quando è acceso."
               }
             ]
           },
@@ -450,12 +450,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e avvicina il magnete. Osserva: il resistore controlla la luminosità anche con l'interruttore magnetico!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e avvicina il magnete. Osserva: il resistore controlla la luminosità anche con l'interruttore magnetico!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia reed switch, resistore e LED. Spiega i due ruoli: 'Il reed switch decide SE la corrente passa. Il resistore decide QUANTA corrente passa.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -474,12 +474,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo imparato che il resistore controlla la luminosità in qualsiasi circuito — anche con il reed switch!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi abbiamo imparato che il resistore controlla la luminosità in qualsiasi circuito — anche con il reed switch!",
+            "spunto_per_classe": null,
+            "note": [
               "Anticipa la sfida: 'E se collegassimo il reed switch a un LED RGB? Il magnete potrebbe accendere i COLORI!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -624,12 +624,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Sfida! Oggi colleghiamo il reed switch al LED RGB. Il magnete accenderà un colore — riuscite ad accenderne di più?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Sfida! Oggi colleghiamo il reed switch al LED RGB. Il magnete accenderà un colore — riuscite ad accenderne di più?",
+            "spunto_per_classe": null,
+            "note": [
               "È una sfida aperta: il circuito base accende solo il rosso. La sfida è pensare a come aggiungere circuiti per verde e blu. Lascia che i ragazzi provino!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -643,12 +643,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito base: reed switch → resistore → pin rosso del LED RGB. Il catodo comune va al negativo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega che il LED RGB ha 4 piedini: rosso, catodo comune, verde, blu. Il circuito base collega solo il canale rosso attraverso il reed switch."
+            "step_corrente": "Visualizzazione il circuito base: reed switch → resistore → pin rosso del LED RGB. Il catodo comune va al negativo.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione che il LED RGB ha 4 piedini: rosso, catodo comune, verde, blu. Il circuito base collega solo il canale rosso attraverso il reed switch."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap12-esp3]"
@@ -664,19 +664,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il magnete accende il rosso. Come faresti ad accendere anche verde e blu? Servono più resistori?",
-            "chiedi_alla_classe": "Con un solo reed switch, riesci ad accendere TUTTI e tre i colori? Dove dovresti posizionarlo nel circuito?",
-            "attenzione_a": [
+            "step_corrente": "Il magnete accende il rosso. Come faresti ad accendere anche verde e blu? Servono più resistori?",
+            "spunto_per_classe": "Domanda: 'Con un solo reed switch, riesci ad accendere TUTTI e tre i colori? Dove dovresti posizionarlo nel circuito?'",
+            "note": [
               "Guida senza dare la risposta: 'Ogni canale del RGB ha bisogno del suo resistore. Il reed switch può stare PRIMA della divisione ai tre canali.'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensano di avere bisogno di 3 reed switch",
-                "fix": "No! Se il reed switch è nel punto giusto (prima della divisione ai 3 canali), uno solo basta per controllare tutto!"
+                "problema": "Pensano di avere bisogno di 3 reed switch",
+                "soluzione_neutra": "No! Se il reed switch è nel punto giusto (prima della divisione ai 3 canali), uno solo basta per controllare tutto!"
               },
               {
-                "mistake": "Collegano i canali senza resistore",
-                "fix": "Ogni canale del LED RGB ha bisogno del suo resistore per non bruciarsi. È come il primo esperimento con il LED senza protezione!"
+                "problema": "Collegano i canali senza resistore",
+                "soluzione_neutra": "Ogni canale del LED RGB ha bisogno del suo resistore per non bruciarsi. È come il primo esperimento con il LED senza protezione!"
               }
             ]
           },
@@ -703,12 +703,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e avvicina il magnete: il canale rosso si accende! Prova ad espandere il circuito per accendere più colori.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e avvicina il magnete: il canale rosso si accende! Prova ad espandere il circuito per accendere più colori.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia reed switch e LED RGB. Incoraggia la sperimentazione: 'Non c'è un solo modo giusto! Provate e osservate cosa succede.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -726,12 +726,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Bravi! Avete combinato reed switch e LED RGB. Un solo interruttore magnetico può controllare più canali di colore!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'E se aggiungessimo anche un potenziometro per regolare la luminosità dei colori?' Anticipa l'esperimento finale del capitolo."
+            "step_corrente": "Bravi! Avete combinato reed switch e LED RGB. Un solo interruttore magnetico può controllare più canali di colore!",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'E se aggiungessimo anche un potenziometro per regolare la luminosità dei colori?' Anticipa l'esperimento finale del capitolo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -896,12 +896,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Sfida finale del capitolo! Uniamo TUTTO: magnete (ON/OFF) + manopola (luminosità) + LED RGB (colore). Tre livelli di controllo in un solo circuito!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Sfida finale del capitolo! Uniamo TUTTO: magnete (ON/OFF) + manopola (luminosità) + LED RGB (colore). Tre livelli di controllo in un solo circuito!",
+            "spunto_per_classe": null,
+            "note": [
               "È il circuito più complesso finora. Fai un recap veloce: 'Il reed switch accende/spegne. Il potenziometro regola quanta corrente. Il LED RGB mostra il colore.' Poi lascia che provino!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -915,12 +915,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "La catena è: batteria → reed switch → potenziometro → resistore → LED RGB. Ogni pezzo ha un ruolo diverso!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra il circuito passo passo. Spiega ogni componente: reed (ON/OFF), potenziometro (dimmer), resistore (protezione), RGB (colore). È come una catena di montaggio!"
+            "step_corrente": "La catena è: batteria → reed switch → potenziometro → resistore → LED RGB. Ogni pezzo ha un ruolo diverso!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il circuito passo passo. Spiega ogni componente: reed (ON/OFF), potenziometro (dimmer), resistore (protezione), RGB (colore). È come una catena di montaggio!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap12-esp4]"
@@ -936,19 +936,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Tre controlli: magnete (ON/OFF), manopola (luminosità), colore (RGB). Quale controlla cosa? E se togli il magnete, cosa succede?",
-            "chiedi_alla_classe": "Se togli il magnete, il potenziometro può ancora accendere il LED? Perché?",
-            "attenzione_a": [
-              "Fai domande a cascata: 'Senza magnete?' → niente. 'Con magnete, manopola a zero?' → LED spento. 'Con magnete, manopola al massimo?' → LED forte!"
+            "step_corrente": "Tre controlli: magnete (ON/OFF), manopola (luminosità), colore (RGB). Quale controlla cosa? E se togli il magnete, cosa succede?",
+            "spunto_per_classe": "Domanda: 'Se togli il magnete, il potenziometro può ancora accendere il LED? Perché?'",
+            "note": [
+              "domande a cascata: 'Senza magnete?' → niente. 'Con magnete, manopola a zero?' → LED spento. 'Con magnete, manopola al massimo?' → LED forte!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensano che il potenziometro possa accendere senza magnete",
-                "fix": "No! Il reed switch è nella catena: se è aperto (senza magnete), NIENTE corrente passa. Il potenziometro può regolare solo se il reed switch è chiuso."
+                "problema": "Pensano che il potenziometro possa accendere senza magnete",
+                "soluzione_neutra": "No! Il reed switch è nella catena: se è aperto (senza magnete), NIENTE corrente passa. Il potenziometro può regolare solo se il reed switch è chiuso."
               },
               {
-                "mistake": "Il circuito è troppo complesso da capire",
-                "fix": "Pensa a una catena: ogni anello deve essere collegato. Reed → pot → resistore → RGB. Se ne manca uno, la catena si spezza!"
+                "problema": "Il circuito è troppo complesso da capire",
+                "soluzione_neutra": "Pensa a una catena: ogni anello deve essere collegato. Reed → pot → resistore → RGB. Se ne manca uno, la catena si spezza!"
               }
             ]
           },
@@ -975,12 +975,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play. Avvicina il magnete e gira la manopola: il LED cambia luminosità! Tre livelli di controllo in azione!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play. Avvicina il magnete e gira la manopola: il LED cambia luminosità! Tre livelli di controllo in azione!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia tutti i componenti chiave. Fai una dimostrazione sequenziale: prima magnete (ON), poi manopola (luminosità). Poi allontana il magnete: tutto si spegne!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -999,12 +999,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Complimenti! Avete costruito il circuito più complesso del capitolo: magnete + manopola + colori. Avete usato TUTTO quello che sapete!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Complimenti! Avete costruito il circuito più complesso del capitolo: magnete + manopola + colori. Avete usato TUTTO quello che sapete!",
+            "spunto_per_classe": null,
+            "note": [
               "Riassumi il capitolo: 'Dal reed switch semplice alla sfida completa. Avete imparato un nuovo tipo di interruttore e l'avete combinato con tutto il resto!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

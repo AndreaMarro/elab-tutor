@@ -152,12 +152,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Capitolo 7: benvenuti nel mondo dei condensatori! Un condensatore è come una piccola batteria ricaricabile: si carica in un istante e poi rilascia l'energia lentamente. Oggi lo vedremo con il multimetro!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostrate fisicamente un condensatore elettrolitico (il cilindrico con due gambe). Fate notare la striscia bianca che indica il polo negativo (−). Contrariamente ai resistori, i condensatori elettrolitici hanno una POLARITÀ precisa: invertirli può danneggiarli!"
+            "step_corrente": "Capitolo 7: benvenuti nel mondo dei condensatori! Un condensatore è come una piccola batteria ricaricabile: si carica in un istante e poi rilascia l'energia lentamente. Oggi lo vedremo con il multimetro!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione fisicamente un condensatore elettrolitico (il cilindrico con due gambe). Fate notare la striscia bianca che indica il polo negativo (−). Contrariamente ai resistori, i condensatori elettrolitici hanno una POLARITÀ precisa: invertirli può danneggiarli!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -171,12 +171,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito: condensatore 1000µF (e5-e6), pulsante (e10-f12), resistore 1kΩ (e16-e23). Il pulsante collega la batteria al condensatore per caricarlo. Rilasciandolo, il condensatore si scarica attraverso il resistore. Il multimetro misura la tensione ai capi del condensatore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiegate il funzionamento in due fasi: CARICA (pulsante premuto: batteria → condensatore, si carica a 9V quasi istantaneamente) e SCARICA (pulsante rilasciato: condensatore → resistore, si scarica in circa 5×Tau = 5 secondi). Il multimetro mostra tutto in tempo reale!"
+            "step_corrente": "Il circuito: condensatore 1000µF (e5-e6), pulsante (e10-f12), resistore 1kΩ (e16-e23). Il pulsante collega la batteria al condensatore per caricarlo. Rilasciandolo, il condensatore si scarica attraverso il resistore. Il multimetro misura la tensione ai capi del condensatore.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione il funzionamento in due fasi: CARICA (pulsante premuto: batteria → condensatore, si carica a 9V quasi istantaneamente) e SCARICA (pulsante rilasciato: condensatore → resistore, si scarica in circa 5×Tau = 5 secondi). Il multimetro mostra tutto in tempo reale!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap7-esp1]"
@@ -192,19 +192,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "La costante di tempo Tau = R × C = 1000Ω × 0.001F = 1 secondo. Dopo 1 Tau, la tensione scende al 37% di 9V = 3.3V. Dopo 5 Tau (5 secondi) il condensatore è praticamente scarico. Perché non scende a zero all'istante?",
-            "chiedi_alla_classe": "Se raddoppiassimo il resistore a 2kΩ, il condensatore si scaricherebbe più veloce o più lentamente? E se usassimo un condensatore da 2000µF?",
-            "attenzione_a": [
+            "step_corrente": "La costante di tempo Tau = R × C = 1000Ω × 0.001F = 1 secondo. Dopo 1 Tau, la tensione scende al 37% di 9V = 3.3V. Dopo 5 Tau (5 secondi) il condensatore è praticamente scarico. Perché non scende a zero all'istante?",
+            "spunto_per_classe": "Domanda: 'Se raddoppiassimo il resistore a 2kΩ, il condensatore si scaricherebbe più veloce o più lentamente? E se usassimo un condensatore da 2000µF?'",
+            "note": [
               "La risposta: perché la corrente di scarica diminuisce man mano che diminuisce la tensione (I = V/R). Meno tensione = meno corrente = scarica più lenta. È un circolo che rallenta sempre — ecco la curva esponenziale!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Invertire la polarità del condensatore",
-                "fix": "Il condensatore elettrolitico ha una polarità precisa! Il polo + (gamba più lunga o marcato '+') va verso il positivo del circuito. La striscia bianca indica il polo −. Invertirlo può danneggiarlo, oppure si scalda e non funziona!"
+                "problema": "Invertire la polarità del condensatore",
+                "soluzione_neutra": "Il condensatore elettrolitico ha una polarità precisa! Il polo + (gamba più lunga o marcato '+') va verso il positivo del circuito. La striscia bianca indica il polo −. Invertirlo può danneggiarlo, oppure si scalda e non funziona!"
               },
               {
-                "mistake": "Pensare che il condensatore si carichi lentamente come si scarica",
-                "fix": "La carica è molto più veloce della scarica! Quando premete il pulsante, la batteria carica il condensatore quasi istantaneamente (la resistenza interna è bassissima). La scarica invece è lenta perché passa attraverso il resistore da 1kΩ."
+                "problema": "Pensare che il condensatore si carichi lentamente come si scarica",
+                "soluzione_neutra": "La carica è molto più veloce della scarica! Quando premete il pulsante, la batteria carica il condensatore quasi istantaneamente (la resistenza interna è bassissima). La scarica invece è lenta perché passa attraverso il resistore da 1kΩ."
               }
             ]
           },
@@ -231,12 +231,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premete Play e poi premete il pulsante nel simulatore: il multimetro salta a 9V! Rilasciate il pulsante e guardate la tensione scendere lentamente... 9V... 6V... 3.3V dopo circa 1 secondo... quasi 0V dopo 5 secondi.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e poi premete il pulsante nel simulatore: il multimetro salta a 9V! Rilasciate il pulsante e guardate la tensione scendere lentamente... 9V... 6V... 3.3V dopo circa 1 secondo... quasi 0V dopo 5 secondi.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenziate condensatore, pulsante, resistore e multimetro. Fate notare che la curva scende VELOCE all'inizio e sempre più LENTAMENTE verso la fine. Questa è la firma dell'esponenziale! Tau = 1s: dopo 1s la tensione è al 37% di 9V ≈ 3.3V."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -256,12 +256,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete visto il condensatore in azione! La costante di tempo Tau = R × C determina la velocità di scarica. Con Tau = 1 secondo, in 5 secondi il condensatore è praticamente a zero.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fate il riassunto sulla lavagna: Tau = R × C; dopo 1 Tau → 37% della tensione iniziale; dopo 5 Tau → praticamente scarico. Esempi: R=10kΩ, C=1000µF → Tau=10s; R=100Ω, C=1000µF → Tau=0.1s."
+            "step_corrente": "Avete visto il condensatore in azione! La costante di tempo Tau = R × C determina la velocità di scarica. Con Tau = 1 secondo, in 5 secondi il condensatore è praticamente a zero.",
+            "spunto_per_classe": null,
+            "note": [
+              "il riassunto sulla lavagna: Tau = R × C; dopo 1 Tau → 37% della tensione iniziale; dopo 5 Tau → praticamente scarico. Esempi: R=10kΩ, C=1000µF → Tau=10s; R=100Ω, C=1000µF → Tau=0.1s."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -447,12 +447,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento precedente vedevamo la scarica sul multimetro. Oggi la rendiamo VISIBILE! Aggiungiamo un LED al circuito: quando il condensatore si scarica, il LED si accende e poi sfuma lentamente come una torcia che si scarica.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fate costruire l'attesa: 'Immaginate di caricare una torcia magica (condensatore) premendo un pulsante, poi spegnerla dalla presa e guardarla sfumare lentamente. Questo è quello che vedrete oggi!'"
+            "step_corrente": "Nell'esperimento precedente vedevamo la scarica sul multimetro. Oggi la rendiamo VISIBILE! Aggiungiamo un LED al circuito: quando il condensatore si scarica, il LED si accende e poi sfuma lentamente come una torcia che si scarica.",
+            "spunto_per_classe": null,
+            "note": [
+              "costruire l'attesa: 'Immaginate di caricare una torcia magica (condensatore) premendo un pulsante, poi spegnerla dalla presa e guardarla sfumare lentamente. Questo è quello che vedrete oggi!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -466,12 +466,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito è simile al precedente ma con un LED rosso aggiunto in serie al resistore nel percorso di scarica. Condensatore (e5-e6), pulsante (e10-f12), resistore 1kΩ (e15-e22), LED rosso (d23 anodo, d24 catodo). Il multimetro misura la tensione ai capi del condensatore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostrate il percorso di scarica: condensatore (+) → resistore → LED → massa → condensatore (−). Il LED ha bisogno di almeno 1.8V per accendersi: quando la tensione del condensatore scende sotto 1.8V, il LED si spegne prima di arrivare a zero!"
+            "step_corrente": "Il circuito è simile al precedente ma con un LED rosso aggiunto in serie al resistore nel percorso di scarica. Condensatore (e5-e6), pulsante (e10-f12), resistore 1kΩ (e15-e22), LED rosso (d23 anodo, d24 catodo). Il multimetro misura la tensione ai capi del condensatore.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il percorso di scarica: condensatore (+) → resistore → LED → massa → condensatore (−). Il LED ha bisogno di almeno 1.8V per accendersi: quando la tensione del condensatore scende sotto 1.8V, il LED si spegne prima di arrivare a zero!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap7-esp2]"
@@ -487,19 +487,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete notato che il LED NON si spegne quando la tensione arriva a zero, ma prima? Perché succede questo? E cosa succede alla luminosità del LED durante la scarica — è lineare o esponenziale?",
-            "chiedi_alla_classe": "Se usassimo un LED blu (Vf ≈ 3V) invece del rosso, si spegnerebbe prima o dopo? E se usassimo due condensatori da 1000µF in parallelo?",
-            "attenzione_a": [
+            "step_corrente": "Avete notato che il LED NON si spegne quando la tensione arriva a zero, ma prima? Perché succede questo? E cosa succede alla luminosità del LED durante la scarica — è lineare o esponenziale?",
+            "spunto_per_classe": "Domanda: 'Se usassimo un LED blu (Vf ≈ 3V) invece del rosso, si spegnerebbe prima o dopo? E se usassimo due condensatori da 1000µF in parallelo?'",
+            "note": [
               "Il LED si spegne quando la tensione del condensatore scende sotto Vf_LED ≈ 1.8V: non c'è abbastanza 'spinta' per accenderlo. La luminosità del LED segue la curva esponenziale: parte intensa e sfuma lentamente — visivamente molto più suggestivo del multimetro!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Aspettarsi che il LED si spenga esattamente quando la tensione raggiunge zero",
-                "fix": "Il LED ha bisogno di almeno 1.8V (la sua Vf) per accendersi. Quando la tensione del condensatore scende sotto 1.8V, la corrente non è più sufficiente per far brillare il LED. Si spegne prima che il condensatore sia completamente scarico!"
+                "problema": "Aspettarsi che il LED si spenga esattamente quando la tensione raggiunge zero",
+                "soluzione_neutra": "Il LED ha bisogno di almeno 1.8V (la sua Vf) per accendersi. Quando la tensione del condensatore scende sotto 1.8V, la corrente non è più sufficiente per far brillare il LED. Si spegne prima che il condensatore sia completamente scarico!"
               },
               {
-                "mistake": "Non capire perché serve il resistore se c'è già il LED",
-                "fix": "Il LED da solo ha una resistenza molto bassa: senza resistore, al momento del pulsante la corrente sarebbe enorme e potrebbe bruciarlo! Il resistore da 1kΩ protegge il LED e controlla la velocità di scarica (Tau = R × C)."
+                "problema": "Non capire perché serve il resistore se c'è già il LED",
+                "soluzione_neutra": "Il LED da solo ha una resistenza molto bassa: senza resistore, al momento del pulsante la corrente sarebbe enorme e potrebbe bruciarlo! Il resistore da 1kΩ protegge il LED e controlla la velocità di scarica (Tau = R × C)."
               }
             ]
           },
@@ -526,12 +526,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premete Play! Premete il pulsante: il condensatore si carica. Rilasciate: il LED si accende brillante e poi sfuma lentamente in pochi secondi. Il multimetro mostra la tensione scendere. Avete reso visibile la fisica!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play! Premete il pulsante: il condensatore si carica. Rilasciate: il LED si accende brillante e poi sfuma lentamente in pochi secondi. Il multimetro mostra la tensione scendere. Avete reso visibile la fisica!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenziate condensatore, LED, resistore e multimetro. Fate notare che il LED sfuma GRADUALMENTE: prima è intenso, poi meno, poi ancora meno fino a spegnersi. Questo è la curva esponenziale resa visibile dalla luce! Tau = 1kΩ × 1000µF = 1s."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -552,12 +552,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete trasformato un numero sul multimetro in luce visibile! La scarica RC attraverso un LED mostra la curva esponenziale in modo diretto e coinvolgente. Questa è l'elettronica resa bella!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Collegate tutto: condensatore = serbatoio di energia; resistore = controllo della velocità (Tau = R×C); LED = indicatore visivo della tensione. Il fatto che il LED si spenga prima di zero (a ≈ 1.8V) mostra il concetto di tensione di soglia. Bellissima sintesi di più concetti!"
+            "step_corrente": "Avete trasformato un numero sul multimetro in luce visibile! La scarica RC attraverso un LED mostra la curva esponenziale in modo diretto e coinvolgente. Questa è l'elettronica resa bella!",
+            "spunto_per_classe": null,
+            "note": [
+              "Collegamento tutto: condensatore = serbatoio di energia; resistore = controllo della velocità (Tau = R×C); LED = indicatore visivo della tensione. Il fatto che il LED si spenga prima di zero (a ≈ 1.8V) mostra il concetto di tensione di soglia. Bellissima sintesi di più concetti!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -749,12 +749,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi aggiungiamo condensatori! Cosa succede se ne mettiamo tre in parallelo invece di uno solo? Il LED si spegnerà più lentamente o uguale?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai una scommessa con la classe: 'Se mettiamo 3 condensatori invece di 1, il LED sfuma 2 volte, 3 volte o 10 volte più lentamente?' Raccoglile le risposte prima di procedere."
+            "step_corrente": "Oggi aggiungiamo condensatori! Cosa succede se ne mettiamo tre in parallelo invece di uno solo? Il LED si spegnerà più lentamente o uguale?",
+            "spunto_per_classe": null,
+            "note": [
+              "una scommessa con la classe: 'Se mettiamo 3 condensatori invece di 1, il LED sfuma 2 volte, 3 volte o 10 volte più lentamente?' Raccoglile le risposte prima di procedere."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -768,12 +768,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Montiamo il circuito: tre condensatori da 1000µF con i positivi tutti collegati insieme (parallelo), poi pulsante, resistore e LED in serie.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Montiamo il circuito: tre condensatori da 1000µF con i positivi tutti collegati insieme (parallelo), poi pulsante, resistore e LED in serie.",
+            "spunto_per_classe": null,
+            "note": [
               "Sottolinea il concetto di parallelo: 'I tre positivi sono tutti collegati allo stesso filo, i tre negativi sono tutti collegati alla riga negativa. Funzionano come UN UNICO condensatore gigante da 3000µF!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap7-esp3]"
@@ -789,19 +789,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Prima di premere Play, fate una previsione: con 3 condensatori da 1000µF in parallelo, quanto durerà la scarica?",
-            "chiedi_alla_classe": "Se un condensatore da 1000µF si scarica in 1 secondo, tre condensatori in parallelo si scaricano in 1, 2 o 3 secondi? Calcolate Tau = R × C con la capacità totale!",
-            "attenzione_a": [
-              "Fate la previsione PRIMA del Play! 'Ctot = 1000+1000+1000 = 3000µF. Tau = R × C = 1kΩ × 3000µF. Quanto fa?' Lasciate che calcolino da soli."
+            "step_corrente": "Prima di premere Play, fate una previsione: con 3 condensatori da 1000µF in parallelo, quanto durerà la scarica?",
+            "spunto_per_classe": "Domanda: 'Se un condensatore da 1000µF si scarica in 1 secondo, tre condensatori in parallelo si scaricano in 1, 2 o 3 secondi? Calcolate Tau = R × C con la capacità totale!'",
+            "note": [
+              "la previsione PRIMA del Play! 'Ctot = 1000+1000+1000 = 3000µF. Tau = R × C = 1kΩ × 3000µF. Quanto fa?' Lasciate che calcolino da soli."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Collegare i condensatori in serie invece che in parallelo",
-                "fix": "In parallelo i positivi sono TUTTI collegati allo stesso nodo positivo, e i negativi TUTTI allo stesso nodo negativo. Non uno dietro l'altro, ma uno ACCANTO all'altro!"
+                "problema": "Collegare i condensatori in serie invece che in parallelo",
+                "soluzione_neutra": "In parallelo i positivi sono TUTTI collegati allo stesso nodo positivo, e i negativi TUTTI allo stesso nodo negativo. Non uno dietro l'altro, ma uno ACCANTO all'altro!"
               },
               {
-                "mistake": "Confondere il polo positivo e negativo del condensatore",
-                "fix": "Il condensatore ha polarità! Il polo positivo (gambe più lunga o segno +) va sempre verso la tensione alta. Il polo negativo (banda bianca o segno −) va verso la riga negativa."
+                "problema": "Confondere il polo positivo e negativo del condensatore",
+                "soluzione_neutra": "Il condensatore ha polarità! Il polo positivo (gambe più lunga o segno +) va sempre verso la tensione alta. Il polo negativo (banda bianca o segno −) va verso la riga negativa."
               }
             ]
           },
@@ -828,12 +828,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi carica i condensatori e premi il pulsante. Il LED sfuma MOLTO più lentamente: quasi 3 secondi! Confrontate con 1 solo condensatore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi carica i condensatori e premi il pulsante. Il LED sfuma MOLTO più lentamente: quasi 3 secondi! Confrontate con 1 solo condensatore.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i tre condensatori e il LED. Fai notare che sfuma circa 3 volte più lentamente rispetto all'esperimento precedente. 'La capacità si è triplicata, e Tau si è triplicato!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -853,12 +853,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "In parallelo le capacità si SOMMANO: 3 × 1000µF = 3000µF. Tau = 1kΩ × 3000µF = 3 secondi. Più condensatori in parallelo = più energia immagazzinata = scarica più lenta!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "In parallelo le capacità si SOMMANO: 3 × 1000µF = 3000µF. Tau = 1kΩ × 3000µF = 3 secondi. Più condensatori in parallelo = più energia immagazzinata = scarica più lenta!",
+            "spunto_per_classe": null,
+            "note": [
               "Scrivi sulla lavagna: Ctot = C1 + C2 + C3. Sottolinea che in PARALLELO la capacità aumenta. Nel prossimo esperimento vedremo come cambia R invece di C."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1058,12 +1058,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Abbiamo visto che Tau = R × C. Fin qui abbiamo cambiato C (con i condensatori in parallelo). Oggi cambiamo R: stessa capacità, resistori diversi. Come cambierà la velocità di scarica?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Abbiamo visto che Tau = R × C. Fin qui abbiamo cambiato C (con i condensatori in parallelo). Oggi cambiamo R: stessa capacità, resistori diversi. Come cambierà la velocità di scarica?",
+            "spunto_per_classe": null,
+            "note": [
               "Metti in fila i quattro resistori: 470Ω, 1kΩ, 4.7kΩ, 10kΩ. Chiedi alla classe: 'Con quale resistore il LED si spegne più velocemente? Con quale più lentamente?' Raccoglile le previsioni."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1077,12 +1077,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Montiamo il circuito con 1 condensatore da 1000µF, il pulsante, un resistore da 1kΩ e il LED. Il multimetro misura la tensione sul condensatore durante la scarica.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra il circuito base con R=1kΩ. Spiega che poi cambieranno SOLO il resistore: 'È come cambiare il rubinetto del serbatoio. Il serbatoio (condensatore) è sempre lo stesso!'"
+            "step_corrente": "Montiamo il circuito con 1 condensatore da 1000µF, il pulsante, un resistore da 1kΩ e il LED. Il multimetro misura la tensione sul condensatore durante la scarica.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il circuito base con R=1kΩ. Spiega che poi cambieranno SOLO il resistore: 'È come cambiare il rubinetto del serbatoio. Il serbatoio (condensatore) è sempre lo stesso!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap7-esp4]"
@@ -1098,19 +1098,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Calcolate Tau per ogni resistore: con R=470Ω, R=1kΩ, R=4.7kΩ, R=10kΩ. Tutti con C=1000µF.",
-            "chiedi_alla_classe": "Se Tau = R × C, e C è sempre 1000µF, calcolate Tau con R=470Ω, R=1kΩ, R=4.7kΩ e R=10kΩ. Quale darà la scarica più lenta?",
-            "attenzione_a": [
+            "step_corrente": "Calcolate Tau per ogni resistore: con R=470Ω, R=1kΩ, R=4.7kΩ, R=10kΩ. Tutti con C=1000µF.",
+            "spunto_per_classe": "Domanda: 'Se Tau = R × C, e C è sempre 1000µF, calcolate Tau con R=470Ω, R=1kΩ, R=4.7kΩ e R=10kΩ. Quale darà la scarica più lenta?'",
+            "note": [
               "Scrivi sulla lavagna: Tau = R × C. R in ohm, C in farad (1000µF = 0.001F). Tau = 1000 × 0.001 = 1 secondo. Fateli calcolare per tutti i valori. '470 × 0.001 = ?' '10000 × 0.001 = ?'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensare che un resistore più grande limiti anche la carica",
-                "fix": "Il resistore più grande rallenta SIA la carica che la scarica! Tau = R × C vale in entrambe le direzioni: caricare e scaricare richiedono lo stesso tempo."
+                "problema": "Pensare che un resistore più grande limiti anche la carica",
+                "soluzione_neutra": "Il resistore più grande rallenta SIA la carica che la scarica! Tau = R × C vale in entrambe le direzioni: caricare e scaricare richiedono lo stesso tempo."
               },
               {
-                "mistake": "Non riuscire a leggere la variazione sul multimetro",
-                "fix": "Il multimetro va in modalità tensione (V). Osserva il numero che scende lentamente da circa 9V a 0V durante la scarica. Con R grande scende molto lentamente!"
+                "problema": "Non riuscire a leggere la variazione sul multimetro",
+                "soluzione_neutra": "Il multimetro va in modalità tensione (V). Osserva il numero che scende lentamente da circa 9V a 0V durante la scarica. Con R grande scende molto lentamente!"
               }
             ]
           },
@@ -1137,12 +1137,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play. Con R=1kΩ osserva il LED e il multimetro. Poi cambia il resistore a 470Ω, poi 4.7kΩ, poi 10kΩ: le differenze sono impressionanti!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play. Con R=1kΩ osserva il LED e il multimetro. Poi cambia il resistore a 470Ω, poi 4.7kΩ, poi 10kΩ: le differenze sono impressionanti!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il resistore e il condensatore. Invita a osservare il multimetro: 'La tensione scende esponenzialmente! Con R=10kΩ e C=1000µF, Tau = 10 secondi: il LED sfuma lentissimamente!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1162,12 +1162,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Tau = R × C funziona in entrambe le direzioni: aumentando R o C, il tempo di scarica cresce proporzionalmente. Con R=10kΩ e C=1000µF otteniamo ben 10 secondi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Tau = R × C funziona in entrambe le direzioni: aumentando R o C, il tempo di scarica cresce proporzionalmente. Con R=10kΩ e C=1000µF otteniamo ben 10 secondi!",
+            "spunto_per_classe": null,
+            "note": [
               "Riepiloga: 'Avete due 'manopole' per controllare Tau: R e C. Capitolo 7 è finito! Nel Capitolo 8 incontrerete un interruttore elettronico controllato dalla tensione.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

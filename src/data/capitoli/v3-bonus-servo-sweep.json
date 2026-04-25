@@ -93,12 +93,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi usiamo un servomotore! A differenza di un motore normale che gira sempre nello stesso verso, il servo può posizionarsi a un angolo PRECISO da 0 a 180 gradi. Arduino gli manda un segnale PWM sul pin D9 e il servo ubbidisce. Con la libreria Servo, basta scrivere myServo.write(90) per andare a 90 gradi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra dove si usano i servomotori nella vita reale: timone dei droni, articolazioni dei robot, flap degli aeroplani, sterzo dei modellini RC. Il punto chiave: il servo VA a un angolo specifico e CI RESTA — non gira in continuo come un motore normale."
+            "step_corrente": "Oggi usiamo un servomotore! A differenza di un motore normale che gira sempre nello stesso verso, il servo può posizionarsi a un angolo PRECISO da 0 a 180 gradi. Arduino gli manda un segnale PWM sul pin D9 e il servo ubbidisce. Con la libreria Servo, basta scrivere myServo.write(90) per andare a 90 gradi!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione dove si usano i servomotori nella vita reale: timone dei droni, articolazioni dei robot, flap degli aeroplani, sterzo dei modellini RC. Il punto chiave: il servo VA a un angolo specifico e CI RESTA — non gira in continuo come un motore normale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -112,12 +112,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il servo ha 3 fili: segnale (arancione) su D9, VCC (rosso) a 5V, GND (marrone/nero) a massa. È semplicissimo da collegare! Il codice usa due cicli for: uno da 0 a 180 che aumenta l'angolo di 1 grado ogni 15ms, e uno da 180 a 0 che lo diminuisce. Il risultato è un movimento fluido avanti e indietro. Il codice viene caricato automaticamente!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il servo ha 3 fili: segnale (arancione) su D9, VCC (rosso) a 5V, GND (marrone/nero) a massa. È semplicissimo da collegare! Il codice usa due cicli for: uno da 0 a 180 che aumenta l'angolo di 1 grado ogni 15ms, e uno da 180 a 0 che lo diminuisce. Il risultato è un movimento fluido avanti e indietro. Il codice viene caricato automaticamente!",
+            "spunto_per_classe": null,
+            "note": [
               "Il concetto chiave del codice: 'Il primo for aumenta l'angolo da 0 a 180, un grado alla volta, aspettando 15ms tra ogni posizione. Questo crea un movimento fluido, non un salto brusco. Il secondo for fa il contrario: torna da 180 a 0. Poi il loop() ripete tutto.' Fa riferimento al tergicristallo come analogia naturale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-extra-servo-sweep]"
@@ -133,19 +133,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il servo è collegato. Il codice usa delay(15) tra ogni grado di movimento. Cosa succederebbe se usassimo delay(1) invece di delay(15)? E se usassimo delay(500)?",
-            "chiedi_alla_classe": "Il servo si muove da 0 a 180 gradi con delay(15) per ogni grado. Quanto tempo ci vuole per fare UN giro completo andata e ritorno? Prova a calcolare: 180 gradi × 15ms + 180 gradi × 15ms = ?",
-            "attenzione_a": [
+            "step_corrente": "Il servo è collegato. Il codice usa delay(15) tra ogni grado di movimento. Cosa succederebbe se usassimo delay(1) invece di delay(15)? E se usassimo delay(500)?",
+            "spunto_per_classe": "Domanda: 'Il servo si muove da 0 a 180 gradi con delay(15) per ogni grado. Quanto tempo ci vuole per fare UN giro completo andata e ritorno? Prova a calcolare: 180 gradi × 15ms + 180 gradi × 15ms = ?'",
+            "note": [
               "Con delay(1) il movimento sarebbe rapidissimo, quasi istantaneo. Con delay(500) ci vorrebbe 90 secondi per fare mezzo giro (500ms × 180 gradi = 90 secondi!). Il delay controlla la VELOCITÀ del movimento."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il servo trema o vibra senza muoversi fluidamente",
-                "fix": "Il servo riceve troppa o troppo poca corrente. Assicurati che VCC sia collegato ai 5V (non direttamente al pin Arduino!) e GND alla massa. I servomotori richiedono più corrente dei LED!"
+                "problema": "Il servo trema o vibra senza muoversi fluidamente",
+                "soluzione_neutra": "Il servo riceve troppa o troppo poca corrente. Assicurati che VCC sia collegato ai 5V (non direttamente al pin Arduino!) e GND alla massa. I servomotori richiedono più corrente dei LED!"
               },
               {
-                "mistake": "Il servo va solo in una direzione e non torna indietro",
-                "fix": "Controlla che ci siano ENTRAMBI i cicli for nel codice: uno da 0 a 180 (angle++) e uno da 180 a 0 (angle--). Se manca il secondo ciclo, il servo arriva a 180 e riparte da 0 di scatto!"
+                "problema": "Il servo va solo in una direzione e non torna indietro",
+                "soluzione_neutra": "Controllo che ci siano ENTRAMBI i cicli for nel codice: uno da 0 a 180 (angle++) e uno da 180 a 0 (angle--). Se manca il secondo ciclo, il servo arriva a 180 e riparte da 0 di scatto!"
               }
             ]
           },
@@ -172,12 +172,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il braccio del servo comincia a muoversi lentamente da sinistra verso destra, poi torna indietro. Il movimento è fluido perché si sposta di un grado alla volta ogni 15ms!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play! Il braccio del servo comincia a muoversi lentamente da sinistra verso destra, poi torna indietro. Il movimento è fluido perché si sposta di un grado alla volta ogni 15ms!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il servo. Chiedi: 'Il movimento è fluido o a scatti? Riesci a vedere il braccio fermarsi ai 180 gradi prima di tornare?' Fai notare che il servo non gira all'infinito — si ferma a 180, poi inverte. Questa precisione lo rende ideale per bracci robotici e comandi precisi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -194,12 +194,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Bravissimi! Avete controllato il vostro primo servomotore. Con myServo.attach() e myServo.write() potete posizionare il braccio a qualsiasi angolo da 0 a 180 gradi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Bravissimi! Avete controllato il vostro primo servomotore. Con myServo.attach() e myServo.write() potete posizionare il braccio a qualsiasi angolo da 0 a 180 gradi!",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: 'myServo.attach(9) = collega il servo al pin 9. myServo.write(angolo) = vai a quell'angolo. Il ciclo for da 0 a 180 con delay(15) = movimento fluido.' Il servo è la base per bracci robotici, telecamere che si muovono, cancelli automatici e mille altri progetti."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

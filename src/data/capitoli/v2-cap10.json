@@ -98,12 +98,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi facciamo girare un motore! Il motore DC trasforma l'energia elettrica in movimento. È lo stesso principio dei ventilatori, dei droni e dei frullatori!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi facciamo girare un motore! Il motore DC trasforma l'energia elettrica in movimento. È lo stesso principio dei ventilatori, dei droni e dei frullatori!",
+            "spunto_per_classe": null,
+            "note": [
               "Porta in classe (o mostra) un oggetto con motore DC: un piccolo ventilatore, un drone giocattolo. Chiedi: 'Quante cose in casa hanno un motore?' Poi spiega: 'Oggi useremo la batteria per far girare il nostro primo motore.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -117,12 +117,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito è semplicissimo: polo + della batteria al terminale + del motore, polo - al terminale - del motore. La corrente scorre e il motore gira!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra il motore: 'Ha solo 2 fili. Il + va al + della batteria, il - al - della batteria. Più semplice di così non si può!' Poi spiega che dentro ci sono magneti e bobine di filo che, con la corrente, creano un campo magnetico che fa girare l'asse."
+            "step_corrente": "Il circuito è semplicissimo: polo + della batteria al terminale + del motore, polo - al terminale - del motore. La corrente scorre e il motore gira!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il motore: 'Ha solo 2 fili. Il + va al + della batteria, il - al - della batteria. Più semplice di così non si può!' Poi spiega che dentro ci sono magneti e bobine di filo che, con la corrente, creano un campo magnetico che fa girare l'asse."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap10-esp1]"
@@ -138,19 +138,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il motore gira! Ma cosa succederebbe se invertissimo i fili? E da cosa dipende la velocità di rotazione?",
-            "chiedi_alla_classe": "Cosa succede se inverto i fili della batteria sul motore? Il motore si ferma, gira più veloce, o gira nella direzione opposta? Perché?",
-            "attenzione_a": [
+            "step_corrente": "Il motore gira! Ma cosa succederebbe se invertissimo i fili? E da cosa dipende la velocità di rotazione?",
+            "spunto_per_classe": "Domanda: 'Cosa succede se inverto i fili della batteria sul motore? Il motore si ferma, gira più veloce, o gira nella direzione opposta? Perché?'",
+            "note": [
               "Stimola la curiosità: 'Se mettessi il filo rosso dove c'è il nero e viceversa, cosa succederebbe?' Lascia che gli studenti facciano ipotesi. Anticipa l'esperimento 2!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il motore non gira",
-                "fix": "Controlla che entrambi i fili siano collegati: + della batteria al + del motore, - della batteria al - del motore. Se un filo è staccato, il circuito è aperto e la corrente non passa!"
+                "problema": "Il motore non gira",
+                "soluzione_neutra": "Controllo che entrambi i fili siano collegati: + della batteria al + del motore, - della batteria al - del motore. Se un filo è staccato, il circuito è aperto e la corrente non passa!"
               },
               {
-                "mistake": "Il motore vibra ma non gira davvero",
-                "fix": "Nel simulatore, assicurati di aver premuto Play! Il motore nel simulatore gira quando il circuito è chiuso e la simulazione è attiva."
+                "problema": "Il motore vibra ma non gira davvero",
+                "soluzione_neutra": "Nel simulatore, assicurati di aver premuto Play! Il motore nel simulatore gira quando il circuito è chiuso e la simulazione è attiva."
               }
             ]
           },
@@ -177,12 +177,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e guarda l'asse del motore che gira! L'energia elettrica della batteria diventa movimento rotatorio.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e guarda l'asse del motore che gira! L'energia elettrica della batteria diventa movimento rotatorio.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il motore durante la simulazione. Fai notare la direzione di rotazione: 'Vedete in che direzione gira? Segnatevela, perché nel prossimo esperimento la cambieremo!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -200,12 +200,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Bravi! Avete collegato il vostro primo motore DC. Con soli 2 fili avete trasformato l'elettricità in movimento!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Bravi! Avete collegato il vostro primo motore DC. Con soli 2 fili avete trasformato l'elettricità in movimento!",
+            "spunto_per_classe": null,
+            "note": [
               "Recap veloce: 'Il motore DC ha 2 terminali: + e -. La corrente entra dal +, percorre le bobine e crea un campo magnetico che fa girare l'asse. La direzione dipende dalla polarità.' Anticipa: 'Nel prossimo esperimento, invertiamo i fili e vediamo cosa succede!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -322,12 +322,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento precedente il motore girava in un verso. Oggi invertiamo i fili e vediamo cosa succede! La polarità è tutto.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Nell'esperimento precedente il motore girava in un verso. Oggi invertiamo i fili e vediamo cosa succede! La polarità è tutto.",
+            "spunto_per_classe": null,
+            "note": [
               "Ricorda: 'Nell'esperimento 1 il filo rosso andava al + del motore. Oggi facciamo il contrario: il filo rosso va al - del motore. Cosa cambierà?' Lascia che gli studenti facciano la loro previsione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -341,12 +341,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito è uguale all'esperimento 1, ma i fili del motore sono invertiti! Il + della batteria va al - del motore e viceversa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra la differenza rispetto all'esperimento precedente: 'Vedete? Tutto uguale, tranne che i due fili del motore sono scambiati. Il + ora va dove andava il -, e il - dove andava il +.' Fai notare che la batteria non è cambiata."
+            "step_corrente": "Il circuito è uguale all'esperimento 1, ma i fili del motore sono invertiti! Il + della batteria va al - del motore e viceversa.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione la differenza rispetto all'esperimento precedente: 'Vedete? Tutto uguale, tranne che i due fili del motore sono scambiati. Il + ora va dove andava il -, e il - dove andava il +.' Fai notare che la batteria non è cambiata."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap10-esp2]"
@@ -362,19 +362,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il motore gira al contrario! Perché invertire i fili cambia la direzione? Cosa succede dentro il motore?",
-            "chiedi_alla_classe": "Se invertire i fili fa girare il motore al contrario, come possiamo costruire un robot che possa andare sia avanti che indietro? Di cosa avremmo bisogno nel circuito?",
-            "attenzione_a": [
-              "Chiedi: 'Perché pensate che il motore giri nella direzione opposta?' Guida la riflessione verso il concetto di campo magnetico invertito: 'Se la corrente scorre nell'altra direzione nelle bobine, il campo magnetico si inverte, e il motore gira al contrario.'"
+            "step_corrente": "Il motore gira al contrario! Perché invertire i fili cambia la direzione? Cosa succede dentro il motore?",
+            "spunto_per_classe": "Domanda: 'Se invertire i fili fa girare il motore al contrario, come possiamo costruire un robot che possa andare sia avanti che indietro? Di cosa avremmo bisogno nel circuito?'",
+            "note": [
+              "Domanda: 'Perché pensate che il motore giri nella direzione opposta?' Guida la riflessione verso il concetto di campo magnetico invertito: 'Se la corrente scorre nell'altra direzione nelle bobine, il campo magnetico si inverte, e il motore gira al contrario.'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il motore non sembra girare in direzione diversa dall'esperimento 1",
-                "fix": "Osserva con attenzione il simbolo di rotazione nel simulatore. Confronta i due esperimenti aprendo uno dopo l'altro: la freccia di rotazione punta in direzioni opposte!"
+                "problema": "Il motore non sembra girare in direzione diversa dall'esperimento 1",
+                "soluzione_neutra": "Osservazione con attenzione il simbolo di rotazione nel simulatore. Confronta i due esperimenti aprendo uno dopo l'altro: la freccia di rotazione punta in direzioni opposte!"
               },
               {
-                "mistake": "Gli studenti confondono quale filo è invertito",
-                "fix": "Nell'esp. 1: rosso → terminale + del motore. Nell'esp. 2: rosso → terminale - del motore. Basta scambiare i due fili che vanno al motore, non quelli della batteria!"
+                "problema": "Gli studenti confondono quale filo è invertito",
+                "soluzione_neutra": "Nell'esp. 1: rosso → terminale + del motore. Nell'esp. 2: rosso → terminale - del motore. Basta scambiare i due fili che vanno al motore, non quelli della batteria!"
               }
             ]
           },
@@ -401,12 +401,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play e confronta la rotazione con l'esperimento 1. Stessa batteria, stessi fili, ma motore invertito!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e confronta la rotazione con l'esperimento 1. Stessa batteria, stessi fili, ma motore invertito!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia i fili di collegamento al motore e mostra come sono invertiti. Se possibile, apri l'esperimento 1 e l'esperimento 2 in sequenza per far vedere la differenza di rotazione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -424,12 +424,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Perfetto! Avete scoperto che la polarità determina la direzione di rotazione. Invertite i fili, invertite il moto!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Perfetto! Avete scoperto che la polarità determina la direzione di rotazione. Invertite i fili, invertite il moto!",
+            "spunto_per_classe": null,
+            "note": [
               "Riassumi: 'Il motore DC ha una proprietà straordinaria: basta invertire + e - per far girare l'asse nell'altra direzione. Nelle auto elettriche, nei robot e nei droni si usa questo trucco per andare avanti e indietro!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -564,12 +564,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora il motore girava sempre non appena collegavamo la batteria. E se volessimo controllare quando gira? Aggiungiamo un pulsante!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra fisicamente un pulsante (se disponibile). Spiega: 'Un pulsante è un interruttore momentaneo: finché lo tieni premuto il circuito è chiuso, quando lo rilasci il circuito si apre e la corrente si blocca.'"
+            "step_corrente": "Finora il motore girava sempre non appena collegavamo la batteria. E se volessimo controllare quando gira? Aggiungiamo un pulsante!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione fisicamente un pulsante (se disponibile). Spiega: 'Un pulsante è un interruttore momentaneo: finché lo tieni premuto il circuito è chiuso, quando lo rilasci il circuito si apre e la corrente si blocca.'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -583,12 +583,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il pulsante è in serie con il motore: la corrente deve passare attraverso il pulsante prima di arrivare al motore. Se il pulsante è aperto, niente corrente, niente rotazione!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il pulsante è in serie con il motore: la corrente deve passare attraverso il pulsante prima di arrivare al motore. Se il pulsante è aperto, niente corrente, niente rotazione!",
+            "spunto_per_classe": null,
+            "note": [
               "Illustra il percorso della corrente: batteria → bus + → pulsante → motore → bus - → batteria. Il pulsante è il 'cancello' del circuito: aperto = niente corrente; chiuso = corrente passa."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap10-esp3]"
@@ -604,19 +604,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il motore gira solo quando premi il pulsante. Cosa succede dentro il circuito quando premi? E quando rilasci?",
-            "chiedi_alla_classe": "Se il pulsante è come un cancello nel percorso della corrente, cosa succederebbe se mettessimo DUE pulsanti in serie? Dovremmo premere entrambi per far girare il motore?",
-            "attenzione_a": [
-              "Chiedi agli studenti di descrivere il percorso della corrente sia quando il pulsante è premuto che quando è rilasciato. Usa la metafora del cancello: 'Il pulsante apre e chiude un cancello nel percorso della corrente.'"
+            "step_corrente": "Il motore gira solo quando premi il pulsante. Cosa succede dentro il circuito quando premi? E quando rilasci?",
+            "spunto_per_classe": "Domanda: 'Se il pulsante è come un cancello nel percorso della corrente, cosa succederebbe se mettessimo DUE pulsanti in serie? Dovremmo premere entrambi per far girare il motore?'",
+            "note": [
+              "Domanda: agli studenti di descrivere il percorso della corrente sia quando il pulsante è premuto che quando è rilasciato. Usa la metafora del cancello: 'Il pulsante apre e chiude un cancello nel percorso della corrente.'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il motore gira sempre, anche senza premere il pulsante",
-                "fix": "Controlla che il pulsante sia davvero in serie con il motore, non in parallelo. Se lo hai collegato in parallelo, bypassa il circuito e il motore riceve sempre corrente!"
+                "problema": "Il motore gira sempre, anche senza premere il pulsante",
+                "soluzione_neutra": "Controllo che il pulsante sia davvero in serie con il motore, non in parallelo. Se lo hai collegato in parallelo, bypassa il circuito e il motore riceve sempre corrente!"
               },
               {
-                "mistake": "Il motore non gira neanche premendo il pulsante",
-                "fix": "Controlla i fili: il filo dal bus + deve arrivare a un pin del pulsante, e l'altro pin del pulsante deve essere collegato al motore. Se c'è un filo mancante, il circuito non si chiude!"
+                "problema": "Il motore non gira neanche premendo il pulsante",
+                "soluzione_neutra": "Controllo i fili: il filo dal bus + deve arrivare a un pin del pulsante, e l'altro pin del pulsante deve essere collegato al motore. Se c'è un filo mancante, il circuito non si chiude!"
               }
             ]
           },
@@ -643,12 +643,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi clicca il pulsante nel simulatore: il motore si avvia! Rilascia il pulsante: si ferma.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi clicca il pulsante nel simulatore: il motore si avvia! Rilascia il pulsante: si ferma.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il pulsante e il motore. Mostra la differenza tra circuito aperto (pulsante non premuto) e circuito chiuso (pulsante premuto). Chiedi agli studenti di descrivere cosa succede."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -666,12 +666,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Ottimo! Con un semplice pulsante avete aggiunto il controllo manuale al motore. Questo è il principio degli interruttori di casa!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Ottimo! Con un semplice pulsante avete aggiunto il controllo manuale al motore. Questo è il principio degli interruttori di casa!",
+            "spunto_per_classe": null,
+            "note": [
               "Riassumi: 'Il pulsante mette un interruttore in serie nel circuito. Premuto = circuito chiuso = motore gira. Rilasciato = circuito aperto = motore fermo.' Anticipa: 'Nel prossimo esperimento aggiungiamo anche un LED che si accende insieme al motore come spia di funzionamento!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -832,12 +832,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento precedente il motore girava con il pulsante. Come facciamo a sapere se il motore sta davvero girando senza guardarlo? Aggiungiamo una spia luminosa: il LED!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Nell'esperimento precedente il motore girava con il pulsante. Come facciamo a sapere se il motore sta davvero girando senza guardarlo? Aggiungiamo una spia luminosa: il LED!",
+            "spunto_per_classe": null,
+            "note": [
               "Porta l'analogia della cruscotto dell'auto: 'Nell'auto ci sono spie luminose che vi dicono cosa sta succedendo al motore. Oggi costruiamo la nostra spia!' Mostra il LED verde che userete."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -851,12 +851,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il LED e il motore sono collegati in parallelo dopo il pulsante. Quando premi, entrambi ricevono tensione: il motore gira E il LED si accende contemporaneamente!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega il parallelo con semplicità: 'In parallelo, ogni componente ha il suo percorso diretto verso la batteria. La tensione è la stessa per tutti, ma la corrente si divide.' Il resistore da 470Ω è necessario per proteggere il LED (il motore non ne ha bisogno perché ha la sua resistenza interna)."
+            "step_corrente": "Il LED e il motore sono collegati in parallelo dopo il pulsante. Quando premi, entrambi ricevono tensione: il motore gira E il LED si accende contemporaneamente!",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione il parallelo con semplicità: 'In parallelo, ogni componente ha il suo percorso diretto verso la batteria. La tensione è la stessa per tutti, ma la corrente si divide.' Il resistore da 470Ω è necessario per proteggere il LED (il motore non ne ha bisogno perché ha la sua resistenza interna)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap10-esp4]"
@@ -872,19 +872,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il LED e il motore si accendono insieme. Come mai il LED riceve abbastanza corrente se deve condividerla con il motore?",
-            "chiedi_alla_classe": "Il LED e il motore sono collegati in parallelo. Se togliessi il LED dal circuito, il motore girerebbe più forte perché riceverebbe tutta la corrente? O no? Perché?",
-            "attenzione_a": [
+            "step_corrente": "Il LED e il motore si accendono insieme. Come mai il LED riceve abbastanza corrente se deve condividerla con il motore?",
+            "spunto_per_classe": "Domanda: 'Il LED e il motore sono collegati in parallelo. Se togliessi il LED dal circuito, il motore girerebbe più forte perché riceverebbe tutta la corrente? O no? Perché?'",
+            "note": [
               "Guida la discussione sul parallelo: 'In parallelo, ogni componente ha il suo ramo separato. Il LED prende la sua corrente dal suo ramo, il motore dal suo. Non si rubano la corrente a vicenda!'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED è molto fioco rispetto a quando è collegato da solo",
-                "fix": "Con la batteria a 9V condivisa con il motore, il LED potrebbe sembrare meno luminoso perché il motore 'assorbe' molta corrente. Questo è normale in parallelo con un componente ad alto consumo come il motore!"
+                "problema": "Il LED è molto fioco rispetto a quando è collegato da solo",
+                "soluzione_neutra": "Con la batteria a 9V condivisa con il motore, il LED potrebbe sembrare meno luminoso perché il motore 'assorbe' molta corrente. Questo è normale in parallelo con un componente ad alto consumo come il motore!"
               },
               {
-                "mistake": "Il LED non si accende affatto",
-                "fix": "Controlla che il filo di collegamento dal punto comune del pulsante vada sia al motore che al resistore del LED. Se manca questo filo di raccordo, il ramo del LED è aperto!"
+                "problema": "Il LED non si accende affatto",
+                "soluzione_neutra": "Controllo che il filo di collegamento dal punto comune del pulsante vada sia al motore che al resistore del LED. Se manca questo filo di raccordo, il ramo del LED è aperto!"
               }
             ]
           },
@@ -911,12 +911,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi premi il pulsante. Guarda: LED verde acceso E motore in rotazione, tutto insieme!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi premi il pulsante. Guarda: LED verde acceso E motore in rotazione, tutto insieme!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il LED verde e il motore in parallelo. Mostra come il filo dal pulsante si biforca: un ramo va al motore, un ramo va al resistore del LED. La corrente si divide in due percorsi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -936,12 +936,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Magnifico! Avete costruito un circuito con controllo (pulsante), attuatore (motore) e indicatore (LED). Tre componenti con tre ruoli diversi!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Magnifico! Avete costruito un circuito con controllo (pulsante), attuatore (motore) e indicatore (LED). Tre componenti con tre ruoli diversi!",
+            "spunto_per_classe": null,
+            "note": [
               "Riassumi i 3 ruoli: 'Pulsante = controllo (decide quando agire). Motore = attuatore (fa qualcosa nel mondo reale). LED = indicatore (ci dice cosa sta succedendo).' Questa struttura — controllo + attuatore + indicatore — si ritrova in quasi tutti i sistemi elettronici!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

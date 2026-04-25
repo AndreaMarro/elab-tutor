@@ -108,12 +108,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi entriamo nel mondo del SUONO! Collegheremo un cicalino alla batteria e lo faremo suonare. È come un LED, ma invece della luce produce suono.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi entriamo nel mondo del SUONO! Collegheremo un cicalino alla batteria e lo faremo suonare. È come un LED, ma invece della luce produce suono.",
+            "spunto_per_classe": null,
+            "note": [
               "Il cicalino è polarizzato come il LED: ha un piedino + e uno −. Mostralo alla classe prima di iniziare. Se lo colleghi al contrario, non funziona."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -127,12 +127,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito sulla LIM: batteria → bus → cicalino → bus → batteria. Il cicalino è collegato direttamente ai bus della breadboard.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Usa il Passo Passo. Fai notare che la struttura è identica al primo circuito LED: cambiano solo i componenti. Il filo rosso va al + del cicalino."
+            "step_corrente": "Visualizzazione il circuito sulla LIM: batteria → bus → cicalino → bus → batteria. Il cicalino è collegato direttamente ai bus della breadboard.",
+            "spunto_per_classe": null,
+            "note": [
+              "Uso il Passo Passo. Fai notare che la struttura è identica al primo circuito LED: cambiano solo i componenti. Il filo rosso va al + del cicalino."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap11-esp1]"
@@ -148,19 +148,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Cosa ha in comune il cicalino con il LED? Entrambi hanno una polarità! Il piedino lungo va al +. Cosa succede se lo giri al contrario?",
-            "chiedi_alla_classe": "Il LED produce luce, il cicalino produce suono. Cosa hanno in comune? E cosa succede se inverti i fili?",
-            "attenzione_a": [
+            "step_corrente": "Cosa ha in comune il cicalino con il LED? Entrambi hanno una polarità! Il piedino lungo va al +. Cosa succede se lo giri al contrario?",
+            "spunto_per_classe": "Domanda: 'Il LED produce luce, il cicalino produce suono. Cosa hanno in comune? E cosa succede se inverti i fili?'",
+            "note": [
               "Lascia che i ragazzi notino la somiglianza con il LED: entrambi hanno + e −. Se qualcuno chiede 'come fa a suonare?', usa l'analogia del cristallo che vibra."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il cicalino non suona",
-                "fix": "Controlla la polarità: il filo rosso deve andare al piedino + del cicalino. Cerca il segno + stampato sopra."
+                "problema": "Il cicalino non suona",
+                "soluzione_neutra": "Controllo la polarità: il filo rosso deve andare al piedino + del cicalino. Cerca il segno + stampato sopra."
               },
               {
-                "mistake": "Non capiscono come il cicalino produce suono",
-                "fix": "Dentro il cicalino c'è un piccolo cristallo che vibra quando riceve corrente. Le vibrazioni muovono l'aria e noi sentiamo il suono!"
+                "problema": "Non capiscono come il cicalino produce suono",
+                "soluzione_neutra": "Dentro il cicalino c'è un piccolo cristallo che vibra quando riceve corrente. Le vibrazioni muovono l'aria e noi sentiamo il suono!"
               }
             ]
           },
@@ -187,12 +187,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play: il cicalino suona! La corrente fa vibrare un cristallo dentro il buzzer e produce suono.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play: il cicalino suona! La corrente fa vibrare un cristallo dentro il buzzer e produce suono.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia il cicalino. Spiega: 'La corrente attraversa il cristallo → il cristallo vibra → l'aria si muove → noi sentiamo il suono!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -209,12 +209,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo scoperto il cicalino: un componente che trasforma la corrente in suono! Come il LED ha una polarità da rispettare.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Ma suona SEMPRE... e se volessimo farlo suonare solo quando premiamo un pulsante?' Questo anticipa l'esperimento successivo."
+            "step_corrente": "Oggi abbiamo scoperto il cicalino: un componente che trasforma la corrente in suono! Come il LED ha una polarità da rispettare.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Ma suona SEMPRE... e se volessimo farlo suonare solo quando premiamo un pulsante?' Questo anticipa l'esperimento successivo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -354,12 +354,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi costruiamo un CAMPANELLO! Aggiungiamo un pulsante al cicalino: suonerà solo quando premiamo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi costruiamo un CAMPANELLO! Aggiungiamo un pulsante al cicalino: suonerà solo quando premiamo.",
+            "spunto_per_classe": null,
+            "note": [
               "Richiama l'esperimento LED + pulsante: 'Vi ricordate quando controllavamo il LED con il pulsante? Oggi facciamo la stessa cosa ma con il suono!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -373,12 +373,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Mostra il circuito sulla LIM: il pulsante è nella catena tra batteria e cicalino. Senza premere, il circuito è aperto.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Visualizzazione il circuito sulla LIM: il pulsante è nella catena tra batteria e cicalino. Senza premere, il circuito è aperto.",
+            "spunto_per_classe": null,
+            "note": [
               "Confronta con il circuito LED + pulsante: stessa struttura, diverso componente. Il pulsante va a cavallo della scanalatura (E14/F16)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v1-cap11-esp2]"
@@ -394,19 +394,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi il pulsante: suona! Rilascia: silenzio. È identico al LED con pulsante — cosa cambia?",
-            "chiedi_alla_classe": "Il circuito è quasi identico a quello del LED con pulsante. Cosa cambia? Solo il componente controllato!",
-            "attenzione_a": [
-              "Fai il confronto esplicito: 'Con il LED, premevi e vedevi la luce. Ora premi e senti il suono. La struttura del circuito è la stessa!'"
+            "step_corrente": "Pressione il pulsante: suona! Rilascia: silenzio. È identico al LED con pulsante — cosa cambia?",
+            "spunto_per_classe": "Domanda: 'Il circuito è quasi identico a quello del LED con pulsante. Cosa cambia? Solo il componente controllato!'",
+            "note": [
+              "il confronto esplicito: 'Con il LED, premevi e vedevi la luce. Ora premi e senti il suono. La struttura del circuito è la stessa!'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il cicalino suona sempre, anche senza premere",
-                "fix": "Il pulsante non è nel percorso della corrente. Controlla che il filo dal cicalino passi attraverso il pulsante prima di tornare al negativo."
+                "problema": "Il cicalino suona sempre, anche senza premere",
+                "soluzione_neutra": "Il pulsante non è nel percorso della corrente. Controlla che il filo dal cicalino passi attraverso il pulsante prima di tornare al negativo."
               },
               {
-                "mistake": "Non vedono la somiglianza con il circuito LED + pulsante",
-                "fix": "Disegna i due circuiti affiancati: sono identici! Cambia solo il componente: LED → cicalino. Il pulsante fa sempre lo stesso lavoro: apre e chiude il circuito."
+                "problema": "Non vedono la somiglianza con il circuito LED + pulsante",
+                "soluzione_neutra": "Disegna i due circuiti affiancati: sono identici! Cambia solo il componente: LED → cicalino. Il pulsante fa sempre lo stesso lavoro: apre e chiude il circuito."
               }
             ]
           },
@@ -433,12 +433,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play, poi premi il pulsante: il cicalino suona! Rilascia e si ferma. È un vero campanello!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play, poi premi il pulsante: il cicalino suona! Rilascia e si ferma. È un vero campanello!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenzia pulsante e cicalino. Fai notare: 'Il pulsante apre e chiude il circuito. È lo STESSO principio del LED — il pulsante è l'interruttore!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -456,12 +456,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi abbiamo costruito un campanello vero! Lo stesso pulsante che controllava il LED ora controlla il suono.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi: 'Abbiamo usato il pulsante con le dita. Esiste un modo per controllare un circuito SENZA toccarlo?' Anticipa il reed switch del cap 12."
+            "step_corrente": "Oggi abbiamo costruito un campanello vero! Lo stesso pulsante che controllava il LED ora controlla il suono.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: 'Abbiamo usato il pulsante con le dita. Esiste un modo per controllare un circuito SENZA toccarlo?' Anticipa il reed switch del cap 12."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

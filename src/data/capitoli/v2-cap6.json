@@ -124,12 +124,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Benvenuti al Volume 2! Iniziamo con qualcosa di familiare: i LED. Ma questa volta li colleghiamo in serie — uno dietro l'altro — con UN solo resistore. Cosa succederà alla luminosità?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedete alla classe: 'Se due LED condividono lo stesso resistore e lo stesso filo, come si dividerà la corrente?' Lasciate che emergano le ipotesi. La risposta sorprenderà: la corrente NON si divide!"
+            "step_corrente": "Benvenuti al Volume 2! Iniziamo con qualcosa di familiare: i LED. Ma questa volta li colleghiamo in serie — uno dietro l'altro — con UN solo resistore. Cosa succederà alla luminosità?",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: alla classe: 'Se due LED condividono lo stesso resistore e lo stesso filo, come si dividerà la corrente?' Lasciate che emergano le ipotesi. La risposta sorprenderà: la corrente NON si divide!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -143,12 +143,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Montiamo il circuito: resistore 330Ω tra e5 e e12, poi il primo LED rosso (anodo in d14, catodo in d15), poi il secondo LED rosso (anodo in d18, catodo in d19). La corrente scorre in fila: batteria → resistore → LED1 → LED2 → massa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostrate il percorso fisicamente: tracciate il percorso della corrente con un dito sulla breadboard. Evidenziate anodo e catodo di ogni LED: la gamba lunga è l'anodo (+), quella corta il catodo (−)."
+            "step_corrente": "Montiamo il circuito: resistore 330Ω tra e5 e e12, poi il primo LED rosso (anodo in d14, catodo in d15), poi il secondo LED rosso (anodo in d18, catodo in d19). La corrente scorre in fila: batteria → resistore → LED1 → LED2 → massa.",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione il percorso fisicamente: tracciate il percorso della corrente con un dito sulla breadboard. Evidenziate anodo e catodo di ogni LED: la gamba lunga è l'anodo (+), quella corta il catodo (−)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap6-esp1]"
@@ -164,19 +164,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Ora che vedete il circuito montato: perché entrambi i LED hanno la stessa luminosità? E se uno dei due LED si bruciasse, cosa succederebbe all'altro?",
-            "chiedi_alla_classe": "Se rimuovo uno dei due LED dal circuito serie, l'altro rimane acceso o si spegne? Perché?",
-            "attenzione_a": [
+            "step_corrente": "Ora che vedete il circuito montato: perché entrambi i LED hanno la stessa luminosità? E se uno dei due LED si bruciasse, cosa succederebbe all'altro?",
+            "spunto_per_classe": "Domanda: 'Se rimuovo uno dei due LED dal circuito serie, l'altro rimane acceso o si spegne? Perché?'",
+            "note": [
               "La domanda sul cortocircuito è fondamentale: in serie, se un componente si guasta (aperto), l'intero circuito si spegne. Fate l'analogia con le luci di Natale vecchio stile!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il LED non si accende perché inserito al contrario",
-                "fix": "Controllate la polarità! L'anodo (gamba lunga, +) deve essere collegato verso il polo positivo della batteria. Il catodo (gamba corta, −) verso la massa. Provate a girarlo!"
+                "problema": "Il LED non si accende perché inserito al contrario",
+                "soluzione_neutra": "Controllate la polarità! L'anodo (gamba lunga, +) deve essere collegato verso il polo positivo della batteria. Il catodo (gamba corta, −) verso la massa. Provate a girarlo!"
               },
               {
-                "mistake": "Pensare che in serie la corrente si divida tra i due LED",
-                "fix": "In serie c'è UN SOLO percorso per la corrente: non può dividersi! Tutta la corrente passa prima nel resistore, poi nel LED1, poi nel LED2. Come l'acqua in un tubo senza biforcazioni."
+                "problema": "Pensare che in serie la corrente si divida tra i due LED",
+                "soluzione_neutra": "In serie c'è UN SOLO percorso per la corrente: non può dividersi! Tutta la corrente passa prima nel resistore, poi nel LED1, poi nel LED2. Come l'acqua in un tubo senza biforcazioni."
               }
             ]
           },
@@ -203,12 +203,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premete Play! Entrambi i LED si accendono alla stessa luminosità. La stessa corrente passa in tutti e due — è la legge del circuito serie!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play! Entrambi i LED si accendono alla stessa luminosità. La stessa corrente passa in tutti e due — è la legge del circuito serie!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenziate entrambi i LED e il resistore. Fate notare che la luminosità è identica: non c'è motivo per cui uno brilli di più se la corrente è la stessa. Domanda bonus: quanta tensione cade su ogni componente?"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -227,12 +227,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Ottimo lavoro! In un circuito serie la corrente è identica in tutti i componenti, mentre le tensioni si sommano. Due LED rossi in serie con 9V: ciascuno prende circa 1.8V e il resistore si prende il resto.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fate il calcolo insieme: 9V - (1.8V + 1.8V) = 5.4V sul resistore. Con R=330Ω: I = 5.4V / 330Ω ≈ 16mA. È una corrente perfetta per i LED!"
+            "step_corrente": "Ottimo lavoro! In un circuito serie la corrente è identica in tutti i componenti, mentre le tensioni si sommano. Due LED rossi in serie con 9V: ciascuno prende circa 1.8V e il resistore si prende il resto.",
+            "spunto_per_classe": null,
+            "note": [
+              "il calcolo insieme: 9V - (1.8V + 1.8V) = 5.4V sul resistore. Con R=330Ω: I = 5.4V / 330Ω ≈ 16mA. È una corrente perfetta per i LED!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -379,12 +379,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento precedente avevamo due LED rossi uguali: stessa luminosità. Ora proviamo con un LED rosso e uno verde. Vi aspettate che brillino uguale o in modo diverso?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Nell'esperimento precedente avevamo due LED rossi uguali: stessa luminosità. Ora proviamo con un LED rosso e uno verde. Vi aspettate che brillino uguale o in modo diverso?",
+            "spunto_per_classe": null,
+            "note": [
               "Raccogliete le previsioni della classe. Molti diranno 'uguale' — è la risposta sbagliata ma logica se non si conosce la tensione forward. Questo è il momento per introdurre il concetto di Vf."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -398,12 +398,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito è identico all'esperimento precedente, ma al posto del secondo LED rosso mettiamo un LED verde. Resistore 330Ω in e5-e12, LED rosso (anodo d14, catodo d15), LED verde (anodo d18, catodo d19).",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fate notare fisicamente la differenza: 'I due LED sembrano identici sulla breadboard, ma sono diversi dentro. Il verde ha bisogno di più tensione per accendersi.' Prima di premere Play, chiedete di nuovo le previsioni."
+            "step_corrente": "Il circuito è identico all'esperimento precedente, ma al posto del secondo LED rosso mettiamo un LED verde. Resistore 330Ω in e5-e12, LED rosso (anodo d14, catodo d15), LED verde (anodo d18, catodo d19).",
+            "spunto_per_classe": null,
+            "note": [
+              "notare fisicamente la differenza: 'I due LED sembrano identici sulla breadboard, ma sono diversi dentro. Il verde ha bisogno di più tensione per accendersi.' Prima di premere Play, chiedete di nuovo le previsioni."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap6-esp2]"
@@ -419,19 +419,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete visto la differenza di luminosità? La corrente è la stessa in entrambi — allora perché la luminosità è diversa? La risposta sta nella tensione forward, Vf.",
-            "chiedi_alla_classe": "Se la corrente è identica in entrambi i LED, perché brillano in modo diverso? Cos'è che cambia da un LED all'altro?",
-            "attenzione_a": [
+            "step_corrente": "Avete visto la differenza di luminosità? La corrente è la stessa in entrambi — allora perché la luminosità è diversa? La risposta sta nella tensione forward, Vf.",
+            "spunto_per_classe": "Domanda: 'Se la corrente è identica in entrambi i LED, perché brillano in modo diverso? Cos'è che cambia da un LED all'altro?'",
+            "note": [
               "Questo è il concetto chiave: Vf rosso ≈ 1.8V, Vf verde ≈ 2.2V. Con 9V e resistore da 330Ω: tensione residua = 9 - 1.8 - 2.2 = 5V sul resistore. I = 5V/330Ω ≈ 15mA. Stessa corrente per entrambi!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensare che la corrente diversa spieghi la luminosità diversa",
-                "fix": "No! In serie la corrente è SEMPRE identica. La differenza di luminosità non dipende dalla corrente ma dall'efficienza luminosa: il verde converte l'energia elettrica in luce in modo leggermente diverso dal rosso a parità di corrente."
+                "problema": "Pensare che la corrente diversa spieghi la luminosità diversa",
+                "soluzione_neutra": "No! In serie la corrente è SEMPRE identica. La differenza di luminosità non dipende dalla corrente ma dall'efficienza luminosa: il verde converte l'energia elettrica in luce in modo leggermente diverso dal rosso a parità di corrente."
               },
               {
-                "mistake": "Confondere anodo e catodo del LED verde",
-                "fix": "Tutti i LED hanno la stessa regola: la gamba LUNGA è sempre l'anodo (+), quella CORTA è sempre il catodo (−). Non importa il colore!"
+                "problema": "Confondere anodo e catodo del LED verde",
+                "soluzione_neutra": "Tutti i LED hanno la stessa regola: la gamba LUNGA è sempre l'anodo (+), quella CORTA è sempre il catodo (−). Non importa il colore!"
               }
             ]
           },
@@ -458,12 +458,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Guardate il simulatore: il LED rosso brilla in modo leggermente diverso dal verde. Ogni colore ha la sua tensione forward, come una firma unica!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Guardate il simulatore: il LED rosso brilla in modo leggermente diverso dal verde. Ogni colore ha la sua tensione forward, come una firma unica!",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenziate entrambi i LED. Spiegate: LED rosso Vf ≈ 1.8V, verde Vf ≈ 2.2V. Dato che la Vf del verde è più alta, il verde 'prende' più tensione. La corrente è la stessa, ma l'efficienza luminosa è diversa per ogni colore."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -482,12 +482,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Perfetto! Ogni colore di LED ha la sua tensione forward Vf: rosso ≈ 1.8V, verde ≈ 2.2V, blu ≈ 3V. In serie le Vf si sommano — bisogna tenerne conto quando si progetta un circuito!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fate la tabella delle Vf sulla lavagna: rosso 1.8V, giallo 2V, verde 2.2V, blu 3V, bianco 3.2V. Spiegare che il LED blu richiede più tensione perché emette luce con più energia (lunghezza d'onda più corta)."
+            "step_corrente": "Perfetto! Ogni colore di LED ha la sua tensione forward Vf: rosso ≈ 1.8V, verde ≈ 2.2V, blu ≈ 3V. In serie le Vf si sommano — bisogna tenerne conto quando si progetta un circuito!",
+            "spunto_per_classe": null,
+            "note": [
+              "la tabella delle Vf sulla lavagna: rosso 1.8V, giallo 2V, verde 2.2V, blu 3V, bianco 3.2V. Spiegare che il LED blu richiede più tensione perché emette luce con più energia (lunghezza d'onda più corta)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -634,12 +634,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Abbiamo aggiunto due LED in serie. Ora ne aggiungiamo un TERZO! Ma attenzione: 3 LED rossi hanno bisogno di almeno 3 × 1.8V = 5.4V. La batteria da 9V ce la fa, ma con meno tensione per il resistore. Cosa cambierà?",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fate il calcolo sulla lavagna PRIMA di montare il circuito: 3 × 1.8V = 5.4V per i LED. Restano 9 - 5.4 = 3.6V per il resistore. Con R=330Ω: I = 3.6/330 ≈ 11mA. Poi: con R=220Ω: I = 3.6/220 ≈ 16mA. La classe vedrà la differenza!"
+            "step_corrente": "Abbiamo aggiunto due LED in serie. Ora ne aggiungiamo un TERZO! Ma attenzione: 3 LED rossi hanno bisogno di almeno 3 × 1.8V = 5.4V. La batteria da 9V ce la fa, ma con meno tensione per il resistore. Cosa cambierà?",
+            "spunto_per_classe": null,
+            "note": [
+              "il calcolo sulla lavagna PRIMA di montare il circuito: 3 × 1.8V = 5.4V per i LED. Restano 9 - 5.4 = 3.6V per il resistore. Con R=330Ω: I = 3.6/330 ≈ 11mA. Poi: con R=220Ω: I = 3.6/220 ≈ 16mA. La classe vedrà la differenza!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -653,12 +653,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Tre LED rossi in serie: resistore in e3-e10, LED1 (d10-d11), LED2 (d17-d18), LED3 (d22-d23). I fili intermedi collegano catodo-anodo-catodo-anodo come una catena!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostrate la catena visivamente: puntate il dito su ogni LED e seguite il percorso catodo→filo→anodo→LED successivo. Poi highlight del resistore: 'Questo sta tenendo a bada la corrente — se lo togliamo, bruciamo i LED!'"
+            "step_corrente": "Tre LED rossi in serie: resistore in e3-e10, LED1 (d10-d11), LED2 (d17-d18), LED3 (d22-d23). I fili intermedi collegano catodo-anodo-catodo-anodo come una catena!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione la catena visivamente: puntate il dito su ogni LED e seguite il percorso catodo→filo→anodo→LED successivo. Poi highlight del resistore: 'Questo sta tenendo a bada la corrente — se lo togliamo, bruciamo i LED!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap6-esp3]"
@@ -674,19 +674,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "I tre LED si accendono tutti. Ora proviamo a sostituire il resistore da 330Ω con uno da 220Ω. Prima di farlo: qualcuno sa predire cosa succederà alla luminosità?",
-            "chiedi_alla_classe": "Abbiamo 9V e 3 LED da 1.8V ciascuno. Quanta tensione rimane per il resistore? E se usassimo 5 LED in serie — funzionerebbe ancora?",
-            "attenzione_a": [
+            "step_corrente": "I tre LED si accendono tutti. Ora proviamo a sostituire il resistore da 330Ω con uno da 220Ω. Prima di farlo: qualcuno sa predire cosa succederà alla luminosità?",
+            "spunto_per_classe": "Domanda: 'Abbiamo 9V e 3 LED da 1.8V ciascuno. Quanta tensione rimane per il resistore? E se usassimo 5 LED in serie — funzionerebbe ancora?'",
+            "note": [
               "Lasciate 1 minuto per le previsioni. Poi fate il calcolo: con R=220Ω la corrente aumenta (I = 3.6/220 ≈ 16mA vs 11mA con 330Ω). Più corrente = più luce. Ma attenzione: troppa corrente può bruciare i LED!"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Pensare che più LED in serie = LED più luminosi",
-                "fix": "È il contrario! Ogni LED in serie 'prende' la sua Vf dalla batteria. Con più LED, rimane meno tensione per il resistore, quindi la corrente può DIMINUIRE e i LED possono essere meno luminosi!"
+                "problema": "Pensare che più LED in serie = LED più luminosi",
+                "soluzione_neutra": "È il contrario! Ogni LED in serie 'prende' la sua Vf dalla batteria. Con più LED, rimane meno tensione per il resistore, quindi la corrente può DIMINUIRE e i LED possono essere meno luminosi!"
               },
               {
-                "mistake": "Dimenticare di aggiornare il resistore quando si cambia il numero di LED",
-                "fix": "Ogni volta che cambia il circuito, ricalcolate il resistore! Formula: R = (Vbatteria - somma Vf) / I_desiderata. Con 3 LED rossi e 9V: R = (9 - 5.4) / 0.02 = 180Ω minimo."
+                "problema": "Dimenticare di aggiornare il resistore quando si cambia il numero di LED",
+                "soluzione_neutra": "Ogni volta che cambia il circuito, ricalcolate il resistore! Formula: R = (Vbatteria - somma Vf) / I_desiderata. Con 3 LED rossi e 9V: R = (9 - 5.4) / 0.02 = 180Ω minimo."
               }
             ]
           },
@@ -713,12 +713,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Guardate tutti e tre i LED accesi! Notate la luminosità con R=330Ω. Ora nella realtà potreste cambiare il resistore con uno da 220Ω: i LED brillerebbero di più perché passa più corrente.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Guardate tutti e tre i LED accesi! Notate la luminosità con R=330Ω. Ora nella realtà potreste cambiare il resistore con uno da 220Ω: i LED brillerebbero di più perché passa più corrente.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenziate tutti e tre i LED e il resistore. Fate notare il filo giallo (catodo LED1 → anodo LED2) e il filo verde (catodo LED2 → anodo LED3): questi sono i 'ponti' della catena serie. Ogni LED riceve circa 1.8V, il resistore prende 3.6V."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -738,12 +738,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Tre LED in serie funzionano con 9V perché la somma delle Vf (5.4V) è inferiore ai 9V disponibili. Cambiare il resistore da 330Ω a 220Ω aumenta la corrente e la luminosità.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Tre LED in serie funzionano con 9V perché la somma delle Vf (5.4V) è inferiore ai 9V disponibili. Cambiare il resistore da 330Ω a 220Ω aumenta la corrente e la luminosità.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap formule: Vresistore = Vbatteria - (n × Vf_LED); I = Vresistore / R. Queste due formule permettono di progettare qualsiasi circuito LED in serie! Fate esercitare la classe con un esempio numerico."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -899,12 +899,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora abbiamo parlato di tensione forward Vf come un valore teorico. Oggi la MISURIAMO davvero! Il multimetro diventa il nostro strumento di indagine: lo colleghiamo in parallelo al LED per leggere esattamente quanti volt consuma.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Finora abbiamo parlato di tensione forward Vf come un valore teorico. Oggi la MISURIAMO davvero! Il multimetro diventa il nostro strumento di indagine: lo colleghiamo in parallelo al LED per leggere esattamente quanti volt consuma.",
+            "spunto_per_classe": null,
+            "note": [
               "Introducete il concetto di 'parallelo' per il multimetro: le sonde si collegano ai DUE capi del LED (anodo e catodo). Il multimetro misura la differenza di tensione tra i due punti senza interferire con il circuito principale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -918,12 +918,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito principale: batteria → resistore 330Ω (a2-a9) → LED rosso (f9 anodo, f10 catodo) → massa. Poi colleghiamo il multimetro IN PARALLELO al LED: sonda rossa all'anodo (f9), sonda nera al catodo (f10).",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il circuito principale: batteria → resistore 330Ω (a2-a9) → LED rosso (f9 anodo, f10 catodo) → massa. Poi colleghiamo il multimetro IN PARALLELO al LED: sonda rossa all'anodo (f9), sonda nera al catodo (f10).",
+            "spunto_per_classe": null,
+            "note": [
               "Sottolineate la differenza tra serie e parallelo per lo strumento di misura. Il voltmetro si collega SEMPRE in parallelo al componente che volete misurare. Se lo collegate in serie, misura tensione sbagliata e cortocircuita il LED!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v2-cap6-esp4]"
@@ -939,19 +939,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il multimetro mostra circa 1.8V. Questo è il Vf del LED rosso! Domanda: se collegassimo le sonde del multimetro ai capi del resistore invece che del LED, che valore vedremmo?",
-            "chiedi_alla_classe": "Se misurassimo con il multimetro la tensione ai capi della batteria mentre il circuito è acceso, vedremmo esattamente 9V o qualcosa di diverso? Perché?",
-            "attenzione_a": [
+            "step_corrente": "Il multimetro mostra circa 1.8V. Questo è il Vf del LED rosso! Domanda: se collegassimo le sonde del multimetro ai capi del resistore invece che del LED, che valore vedremmo?",
+            "spunto_per_classe": "Domanda: 'Se misurassimo con il multimetro la tensione ai capi della batteria mentre il circuito è acceso, vedremmo esattamente 9V o qualcosa di diverso? Perché?'",
+            "note": [
               "La risposta è: 9 - 1.8 = 7.2V sul resistore. Se poi chiedete 'quanto corrente scorre?': I = 7.2V / 330Ω ≈ 21.8mA. Questi calcoli collegano teoria e misura reale."
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Collegare le sonde del multimetro in serie invece che in parallelo",
-                "fix": "Il voltmetro va SEMPRE in parallelo! In serie misurerebbe la corrente (che è un'altra cosa) e potrebbe interrompere il circuito. Le sonde vanno ai DUE CAPI del componente che volete misurare, non dentro il percorso principale."
+                "problema": "Collegare le sonde del multimetro in serie invece che in parallelo",
+                "soluzione_neutra": "Il voltmetro va SEMPRE in parallelo! In serie misurerebbe la corrente (che è un'altra cosa) e potrebbe interrompere il circuito. Le sonde vanno ai DUE CAPI del componente che volete misurare, non dentro il percorso principale."
               },
               {
-                "mistake": "Collegare la sonda rossa al catodo invece che all'anodo",
-                "fix": "Attenzione alla polarità! La sonda rossa (+) va all'anodo del LED (gamba lunga, +). La sonda nera (−) va al catodo (gamba corta, −). Se invertite, il multimetro mostra un valore negativo."
+                "problema": "Collegare la sonda rossa al catodo invece che all'anodo",
+                "soluzione_neutra": "Attenzione alla polarità! La sonda rossa (+) va all'anodo del LED (gamba lunga, +). La sonda nera (−) va al catodo (gamba corta, −). Se invertite, il multimetro mostra un valore negativo."
               }
             ]
           },
@@ -978,12 +978,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premete Play e osservate il multimetro: mostra circa 1.8V — la tensione forward del LED rosso! Il LED è acceso, il multimetro misura in modo invisibile senza interferire.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Pressione Play e osservate il multimetro: mostra circa 1.8V — la tensione forward del LED rosso! Il LED è acceso, il multimetro misura in modo invisibile senza interferire.",
+            "spunto_per_classe": null,
+            "note": [
               "Evidenziate il multimetro e le sonde. Fate notare che il LED continua ad accendersi normalmente — il multimetro non disturba il circuito. Poi highlight del LED: 'Questa piccola differenza di tensione ai suoi capi è tutta la 'spinta' che gli serve per illuminarsi!'"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1002,12 +1002,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete misurato la tensione forward con il multimetro! Il segreto: il voltmetro si collega sempre in parallelo al componente da misurare. Con questa tecnica potete verificare qualsiasi circuito.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete misurato la tensione forward con il multimetro! Il segreto: il voltmetro si collega sempre in parallelo al componente da misurare. Con questa tecnica potete verificare qualsiasi circuito.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: Vf rosso ≈ 1.8V, verde ≈ 2.2V, blu ≈ 3V. Il multimetro va in parallelo per misurare tensione. Se vedono un valore diverso (es. 0V), significa che il LED è spento o invertito. Questo conclude il Capitolo 6!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null

@@ -79,12 +79,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora Arduino ha solo parlato: accendi LED, suona buzzer. Ma non ha mai ascoltato. Oggi gli diamo un orecchio: un pulsante collegato a un pin di INPUT. Quando lo premiamo, Arduino lo sa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Finora Arduino ha solo parlato: accendi LED, suona buzzer. Ma non ha mai ascoltato. Oggi gli diamo un orecchio: un pulsante collegato a un pin di INPUT. Quando lo premiamo, Arduino lo sa.",
+            "spunto_per_classe": null,
+            "note": [
               "L'analogia parlare/ascoltare e potente. OUTPUT = Arduino parla al mondo. INPUT = Arduino ascolta il mondo. Oggi e la prima volta che ascolta."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -98,12 +98,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Carichiamo il circuito: pulsante collegato al pin 2 con resistore pull-down, LED sul pin 7. Nel codice, il pin 2 e INPUT e il pin 7 e OUTPUT. Con if leggiamo il pulsante e decidiamo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Carichiamo il circuito: pulsante collegato al pin 2 con resistore pull-down, LED sul pin 7. Nel codice, il pin 2 e INPUT e il pin 7 e OUTPUT. Con if leggiamo il pulsante e decidiamo.",
+            "spunto_per_classe": null,
+            "note": [
               "Spiegare il resistore pull-down in modo semplice: senza di lui, quando il pulsante non e premuto, il pin non sa se e HIGH o LOW. Il resistore lo tiene a LOW finche non premiamo."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp1]"
@@ -119,12 +119,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il codice dice: se il pulsante e premuto, accendi il LED. Altrimenti, spegnilo. Cosa succede se tolgo la parte 'altrimenti'? Il LED resta acceso per sempre dopo la prima pressione?",
-            "chiedi_alla_classe": "Se il loop gira migliaia di volte al secondo, Arduino controlla il pulsante migliaia di volte al secondo. Spreca energia o e utile?",
-            "attenzione_a": [
+            "step_corrente": "Il codice dice: se il pulsante e premuto, accendi il LED. Altrimenti, spegnilo. Cosa succede se tolgo la parte 'altrimenti'? Il LED resta acceso per sempre dopo la prima pressione?",
+            "spunto_per_classe": "Domanda: 'Se il loop gira migliaia di volte al secondo, Arduino controlla il pulsante migliaia di volte al secondo. Spreca energia o e utile?'",
+            "note": [
               "Lasciare provare. Senza l'else, il LED si accende quando premi ma si spegne al giro di loop successivo se non premi. Il loop e cosi veloce che sembra funzionare comunque."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -138,12 +138,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premiamo Play. Ora premete il pulsante nel simulatore: il LED si accende. Rilasciate: si spegne. Arduino legge il pulsante e reagisce in tempo reale.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Premiamo Play. Ora premete il pulsante nel simulatore: il LED si accende. Rilasciate: si spegne. Arduino legge il pulsante e reagisce in tempo reale.",
+            "spunto_per_classe": null,
+            "note": [
               "Far notare la reattivita: non c'e ritardo visibile. Il loop e cosi veloce che la risposta sembra istantanea. Questo e il polling."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]"
@@ -159,12 +159,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Oggi Arduino ha imparato ad ascoltare. Con digitalRead legge HIGH o LOW dal pulsante. Con if decide cosa fare. Questa e la base di ogni programma interattivo: leggere, decidere, agire.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Oggi Arduino ha imparato ad ascoltare. Con digitalRead legge HIGH o LOW dal pulsante. Con if decide cosa fare. Questa e la base di ogni programma interattivo: leggere, decidere, agire.",
+            "spunto_per_classe": null,
+            "note": [
               "Il pattern INPUT-DECISIONE-OUTPUT e il cuore di quasi tutti i programmi. Sottolinearlo: sensore legge, codice decide, attuatore agisce."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -243,12 +243,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora Arduino ha solo comandato i LED: acceso o spento. Oggi facciamo il contrario! Il LED parte acceso e si spegne quando premiamo un pulsante. Arduino impara ad ASCOLTARE il mondo esterno.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Finora Arduino ha solo comandato i LED: acceso o spento. Oggi facciamo il contrario! Il LED parte acceso e si spegne quando premiamo un pulsante. Arduino impara ad ASCOLTARE il mondo esterno.",
+            "spunto_per_classe": null,
+            "note": [
               "Inizia chiedendo alla classe: chi ha mai usato un pulsante per spegnere qualcosa? Il telecomando della TV, il campanello di casa. Ogni volta che premi, mandi un segnale. Oggi Arduino riceve quel segnale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -262,12 +262,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito ha due parti: il LED su un pin OUTPUT e il pulsante su un pin INPUT. Quando il pulsante non e premuto, digitalRead legge HIGH e il LED resta acceso. Quando lo premiamo, legge LOW e il LED si spegne.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega il concetto di INPUT vs OUTPUT con un paragone semplice: OUTPUT e come parlare (Arduino comanda), INPUT e come ascoltare (Arduino riceve). Fino ad ora abbiamo solo parlato, oggi impariamo ad ascoltare."
+            "step_corrente": "Il circuito ha due parti: il LED su un pin OUTPUT e il pulsante su un pin INPUT. Quando il pulsante non e premuto, digitalRead legge HIGH e il LED resta acceso. Quando lo premiamo, legge LOW e il LED si spegne.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione il concetto di INPUT vs OUTPUT con un paragone semplice: OUTPUT e come parlare (Arduino comanda), INPUT e come ascoltare (Arduino riceve). Fino ad ora abbiamo solo parlato, oggi impariamo ad ascoltare."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp2]"
@@ -283,12 +283,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il LED e acceso. Il pulsante e collegato. Cosa pensate che succeda quando lo premiamo? E perche quando rilasciamo il pulsante, il LED torna ad accendersi? Arduino ha memoria di cosa e successo?",
-            "chiedi_alla_classe": "Se il loop di Arduino gira migliaia di volte al secondo, perche non vediamo il LED che lampeggia? Come fa Arduino a sembrare cosi veloce?",
-            "attenzione_a": [
+            "step_corrente": "Il LED e acceso. Il pulsante e collegato. Cosa pensate che succeda quando lo premiamo? E perche quando rilasciamo il pulsante, il LED torna ad accendersi? Arduino ha memoria di cosa e successo?",
+            "spunto_per_classe": "Domanda: 'Se il loop di Arduino gira migliaia di volte al secondo, perche non vediamo il LED che lampeggia? Come fa Arduino a sembrare cosi veloce?'",
+            "note": [
               "Guida la riflessione: Arduino non ricorda nulla tra un ciclo e l'altro del loop. Ogni volta legge il pulsante e decide. Se il pulsante e premuto, spegne il LED. Se non e premuto, lo accende. Non c'e memoria, solo lettura istantanea."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -302,12 +302,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il LED rosso si accende. Ora cliccate sul pulsante nel simulatore e tenetelo premuto: il LED si spegne. Rilasciate: torna acceso. E un comportamento momentaneo, non un toggle.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai notare la differenza con un interruttore di casa: quello resta nella posizione in cui lo metti. Il pulsante invece torna su da solo quando lo lasci. Chiedi: servirebbe una variabile per farlo restare spento?"
+            "step_corrente": "Pressione Play! Il LED rosso si accende. Ora cliccate sul pulsante nel simulatore e tenetelo premuto: il LED si spegne. Rilasciate: torna acceso. E un comportamento momentaneo, non un toggle.",
+            "spunto_per_classe": null,
+            "note": [
+              "notare la differenza con un interruttore di casa: quello resta nella posizione in cui lo metti. Il pulsante invece torna su da solo quando lo lasci. Chiedi: servirebbe una variabile per farlo restare spento?"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -325,12 +325,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete costruito il primo circuito interattivo! Arduino ora sa ascoltare un pulsante con digitalRead. INPUT e OUTPUT sono le due direzioni della comunicazione tra Arduino e il mondo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete costruito il primo circuito interattivo! Arduino ora sa ascoltare un pulsante con digitalRead. INPUT e OUTPUT sono le due direzioni della comunicazione tra Arduino e il mondo.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: pinMode(pin, INPUT) configura un pin per ascoltare. digitalRead(pin) legge il valore: HIGH o LOW. Il pulsante e momentaneo: funziona solo mentre lo tieni premuto. Per un toggle serve una variabile, che vedremo presto."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -408,12 +408,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento precedente il pulsante aveva bisogno di un resistore esterno. Arduino ha un trucco: una resistenza nascosta dentro al chip chiamata pullup. Oggi la attiviamo con INPUT_PULLUP e risparmiamo un componente!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Usa l'analogia dell'elastico: immagina un muretto (il pin) tenuto su da un elastico (la resistenza interna). Di default il muretto sta su (HIGH). Quando premi il pulsante, lo abbatti (LOW). Senza elastico il muretto potrebbe cadere da solo (valore casuale)."
+            "step_corrente": "Nell'esperimento precedente il pulsante aveva bisogno di un resistore esterno. Arduino ha un trucco: una resistenza nascosta dentro al chip chiamata pullup. Oggi la attiviamo con INPUT_PULLUP e risparmiamo un componente!",
+            "spunto_per_classe": null,
+            "note": [
+              "Uso l'analogia dell'elastico: immagina un muretto (il pin) tenuto su da un elastico (la resistenza interna). Di default il muretto sta su (HIGH). Quando premi il pulsante, lo abbatti (LOW). Senza elastico il muretto potrebbe cadere da solo (valore casuale)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -427,12 +427,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito e quasi uguale al precedente, ma il pulsante va da un pin di Arduino direttamente a GND, senza resistore esterno. Con pinMode(pin, INPUT_PULLUP) Arduino attiva la resistenza interna da 20k ohm. Il pin legge HIGH quando rilasciato, LOW quando premuto.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il circuito e quasi uguale al precedente, ma il pulsante va da un pin di Arduino direttamente a GND, senza resistore esterno. Con pinMode(pin, INPUT_PULLUP) Arduino attiva la resistenza interna da 20k ohm. Il pin legge HIGH quando rilasciato, LOW quando premuto.",
+            "spunto_per_classe": null,
+            "note": [
               "Disegna alla lavagna il circuito equivalente: pin --- [R interna 20k] --- 5V e pin --- [pulsante] --- GND. Quando il pulsante e aperto, la resistenza tira il pin verso 5V (HIGH). Quando e chiuso, la corrente va a GND (LOW). La logica e invertita rispetto all'intuizione."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp3]"
@@ -448,12 +448,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Attenzione: con INPUT_PULLUP quando il pulsante NON e premuto, il pin legge HIGH. Quando lo premiamo, legge LOW. E il contrario di quello che ci aspetteremmo! Perche la logica e invertita?",
-            "chiedi_alla_classe": "Se scriviamo if(digitalRead(pin) == HIGH) per accendere il LED, il LED si accende quando premiamo o quando rilasciamo il pulsante? Attenzione, non e intuitivo!",
-            "attenzione_a": [
+            "step_corrente": "Attenzione: con INPUT_PULLUP quando il pulsante NON e premuto, il pin legge HIGH. Quando lo premiamo, legge LOW. E il contrario di quello che ci aspetteremmo! Perche la logica e invertita?",
+            "spunto_per_classe": "Domanda: 'Se scriviamo if(digitalRead(pin) == HIGH) per accendere il LED, il LED si accende quando premiamo o quando rilasciamo il pulsante? Attenzione, non e intuitivo!'",
+            "note": [
               "Questa e la domanda chiave. Spiega che la resistenza interna 'tira su' il pin verso 5V (HIGH). Il pulsante, quando premuto, collega il pin direttamente a GND (0V = LOW). GND vince sempre sulla resistenza perche e un collegamento diretto. E come un braccio di ferro dove GND e piu forte."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -467,12 +467,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il LED si comporta come prima, ma il circuito e piu semplice. Notate: non c'e piu il resistore esterno per il pulsante. Arduino fa tutto da solo con INPUT_PULLUP. Premete e rilasciate il pulsante.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai confrontare mentalmente i due circuiti: quello precedente (resistore esterno) e questo (INPUT_PULLUP). Il risultato e lo stesso, ma il circuito e piu pulito. Nella pratica, quasi tutti usano INPUT_PULLUP per i pulsanti perche e piu comodo e affidabile."
+            "step_corrente": "Pressione Play! Il LED si comporta come prima, ma il circuito e piu semplice. Notate: non c'e piu il resistore esterno per il pulsante. Arduino fa tutto da solo con INPUT_PULLUP. Premete e rilasciate il pulsante.",
+            "spunto_per_classe": null,
+            "note": [
+              "confrontare mentalmente i due circuiti: quello precedente (resistore esterno) e questo (INPUT_PULLUP). Il risultato e lo stesso, ma il circuito e piu pulito. Nella pratica, quasi tutti usano INPUT_PULLUP per i pulsanti perche e piu comodo e affidabile."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -489,12 +489,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "INPUT_PULLUP e un trucco fondamentale di Arduino. Da oggi in poi, ogni volta che usate un pulsante, potete usare INPUT_PULLUP e risparmiare un resistore. Ricordate solo che la logica e invertita: premuto = LOW!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "INPUT_PULLUP e un trucco fondamentale di Arduino. Da oggi in poi, ogni volta che usate un pulsante, potete usare INPUT_PULLUP e risparmiare un resistore. Ricordate solo che la logica e invertita: premuto = LOW!",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: INPUT_PULLUP attiva una resistenza interna da 20k ohm. Il pin legge HIGH di default. Premendo il pulsante (collegato a GND) il pin va a LOW. Nella pratica e lo standard per collegare pulsanti ad Arduino."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -567,12 +567,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora il LED era solo acceso (HIGH) o spento (LOW). Oggi scopriamo una via di mezzo! Con analogWrite possiamo scegliere 256 livelli di luminosita, da 0 (spento) a 255 (piena luce). Il segreto si chiama PWM.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Finora il LED era solo acceso (HIGH) o spento (LOW). Oggi scopriamo una via di mezzo! Con analogWrite possiamo scegliere 256 livelli di luminosita, da 0 (spento) a 255 (piena luce). Il segreto si chiama PWM.",
+            "spunto_per_classe": null,
+            "note": [
               "Il PWM e controintuitivo: Arduino non abbassa davvero la tensione. Accende e spegne il LED centinaia di volte al secondo. Se e acceso il 50% del tempo, l'occhio vede meta luminosita. Come un ventilatore: le pale sembrano un disco continuo quando girano veloci."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -586,12 +586,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito e semplice: un LED con resistore collegato a un pin PWM (quelli marcati con la tilde ~). Il codice usa analogWrite(pin, valore) dove valore va da 0 a 255. Solo i pin 3, 5, 6, 9, 10, 11 supportano il PWM!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Mostra sulla scheda Arduino dove sono i pin con il simbolo ~. Spiega che se usano analogWrite su un pin senza ~, non funziona. Il nome analogWrite e ingannevole: non produce un vero segnale analogico, ma un treno di impulsi digitali (PWM)."
+            "step_corrente": "Il circuito e semplice: un LED con resistore collegato a un pin PWM (quelli marcati con la tilde ~). Il codice usa analogWrite(pin, valore) dove valore va da 0 a 255. Solo i pin 3, 5, 6, 9, 10, 11 supportano il PWM!",
+            "spunto_per_classe": null,
+            "note": [
+              "Visualizzazione sulla scheda Arduino dove sono i pin con il simbolo ~. Spiega che se usano analogWrite su un pin senza ~, non funziona. Il nome analogWrite e ingannevole: non produce un vero segnale analogico, ma un treno di impulsi digitali (PWM)."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp4]"
@@ -607,12 +607,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "analogWrite(5, 128) imposta il LED a meta luminosita. Ma Arduino non ha un dimmer analogico vero! Come fa a creare una luminosita intermedia usando solo acceso e spento? Pensateci: cosa succede se accendo e spengo una luce 500 volte al secondo?",
-            "chiedi_alla_classe": "Se analogWrite usa solo ON e OFF velocissimi, come facciamo a distinguere 128 da 127? L'occhio umano riesce davvero a vedere la differenza tra 256 livelli?",
-            "attenzione_a": [
+            "step_corrente": "analogWrite(5, 128) imposta il LED a meta luminosita. Ma Arduino non ha un dimmer analogico vero! Come fa a creare una luminosita intermedia usando solo acceso e spento? Pensateci: cosa succede se accendo e spengo una luce 500 volte al secondo?",
+            "spunto_per_classe": "Domanda: 'Se analogWrite usa solo ON e OFF velocissimi, come facciamo a distinguere 128 da 127? L'occhio umano riesce davvero a vedere la differenza tra 256 livelli?'",
+            "note": [
               "Guida verso la risposta: se il LED e acceso il 50% del tempo e spento il 50%, l'occhio non vede il lampeggio (troppo veloce!) ma percepisce meta luminosita. analogWrite(5, 64) = acceso 25% del tempo = un quarto di luminosita. Questo e il duty cycle."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -626,12 +626,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il LED si accende gradualmente da spento a piena luminosita. Osservate come la luce cresce in modo fluido. Il ciclo for aumenta il valore da 0 a 255, un passo alla volta.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Chiedi agli studenti di contare mentalmente i livelli di luminosita che riescono a distinguere a occhio. Probabilmente ne distinguono 10-15, non 256. Questo apre una discussione interessante sulla percezione umana vs la precisione digitale."
+            "step_corrente": "Pressione Play! Il LED si accende gradualmente da spento a piena luminosita. Osservate come la luce cresce in modo fluido. Il ciclo for aumenta il valore da 0 a 255, un passo alla volta.",
+            "spunto_per_classe": null,
+            "note": [
+              "Domanda: agli studenti di contare mentalmente i livelli di luminosita che riescono a distinguere a occhio. Probabilmente ne distinguono 10-15, non 256. Questo apre una discussione interessante sulla percezione umana vs la precisione digitale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -648,12 +648,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Ora sapete controllare la luminosita di un LED! analogWrite e il PWM vi aprono un mondo: non solo LED, ma anche la velocita dei motori e il volume dei buzzer. Tutto con 256 livelli di controllo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Ora sapete controllare la luminosita di un LED! analogWrite e il PWM vi aprono un mondo: non solo LED, ma anche la velocita dei motori e il volume dei buzzer. Tutto con 256 livelli di controllo.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: analogWrite(pin, valore) controlla il duty cycle del PWM. 0 = sempre spento, 255 = sempre acceso, 128 = acceso meta del tempo. Solo i pin con ~ supportano il PWM. Il nome 'analogWrite' e fuorviante: e digitale mascherato!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -727,12 +727,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento precedente il LED si accendeva gradualmente ma poi ripartiva da zero. Oggi lo facciamo anche spegnere gradualmente! Due cicli for: uno che sale e uno che scende. L'effetto e come il respiro: inspira (si accende) ed espira (si spegne).",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Nell'esperimento precedente il LED si accendeva gradualmente ma poi ripartiva da zero. Oggi lo facciamo anche spegnere gradualmente! Due cicli for: uno che sale e uno che scende. L'effetto e come il respiro: inspira (si accende) ed espira (si spegne).",
+            "spunto_per_classe": null,
+            "note": [
               "L'analogia del respiro funziona benissimo: inspira = luce che cresce, espira = luce che cala. Chiedi a un volontario di respirare lentamente e fai notare che e un ciclo continuo, come il nostro programma nel loop()."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -746,12 +746,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito e identico al precedente: un LED con resistore su un pin PWM. La differenza e nel codice: il primo for va da 0 a 255 (fade up), il secondo for va da 255 a 0 (fade down). Nel loop() si ripetono all'infinito.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega la struttura dei due for: for(int i=0; i<=255; i+=5) sale, for(int i=255; i>=0; i-=5) scende. Il passo di 5 rende il fade visibile (51 passaggi invece di 256). Il delay(10) tra ogni passo controlla la velocita dell'effetto."
+            "step_corrente": "Il circuito e identico al precedente: un LED con resistore su un pin PWM. La differenza e nel codice: il primo for va da 0 a 255 (fade up), il secondo for va da 255 a 0 (fade down). Nel loop() si ripetono all'infinito.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione la struttura dei due for: for(int i=0; i<=255; i+=5) sale, for(int i=255; i>=0; i-=5) scende. Il passo di 5 rende il fade visibile (51 passaggi invece di 256). Il delay(10) tra ogni passo controlla la velocita dell'effetto."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp5]"
@@ -767,12 +767,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il primo for sale da 0 a 255 con passi di 5. Il secondo scende da 255 a 0 con passi di 5. Se cambio il delay da 10 a 50, cosa succede all'effetto? E se cambio il passo da 5 a 1?",
-            "chiedi_alla_classe": "Se il LED fa 256 livelli di luminosita, quanti ne distingue davvero il vostro occhio? Provate a immaginare: vedreste la differenza tra il livello 100 e il livello 101?",
-            "attenzione_a": [
+            "step_corrente": "Il primo for sale da 0 a 255 con passi di 5. Il secondo scende da 255 a 0 con passi di 5. Se cambio il delay da 10 a 50, cosa succede all'effetto? E se cambio il passo da 5 a 1?",
+            "spunto_per_classe": "Domanda: 'Se il LED fa 256 livelli di luminosita, quanti ne distingue davvero il vostro occhio? Provate a immaginare: vedreste la differenza tra il livello 100 e il livello 101?'",
+            "note": [
               "Guida il ragionamento: delay piu lungo = fade piu lento e morbido. Passo piu piccolo = piu passaggi = transizione piu fluida ma piu lunga. Con passo 1 e delay 10 servono 255 x 10ms = 2.55 secondi per salire. Con passo 5 servono 51 x 10ms = 0.51 secondi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -786,12 +786,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Osservate il LED che si accende lentamente e poi si spegne lentamente, come un respiro. Il ciclo si ripete all'infinito. Provate a contare quanti secondi dura un ciclo completo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai misurare il tempo di un ciclo completo (up + down). Con delay(10) e passo 5, ogni fase dura circa 0.5 secondi, quindi un ciclo completo e circa 1 secondo. Chiedi: come lo rallenterei a 3 secondi per fase?"
+            "step_corrente": "Pressione Play! Osservate il LED che si accende lentamente e poi si spegne lentamente, come un respiro. Il ciclo si ripete all'infinito. Provate a contare quanti secondi dura un ciclo completo.",
+            "spunto_per_classe": null,
+            "note": [
+              "misurare il tempo di un ciclo completo (up + down). Con delay(10) e passo 5, ogni fase dura circa 0.5 secondi, quindi un ciclo completo e circa 1 secondo. Chiedi: come lo rallenterei a 3 secondi per fase?"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -808,12 +808,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete creato un effetto di luce professionale con solo due cicli for! Questo tipo di animazione si usa in prodotti reali: LED di notifica, luci di standby, indicatori di ricarica. Il principio e sempre lo stesso: PWM + ciclo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete creato un effetto di luce professionale con solo due cicli for! Questo tipo di animazione si usa in prodotti reali: LED di notifica, luci di standby, indicatori di ricarica. Il principio e sempre lo stesso: PWM + ciclo.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: due for loop consecutivi nel loop() creano un ciclo infinito di fade up e fade down. Il delay controlla la velocita, il passo controlla la fluidita. Sfida per casa: provate a fare il fade solo nella direzione up, fermandosi a 128 invece di 255."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -896,12 +896,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Nell'esperimento con il pulsante, il LED si spegneva solo mentre tenevamo premuto. Oggi facciamo un salto: ogni pressione CAMBIA lo stato per sempre. Come il tasto Caps Lock: premi una volta e resta attivo fino alla prossima pressione.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Nell'esperimento con il pulsante, il LED si spegneva solo mentre tenevamo premuto. Oggi facciamo un salto: ogni pressione CAMBIA lo stato per sempre. Come il tasto Caps Lock: premi una volta e resta attivo fino alla prossima pressione.",
+            "spunto_per_classe": null,
+            "note": [
               "Parti dall'esperienza quotidiana: Caps Lock, tasto Mute, Play/Pausa. Tutti sono toggle. La sfida tecnica e che il loop gira migliaia di volte al secondo: come fa Arduino a capire che e UNA pressione e non mille? Servono due ingredienti: variabile di stato e debounce."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -915,12 +915,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito ha tre parti: il pulsante su INPUT_PULLUP, il LED verde e il LED rosso su due pin OUTPUT. Il codice usa una variabile booleana per ricordare quale LED e acceso. A ogni pressione la variabile si inverte: da true diventa false e viceversa.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega la variabile booleana con un esempio fisico: e come un post-it dove scrivi 'verde' o 'rosso'. Ogni volta che premi il pulsante, cancelli e scrivi l'altro colore. Senza il post-it, Arduino non saprebbe quale LED era acceso al ciclo precedente."
+            "step_corrente": "Il circuito ha tre parti: il pulsante su INPUT_PULLUP, il LED verde e il LED rosso su due pin OUTPUT. Il codice usa una variabile booleana per ricordare quale LED e acceso. A ogni pressione la variabile si inverte: da true diventa false e viceversa.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione la variabile booleana con un esempio fisico: e come un post-it dove scrivi 'verde' o 'rosso'. Ogni volta che premi il pulsante, cancelli e scrivi l'altro colore. Senza il post-it, Arduino non saprebbe quale LED era acceso al ciclo precedente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp6]"
@@ -936,12 +936,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il codice ha un delay(50) dopo aver letto la pressione del pulsante. A cosa serve? Provate a pensare: cosa succede fisicamente quando premete un pulsante? Il contatto e perfetto o rimbalza un po'?",
-            "chiedi_alla_classe": "Se togliamo il delay(50) dal codice, il toggle funzionera ancora correttamente? O succede qualcosa di strano?",
-            "attenzione_a": [
+            "step_corrente": "Il codice ha un delay(50) dopo aver letto la pressione del pulsante. A cosa serve? Provate a pensare: cosa succede fisicamente quando premete un pulsante? Il contatto e perfetto o rimbalza un po'?",
+            "spunto_per_classe": "Domanda: 'Se togliamo il delay(50) dal codice, il toggle funzionera ancora correttamente? O succede qualcosa di strano?'",
+            "note": [
               "Il debounce e fondamentale. Un pulsante meccanico rimbalza per 5-20 millisecondi dopo ogni pressione, generando tanti contatti rapidi. Senza delay, Arduino potrebbe leggere 5-10 pressioni invece di una sola. Il delay(50) aspetta che il rimbalzo finisca. Analogia: una moneta che cade sul tavolo rimbalza prima di fermarsi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -955,12 +955,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il LED verde si accende. Cliccate sul pulsante: il verde si spegne e il rosso si accende. Cliccate ancora: si scambiano di nuovo! Ogni pressione alterna lo stato per sempre.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai notare che e una vera ALTERNANZA di stato: ogni pressione cambia. Non e come tenere premuto un pulsante normale. Questo meccanismo e ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa. La variabile booleana e la chiave."
+            "step_corrente": "Pressione Play! Il LED verde si accende. Cliccate sul pulsante: il verde si spegne e il rosso si accende. Cliccate ancora: si scambiano di nuovo! Ogni pressione alterna lo stato per sempre.",
+            "spunto_per_classe": null,
+            "note": [
+              "notare che e una vera ALTERNANZA di stato: ogni pressione cambia. Non e come tenere premuto un pulsante normale. Questo meccanismo e ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa. La variabile booleana e la chiave."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -979,12 +979,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete costruito un vero toggle! Tre concetti fondamentali: la variabile booleana per ricordare lo stato, il debounce per evitare rimbalzi, e INPUT_PULLUP per il pulsante. Con questi strumenti potete costruire qualsiasi interfaccia interattiva.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete costruito un vero toggle! Tre concetti fondamentali: la variabile booleana per ricordare lo stato, il debounce per evitare rimbalzi, e INPUT_PULLUP per il pulsante. Con questi strumenti potete costruire qualsiasi interfaccia interattiva.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: variabile booleana = memoria tra un ciclo e l'altro. Debounce con delay(50) = ignora i rimbalzi meccanici. Toggle = ogni pressione inverte lo stato. Sfida: e se volessimo 3 stati invece di 2? Servirebbe un int invece di un bool."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1072,12 +1072,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "I computer contano in binario: solo con 0 e 1. I nostri LED fanno la stessa cosa: acceso = 1, spento = 0. Con 3 LED possiamo contare da 0 a 7! Oggi costruiamo un contatore che mostra il numero di pressioni del pulsante in binario.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "I computer contano in binario: solo con 0 e 1. I nostri LED fanno la stessa cosa: acceso = 1, spento = 0. Con 3 LED possiamo contare da 0 a 7! Oggi costruiamo un contatore che mostra il numero di pressioni del pulsante in binario.",
+            "spunto_per_classe": null,
+            "note": [
               "Scrivi alla lavagna i numeri da 0 a 7 in binario: 000, 001, 010, 011, 100, 101, 110, 111. Mostra che con 3 cifre binarie (3 bit = 3 LED) si possono rappresentare 8 numeri diversi (da 0 a 7). Il LED piu a destra vale 1, quello centrale vale 2, quello a sinistra vale 4."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1091,12 +1091,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito ha un pulsante INPUT_PULLUP e 3 LED su pin OUTPUT. Una variabile int conta le pressioni da 0 a 7 e poi ricomincia. Il codice usa l'operatore modulo (%) per tornare a 0 dopo il 7, e operazioni sui bit per accendere i LED giusti.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Il circuito ha un pulsante INPUT_PULLUP e 3 LED su pin OUTPUT. Una variabile int conta le pressioni da 0 a 7 e poi ricomincia. Il codice usa l'operatore modulo (%) per tornare a 0 dopo il 7, e operazioni sui bit per accendere i LED giusti.",
+            "spunto_per_classe": null,
+            "note": [
               "L'operatore modulo e come un orologio: dopo le 12 torna a 1. Dopo il 7 il contatore torna a 0. Per i bit, spiega in modo semplice: il primo LED mostra se il numero e dispari (bit 0), il secondo mostra i 'due' (bit 1), il terzo mostra i 'quattro' (bit 2). Non serve andare nel dettaglio del bitwise AND."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp7]"
@@ -1112,12 +1112,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Se premo il pulsante 5 volte, quali LED saranno accesi? Pensate: 5 in binario si scrive 101. Significa che il LED delle unita (vale 1) e acceso, quello dei due (vale 2) e spento, e quello dei quattro (vale 4) e acceso. 4 + 0 + 1 = 5!",
-            "chiedi_alla_classe": "Cosa succede se premo il pulsante 8 volte? 8 in binario e 1000, ma abbiamo solo 3 LED. Dove va il quarto bit?",
-            "attenzione_a": [
-              "Fai provare agli studenti a convertire mentalmente: 3 = 011 (due + uno), 6 = 110 (quattro + due), 7 = 111 (tutto acceso). Se qualcuno chiede 8: con 3 LED non si puo! Servirebbero 4 LED. Questo introduce naturalmente il concetto di overflow."
+            "step_corrente": "Se premo il pulsante 5 volte, quali LED saranno accesi? Pensate: 5 in binario si scrive 101. Significa che il LED delle unita (vale 1) e acceso, quello dei due (vale 2) e spento, e quello dei quattro (vale 4) e acceso. 4 + 0 + 1 = 5!",
+            "spunto_per_classe": "Domanda: 'Cosa succede se premo il pulsante 8 volte? 8 in binario e 1000, ma abbiamo solo 3 LED. Dove va il quarto bit?'",
+            "note": [
+              "provare agli studenti a convertire mentalmente: 3 = 011 (due + uno), 6 = 110 (quattro + due), 7 = 111 (tutto acceso). Se qualcuno chiede 8: con 3 LED non si puo! Servirebbero 4 LED. Questo introduce naturalmente il concetto di overflow."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1131,12 +1131,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! All'inizio tutti i LED sono spenti (numero 0). Premete il pulsante e contate: 1, 2, 3... Osservate come i LED si accendono e spengono seguendo lo schema binario. Dopo il 7 si torna a 0!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai tenere un foglio con la tabella binaria 0-7 e chiedi di verificare ad ogni pressione che i LED corrispondono. E un momento di scoperta potente: stanno vedendo come un computer rappresenta i numeri!"
+            "step_corrente": "Pressione Play! All'inizio tutti i LED sono spenti (numero 0). Premete il pulsante e contate: 1, 2, 3... Osservate come i LED si accendono e spengono seguendo lo schema binario. Dopo il 7 si torna a 0!",
+            "spunto_per_classe": null,
+            "note": [
+              "tenere un foglio con la tabella binaria 0-7 e chiedi di verificare ad ogni pressione che i LED corrispondono. E un momento di scoperta potente: stanno vedendo come un computer rappresenta i numeri!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1156,12 +1156,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete appena visto come conta un computer! Il sistema binario e alla base di tutta l'informatica. Con 3 bit contiamo fino a 7, con 8 bit fino a 255, con 32 bit fino a 4 miliardi. Ogni LED del nostro circuito e esattamente un bit nella memoria di Arduino.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete appena visto come conta un computer! Il sistema binario e alla base di tutta l'informatica. Con 3 bit contiamo fino a 7, con 8 bit fino a 255, con 32 bit fino a 4 miliardi. Ogni LED del nostro circuito e esattamente un bit nella memoria di Arduino.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: ogni LED e un bit. Il LED destro vale 1 (bit 0), il centrale vale 2 (bit 1), il sinistro vale 4 (bit 2). L'operatore modulo (%) fa tornare il contatore a 0 dopo il massimo. Collegamento con la vita reale: la RAM del computer ha miliardi di questi 'LED microscopici'."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1240,12 +1240,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Negli esperimenti precedenti abbiamo usato delay(50) per evitare i rimbalzi del pulsante. Ma delay ha un problema: blocca TUTTO il programma per 50 millisecondi! Oggi impariamo un metodo migliore: millis() che permette al programma di continuare a lavorare.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega il problema del delay con un esempio: e come se per evitare di guardare il telefono mentre cammini, ti fermassi completamente ogni volta. Con millis() invece cammini e ogni tanto dai un'occhiata al telefono: non ti fermi mai. Questo e fondamentale quando il programma deve fare piu cose contemporaneamente."
+            "step_corrente": "Negli esperimenti precedenti abbiamo usato delay(50) per evitare i rimbalzi del pulsante. Ma delay ha un problema: blocca TUTTO il programma per 50 millisecondi! Oggi impariamo un metodo migliore: millis() che permette al programma di continuare a lavorare.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione il problema del delay con un esempio: e come se per evitare di guardare il telefono mentre cammini, ti fermassi completamente ogni volta. Con millis() invece cammini e ogni tanto dai un'occhiata al telefono: non ti fermi mai. Questo e fondamentale quando il programma deve fare piu cose contemporaneamente."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1259,12 +1259,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito e uguale al toggle: pulsante INPUT_PULLUP e LED. La differenza e nel codice: usiamo millis() per registrare il tempo dell'ultima pressione. Se sono passati almeno 50ms dalla pressione precedente, accettiamo la nuova pressione. Altrimenti la ignoriamo.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega millis() come un cronometro che parte quando Arduino si accende e non si ferma mai. Restituisce il numero di millisecondi trascorsi dall'accensione. Il tipo unsigned long serve perche dopo 50 giorni il numero diventa enorme (4 miliardi). La logica e: tempo_attuale - tempo_ultima_pressione > 50."
+            "step_corrente": "Il circuito e uguale al toggle: pulsante INPUT_PULLUP e LED. La differenza e nel codice: usiamo millis() per registrare il tempo dell'ultima pressione. Se sono passati almeno 50ms dalla pressione precedente, accettiamo la nuova pressione. Altrimenti la ignoriamo.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione millis() come un cronometro che parte quando Arduino si accende e non si ferma mai. Restituisce il numero di millisecondi trascorsi dall'accensione. Il tipo unsigned long serve perche dopo 50 giorni il numero diventa enorme (4 miliardi). La logica e: tempo_attuale - tempo_ultima_pressione > 50."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-esp8]"
@@ -1280,12 +1280,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il codice confronta millis() con il tempo dell'ultima pressione. Se la differenza e maggiore di 50ms, accetta la pressione. Perche 50ms? E tanto o poco? Cosa succede se mettiamo 500ms invece? E se mettiamo 5ms?",
-            "chiedi_alla_classe": "Se due studenti premono lo stesso pulsante a 30ms di distanza, il debounce ignora la seconda pressione. E giusto o sbagliato? Quando il debounce diventa un problema invece di una soluzione?",
-            "attenzione_a": [
+            "step_corrente": "Il codice confronta millis() con il tempo dell'ultima pressione. Se la differenza e maggiore di 50ms, accetta la pressione. Perche 50ms? E tanto o poco? Cosa succede se mettiamo 500ms invece? E se mettiamo 5ms?",
+            "spunto_per_classe": "Domanda: 'Se due studenti premono lo stesso pulsante a 30ms di distanza, il debounce ignora la seconda pressione. E giusto o sbagliato? Quando il debounce diventa un problema invece di una soluzione?'",
+            "note": [
               "50ms e un buon compromesso: abbastanza lungo per ignorare tutti i rimbalzi (che durano 5-20ms), abbastanza corto per non perdere pressioni veloci. Con 500ms perderemmo le pressioni rapide. Con 5ms potremmo ancora avere rimbalzi. Fai provare diversi valori nel simulatore."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1299,12 +1299,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Provate a premere il pulsante velocemente tante volte. Con il debounce millis() ogni pressione viene registrata correttamente, senza salti o doppie letture. Il LED fa toggle pulito ad ogni pressione.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai confrontare mentalmente con il debounce a delay: il risultato sembra lo stesso, ma con delay il LED non puo fare nient'altro durante quei 50ms. Con millis() Arduino e libero di controllare sensori, muovere motori, aggiornare display. Nella pratica professionale non si usa mai delay per il debounce."
+            "step_corrente": "Pressione Play! Provate a premere il pulsante velocemente tante volte. Con il debounce millis() ogni pressione viene registrata correttamente, senza salti o doppie letture. Il LED fa toggle pulito ad ogni pressione.",
+            "spunto_per_classe": null,
+            "note": [
+              "confrontare mentalmente con il debounce a delay: il risultato sembra lo stesso, ma con delay il LED non puo fare nient'altro durante quei 50ms. Con millis() Arduino e libero di controllare sensori, muovere motori, aggiornare display. Nella pratica professionale non si usa mai delay per il debounce."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1322,12 +1322,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Avete imparato la tecnica professionale per gestire i pulsanti! millis() e uno strumento potentissimo: serve per il debounce, per i timer, per far lampeggiare LED senza delay, per il multitasking. E la base della programmazione non-bloccante.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Avete imparato la tecnica professionale per gestire i pulsanti! millis() e uno strumento potentissimo: serve per il debounce, per i timer, per far lampeggiare LED senza delay, per il multitasking. E la base della programmazione non-bloccante.",
+            "spunto_per_classe": null,
+            "note": [
               "Recap: millis() restituisce i millisecondi dall'accensione. Confrontando il tempo attuale con quello dell'ultimo evento, decidiamo se e passato abbastanza tempo. Nessun delay, nessun blocco. Pattern: if(millis() - ultimoTempo > intervallo). Questo pattern si usa ovunque nella programmazione Arduino professionale."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1494,12 +1494,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Finora Arduino ha solo comandato i LED (OUTPUT). Oggi impariamo a far ASCOLTARE Arduino: un pulsante che ogni volta che viene premuto alterna due LED. È il primo esperimento con i pin di INPUT!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Finora Arduino ha solo comandato i LED (OUTPUT). Oggi impariamo a far ASCOLTARE Arduino: un pulsante che ogni volta che viene premuto alterna due LED. È il primo esperimento con i pin di INPUT!",
+            "spunto_per_classe": null,
+            "note": [
               "Parti dall'esperienza: 'Un interruttore della luce, quando lo premi, non resta ON finché lo tieni premuto — cambia stato! Questo si chiama toggle.' Spiega che il toggle è ovunque: il tasto Caps Lock del computer è un toggle!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
@@ -1513,12 +1513,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Il circuito ha tre parti: il pulsante su D6 (INPUT_PULLUP), il LED verde su D10 e il LED rosso su D9. Con INPUT_PULLUP il pulsante legge 1 quando è rilasciato e 0 quando è premuto — il contrario di quello che ci si aspetta! Il codice viene caricato automaticamente dal simulatore.",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Spiega l'INPUT_PULLUP con una analogia: 'Immagina un muretto tenuto su da un elastico — di solito sta su (HIGH). Quando premi, l'abbatti (LOW). L'elastico è la resistenza interna di Arduino.' Poi spiega il debounce: i pulsanti meccanici 'rimbalzano' per qualche millisecondo, come una moneta che cade sul tavolo e rimbalza un po' prima di fermarsi."
+            "step_corrente": "Il circuito ha tre parti: il pulsante su D6 (INPUT_PULLUP), il LED verde su D10 e il LED rosso su D9. Con INPUT_PULLUP il pulsante legge 1 quando è rilasciato e 0 quando è premuto — il contrario di quello che ci si aspetta! Il codice viene caricato automaticamente dal simulatore.",
+            "spunto_per_classe": null,
+            "note": [
+              "Spiegazione l'INPUT_PULLUP con una analogia: 'Immagina un muretto tenuto su da un elastico — di solito sta su (HIGH). Quando premi, l'abbatti (LOW). L'elastico è la resistenza interna di Arduino.' Poi spiega il debounce: i pulsanti meccanici 'rimbalzano' per qualche millisecondo, come una moneta che cade sul tavolo e rimbalza un po' prima di fermarsi."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:loadexp:v3-cap7-mini]"
@@ -1534,19 +1534,19 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "All'avvio il LED verde è acceso e il rosso è spento. Il codice usa una variabile chiamata 'statoVerde' per ricordare quale LED è acceso. Perché è necessaria una variabile? Arduino non sa già cosa è acceso?",
-            "chiedi_alla_classe": "Se il programma non avesse la variabile 'statoVerde', cosa succederebbe quando premi il pulsante? Il toggle funzionerebbe ancora?",
-            "attenzione_a": [
-              "Spiega che il loop() riparte da zero ogni ciclo — non ricorda cosa è successo al ciclo precedente! La variabile 'statoVerde' è come un foglio su cui Arduino appunta ogni volta lo stato attuale. Chiedi: 'Cosa succede se tolgo la variabile? Arduino sa ancora quale LED era acceso?'"
+            "step_corrente": "All'avvio il LED verde è acceso e il rosso è spento. Il codice usa una variabile chiamata 'statoVerde' per ricordare quale LED è acceso. Perché è necessaria una variabile? Arduino non sa già cosa è acceso?",
+            "spunto_per_classe": "Domanda: 'Se il programma non avesse la variabile 'statoVerde', cosa succederebbe quando premi il pulsante? Il toggle funzionerebbe ancora?'",
+            "note": [
+              "Spiegazione che il loop() riparte da zero ogni ciclo — non ricorda cosa è successo al ciclo precedente! La variabile 'statoVerde' è come un foglio su cui Arduino appunta ogni volta lo stato attuale. Chiedi: 'Cosa succede se tolgo la variabile? Arduino sa ancora quale LED era acceso?'"
             ],
-            "common_mistakes_short": [
+            "errori_tipici": [
               {
-                "mistake": "Il pulsante cambia stato troppo velocemente o sembra schizzato",
-                "fix": "È il rimbalzo meccanico! Il pulsante fisico fa contatto e stacca tante volte in pochi millisecondi. Il codice usa delay(50) — il debounce — per aspettare che il rimbalzo finisca prima di registrare la pressione."
+                "problema": "Il pulsante cambia stato troppo velocemente o sembra schizzato",
+                "soluzione_neutra": "È il rimbalzo meccanico! Il pulsante fisico fa contatto e stacca tante volte in pochi millisecondi. Il codice usa delay(50) — il debounce — per aspettare che il rimbalzo finisca prima di registrare la pressione."
               },
               {
-                "mistake": "Il pulsante non fa nulla quando viene premuto",
-                "fix": "Controlla il collegamento: un lato del pulsante va al pin D6 (INPUT_PULLUP), l'altro lato va a GND. Con INPUT_PULLUP non serve un resistore esterno — Arduino ne ha uno interno!"
+                "problema": "Il pulsante non fa nulla quando viene premuto",
+                "soluzione_neutra": "Controllo il collegamento: un lato del pulsante va al pin D6 (INPUT_PULLUP), l'altro lato va a GND. Con INPUT_PULLUP non serve un resistore esterno — Arduino ne ha uno interno!"
               }
             ]
           },
@@ -1573,12 +1573,12 @@
             ]
           },
           "docente_sidebar": {
-            "ora_fai": "Premi Play! Il LED verde si accende. Ora clicca sul pulsante nel simulatore: il verde si spegne e il rosso si accende. Premi ancora: si scambiano di nuovo!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
-              "Fai notare che è una vera ALTERNANZA di stato: ogni pressione cambia. Non è come tenere premuto un pulsante normale. Questo meccanismo — il toggle — è ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa."
+            "step_corrente": "Pressione Play! Il LED verde si accende. Ora clicca sul pulsante nel simulatore: il verde si spegne e il rosso si accende. Premi ancora: si scambiano di nuovo!",
+            "spunto_per_classe": null,
+            "note": [
+              "notare che è una vera ALTERNANZA di stato: ogni pressione cambia. Non è come tenere premuto un pulsante normale. Questo meccanismo — il toggle — è ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa."
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [
             "[AZIONE:play]",
@@ -1597,12 +1597,12 @@
             "analogies": []
           },
           "docente_sidebar": {
-            "ora_fai": "Bravi! Avete imparato i pin di INPUT_PULLUP, il toggle e il debounce. Questi tre concetti sono fondamentali per costruire qualsiasi progetto interattivo con Arduino!",
-            "chiedi_alla_classe": null,
-            "attenzione_a": [
+            "step_corrente": "Bravi! Avete imparato i pin di INPUT_PULLUP, il toggle e il debounce. Questi tre concetti sono fondamentali per costruire qualsiasi progetto interattivo con Arduino!",
+            "spunto_per_classe": null,
+            "note": [
               "Recap finale: 'INPUT_PULLUP = il pin è HIGH di default, diventa LOW quando premi. digitalRead() = leggiamo il valore del pin. Variabile di stato = ricordiamo cosa era acceso. Debounce = aspettiamo che il pulsante smetta di rimbalzare.' Con questi strumenti potete fare qualsiasi tipo di interfaccia!"
             ],
-            "common_mistakes_short": []
+            "errori_tipici": []
           },
           "action_tags": [],
           "auto_action": null
