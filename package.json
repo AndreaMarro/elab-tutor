@@ -38,6 +38,8 @@
     "@codemirror/view": "^6.39.14",
     "@react-pdf/renderer": "^4.3.1",
     "@supabase/supabase-js": "^2.101.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "ai": "^6.0.168",
     "avr8js": "^0.20.1",
     "blockly": "^12.4.1",
