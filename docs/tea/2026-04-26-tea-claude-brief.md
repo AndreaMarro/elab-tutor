@@ -251,6 +251,28 @@ Currentemente Scratch supporta gli stessi esperimenti Arduino del Vol. 3 ma con 
 
 ---
 
+### T9 — "Tutto bene ordinato" general product audit (creativo + UX consulenza)
+
+Andrea ha detto: "SERVE RENDERE TUTTO BENE ORDINATO". È un'esigenza generale di pulizia del prodotto. Tu hai già fatto schema UX semplificato (3 zone, Guida Docente, toolbar 4 comandi) — questo task estende quella linea.
+
+**Cosa potresti fare**:
+
+Audit ELAB Tutor end-to-end con occhio "ordine generale":
+
+- **T9a** — Naming consistency: nomi schermate, etichette bottoni, terminologia ("Lezione" vs "Esperimento" vs "Esercizio") sono coerenti? Lista incongruenze.
+- **T9b** — Component organization: la lavagna ha tab/zone organizzate logicamente? La transizione tra Modalità Percorso/Passo Passo/Libero è chiara per docente?
+- **T9c** — Documentation coverage: per ogni feature visibile a docente, esiste un breve "cosa fa" in tooltip o sezione aiuto?
+- **T9d** — Dead code/feature removal: ci sono pulsanti, schermate o feature non più usate che andrebbero tolte? (Andrea può fornire screenshots)
+- **T9e** — Onboarding first-time docente: cosa vede un docente che apre ELAB la prima volta? L'esperienza è guidata o disorientante?
+
+**Tempo**: 4-6h
+
+**Output**: report `docs/audits/tea-product-ordering-audit-2026-04.md` con sezioni per ogni axis (T9a-T9e), 3-5 incongruenze/problemi per axis con proposte concrete (no code, solo description + screenshot reference se utile).
+
+**Why creative**: questo è il tipo di feedback che salva mesi di refactor. Tu vedi cose che Andrea non vede più (cecità da prossimità). È il SUO mestiere consulenziale.
+
+---
+
 ## 7. File del progetto da consultare (se vuoi approfondire)
 
 Tutti i file vivono nella cartella di Andrea: `/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/` e sono nel repo GitHub privato `AndreaMarro/elab-tutor`.

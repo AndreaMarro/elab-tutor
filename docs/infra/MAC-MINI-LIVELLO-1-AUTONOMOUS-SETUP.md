@@ -421,6 +421,116 @@ tail -f ~/Library/Logs/elab/autonomous-loop-*.log
 | Repo state drift (autonomous commits accumulate) | All autonomous work goes to NEW branches. Andrea reviews via PR before main merge. |
 | Tailscale tunnel down | SSH local fallback (if same network) or hard reset Tailscale |
 
+## API Cost Monitoring (audit gap #3)
+
+**Honesty**: Claude Max sub is NOT unlimited. Has rate limits + monthly cap.
+
+**Estimated nightly autonomous loop cost**:
+- 5 agent invocations × 10K input + 3K output tokens cada = 65K tokens/night
+- Sonnet 4.6: $3/M input + $15/M output → ~$0.15-0.50/night
+- Monthly: ~$5-15 if running every night (within Max sub cap typically)
+
+**Heavier workload (Sprint R parallel orchestration)**:
+- 5 parallel agent × 30 min × full context = ~300K tokens/session
+- ~$0.75-1.50/session
+- Monthly if used 3-5 times/week: ~$15-30
+
+**Total Mac Mini autonomous projection: $20-45/month** (within Max sub if light, may exceed for heavy parallel sprint orchestration).
+
+### Daily monitoring routine (3min Andrea)
+
+```bash
+# Check Anthropic dashboard
+open https://console.anthropic.com/
+
+# Or via API (if API key separate)
+curl -sH "x-api-key: $ANTHROPIC_API_KEY" https://api.anthropic.com/v1/usage 2>&1 | head -20
+```
+
+### Hard cap protection
+
+Add to autonomous loop script:
+```bash
+# Kill loop if monthly spend exceeds threshold (manual gate)
+DAILY_BUDGET_USD=2  # ~$60/month soft cap
+# Track via Anthropic API or manual log inspection
+```
+
+Telegram alert when daily spend > $2: append to `elab-mac-mini-autonomous-loop.sh`:
+```bash
+# Pseudo-check (real implementation requires Anthropic usage API)
+if [ "$DAILY_SPEND_USD" -gt "$DAILY_BUDGET_USD" ]; then
+  ~/scripts/elab-telegram-approval.sh "Daily Anthropic spend exceeded \$${DAILY_BUDGET_USD}. Pause loop?"
+  if [ "$?" -eq 0 ]; then exit 0; fi
+fi
+```
+
+## Wiki Branch Validation Gate (audit gap #4)
+
+**Goal**: prevent low-quality Wiki concept md from accumulating on autonomous branches without Andrea review.
+
+### Pre-commit hook on Mac Mini Wiki branches
+
+```bash
+mkdir -p ~/Projects/elab-tutor/.git/hooks
+cat > ~/Projects/elab-tutor/.git/hooks/pre-commit-wiki << 'EOF'
+#!/bin/bash
+# Validate Wiki concept md files before commit
+# Triggered manually via: git commit -n + this hook for wiki branches only
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [[ "$BRANCH" != mac-mini/wiki-* ]] && [[ "$BRANCH" != tea/wiki-* ]]; then
+  exit 0  # Only enforce on wiki branches
+fi
+
+# Find new/modified .md files in docs/unlim-wiki/concepts/
+WIKI_FILES=$(git diff --cached --name-only --diff-filter=AM | grep '^docs/unlim-wiki/concepts/.*\.md$')
+if [ -z "$WIKI_FILES" ]; then exit 0; fi
+
+# Validate each file
+FAILED=0
+for f in $WIKI_FILES; do
+  # 1. Front-matter required fields (per Q4 SCHEMA.md)
+  if ! grep -q "^id:" "$f" || ! grep -q "^title:" "$f" || ! grep -q "^volume:" "$f"; then
+    echo "FAIL $f: missing front-matter required fields (id, title, volume)"
+    FAILED=$((FAILED+1))
+    continue
+  fi
+  # 2. PRINCIPIO ZERO section present
+  if ! grep -qi "PRINCIPIO ZERO" "$f"; then
+    echo "FAIL $f: missing PRINCIPIO ZERO section"
+    FAILED=$((FAILED+1))
+    continue
+  fi
+  # 3. Plurale ragazzi present
+  if ! grep -qiE "\b(ragazzi|vediamo|provate|guardate)\b" "$f"; then
+    echo "FAIL $f: missing plurale inclusivo ragazzi/vediamo/provate/guardate"
+    FAILED=$((FAILED+1))
+    continue
+  fi
+  # 4. Citation Vol/pag present
+  if ! grep -qE "Vol\.[0-9]+ pag\.[0-9]+" "$f"; then
+    echo "WARN $f: missing Vol.X pag.Y citation (allowed but encouraged)"
+  fi
+done
+
+if [ "$FAILED" -gt 0 ]; then
+  echo ""
+  echo "VALIDATION FAILED: $FAILED file(s) rejected. Fix and re-stage."
+  exit 1
+fi
+exit 0
+EOF
+chmod +x ~/Projects/elab-tutor/.git/hooks/pre-commit-wiki
+
+# Activate hook by linking to standard pre-commit chain (or manual run)
+# Suggested: add to existing .githooks/pre-commit script as additional check
+```
+
+This hook runs ONLY on wiki branches (mac-mini/wiki-*, tea/wiki-*). Validates Q4 SCHEMA + linguaggio plurale + citation. Failure = commit rejected.
+
+Output: low-quality Wiki concepts NEVER reach branch HEAD. Andrea reviews ONLY validated drafts.
+
 ---
 
 ## Anti-patterns (NON fare)

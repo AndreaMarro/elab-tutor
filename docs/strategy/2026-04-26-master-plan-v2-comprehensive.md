@@ -544,10 +544,12 @@ User flow:
 | R2 | 6-8h | post PR #36 merge |
 | R3 | 8-12h (Tea + Mac Mini parallel reduces wall clock) | post PR #38 merge |
 | R4 | 4-6h | post PR #39 merge |
-| R5 | 4-6h | sequential after R1-R4 |
+| R5 | 4-6h | depends on R1+R2+R4 (NOT R3) |
 | **TOTAL Sprint R** | ~4-6 days wall clock w/ parallel work | ~32-48h human time |
 
 **Parallel reductions via Mac Mini autonomous + Tea async**: 32-48h could collapse to 2-3 days wall-clock if orchestrated well.
+
+**Honesty correction (audit gap #5)**: R5 stress test does NOT depend on R3 (Wiki expansion). R5 measures synthesis quality on existing 30 concepts + 549 RAG chunks. Wiki 30→100 expansion is INDEPENDENT improvement, can lag R5 gate without blocking Sprint 6 Day 39 OpenClaw start. R5 prerequisites: R1 (synthesis prompt) + R2 (citation UI) + R4 (memory wire-up) only.
 
 ---
 
@@ -822,9 +824,11 @@ Saturday 2026-04-25 ALREADY in window.
 Sunday 2026-04-26 also in window.
 
 Trial scope per `docs/business/gpu-vps-decision-framework.md`:
-- Provider: Scaleway L4 FR (EU GDPR-clean) hourly €0.85/h
-- Budget cap €25 = ~28h compute time
+- Provider Saturday trial: **Scaleway L4 FR ONLY** (EU GDPR-clean, hourly billing €0.85/h, ~€3.40 for 4h)
+- Budget cap €25 = ~28h compute time on Scaleway
 - Realistic test: 4-6h Andrea active
+
+**Honesty correction (audit gap #11)**: Hetzner GEX44 (€187 mensile) NON disponibile per trial weekend — solo subscription mensile. Riservato a post-decision Stage 2a (1+ paying school). Vast.ai RTX 4090 ($0.30/h) cheaper alternative ma US-skewed → friction not worth €3 saved per trial.
 
 ### 10.2 Benchmarks (per master formulation v1 Hetzner section)
 
