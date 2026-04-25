@@ -2803,3 +2803,42 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Review and either ready-for-review or close
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-25T22:48:15Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-25T22:48:15Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il tuo ambiente di sviluppo sia configurato correttamente per questo esperimento. Verifica di aver installato tutte le dipendenze necessarie prima di procedere.
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-25T22:48:15Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Il circuito è incompleto.\n\n1.  **Cosa sbagliato:** Manca un'alimentazione e un resistore per il LED.\n2.  **Perché:** Un LED richiede una fonte di energia (tensione e 
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-25T22:48:15Z — pr_draft_stuck
+
+**Detail**: Draft PRs older than 2h: #42 feat(observability): Vercel Pro Analytics + Speed Insights
+#40 feat(q6): percorsoGenerator dynamic service (TDD)
+#39 feat(q5): memoryWriter student + teacher compounding (TDD)
+#38 feat(q4): Wiki L2 30 concept md + validator (TDD)
+#37 feat(q3): Edge Function prompt + Deno loader + validator + 20 fixtures (TDD)
+#36 feat(q2): 5 componenti UI Capitolo Q2 (TDD)
+#35 feat(q1): schema Capitolo narrative-preserving + migration 94->37 + service (TDD)
+#34 docs(sprint-q0): tresjolie volumi analysis + tutor mapping audit
+
+**Pattern hint**: Review and either ready-for-review or close
+
+**Run**: regular | **Source**: watchdog-elab
