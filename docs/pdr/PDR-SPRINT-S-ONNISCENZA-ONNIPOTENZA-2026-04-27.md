@@ -134,7 +134,7 @@ ITER N (ogni iter):
 6. ✅ Hybrid RAG live: BM25 + BGE-M3 + RRF + bge-reranker-large + top-5 to LLM
 7. ✅ Vision flow live (Qwen3-VL-32B sees simulator screenshot + reasons)
 8. ✅ TTS+STT Italian working (Coqui XTTS-v2 + Whisper Turbo via faster-whisper)
-9. ✅ Sprint R5 stress test 50 prompts pass rate ≥85% (Sprint R0 fixture + scorer ready)
+9. ✅ Sprint R5 stress test 50 prompts pass rate ≥90% (Sprint R0 fixture + scorer ready)
 10. ✅ ClawBot Sprint 6 Day 39 dispatcher 80 tools live (post Sprint R5 PASS gate)
 
 **+ Sprint S extension**: Together AI fallback gated wired (per Sprint 5 canUseTogether) per resilience.
@@ -296,7 +296,7 @@ Existing OpenClaw deliverables (Sett-5, branch `feature/pdr-sett5-openclaw-onnip
 Sprint 6 Day 39 dispatcher = wire-up production. Plan esistente `docs/superpowers/plans/2026-04-23-openclaw-sprint6-l1-live.md`.
 
 **Sprint S integration**:
-- Day 39 dispatcher GATE post Sprint R5 PASS (≥85% UNLIM quality)
+- Day 39 dispatcher GATE post Sprint R5 PASS (≥90% UNLIM quality)
 - 80 tool dispatcher = onnipotence layer
 - Tools: simulator API + Wiki query + RAG retrieve + Anthropic Contextual + Vision Qwen3-VL + TTS Coqui + STT Whisper + image gen FLUX.1 (Sprint 7) + Vol/pag citation jumper
 

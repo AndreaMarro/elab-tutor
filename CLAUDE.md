@@ -316,3 +316,79 @@ Branch: `feature/pdr-sett5-openclaw-onnipotenza-morfica-v4` (worktree `elab-buil
 - GPU VPS mensile premature optimization. GPU orarie €15-20/weekend per benchmark.
 - Together AI solo per batch-ingest Wiki LLM una-tantum ($0,07) + teacher-context con consenso.
 - Student runtime chat SEMPRE EU-only (Gemini EU / Mistral FR / Qwen locale su Hetzner).
+
+## Sprint S — Onniscenza + Onnipotenza Definitiva (26/04/2026)
+
+**Goal**: realizzare definitivamente UNLIM onniscenza + onnipotenza via ralph loop con 5-agent team OPUS orchestrato. ClawBot come scheletro UNLIM. RunPod GPU on/off + Together AI fallback. Mac Mini autonomous H24.
+
+**Iter 1 (26/04/2026 04:30-06:30 CEST)** — Foundation deployment:
+- Pod `felby5z84fk3ly` RTX 6000 Ada 48GB creato + 5/6 servizi deployati (Ollama+VLM, BGE-M3+rerank, Whisper Turbo, FLUX.1, ClawBot stub OK; Coqui TTS recovery in corso, container disk 30GB tight)
+- 4 token forniti + verificati: RunPod, Cloudflare (free, 0 zones, DNS Vercel), HuggingFace gated read, Voice clone Andrea pending (Downloads sandbox blocked → Andrea cp /tmp/voice.mp4)
+- 11 nuovi script in `scripts/`: runpod-{bootstrap,pod-create,deploy-stack,r0-bench,stop,resume,status,auto-stop-after}, cloudflare-tunnel-setup, together-ai-fallback-wireup
+- Pod STOPPED post-bench (storage $0.33/mo, modelli persisti su volume 50GB)
+- 12291 PASS test baseline preservato
+- 3 commit branch `feat/sprint-s-iter-1-runpod-trial-2026-04-26`
+
+**SPRINT_S_COMPLETE 10 boxes** (target Sprint S iter 2-N):
+1. ✅ VPS GPU deployed (RunPod minimum)
+2. ⚠️ 7-component stack live (5/7 OK iter 1 close)
+3. ❌ 6000 RAG chunks Anthropic Contextual ingest
+4. ⚠️ 100+ Wiki LLM concepts (~50/100, Mac Mini batches running)
+5. ❌ UNLIM synthesis prompt v3 wired prod (PR #37 merge)
+6. ❌ Hybrid RAG live
+7. ❌ Vision flow live (Qwen-VL screenshot diagnose)
+8. ❌ TTS+STT Italian (Coqui voice clone Andrea pending)
+9. ❌ R5 stress 50 prompts ≥85%
+10. ❌ ClawBot 80-tool dispatcher live (Sprint 6 Day 39 post R5 PASS)
+
+**Pattern S 5-agent OPUS** (replaces Pattern B):
+- planner-opus + architect-opus + generator-app-opus + generator-test-opus + scribe-opus
+- Communication: filesystem `automa/team-state/messages/`
+- CoV per agente: 3x verify (test PASS, build PASS, baseline preserved)
+- /quality-audit orchestratore fine ogni iter
+- Stress test Playwright + Control Chrome ogni 4 iter su https://www.elabtutor.school
+
+**RunPod cost discipline (CRITICAL)**:
+- RUNNING $0.74/h (RTX 6000 Ada) — solo durante lavoro attivo
+- EXITED (stopped) $0.33/mo storage 50GB volume
+- TERMINATED $0 ma volume eliminato (modelli da re-scaricare)
+- Rule: STOP pod immediato post-task. RESUME quando bench/test serve.
+
+**RunPod pilot**:
+```bash
+export ELAB_RUNPOD_POD_ID="felby5z84fk3ly"
+bash scripts/runpod-status.sh $ELAB_RUNPOD_POD_ID    # query state
+bash scripts/runpod-resume.sh $ELAB_RUNPOD_POD_ID    # ~2min boot
+bash scripts/runpod-stop.sh $ELAB_RUNPOD_POD_ID      # max savings
+ssh -i ~/.ssh/id_ed25519_runpod root@<IP> -p <PORT>  # SSH dedicated key
+```
+
+**Mac Mini autonomous H24 LIVE**:
+- launchctl `com.elab.mac-mini-autonomous-loop` PID 23944
+- SSH `progettibelli@100.124.198.59` via `~/.ssh/id_ed25519_elab` (MacBook only)
+- Wiki batch overnight target 100+ concepts kebab-case
+- Branch pattern: `mac-mini/wiki-concepts-batch-YYYYMMDD-HHMMSS`
+
+**SSH Key Policy ENFORCED**:
+- `id_ed25519_elab`: SOLO MacBook locale, MAI archive GitHub/cloud
+- `id_ed25519_runpod`: dedicated RunPod, public uploaded RunPod account
+- Mac Mini ha SOLO `authorized_keys` (public key MacBook)
+
+**Together AI Fallback Gated** (Sprint S iter 3+ wire-up):
+- File scaffold: `scripts/together-ai-fallback-wireup.ts`
+- Chain: RunPod/Hetzner EU → Gemini EU → Together AI (gated emergency_anonymized)
+- Block: student runtime SEMPRE bloccato su Together AI
+- Audit: every Together call logged `together_audit_log` Supabase
+
+**Files Sprint S iter 1**:
+- `docs/pdr/PDR-SPRINT-S-ITER-2-RALPH-LOOP-5-AGENT-2026-04-26.md` ← MASTER iter 2
+- `docs/pdr/PDR-SPRINT-S-ONNISCENZA-ONNIPOTENZA-2026-04-27.md`
+- `docs/pdr/PDR-SPRINT-S-APPENDIX-2026-04-27.md`
+- `docs/handoff/2026-04-26-ralph-loop-handoff.md`
+- `docs/architectures/STACK-V3-DEFINITIVE-2026-04-26.md`
+- `docs/strategy/2026-04-26-master-plan-v2-comprehensive.md`
+- `docs/audits/2026-04-26-sprint-s-iter1-runpod-trial-prep.md`
+- `docs/audits/2026-04-26-sprint-s-iter1-FINAL-AUDIT.md` (coming this commit)
+
+**Activation prompt next session**: see `docs/pdr/PDR-SPRINT-S-ITER-2-RALPH-LOOP-5-AGENT-2026-04-26.md` §9.
+
