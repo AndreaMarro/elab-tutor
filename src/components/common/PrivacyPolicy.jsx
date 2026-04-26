@@ -407,9 +407,9 @@ export default function PrivacyPolicy({ onClose }) {
             <tbody>
               <tr>
                 <td style={styles.td}><strong>Vercel Inc.</strong></td>
-                <td style={styles.td}>Hosting frontend (elab-builder.vercel.app)</td>
-                <td style={styles.td}>File statici, log di accesso</td>
-                <td style={styles.td}>US/EU (Edge Network)</td>
+                <td style={styles.td}>Hosting frontend + Web Analytics + Speed Insights</td>
+                <td style={styles.td}>File statici, log di accesso, page views anonimizzati (no cookies, no fingerprinting), Core Web Vitals (LCP/FID/CLS/TTFB)</td>
+                <td style={styles.td}>EU Frankfurt (region pinned <code>fra1</code>)</td>
               </tr>
               <tr>
                 <td style={styles.td}><strong>Anthropic PBC</strong></td>
@@ -487,8 +487,11 @@ export default function PrivacyPolicy({ onClose }) {
               Trasferimento protetto da SCC.
             </li>
             <li style={styles.listItem}>
-              <strong>Vercel</strong> — Hosting frontend con Edge Network EU/US. Solo file statici e log di accesso.
-              Trasferimento protetto da SCC e EU-US Data Privacy Framework.
+              <strong>Vercel</strong> — Hosting frontend pinnato in regione EU Frankfurt (<code>fra1</code> via
+              <code>vercel.json regions: ["fra1"]</code>). Web Analytics + Speed Insights raccolgono dati
+              anonimizzati senza cookie ne fingerprinting (page views, Core Web Vitals).
+              Nessun trasferimento extra-UE per i dati di runtime studenti.
+              Account Vercel protetto da SCC e EU-US Data Privacy Framework per metadati di servizio.
             </li>
             <li style={styles.listItem}>
               <strong>Google (Gemini)</strong> — Testo messaggi via nanobot proxy. Trasferimento basato
