@@ -25,6 +25,8 @@ import LessonReader from './LessonReader';
 import LessonSelector from './LessonSelector';
 import VisionButton from '../tutor/VisionButton';
 import logger from '../../utils/logger';
+// Sprint S iter 2 Task B — Capitolo lookup service
+import { getCapitolo, listAllCapitoli } from '../../services/percorsoService';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -33,6 +35,9 @@ const StudentDashboard = lazy(() => import('../student/StudentDashboard'));
 const VolumeViewer = lazy(() => import('./VolumeViewer'));
 const PercorsoPanel = lazy(() => import('./PercorsoPanel'));
 const DrawingOverlay = lazy(() => import('../simulator/canvas/DrawingOverlay'));
+// Sprint S iter 2 Task B — lazy load Capitolo flow components
+const CapitoloPicker = lazy(() => import('./CapitoloPicker'));
+const PercorsoCapitoloView = lazy(() => import('./PercorsoCapitoloView'));
 
 // Component quick-add buttons for left panel (uses __ELAB_API)
 // Realistic component icons — recognizable by a 10-year-old
@@ -396,6 +401,9 @@ export default function LavagnaShell() {
     try { return parseInt(localStorage.getItem('elab-lavagna-page') || '1', 10) || 1; } catch { return 1; }
   });
   const [percorsoOpen, setPercorsoOpen] = useState(false);
+  // Sprint S iter 2 Task B — Capitolo (Modalita Percorso Capitolo)
+  const [capitoloPickerOpen, setCapitoloPickerOpen] = useState(false);
+  const [activeCapitoloId, setActiveCapitoloId] = useState(null);
   const [activeLessonId, setActiveLessonId] = useState('v1-accendi-led');
   const [unlimTab, setUnlimTab] = useState('chat'); // 'chat' | 'percorso'
   const [buildMode, setBuildMode] = useState(() => {
@@ -732,6 +740,63 @@ export default function LavagnaShell() {
     }
   }, []);
 
+  // ── Sprint S iter 2 Task B — Capitolo Picker + Percorso Capitolo View ──
+  const handleCapitoliOpen = useCallback(() => {
+    setCapitoloPickerOpen(true);
+  }, []);
+
+  const handleCapitoliClose = useCallback(() => {
+    setCapitoloPickerOpen(false);
+  }, []);
+
+  const handleCapitoloSelect = useCallback((capId) => {
+    setActiveCapitoloId(capId);
+    setCapitoloPickerOpen(false);
+    // Detect volume from capitolo for VolumeViewer alignment
+    try {
+      const cap = getCapitolo(capId);
+      if (cap?.volume) setCurrentVolume(cap.volume);
+    } catch (err) {
+      logger.warn('[Lavagna] getCapitolo failed:', err?.message || err);
+    }
+  }, []);
+
+  const handlePercorsoCapitoloClose = useCallback(() => {
+    setActiveCapitoloId(null);
+  }, []);
+
+  // VolumeCitation onClick wired → opens VolumeViewer at vol/page (lazy-loaded already)
+  const handleCitationClick = useCallback(({ volume, page }) => {
+    if (typeof volume === 'number' && volume >= 1 && volume <= 3) {
+      setCurrentVolume(volume);
+    }
+    if (typeof page === 'number' && page > 0) {
+      setCurrentVolumePage(page);
+    }
+    setVolumeOpen(true);
+  }, []);
+
+  // Resolve Capitolo object from id (memoized)
+  const activeCapitolo = useMemo(() => {
+    if (!activeCapitoloId) return null;
+    try {
+      return getCapitolo(activeCapitoloId);
+    } catch (err) {
+      logger.warn('[Lavagna] getCapitolo lookup failed:', err?.message || err);
+      return null;
+    }
+  }, [activeCapitoloId]);
+
+  // Capitoli full list for picker (memoized)
+  const allCapitoli = useMemo(() => {
+    try {
+      return listAllCapitoli();
+    } catch (err) {
+      logger.warn('[Lavagna] listAllCapitoli failed:', err?.message || err);
+      return [];
+    }
+  }, []);
+
   // Clear volume context when viewer closes
   useEffect(() => {
     if (!volumeOpen) {
@@ -821,6 +886,8 @@ export default function LavagnaShell() {
         videoOpen={videoOpen}
         onVolumeToggle={toggleVolume}
         volumeOpen={volumeOpen}
+        onCapitoliOpen={handleCapitoliOpen}
+        capitoliOpen={capitoloPickerOpen || !!activeCapitoloId}
         onPercorsoToggle={() => {
           // Open UNLIM with Percorso tab instead of separate panel
           if (galileoOpen && unlimTab === 'percorso') {
@@ -949,6 +1016,56 @@ export default function LavagnaShell() {
           onMinimize={() => setVideoMinimized(true)}
           onRestore={() => setVideoMinimized(false)}
         />
+
+        {/* Sprint S iter 2 Task B — CapitoloPicker overlay (modal) */}
+        {capitoloPickerOpen && (
+          <div
+            className={css.capitoloPickerOverlay}
+            data-testid="capitolo-picker-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Selezione capitolo"
+            onClick={(e) => {
+              // Click backdrop closes picker; clicks inside content do not
+              if (e.target === e.currentTarget) handleCapitoliClose();
+            }}
+          >
+            <div className={css.capitoloPickerContent}>
+              <button
+                type="button"
+                className={css.capitoloPickerClose}
+                onClick={handleCapitoliClose}
+                aria-label="Chiudi selezione capitolo"
+              >
+                ×
+              </button>
+              <Suspense fallback={<div className={css.loading}><span>Caricamento capitoli...</span></div>}>
+                <CapitoloPicker
+                  capitoli={allCapitoli}
+                  volume={currentVolume}
+                  onVolumeChange={setCurrentVolume}
+                  onSelectCapitolo={handleCapitoloSelect}
+                />
+              </Suspense>
+            </div>
+          </div>
+        )}
+
+        {/* Sprint S iter 2 Task B — PercorsoCapitoloView overlay (side panel) */}
+        {activeCapitoloId && (
+          <div
+            className={css.percorsoCapitoloOverlay}
+            data-testid="percorso-capitolo-view"
+          >
+            <Suspense fallback={<div className={css.loading}><span>Caricamento capitolo...</span></div>}>
+              <PercorsoCapitoloView
+                capitolo={activeCapitolo}
+                onClose={handlePercorsoCapitoloClose}
+                onCitationClick={handleCitationClick}
+              />
+            </Suspense>
+          </div>
+        )}
       </div>
 
       {/* Bottom panel — placeholder for code/serial (simulator handles its own) */}
