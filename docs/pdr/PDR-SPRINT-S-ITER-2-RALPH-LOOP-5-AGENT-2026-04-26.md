@@ -22,7 +22,7 @@
 12. **PR #36/#37 merge**: UNLIM synthesis prompt v3 + Modalità citazioni inline UI
 13. **Voice clone**: aspetta Andrea voce 6sec audio (cp WhatsApp video → /tmp/voice.mp4)
 14. **Tokens forniti**: RunPod ✓, Cloudflare ✓ (free, 0 zones, DNS Vercel), HuggingFace ✓ (gated read)
-15. **Auto-deploy permission granted**: con test PASS gate (≥85% Sprint R5 stress test)
+15. **Auto-deploy permission granted**: con test PASS gate (≥90% Sprint R5 stress test)
 
 ---
 
@@ -57,8 +57,8 @@
 | CLOUDFLARE_API_TOKEN | ✓ verified | account `31b0f72ef02445f6a9987c994fe17b56`, 0 zones (DNS Vercel) |
 | CLOUDFLARE_ACCOUNT_ID | ✓ saved | for Tunnel API calls |
 | HUGGINGFACE_TOKEN | ✓ verified | gated read (Qwen3-VL access ok) |
-| TOGETHER_API_KEY | ❌ NOT YET | Sprint S iter 3+ wire-up |
-| VERCEL_API_TOKEN | ❌ NOT YET | for DNS automation gpu CNAME |
+| TOGETHER_API_KEY | ✓ in Supabase secrets | wired in `supabase/functions/_shared/llm-client.ts` (Andrea fornita giorni fa, accessibile via Deno.env.get) |
+| VERCEL_API_TOKEN | ✓ via MCP connector | `mcp__plugin_vercel_vercel__authenticate` + `mcp__57ae1081-...__list_projects` available |
 | Voice clone audio | ❌ macOS sandbox blocks Downloads | Andrea: cp file → /tmp/voice.mp4 |
 
 ### 1.4 Mac Mini autonomous H24 LIVE
@@ -184,7 +184,7 @@ ITER N (each iter):
 6. ✅ Hybrid RAG live: BM25 + BGE-M3 + RRF + bge-reranker-large + top-5 to LLM
 7. ✅ Vision flow live (Qwen2.5-VL OR Qwen3-VL-32B vede simulator screenshot + ragiona)
 8. ✅ TTS+STT Italian working (Coqui XTTS-v2 voice clone Andrea + Whisper Turbo)
-9. ✅ Sprint R5 stress test 50 prompts pass rate ≥85% (Sprint R0 fixture + scorer ready)
+9. ✅ Sprint R5 stress test 50 prompts pass rate ≥90% (Sprint R0 fixture + scorer ready)
 10. ✅ ClawBot Sprint 6 Day 39 dispatcher 80 tools live (post Sprint R5 PASS gate)
 
 **+ Sprint S iter 2 extension**: Together AI fallback gated wired (post TOGETHER_API_KEY provision).
@@ -329,13 +329,13 @@ Total stub iter 1: 12 tools. Target Sprint 6 Day 39: 80.
 
 ### 5.2 Pending iter 2
 
-1. **Voice clone audio**: `cp ~/Downloads/'WhatsApp Video 2026-03-13 at 13.39.50 (1).mp4' /tmp/voice.mp4`
-2. **TOGETHER_API_KEY**: free tier $25 credit ([api.together.xyz](https://api.together.xyz)) — for fallback
-3. **VERCEL_API_TOKEN**: for DNS automation gpu CNAME ([vercel.com/account/tokens](https://vercel.com/account/tokens))
-4. **PR Sprint Q review**: #34-#41 cascade merge needed
-5. **Permission policy explicit**: auto-deploy if R5 ≥85% PASS? OR every step OK?
-6. **Budget cap**: $50 weekend test? $200 monthly RunPod long-term?
-7. **Voice clone source**: Andrea voice OR Tea OR voice actor?
+1. **Voice clone audio**: `cp ~/Downloads/'WhatsApp Video 2026-03-13 at 13.39.50 (1).mp4' /tmp/voice.mp4` (NOT mandatory — Tammy Grit built-in default chosen)
+2. ~~TOGETHER_API_KEY~~ ✓ già in Supabase secrets (Andrea fornita giorni fa)
+3. ~~VERCEL_API_TOKEN~~ ✓ via MCP connector
+4. **PR Sprint Q review + merge**: #34-#41 cascade — Andrea CONFIRMED review then merge sequential
+5. **Permission policy**: auto-deploy if R5 ≥**90% PASS** (Andrea raised from 85%)
+6. **Budget cap**: pending Andrea decision ($50 weekend / $200 monthly?)
+7. **Voice clone source**: Andrea voice OR Tea OR voice actor (optional — Tammy Grit acceptable default)
 
 ### 5.3 Optional refines
 
