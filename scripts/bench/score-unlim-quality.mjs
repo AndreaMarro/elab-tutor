@@ -128,6 +128,35 @@ const RULES = {
     severity: 'HIGH',
     requireWhenFlag: false,
   },
+
+  // RULE 11: Humble admission "non lo so" when uncertain (Principio Zero v3.1 vision)
+  // UNLIM admits when uncertain instead of fabricating
+  humble_admission: {
+    check: (response, fixture) => {
+      // Only check on uncertain scenarios (deep questions, off-topic)
+      const uncertainScenarios = ['deep-question', 'off-topic'];
+      if (!uncertainScenarios.includes(fixture.scenario)) return true;
+      // For deep questions, expect either solid answer OR "non lo so / vediamo nel libro / verifichiamo"
+      const humble = /\b(non lo so|vediamo (nel libro|insieme)|verifichiamo|controlliamo|chiediamo)\b/i;
+      return humble.test(response) || response.length > 100; // either humble OR substantive
+    },
+    weight: 0.5,
+    severity: 'MEDIUM',
+    requireWhenFlag: false,
+    note: 'PZ vision: UNLIM dice non lo so quando non sa',
+  },
+
+  // RULE 12: NO chatbot preamble "Sono UNLIM" / "Posso aiutarti?"
+  // UNLIM is invisible, doesn't introduce itself per Principio Zero v3.1
+  no_chatbot_preamble: {
+    check: (response) => {
+      const preamble = /^(\s*)(ciao|sono unlim|posso aiutarti|come posso aiutarti|certo|certamente|volentieri|naturalmente)/i;
+      return !preamble.test(response);
+    },
+    weight: 0.6,
+    severity: 'HIGH',
+    note: 'PZ vision: UNLIM non si presenta — è già lì',
+  },
 };
 
 // ────────────────────────────────────────────────────────────
