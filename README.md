@@ -8,8 +8,8 @@ Live: https://www.elabtutor.school
 
 ELAB e' un prodotto completo per l'insegnamento dell'elettronica nelle scuole:
 
-- **Simulatore di circuiti** proprietario con 92 esperimenti in 3 volumi
-- **Tutor AI "Galileo"** che guida lo studente passo passo
+- **Simulatore di circuiti** proprietario con 94 lesson-paths + 37 Capitoli (3 volumi)
+- **Tutor AI "UNLIM"** che guida la classe passo passo (Principio Zero v3.1)
 - **Scratch/Blockly** per programmare Arduino visualmente
 - **Compilatore Arduino** (C++ -> HEX -> emulazione AVR in browser)
 - **Dashboard docente** con tracciamento progressi e report
@@ -24,8 +24,8 @@ git clone https://github.com/AndreaMarro/elabtutor.git
 cd elabtutor
 npm install
 npm run dev        # http://localhost:5173
-npm run test:ci    # 1001 test
-npm run build      # Build produzione
+npm run test:ci    # 12498+ test (baseline post Sprint Q 2026-04-25)
+npm run build      # Build produzione (32 precache 4.8MB)
 ```
 
 ## Stack
@@ -33,7 +33,8 @@ npm run build      # Build produzione
 | Tecnologia | Ruolo |
 |-----------|-------|
 | React 19 + Vite 7 | Frontend |
-| Vitest | Test (1001+) |
+| Vitest | Test (12498+) |
+| Zod 4.3 | Schema validation (Capitolo + Wiki) |
 | Vercel | Deploy produzione |
 | Supabase | Backend (DB + Edge Functions) |
 | avr8js | Emulazione CPU Arduino ATmega328p |
@@ -65,7 +66,9 @@ src/
     experiments-vol1.js     <- 38 esperimenti Volume 1 (circuiti passivi)
     experiments-vol2.js     <- 18 esperimenti Volume 2 (condensatori, transistor)
     experiments-vol3.js     <- 27 esperimenti Volume 3 (Arduino, codice)
-    lesson-paths/           <- 62 percorsi lezione JSON
+    lesson-paths/           <- 94 percorsi lezione JSON (legacy flat)
+    capitoli/               <- 37 Capitoli JSON (Sprint Q1, narrative-preserving)
+    schemas/Capitolo.js     <- Zod schema Capitolo (Sprint Q1.A)
   services/
     api.js                  <- API calls (chat, compile, diagnose, hints)
     voiceCommands.js        <- 24 comandi vocali
@@ -79,11 +82,15 @@ src/
 
 ## I 3 Volumi
 
-| Volume | Esperimenti | Tipo | Colore |
-|--------|------------|------|--------|
-| Vol. 1 | 38 | Circuiti passivi (LED, resistori, parallelo/serie) | Lime #4A7A25 |
-| Vol. 2 | 27 | Condensatori, transistor, RC, scarica esponenziale | Orange #E8941C |
-| Vol. 3 | 27 | Arduino (digitalWrite, analogRead, PWM, Servo, LCD) | Red #E54B3D |
+| Volume | Capitoli | Esperimenti | Tipo | Colore |
+|--------|----------|-------------|------|--------|
+| Vol. 1 | 14 (5 teoria + 9 sperimentali) | 38 lesson-paths | Circuiti passivi (LED, resistori, parallelo/serie) | Lime #4A7A25 |
+| Vol. 2 | 12 (3 teoria + 9 sperimentali/capstone) | 27 lesson-paths | Condensatori, transistor, fototransistor, motore DC | Orange #E8941C |
+| Vol. 3 | 9 (4 teoria + 5 esperimenti/capstone) | 29 lesson-paths | Arduino (digitalWrite, analogRead, PWM, Servo, LCD) | Red #E54B3D |
+| Bonus Vol3 | 2 | 2 freestyle (lcd-hello, servo-sweep) | Capstone bonus | Navy #1E4D8C |
+| **TOT** | **37 Capitoli** | **94 lesson-paths** | | |
+
+Vedi: `docs/data/volume-structure.json` (Sprint Q0 analysis), `docs/sprint-q/SPRINT-Q-HISTORY-COMPREHENSIVE.md`.
 
 ## Palette colori
 
@@ -116,6 +123,22 @@ Leggi CONTRIBUTING.md per le regole complete. In breve:
 4. Sempre npm run test:ci && npm run build prima di pushare
 5. Target: bambini 8-14 — testi semplici, bottoni grandi (44x44px min)
 6. WCAG AA: contrasto minimo 4.5:1, font minimo 13px
+
+## Documentazione approfondita
+
+| Doc | Descrizione |
+|-----|-------------|
+| [CLAUDE.md](CLAUDE.md) | Contesto Claude Code + regole immutabili |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Guida sviluppatori |
+| [docs/HISTORY.md](docs/HISTORY.md) | Storia progetto sprint history |
+| [docs/sprint-q/SPRINT-Q-HISTORY-COMPREHENSIVE.md](docs/sprint-q/SPRINT-Q-HISTORY-COMPREHENSIVE.md) | Sprint Q dettagliato Q0-Q6 (2026-04-25) |
+| [docs/pdr/PDR-MASTER-NEXT-DAYS-2026-04-26.md](docs/pdr/PDR-MASTER-NEXT-DAYS-2026-04-26.md) | PDR Master prossimi giorni |
+| [docs/pdr/PDR-MAC-MINI.md](docs/pdr/PDR-MAC-MINI.md) | Setup Mac Mini infrastructure |
+| [docs/pdr/PDR-AGENT-ORCHESTRATION.md](docs/pdr/PDR-AGENT-ORCHESTRATION.md) | Multi-agent strategy |
+| [docs/handoff/2026-04-26/00-NEXT-SESSION-PROMPT.md](docs/handoff/2026-04-26/00-NEXT-SESSION-PROMPT.md) | Prompt next session + activation string |
+| [docs/data/volume-structure.json](docs/data/volume-structure.json) | Schema 35 Cap reali Tresjolie |
+| [docs/audits/](docs/audits/) | Audit doc per sprint (Q0-Q6 + storici) |
+| [docs/unlim-wiki/](docs/unlim-wiki/) | Wiki LLM L2 (30 concept md) |
 
 ## Licenza
 
