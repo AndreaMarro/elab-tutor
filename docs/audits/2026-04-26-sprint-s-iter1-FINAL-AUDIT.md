@@ -231,7 +231,7 @@ All within scribe + generator + planner + architect domains. Pattern S compliant
 | 6 | Hybrid RAG live | ❌ depends VPS GPU + migration |
 | 7 | Vision flow live (Qwen-VL) | ❌ depends Qwen3-VL deploy + simulator integration |
 | 8 | TTS+STT Italian working | ⚠️ STT OK, TTS recovery |
-| 9 | R5 stress 50 prompts ≥85% | ❌ R0 not run yet |
+| 9 | R5 stress 50 prompts ≥90% | ❌ R0 not run yet |
 | 10 | ClawBot 80-tool dispatcher live | ❌ stub 12-tool only, full Sprint 6 Day 39 |
 
 **Score iter 1**: 1.5/10 boxes (15%) — foundation phase, expected.
@@ -254,7 +254,7 @@ All within scribe + generator + planner + architect domains. Pattern S compliant
 2. TOGETHER_API_KEY (free $25 credit)
 3. VERCEL_API_TOKEN (DNS automation)
 4. PR Sprint Q #34-#41 cascade review/merge
-5. Permission policy explicit (auto-deploy if R5 ≥85% PASS?)
+5. Permission policy explicit (auto-deploy if R5 ≥90% PASS?)
 6. Budget cap explicit ($/mo)
 
 ### 9.3 First iter 2 tasks (planner-opus assignment)
@@ -301,3 +301,64 @@ All within scribe + generator + planner + architect domains. Pattern S compliant
 **Skill compliance**: quality-audit + verification-before-completion + documentation
 **Honesty**: 10 caveats explicit, all gaps documented
 **Sprint**: S iter 1 → S iter 2 transition
+
+---
+
+## 11. Sprint Q PR cascade review (added Sprint S iter 1 close)
+
+Andrea CONFIRMS: review then merge cascade.
+
+### 11.1 PR status verified
+
+| PR | Title | Base | Mergeable | Failed checks |
+|----|-------|------|-----------|---------------|
+| #34 | Sprint Q0 tresjolie analysis | main | UNKNOWN | NONE (all SUCCESS/SKIPPED) |
+| #35 | Q1 schema Capitolo + migration 94→37 | main | UNKNOWN | 1: governance rule 2 (TDD test-first) |
+| #36 | Q2 UI Capitolo (5 components) | #35 | MERGEABLE | NONE |
+| #37 | Q3 Edge Function prompt + 20 fixtures | #36 | MERGEABLE | NONE |
+| #38 | Q4 Wiki L2 30 concept md | #37 | MERGEABLE | NONE |
+| #39 | Q5 memoryWriter compounding | #38 | MERGEABLE | NONE |
+| #40 | Q6 percorsoGenerator dynamic | #39 | MERGEABLE | NONE |
+| #41 | Sprint Q docs comprehensive | main | UNKNOWN | 1: governance rule 2 (same as #35) |
+| #42 | Vercel Pro Analytics | main | DRAFT | TBD |
+| #43 | Mac Mini Wiki concepts batch 1 | main | DRAFT | TBD |
+| #44 | Sprint S iter 1 (this) | main | DRAFT | passing |
+
+### 11.2 Governance rule 2 failure
+
+**Rule**: "feat() commit must follow test() commit first" (TDD discipline enforcement).
+**Affected**: #35 + #41.
+**Cause**: Sprint Q bundled feat+test in same commit instead of test-first cycle.
+
+### 11.3 Resolution recommendations
+
+**Option A (recommended)**: Andrea admin override force-merge
+- Content quality high (Sprint Q1.A schema designed correctly per Andrea constraint analysis)
+- Reverse-engineer TDD via git log will not help
+- Time-efficient
+
+**Option B**: Rebase interactive split test/feat commits
+- Proper TDD trail
+- Risky: 26K lines #35, complex split
+
+**Option C**: Empty test() commit prepend before feat()
+- Cosmetic fix
+- Satisfies rule formally without true TDD trail
+
+### 11.4 Recommended merge order (when ready)
+
+1. **#34** first (docs only, base main, NO failed checks) — direct merge
+2. **#35** Andrea admin override + merge (TDD violation cosmetic)
+3. **#36-#40** sequential cascade auto-rebase as #35 merges (governance rule passes once test-precedence resolved upstream)
+4. **#41** Andrea admin override + merge
+5. **#42** Vercel Pro Analytics — independent merge
+6. **#43** Mac Mini Wiki — independent merge
+7. **#44** Sprint S iter 1 — depends on #41 base merged first OR rebase main
+
+### 11.5 Pre-merge verification (Andrea side, per merge)
+
+- Read PR diff: `gh pr diff <num> | head -200`
+- Run tests local: `git checkout <branch> && npx vitest run`
+- Verify build: `npm run build`
+- Read audit/PDR docs in PR
+- Ack honesty caveats in audit
