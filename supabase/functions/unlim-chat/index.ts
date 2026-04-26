@@ -14,6 +14,8 @@ import { loadStudentContext, saveInteraction, checkConsent } from '../_shared/me
 import { checkRateLimitPersistent, validateChatInput, sanitizeMessage, sanitizeCircuitState, validateExperimentId, validateMimeType, getCorsHeaders, getSecurityHeaders, checkBodySize, validateSessionId, verifyElabApiKey } from '../_shared/guards.ts';
 import type { ChatRequest, ChatResponse, CircuitState } from '../_shared/types.ts';
 import { retrieveVolumeContext } from '../_shared/rag.ts';
+import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shared/capitoli-loader.ts';
+import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
@@ -226,12 +228,31 @@ serve(async (req: Request) => {
     const experimentContext = safeExperimentId
       ? `Esperimento attivo: ${safeExperimentId}`
       : null;
+
+    // Sprint S iter 2 — Task A4: resolve Capitolo from experimentId (defensive).
+    // Legacy experimentId not yet in 37-Capitoli mapping → returns null → fragment empty.
+    // buildSystemPrompt skips empty fragment, preserving legacy behavior (Task A5).
+    let capitoloFragment = '';
+    if (safeExperimentId) {
+      try {
+        const match = getCapitoloByExperimentId(safeExperimentId);
+        capitoloFragment = buildCapitoloPromptFragment(match?.capitolo ?? null, safeExperimentId);
+      } catch (capErr) {
+        console.warn(JSON.stringify({
+          level: 'warn', event: 'capitolo_fragment_error',
+          experimentId: safeExperimentId,
+          error: capErr instanceof Error ? capErr.message : 'unknown',
+        }));
+        capitoloFragment = '';
+      }
+    }
+
     // RAG rule is already in BASE_PROMPT; just append retrieved context
     // Image PII guard: instruct AI to ignore personal info in images
     const imagePiiGuard = hasImages
       ? '\n\nREGOLA IMMAGINI: Se l\'immagine contiene volti, nomi, indirizzi o dati personali, IGNORA queste informazioni. Analizza SOLO i componenti elettronici visibili. MAI menzionare persone o dati personali nelle risposte.'
       : '';
-    const systemPrompt = buildSystemPrompt(studentContext, safeCircuitState as CircuitState | null, experimentContext)
+    const systemPrompt = buildSystemPrompt(studentContext, safeCircuitState as CircuitState | null, experimentContext, capitoloFragment)
       + (ragContext ? `\n\n${ragContext}` : '')
       + imagePiiGuard;
 
@@ -274,6 +295,35 @@ serve(async (req: Request) => {
 
     // 6. Cap response length
     const cappedText = capWords(result.text);
+
+    // 6b. Sprint S iter 2 — Task A4: post-LLM PRINCIPIO ZERO validation.
+    // Append-warning pattern: log violations, NEVER reject/modify response.
+    // CRITICAL severity → console.error; lower → no-op (telemetry future).
+    try {
+      const isConceptIntro = false; // best-guess; future: derive from experimentContext metadata
+      const pzValidation = validatePrincipioZero(cappedText, { isConceptIntro });
+      if (pzValidation.severity === 'CRITICAL') {
+        console.error(JSON.stringify({
+          level: 'error', event: 'pz_critical_violation',
+          violations: pzValidation.violations,
+          experimentId: safeExperimentId || null,
+          model: result.model,
+          sample: cappedText.slice(0, 200),
+          timestamp: new Date().toISOString(),
+        }));
+      } else if (pzValidation.violations.length > 0) {
+        console.info(JSON.stringify({
+          level: 'info', event: 'pz_violations',
+          severity: pzValidation.severity,
+          count: pzValidation.violations.length,
+          rules: pzValidation.violations.map(v => v.rule),
+          experimentId: safeExperimentId || null,
+        }));
+      }
+    } catch (pzErr) {
+      // Validator must NEVER break chat flow.
+      console.warn('[Nanobot V2] PZ validator error (non-blocking):', pzErr);
+    }
 
     // 7. Request TTS audio (parallel, non-blocking)
     const audioPromise = requestTTS(cappedText);

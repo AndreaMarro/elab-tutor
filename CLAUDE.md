@@ -327,18 +327,32 @@ Branch: `feature/pdr-sett5-openclaw-onnipotenza-morfica-v4` (worktree `elab-buil
 - 11 nuovi script in `scripts/`: runpod-{bootstrap,pod-create,deploy-stack,r0-bench,stop,resume,status,auto-stop-after}, cloudflare-tunnel-setup, together-ai-fallback-wireup
 - Pod STOPPED post-bench (storage $0.33/mo, modelli persisti su volume 50GB)
 - 12291 PASS test baseline preservato
-- 3 commit branch `feat/sprint-s-iter-1-runpod-trial-2026-04-26`
+- 3 commit branch `feat/sprint-s-iter-1-runpod-trial-2026-04-26` mergiato via PR #51 main
 
-**SPRINT_S_COMPLETE 10 boxes** (target Sprint S iter 2-N):
-1. ✅ VPS GPU deployed (RunPod minimum)
-2. ⚠️ 7-component stack live (5/7 OK iter 1 close)
-3. ❌ 6000 RAG chunks Anthropic Contextual ingest
-4. ⚠️ 100+ Wiki LLM concepts (~50/100, Mac Mini batches running)
-5. ❌ UNLIM synthesis prompt v3 wired prod (PR #37 merge)
-6. ❌ Hybrid RAG live
-7. ❌ Vision flow live (Qwen-VL screenshot diagnose)
-8. ❌ TTS+STT Italian (Coqui voice clone Andrea pending)
-9. ❌ R5 stress 50 prompts ≥85%
+**Iter 2 (26/04/2026 09:30-13:30 CEST)** — SOFTWARE-only ralph loop (pod EXITED throughout, host saturo):
+- 5-agent OPUS Pattern S: planner+architect+gen-app+gen-test+scribe parallel via Agent tool
+- PR cascade #34-#41 scoperto già MERGED (PDR claim "OPEN draft" obsoleto)
+- Task A UNLIM synthesis prompt v3: `buildCapitoloPromptFragment` impl in `_shared/capitoli-loader.ts` (+131 lines), `validatePrincipioZero` impl `_shared/principio-zero-validator.ts` NEW, BASE_PROMPT v3 revisione `_shared/system-prompt.ts` (sintesi default + USO DELLE FONTI rules + LINGUAGGIO OBBLIGATORIO "Ragazzi,"), wire-up `unlim-chat/index.ts:228-330` con defensive try/catch
+- Task B UI citazioni inline: NOT done iter 2 (defer iter 3, solo CSS module toccato)
+- Task C R0 baseline LIVE measured: **75.81% WARN** (target 85%) su Render endpoint; gap critici `plurale_ragazzi` 0/10 + `citation_vol_pag` 0/10 (atteso lift dramatic post BASE_PROMPT v3 deploy)
+- Task D Mac Mini Wiki batch: dispatched 5 concepts (analog-read+digital-write+pin-mode+ohm+amperometro), DONE attempt 2/12 ~10min, +2 nuovi (ohm.md + amperometro.md), 50→52 concepts
+- Task E ADR-008 buildCapitoloPromptFragment + ADR-009 principio-zero-validator-middleware (~600 righe each)
+- Task F audit + handoff + CLAUDE.md update (questa sezione)
+- Iter 4 stress test smoke prod: ✅ HTTP 200 + 0 errori console + screenshot evidence
+- Iter 8 E2E flow: PARTIAL (login gate richiede chiave univoca, deferito iter 12+ con fixture auth)
+- CoV: vitest **12532 PASS + 8 todo** (+34 vs baseline 12498, ZERO regressioni), build **PASS 13m54s** (obfuscation lenta + esbuild CSS warnings non-fatal)
+- Pod resume retry poll background PID 10470: 8/32 attempts FAIL "not enough free GPUs on host machine" durante intero iter
+
+**SPRINT_S_COMPLETE 10 boxes** (post iter 2 close, score onesto 1.5 → 2.0/10):
+1. ✅ VPS GPU deployed (RunPod pod paid storage, EXITED iter 2 throughout host saturo)
+2. ⚠️ 7-component stack live (5/7 iter 1 deploy, depend pod resume iter 3)
+3. ❌ 6000 RAG chunks Anthropic Contextual ingest (depend GPU)
+4. ⚠️ ~52 Wiki LLM concepts (+2 iter 2, 52% verso 100)
+5. ⚠️ UNLIM synthesis prompt v3 wire-up code shipped (NON deployato Supabase prod, gate Andrea autonomous deploy NO)
+6. ❌ Hybrid RAG live (depend GPU)
+7. ❌ Vision flow live (depend GPU)
+8. ❌ TTS+STT Italian (depend GPU + voice clone Andrea pending)
+9. ⚠️ R0 baseline measured 75.81% WARN (R5 ≥90% target Sprint S iter 5+ post deploy)
 10. ❌ ClawBot 80-tool dispatcher live (Sprint 6 Day 39 post R5 PASS)
 
 **Pattern S 5-agent OPUS** (replaces Pattern B):
@@ -388,7 +402,30 @@ ssh -i ~/.ssh/id_ed25519_runpod root@<IP> -p <PORT>  # SSH dedicated key
 - `docs/architectures/STACK-V3-DEFINITIVE-2026-04-26.md`
 - `docs/strategy/2026-04-26-master-plan-v2-comprehensive.md`
 - `docs/audits/2026-04-26-sprint-s-iter1-runpod-trial-prep.md`
-- `docs/audits/2026-04-26-sprint-s-iter1-FINAL-AUDIT.md` (coming this commit)
+- `docs/audits/2026-04-26-sprint-s-iter1-FINAL-AUDIT.md`
 
-**Activation prompt next session**: see `docs/pdr/PDR-SPRINT-S-ITER-2-RALPH-LOOP-5-AGENT-2026-04-26.md` §9.
+**Files Sprint S iter 2** (ralph loop SOFTWARE-only, branch `feat/sprint-s-iter-2-software-prompt-v3-wireup-2026-04-26`):
+- `automa/team-state/sprint-contracts/sprint-S-iter-2-contract.md` (orchestrator)
+- `automa/team-state/messages/{planner,architect,gen-test,gen-app,scribe}-opus-to-*-2026-04-26*.md` (7 inter-agent messages)
+- `automa/tasks/pending/ATOM-S2-A-{01..07}.md` + `ATOM-S2-B-{01..05}.md` (12 atomic tasks by planner-opus)
+- `docs/adrs/ADR-008-buildCapitoloPromptFragment-design.md` (architect-opus, 424 righe)
+- `docs/adrs/ADR-009-principio-zero-validator-middleware.md` (architect-opus, 563 righe)
+- `supabase/functions/_shared/capitoli-loader.ts` (gen-app, +131 buildCapitoloPromptFragment)
+- `supabase/functions/_shared/principio-zero-validator.ts` (gen-app, NEW, 6 PZ rules runtime)
+- `supabase/functions/_shared/system-prompt.ts` (gen-app, BASE_PROMPT v3 sintesi+citazione+plurale)
+- `supabase/functions/unlim-chat/index.ts` (gen-app, wire-up Capitolo + post-LLM PZ validation)
+- `tests/unit/buildCapitoloPromptFragment.test.js` (gen-test, 9 test PASS)
+- `tests/unit/principioZeroValidator.test.js` (gen-test, 19 PASS + 8 todo bench-only)
+- `tests/integration/unlim-chat-prompt-v3.test.js` (gen-test, 6 PASS)
+- `scripts/bench/run-sprint-r0-render.mjs` (gen-test, R0 baseline runner Render endpoint)
+- `scripts/bench/output/r0-render-{report,responses,scores}-2026-04-26T09-35-59-692Z.{md,jsonl,json}` (R0 baseline 75.81% WARN)
+- `docs/audits/2026-04-26-sprint-s-iter2-audit.md` (scribe-opus, 246 righe FINAL)
+- `docs/audits/2026-04-26-sprint-s-iter4-stress-smoke.md` (orchestrator, Playwright smoke iter 4)
+- `docs/audits/iter4-smoke-prod-2026-04-26.png` (Playwright screenshot evidence)
+- `docs/handoff/2026-04-26-sprint-s-iter2-handoff.md` (scribe-opus, 109 righe activation iter 3)
+- `docs/unlim-wiki/concepts/{ohm,amperometro}.md` (Mac Mini batch 5/5 success, +2 nuovi 50→52)
+- `docs/unlim-wiki/concepts/{analog-read,digital-write,pin-mode}.md` (Mac Mini batch overwrite, Tea review consigliato)
+- `docs/unlim-wiki/{index,log}.md` (scribe-opus aggiorna catalog)
+
+**Activation prompt next session**: see `docs/handoff/2026-04-26-sprint-s-iter2-handoff.md` §"Activation prompt iter 3".
 
