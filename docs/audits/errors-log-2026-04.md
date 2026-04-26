@@ -3370,3 +3370,43 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check Edge Function logs in Supabase dashboard
 
 **Run**: weekly | **Source**: watchdog-elab
+
+### 2026-04-26T22:50:04Z — edge_cors_broken
+
+**Detail**: unlim-chat preflight returned 503
+
+**Pattern hint**: Verify guards.ts Allow-Headers contains apikey + content-type
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-26T22:50:04Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"code":"SUPABASE_EDGE_RUNTIME_ERROR","message":"Service is temporarily unavailable"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-26T22:50:04Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che tutti i componenti siano collegati correttamente prima di iniziare. Verifica la polarità delle batterie per evitare danni.","source":"flash-lite"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-26T22:50:04Z — edge_cors_broken
+
+**Detail**: unlim-diagnose preflight returned 503
+
+**Pattern hint**: Verify guards.ts Allow-Headers contains apikey + content-type
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-26T22:50:04Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"[ERRORE:highlight:id]: LED senza alimentazione.\n[PERCHÉ:highlight:id]: Un LED necessita di corrente per accendersi, ma non ci sono fili collegati.\n[COME CORREGGERE:high
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
