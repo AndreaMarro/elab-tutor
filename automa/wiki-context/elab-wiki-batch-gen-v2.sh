@@ -22,12 +22,16 @@ mkdir -p "$LOG_DIR"
 REPO="$HOME/Projects/elab-tutor"
 cd "$REPO"
 
-git checkout main 2>>"$LOG_FILE"
-git pull --quiet 2>>"$LOG_FILE" || true
+# Sprint S iter 23 fix: volumi-text vive su feature branch, non main.
+# Fetch latest origin + checkout feature branch (auto-track if missing).
+FEATURE_BRANCH="feat/sprint-s-iter-2-software-prompt-v3-wireup-2026-04-26"
+git fetch origin --quiet 2>>"$LOG_FILE"
+git checkout "$FEATURE_BRANCH" 2>>"$LOG_FILE" || git checkout -b "$FEATURE_BRANCH" "origin/$FEATURE_BRANCH" 2>>"$LOG_FILE"
+git pull origin "$FEATURE_BRANCH" --quiet 2>>"$LOG_FILE" || true
 
 VOLUMI_DIR="$REPO/automa/wiki-context/volumi-text"
 if [ ! -d "$VOLUMI_DIR" ]; then
-    echo "ERROR: $VOLUMI_DIR mancante. Esegui pdftotext volumi su MacBook + git push." >> "$LOG_FILE"
+    echo "ERROR: $VOLUMI_DIR mancante anche su $FEATURE_BRANCH. Verifica branch+commit." >> "$LOG_FILE"
     exit 1
 fi
 
