@@ -427,5 +427,18 @@ ssh -i ~/.ssh/id_ed25519_runpod root@<IP> -p <PORT>  # SSH dedicated key
 - `docs/unlim-wiki/concepts/{analog-read,digital-write,pin-mode}.md` (Mac Mini batch overwrite, Tea review consigliato)
 - `docs/unlim-wiki/{index,log}.md` (scribe-opus aggiorna catalog)
 
-**Activation prompt next session**: see `docs/handoff/2026-04-26-sprint-s-iter2-handoff.md` §"Activation prompt iter 3".
+**Activation prompt next session**: see `docs/handoff/2026-04-26-sprint-s-iter-3-handoff.md` §3 ACTIVATION STRING + §2 simple setup guide.
+
+**Iter 2 close addendum (post commit `a22b24d` → `4695c88` + Mac Mini wiki batches)**:
+- 6 commits su branch `feat/sprint-s-iter-2-software-prompt-v3-wireup-2026-04-26` pushed origin
+- Wiki count 50 → **59 concepts** (+9 iter 2 via Mac Mini autonomous v1 + v2 volumi-anchored)
+- Pod nuovo `5ren6xbrprhkl5` RTX A6000 EXITED (cost discipline, modelli persisteno volume 130GB $13/mo)
+- ✅ Edge Function `unlim-chat` DEPLOYED elab-unlim prod (UNLIM v3 prompt LIVE)
+- Iter 4 stress smoke prod: HTTP 200 + 0 console errors ✓
+- Score iter 2 close ONESTO: **2.5/10** (NON 5/10 inflated)
+- Mac Mini script v2 volumi-anchored deployato (`~/scripts/elab-wiki-batch-gen-v2.sh`)
+- Bug noti workarounds documentati: NO dockerArgs sleep infinity (kill SSHD), apt zstd PRE Ollama, pip --ignore-installed transformers==4.46.3 (FlagEmbedding compat), 80GB+ container disk
+
+**Iter 3 master PDR**: `docs/pdr/PDR-SPRINT-S-ITER-3-RALPH-LOOP-5-AGENT-OPUS-2026-04-27.md`
+**Iter 3 handoff + setup**: `docs/handoff/2026-04-26-sprint-s-iter-3-handoff.md`
 
