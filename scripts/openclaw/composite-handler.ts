@@ -62,6 +62,7 @@ import {
   type ToolSpec,
   OPENCLAW_TOOLS_REGISTRY,
   resolveStatus,
+  ensureHandlerResolves,
 } from './tools-registry.ts';
 import { type DispatchContext, type DispatchResult, dispatch as defaultDispatch } from './dispatcher.ts';
 
@@ -490,3 +491,49 @@ export function listComposites(): { name: string; composite_of: string[] }[] {
   }
   return out;
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// Sprint S iter 8 ATOM-S8-A6 — live wire-up validation helper
+// ────────────────────────────────────────────────────────────────────────────
+
+/**
+ * validateCompositeLiveWireUp — checks that all composite sub-tools are
+ * dispatchable (registry-resolvable OR special-cased like `postToVisionEndpoint`).
+ *
+ * Returns per-composite status. Useful at app-mount or in CI to detect
+ * composite specs whose sub-tools have no handler yet.
+ *
+ * Iter 8: includes recognition of `postToVisionEndpoint` (special-case in
+ * dispatcher iter 8 — not in registry but resolves via postToVisionEndpoint.ts).
+ */
+export function validateCompositeLiveWireUp(api?: Record<string, unknown>): Array<{
+  composite: string;
+  composite_of: string[];
+  unresolved_subs: string[];
+  ok: boolean;
+}> {
+  const SPECIAL_SUBS = new Set(['postToVisionEndpoint']);
+  const idx = getCompositeIndex();
+  const out: Array<{ composite: string; composite_of: string[]; unresolved_subs: string[]; ok: boolean }> = [];
+
+  for (const spec of OPENCLAW_TOOLS_REGISTRY) {
+    if (resolveStatus(spec) !== 'composite') continue;
+    const subs = spec.composite_of || [];
+    const unresolved: string[] = [];
+    for (const sub of subs) {
+      if (SPECIAL_SUBS.has(sub)) continue; // dispatcher special-case handles it
+      const subSpec = idx.get(sub);
+      if (!subSpec) { unresolved.push(`${sub} (not in registry)`); continue; }
+      const subStatus = resolveStatus(subSpec);
+      if (subStatus === 'todo_sett5') { unresolved.push(`${sub} (todo_sett5)`); continue; }
+      if (api) {
+        const check = ensureHandlerResolves(subSpec, api);
+        if (!check.resolved) unresolved.push(`${sub} (${check.reason})`);
+      }
+    }
+    out.push({ composite: spec.name, composite_of: subs, unresolved_subs: unresolved, ok: unresolved.length === 0 });
+  }
+  return out;
+}
+
+// (iter 8: ensureHandlerResolves now imported at top of file)

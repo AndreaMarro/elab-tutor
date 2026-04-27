@@ -13,7 +13,7 @@ import { buildSystemPrompt } from '../_shared/system-prompt.ts';
 import { loadStudentContext, saveInteraction, checkConsent } from '../_shared/memory.ts';
 import { checkRateLimitPersistent, validateChatInput, sanitizeMessage, sanitizeCircuitState, validateExperimentId, validateMimeType, getCorsHeaders, getSecurityHeaders, checkBodySize, validateSessionId, verifyElabApiKey } from '../_shared/guards.ts';
 import type { ChatRequest, ChatResponse, CircuitState } from '../_shared/types.ts';
-import { retrieveVolumeContext } from '../_shared/rag.ts';
+import { retrieveVolumeContext, hybridRetrieve, formatHybridContext } from '../_shared/rag.ts';
 import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shared/capitoli-loader.ts';
 import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
 
@@ -220,8 +220,22 @@ serve(async (req: Request) => {
     // 1. Load student memory (non-blocking if DB unavailable)
     const studentContext = await loadStudentContext(sessionId);
 
-    // 2. Retrieve RAG context from volumes (semantic + keyword)
-    const ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+    // 2. Retrieve RAG context from volumes
+    // Sprint S iter 8 ATOM-S8-A2: optional hybrid retrieval (BM25+dense+RRF) gated
+    // by env RAG_HYBRID_ENABLED=true. Default false → preserves iter 7 dense-only path.
+    const useHybrid = (Deno.env.get('RAG_HYBRID_ENABLED') || 'false').toLowerCase() === 'true';
+    let ragContext: string;
+    if (useHybrid) {
+      try {
+        const chunks = await hybridRetrieve(safeMessage, 5, {});
+        ragContext = chunks.length > 0 ? formatHybridContext(chunks) : await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+      } catch (_err) {
+        // Defensive fallback to dense-only path if hybrid fails for any reason
+        ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+      }
+    } else {
+      ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+    }
 
     // 3. Build system prompt with all context
     const hasImages = (safeImages?.length ?? 0) > 0;

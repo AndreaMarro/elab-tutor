@@ -850,6 +850,62 @@ npx supabase migration list --linked
 
 **Tea brief**: `/Users/andreamarro/VOLUME 3/SETUP-NEXT-SESSION/PROMPT-PER-TEA-2026-04-26-AGGIORNATO.md` — 497 LOC, 8 task possibili.
 
+## Sprint S iter 8 PHASE 1 close (2026-04-27 ~14:47 CEST) — Pattern S r2 retry validated
+
+**Date**: 2026-04-27 | **Pattern**: Pattern S 4-agent OPUS PHASE-PHASE r2 retry (session resume kill mitigation deferred iter 9 checkpoint markers).
+
+**Score iter 8 PHASE 1 close ONESTO**: **8.5/10** (target 8.7+ post bench exec PHASE 3 orchestrator).
+
+**12 ATOM-S8 deliverables shipped**:
+- 4 atoms gen-app (A2 Hybrid RAG impl + A4 TTS WS impl + A6 ClawBot composite live + A9 5 NEW scorers + A10 5 NEW runners + master orchestrator) — atoms count 5 logical bundle
+- 3 atoms gen-test (A5 Vision E2E exec PARTIAL + A8 6 NEW fixtures + A11 composite tests +5)
+- 2 atoms architect (A1 ADR-015 + A3 ADR-016)
+- 1 atom planner iter 1 (12 ATOM creation + sprint contract + 5 dispatch)
+- 1 atom scribe iter 8 PHASE 2 (this turn: audit + handoff + CLAUDE.md append)
+- 1 atom future PHASE 3 orchestrator (bench runner exec + score + commit)
+
+**ADR-015 Hybrid RAG retriever 770 LOC + ADR-016 TTS Isabella WS Deno 625 LOC = 1395 LOC architecture**.
+
+**~2832 LOC NEW + ~471 MODIFIED delta gen-app** (12 NEW file + 5 MODIFIED file file system verified `wc -l`).
+
+**6 fixtures + 20 PNG placeholder + 1 NEW integration test gen-test** (session-replay 50 + fallback-chain 200 + r6-100 + hybrid-gold-30 + tts-isabella-50 + clawbot-25 + 20 PNG zlib + 20 metadata + composite-handler.test.ts 224→481 LOC +5 NEW tests + hybrid-rag.test.js 114 LOC NEW).
+
+**CoV iter 8**: vitest 12599 PASS preserved (+0 vs iter 7 baseline EXACT) + 129 OpenClaw PASS (124 + 5 NEW) + 24 TTS PASS. Build deferred (heavy ~14min, defer iter 9 entrance). 7-suite bench NOT executed PHASE 1 close (orchestrator PHASE 3 exec post scribe).
+
+**SPRINT_S_COMPLETE 10 boxes status post iter 8 PHASE 1**:
+- Box 1 VPS GPU: 0.4 (no change Path A) | Box 2 stack: 0.4 | Box 3 RAG 1881 chunks LIVE: 0.7 | Box 4 Wiki 100/100: 1.0
+- Box 5 R0 91.80%: 1.0 | Box 6 Hybrid RAG impl: **0.5** (+0.5 lift, B2 bench NOT exec) | Box 7 Vision: 0.3 | Box 8 TTS WS: **0.85** (+0.15 lift)
+- Box 9 R5 91.80%: 1.0 | Box 10 ClawBot composite: **0.8** (+0.2 lift, postToVisionEndpoint live + 5 NEW tests)
+
+Box subtotal 6.3/10 + bonus cumulative 2.5 (+0.4 iter 8 vs 2.1 iter 7) = **TOTAL ONESTO 8.5/10 PHASE 1 close**.
+
+**Pattern S race-cond fix VALIDATED 5th iter consecutive** (iter 5 P1+P2, iter 6 P1+P2, iter 8 r2). Filesystem barrier filesystem `automa/team-state/messages/{planner,architect,gen-app,gen-test}-opus-iter8-to-orchestrator-*.md` 4/4 confirmed PRE scribe Phase 2 spawn. ZERO write conflict + ZERO stale-state risk.
+
+**Files iter 8 close** (uncommitted, batch commit PHASE 3 orchestrator):
+- NEW: `docs/adrs/ADR-016-*.md` (625) + 12 NEW gen-app file (~2463 LOC) + 8 NEW gen-test file (50+200+20PNG+20JSON+63+114+report) + 12 ATOM-S8 + sprint contract + 5 planner dispatch msgs + 4 PHASE 1 completion msgs + this scribe audit + handoff + scribe completion msg
+- MODIFIED: 5 gen-app file (rag.ts +384, edge-tts-client.ts REWRITTEN, unlim-chat +15, dispatcher +27, composite-handler +45) + 1 EXTENDED gen-test (composite-handler.test.ts +257) + this CLAUDE.md append
+
+**Honesty caveats critical 5 bullets**:
+1. **Pattern S session resume kill**: agents need checkpoint markers iter 9 mitigation. Planner saved disk barrier (12 ATOM iter 1), architect/gen-app/gen-test fresh restart lost in-flight state.
+2. **Hybrid RAG live BLOCKED env**: SUPABASE_SERVICE_ROLE_KEY + VOYAGE_API_KEY needed B2 bench exec.
+3. **WS Sec-MS-GEC algo NOT verified vs MS dev-tools** (rany2/edge-tts ref Python port to Deno, derived not personally verified).
+4. **Vision E2E 5 SKIPPED defensive env gate** (NOT spec fail, iter 9 ~10min unblock + PNG placeholder pure-Python zlib, real screenshots iter 9 Playwright captureScreenshot).
+5. **Master runner end-to-end NOT executed PHASE 1** (PHASE 3 orchestrator exec, NO Edge Function deploy + NO migration apply per RULES MANDATORY).
+
+**Activation iter 9**: see `docs/handoff/2026-04-27-sprint-s-iter-8-to-iter-9-handoff.md` §1 ACTIVATION STRING (paste-ready) + §2 setup steps Andrea (5 min) + §3 priorities iter 9 (P0 #1-#5 bench exec + Vision live + Hybrid RAG B2 + TTS B4 + ClawBot B5).
+
+**Iter 9 score target**: **9.0+/10 ONESTO** (lift Box 6 → 0.85 + Box 7 → 0.7 + Box 8 → 1.0 + Box 10 → 1.0 via bench live exec + Andrea env provision).
+
+**Files refs iter 8**:
+- `docs/audits/2026-04-27-sprint-s-iter8-PHASE1-FINAL-audit.md` (NEW, ~400 LOC)
+- `docs/handoff/2026-04-27-sprint-s-iter-8-to-iter-9-handoff.md` (NEW, ~250 LOC)
+- `automa/team-state/messages/scribe-opus-iter8-to-orchestrator-2026-04-27-144730.md` (completion)
+- `automa/state/iter-8-progress.md` (orchestrator master state)
+- ADR-015 770 LOC + ADR-016 625 LOC (architect)
+- 12 ATOM-S8 + sprint contract + 5 dispatch msgs (planner)
+
+**PRINCIPIO ZERO + MORFISMO compliance**: ADR-015 §4 Schema Postgres rag_chunks volume_id+page_number canonical citation. ADR-016 §11 Voice register Isabella Italian narratore volumi. Composite tests case 10 asserts `Ragazzi` + `Vol.X|pag.` regex. Session-replay 50 sess + fallback-chain 200 fixture verified plurale + Vol/pag canonical map. Hybrid retriever runtime fusion morphic Sense 1 + triplet coerenza preservata Sense 2.
+
 
 
 

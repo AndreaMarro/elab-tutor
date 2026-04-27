@@ -28,6 +28,7 @@ import {
   resolveStatus,
   ensureHandlerResolves,
 } from './tools-registry.ts';
+import { postToVisionEndpoint as postToVisionEndpointImpl } from './postToVisionEndpoint.ts';
 
 export type DispatchStatus =
   | 'ok'
@@ -128,6 +129,35 @@ export async function dispatch<T = unknown>(
   context: DispatchContext = {},
 ): Promise<DispatchResult<T>> {
   const start = Date.now();
+
+  // Sprint S iter 8 ATOM-S8-A6: special-case `postToVisionEndpoint` sub-tool
+  // (used by `analyzeImage` composite). Not a standalone registry entry — dispatched
+  // directly to the Edge Function POST helper.
+  if (toolId === 'postToVisionEndpoint') {
+    try {
+      const r = await postToVisionEndpointImpl(args as Parameters<typeof postToVisionEndpointImpl>[0]);
+      return {
+        status: r.status === 'ok' ? 'ok' : 'error',
+        tool: toolId,
+        handler: 'unlim.postToVisionEndpoint',
+        data: r as T,
+        error: r.status !== 'ok' ? r.error : undefined,
+        latency_ms: r.latency_ms,
+        resolved_status: 'live',
+        meta: { iter: 8, special_case: 'postToVisionEndpoint' },
+      };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      return {
+        status: 'error',
+        tool: toolId,
+        handler: 'unlim.postToVisionEndpoint',
+        error: `postToVisionEndpoint threw: ${msg}`,
+        latency_ms: Date.now() - start,
+      };
+    }
+  }
+
   const spec = getRegistryIndex().get(toolId);
 
   if (!spec) {
