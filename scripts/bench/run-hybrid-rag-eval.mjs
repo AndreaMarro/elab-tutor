@@ -29,7 +29,9 @@ const __dirname = dirname(__filename);
 
 const SUPABASE_URL = (process.env.SUPABASE_URL || '').trim();
 const SUPABASE_ANON_KEY = (process.env.SUPABASE_ANON_KEY || '').trim();
+const ELAB_API_KEY = (process.env.ELAB_API_KEY || '').trim();
 const ENDPOINT = `${SUPABASE_URL}/functions/v1/unlim-chat`;
+let SESSION_COUNTER = 0;
 
 function parseArgs(argv) {
   const out = { fixture: null, dryRun: false, threshold: 0.85, topK: 5 };
@@ -64,15 +66,23 @@ async function callRetrieval(query, topK, dryRun, goldChunks) {
   }
 
   try {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'apikey': SUPABASE_ANON_KEY,
+    };
+    // Iter 10 fix: Edge Function unlim-chat requires X-Elab-Api-Key header (auth gate)
+    if (ELAB_API_KEY) {
+      headers['X-Elab-Api-Key'] = ELAB_API_KEY;
+    }
+    SESSION_COUNTER++;
     const res = await fetch(ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'apikey': SUPABASE_ANON_KEY,
-      },
+      headers,
       body: JSON.stringify({
         message: query,
+        sessionId: `bench-hybrid-${Date.now()}-${SESSION_COUNTER}`,
+        experimentId: 'v1-cap6-esp1',
         debug_retrieval: true,
         retrieval_mode: 'hybrid',
         top_k: topK,
@@ -84,12 +94,24 @@ async function callRetrieval(query, topK, dryRun, goldChunks) {
     const data = await res.json();
     const chunks = data.debug_retrieval || data.retrieval || data.rag_chunks || [];
     return {
-      retrieved: chunks.slice(0, topK).map(c => ({
-        id: c.id || c.chunk_id || c.figure_id || `${c.source}_pag${c.page}`,
-        content: c.content || c.content_raw || '',
-        score: c.rrf_score || c.similarity || c.score || 0,
-      })),
+      retrieved: chunks.slice(0, topK).map(c => {
+        // Iter 10: emit BOTH UUID and synthetic composite key for gold-set matching flexibility
+        const uuid = c.id || c.chunk_id || null;
+        const composite = c.source && c.page ? `${c.source}_cap${c.chapter || 'X'}_pag${c.page}_${(c.section_title || c.figure_id || '').toLowerCase().replace(/\s+/g, '_').slice(0, 30)}` : null;
+        return {
+          id: uuid,
+          composite_id: composite,
+          source: c.source || null,
+          chapter: c.chapter ?? null,
+          page: c.page ?? null,
+          section_title: c.section_title || null,
+          figure_id: c.figure_id || null,
+          content: c.content || c.content_raw || '',
+          score: c.rrf_score || c.similarity || c.score || 0,
+        };
+      }),
       latency_ms: Date.now() - start,
+      retrieval_mode_used: data.retrieval_mode,
     };
   } catch (err) {
     return { retrieved: [], latency_ms: Date.now() - start, error: err.message };

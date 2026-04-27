@@ -130,8 +130,16 @@ serve(async (req: Request) => {
   if (bodyCheck) return bodyCheck;
 
   try {
-    const body: ChatRequest = await req.json();
+    const body = await req.json() as ChatRequest & {
+      debug_retrieval?: boolean;
+      retrieval_mode?: 'hybrid' | 'dense' | 'auto';
+      top_k?: number;
+    };
     const { message, sessionId, circuitState, experimentId, simulatorContext, images } = body;
+    // Iter 10 P0 debug: surface retrieved chunks when bench/dev requests debug_retrieval=true
+    const debugRetrieval = body.debug_retrieval === true;
+    const retrievalModeReq = body.retrieval_mode;
+    const topKReq = typeof body.top_k === 'number' && body.top_k > 0 && body.top_k <= 20 ? body.top_k : 5;
 
     // SessionId format validation
     if (!validateSessionId(sessionId)) {
@@ -223,18 +231,43 @@ serve(async (req: Request) => {
     // 2. Retrieve RAG context from volumes
     // Sprint S iter 8 ATOM-S8-A2: optional hybrid retrieval (BM25+dense+RRF) gated
     // by env RAG_HYBRID_ENABLED=true. Default false → preserves iter 7 dense-only path.
-    const useHybrid = (Deno.env.get('RAG_HYBRID_ENABLED') || 'false').toLowerCase() === 'true';
+    // Iter 10: request param retrieval_mode='hybrid' overrides env to force hybrid (debug/bench).
+    const envHybrid = (Deno.env.get('RAG_HYBRID_ENABLED') || 'false').toLowerCase() === 'true';
+    const useHybrid = retrievalModeReq === 'hybrid' || (retrievalModeReq !== 'dense' && envHybrid);
     let ragContext: string;
+    let retrievedChunksDebug: Array<Record<string, unknown>> = [];
+    let retrievalModeUsed: 'hybrid' | 'dense' | 'fallback' = 'dense';
     if (useHybrid) {
       try {
-        const chunks = await hybridRetrieve(safeMessage, 5, {});
-        ragContext = chunks.length > 0 ? formatHybridContext(chunks) : await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+        const chunks = await hybridRetrieve(safeMessage, topKReq, {});
+        if (chunks.length > 0) {
+          ragContext = formatHybridContext(chunks);
+          retrievedChunksDebug = chunks.map(c => ({
+            id: (c as Record<string, unknown>).id ?? null,
+            source: (c as Record<string, unknown>).source ?? null,
+            chapter: (c as Record<string, unknown>).chapter ?? null,
+            page: (c as Record<string, unknown>).page ?? null,
+            figure_id: (c as Record<string, unknown>).figure_id ?? null,
+            section_title: (c as Record<string, unknown>).section_title ?? null,
+            content: typeof (c as Record<string, unknown>).content === 'string'
+              ? ((c as Record<string, unknown>).content as string).slice(0, 240)
+              : null,
+            rrf_score: (c as Record<string, unknown>).rrf_score ?? null,
+            similarity: (c as Record<string, unknown>).similarity ?? null,
+          }));
+          retrievalModeUsed = 'hybrid';
+        } else {
+          ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+          retrievalModeUsed = 'fallback';
+        }
       } catch (_err) {
         // Defensive fallback to dense-only path if hybrid fails for any reason
         ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+        retrievalModeUsed = 'fallback';
       }
     } else {
       ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+      retrievalModeUsed = 'dense';
     }
 
     // 3. Build system prompt with all context
@@ -363,7 +396,10 @@ serve(async (req: Request) => {
     }
 
     // 10. Return response — include data processing transparency (GDPR)
-    const response: ChatResponse = {
+    const response: ChatResponse & {
+      debug_retrieval?: Array<Record<string, unknown>>;
+      retrieval_mode?: string;
+    } = {
       success: true,
       response: cappedText,
       source: modelDisplayName(model) || result.model,
@@ -372,6 +408,11 @@ serve(async (req: Request) => {
         : result.provider === 'brain' ? 'local-brain'
         : 'google-gemini',
     };
+    // Iter 10 P0: surface retrieved chunks for bench (B2 hybrid RAG eval)
+    if (debugRetrieval) {
+      response.debug_retrieval = retrievedChunksDebug;
+      response.retrieval_mode = retrievalModeUsed;
+    }
 
     return new Response(JSON.stringify(response), {
       status: 200,
