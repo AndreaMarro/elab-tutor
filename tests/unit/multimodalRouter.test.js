@@ -157,10 +157,12 @@ describe('multimodalRouter — stubs (stt/tts/imageGen/clawbot)', () => {
     expect(r.error).toMatch(/useSpeechRecognition/);
   });
 
-  it('tts defers to iter 5+ with Tammy Grit hint', async () => {
-    const r = await multimodalRouter.route({ modality: 'tts', payload: { text: 'ciao' } });
+  it('tts validates payload (iter 6+ real impl with Isabella Neural default)', async () => {
+    // Iter 6 routeTTS real impl (not stub). With empty payload, validation fails.
+    const r = await multimodalRouter.route({ modality: 'tts', payload: {} });
     expect(r.ok).toBe(false);
-    expect(r.meta?.voice_default).toBe('Tammy Grit');
+    expect(r.error).toMatch(/payload\.text required/);
+    expect(r.provider).toBe('edge-tts');
   });
 
   it('imageGen defers to Sprint S iter 6+', async () => {
