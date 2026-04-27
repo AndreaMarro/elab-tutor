@@ -8,11 +8,22 @@
 
 import type { GeminiModel, ImageData } from './types.ts';
 import { callGemini, callBrainFallback, GeminiError, ErrorCode } from './gemini.ts';
+import {
+  canUseTogether,
+  anonymizePayload,
+  logTogetherCall,
+  isTogetherFallbackEnabled,
+  type TogetherContext,
+  type SupabaseClientLike,
+} from './together-fallback.ts';
 
 // Re-export for consumers that need error handling
 export { GeminiError, ErrorCode, callBrainFallback };
 // Re-export getMetrics so health endpoints still work
 export { getMetrics } from './gemini.ts';
+// Re-export gate helpers for callers that want the same predicate
+export { canUseTogether, anonymizePayload, isTogetherFallbackEnabled };
+export type { TogetherContext };
 
 const TOGETHER_API_URL = 'https://api.together.xyz/v1/chat/completions';
 const TOGETHER_TIMEOUT_MS = 15000;
@@ -223,4 +234,195 @@ export async function callLLM(options: LLMOptions): Promise<LLMResult> {
     // Auto-fallback to Gemini
     return withGeminiProvider(await callGemini(options));
   }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Sprint S iter 3 — Gated fallback chain (RunPod → Gemini EU → Together)
+// ════════════════════════════════════════════════════════════════════
+
+/**
+ * RunPod / Hetzner EU GPU stub — Sprint S iter 4+ wires the real call.
+ * For now we just emit "not configured" if no env URL is set so the chain
+ * gracefully proceeds to Gemini.
+ */
+async function callRunPod(options: LLMOptions): Promise<LLMResult> {
+  const url = (Deno.env.get('VPS_GPU_URL') || '').trim();
+  if (!url) {
+    throw new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, 'VPS_GPU_URL not configured');
+  }
+  const apiKey = (Deno.env.get('ELAB_GPU_API_KEY') || '').trim();
+  const start = Date.now();
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const res = await fetch(`${url}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(apiKey ? { 'X-Elab-Api-Key': apiKey } : {}),
+      },
+      body: JSON.stringify({
+        model: 'qwen2.5vl:7b',
+        messages: [
+          { role: 'system', content: options.systemPrompt },
+          { role: 'user', content: options.message },
+        ],
+        max_tokens: options.maxOutputTokens ?? 256,
+        temperature: options.temperature ?? 0.7,
+        stream: false,
+      }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      throw new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, `RunPod ${res.status}`);
+    }
+    const data = await res.json();
+    const text: string = data?.choices?.[0]?.message?.content ?? '';
+    if (!text) throw new GeminiError(ErrorCode.EMPTY_RESPONSE, 'RunPod empty response');
+    return {
+      text,
+      model: options.model,
+      provider: 'runpod',
+      tokensUsed: {
+        input: data?.usage?.prompt_tokens ?? 0,
+        output: data?.usage?.completion_tokens ?? 0,
+      },
+      latencyMs: Date.now() - start,
+    };
+  } catch (e) {
+    clearTimeout(timeout);
+    if (e instanceof GeminiError) throw e;
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      throw new GeminiError(ErrorCode.TIMEOUT, 'RunPod request timed out');
+    }
+    throw new GeminiError(ErrorCode.API_ERROR, `RunPod failed: ${e}`);
+  }
+}
+
+/**
+ * Sprint S iter 3 fallback chain:
+ *
+ *   RunPod / Hetzner EU GPU
+ *     ↓ (down or not configured)
+ *   Gemini EU
+ *     ↓ (down)
+ *   Together AI  ← only if `canUseTogether(ctx)` AND env flag enabled
+ *
+ * If the chain reaches Together AI:
+ *   - payload is anonymized via `anonymizePayload()` (caller must mark
+ *     ctx.anonymized=true; gate enforces it for batch/emergency)
+ *   - one row is appended to `together_audit_log` per call
+ *
+ * For student runtime the gate ALWAYS returns false → Together step is
+ * skipped and the original Gemini error is rethrown so the caller can
+ * surface the offline message to the LIM.
+ */
+export async function callLLMWithFallback(
+  options: LLMOptions,
+  context: TogetherContext,
+  supabase?: SupabaseClientLike | null,
+): Promise<LLMResult> {
+  const providersDown: string[] = [];
+  const reqId = context.request_id ?? cryptoRandomId();
+
+  // 1. RunPod EU
+  try {
+    return await callRunPod(options);
+  } catch (e) {
+    providersDown.push('runpod');
+    console.info(JSON.stringify({
+      level: 'info', event: 'runpod_down', request_id: reqId,
+      error: e instanceof Error ? e.message : String(e),
+    }));
+  }
+
+  // 2. Gemini EU (existing)
+  let lastError: unknown = null;
+  try {
+    const r = await callGemini(options);
+    return {
+      text: r.text,
+      model: r.model,
+      provider: r.model === 'galileo-brain-v13' ? 'brain' : 'gemini',
+      tokensUsed: { input: r.tokensUsed?.input ?? 0, output: r.tokensUsed?.output ?? 0 },
+      latencyMs: r.latencyMs,
+    };
+  } catch (e) {
+    providersDown.push('gemini');
+    lastError = e;
+    console.warn(JSON.stringify({
+      level: 'warn', event: 'gemini_down', request_id: reqId,
+      error: e instanceof Error ? e.message : String(e),
+    }));
+  }
+
+  // 3. Together AI gated
+  const envEnabled = isTogetherFallbackEnabled();
+  const gateOk = canUseTogether(context);
+  const eligible = envEnabled && gateOk && providersDown.length >= 2;
+
+  if (!eligible) {
+    // Audit the BLOCKED decision so we can prove gate enforcement
+    await logTogetherCall(supabase, {
+      request_kind: 'fallback',
+      anonymized_payload: null,
+      user_role: context.runtime,
+      consent_id: context.consent_id,
+      latency_ms: 0,
+      status: !envEnabled ? 'blocked_env_disabled' :
+              !gateOk ? `blocked_gate_${context.runtime}` :
+              'blocked_only_one_provider_down',
+    });
+    throw lastError instanceof Error
+      ? lastError
+      : new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, `chain failed: ${providersDown.join(',')}`);
+  }
+
+  // Anonymize before US transit
+  const safeMessages = anonymizePayload([
+    { role: 'system', content: options.systemPrompt },
+    { role: 'user', content: options.message },
+  ]);
+  const safeOptions: LLMOptions = {
+    ...options,
+    systemPrompt: safeMessages[0]?.content ?? options.systemPrompt,
+    message: safeMessages[1]?.content ?? options.message,
+  };
+
+  const start = Date.now();
+  try {
+    const r = await callTogether(safeOptions);
+    await logTogetherCall(supabase, {
+      request_kind: 'fallback',
+      anonymized_payload: { messages: safeMessages, model: r.model },
+      user_role: context.runtime,
+      consent_id: context.consent_id,
+      latency_ms: r.latencyMs ?? (Date.now() - start),
+      status: 'ok',
+    });
+    return r;
+  } catch (e) {
+    const latency = Date.now() - start;
+    const status = e instanceof GeminiError ? `error_${e.code}` : 'error';
+    await logTogetherCall(supabase, {
+      request_kind: 'fallback',
+      anonymized_payload: { messages: safeMessages },
+      user_role: context.runtime,
+      consent_id: context.consent_id,
+      latency_ms: latency,
+      status,
+    });
+    throw e;
+  }
+}
+
+// Tiny request-id helper (no crypto.randomUUID dep on older Deno)
+function cryptoRandomId(): string {
+  try {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  } catch { /* noop */ }
+  return `r_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
 }
