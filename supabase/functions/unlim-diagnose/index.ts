@@ -27,8 +27,20 @@ serve(async (req: Request) => {
   if (bodyCheck) return bodyCheck;
 
   try {
-    const body: DiagnoseRequest = await req.json();
-    const { circuitState, experimentId, sessionId } = body;
+    // Iter 8 fix: accept BOTH legacy `circuitState` schema AND new
+    // postToVisionEndpoint schema `{image, circuit, session_id, prompt}`.
+    // Image (base64 PNG) is forwarded to callLLM Gemini Vision when present.
+    const body = await req.json() as DiagnoseRequest & {
+      image?: string;
+      circuit?: unknown;
+      session_id?: string;
+      prompt?: string;
+    };
+    const circuitState = body.circuitState ?? body.circuit;
+    const experimentId = body.experimentId;
+    const sessionId = body.sessionId ?? body.session_id;
+    const imageBase64 = typeof body.image === 'string' ? body.image : undefined;
+    const userPrompt = typeof body.prompt === 'string' ? body.prompt : undefined;
 
     // Consent check (if sessionId provided)
     if (sessionId) {
@@ -43,8 +55,9 @@ serve(async (req: Request) => {
       }
     }
 
-    if (!circuitState) {
-      return new Response(JSON.stringify({ success: false, error: 'No circuit state' }), {
+    // Iter 8 fix: at least ONE of circuitState OR image required
+    if (!circuitState && !imageBase64) {
+      return new Response(JSON.stringify({ success: false, error: 'No circuit state or image' }), {
         status: 400, headers: getSecurityHeaders(req),
       });
     }
@@ -58,19 +71,29 @@ serve(async (req: Request) => {
       });
     }
 
-    // Deep sanitize circuit state
-    const safeState = sanitizeCircuitState(circuitState) as Record<string, unknown>;
+    // Deep sanitize circuit state (optional now — image-only diagnosis OK)
+    const safeState = circuitState ? (sanitizeCircuitState(circuitState) as Record<string, unknown>) : null;
     const safeExpId = validateExperimentId(experimentId);
 
-    const circuitDescription = (safeState as { text?: string }).text
-      || JSON.stringify(safeState).slice(0, 2000);
+    const circuitDescription = safeState
+      ? ((safeState as { text?: string }).text || JSON.stringify(safeState).slice(0, 2000))
+      : '(nessuno stato circuito fornito — diagnosi via vision)';
 
-    const message = safeExpId
-      ? `Esperimento: ${safeExpId}\n\nStato circuito:\n${circuitDescription}`
-      : `Stato circuito:\n${circuitDescription}`;
+    // Iter 8 fix: support optional teacher-supplied prompt to focus the diagnosis
+    const promptHeader = userPrompt ? `Domanda docente: ${userPrompt}\n\n` : '';
+    const expIdHeader = safeExpId ? `Esperimento: ${safeExpId}\n\n` : '';
+    const message = `${promptHeader}${expIdHeader}Stato circuito:\n${circuitDescription}`;
+
+    // Iter 8 fix: build images[] for callLLM Gemini Vision when image present
+    const images = imageBase64
+      ? [{
+          mimeType: 'image/png' as const,
+          data: imageBase64.replace(/^data:image\/[a-z]+;base64,/i, ''),
+        }]
+      : undefined;
 
     let result = null;
-    let source = 'flash';
+    let source = imageBase64 ? 'flash-vision' : 'flash';
 
     // Try LLM (Together/Gemini with auto-fallback), then Flash-Lite, then Brain
     try {
@@ -78,7 +101,8 @@ serve(async (req: Request) => {
         model: 'gemini-2.5-flash',
         systemPrompt: DIAGNOSE_PROMPT,
         message,
-        maxOutputTokens: 200,
+        images,
+        maxOutputTokens: imageBase64 ? 400 : 200, // vision needs more tokens
         temperature: 0.3,
       });
     } catch (e1) {
@@ -92,12 +116,13 @@ serve(async (req: Request) => {
           model: 'gemini-2.5-flash-lite',
           systemPrompt: DIAGNOSE_PROMPT,
           message,
-          maxOutputTokens: 200,
+          images,
+          maxOutputTokens: imageBase64 ? 400 : 200,
           temperature: 0.3,
         });
-        source = 'flash-lite';
+        source = imageBase64 ? 'flash-lite-vision' : 'flash-lite';
       } catch {
-        // All LLM providers failed — try Brain
+        // All LLM providers failed — try Brain (Brain has no vision)
         result = await callBrainFallback(message, DIAGNOSE_PROMPT);
         source = 'brain';
       }
