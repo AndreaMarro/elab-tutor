@@ -579,12 +579,28 @@ async function bm25Search(
   // Strategy: call the existing search_rag_hybrid RPC with a zero-vector dense
   // (so dense_rank is dropped from fusion) — but cleaner is direct query.
   // Direct PostgREST: GET /rest/v1/rag_chunks?content_fts=plfts(italian).<query>
-  const safeQuery = encodeURIComponent(query.replace(/[^\p{L}\p{N}\s]/gu, ' ').trim());
+  //
+  // Iter 11 P0 fix: Italian FTS strips single-letter tokens + stopwords ("V",
+  // "R", "I", "per", "di", ecc.). Query "Ohm legge formula V uguale R per I"
+  // → tsquery empty after Italian stemmer = 0 results. Solution: pre-clean
+  // query removing single-letter tokens + Italian stopwords BEFORE plfts call.
+  const STOPWORDS_IT = new Set(['di','il','la','un','una','per','con','del','della','della','su','tra','fra','dei','delle','degli','al','alla','ad','è','sono','sei','non','non','ma','si','no','che','cosa','come','quando','perché','più','meno','molto','poco','tutti','tutto','ogni','some','of','the','for','an','to','from','as','by','with','is','are','was','were','do']);
+  const cleanedQuery = query
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 2 && !STOPWORDS_IT.has(w.toLowerCase()))
+    .join(' ')
+    .trim();
+  const safeQuery = encodeURIComponent(cleanedQuery);
   if (!safeQuery) return [];
 
+  // Iter 11 P0 fix: plfts uses AND logic between tokens → query "Ohm legge formula uguale"
+  // requires ALL match = 0 results when "uguale" not in chunk. Switch to wfts (websearch_to_tsquery)
+  // which handles partial matches better, OR build explicit OR tsquery via fts.
+  // Strategy: try wfts first; if 0 results → fallback fts with OR-joined tokens.
   let url = `${SUPABASE_URL}/rest/v1/rag_chunks`
     + `?select=id,content,content_raw,source,chapter,page,figure_id`
-    + `&content_fts=plfts(italian).${safeQuery}`
+    + `&content_fts=wfts(italian).${safeQuery}`
     + `&limit=${limit}`;
   if (filterSource) url += `&source=eq.${encodeURIComponent(filterSource)}`;
   if (typeof filterChapter === 'number') url += `&chapter=eq.${filterChapter}`;
@@ -604,7 +620,7 @@ async function bm25Search(
     clearTimeout(timer);
     if (!res.ok) return [];
     const rows = await res.json() as Array<Record<string, unknown>>;
-    return (rows || []).map((row, idx) => ({
+    let result = (rows || []).map((row, idx) => ({
       id: String(row.id ?? ''),
       content: String(row.content ?? ''),
       content_raw: String(row.content_raw ?? row.content ?? ''),
@@ -614,6 +630,50 @@ async function bm25Search(
       figure_id: row.figure_id ? String(row.figure_id) : null,
       rank: idx + 1,
     }));
+
+    // Iter 11 P0 fix: if wfts returns 0, retry with explicit OR tsquery
+    // (handles edge cases where Italian stemmer + websearch logic miss matches).
+    if (result.length === 0 && cleanedQuery.length > 0) {
+      const tokens = cleanedQuery.split(/\s+/).filter(t => t.length >= 3);
+      if (tokens.length >= 2) {
+        const orQuery = encodeURIComponent(tokens.join(' | '));
+        const fallbackUrl = `${SUPABASE_URL}/rest/v1/rag_chunks`
+          + `?select=id,content,content_raw,source,chapter,page,figure_id`
+          + `&content_fts=fts(italian).${orQuery}`
+          + `&limit=${limit}`
+          + (filterSource ? `&source=eq.${encodeURIComponent(filterSource)}` : '')
+          + (typeof filterChapter === 'number' ? `&chapter=eq.${filterChapter}` : '');
+        try {
+          const ctrlFb = new AbortController();
+          const fbTimer = setTimeout(() => ctrlFb.abort(), 5000);
+          const fbRes = await fetch(fallbackUrl, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+              'apikey': SUPABASE_SERVICE_ROLE_KEY,
+              'Accept': 'application/json',
+            },
+            signal: ctrlFb.signal,
+          });
+          clearTimeout(fbTimer);
+          if (fbRes.ok) {
+            const fbRows = await fbRes.json() as Array<Record<string, unknown>>;
+            result = (fbRows || []).map((row, idx) => ({
+              id: String(row.id ?? ''),
+              content: String(row.content ?? ''),
+              content_raw: String(row.content_raw ?? row.content ?? ''),
+              source: String(row.source ?? ''),
+              chapter: typeof row.chapter === 'number' ? row.chapter : null,
+              page: typeof row.page === 'number' ? row.page : null,
+              figure_id: row.figure_id ? String(row.figure_id) : null,
+              rank: idx + 1,
+            }));
+          }
+        } catch (_err) { /* OR fallback fail, keep [] */ }
+      }
+    }
+
+    return result;
   } catch (_err) {
     clearTimeout(timer);
     return [];

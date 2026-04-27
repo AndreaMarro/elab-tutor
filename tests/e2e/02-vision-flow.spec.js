@@ -138,7 +138,9 @@ test.describe('Sprint S iter 6 — Vision E2E flow', () => {
         } catch (_e) { /* storage disabled — test will skip naturally */ }
       }, CLASS_KEY_FIXTURE);
 
-      await page.goto('/');
+      // Iter 11 P0 fix: navigate to /#lavagna route where LavagnaShell mounts __ELAB_API global.
+      // Root '/' renders Vetrina (no simulator) — __ELAB_API not exposed.
+      await page.goto('/#lavagna');
       await waitForPageReady(page);
 
       // 2. Mount experiment via __ELAB_API (when fixture demands it)
