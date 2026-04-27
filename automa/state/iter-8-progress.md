@@ -59,3 +59,31 @@
 - 6/7 GREEN → 8.7/10 (target ONESTO)
 - 5/7 GREEN → 8.2/10 (acceptable)
 - ≤4/7 GREEN → 7.5/10 stuck (defer iter 9)
+
+## MID-ITER-8 UPDATE 2026-04-27 12:50 — Morfismo DUAL SENSE clarification
+
+Andrea clarifies Morfismo = TWO senses combinati. Inject in all in-flight + pending agents:
+
+**Sense 1 — Tecnico-architetturale**: piattaforma MORFICA + MUTAFORMA. Software adatta runtime per-classe/per-docente/per-kit/per-momento. Codice morfico (L1 composition + L2 template + L3 flag DEV). OpenClaw 52 ToolSpec + composite handler.
+
+**Sense 2 — Strategico-competitivo**: coerenza software ↔ kit Omaric ↔ volumi cartacei. Moat 2026+ vs LLM coding democratizzato. Triplet artefatti fisici originali non replicabili via prompt.
+
+**Combinato**: software morfico INTERNO (adatta runtime) + coerente ESTERNO (triplet immutabile). Doppia barriera entry: tecnica + materiale.
+
+### Apply iter 8 in-flight agents
+
+- **architect-opus** (✅ COMPLETED r2): ADR-015 Hybrid RAG + ADR-016 TTS WS — re-verify both align Sense 1+2. ADR-015 BM25+dense+RRF+rerank = morphic retrieval (S1) + cita Vol/pag (S2). OK no rewrite needed.
+- **gen-app-opus-r2** (🔄 IN-FLIGHT): when implementing Hybrid RAG retriever + ClawBot composite + TTS WS, ensure:
+  - S1: adapt per-class context (chunk filter by class_key + experiment context)
+  - S2: cita Vol/pag dai chunks retrieved (preserve metadata source=vol1+page)
+- **gen-test-opus** (✅ COMPLETED r2): bench fixtures already cite Vol/pag in r6-fixture-100. OK.
+- **scribe-opus** (PENDING): include Morfismo dual sense section in iter 8 audit + handoff + CLAUDE.md update
+
+### Reject criteria pre-merge iter 8
+
+Feature contribuisce:
+- S1 morfico runtime adattivo? (yes/no)
+- S2 triplet coerenza materiale? (yes/no)
+- Se entrambi NO → REJECT
+- Se uno solo → flag for iter 9 enrichment
+

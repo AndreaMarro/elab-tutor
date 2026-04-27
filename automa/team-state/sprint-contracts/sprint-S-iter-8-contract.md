@@ -145,7 +145,11 @@ NO claim done if any of 3 CoV fail. Investigate before retry.
 - NO push main, NO merge
 - NO --no-verify, NO --no-gpg-sign
 - PRINCIPIO ZERO: docente=tramite, UNLIM=strumento, plurale "Ragazzi,", citazioni Vol/pag, ≤60 parole, mai imperativo docente
-- MORFISMO: software=forma kit Omaric+volumi cartacei, stessi nomi/colori/capitoli/ordine/estetica
+- MORFISMO DUAL SENSE (chiarito Andrea 2026-04-27 12:50 mid-iter-8):
+  - **Sense 1 — Tecnico-architetturale**: piattaforma MORFICA + MUTAFORMA. Software adatta runtime per-classe/per-docente/per-kit/per-momento. Codice morfico OpenClaw "Onnipotenza Morfica v4" — L1 composition (composite handler sequential dispatch) + L2 template (pre-defined morphic patterns) + L3 flag DEV (dynamic JS Web Worker sandbox). 52 ToolSpec declarative + composite handler. Differenziatore vs static-config Tinkercad/Wokwi/LabsLand
+  - **Sense 2 — Strategico-competitivo**: coerenza software ↔ kit Omaric ↔ volumi cartacei. Moat 2026+ vs LLM coding democratizzato. Triplet artefatti fisici originali non replicabili via prompt LLM
+  - **Combinato — DUAL MOAT**: software morfico INTERNO (adatta runtime, S1) + coerente ESTERNO (triplet immutabile, S2). Doppia barriera entry tecnica + materiale. LLM disruption-proof. Nessun competitor puro-software può replicare entrambi senza kit fisico + volumi originali Omaric
+  - **Reject ogni feature che viola entrambi sensi**. Test pre-merge: feature contribuisce S1 (morfico runtime adattivo)? S2 (triplet coerenza)? Se NO → REJECT
 - Caveman ON
 - 3x CoV before claim done
 
