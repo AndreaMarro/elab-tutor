@@ -906,6 +906,22 @@ Box subtotal 6.3/10 + bonus cumulative 2.5 (+0.4 iter 8 vs 2.1 iter 7) = **TOTAL
 
 **PRINCIPIO ZERO + MORFISMO compliance**: ADR-015 §4 Schema Postgres rag_chunks volume_id+page_number canonical citation. ADR-016 §11 Voice register Isabella Italian narratore volumi. Composite tests case 10 asserts `Ragazzi` + `Vol.X|pag.` regex. Session-replay 50 sess + fallback-chain 200 fixture verified plurale + Vol/pag canonical map. Hybrid retriever runtime fusion morphic Sense 1 + triplet coerenza preservata Sense 2.
 
+## Design Context
+
+**Source of truth design**: → `.impeccable.md` (project root, generated 2026-04-27 via `/impeccable:teach-impeccable` skill).
+
+Contiene:
+- **Users** primario (docente LIM 8-14 anni studenti) + secondario (bambini via LIM) + terziario (Tea + Andrea dev)
+- **Brand personality 3 parole**: Affidabile / Didattico / Accogliente (Andrea-confirmed iter 8 close 2026-04-27)
+- **Aesthetic direction** (kit-coupled didactic, reference Lego Education + Khan Academy + volumi cartacei stessi)
+- **Anti-references** (no Material Design SaaS, no cartoon Disney, no enterprise B2B Salesforce, no gaming RGB)
+- **5 Design Principles**: Morfismo Triplet + Principio Zero Pedagogico + LIM-First Light Mode + Mai Demo Mai Mock + Anti-Inflation CoV
+- **Anti-pattern checklist pre-merge** Test Morfismo (10 check, REJECT se viola anche solo 1)
+
+**Source of truth orchestration sprint**: → CLAUDE.md (questo file, sezioni "DUE PAROLE D'ORDINE" + sprint history iter 1-8 close).
+
+Single source of truth principle: design knowledge = `.impeccable.md`, orchestration history + tech stack = `CLAUDE.md`. Cross-link only, no duplication.
+
 
 
 
