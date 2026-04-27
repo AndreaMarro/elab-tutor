@@ -24,7 +24,38 @@ Il software ELAB Tutor è MORFICO runtime. Adatta forma + comportamento per-clas
 - **Sintesi runtime**: prompt + RAG + Wiki + memoria classe + stato live → risposta adattiva NON pre-compilata
 - **Adattamento progressivo**: stesso UNLIM diverse classi = comportamento diverso (memoria classe Supabase + analisi sessioni)
 
-Differenziatore vs static-config competitor: Tinkercad/Wokwi/LabsLand = scripted/configurato. ELAB = morfico runtime self-adapting.
+**Sense 1.5 — Adattabilità docente + classe + UI/funzioni (iter 10 estensione 2026-04-27)**
+
+Il Morfismo runtime non è solo "stack di codice", è ESPERIENZA adattiva multi-dimensionale. Stesso prodotto, forma diversa per chi lo usa + dove lo usa:
+
+**A. Per docente specifico** (linguaggio INVARIATO, contesto adatta):
+- Linguaggio Italiano scuola pubblica plurale "Ragazzi," + cita Vol/pag VERBATIM = INVARIANTE (Principio Zero non negoziabile)
+- Adatta dettagli: docente esperto Arduino → meno esempi base, più spunti avanzati. Docente al primo anno → più analogie esplicite, ripetizioni concetto, micro-step.
+- Memoria docente: UNLIM ricorda quale docente ha già spiegato cosa nelle sessioni precedenti, NON ripete inutile, suggerisce next step coerente con percorso fatto.
+- Stile docente: rilevato da pattern interazioni (es. docente che chiede sempre verifica componenti prima di codice → UNLIM proattivo highlight breadboard prima di mostrare codice).
+
+**B. Per contesto classe specifico**:
+- Età studenti rilevata (4ª primaria vs 3ª media) → complessità lessicale + analogie target età.
+- Livello competenza classe rilevato sessioni passate (memoria classe Supabase) → progressivo difficoltà esperimenti.
+- Kit specifico in dotazione (Omaric base vs avanzato vs custom) → mostra solo componenti effettivamente disponibili nel kit fisico classe.
+- Capitolo corrente nel libro (lesson-paths active) → contesto retrieval RAG focused su chapter.
+- Numero alunni + dispositivi (LIM 1 vs LIM+iPad ragazzi vs solo LIM) → adatta interfaccia (finestre più grandi LIM, denser LIM+iPad).
+
+**C. Morfismo funzionale + UI/finestre (NEW iter 10)**:
+- **Funzioni morfiche**: stesse capacità (highlight, mountExperiment, captureScreenshot, ecc.) MA invocazione + presentazione adatta contesto. Es: in Lavagna lezione frontale → highlight grosso colorato per visibilità LIM 5m. In Dashboard docente → highlight subtle inline per analisi puntuale.
+- **Finestre morfiche**: pannelli/overlay/floating window adattano dimensione, posizione, contenuto, gerarchia VISUALE in base a:
+  - Risoluzione LIM (1080p vs 4K) → font + componenti scalati
+  - Mode active (Lezione vs Lavagna libera vs Dashboard vs Esperimento) → finestre rilevanti in primo piano, altre minimizzate
+  - Touch vs mouse vs voice → target size + interaction zones adattive
+  - Stato sessione (intro vs costruzione vs verifica vs report) → diversi pannelli prominenti per fase
+- **Toolbar morfica**: 4 strumenti core (Pen / Wire / Select / Delete) + AI command bar UNLIM, MA layout/icone scalano per LIM front-class vs iPad student
+- **Mascotte UNLIM finestra morfica**: posizione + dimensione + stato (parla/ascolta/aspetta) adatta workflow corrente
+- **Quick-access pannelli**: docente esperienza accumulata → ELAB Tutor mostra shortcut frequenti suoi (es. docente che usa sempre "captureScreenshot+postToVision" → quick button)
+- **Layout adattivo**: stesso schermo LIM proietta DIVERSO per docente A (ama dashboard sempre visibile) vs docente B (ama focus su Lavagna grande)
+
+**Test Morfismo funzionale**: stesso esperimento aperto da 2 docenti diversi su stessa LIM = layout/funzioni/finestre adattate identità + storia ciascuno. Non è "preferenze utente" generiche → è MORFISMO automatico runtime apprendimento.
+
+Differenziatore vs static-config competitor: Tinkercad/Wokwi/LabsLand = scripted/configurato + UI fissa per tutti utenti. ELAB = morfico runtime self-adapting docente+classe+contesto+funzioni+finestre + memoria persistente.
 
 **Sense 2 — Strategico-competitivo: triplet coerenza esterna**
 
