@@ -14,11 +14,29 @@
 - Il testo dei volumi deve essere CITATO e USATO per la lettura — le stesse parole, non parafrasi
 - Il differenziatore competitivo: nessun competitor prepara lezioni personalizzate basate sulle sessioni precedenti + contenuto specifico dei volumi
 
-### 2. MORFISMO (la regola tecnica + competitiva)
+### 2. MORFISMO (DUE SENSI combinati — duale moat)
 
-**Il software ELAB Tutor è MORFICO al kit fisico + volumi cartacei. Stessa forma. Stessi nomi. Stesse pagine. Stesso ordine. Stessa estetica.**
+**Sense 1 — Tecnico-architetturale: piattaforma MORFICA + MUTAFORMA**
+
+Il software ELAB Tutor è MORFICO runtime. Adatta forma + comportamento per-classe / per-docente / per-kit / per-livello-studente in tempo reale.
+- **Codice morfico** (OpenClaw "Onnipotenza Morfica v4"): 52 ToolSpec declarative + L1 composition (composite handler sequential dispatch) + L2 template (pre-defined morphic patterns) + L3 flag DEV (dynamic JS generation Web Worker sandbox, DEV-ONLY)
+- **Mutaforma**: UNLIM compone tools dinamicamente in base al contesto (classe primaria vs secondaria, kit basic vs avanzato, capitolo iniziale vs capstone)
+- **Sintesi runtime**: prompt + RAG + Wiki + memoria classe + stato live → risposta adattiva NON pre-compilata
+- **Adattamento progressivo**: stesso UNLIM diverse classi = comportamento diverso (memoria classe Supabase + analisi sessioni)
+
+Differenziatore vs static-config competitor: Tinkercad/Wokwi/LabsLand = scripted/configurato. ELAB = morfico runtime self-adapting.
+
+**Sense 2 — Strategico-competitivo: triplet coerenza esterna**
+
+Il software ELAB Tutor è MORFICO al kit fisico + volumi cartacei. Stessa forma. Stessi nomi. Stesse pagine. Stesso ordine. Stessa estetica.
 
 In mesi chiunque potrà generare software via LLM. Il differenziatore non sarà più "abbiamo software". Sarà la **coerenza esatta tra software ↔ kit fisico Omaric ↔ volumi cartacei** = singola esperienza unificata. Questo è il moat che NON si può copiare senza avere il kit fisico + i volumi originali.
+
+**Combinato — DUAL MOAT 2026+**:
+- INTERNO: software morfico runtime (Sense 1) = differenziatore tecnico vs static competitor
+- ESTERNO: triplet coerenza materiale (Sense 2) = differenziatore competitivo vs LLM-generated copycat
+- Doppia barriera entry: tecnica (richiede architettura morphic) + materiale (richiede kit + volumi originali)
+- Nessun competitor puro-software può replicare entrambi senza investire kit fisico + volumi originali Omaric
 
 Implicazioni morfiche IMMUTABILI:
 
