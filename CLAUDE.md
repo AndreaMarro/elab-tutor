@@ -1,6 +1,8 @@
 # ELAB Tutor — Contesto per Claude Code
 
-## PRINCIPIO ZERO (la regola piu importante di tutto il progetto)
+## DUE PAROLE D'ORDINE — coppia inseparabile
+
+### 1. PRINCIPIO ZERO (la regola pedagogica)
 
 **Il docente e il tramite. UNLIM e lo strumento del docente. Gli studenti lavorano sui kit fisici ELAB.**
 
@@ -11,6 +13,60 @@
 - **CHIUNQUE** accendendo ELAB Tutor deve essere in grado, SENZA conoscenze pregresse, di giostrarsi sulla piattaforma e spiegare ai ragazzi
 - Il testo dei volumi deve essere CITATO e USATO per la lettura — le stesse parole, non parafrasi
 - Il differenziatore competitivo: nessun competitor prepara lezioni personalizzate basate sulle sessioni precedenti + contenuto specifico dei volumi
+
+### 2. MORFISMO (la regola tecnica + competitiva)
+
+**Il software ELAB Tutor è MORFICO al kit fisico + volumi cartacei. Stessa forma. Stessi nomi. Stesse pagine. Stesso ordine. Stessa estetica.**
+
+In mesi chiunque potrà generare software via LLM. Il differenziatore non sarà più "abbiamo software". Sarà la **coerenza esatta tra software ↔ kit fisico Omaric ↔ volumi cartacei** = singola esperienza unificata. Questo è il moat che NON si può copiare senza avere il kit fisico + i volumi originali.
+
+Implicazioni morfiche IMMUTABILI:
+
+**A. Visivo — ogni elemento UI deriva dal kit/volumi**
+- NanoR4Board SVG simulatore = identico ad Arduino Nano del kit Omaric (colori, pin, layout, dimensioni)
+- Componenti SVG (LED, R, condensatori, breadboard) = stessa palette + stessa proporzione del kit fisico
+- Iconografia derivata dai disegni dei volumi (NON icone generiche stock)
+- Palette ELAB = palette stampa volumi (Navy #1E4D8C, Lime #4A7A25, Orange #E8941C, Red #E54B3D)
+
+**B. Linguistico — testo dei volumi è CANONE**
+- UNLIM cita VERBATIM dai volumi (Vol.X pag.Y "testo esatto") — `volume-references.js` 92/92 enriched
+- Nomi capitoli software = nomi capitoli libro (NO "Lesson 1" — usa "Capitolo 6 — I LED")
+- Esercizio nel software = identico esercizio nel libro (numerazione, ordine, parole-chiave)
+- 37 Capitoli (Sprint Q) mantengono narrativa continua del libro (NO card flat indipendenti)
+
+**C. Strutturale — ordine = ordine libro**
+- Volume 1 → 6 capitoli software stesso ordine fisico (no Lezione 1 = capitolo random Vol.2)
+- Lesson-paths JSON (`v1-cap6-esp1`) = mapping diretto volume + capitolo + esperimento
+- Schema dati (`Capitolo.js`, `volume-structure.json`) = modello del libro fisico stesso
+
+**D. Pedagogico — kit fisico SEMPRE protagonista**
+- UNLIM mai sostituisce kit. Mai dice "puoi fare in simulatore". Sempre "costruite sul vostro kit + verifichiamo insieme"
+- Simulatore = compagno di kit (verifica + diagnosi + tinkering), NON sostituto
+- Diagnosi UNLIM riferisce SEMPRE al kit fisico ("controllate la breadboard fila E pin 13")
+
+**E. Multimodale — voce + visione + tatto**
+- Voce Isabella italiana = stesso registro narratore volumi
+- Vision UNLIM = vede cosa hanno costruito sul kit fisico (foto/webcam) + cosa hanno simulato
+- TTS legge testo dai volumi quando docente clicca "leggi questa pagina"
+
+**F. Aggiornabile coerentemente**
+- Quando volumi v2 escono → software auto-aggiorna RAG + lesson-paths + Capitoli (script `npm run sync-volumi`)
+- Quando kit Omaric aggiunge componente → SVG simulator aggiunge componente identico (NON generico)
+
+**Regola Morfismo TEST**: prendi una pagina random del Volume + una schermata random del software. Se NON sembrano "lo stesso prodotto fatto da persone che hanno parlato", Morfismo è violato.
+
+**Anti-pattern Morfismo (vietati)**:
+- Componenti SVG con palette generica (es. blu/rosso standard) invece kit Omaric
+- UNLIM che parafrasa il libro invece di citarlo
+- Capitoli software con titoli inventati (NO "Cap. 1: Introduzione")
+- Esercizi software che esistono SOLO nel software (NON nel libro fisico)
+- Icone generiche material-design invece icone derivate volumi
+- Layout simulatore non riconducibile a setup fisico kit
+
+**Differenziatore competitivo 2026+**:
+- LLM coding renderà software facilmente generabile
+- Chiunque può costruire "Arduino tutor" — ma NON può copiare kit Omaric + volumi cartacei + Morfismo coerente
+- ELAB = unico prodotto dove software è "scritto dallo stesso autore dei libri" (anche se Andrea coding, Tea volumi, Omaric kit — il prodotto è UNIFICATO morficamente)
 
 ## Cosa e' questo progetto
 ELAB e' un tutor educativo per elettronica e Arduino per bambini 8-14 anni.

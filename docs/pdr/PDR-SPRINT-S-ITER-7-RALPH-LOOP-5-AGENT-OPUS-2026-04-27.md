@@ -10,6 +10,34 @@ target: SPRINT_S_COMPLETE 10/10 entro iter 9-10
 
 # PDR Sprint S iter 7 — RALPH LOOP CAVEMAN 5-AGENT OPUS PATTERN S NEXT LEVEL
 
+## 0. PAROLE D'ORDINE — Principio Zero + Morfismo
+
+**ELAB Tutor è governato da DUE principi inseparabili. Ogni iter, ogni agente, ogni linea di codice li rispetta.**
+
+### 0.1 PRINCIPIO ZERO (regola pedagogica)
+Docente=tramite. UNLIM=strumento docente. Studenti=kit fisici ELAB. Plurale "Ragazzi,". Citazioni Vol/pag. ≤60 parole. Mai imperativo docente.
+
+### 0.2 MORFISMO (regola tecnica + competitiva)
+**Software ELAB = forma esatta del kit fisico Omaric + volumi cartacei.** Stessi nomi, stessi colori, stessi capitoli, stesso ordine, stessa estetica.
+
+LLM coding renderà software facilmente replicabile entro mesi. Differenziatore 2026+ = coerenza esatta software ↔ kit ↔ volumi. Moat NON copiabile senza kit fisico + volumi originali.
+
+**Test Morfismo**: pagina random Volume + schermata random software → "stesso prodotto". Se NO → Morfismo violato.
+
+**Anti-pattern Morfismo vietati**:
+- Componenti SVG palette generica (NO blu/rosso standard, SI palette kit Omaric)
+- UNLIM parafrasa volumi (SI cita VERBATIM Vol.X pag.Y "testo esatto")
+- Capitoli software con titoli inventati (SI usa titoli identici libro fisico)
+- Esercizi software-only (SI 1:1 mapping libro)
+- Icone material-design generiche (SI icone derivate volumi)
+- Layout simulator non riconducibile al kit (SI NanoR4Board SVG = Arduino kit Omaric pixel-perfect)
+
+**Iter 7+ ogni nuova feature** verifica: pedagogica (Principio Zero) + morfica (kit+volumi coerente). Se viola uno dei due → REJECT.
+
+Detail completo: `CLAUDE.md` §1+2 "Due parole d'ordine — coppia inseparabile".
+
+---
+
 ## 0. TL;DR (15 line)
 
 1. **Sprint S iter 7+** = ralph loop max 100 iter, completion-promise SPRINT_S_COMPLETE
