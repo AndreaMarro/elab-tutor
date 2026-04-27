@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-04-26T09:38:36.820Z",
-  "fixtures_count": 10,
-  "responses_count": 10,
-  "overall_score": 65.49999999999999,
-  "overall_max": 86.39999999999999,
-  "overall_pct": 75.81018518518518,
-  "verdict": "WARN",
+  "generated_at": "2026-04-26T19:51:03.587Z",
+  "fixtures_count": 50,
+  "responses_count": 50,
+  "overall_score": 403.80000000000007,
+  "overall_max": 439.8,
+  "overall_pct": 91.81446111869033,
+  "verdict": "PASS",
   "results": [
     {
-      "fixture_id": "r0-001",
-      "scenario": "introduce-concept",
+      "fixture_id": "r5-001",
+      "scenario": "plurale_ragazzi",
       "rules": {
         "plurale_ragazzi": {
-          "passed": false,
+          "passed": true,
           "severity": "HIGH",
           "weight": 1,
-          "contribution": 0
+          "contribution": 1
         },
         "no_imperativo_docente": {
           "passed": true,
@@ -87,183 +87,19 @@
           "note": "PZ vision: UNLIM non si presenta — è già lì"
         }
       },
-      "score": 7.3999999999999995,
+      "score": 8.4,
       "maxScore": 9.4,
-      "pct": 78.72340425531914
+      "pct": 89.36170212765957
     },
     {
-      "fixture_id": "r0-002",
-      "scenario": "debug-circuit",
+      "fixture_id": "r5-002",
+      "scenario": "plurale_ragazzi",
       "rules": {
         "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "no_imperativo_docente": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1
-        },
-        "max_words": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "citation_vol_pag": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "analogia": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "no_verbatim_3plus_frasi": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "linguaggio_bambino": {
-          "passed": true,
-          "severity": "LOW",
-          "weight": 0.5,
-          "contribution": 0.5
-        },
-        "action_tags_when_expected": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.8,
-          "contribution": 0.8
-        },
-        "synthesis_not_verbatim": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1,
-          "note": "measured-live-only"
-        },
-        "off_topic_recognition": {
           "passed": true,
           "severity": "HIGH",
           "weight": 1,
           "contribution": 1
-        },
-        "humble_admission": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.5,
-          "contribution": 0.5,
-          "note": "PZ vision: UNLIM dice non lo so quando non sa"
-        },
-        "no_chatbot_preamble": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.6,
-          "contribution": 0.6,
-          "note": "PZ vision: UNLIM non si presenta — è già lì"
-        }
-      },
-      "score": 6.8,
-      "maxScore": 7.8,
-      "pct": 87.17948717948718
-    },
-    {
-      "fixture_id": "r0-003",
-      "scenario": "verify-comprehension",
-      "rules": {
-        "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "no_imperativo_docente": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1
-        },
-        "max_words": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0
-        },
-        "citation_vol_pag": {
-          "passed": false,
-          "severity": "MEDIUM",
-          "weight": 1,
-          "contribution": 0
-        },
-        "analogia": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.6,
-          "contribution": 0.6
-        },
-        "no_verbatim_3plus_frasi": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "linguaggio_bambino": {
-          "passed": true,
-          "severity": "LOW",
-          "weight": 0.5,
-          "contribution": 0.5
-        },
-        "action_tags_when_expected": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.8,
-          "contribution": 0.8
-        },
-        "synthesis_not_verbatim": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1,
-          "note": "measured-live-only"
-        },
-        "off_topic_recognition": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 1
-        },
-        "humble_admission": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.5,
-          "contribution": 0.5,
-          "note": "PZ vision: UNLIM dice non lo so quando non sa"
-        },
-        "no_chatbot_preamble": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.6,
-          "contribution": 0.6,
-          "note": "PZ vision: UNLIM non si presenta — è già lì"
-        }
-      },
-      "score": 6.699999999999999,
-      "maxScore": 9.4,
-      "pct": 71.27659574468083
-    },
-    {
-      "fixture_id": "r0-004",
-      "scenario": "capitolo-intro",
-      "rules": {
-        "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
         },
         "no_imperativo_docente": {
           "passed": true,
@@ -328,170 +164,6 @@
           "note": "PZ vision: UNLIM dice non lo so quando non sa"
         },
         "no_chatbot_preamble": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 0.6,
-          "contribution": 0,
-          "note": "PZ vision: UNLIM non si presenta — è già lì"
-        }
-      },
-      "score": 6.8,
-      "maxScore": 9.4,
-      "pct": 72.34042553191489
-    },
-    {
-      "fixture_id": "r0-005",
-      "scenario": "off-topic",
-      "rules": {
-        "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "no_imperativo_docente": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1
-        },
-        "max_words": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "citation_vol_pag": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "analogia": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "no_verbatim_3plus_frasi": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "linguaggio_bambino": {
-          "passed": true,
-          "severity": "LOW",
-          "weight": 0.5,
-          "contribution": 0.5
-        },
-        "action_tags_when_expected": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.8,
-          "contribution": 0.8
-        },
-        "synthesis_not_verbatim": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1,
-          "note": "measured-live-only"
-        },
-        "off_topic_recognition": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "humble_admission": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.5,
-          "contribution": 0.5,
-          "note": "PZ vision: UNLIM dice non lo so quando non sa"
-        },
-        "no_chatbot_preamble": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 0.6,
-          "contribution": 0,
-          "note": "PZ vision: UNLIM non si presenta — è già lì"
-        }
-      },
-      "score": 5.2,
-      "maxScore": 7.8,
-      "pct": 66.66666666666667
-    },
-    {
-      "fixture_id": "r0-006",
-      "scenario": "deep-question",
-      "rules": {
-        "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "no_imperativo_docente": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1
-        },
-        "max_words": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0
-        },
-        "citation_vol_pag": {
-          "passed": false,
-          "severity": "MEDIUM",
-          "weight": 1,
-          "contribution": 0
-        },
-        "analogia": {
-          "passed": false,
-          "severity": "MEDIUM",
-          "weight": 0.6,
-          "contribution": 0
-        },
-        "no_verbatim_3plus_frasi": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "linguaggio_bambino": {
-          "passed": true,
-          "severity": "LOW",
-          "weight": 0.5,
-          "contribution": 0.5
-        },
-        "action_tags_when_expected": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.8,
-          "contribution": 0.8
-        },
-        "synthesis_not_verbatim": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1,
-          "note": "measured-live-only"
-        },
-        "off_topic_recognition": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 1
-        },
-        "humble_admission": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.5,
-          "contribution": 0.5,
-          "note": "PZ vision: UNLIM dice non lo so quando non sa"
-        },
-        "no_chatbot_preamble": {
           "passed": true,
           "severity": "HIGH",
           "weight": 0.6,
@@ -499,19 +171,19 @@
           "note": "PZ vision: UNLIM non si presenta — è già lì"
         }
       },
-      "score": 6.1,
+      "score": 8.4,
       "maxScore": 9.4,
-      "pct": 64.8936170212766
+      "pct": 89.36170212765957
     },
     {
-      "fixture_id": "r0-007",
-      "scenario": "safety-warning",
+      "fixture_id": "r5-003",
+      "scenario": "citation_vol_pag",
       "rules": {
         "plurale_ragazzi": {
-          "passed": false,
+          "passed": true,
           "severity": "HIGH",
           "weight": 1,
-          "contribution": 0
+          "contribution": 1
         },
         "no_imperativo_docente": {
           "passed": true,
@@ -526,10 +198,10 @@
           "contribution": 0.7
         },
         "citation_vol_pag": {
-          "passed": false,
+          "passed": true,
           "severity": "MEDIUM",
           "weight": 1,
-          "contribution": 0
+          "contribution": 1
         },
         "analogia": {
           "skipped": true,
@@ -581,19 +253,19 @@
           "note": "PZ vision: UNLIM non si presenta — è già lì"
         }
       },
-      "score": 6.8,
+      "score": 8.799999999999999,
       "maxScore": 8.799999999999999,
-      "pct": 77.27272727272728
+      "pct": 100
     },
     {
-      "fixture_id": "r0-008",
-      "scenario": "action-request",
+      "fixture_id": "r5-004",
+      "scenario": "citation_vol_pag",
       "rules": {
         "plurale_ragazzi": {
-          "passed": false,
+          "passed": true,
           "severity": "HIGH",
           "weight": 1,
-          "contribution": 0
+          "contribution": 1
         },
         "no_imperativo_docente": {
           "passed": true,
@@ -606,166 +278,6 @@
           "severity": "HIGH",
           "weight": 0.7,
           "contribution": 0.7
-        },
-        "citation_vol_pag": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "analogia": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "no_verbatim_3plus_frasi": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "linguaggio_bambino": {
-          "passed": true,
-          "severity": "LOW",
-          "weight": 0.5,
-          "contribution": 0.5
-        },
-        "action_tags_when_expected": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.8,
-          "contribution": 0.8
-        },
-        "synthesis_not_verbatim": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1,
-          "note": "measured-live-only"
-        },
-        "off_topic_recognition": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 1
-        },
-        "humble_admission": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.5,
-          "contribution": 0.5,
-          "note": "PZ vision: UNLIM dice non lo so quando non sa"
-        },
-        "no_chatbot_preamble": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.6,
-          "contribution": 0.6,
-          "note": "PZ vision: UNLIM non si presenta — è già lì"
-        }
-      },
-      "score": 6.8,
-      "maxScore": 7.8,
-      "pct": 87.17948717948718
-    },
-    {
-      "fixture_id": "r0-009",
-      "scenario": "narrative-transition",
-      "rules": {
-        "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "no_imperativo_docente": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1
-        },
-        "max_words": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "citation_vol_pag": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "analogia": {
-          "skipped": true,
-          "reason": "fixture flag false"
-        },
-        "no_verbatim_3plus_frasi": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0.7
-        },
-        "linguaggio_bambino": {
-          "passed": true,
-          "severity": "LOW",
-          "weight": 0.5,
-          "contribution": 0.5
-        },
-        "action_tags_when_expected": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.8,
-          "contribution": 0.8
-        },
-        "synthesis_not_verbatim": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1,
-          "note": "measured-live-only"
-        },
-        "off_topic_recognition": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 1
-        },
-        "humble_admission": {
-          "passed": true,
-          "severity": "MEDIUM",
-          "weight": 0.5,
-          "contribution": 0.5,
-          "note": "PZ vision: UNLIM dice non lo so quando non sa"
-        },
-        "no_chatbot_preamble": {
-          "passed": true,
-          "severity": "HIGH",
-          "weight": 0.6,
-          "contribution": 0.6,
-          "note": "PZ vision: UNLIM non si presenta — è già lì"
-        }
-      },
-      "score": 6.8,
-      "maxScore": 7.8,
-      "pct": 87.17948717948718
-    },
-    {
-      "fixture_id": "r0-010",
-      "scenario": "book-citation-request",
-      "rules": {
-        "plurale_ragazzi": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 1,
-          "contribution": 0
-        },
-        "no_imperativo_docente": {
-          "passed": true,
-          "severity": "CRITICAL",
-          "weight": 1,
-          "contribution": 1
-        },
-        "max_words": {
-          "passed": false,
-          "severity": "HIGH",
-          "weight": 0.7,
-          "contribution": 0
         },
         "citation_vol_pag": {
           "passed": false,
@@ -823,9 +335,3799 @@
           "note": "PZ vision: UNLIM non si presenta — è già lì"
         }
       },
-      "score": 6.1,
+      "score": 7.8,
       "maxScore": 8.799999999999999,
-      "pct": 69.31818181818183
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-005",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-006",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-007",
+      "scenario": "safety_warning",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-008",
+      "scenario": "off_topic_redirect",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": false,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 0
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 6.8,
+      "maxScore": 7.8,
+      "pct": 87.17948717948718
+    },
+    {
+      "fixture_id": "r5-009",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-010",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-011",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-012",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-013",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-014",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-015",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-016",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-017",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-018",
+      "scenario": "plurale_ragazzi",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-019",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 1
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.799999999999999,
+      "maxScore": 8.799999999999999,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-020",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-021",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 1
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.799999999999999,
+      "maxScore": 8.799999999999999,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-022",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-023",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-024",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-025",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-026",
+      "scenario": "citation_vol_pag",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-027",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-028",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-029",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-030",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-031",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-032",
+      "scenario": "sintesi_60_parole",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-033",
+      "scenario": "safety_warning",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-034",
+      "scenario": "safety_warning",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-035",
+      "scenario": "safety_warning",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-036",
+      "scenario": "safety_warning",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 7.8,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-037",
+      "scenario": "safety_warning",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 7.8,
+      "maxScore": 8.799999999999999,
+      "pct": 88.63636363636364
+    },
+    {
+      "fixture_id": "r5-038",
+      "scenario": "off_topic_redirect",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": false,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 0
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 6.8,
+      "maxScore": 7.8,
+      "pct": 87.17948717948718
+    },
+    {
+      "fixture_id": "r5-039",
+      "scenario": "off_topic_redirect",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": false,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 0
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 6.8,
+      "maxScore": 7.8,
+      "pct": 87.17948717948718
+    },
+    {
+      "fixture_id": "r5-040",
+      "scenario": "off_topic_redirect",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": false,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 0
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 6.8,
+      "maxScore": 7.8,
+      "pct": 87.17948717948718
+    },
+    {
+      "fixture_id": "r5-041",
+      "scenario": "off_topic_redirect",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": false,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 0
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 6.8,
+      "maxScore": 7.8,
+      "pct": 87.17948717948718
+    },
+    {
+      "fixture_id": "r5-042",
+      "scenario": "off_topic_redirect",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": false,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 0
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 6.8,
+      "maxScore": 7.8,
+      "pct": 87.17948717948718
+    },
+    {
+      "fixture_id": "r5-043",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-044",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-045",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-046",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-047",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-048",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
+    },
+    {
+      "fixture_id": "r5-049",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "skipped": true,
+          "reason": "fixture flag false"
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 8.4,
+      "pct": 100
+    },
+    {
+      "fixture_id": "r5-050",
+      "scenario": "deep_question",
+      "rules": {
+        "plurale_ragazzi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "no_imperativo_docente": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1
+        },
+        "max_words": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "citation_vol_pag": {
+          "passed": false,
+          "severity": "MEDIUM",
+          "weight": 1,
+          "contribution": 0
+        },
+        "analogia": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.6,
+          "contribution": 0.6
+        },
+        "no_verbatim_3plus_frasi": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.7,
+          "contribution": 0.7
+        },
+        "linguaggio_bambino": {
+          "passed": true,
+          "severity": "LOW",
+          "weight": 0.5,
+          "contribution": 0.5
+        },
+        "action_tags_when_expected": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.8,
+          "contribution": 0.8
+        },
+        "synthesis_not_verbatim": {
+          "passed": true,
+          "severity": "CRITICAL",
+          "weight": 1,
+          "contribution": 1,
+          "note": "measured-live-only"
+        },
+        "off_topic_recognition": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 1,
+          "contribution": 1
+        },
+        "humble_admission": {
+          "passed": true,
+          "severity": "MEDIUM",
+          "weight": 0.5,
+          "contribution": 0.5,
+          "note": "PZ vision: UNLIM dice non lo so quando non sa"
+        },
+        "no_chatbot_preamble": {
+          "passed": true,
+          "severity": "HIGH",
+          "weight": 0.6,
+          "contribution": 0.6,
+          "note": "PZ vision: UNLIM non si presenta — è già lì"
+        }
+      },
+      "score": 8.4,
+      "maxScore": 9.4,
+      "pct": 89.36170212765957
     }
   ]
 }

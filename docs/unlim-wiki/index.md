@@ -1,14 +1,27 @@
 # UNLIM Wiki — Index
 
 **Layer:** L2 (LLM-owned)
-**Last updated:** 2026-04-26 by scribe-opus (Sprint S iter 2 batch wiki-concepts-batch-20260426-112238)
-**Total pages:** 52 concepts + SCHEMA + log — target 200+ by Sprint 12
+**Last updated:** 2026-04-26 by scribe-opus (Sprint S iter 5 Phase 2 by-hand +1: matrice-led-8x8)
+**Total pages:** 87 concepts + SCHEMA + log — target 100 by Sprint S iter 8, 200+ by Sprint 12
 
 ## Catalog
 
-### Concepts (52/100 Sprint S iter 2 milestone)
+### Concepts (87/100 Sprint S iter 5 Phase 2 milestone)
 
-Directory completa: `docs/unlim-wiki/concepts/` (52 file kebab-case lowercase). Highlights seed + ultime aggiunte 2026-04-26 (batch Mac Mini 5 concepts):
+Directory completa: `docs/unlim-wiki/concepts/` (87 file kebab-case lowercase). Highlights seed + ultime aggiunte:
+
+| File                         | Vol | Pag | Tags                                |
+|------------------------------|-----|-----|-------------------------------------|
+| [concepts/matrice-led-8x8.md](concepts/matrice-led-8x8.md) | 3 | 134 | matrice-led, 8x8, max7219, multiplexing, capstone |
+| [concepts/zener.md](concepts/zener.md) | 2 | 105 | zener, regolatore, breakdown |
+| [concepts/for-loop.md](concepts/for-loop.md) | 3 | 67 | for, loop, iterazione |
+
+| File                         | Vol | Pag | Tags                                |
+|------------------------------|-----|-----|-------------------------------------|
+| [concepts/analog-write.md](concepts/analog-write.md) | 3 | 89 | analogwrite, pwm, output, fading, ~ |
+| [concepts/if-else.md](concepts/if-else.md) | 3 | 102 | if, else, controllo-flusso, condizioni |
+
+Highlights iter 2 (batch Mac Mini 5 concepts):
 
 | File                         | Vol | Pag | Tags                                |
 |------------------------------|-----|-----|-------------------------------------|

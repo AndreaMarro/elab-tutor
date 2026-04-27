@@ -209,21 +209,46 @@ function scoreResponse(response, fixture) {
 // Main
 // ────────────────────────────────────────────────────────────
 
+function parseFixturePathArg(args) {
+  // Support: --fixture-path <path> OR --fixture-path=<path> OR env FIXTURE_PATH
+  const flagIdx = args.findIndex(a => a === '--fixture-path');
+  if (flagIdx !== -1 && args[flagIdx + 1]) return args[flagIdx + 1];
+  const eqArg = args.find(a => a.startsWith('--fixture-path='));
+  if (eqArg) return eqArg.split('=', 2)[1];
+  if (process.env.FIXTURE_PATH) return process.env.FIXTURE_PATH;
+  return null;
+}
+
 function main() {
   const args = process.argv.slice(2);
-  const responsesPath = args[0] || resolve(__dirname, 'workloads', 'sprint-r0-unlim-quality-fixtures.jsonl');
+  // Filter out flag args from positional args
+  const positional = [];
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a === '--fixture-path') { i++; continue; }
+    if (a.startsWith('--fixture-path=')) continue;
+    if (a === '--baseline') continue;
+    positional.push(a);
+  }
+  const responsesPath = positional[0] || resolve(__dirname, 'workloads', 'sprint-r0-unlim-quality-fixtures.jsonl');
   const baseline = args.includes('--baseline');
+  const explicitFixturePath = parseFixturePathArg(args);
+  const fixturePath = explicitFixturePath
+    ? resolve(explicitFixturePath)
+    : resolve(__dirname, 'workloads', 'sprint-r0-unlim-quality-fixtures.jsonl');
 
-  if (!responsesPath || responsesPath === '--baseline') {
-    console.error('Usage: node score-unlim-quality.mjs <responses.jsonl> [--baseline]');
+  if (!responsesPath) {
+    console.error('Usage: node score-unlim-quality.mjs <responses.jsonl> [--baseline] [--fixture-path <path>]');
     console.error('  responses.jsonl format: {fixture_id, response_text, response_actions}');
     console.error('  --baseline: score fixtures themselves (no responses needed) for rule sanity check');
+    console.error('  --fixture-path <path>: override fixture file (default: workloads/sprint-r0-unlim-quality-fixtures.jsonl)');
+    console.error('  env FIXTURE_PATH: alternative way to set fixture path');
     process.exit(2);
   }
 
   if (baseline) {
     // Sanity-check rules against fixture-level expected behavior
-    const fixtures = loadFixtures(responsesPath);
+    const fixtures = loadFixtures(explicitFixturePath ? fixturePath : responsesPath);
     console.log(`# Sprint R0 Fixture Sanity Check (n=${fixtures.length})`);
     console.log('');
     for (const f of fixtures) {
@@ -242,7 +267,8 @@ function main() {
 
   // Score live responses against fixtures
   const responses = loadFixtures(responsesPath); // expects {fixture_id, response_text}
-  const fixtures = loadFixtures(resolve(__dirname, 'workloads', 'sprint-r0-unlim-quality-fixtures.jsonl'));
+  const fixtures = loadFixtures(fixturePath);
+  console.error(`[scorer] loaded ${fixtures.length} fixtures from ${fixturePath}`);
   const fixturesById = Object.fromEntries(fixtures.map(f => [f.id, f]));
 
   let totalScore = 0;

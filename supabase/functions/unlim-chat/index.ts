@@ -263,6 +263,9 @@ serve(async (req: Request) => {
     const thinkingLevel = model === 'gemini-2.5-pro' ? 'medium' : undefined;
 
     // 5. Call LLM (Together default, Gemini fallback, Brain last resort)
+    // Sprint S iter 5: Andrea decision — Together AI primary, Gemini fallback
+    // (R5 49/50 PASS Llama 3.3 70B, audit docs/audits/2026-04-26-sprint-s-iter4-r5-together-direct-RESULT.md)
+    // callLLM respects LLM_PROVIDER env (defaults to 'together' in llm-client.ts:192).
     let result;
     try {
       result = await callLLM({
