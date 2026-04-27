@@ -130,6 +130,65 @@ Iter 9 close target: **9.0+/10 ONESTO** post Andrea env unblock + cron firing.
 
 3 iter remaining realistic path 10/10 SPRINT_S_COMPLETE.
 
+## ITER 9 WAVE PARTIAL CLOSE 2026-04-27 17:50 CEST — 8.75/10 ONESTO
+
+### Iter 9 P0 HARD bug discovered + fixed live (commit c178e49)
+
+**Bug**: `postToVisionEndpoint` (scripts/openclaw, iter 8 NEW 169 LOC) POSTs `{image, circuit, session_id, prompt}` but `unlim-diagnose` Edge Function expected ONLY `{circuitState, experimentId, sessionId}` → HTTP 200 `"No circuit state"` error live verified iter 9 turn entry.
+
+**Root cause**: gen-app-opus-iter8-r2 shipped postToVisionEndpoint without contract integration test vs deployed Edge Function. Synthetic mock tests passed but real Edge Function rejected payload schema.
+
+**Fix iter 9 P0**: extended unlim-diagnose to accept BOTH legacy `circuitState` AND new schema `{image, circuit, session_id, prompt}` + pass image to callLLM via `images[]` array (Gemini Vision). Backwards compat preserved.
+
+**Patch**: +41/-16 LOC `supabase/functions/unlim-diagnose/index.ts`. Deployed Supabase prod iter 9.
+
+### B5 ClawBot composite LIVE 3/3 PASS post fix
+
+3 scenarios end-to-end verified:
+- Scenario A (highlight + speak + camera, circuit+prompt no image): "LED inverso, acqua salita analogia, resistore tappo bottiglia analogia" — TWO errors detected with analogie
+- Scenario B (mountExperiment + analyze + suggest, circuitState legacy): "[AZIONE:highlight:led1] LED non collegato, auto senza ruote analogia" — INTENT + analogia + suggestion
+- Scenario C (LED inverso error case): "[AZIONE:highlight:led1] strada senso unico analogia, invertire anodo/catodo" + "manca resistenza tubo acqua analogia"
+
+Tutti: diagnosis correct + Principio Zero analogie real-world + INTENT tags `[AZIONE:]` ClawBot composite chain compatible + Gemini Vision-tier fallback chain (flash + flash-lite).
+
+### Box 10 ClawBot composite ITER 9 lift
+
+- Iter 8 close: 0.8 (postToVisionEndpoint code shipped, untested live)
+- Iter 9 P0 schema fix deploy: 0.85 (+0.05 schema bug fixed, circuit-only path live verified)
+- Iter 9 B5 3/3 live scenarios: **0.95** (+0.10 lift end-to-end live verified, INTENT tags + analogie + diagnosis correct)
+- Path Box 10 → 1.0 iter 9 P1: real screenshot fixture (Playwright captureScreenshot) + image-based vision live + 28 ToolSpec expand
+
+### Score iter 9 wave running
+
+- Iter 8 close: 8.6/10
+- Iter 9 P0 fix Box 10 +0.05: 8.65
+- Iter 9 B5 live Box 10 +0.10: **8.75/10 ONESTO**
+
+### CoV iter 9 preserved
+- vitest main 12599 PASS (3x verified zero flakiness)
+- vitest openclaw 129 PASS (post schema fix unchanged)
+- Edge Function unlim-chat + unlim-diagnose deploy LIVE iter 8+9
+- Vercel www.elabtutor.school HTTP 200 cache HIT
+
+### Commits iter 9 push origin
+
+- `c178e49` fix(unlim-diagnose): iter 9 P0 — accept image + circuit + prompt schema postToVisionEndpoint compat + Vision support
+
+### Iter 9 P1 next priorities
+
+1. **Real screenshot fixture** via Playwright captureScreenshot (Mac Mini OR MacBook):
+   - 20 placeholder PNGs zlib (iter 8) → 20 real circuit screenshots from simulator
+   - Unblocks B3 Vision E2E live + image-based postToVisionEndpoint
+2. **R7 fixture 200 prompts** (gen-test agent): expand B1 R6 100 → 200 prompts × 10 cat = 200 (was 10/cat × 10 cat)
+3. **iter-9-bench-runner.mjs upgrade**: extend master runner with B8 simulator engine + B9 Arduino compile flow + B10 Scratch/Blockly tests integration
+4. **28 ToolSpec expand** 52 → 80 (gen-app autonomous Mac Mini builder agent)
+5. **Andrea env actions** (10 min): RAG_HYBRID_ENABLED=true + class_key fixture + unlim-tts WS deploy decision
+6. **Mac Mini cron firing live verify** post next 6h cycle (R5+R6 stress 22:30 CEST)
+
+### Iter 9 close target
+
+**9.0+/10 ONESTO** post real screenshots + Andrea env unblock + 28 ToolSpec partial expand + Mac Mini cron firing.
+
 ## MID-ITER-8 UPDATE 2026-04-27 12:50 — Morfismo DUAL SENSE clarification
 
 Andrea clarifies Morfismo = TWO senses combinati. Inject in all in-flight + pending agents:
