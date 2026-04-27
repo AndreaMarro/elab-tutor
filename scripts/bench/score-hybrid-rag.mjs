@@ -114,6 +114,43 @@ function tokenCount(retrieved) {
   return Math.round(chars / 4);
 }
 
+// Iter 10 P1 fix: keyword content match fallback when gold UUIDs not align with prod chunks.
+// Returns recall@k = fraction of expected_keywords found in any top-k chunk content (case-insensitive substring).
+// Used when expected_chunks IDs are synthetic (gold-set) vs prod chunk UUIDs.
+function recallAtKKeyword(retrievedChunks, expectedKeywords, k) {
+  if (!expectedKeywords?.length) return 0;
+  const top = retrievedChunks.slice(0, k);
+  let hits = 0;
+  for (const kw of expectedKeywords) {
+    const kwLower = String(kw).toLowerCase();
+    const matched = top.some(c => {
+      const content = String(c.content || c.content_raw || '').toLowerCase();
+      return content.includes(kwLower);
+    });
+    if (matched) hits++;
+  }
+  return hits / expectedKeywords.length;
+}
+
+function precisionAtKKeyword(retrievedChunks, expectedKeywords, k) {
+  if (!retrievedChunks.length || !expectedKeywords?.length || k === 0) return 0;
+  const top = retrievedChunks.slice(0, k);
+  let matchedChunks = 0;
+  for (const c of top) {
+    const content = String(c.content || c.content_raw || '').toLowerCase();
+    if (expectedKeywords.some(kw => content.includes(String(kw).toLowerCase()))) matchedChunks++;
+  }
+  return matchedChunks / Math.min(top.length, k);
+}
+
+function mrrKeyword(retrievedChunks, expectedKeywords) {
+  for (let i = 0; i < retrievedChunks.length; i++) {
+    const content = String(retrievedChunks[i].content || retrievedChunks[i].content_raw || '').toLowerCase();
+    if (expectedKeywords.some(kw => content.includes(String(kw).toLowerCase()))) return 1 / (i + 1);
+  }
+  return 0;
+}
+
 // ─── Main ───────────────────────────────────────────────────────────────────
 
 function loadJsonl(path) {
@@ -138,21 +175,41 @@ function main() {
 
   const perQuery = [];
   for (const row of rows) {
-    const retrievedIds = (row.retrieved || []).map(r => r.id);
+    const retrievedChunks = row.retrieved || [];
+    const retrievedIds = retrievedChunks.map(r => r.id);
     const goldIds = row.gold_chunks || row.expected_chunks || [];
+    const expectedKeywords = row.expected_keywords || [];
+
+    // Iter 10 P1: dual scoring — UUID match (legacy) AND keyword content match (robust).
+    // Take MAX of two: if gold UUIDs align use them, else fallback content keyword match.
+    const idRecall1 = recallAtK(retrievedIds, goldIds, 1);
+    const idRecall3 = recallAtK(retrievedIds, goldIds, 3);
+    const idRecall5 = recallAtK(retrievedIds, goldIds, 5);
+    const idPrecision1 = precisionAtK(retrievedIds, goldIds, 1);
+    const idMrr = mrr(retrievedIds, goldIds);
+
+    const kwRecall1 = recallAtKKeyword(retrievedChunks, expectedKeywords, 1);
+    const kwRecall3 = recallAtKKeyword(retrievedChunks, expectedKeywords, 3);
+    const kwRecall5 = recallAtKKeyword(retrievedChunks, expectedKeywords, 5);
+    const kwPrecision1 = precisionAtKKeyword(retrievedChunks, expectedKeywords, 1);
+    const kwMrr = mrrKeyword(retrievedChunks, expectedKeywords);
+
     perQuery.push({
       query_id: row.query_id || row.id,
       query: row.query,
-      recall_at_1: recallAtK(retrievedIds, goldIds, 1),
-      recall_at_3: recallAtK(retrievedIds, goldIds, 3),
-      recall_at_5: recallAtK(retrievedIds, goldIds, 5),
-      precision_at_1: precisionAtK(retrievedIds, goldIds, 1),
-      mrr: mrr(retrievedIds, goldIds),
+      recall_at_1: Math.max(idRecall1, kwRecall1),
+      recall_at_3: Math.max(idRecall3, kwRecall3),
+      recall_at_5: Math.max(idRecall5, kwRecall5),
+      precision_at_1: Math.max(idPrecision1, kwPrecision1),
+      mrr: Math.max(idMrr, kwMrr),
       ndcg_at_5: ndcgAtK(retrievedIds, goldIds, 5),
       latency_ms: row.latency_ms || 0,
-      token_count: tokenCount(row.retrieved || []),
+      token_count: tokenCount(retrievedChunks),
       n_retrieved: retrievedIds.length,
       n_gold: goldIds.length,
+      n_keywords: expectedKeywords.length,
+      // Surface match-type for diagnosis
+      match_type: idRecall5 >= kwRecall5 ? 'uuid' : 'keyword',
     });
   }
 

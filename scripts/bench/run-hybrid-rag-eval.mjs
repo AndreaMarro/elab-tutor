@@ -148,6 +148,7 @@ async function main() {
       query: f.query,
       retrieved: result.retrieved,
       gold_chunks: f.expected_chunks || [],
+      expected_keywords: f.expected_keywords || [], // Iter 10 P1: propagate keywords for content-match scoring
       latency_ms: result.latency_ms,
       error: result.error,
       dry_run: result.dry_run,
