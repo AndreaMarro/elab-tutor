@@ -1,0 +1,137 @@
+{
+  "iter": 12,
+  "timestamp": "2026-04-28T03:23:17.919Z",
+  "dry_run": true,
+  "pre_flight": {
+    "env": {
+      "missingRequired": [
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
+      ],
+      "missingOptional": [
+        "TOGETHER_API_KEY",
+        "GEMINI_API_KEY"
+      ]
+    },
+    "baseline": {
+      "ok": true,
+      "passed": 0,
+      "skipped": true
+    },
+    "services": []
+  },
+  "suites": {
+    "B1": {
+      "name": "B1 R7 200-prompt PASS rate",
+      "target": "≥87% global + 10/10 cat ≥85%",
+      "measured": "dry-run (schema check only)",
+      "pass": null,
+      "details": {
+        "fixture_used": "r7-fixture.jsonl",
+        "fallback_triggered": false,
+        "fixture_missing": false,
+        "scorer": "scripts/bench/score-unlim-quality.mjs (12-rule)"
+      }
+    },
+    "B2": {
+      "name": "B2 Hybrid RAG recall@5",
+      "target": "recall@5 ≥0.55 (lift +0.165 vs iter 11 0.384)",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "fixture": "tests/fixtures/hybrid-gold-30.jsonl",
+        "fixture_present": true,
+        "endpoint": "/functions/v1/unlim-chat?debug_retrieval=true"
+      }
+    },
+    "B3": {
+      "name": "B3 Vision E2E",
+      "target": "p95 <8s + topology ≥80%",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "spec": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/02-vision-flow.spec.js",
+        "spec_present": true
+      }
+    },
+    "B4": {
+      "name": "B4 TTS Isabella WS",
+      "target": "p50 <2s OR ceiling browser fallback 0.85",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "ceiling": 0.85,
+        "runner": "run-tts-isabella-bench.mjs"
+      }
+    },
+    "B5": {
+      "name": "B5 ClawBot composite",
+      "target": "composite success ≥90% + sub-tool p95 <3s",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "runner": "run-clawbot-composite-bench.mjs",
+        "threshold": 0.9
+      }
+    },
+    "B6": {
+      "name": "B6 Cost per session",
+      "target": "<€0.012/session avg + p95 <€0.025",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "runner": "run-cost-bench.mjs",
+        "cap_avg": 0.012,
+        "cap_p95": 0.025
+      }
+    },
+    "B7": {
+      "name": "B7 Fallback gate",
+      "target": "gate accuracy student-runtime 100% + audit log 100%",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "runner": "run-fallback-chain-bench.mjs",
+        "threshold": 1
+      }
+    },
+    "B8": {
+      "name": "B8 Simulator engine integration",
+      "target": "simulator engine integration tests PASS (≥30 if available, else 0+)",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "impl": "STUB iter 12 (vitest filter tests/unit/simulator + tests/integration/simulator)",
+        "todo": "real impl iter 13+: dedicated harness for CircuitSolver/AVRBridge/PlacementEngine"
+      }
+    },
+    "B9": {
+      "name": "B9 Arduino compile flow",
+      "target": "Arduino compile flow tests PASS rate ≥95% (target 92 esperimenti)",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "impl": "STUB iter 12 (vitest filter tests/integration/arduino-compile + arduino-compile.test)",
+        "todo": "real impl iter 13+: 92-esperimento HEX compilation matrix"
+      }
+    },
+    "B10": {
+      "name": "B10 Scratch Blockly compile",
+      "target": "Scratch Blockly compile rate ≥90%",
+      "measured": "dry-run",
+      "pass": null,
+      "details": {
+        "impl": "STUB iter 12 (vitest filter tests/integration/scratch-compile + scratch-compile.test)",
+        "todo": "real impl iter 13+: Blockly XML→AST→C++→HEX matrix"
+      }
+    }
+  },
+  "summary": {
+    "total_suites": 10,
+    "pass_count": 0,
+    "fail_count": 0,
+    "skipped_or_stub_count": 10,
+    "score_lift_target": 9.65,
+    "score_baseline_iter11": 9.3
+  }
+}

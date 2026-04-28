@@ -179,6 +179,74 @@ test.describe('Sprint S iter 6 — Vision E2E flow', () => {
       // Settle simulator render before screenshot
       await page.waitForTimeout(500);
 
+      // ITER 12 ATOM-S12-A3 — DIAGNOSTIC BLOCK: enumerate canvas/svg candidates BEFORE capture.
+      // Iter 11 captureScreenshot returned null/empty (selector mismatch). Enumerate live
+      // candidates to surface canvas + svg root info (id/class/role/aria/bbox) — log to
+      // console + attach to test as artifact for selector-evidence audit.
+      const canvasCandidates = await page.evaluate(() => {
+        const out = [];
+        const els = Array.from(document.querySelectorAll('canvas, svg'));
+        for (const el of els) {
+          const rect = el.getBoundingClientRect();
+          out.push({
+            tag: el.tagName,
+            id: el.id || '',
+            class: typeof el.className === 'string'
+              ? el.className
+              : (el.className && el.className.baseVal) || '',
+            role: el.getAttribute('role') || '',
+            aria: el.getAttribute('aria-label') || '',
+            testid: el.getAttribute('data-testid') || '',
+            bbox: { x: rect.x, y: rect.y, w: rect.width, h: rect.height },
+          });
+        }
+        return out;
+      });
+      console.log(`[vision-e2e][${fx.id}] canvas/svg candidates:`, JSON.stringify(canvasCandidates, null, 2));
+
+      // Pick the simulator canvas root: prefer data-testid="simulator-canvas", then svg
+      // with class containing "NanoR4" or "SimulatorCanvas", then largest bbox svg.
+      const simulatorSelector = await page.evaluate(() => {
+        const tryEl = (sel) => document.querySelector(sel);
+        const named = tryEl('[data-testid="simulator-canvas"]')
+          || tryEl('svg[data-testid*="simulator"]')
+          || tryEl('svg.SimulatorCanvas')
+          || tryEl('svg[class*="NanoR4"]')
+          || tryEl('svg[class*="simulator"]');
+        if (named) {
+          if (named.getAttribute('data-testid')) return `[data-testid="${named.getAttribute('data-testid')}"]`;
+          if (named.id) return `#${named.id}`;
+          const cls = (typeof named.className === 'string' ? named.className : named.className?.baseVal || '')
+            .split(/\s+/).filter(Boolean)[0];
+          if (cls) return `${named.tagName.toLowerCase()}.${cls}`;
+        }
+        // Largest bbox svg fallback
+        const svgs = Array.from(document.querySelectorAll('svg'));
+        let best = null;
+        let bestArea = 0;
+        for (const s of svgs) {
+          const r = s.getBoundingClientRect();
+          const area = r.width * r.height;
+          if (area > bestArea) { best = s; bestArea = area; }
+        }
+        if (best) {
+          const cls = (typeof best.className === 'string' ? best.className : best.className?.baseVal || '')
+            .split(/\s+/).filter(Boolean)[0];
+          return cls ? `svg.${cls}` : 'svg';
+        }
+        return 'svg';
+      });
+      console.log(`[vision-e2e][${fx.id}] picked simulator selector: ${simulatorSelector}`);
+
+      // Wait for the picked simulator canvas selector to be visible before screenshot.
+      // Tolerant: if selector vanishes mid-test, fall through to captureScreenshot which
+      // owns its own internal selector logic (see simulator-api.js).
+      try {
+        await page.waitForSelector(simulatorSelector, { state: 'visible', timeout: 10000 });
+      } catch (e) {
+        console.warn(`[vision-e2e][${fx.id}] waitForSelector(${simulatorSelector}) timeout: ${e.message}`);
+      }
+
       // 3. Capture screenshot via __ELAB_API
       const screenshot = await page.evaluate(async () => {
         if (!window.__ELAB_API || typeof window.__ELAB_API.captureScreenshot !== 'function') {

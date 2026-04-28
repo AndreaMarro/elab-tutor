@@ -242,19 +242,28 @@ serve(async (req: Request) => {
         const chunks = await hybridRetrieve(safeMessage, topKReq, {});
         if (chunks.length > 0) {
           ragContext = formatHybridContext(chunks);
-          retrievedChunksDebug = chunks.map(c => ({
-            id: (c as Record<string, unknown>).id ?? null,
-            source: (c as Record<string, unknown>).source ?? null,
-            chapter: (c as Record<string, unknown>).chapter ?? null,
-            page: (c as Record<string, unknown>).page ?? null,
-            figure_id: (c as Record<string, unknown>).figure_id ?? null,
-            section_title: (c as Record<string, unknown>).section_title ?? null,
-            content: typeof (c as Record<string, unknown>).content === 'string'
-              ? ((c as Record<string, unknown>).content as string).slice(0, 240)
-              : null,
-            rrf_score: (c as Record<string, unknown>).rrf_score ?? null,
-            similarity: (c as Record<string, unknown>).similarity ?? null,
-          }));
+          retrievedChunksDebug = chunks.map(c => {
+            const cr = c as Record<string, unknown>;
+            const rrf = typeof cr.rrf_score === 'number' ? cr.rrf_score : null;
+            const sim = typeof cr.similarity === 'number' ? cr.similarity : null;
+            const contentStr = typeof cr.content === 'string' ? cr.content as string : '';
+            return {
+              // Iter 12 ATOM-S12-A4: surface unified score + chunk_id alias + content_preview (60 chars).
+              // Preserve legacy fields (id, content) for backward compat with iter 10 bench scripts.
+              chunk_id: cr.id ?? null,
+              id: cr.id ?? null,
+              score: rrf !== null ? rrf : sim,
+              source: cr.source ?? null,
+              chapter: cr.chapter ?? null,
+              page: cr.page ?? null,
+              figure_id: cr.figure_id ?? null,
+              section_title: cr.section_title ?? null,
+              content_preview: contentStr.slice(0, 60),
+              content: contentStr.slice(0, 240),
+              rrf_score: rrf,
+              similarity: sim,
+            };
+          });
           retrievalModeUsed = 'hybrid';
         } else {
           ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);

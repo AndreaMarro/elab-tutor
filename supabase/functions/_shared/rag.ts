@@ -633,8 +633,11 @@ async function bm25Search(
 
     // Iter 11 P0 fix: if wfts returns 0, retry with explicit OR tsquery
     // (handles edge cases where Italian stemmer + websearch logic miss matches).
+    // Iter 12 ATOM-S12-A2: lower token-length filter 3 → 2 (Italian queries
+    // often short: "legge Ohm", "LED rosso" → 2 short tokens after stop-word
+    // strip). Min token count gate stays >= 2 (no regression for >= 3 case).
     if (result.length === 0 && cleanedQuery.length > 0) {
-      const tokens = cleanedQuery.split(/\s+/).filter(t => t.length >= 3);
+      const tokens = cleanedQuery.split(/\s+/).filter(t => t.length >= 2);
       if (tokens.length >= 2) {
         const orQuery = encodeURIComponent(tokens.join(' | '));
         const fallbackUrl = `${SUPABASE_URL}/rest/v1/rag_chunks`

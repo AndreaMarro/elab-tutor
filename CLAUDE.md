@@ -953,8 +953,61 @@ Contiene:
 
 Single source of truth principle: design knowledge = `.impeccable.md`, orchestration history + tech stack = `CLAUDE.md`. Cross-link only, no duplication.
 
+## Sprint S iter 12 PHASE 1 close (2026-04-28 ~05:30 CEST) — Pattern S r2 (5th iter consecutive)
 
+**Pattern**: Pattern S 4-agent OPUS PHASE-PHASE r2 + scribe Phase 2 sequential. Race-cond fix validated 5th iter consecutive (iter 5+6+8+11+12), with §7.2 protocol gap noted (1/4 completion msgs emitted, deliverables file-system verified — mitigation iter 13 explicit msg-emission CoV step MANDATORY).
 
+**Score iter 12 PHASE 1 close ONESTO**: **9.30/10 UNCHANGED** vs iter 11 baseline (HEAD `e02eabb`). Lift target 9.65 PROJECTION pending PHASE 3 live bench (NOT yet executed — Andrea env provision SUPABASE_URL/ANON_KEY/ELAB_API_KEY/VOYAGE_API_KEY required ~5 min).
 
+**12 ATOM-S12 deliverables shipped Phase 1** (file system verified):
+- ADR-019 Sense 1.5 morfismo runtime docente/classe (320 LOC) + ADR-020 Box 1 VPS GPU decommission prep iter 13 ratify (232 LOC) + ADR-021 Box 3 RAG 1881 chunks coverage redefine prep iter 13 ratify (261 LOC) = **813 LOC ADR architect-opus**
+- `supabase/functions/_shared/rag.ts` 958 LOC (A2 OR-fallback 2-token threshold + A4 DebugChunk type extension single-agent serialized) + `supabase/functions/unlim-chat/index.ts` 447 LOC (A4 debug_retrieval per-chunk metadata surface) + `scripts/bench/iter-12-bench-runner.mjs` 656 LOC NEW 10-suite B1-B10 + `automa/state/iter-12-bench-{results.json,summary.md}` dry-run output (env missing required) — **gen-app-opus**
+- `tests/fixtures/hybrid-gold-30.jsonl` 30 entries 86 UUIDs resolved + `hybrid-gold-30-realign.md` provenance 4195B + `tests/e2e/02-vision-flow.spec.js` 332 LOC canvas selector debug + `vision-canvas-selector-evidence.md` 5389B + `scripts/bench/r7-fixture.jsonl` 200 prompts 10 cat × 20 + `scripts/capture-real-screenshots.mjs` 268 LOC NEW Playwright helper + `tests/fixtures/screenshots/circuit-{01..20}.png` 20 placeholders 582-583B valid PNG + `INDEX.md` 3313B — **gen-test-opus**
+
+**SPRINT_S_COMPLETE 10 boxes status post iter 12 P1**:
+- Box 1 VPS GPU 0.4 (UNCHANGED) — ADR-020 prep iter 13 ratify shipped
+- Box 2 stack 0.4 (UNCHANGED)
+- Box 3 RAG 0.7 (UNCHANGED) — ADR-021 prep iter 13 ratify shipped
+- Box 4 Wiki 1.0 (MAINTAIN)
+- Box 5 R0 91.80% 1.0 (MAINTAIN)
+- Box 6 Hybrid RAG 0.85 UNCHANGED Phase 1 (lift to 0.95 IF B2 recall@5 ≥0.55 measured live)
+- Box 7 Vision 0.55 UNCHANGED Phase 1 (lift to 0.70 IF B3 topology ≥80% verified live)
+- Box 8 TTS 0.85 (defer iter 14 ceiling)
+- Box 9 R5 91.80% 1.0 (MAINTAIN)
+- Box 10 ClawBot 0.95 (UNCHANGED — Mac Mini D1 deferred SSH block, retry iter 13)
+
+Box subtotal 7.20/10 + bonus cumulative 2.10 = **9.30/10 ONESTO Phase 1 close** (lift PROJECTION-only).
+
+**CoV iter 12**: vitest 12599 PASS preserved (+309 vs iter 11 baseline 12290, new gen-test fixtures registered). Build NOT re-run Phase 1 (deferred PHASE 3 orchestrator heavy ~14min). Baseline file `automa/baseline-tests.txt` reads 12290 (pre-commit hook would update post-vitest re-run). Openclaw 129 PASS preserved.
+
+**Pattern S race-cond fix VALIDATED 5× consecutive** (iter 5 P1+P2, iter 6 P1+P2, iter 8 r2, iter 11 P0, iter 12 r2 with §7.2 protocol gap). File ownership rigid + filesystem barrier substantively respected (deliverables artifacts present), msg emission step iter 12 SKIPPED by 3/4 agents (planner only emitted). Mitigation iter 13: explicit msg-emission CoV step MANDATORY each agent contract.
+
+**Honest gaps iter 12 PHASE 1**:
+1. Mac Mini SSH key auth fail (publickey,password,keyboard-interactive denied) → D1+D2+D3 NOT dispatched, deferred iter 13.
+2. PHASE 3 live bench env missing (B2+B3+B7 unverified live) — Andrea provision ~5 min iter 13 entrance unblocks.
+3. Real circuit screenshots placeholders only (B3 unblock pending env + class_key seeded).
+4. Quality audit raw signals defer Sprint T iter 15+: 435 font<14 CSS + 1326 fontSize<14 JSX + 103 touch<44 + 9 console.log.
+5. Iter 11 dedicated audit md NOT FOUND filesystem (`2026-04-27-sprint-s-iter11-MASSIVE-LIFT-audit.md` doesn't exist; iter 11 close narrative is inline CLAUDE.md sprint history + master PDR §1.1-1.3).
+
+**Iter 13 priorities preview** (per master PDR §4.2):
+- ATOM-S13-A1+A2 architect ADR-020+021 ratify (Andrea ~6 min) → Box 1 0.4 → 1.0 + Box 3 0.7 → 1.0
+- ATOM-S13-A3 gen-app A/B test RAG_HYBRID_ENABLED prod 50% (Andrea approve ~3 min) → Box 6 +0.05
+- ATOM-S13-A4 gen-test B5 ClawBot composite image-based scenarios D+E
+- ATOM-S13-B1 gen-app composite-handler L2 template runtime activation (Sense 1.5 morfismo)
+- ATOM-S13-B2 gen-app state-snapshot-aggregator parallel orchestration prod wire-up (Onniscenza)
+- D1+D2+D3 Mac Mini retry post SSH unblock (Wiki 30 + ToolSpec 28 + Volumi audit)
+- D2-iter13 Mac Mini elab-strategist 9-doc audit Phase 1-6 entry preview Sprint T iter 15+
+
+**Activation iter 13**: see `docs/handoff/2026-04-28-sprint-s-iter-12-to-iter-13-handoff.md` §1 ACTIVATION STRING (paste-ready) + §2 setup steps Andrea (5-10 min) + §5 Andrea ratify queue (~10 min).
+
+**Iter 13 score target**: 9.30 (Phase 1) | 9.65 (post Phase 3 projection) → **9.95/10 ONESTO** (per master PDR §4.2 — Box 1+3 redefine 0.6+0.3 lift + Box 6 A/B +0.05).
+
+**Files refs iter 12**:
+- `docs/audits/2026-04-28-sprint-s-iter12-PHASE1-FINAL-audit.md` (NEW ~600 LOC)
+- `docs/handoff/2026-04-28-sprint-s-iter-12-to-iter-13-handoff.md` (NEW ~400 LOC)
+- `docs/pdr/sprint-S-iter-12-contract.md` (planner)
+- `docs/pdr/PDR-SPRINT-S-CLOSE-AND-T-BEGIN-2026-04-28.md` (master PDR §4.1 + §4.2 + §6)
+- `docs/adrs/ADR-019-*.md` 320 + `ADR-020-*.md` 232 + `ADR-021-*.md` 261 = 813 LOC
+- 12 ATOM-S12 deliverables filesystem (audit §2 delivery matrix)
 
 
