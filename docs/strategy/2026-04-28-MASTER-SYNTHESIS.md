@@ -10,13 +10,19 @@
 
 ## 1. Executive Summary — brutal honest, ≤500 parole
 
-ELAB Tutor è prodotto edutech K-12 STEM completo (software + hardware Arduino Nano R4 via Omaric + 3 volumi cartacei + 92 video lezioni Tea) target scuole pubbliche italiane PNRR 4.0. Lo sviluppatore unico è Andrea Marro. Score onesto piattaforma 9.55/10 su test interni S-close (1442 test passing, 8 tabelle Supabase live, 1881 chunk RAG + embeddings, 27 Lezioni replicate VERBATIM dai volumi cartacei). UNLIM tutor AI funziona in produzione (5 Edge Functions Supabase, routing Gemini 70/25/5, 549 chunk indicizzati al 14 Apr).
+ELAB Tutor è prodotto edutech K-12 STEM completo. **REALTÀ PRODOTTO (Andrea confirm 2026-04-28 PM)**:
+- **Kit hardware Arduino Nano R4 + componenti** = GIÀ ESISTENTE Omaric Strambino (filiera completa, BOM, codici barre, rendering scatole packaging — `/VOLUME 3/ELAB - TRES JOLIE/`)
+- **3 Volumi cartacei** Vol1+Vol2+Vol3 = GIÀ SCRITTI COMPLETI Davide Fagherazzi (no residual writing)
+- **Brand/marketing materials** = GIÀ READY (logo, foto, volantino, video promozionali, packaging — TRES JOLIE)
+- **Software ELAB Tutor** = IN SVILUPPO (Andrea unico dev)
+- **92 video lezioni didattiche** = FUTURE (post-MVP, NON pre-Fiera, optional Premium tier €3,490 quando disponibili — owner+timeline TBD)
+Target scuole pubbliche italiane PNRR 4.0. Bundle base SHIPPABLE NOW (kit+volumi+software+brand), Premium tier video FUTURE addition. Score onesto piattaforma 9.55/10 su test interni S-close (1442 test passing, 8 tabelle Supabase live, 1881 chunk RAG + embeddings, 27 Lezioni replicate VERBATIM dai volumi cartacei). UNLIM tutor AI funziona in produzione (5 Edge Functions Supabase, routing Gemini 70/25/5, 549 chunk indicizzati al 14 Apr).
 
 **Tre time bomb hard-deadline**:
 
 1. **Gemini 2.0 Flash-Lite retire 1 giugno 2026** (5 settimane countdown da oggi). Tutta architettura UNLIM oggi dipende da Gemini Flash-Lite per routing economico 70%. Se il 31 maggio non abbiamo migrato → produzione down. Mitigazione: Mistral La Plateforme EU primary (€0.20/M input, server Parigi GDPR-clean) + Vertex AI Frankfurt emergency. Stima Sprint T iter 18-22.
 
-2. **PNRR Voucher 4.0 deadline 30 giugno 2026** (9 settimane). Window vendita scuole con voucher €5500-€8000/classe expires. Davide gestisce procurement MePA. MePA listing cutoff stimato 30 maggio 2026 (4 settimane lavoro Davide + Andrea per template + screenshot prodotto). Se manchiamo finestra → revenue Y1 -60%.
+2. **PNRR Voucher 4.0 deadline 30 giugno 2026** (9 settimane). Window vendita scuole con voucher €5500-€8000/classe expires. **Davide MePA listing GIÀ COMPLETATO** (confirmation Andrea iter 17 close 2026-04-28 PM): canale procurement attivo, niente lavoro listing residuo. Andrea + team focus 100% Mistral migration + Tea video + Fiera Trieste. Se manchiamo finestra PNRR → revenue Y1 -60%, MA listing Davide assicura accesso voucher channel.
 
 3. **EU AI Act art. 6 high-risk education entry 2 agosto 2026** (14 settimane). UNLIM è AI in education = high-risk. Mandatory: Fundamental Rights Impact Assessment (FRIA) + Data Protection Impact Assessment (DPIA) + technical documentation art. 11 + transparency obligations art. 13. Stima 80h legal + dev. Se non compliant entro 2/8 → retiro forzato dal mercato EU.
 
@@ -30,13 +36,13 @@ ELAB Tutor è prodotto edutech K-12 STEM completo (software + hardware Arduino N
 2. **Flat Y2 €2290/classe annuo** (recurring, margin 71%, churn risk medio).
 3. **Consortium €1618/classe** (10+ scuole consorziate, margin 64%, deal complexity alto).
 
-**Bundle moat**: Hardware Omaric (filiera Arduino) + Software ELAB + Volumi cartacei + 92 video Tea. 4-way bundle che CampuStore/MyEdu non possono replicare in <12 mesi.
+**Bundle moat (REALTÀ corretta 2026-04-28 PM Andrea confirm)**: Hardware Omaric kit GIÀ PRODUZIONE (filiera Strambino, BOM definito, codici barre, rendering scatole) + Software ELAB Tutor (in sviluppo Andrea) + 3 Volumi cartacei GIÀ SCRITTI DAVIDE (Vol1+Vol2+Vol3 finali stampati, cartella `/VOLUME 3/ELAB - TRES JOLIE/`) + Brand/marketing materials GIÀ READY (logo, foto, volantini, video promozionali, packaging rendering). 4-way bundle PRODUCT-COMPLETE eccetto software in dev. CampuStore/MyEdu non possono replicare in <12 mesi (filiera completa).
 
 **Financial 12mo**: Y1 break-even cash-positive 40 scuole. 100 scuole = inflection point (margin gross 71%, net +3.5%). Worst case 50 scuole = burn-rate sostenibile €18k/mese da risparmio Andrea. Best case 200 scuole = bootstrap to €1.4M revenue Y2.
 
 **Brand voice**: Affidabile / Didattico / Accogliente. Italiano scuola pubblica, mai hype. Numeri verbatim sempre. UNLIM mascotte calorosa non robot. Plurale "Ragazzi" (Principio Zero).
 
-**Top risk**: Gemini retire (P0), MePA window slip (P0), EU AI Act non-compliance (P0), Giovanni non-compete clausola residua Arduino (P1), competitor MyEdu price-war (P2).
+**Top risk** (post Andrea confirm 2026-04-28 PM realtà PRODOTTO): Gemini retire (P0), EU AI Act non-compliance (P0), Giovanni non-compete clausola residua Arduino (P1), competitor MyEdu price-war (P2). MePA window risk REMOVED (Davide listing già attivo). **Volumi/Kit/Brand risks REMOVED** (TRES JOLIE shipped: 3 Volumi Davide scritti completi + Kit Omaric BOM + foto + logo + rendering + volantini + video promozionali tutti pronti). Solo ELAB Tutor software residual dev.
 
 ---
 

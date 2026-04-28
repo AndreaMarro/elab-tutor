@@ -115,7 +115,7 @@ Implicazioni morfiche IMMUTABILI:
 **Differenziatore competitivo 2026+**:
 - LLM coding renderà software facilmente generabile
 - Chiunque può costruire "Arduino tutor" — ma NON può copiare kit Omaric + volumi cartacei + Morfismo coerente
-- ELAB = unico prodotto dove software è "scritto dallo stesso autore dei libri" (anche se Andrea coding, Tea volumi, Omaric kit — il prodotto è UNIFICATO morficamente)
+- ELAB = unico prodotto dove software è "scritto dallo stesso autore dei libri" (Andrea coding, **Davide Fagherazzi volumi cartacei** già scritti completamente, Omaric kit hardware, Tea collaboratrice ruolo specifico TBD — il prodotto è UNIFICATO morficamente)
 
 ## Cosa e' questo progetto
 ELAB e' un tutor educativo per elettronica e Arduino per bambini 8-14 anni.
@@ -172,12 +172,17 @@ Include:
 - **27 Lezioni** raggruppano per concetto come nel libro fisico (src/data/lesson-groups.js)
 - **Riferimenti**: src/data/volume-references.js (92/92 enriched con bookText dai PDF, 1221 righe)
 
-## Tea (collaboratrice)
-- Documenti: `/VOLUME 3/TEA/` (4 documenti del 13/04/2026)
-  - analisi_complessita_esperimenti.pdf — 92 esperimenti analizzati, 4 capstone, MOSFET problematico
-  - riepilogo_correzioni_github.pdf — PR #73 mergiata (chunk error + icone + Scratch)
-  - schema_ux_semplificato.docx — 3 zone, Guida Docente, toolbar 4 comandi
-  - 10_idee_miglioramento.docx — Dashboard, Proietta in Classe, Quaderno, Glossario, etc.
+## Team — ruoli aggiornati 2026-04-28 PM (correzione Andrea)
+- **Davide Fagherazzi** — autore VOLUMI CARTACEI (Vol1+2+3 già scritti completamente) + procurement MePA (listing GIÀ COMPLETATO 2026-04-28)
+- **Andrea Marro** — software dev unico
+- **Giovanni Fagherazzi** — ex Arduino global sales, network commerciale + warm intros scuole
+- **Omaric Elettronica** — kit hardware filiera Strambino
+- **Tea** — collaboratrice (ruolo specifico TBD: design/illustrazioni/video narration?)
+  - Documenti: `/VOLUME 3/TEA/` (4 documenti del 13/04/2026)
+    - analisi_complessita_esperimenti.pdf — 92 esperimenti analizzati, 4 capstone, MOSFET problematico
+    - riepilogo_correzioni_github.pdf — PR #73 mergiata (chunk error + icone + Scratch)
+    - schema_ux_semplificato.docx — 3 zone, Guida Docente, toolbar 4 comandi
+    - 10_idee_miglioramento.docx — Dashboard, Proietta in Classe, Quaderno, Glossario, etc.
 
 ## UNLIM AI (nome corretto, NON Galileo)
 - **RAG**: 549 chunk in `src/data/rag-chunks.json` (volumi + glossario + FAQ + errori + analogie + codice)
