@@ -190,17 +190,53 @@ Cloud API retired student-runtime, retained ONLY teacher-context con consenso GD
 - Pros: dedicato 24/7 unlimited inference, costi fissi, EU data residency
 - Cons: single SPOF (mitigato secondary backup §10.2)
 
-**Option B — RunPod RTX A6000 always-on EU**:
-- GPU: NVIDIA RTX A6000 48GB
-- Mode: always-on (NOT hourly)
-- Cost: ~€530/mese always-on OR €0.79/h on-demand peak
-- Location: EU pod (Frankfurt OR Stockholm)
-- Pros: spin-up flexibility, GPU shortage hedge
-- Cons: more expensive always-on, less control vs dedicated, DPA convenience reduced
+**Option B — OVH Cloud GPU EU (alternativa primaria)**:
+- GPU: NVIDIA A100 80GB OR H100 80GB (OVH Cloud GPU instance)
+- Location: Roubaix FR OR Strasbourg FR (EU GDPR primario)
+- Cost: ~€450-500/mese A100 always-on
+- DPA GDPR: signed OVH GDPR-ready (French Sovereignty Cloud)
+- Pros: French data sovereignty + Schrems II native + EU jurisdiction strong
+- Cons: meno container-friendly Hetzner, supporto IT secondario
 
-**Decision**: Hetzner Option A raccomandato per Sprint T iter 17 (cost + DPA convenience + dedicato 24/7 stability). RunPod fallback if Hetzner GPU unavailable iter 17 procurement window.
+**Option C — Scaleway GPU EU**:
+- GPU: NVIDIA H100 80GB
+- Location: Paris FR OR Amsterdam NL
+- Cost: ~€550/mese H100 always-on
+- DPA GDPR: Scaleway French GDPR-ready
+- Pros: H100 più potente, EU sovereignty
+- Cons: cost più alto
 
-**Andrea ratify queue iter 16 close**: Hetzner vs RunPod (~5 min review §13.1).
+**Option D — IONOS Cloud GPU DE**:
+- GPU: NVIDIA A100 80GB
+- Location: Frankfurt DE OR Berlin DE
+- Cost: ~€400/mese A100 always-on
+- DPA GDPR: IONOS German GDPR-ready (Bundesdatenschutzgesetz)
+- Pros: cost most competitive, German enterprise
+- Cons: maturity GPU offering minore Hetzner
+
+**Option E — RunPod RTX A6000 (EMERGENCY FALLBACK ONLY, NOT primary)**:
+- GPU: NVIDIA RTX A6000 48GB OR RTX 6000 Ada 48GB
+- Mode: on-demand $0.74/h OR always-on €530/mese
+- Location: EU pod (Frankfurt OR Stockholm) — disponibilità non garantita
+- Pros: spin-up rapido, marketplace flessibile dev/test
+- Cons gravi (history ELAB iter 1-5):
+  - "host saturo / no GPU available" failures iter 2-5 (8/32 attempts pod resume FAIL)
+  - Cold start ~18s perceived = scarso UX LIM real-time docente
+  - Container disk 30GB tight (Coqui TTS recovery iter 1 non shipped)
+  - Volume cancellato dopo TERMINATE (iter 5 P3 storia ELAB) = re-download modelli 50GB ogni resume = ops debole
+  - US Delaware Inc. parent company → DPA negoziabile MA non native EU sovereignty
+  - Marketplace dynamic = production reliability instabile (vs dedicated bare-metal)
+- Verdict iter 17+ ELAB: **RunPod NOT primary production**. Solo emergency burst (24-72h max) se Hetzner/OVH/Scaleway/IONOS down.
+- Storia ELAB iter 1-5 documentata: pods `felby5z84fk3ly` + `5ren6xbrprhkl5` entrambi TERMINATED iter 5 P3 Path A. Iter 17+: 0 pods attivi (verified API call 2026-04-28).
+
+**Decision finale §5.1**:
+- **Primary** (raccomandato Sprint T iter 17): **Hetzner Option A** — A100 80GB Falkenstein DE €430/mese, 12-month commit, DPA convenience, EU sovereignty, dedicated 24/7 bare-metal.
+- **Secondary** (fallback se Hetzner GPU shortage iter 17 procurement window): IONOS Option D €400/mese OR OVH Option B €450/mese — entrambi EU GDPR-ready, simile capability.
+- **Tertiary** (HA cluster Sprint T iter 21+ multi-region): secondary GPU OVH Option B €450/mese su region diversa Hetzner per failover automatico.
+- **Emergency burst (24-72h max only)**: RunPod Option E spin-up rapido se ALL EU primary down.
+- **REJECTED come primary**: RunPod (history ELAB iter 1-5 reliability instabile + US Delaware DPA convenience reduced + cost always-on €530 vs €430 Hetzner).
+
+**Andrea ratify queue iter 16-17 close**: Hetzner Option A binary OK per procurement Sprint T iter 17 entrance (~5 min review §13.1). Backup IONOS/OVH Option D/B se Hetzner unavailable.
 
 ### 5.2 LLM chat — Llama 3.3 70B Q5_K_M (Ollama runtime)
 
