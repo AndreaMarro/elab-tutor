@@ -1,11 +1,10 @@
 {
   "iter": 12,
-  "timestamp": "2026-04-28T03:23:17.919Z",
-  "dry_run": true,
+  "timestamp": "2026-04-28T03:30:40.850Z",
+  "dry_run": false,
   "pre_flight": {
     "env": {
       "missingRequired": [
-        "SUPABASE_URL",
         "SUPABASE_ANON_KEY"
       ],
       "missingOptional": [
@@ -14,123 +13,30 @@
       ]
     },
     "baseline": {
-      "ok": true,
       "passed": 0,
-      "skipped": true
+      "tail": "    at JSON.parse (<anonymous>)\n    at Module.getCachedHex \u001b[90m(/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/\u001b[39msrc/components/simulator/utils/compileCache.js:59:24\u001b[90m)\u001b[39m\n    at \u001b[90m/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/\u001b[39mtests/unit/compileCache.test.js:66:12\n    at \u001b[90mfile:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/runner/dist/chunk-hooks.js:155:11\n    at \u001b[90mfile:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/runner/dist/chunk-hooks.js:752:26\n    at \u001b[90mfile:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/runner/dist/chunk-hooks.js:1863:10\u001b[90m)\u001b[39m\n    at runTest \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/runner/dist/chunk-hooks.js:1574:12\u001b[90m)\u001b[39m\n\u001b[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)\u001b[39m\n\nstderr | tests/unit/compileCache.test.js > compileCache — getCachedHex/setCachedHex > handles localStorage full on write\n[WARN] [ELAB Cache] Errore scrittura cache: Error: QuotaExceeded\n    at Object.<anonymous> \u001b[90m(/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/\u001b[39mtests/unit/compileCache.test.js:70:55\u001b[90m)\u001b[39m\n    at Object.mockCall \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/spy/dist/index.js:96:15\u001b[90m)\u001b[39m\n    at Object.spy [as setItem] \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4mtinyspy\u001b[24m/dist/index.js:47:80\u001b[90m)\u001b[39m\n    at Module.setCachedHex \u001b[90m(/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/\u001b[39msrc/components/simulator/utils/compileCache.js:89:18\u001b[90m)\u001b[39m\n    at \u001b[90m/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/\u001b[39mtests/unit/compileCache.test.js:71:18\n    at Proxy.assertThrows \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4mchai\u001b[24m/index.js:2767:5\u001b[90m)\u001b[39m\n    at Proxy.methodWrapper \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4mchai\u001b[24m/index.js:1686:25\u001b[90m)\u001b[39m\n    at Proxy.<anonymous> \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/expect/dist/index.js:1088:12\u001b[90m)\u001b[39m\n    at Proxy.overwritingMethodWrapper \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4mchai\u001b[24m/index.js:1735:33\u001b[90m)\u001b[39m\n    at Proxy.<anonymous> \u001b[90m(file:///Users/andreamarro/VOLUME%203/PRODOTTO/elab-builder/\u001b[39mnode_modules/\u001b[4m@vitest\u001b[24m/expect/dist/index.js:1420:16\u001b[90m)\u001b[39m\n\n",
+      "ok": false,
+      "threshold": 12290
     },
     "services": []
   },
   "suites": {
-    "B1": {
-      "name": "B1 R7 200-prompt PASS rate",
-      "target": "≥87% global + 10/10 cat ≥85%",
-      "measured": "dry-run (schema check only)",
-      "pass": null,
-      "details": {
-        "fixture_used": "r7-fixture.jsonl",
-        "fallback_triggered": false,
-        "fixture_missing": false,
-        "scorer": "scripts/bench/score-unlim-quality.mjs (12-rule)"
-      }
-    },
     "B2": {
       "name": "B2 Hybrid RAG recall@5",
       "target": "recall@5 ≥0.55 (lift +0.165 vs iter 11 0.384)",
-      "measured": "dry-run",
-      "pass": null,
+      "measured": "FAIL exit=1",
+      "pass": false,
       "details": {
-        "fixture": "tests/fixtures/hybrid-gold-30.jsonl",
-        "fixture_present": true,
-        "endpoint": "/functions/v1/unlim-chat?debug_retrieval=true"
-      }
-    },
-    "B3": {
-      "name": "B3 Vision E2E",
-      "target": "p95 <8s + topology ≥80%",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "spec": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/02-vision-flow.spec.js",
-        "spec_present": true
-      }
-    },
-    "B4": {
-      "name": "B4 TTS Isabella WS",
-      "target": "p50 <2s OR ceiling browser fallback 0.85",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "ceiling": 0.85,
-        "runner": "run-tts-isabella-bench.mjs"
-      }
-    },
-    "B5": {
-      "name": "B5 ClawBot composite",
-      "target": "composite success ≥90% + sub-tool p95 <3s",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "runner": "run-clawbot-composite-bench.mjs",
-        "threshold": 0.9
-      }
-    },
-    "B6": {
-      "name": "B6 Cost per session",
-      "target": "<€0.012/session avg + p95 <€0.025",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "runner": "run-cost-bench.mjs",
-        "cap_avg": 0.012,
-        "cap_p95": 0.025
-      }
-    },
-    "B7": {
-      "name": "B7 Fallback gate",
-      "target": "gate accuracy student-runtime 100% + audit log 100%",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "runner": "run-fallback-chain-bench.mjs",
-        "threshold": 1
-      }
-    },
-    "B8": {
-      "name": "B8 Simulator engine integration",
-      "target": "simulator engine integration tests PASS (≥30 if available, else 0+)",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "impl": "STUB iter 12 (vitest filter tests/unit/simulator + tests/integration/simulator)",
-        "todo": "real impl iter 13+: dedicated harness for CircuitSolver/AVRBridge/PlacementEngine"
-      }
-    },
-    "B9": {
-      "name": "B9 Arduino compile flow",
-      "target": "Arduino compile flow tests PASS rate ≥95% (target 92 esperimenti)",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "impl": "STUB iter 12 (vitest filter tests/integration/arduino-compile + arduino-compile.test)",
-        "todo": "real impl iter 13+: 92-esperimento HEX compilation matrix"
-      }
-    },
-    "B10": {
-      "name": "B10 Scratch Blockly compile",
-      "target": "Scratch Blockly compile rate ≥90%",
-      "measured": "dry-run",
-      "pass": null,
-      "details": {
-        "impl": "STUB iter 12 (vitest filter tests/integration/scratch-compile + scratch-compile.test)",
-        "todo": "real impl iter 13+: Blockly XML→AST→C++→HEX matrix"
+        "duration_ms": 66,
+        "threshold": 0.55
       }
     }
   },
   "summary": {
-    "total_suites": 10,
+    "total_suites": 1,
     "pass_count": 0,
-    "fail_count": 0,
-    "skipped_or_stub_count": 10,
+    "fail_count": 1,
+    "skipped_or_stub_count": 0,
     "score_lift_target": 9.65,
     "score_baseline_iter11": 9.3
   }
