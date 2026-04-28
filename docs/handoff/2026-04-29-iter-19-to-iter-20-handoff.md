@@ -142,7 +142,7 @@ Per audit §5 ratify queue 12 unique voci dedup:
 - voce 1+2+3 (modalità) → ADR-025
 - voce 4 (ClawBot consapevolezza) → ADR-024 §5 + ADR-026
 - voce 5 (content safety 10 rules deploy) → ADR-026
-- voce 10 (Tea co-founder formalize) → equity 25% + revenue 15%
+- voce 10 (Tea co-dev formalize) → TBD pending Andrea decision (termini NON specificati)
 - voce 12 (ADR-026 over-cap LOC justify)
 
 **Iter 23 deadline**:

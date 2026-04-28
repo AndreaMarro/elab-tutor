@@ -135,7 +135,7 @@ Per planner A15 ATOM dedup (10 ADDENDUM §6 + 8 PDR-MASTER §7) + 2 NEW from ite
 | 7 | RunPod stessi modelli production target | Y/N task A/B/C results | iter 18 close (DONE pending verify) | ADDENDUM §6.7 |
 | 8 | Vercel env switch compile-proxy | OAuth click | iter 19 (PENDING) | ADDENDUM §6.8 + A13 |
 | 9 | Mistral PAYG signup primary | OAuth click + €500 first month | 31/05 | ADDENDUM §6.9 + A7 |
-| 10 | Tea co-founder formalize | equity 25% + revenue 15% Y2+ | iter 22 | ADDENDUM §6.10 |
+| 10 | Tea co-dev formalize | TBD pending Andrea decision (NON specificare termini ancora) | iter 22 | ADDENDUM §6.10 |
 | **11** | **Harness 2.0 golden fixtures protocol** | **Approve fixture authoring iter 21 (manual seed 5 esp + automated diff capture remaining 87)** | **iter 21** | **NEW iter 19 PHASE 1 (this audit §4 risk #8)** |
 | **12** | **ADR-026 + ADR-027 over-cap LOC justification** | **Approve density (10-rule spec + 4-step plan rationale load-bearing)** | **iter 22 (con ADR-026) + iter 25 (con ADR-027)** | **NEW iter 19 PHASE 1 (this audit §4 risk #2)** |
 
