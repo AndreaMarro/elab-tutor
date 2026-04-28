@@ -56,6 +56,27 @@ export interface DispatchContext {
    * scaffold behaviour (status='todo_sett5'). Opt-in preserves baseline tests.
    */
   use_composite?: boolean;
+  /**
+   * Sprint T iter 19/20: composite halt-on-error mode passed through to
+   * executeComposite. 'strict' (default — preserves iter 6 contract) aborts
+   * on first error; 'continue' gathers full telemetry without halting on
+   * non-timeout failures; 'compensate' reserved for future rollback.
+   */
+  halt_on_error?: 'strict' | 'continue' | 'compensate';
+  /**
+   * Sprint T iter 19/20: optional audit log writer. Receives one record per
+   * composite step; intended target Supabase openclaw_tool_memory. When
+   * omitted, telemetry is still captured in result.meta but not persisted.
+   */
+  audit_writer?: (record: {
+    composite: string;
+    tool_id: string;
+    index: number;
+    status: string;
+    latency_ms: number;
+    error?: string;
+    ts: string;
+  }) => void | Promise<void>;
 }
 
 export interface DispatchResult<T = unknown> {
@@ -195,6 +216,8 @@ export async function dispatch<T = unknown>(
         pz_mode: context.pz_mode,
         validate_pz: context.validate_pz,
         session_id: context.session_id,
+        halt_on_error: context.halt_on_error ?? 'strict',
+        audit_writer: context.audit_writer,
       });
       // Map CompositeResult → DispatchResult (preserves DispatchStatus union).
       // 'cache_hit' is treated as 'ok' from caller's perspective (data is valid).
