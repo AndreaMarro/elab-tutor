@@ -1,0 +1,484 @@
+{
+  "config": {
+    "configFile": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/playwright.harness-real.config.js",
+    "rootDir": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-prod",
+        "name": "chromium-prod",
+        "testDir": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harness-real-2026-04-28\\.spec\\.js$/"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../automa/state/iter-21-harness-real/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "harness-real-2026-04-28.spec.js",
+      "file": "harness-real-2026-04-28.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "iter-21 real harness UNO PER UNO @ https://www.elabtutor.school",
+          "file": "harness-real-2026-04-28.spec.js",
+          "line": 168,
+          "column": 6,
+          "specs": [
+            {
+              "title": "real harness v1-cap10-esp1",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 74313,
+                      "error": {
+                        "message": "Error: svg rendered for v1-cap10-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: svg rendered for v1-cap10-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75",
+                        "location": {
+                          "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                          "column": 75,
+                          "line": 284
+                        },
+                        "snippet": "  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                            "column": 75,
+                            "line": 284
+                          },
+                          "message": "Error: svg rendered for v1-cap10-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-28T19:18:28.746Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-baeae--real-harness-v1-cap10-esp1-chromium-prod/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-baeae--real-harness-v1-cap10-esp1-chromium-prod/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-baeae--real-harness-v1-cap10-esp1-chromium-prod/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-baeae--real-harness-v1-cap10-esp1-chromium-prod/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                        "column": 75,
+                        "line": 284
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "37bacacec16cc3ea0d1a-aa8ad406cc7da995d022",
+              "file": "harness-real-2026-04-28.spec.js",
+              "line": 172,
+              "column": 5
+            },
+            {
+              "title": "real harness v1-cap11-esp1",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 36568,
+                      "error": {
+                        "message": "Error: svg rendered for v1-cap11-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: svg rendered for v1-cap11-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75",
+                        "location": {
+                          "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                          "column": 75,
+                          "line": 284
+                        },
+                        "snippet": "  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                            "column": 75,
+                            "line": 284
+                          },
+                          "message": "Error: svg rendered for v1-cap11-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-28T19:20:42.369Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-bb012--real-harness-v1-cap11-esp1-chromium-prod/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-bb012--real-harness-v1-cap11-esp1-chromium-prod/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-bb012--real-harness-v1-cap11-esp1-chromium-prod/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-bb012--real-harness-v1-cap11-esp1-chromium-prod/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                        "column": 75,
+                        "line": 284
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "37bacacec16cc3ea0d1a-8780a090eae98df2c660",
+              "file": "harness-real-2026-04-28.spec.js",
+              "line": 172,
+              "column": 5
+            },
+            {
+              "title": "real harness v1-cap6-esp1",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 29103,
+                      "error": {
+                        "message": "Error: svg rendered for v1-cap6-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: svg rendered for v1-cap6-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75",
+                        "location": {
+                          "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                          "column": 75,
+                          "line": 284
+                        },
+                        "snippet": "  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                            "column": 75,
+                            "line": 284
+                          },
+                          "message": "Error: svg rendered for v1-cap6-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-28T19:21:55.229Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-5750e-l-real-harness-v1-cap6-esp1-chromium-prod/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-5750e-l-real-harness-v1-cap6-esp1-chromium-prod/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-5750e-l-real-harness-v1-cap6-esp1-chromium-prod/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-5750e-l-real-harness-v1-cap6-esp1-chromium-prod/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                        "column": 75,
+                        "line": 284
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "37bacacec16cc3ea0d1a-a3f80c2153ade34efbf7",
+              "file": "harness-real-2026-04-28.spec.js",
+              "line": 172,
+              "column": 5
+            },
+            {
+              "title": "real harness v2-cap3-esp1",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 21741,
+                      "error": {
+                        "message": "Error: svg rendered for v2-cap3-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: svg rendered for v2-cap3-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75",
+                        "location": {
+                          "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                          "column": 75,
+                          "line": 284
+                        },
+                        "snippet": "  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                            "column": 75,
+                            "line": 284
+                          },
+                          "message": "Error: svg rendered for v2-cap3-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-28T19:22:43.217Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-8e722-l-real-harness-v2-cap3-esp1-chromium-prod/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-8e722-l-real-harness-v2-cap3-esp1-chromium-prod/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-8e722-l-real-harness-v2-cap3-esp1-chromium-prod/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-8e722-l-real-harness-v2-cap3-esp1-chromium-prod/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                        "column": 75,
+                        "line": 284
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "37bacacec16cc3ea0d1a-52bc34e29f49f719f6b2",
+              "file": "harness-real-2026-04-28.spec.js",
+              "line": 172,
+              "column": 5
+            },
+            {
+              "title": "real harness v3-cap5-esp1",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 21161,
+                      "error": {
+                        "message": "Error: svg rendered for v3-cap5-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: svg rendered for v3-cap5-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75",
+                        "location": {
+                          "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                          "column": 75,
+                          "line": 284
+                        },
+                        "snippet": "  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                            "column": 75,
+                            "line": 284
+                          },
+                          "message": "Error: svg rendered for v3-cap5-esp1\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  282 |       expect.soft(result.pageErrors.length, 'no pageerror').toBe(0);\n  283 |       // Hard: at least one SVG must render (otherwise the simulator clearly failed to mount)\n> 284 |       expect(result.steps.render?.svg_count, `svg rendered for ${lp.id}`).toBeGreaterThan(0);\n      |                                                                           ^\n  285 |     });\n  286 |   }\n  287 | });\n    at /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js:284:75"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-28T19:23:10.840Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-87350-l-real-harness-v3-cap5-esp1-chromium-prod/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-87350-l-real-harness-v3-cap5-esp1-chromium-prod/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-87350-l-real-harness-v3-cap5-esp1-chromium-prod/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results/harness-real-2026-04-28-it-87350-l-real-harness-v3-cap5-esp1-chromium-prod/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/harness-real-2026-04-28.spec.js",
+                        "column": 75,
+                        "line": 284
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "37bacacec16cc3ea0d1a-c92360d742f70402bfc1",
+              "file": "harness-real-2026-04-28.spec.js",
+              "line": 172,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-28T19:17:19.612Z",
+    "duration": 375681.195,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}
