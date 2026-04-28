@@ -254,6 +254,8 @@ serve(async (req: Request) => {
               id: cr.id ?? null,
               score: rrf !== null ? rrf : sim,
               source: cr.source ?? null,
+              // Iter 13 U3: corpus tag — 'rag' (volumi) | 'wiki' (concept).
+              corpus: cr.corpus ?? null,
               chapter: cr.chapter ?? null,
               page: cr.page ?? null,
               figure_id: cr.figure_id ?? null,

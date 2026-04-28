@@ -538,6 +538,10 @@ export interface HybridChunk {
   chapter: number | null;
   page: number | null;
   figure_id: string | null;
+  /** Iter 13 U1: section_title surfaced from rag_chunks schema (was NULL pre-fix). */
+  section_title: string | null;
+  /** Iter 13 U3: explicit corpus tag — 'rag' (volumi) | 'wiki' (concept) | 'mixed'. */
+  corpus: 'rag' | 'wiki' | 'mixed';
   rrf_score: number;
   bm25_rank: number | null;
   dense_rank: number | null;
@@ -557,6 +561,15 @@ export interface HybridRetrieveOptions {
   candidatePool?: number;
   /** Return raw debug info (per-retriever rankings). */
   debug?: boolean;
+  /**
+   * Iter 13 U3: Wiki LLM Hybrid fusion mode.
+   * When true: run RAG (volumi) retrieval AND Wiki retrieval in parallel as
+   * separate corpora, then RRF-fuse the 4 ranked lists (rag-bm25, rag-dense,
+   * wiki-bm25, wiki-dense) at k=60. Prevents the larger volumi corpus from
+   * starving the 100-chunk wiki corpus during ranking.
+   * Default false (preserves iter 12 single-corpus behavior).
+   */
+  wikiFusion?: boolean;
 }
 
 /**
@@ -571,7 +584,7 @@ async function bm25Search(
   limit: number,
   filterSource?: string,
   filterChapter?: number,
-): Promise<Array<{ id: string; content: string; content_raw: string; source: string; chapter: number | null; page: number | null; figure_id: string | null; rank: number }>> {
+): Promise<Array<{ id: string; content: string; content_raw: string; source: string; chapter: number | null; page: number | null; figure_id: string | null; section_title: string | null; rank: number }>> {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return [];
 
   // Use search_rag_hybrid RPC if available (provides BM25+dense fused), but
@@ -598,8 +611,9 @@ async function bm25Search(
   // requires ALL match = 0 results when "uguale" not in chunk. Switch to wfts (websearch_to_tsquery)
   // which handles partial matches better, OR build explicit OR tsquery via fts.
   // Strategy: try wfts first; if 0 results → fallback fts with OR-joined tokens.
+  // Iter 13 U1 P0 fix: include section_title in SELECT (was missing → NULL in debug_retrieval).
   let url = `${SUPABASE_URL}/rest/v1/rag_chunks`
-    + `?select=id,content,content_raw,source,chapter,page,figure_id`
+    + `?select=id,content,content_raw,source,chapter,page,figure_id,section_title`
     + `&content_fts=wfts(italian).${safeQuery}`
     + `&limit=${limit}`;
   if (filterSource) url += `&source=eq.${encodeURIComponent(filterSource)}`;
@@ -628,6 +642,8 @@ async function bm25Search(
       chapter: typeof row.chapter === 'number' ? row.chapter : null,
       page: typeof row.page === 'number' ? row.page : null,
       figure_id: row.figure_id ? String(row.figure_id) : null,
+      // Iter 13 U1: section_title surfaced from row (was missing → NULL).
+      section_title: row.section_title ? String(row.section_title) : null,
       rank: idx + 1,
     }));
 
@@ -640,8 +656,9 @@ async function bm25Search(
       const tokens = cleanedQuery.split(/\s+/).filter(t => t.length >= 2);
       if (tokens.length >= 2) {
         const orQuery = encodeURIComponent(tokens.join(' | '));
+        // Iter 13 U1 P0 fix: include section_title in fallback SELECT.
         const fallbackUrl = `${SUPABASE_URL}/rest/v1/rag_chunks`
-          + `?select=id,content,content_raw,source,chapter,page,figure_id`
+          + `?select=id,content,content_raw,source,chapter,page,figure_id,section_title`
           + `&content_fts=fts(italian).${orQuery}`
           + `&limit=${limit}`
           + (filterSource ? `&source=eq.${encodeURIComponent(filterSource)}` : '')
@@ -669,6 +686,8 @@ async function bm25Search(
               chapter: typeof row.chapter === 'number' ? row.chapter : null,
               page: typeof row.page === 'number' ? row.page : null,
               figure_id: row.figure_id ? String(row.figure_id) : null,
+              // Iter 13 U1: section_title surfaced (fallback path).
+              section_title: row.section_title ? String(row.section_title) : null,
               rank: idx + 1,
             }));
           }
@@ -696,7 +715,7 @@ async function denseSearch(
   limit: number,
   filterSource?: string,
   filterChapter?: number,
-): Promise<Array<{ id: string; content: string; content_raw: string; source: string; chapter: number | null; page: number | null; figure_id: string | null; rank: number; similarity: number }>> {
+): Promise<Array<{ id: string; content: string; content_raw: string; source: string; chapter: number | null; page: number | null; figure_id: string | null; section_title: string | null; rank: number; similarity: number }>> {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return [];
 
   const embedding = await embedQueryVoyage(query);
@@ -739,6 +758,12 @@ async function denseSearch(
         chapter: typeof row.chapter === 'number' ? row.chapter : null,
         page: typeof row.page === 'number' ? row.page : null,
         figure_id: row.figure_id ? String(row.figure_id) : null,
+        // Iter 13 U1: section_title surfaced — relies on RPC RETURNS TABLE
+        // including section_title column. Pre-iter-13 RPC schema does NOT include
+        // it (migration 20260426160000 RETURNS TABLE list lacks section_title);
+        // for now we fall through to null. Iter 14 migration scope: extend
+        // search_rag_dense_only + search_rag_hybrid RPCs to RETURN section_title.
+        section_title: row.section_title ? String(row.section_title) : null,
         rank: idx + 1,
         similarity: typeof row.similarity === 'number' ? row.similarity : 0,
       }));
@@ -807,6 +832,29 @@ function rrfFuse(
 }
 
 /**
+ * Iter 13 U2+U3: Multi-list RRF fusion. Generalizes rrfFuse to N ranked lists
+ * (e.g. rag-bm25, rag-dense, wiki-bm25, wiki-dense). Each list contributes
+ * 1/(k+rank) to a chunk's combined score. Required for Wiki LLM Hybrid fusion
+ * (U3) where 4 independent rankings must merge into one ordering.
+ *
+ * @param lists ranked lists each with `id`+`rank` (rank is 1-indexed best-first)
+ * @param k     RRF dampening constant (default upstream caller passes 60)
+ */
+export function rrfFuseMulti(
+  lists: Array<Array<{ id: string; rank: number }>>,
+  k: number,
+): Map<string, number> {
+  const fused = new Map<string, number>();
+  for (const list of lists) {
+    for (const r of list) {
+      const prev = fused.get(r.id) ?? 0;
+      fused.set(r.id, prev + 1 / (k + r.rank));
+    }
+  }
+  return fused;
+}
+
+/**
  * Voyage rerank-2.5 cross-encoder rerank. Optional, gated by RAG_RERANK_ENABLED.
  * Slices candidates to top-N via reranker scores. Latency ~200-400ms.
  */
@@ -868,17 +916,97 @@ export async function hybridRetrieve(
   const k = opts.rrfK ?? 60;
   const candidatePool = opts.candidatePool ?? 50;
   const useRerank = opts.rerank ?? ENABLE_RERANKER;
+  // Iter 13 U3 default ON: env opt-out via RAG_WIKI_FUSION_DISABLED=true.
+  const envWikiOff = (Deno.env.get('RAG_WIKI_FUSION_DISABLED') || 'false').toLowerCase() === 'true';
+  const useWikiFusion = opts.wikiFusion ?? !envWikiOff;
 
-  // Run BM25 + dense in parallel
+  // Iter 13 U3: Wiki LLM Hybrid fusion — run RAG + Wiki retrievals in parallel
+  // as 4 independent ranked lists (rag-bm25, rag-dense, wiki-bm25, wiki-dense),
+  // then RRF k=60 fuse all 4. Avoids 1881-vs-100 corpus imbalance starving wiki.
+  // Skipped when caller already filters by source (filterSource override wins).
+  const wikiFusionActive = useWikiFusion && !opts.filterSource;
+
+  // Run BM25 + dense in parallel — single corpus path (default fallback).
   const [bm25Raw, denseRaw] = await Promise.all([
     bm25Search(query, candidatePool, opts.filterSource, opts.filterChapter),
     denseSearch(query, candidatePool, opts.filterSource, opts.filterChapter),
   ]);
 
-  if (bm25Raw.length === 0 && denseRaw.length === 0) return [];
+  // U3 wiki fusion: also fetch wiki-only ranked lists in parallel for RRF
+  // multi-list fusion. Reserve ~20% candidatePool for wiki to keep latency flat.
+  let wikiBm25Raw: typeof bm25Raw = [];
+  let wikiDenseRaw: typeof denseRaw = [];
+  if (wikiFusionActive) {
+    const wikiPool = Math.max(10, Math.floor(candidatePool * 0.4));
+    try {
+      const [wb, wd] = await Promise.all([
+        bm25Search(query, wikiPool, 'wiki', opts.filterChapter),
+        denseSearch(query, wikiPool, 'wiki', opts.filterChapter),
+      ]);
+      wikiBm25Raw = wb;
+      wikiDenseRaw = wd;
+    } catch (_err) {
+      // Wiki fetch failure non-fatal — proceed with rag-only fusion.
+      wikiBm25Raw = [];
+      wikiDenseRaw = [];
+    }
+  }
+
+  if (
+    bm25Raw.length === 0 && denseRaw.length === 0
+    && wikiBm25Raw.length === 0 && wikiDenseRaw.length === 0
+  ) return [];
 
   // Index by id for content lookup
+  // Iter 13 U3: classify corpus from `source` field — wiki vs rag (volumi).
+  const classifyCorpus = (src: string): 'rag' | 'wiki' => {
+    const s = (src || '').toLowerCase();
+    return s === 'wiki' ? 'wiki' : 'rag';
+  };
   const byId = new Map<string, HybridChunk>();
+  // Iter 13 U3: ingest wiki-corpus rows into same byId map. Same shape as RAG;
+  // RRF dedupes by id. Done BEFORE rag rows so rag rows can amend missing
+  // section_title / similarity if same id appears in both lists (rare but safe).
+  for (const r of wikiBm25Raw) {
+    byId.set(r.id, {
+      id: r.id,
+      content: r.content,
+      content_raw: r.content_raw,
+      source: r.source,
+      chapter: r.chapter,
+      page: r.page,
+      figure_id: r.figure_id,
+      section_title: r.section_title,
+      corpus: 'wiki',
+      rrf_score: 0,
+      bm25_rank: r.rank,
+      dense_rank: null,
+    });
+  }
+  for (const r of wikiDenseRaw) {
+    if (byId.has(r.id)) {
+      const cur = byId.get(r.id)!;
+      cur.dense_rank = r.rank;
+      cur.similarity = r.similarity;
+      if (cur.section_title === null && r.section_title) cur.section_title = r.section_title;
+    } else {
+      byId.set(r.id, {
+        id: r.id,
+        content: r.content,
+        content_raw: r.content_raw,
+        source: r.source,
+        chapter: r.chapter,
+        page: r.page,
+        figure_id: r.figure_id,
+        section_title: r.section_title,
+        corpus: 'wiki',
+        rrf_score: 0,
+        bm25_rank: null,
+        dense_rank: r.rank,
+        similarity: r.similarity,
+      });
+    }
+  }
   for (const r of bm25Raw) {
     byId.set(r.id, {
       id: r.id,
@@ -888,6 +1016,8 @@ export async function hybridRetrieve(
       chapter: r.chapter,
       page: r.page,
       figure_id: r.figure_id,
+      section_title: r.section_title,
+      corpus: classifyCorpus(r.source),
       rrf_score: 0,
       bm25_rank: r.rank,
       dense_rank: null,
@@ -898,6 +1028,8 @@ export async function hybridRetrieve(
       const cur = byId.get(r.id)!;
       cur.dense_rank = r.rank;
       cur.similarity = r.similarity;
+      // Prefer non-null section_title from any source path
+      if (cur.section_title === null && r.section_title) cur.section_title = r.section_title;
     } else {
       byId.set(r.id, {
         id: r.id,
@@ -907,6 +1039,8 @@ export async function hybridRetrieve(
         chapter: r.chapter,
         page: r.page,
         figure_id: r.figure_id,
+        section_title: r.section_title,
+        corpus: classifyCorpus(r.source),
         rrf_score: 0,
         bm25_rank: null,
         dense_rank: r.rank,
@@ -915,19 +1049,35 @@ export async function hybridRetrieve(
     }
   }
 
-  // Apply RRF fusion
-  const fused = rrfFuse(
-    bm25Raw.map(r => ({ id: r.id, rank: r.rank })),
-    denseRaw.map(r => ({ id: r.id, rank: r.rank })),
-    k,
-  );
-
-  for (const [id, scoring] of fused.entries()) {
-    const chunk = byId.get(id);
-    if (chunk) {
-      chunk.rrf_score = scoring.rrf_score;
-      chunk.bm25_rank = scoring.bm25_rank;
-      chunk.dense_rank = scoring.dense_rank;
+  // Iter 13 U2+U3: RRF k=60 fusion. When wikiFusionActive use multi-list path
+  // (4 lists: rag-bm25, rag-dense, wiki-bm25, wiki-dense). Else legacy 2-list.
+  if (wikiFusionActive) {
+    const multi = rrfFuseMulti(
+      [
+        bm25Raw.map(r => ({ id: r.id, rank: r.rank })),
+        denseRaw.map(r => ({ id: r.id, rank: r.rank })),
+        wikiBm25Raw.map(r => ({ id: r.id, rank: r.rank })),
+        wikiDenseRaw.map(r => ({ id: r.id, rank: r.rank })),
+      ],
+      k,
+    );
+    for (const [id, score] of multi.entries()) {
+      const chunk = byId.get(id);
+      if (chunk) chunk.rrf_score = score;
+    }
+  } else {
+    const fused = rrfFuse(
+      bm25Raw.map(r => ({ id: r.id, rank: r.rank })),
+      denseRaw.map(r => ({ id: r.id, rank: r.rank })),
+      k,
+    );
+    for (const [id, scoring] of fused.entries()) {
+      const chunk = byId.get(id);
+      if (chunk) {
+        chunk.rrf_score = scoring.rrf_score;
+        chunk.bm25_rank = scoring.bm25_rank;
+        chunk.dense_rank = scoring.dense_rank;
+      }
     }
   }
 

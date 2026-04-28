@@ -1,3 +1,9 @@
+/* SessionReportComic — Sprint S iter 13 atom F2 (fumetto-opus)
+ * Brand palette: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D
+ * Typography: Oswald (titoli) + Open Sans (body) + Fira Code (Vol/pag citation)
+ * Print A4 portrait optimized.
+ */
+
 .container {
   padding: 1.5rem;
   max-width: 1200px;
@@ -13,47 +19,65 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #1E4D8C;
+  border-bottom: 3px solid #1E4D8C;
   flex-wrap: wrap;
 }
 
-.meta {
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   flex: 1;
   min-width: 240px;
 }
 
+.titleIcon {
+  color: #1E4D8C;
+  flex-shrink: 0;
+}
+
+.meta {
+  flex: 1;
+  min-width: 0;
+}
+
 .title {
   font-family: 'Oswald', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.625rem;
   color: #1E4D8C;
   margin: 0 0 0.25rem;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
 }
 
 .subtitle {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: #475569;
   margin: 0;
 }
 
 .alias {
   font-weight: 600;
+  color: #1E4D8C;
 }
 
 .date {
-  margin-left: 0.25rem;
+  font-weight: 500;
 }
 
 .exportBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.625rem 1.25rem;
   min-height: 44px;
   border: 0;
   border-radius: 8px;
   background: #4A7A25;
   color: #fff;
-  font-family: inherit;
-  font-size: 0.9375rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
@@ -68,7 +92,7 @@
 }
 
 .exportBtn:focus-visible {
-  outline: 2px solid #E8941C;
+  outline: 3px solid #E8941C;
   outline-offset: 2px;
 }
 
@@ -98,7 +122,8 @@
   background: #fff;
   display: flex;
   flex-direction: column;
-  min-height: 200px;
+  min-height: 220px;
+  box-shadow: 0 2px 6px rgba(30, 77, 140, 0.08);
 }
 
 .photo {
@@ -112,8 +137,10 @@
 .photoPlaceholder {
   aspect-ratio: 4 / 3;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   background: linear-gradient(135deg, #1E4D8C 0%, #4A7A25 100%);
   color: #fff;
   font-family: 'Oswald', sans-serif;
@@ -122,24 +149,56 @@
   padding: 1rem;
 }
 
+.placeholderIcon {
+  color: #fff;
+  opacity: 0.85;
+}
+
+.placeholderText {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .caption {
-  padding: 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.4;
+  padding: 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.45;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .captionTitle {
   display: block;
   color: #1E4D8C;
-  margin-bottom: 0.25rem;
-  font-size: 0.9375rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.volumeRef {
+  display: inline-block;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  font-style: normal;
+  color: #E8941C;
+  font-weight: 600;
+  background: rgba(232, 148, 28, 0.08);
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(232, 148, 28, 0.3);
+  align-self: flex-start;
 }
 
 .narration {
   margin: 0;
   color: #334155;
-  line-height: 1.45;
+  line-height: 1.5;
+  font-size: 0.9375rem;
+/* © Andrea Marro — 28/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 }
 
 .placeholder {
@@ -151,6 +210,7 @@
   color: #94a3b8;
   font-style: italic;
   flex: 1;
+  font-size: 0.9375rem;
 }
 
 .footer {
@@ -158,25 +218,53 @@
   text-align: center;
   font-family: 'Oswald', sans-serif;
   color: #E8941C;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 600;
+  border-top: 2px solid rgba(232, 148, 28, 0.3);
+  padding-top: 1rem;
 }
 
 .footerText {
   margin: 0;
+  letter-spacing: 0.01em;
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm;
+  }
+
   .exportBtn {
     display: none;
   }
 
   .container {
     padding: 0;
+    max-width: none;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5cm;
   }
 
   .vignette {
     page-break-inside: avoid;
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  .header {
+    border-bottom-width: 2px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .footer {
+    page-break-before: avoid;
   }
 }
 

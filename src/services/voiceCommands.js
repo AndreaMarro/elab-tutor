@@ -327,7 +327,7 @@ const VOICE_COMMANDS = [
   // ── Principio Zero: Report ──
   {
     action: 'createReport',
-    patterns: ['crea il report', 'crea report', 'mostra report', 'genera report', 'report fumetto', 'apri report'],
+    patterns: ['crea il report', 'crea report', 'mostra report', 'genera report', 'report fumetto', 'apri report', 'leggi rapporto', 'leggi il rapporto', 'mostra fumetto', 'apri fumetto', 'mostra il fumetto'],
     execute: () => {
       window.dispatchEvent(new CustomEvent('elab-voice-command', {
         detail: { action: 'createReport' },

@@ -335,7 +335,7 @@ function HeaderPinPad({ pin, stateValue, boardId }) {
   );
 }
 
-function WingPinPad({ pin, stateValue, boardId }) {
+function WingPinPad({ pin, stateValue, boardId, textCounterRot = 270 }) {
   const isHigh = stateValue === 'HIGH' || stateValue === 1 || stateValue === true;
   const isActive = stateValue !== undefined && stateValue !== null;
 
@@ -362,7 +362,7 @@ function WingPinPad({ pin, stateValue, boardId }) {
         strokeWidth="0.2"
       />
       {isHigh && <circle cx={pin.x} cy={pin.y} r="3.5" fill="#F3C65C" opacity="0.25" />}
-      {/* Label rotated -90° above pin (ORDINE 2) */}
+      {/* Label rotated -90° above pin (ORDINE 2) — iter 13 R1: counter-rotate when parent rotated */}
       <text
         x={pin.x}
         y={pin.y - 5}
@@ -372,7 +372,7 @@ function WingPinPad({ pin, stateValue, boardId }) {
         fill={SILK_DARK}
         opacity="0.9"
         fontWeight="600"
-        transform={`rotate(-90, ${pin.x}, ${pin.y - 5})`}
+        transform={`rotate(${textCounterRot}, ${pin.x}, ${pin.y - 5})`}
       >
         {pin.label}
       </text>
@@ -577,7 +577,7 @@ function NanoModule({ leds, running, onReset, boardId }) {
 
 // ─── Sub-component: Wing breakout connector (ORDINE 2 — on upper arm) ─────
 
-function WingConnector({ wingPins, pinStateFor, boardId }) {
+function WingConnector({ wingPins, pinStateFor, boardId, textCounterRot = 270 }) {
   const midX = WING_PIN_START_X + (WING_PINS.length - 1) * WING_PIN_PITCH / 2;
 
   return (
@@ -589,7 +589,7 @@ function WingConnector({ wingPins, pinStateFor, boardId }) {
         BREAKOUT PINS
       </text>
       {wingPins.map((pin) => (
-        <WingPinPad key={pin.id} pin={pin} stateValue={pinStateFor(pin)} boardId={boardId} />
+        <WingPinPad key={pin.id} pin={pin} stateValue={pinStateFor(pin)} boardId={boardId} textCounterRot={textCounterRot} />
       ))}
     </g>
   );
@@ -636,27 +636,27 @@ function PowerSection() {
 
 // ─── Sub-component: Board silkscreen & PCB details ────────────────────────
 
-function BoardSilkscreen() {
+function BoardSilkscreen({ textCounterRot = 270 }) {
   return (
     <g>
-      {/* ORDINE 4 — ELAB branding on semicircle, rotated -90° */}
+      {/* ORDINE 4 — ELAB branding on semicircle — iter 13 R1: counter-rotate when parent rotated */}
       {/* Positioned at x=8 to stay on exposed PCB (socket starts at x=14) */}
       <text
         x={8} y={BOARD_H / 2}
         textAnchor="middle" dominantBaseline="central"
         fontSize="12" fill={PCB_BORDER} fontFamily="Oswald, Arial, sans-serif"
         fontWeight="800" letterSpacing="1.5"
-        transform={`rotate(-90, 8, ${BOARD_H / 2})`}
+        transform={`rotate(${textCounterRot}, 8, ${BOARD_H / 2})`}
       >
         ELAB
       </text>
-      {/* "Electronics Laboratory" — rotated -90° on far-left semicircle */}
+      {/* "Electronics Laboratory" — iter 13 R1: counter-rotate when parent rotated */}
       <text
         x={3} y={BOARD_H / 2}
         textAnchor="middle" dominantBaseline="central"
         fontSize="4" fill={SILK_GRAY} fontFamily="Fira Code, monospace"
         fontWeight="400"
-        transform={`rotate(-90, 3, ${BOARD_H / 2})`}
+        transform={`rotate(${textCounterRot}, 3, ${BOARD_H / 2})`}
       >
         Electronics Laboratory
       </text>
@@ -794,12 +794,34 @@ function TabPads({ boardId }) {
 
 // ─── Main component ──────────────────────────────────────────────────────
 
-const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }) => {
+/**
+ * iter 13 R1: counter-rotate text labels when parent component rotates.
+ * Pin labels are hardcoded `rotate(-90, ...)` so when parent rotates 90/180/270
+ * the text becomes upside-down or sideways. Counter-rotate computes the text
+ * delta angle so absolute screen orientation stays readable.
+ *
+ * @param {number} parentRot — parent rotation in degrees (0/90/180/270)
+ * @returns {number} text counter-rotation degrees
+ */
+function computeCounterRotation(parentRot) {
+  const p = ((Number(parentRot) || 0) % 360 + 360) % 360;
+  // Original text angle is -90 (pin labels) — we want absolute screen angle = -90
+  // text_absolute = parent_rot + text_local => text_local = -90 - parent_rot
+  // Snap to nearest 90 to avoid float precision issues
+  const target = -90 - p;
+  // Normalize 0..359
+  return ((target % 360) + 360) % 360;
+}
+
+const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id, parentRotation = 0 }) => {
   const { running = false, pinStates = {}, leds = {} } = state;
 
   const topPins = useMemo(() => computePinRow(TOP_PINS, 'top'), []);
   const bottomPins = useMemo(() => computePinRow(BOTTOM_PINS, 'bottom'), []);
   const wingPins = useMemo(() => computeWingPinPositions(), []);
+
+  // iter 13 R1: parentRotation prop for text counter-rotate (pin labels + ELAB branding)
+  const textCounterRot = computeCounterRotation(parentRotation);
 
   const pinStateFor = (pin) => {
     if (pinStates[pin.id] !== undefined) return pinStates[pin.id];
@@ -846,14 +868,14 @@ const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract
           <HeaderPinPad key={pin.id} pin={pin} stateValue={pinStateFor(pin)} boardId={id} />
         ))}
 
-        {/* Wing breakout connector (ORDINE 2 — on upper arm) */}
-        <WingConnector wingPins={wingPins} pinStateFor={pinStateFor} boardId={id} />
+        {/* Wing breakout connector (ORDINE 2 — on upper arm) — iter 13 R1 textCounterRot threaded */}
+        <WingConnector wingPins={wingPins} pinStateFor={pinStateFor} boardId={id} textCounterRot={textCounterRot} />
 
         {/* VIN morsettiera (ORDINE 5 — far left of arm) */}
         <PowerSection />
 
-        {/* PCB silkscreen & details (ORDINE 4 — branding) */}
-        <BoardSilkscreen />
+        {/* PCB silkscreen & details (ORDINE 4 — branding) — iter 13 R1 textCounterRot threaded */}
+        <BoardSilkscreen textCounterRot={textCounterRot} />
 
         {/* Power LED (ORDINE 3 — blue with glow) */}
         <PowerLed on={leds.power || running} />
