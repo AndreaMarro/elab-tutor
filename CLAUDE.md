@@ -173,16 +173,17 @@ Include:
 - **Riferimenti**: src/data/volume-references.js (92/92 enriched con bookText dai PDF, 1221 righe)
 
 ## Team — ruoli aggiornati 2026-04-28 PM (correzione Andrea)
-- **Davide Fagherazzi** — autore VOLUMI CARTACEI (Vol1+2+3 già scritti completamente) + procurement MePA (listing GIÀ COMPLETATO 2026-04-28)
-- **Andrea Marro** — software dev unico
-- **Giovanni Fagherazzi** — ex Arduino global sales, network commerciale + warm intros scuole
-- **Omaric Elettronica** — kit hardware filiera Strambino
-- **Tea** — collaboratrice (ruolo specifico TBD: design/illustrazioni/video narration?)
+- **Andrea Marro** — founder + software dev primario
+- **Tea** — aiutante/socia/amica + co-dev + tester + creativa (USA CLAUDE CODE come Andrea, dev parallelo + QA + UX/idee creative + UAT)
   - Documenti: `/VOLUME 3/TEA/` (4 documenti del 13/04/2026)
     - analisi_complessita_esperimenti.pdf — 92 esperimenti analizzati, 4 capstone, MOSFET problematico
     - riepilogo_correzioni_github.pdf — PR #73 mergiata (chunk error + icone + Scratch)
     - schema_ux_semplificato.docx — 3 zone, Guida Docente, toolbar 4 comandi
     - 10_idee_miglioramento.docx — Dashboard, Proietta in Classe, Quaderno, Glossario, etc.
+  - Capabilities: coding contributor + test E2E/UAT + idee creative UX + design feedback
+- **Davide Fagherazzi** — autore VOLUMI CARTACEI (Vol1+2+3 già scritti completi) + procurement MePA (listing GIÀ COMPLETATO 2026-04-28)
+- **Giovanni Fagherazzi** — ex Arduino global sales, network commerciale + warm intros scuole
+- **Omaric Elettronica** — kit hardware filiera Strambino
 
 ## UNLIM AI (nome corretto, NON Galileo)
 - **RAG**: 549 chunk in `src/data/rag-chunks.json` (volumi + glossario + FAQ + errori + analogie + codice)

@@ -14,7 +14,7 @@ ELAB Tutor è prodotto edutech K-12 STEM completo. **REALTÀ PRODOTTO (Andrea co
 - **Kit hardware Arduino Nano R4 + componenti** = GIÀ ESISTENTE Omaric Strambino (filiera completa, BOM, codici barre, rendering scatole packaging — `/VOLUME 3/ELAB - TRES JOLIE/`)
 - **3 Volumi cartacei** Vol1+Vol2+Vol3 = GIÀ SCRITTI COMPLETI Davide Fagherazzi (no residual writing)
 - **Brand/marketing materials** = GIÀ READY (logo, foto, volantino, video promozionali, packaging — TRES JOLIE)
-- **Software ELAB Tutor** = IN SVILUPPO (Andrea unico dev)
+- **Software ELAB Tutor** = IN SVILUPPO (Andrea founder + Tea co-dev/tester/creativa via Claude Code parallelo)
 - **92 video lezioni didattiche** = FUTURE (post-MVP, NON pre-Fiera, optional Premium tier €3,490 quando disponibili — owner+timeline TBD)
 Target scuole pubbliche italiane PNRR 4.0. Bundle base SHIPPABLE NOW (kit+volumi+software+brand), Premium tier video FUTURE addition. Score onesto piattaforma 9.55/10 su test interni S-close (1442 test passing, 8 tabelle Supabase live, 1881 chunk RAG + embeddings, 27 Lezioni replicate VERBATIM dai volumi cartacei). UNLIM tutor AI funziona in produzione (5 Edge Functions Supabase, routing Gemini 70/25/5, 549 chunk indicizzati al 14 Apr).
 
