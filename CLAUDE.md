@@ -1016,4 +1016,21 @@ Box subtotal 7.20/10 + bonus cumulative 2.10 = **9.30/10 ONESTO Phase 1 close** 
 - `docs/adrs/ADR-019-*.md` 320 + `ADR-020-*.md` 232 + `ADR-021-*.md` 261 = 813 LOC
 - 12 ATOM-S12 deliverables filesystem (audit §2 delivery matrix)
 
+## Sprint T iter 19 PHASE 1 close (2026-04-28 PM)
+
+- 4 agents PHASE 1 PASS: planner-opus (16 ATOMs PDR-ITER-19-ATOMS) + architect-opus (ADR-025 modalità 4-simplification 357 LOC + ADR-026 content-safety-guard runtime 536 LOC + ADR-027 volumi narrative refactor schema 562 LOC = 1455 LOC) + gen-app-opus (content-safety-guard.ts 306 LOC + onniscenza-bridge.ts 254 LOC STUB + composite-handler.ts EXTEND 492→634 LOC + harness-2.0/runner.mjs 303 LOC = 1497 LOC) + gen-test-opus (harness-2.0-92-esperimenti.test.js 348 LOC + clawbot-l2-gold-set-v4 30 queries Italian + content-safety-guard-regression.test.js 596 LOC = 1410 LOC).
+- LOC delta PHASE 1: ~4661 NEW.
+- composite-handler 10/10 vitest preserved (ZERO regression).
+- harness 2.0 stub-mode 87/87 PASS (5-7 lesson-paths gap regex strict, golden fixtures dir empty iter 21+).
+- content-safety-guard regression 68/68 PASS + harness integration 8/8 PASS = 76 NEW vitest PASS.
+- ADR-025 modalità 4 simplification PROPOSED — Andrea ratify voci 1+2+3 deadline iter 22.
+- ADR-026 content safety guard 10 rules runtime PROPOSED — deploy iter 20 P0.3 + Andrea ratify voce 5 deadline iter 22.
+- ADR-027 Volumi narrative refactor schema PROPOSED — Davide co-author + Andrea ratify voce 6 deadline iter 25.
+- 8 Andrea mandates iter 18 PM ADDENDUM compliance: 4/8 PASS spec + 3/8 PARTIAL + 1/8 deferred-impl. Mandate 8 (NO inflation auto-score >7 senza Opus indipendente — G45) explicitly enforced this iter.
+- Honest score iter 19 PHASE 1 close: **8.7-8.8/10** ONESTO (G45 anti-inflation cap). PHASE 3 PROJECTION 8.8-9.0/10 conditional harness EXECUTE + 3 ADR ratify + content-safety deploy.
+- PHASE 3 pending orchestrator: harness 2.0 EXECUTE 87/94 + commit (NO push main, NO --no-verify) + Mac Mini D1-D8 trigger via Tailscale IP fallback (.local mDNS unreachable).
+- Pattern S 4-agent OPUS race-cond fix VALIDATED 6× consecutive (iter 5 P1+P2 + iter 6 P1 + iter 8 r2 + iter 11 + iter 12 r2 + **iter 19**).
+- Andrea ratify queue updated 12 voci dedup (10 ADDENDUM §6 + 2 NEW iter 19 PHASE 1: harness golden fixtures protocol + ADR-026/027 over-cap LOC justification).
+- Vitest baseline 12290 (file `automa/baseline-tests.txt` reads 12290; PHASE 3 orchestrator MUST re-run + update post test discovery, iter 18 doc claim 12718 unsync flagged).
+- See: `docs/audits/iter-19-PHASE-1-audit-2026-04-29.md` + `docs/handoff/2026-04-29-iter-19-to-iter-20-handoff.md` + `docs/pdr/2026-04-29-sprint-T-iter-18+/PDR-ITER-19-ATOMS.md` + 3 NEW ADR-025/026/027.
 

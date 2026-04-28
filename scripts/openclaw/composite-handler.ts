@@ -86,7 +86,35 @@ export interface CompositeStepResult {
   error?: string;
   latency_ms: number;
   pz_warnings?: string[];
+  /** Sprint T iter 19 — full step telemetry per Andrea mandate §2 ClawBot consapevolezza. */
+  telemetry?: CompositeStepTelemetry;
 }
+
+/**
+ * Sprint T iter 19 — per-step telemetry envelope (Andrea mandate §2).
+ * Captures tool_id + latency + status + error for downstream observability.
+ */
+export interface CompositeStepTelemetry {
+  tool_id: string;
+  latency_ms: number;
+  status: string;
+  error?: string;
+  /** ISO timestamp at step start. */
+  started_at: string;
+  /** Ordinal index within composite chain (0-based). */
+  index: number;
+}
+
+/** Optional audit log writer for openclaw_tool_memory Supabase table. */
+export type CompositeAuditWriter = (entry: {
+  composite: string;
+  tool_id: string;
+  index: number;
+  status: string;
+  latency_ms: number;
+  error?: string;
+  ts: string;
+}) => void | Promise<void>;
 
 export interface CompositeResult<T = unknown> {
   status: CompositeStatus;
@@ -106,6 +134,8 @@ export interface CompositeResult<T = unknown> {
     failed_at?: string;
     /** Aggregated per-step data array (parallel to steps). */
     aggregated?: unknown[];
+    /** Sprint T iter 19 — full per-step telemetry (Andrea mandate §2). */
+    telemetry?: CompositeStepTelemetry[];
   };
 }
 
@@ -153,6 +183,15 @@ export interface CompositeContext {
   session_id?: string;
   /** Whether to invoke PZ v3 (default true; forwarded to sub-dispatch). */
   validate_pz?: boolean;
+  /**
+   * Sprint T iter 19 — halt-on-error semantics control (Andrea mandate §2).
+   * 'strict' (default): any sub-step status!='ok' halts chain (preserves iter 6 contract).
+   * 'continue': record failure + continue to next step (gather full telemetry).
+   * 'compensate': iter 22+ TODO — invoke compensating txns (placeholder, behaves as strict).
+   */
+  halt_on_error?: 'strict' | 'continue' | 'compensate';
+  /** Sprint T iter 19 — audit log writer (Supabase openclaw_tool_memory). */
+  audit_writer?: CompositeAuditWriter;
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -343,8 +382,17 @@ export async function executeComposite<T = unknown>(
   const stepResults: CompositeStepResult[] = [];
   const aggregated: unknown[] = [];
   let prev: unknown = undefined;
+  // Sprint T iter 19 — full telemetry per step (Andrea mandate §2)
+  const telemetry: CompositeStepTelemetry[] = [];
+  const haltMode = context.halt_on_error || 'strict';
+  const auditWrite = async (entry: Parameters<CompositeAuditWriter>[0]): Promise<void> => {
+    if (!context.audit_writer) return;
+    try { await context.audit_writer(entry); } catch (_err) { /* non-fatal */ }
+  };
+  let stepIndex = -1;
 
   for (const stepName of steps) {
+    stepIndex += 1;
     const elapsed = Date.now() - start;
     const remaining = timeoutMs - elapsed;
     if (remaining <= 0) {
@@ -354,12 +402,13 @@ export async function executeComposite<T = unknown>(
         error: `composite '${toolId}' timeout exceeded (${timeoutMs}ms) before step '${stepName}'`,
         failed_sub_stage: stepName,
         latency_ms: Date.now() - start,
-        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated },
+        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated, telemetry },
       };
     }
 
     const stepArgs = argsForStep(stepName, args, prev);
     const stepStart = Date.now();
+    const stepStartedIso = new Date().toISOString();
     let raced: DispatchResult | { __timeout: true } | { __timeout: false; __error: unknown };
     try {
       raced = await withDeadline(
@@ -369,60 +418,98 @@ export async function executeComposite<T = unknown>(
     } catch (err) {
       // dispatchFn synchronous throw (rare — defensive)
       const msg = err instanceof Error ? err.message : String(err);
+      const latency = Date.now() - stepStart;
+      const tThrow: CompositeStepTelemetry = {
+        tool_id: stepName, latency_ms: latency, status: 'error',
+        error: `dispatch threw: ${msg}`, started_at: stepStartedIso, index: stepIndex,
+      };
+      telemetry.push(tThrow);
       stepResults.push({
         step: stepName,
         status: 'error',
         error: `dispatch threw: ${msg}`,
-        latency_ms: Date.now() - stepStart,
+        latency_ms: latency,
+        telemetry: tThrow,
       });
-      return {
-        status: 'error',
-        tool: toolId,
-        error: `step '${stepName}' threw: ${msg}`,
-        failed_sub_stage: stepName,
-        latency_ms: Date.now() - start,
-        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated },
-      };
+      await auditWrite({ composite: toolId, tool_id: stepName, index: stepIndex, status: 'error', latency_ms: latency, error: `dispatch threw: ${msg}`, ts: stepStartedIso });
+      if (haltMode !== 'continue') {
+        return {
+          status: 'error',
+          tool: toolId,
+          error: `step '${stepName}' threw: ${msg}`,
+          failed_sub_stage: stepName,
+          latency_ms: Date.now() - start,
+          meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated, telemetry },
+        };
+      }
+      // continue mode: skip aggregating this step + advance
+      continue;
     }
 
     // Timeout sentinel
     if (raced && typeof raced === 'object' && (raced as { __timeout?: boolean }).__timeout === true) {
+      const latency = Date.now() - stepStart;
+      const tTimeout: CompositeStepTelemetry = {
+        tool_id: stepName, latency_ms: latency, status: 'timeout',
+        error: `step '${stepName}' exceeded chain deadline ${timeoutMs}ms`,
+        started_at: stepStartedIso, index: stepIndex,
+      };
+      telemetry.push(tTimeout);
       stepResults.push({
         step: stepName,
         status: 'timeout',
         error: `step '${stepName}' exceeded chain deadline ${timeoutMs}ms`,
-        latency_ms: Date.now() - stepStart,
+        latency_ms: latency,
+        telemetry: tTimeout,
       });
+      await auditWrite({ composite: toolId, tool_id: stepName, index: stepIndex, status: 'timeout', latency_ms: latency, error: `deadline ${timeoutMs}ms`, ts: stepStartedIso });
+      // Timeout always halts (even continue mode — chain deadline is a hard ceiling)
       return {
         status: 'timeout',
         tool: toolId,
         error: `composite '${toolId}' timeout: step '${stepName}' exceeded deadline ${timeoutMs}ms`,
         failed_sub_stage: stepName,
         latency_ms: Date.now() - start,
-        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated },
+        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated, telemetry },
       };
     }
     // Async rejection sentinel
     if (raced && typeof raced === 'object' && (raced as { __timeout?: boolean }).__timeout === false && '__error' in (raced as object)) {
       const err = (raced as { __error: unknown }).__error;
       const msg = err instanceof Error ? err.message : String(err);
+      const latency = Date.now() - stepStart;
+      const tRej: CompositeStepTelemetry = {
+        tool_id: stepName, latency_ms: latency, status: 'error',
+        error: `dispatch rejected: ${msg}`, started_at: stepStartedIso, index: stepIndex,
+      };
+      telemetry.push(tRej);
       stepResults.push({
         step: stepName,
         status: 'error',
         error: `dispatch rejected: ${msg}`,
-        latency_ms: Date.now() - stepStart,
+        latency_ms: latency,
+        telemetry: tRej,
       });
-      return {
-        status: 'error',
-        tool: toolId,
-        error: `step '${stepName}' rejected: ${msg}`,
-        failed_sub_stage: stepName,
-        latency_ms: Date.now() - start,
-        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated },
-      };
+      await auditWrite({ composite: toolId, tool_id: stepName, index: stepIndex, status: 'error', latency_ms: latency, error: `dispatch rejected: ${msg}`, ts: stepStartedIso });
+      if (haltMode !== 'continue') {
+        return {
+          status: 'error',
+          tool: toolId,
+          error: `step '${stepName}' rejected: ${msg}`,
+          failed_sub_stage: stepName,
+          latency_ms: Date.now() - start,
+          meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated, telemetry },
+        };
+      }
+      continue;
     }
 
     const r = raced as DispatchResult;
+    const tStep: CompositeStepTelemetry = {
+      tool_id: stepName, latency_ms: r.latency_ms, status: r.status,
+      error: r.error, started_at: stepStartedIso, index: stepIndex,
+    };
+    telemetry.push(tStep);
     stepResults.push({
       step: stepName,
       status: r.status,
@@ -430,21 +517,28 @@ export async function executeComposite<T = unknown>(
       error: r.error,
       latency_ms: r.latency_ms,
       pz_warnings: r.pz_warnings,
+      telemetry: tStep,
     });
+    await auditWrite({ composite: toolId, tool_id: stepName, index: stepIndex, status: r.status, latency_ms: r.latency_ms, error: r.error, ts: stepStartedIso });
 
     if (r.status !== 'ok') {
       // Map sub-step status to composite-level status when meaningful.
       const compositeStatus: CompositeStatus =
         r.status === 'blocked_pz' ? 'blocked_pz' :
         'error';
-      return {
-        status: compositeStatus,
-        tool: toolId,
-        error: r.error || `step '${stepName}' returned status='${r.status}'`,
-        failed_sub_stage: stepName,
-        latency_ms: Date.now() - start,
-        meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated },
-      };
+      // halt-on-error: strict (default) halts; continue gathers telemetry but skips aggregating
+      if (haltMode !== 'continue') {
+        return {
+          status: compositeStatus,
+          tool: toolId,
+          error: r.error || `step '${stepName}' returned status='${r.status}'`,
+          failed_sub_stage: stepName,
+          latency_ms: Date.now() - start,
+          meta: { composite_of: steps, steps: stepResults, failed_at: stepName, aggregated, telemetry },
+        };
+      }
+      // continue mode: do not aggregate failed step, do not advance prev
+      continue;
     }
 
     aggregated.push(r.data);
@@ -475,6 +569,7 @@ export async function executeComposite<T = unknown>(
       steps: stepResults,
       cache_hit: false,
       aggregated,
+      telemetry,
     },
   };
 }
