@@ -28,7 +28,8 @@
 }
 
 .schemaBadge {
-  font-size: 12px;
+  /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6 (Dashboard docente metadata visible LIM). */
+  font-size: 14px;
   color: #64748b;
   margin: 0 0 1rem;
   font-family: var(--font-mono, 'Fira Code', monospace);
@@ -47,7 +48,8 @@
 
 .errorCode {
   font-family: var(--font-mono, 'Fira Code', monospace);
-  font-size: 12px;
+  /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6. */
+  font-size: 14px;
   opacity: 0.8;
   margin-left: 0.25rem;
 }
@@ -92,7 +94,8 @@
 }
 
 .metricLabel {
-  font-size: 13px;
+  /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (HIGH severity Dashboard label LIM). */
+  font-size: 14px;
   color: #64748b;
   margin-bottom: 0.25rem;
 }

@@ -104,7 +104,8 @@
   border-radius: 8px;
   background: none;
   cursor: pointer;
-  font-size: 13px;
+  /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (interactive showAllBtn HIGH severity LIM). */
+  font-size: 14px;
   color: #666;
   transition: all 0.15s;
 }

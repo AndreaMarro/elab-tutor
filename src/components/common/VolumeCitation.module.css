@@ -10,7 +10,8 @@
   gap: 4px;
   padding: 2px 8px;
   border-radius: 12px;
-  font-size: 13px;
+  /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (Vol/pag canonical citation badge LIM). */
+  font-size: 14px;
   font-family: 'Open Sans', system-ui, sans-serif;
   background-color: rgba(30, 77, 140, 0.08);
   color: var(--color-primary, #1E4D8C);

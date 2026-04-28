@@ -182,7 +182,8 @@
 .volumeRef {
   display: inline-block;
   font-family: 'Fira Code', monospace;
-  font-size: 0.8125rem;
+  /* iter 15 LIM legibility batch 2: 0.8125rem (13px) → 0.875rem (14px) per spec §6 (Vol/pag ref LIM). */
+  font-size: 0.875rem;
   font-style: normal;
   color: #E8941C;
   font-weight: 600;

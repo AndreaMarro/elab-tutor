@@ -249,7 +249,8 @@
 }
 
 .typeBadge {
-  font-size: 12px;
+  /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6 (label/badge ≥14px LIM ≥2m). */
+  font-size: 14px;
   font-weight: 700;
   color: var(--color-primary, #1E4D8C);
   background: rgba(30, 77, 140, 0.1);
@@ -261,7 +262,8 @@
 }
 
 .advancedBadge {
-  font-size: 12px;
+  /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6. */
+  font-size: 14px;
   font-weight: 700;
   color: #E65100;
   background: #FFF3E0;
@@ -273,7 +275,8 @@
 }
 
 .metaItem {
-  font-size: 13px;
+  /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (borderline body ≥14px). */
+  font-size: 14px;
   color: #595959;
   white-space: nowrap;
   flex-shrink: 0;
@@ -384,7 +387,8 @@
   background: none;
   padding: 6px 14px;
   border-radius: 8px;
-  font-size: 13px;
+  /* iter 15 LIM legibility batch 2: 13px → 14px (interactive button ≥14px LIM). */
+  font-size: 14px;
   font-weight: 500;
   color: #666;
   cursor: pointer;
@@ -433,7 +437,8 @@
   color: #1a1a2e;
 }
 .lessonConcept {
-  font-size: 12px;
+  /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6. */
+  font-size: 14px;
   color: #666;
 }
 .lessonMeta {
@@ -443,12 +448,14 @@
   flex-shrink: 0;
 }
 .lessonCount {
-  font-size: 12px;
+  /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6. */
+  font-size: 14px;
   color: #999;
   font-weight: 500;
 }
 .challengeBadge {
-  font-size: 11px;
+  /* iter 15 LIM legibility batch 2: 11px → 14px per spec §6 (CRITICAL: label LIM ≥14px). */
+  font-size: 14px;
   font-weight: 600;
   color: #E8941C;
   background: rgba(232, 148, 28, 0.1);
