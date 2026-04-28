@@ -161,3 +161,64 @@ Se Mistral account NON creato, iter 18 BLOCKED su Mistral migration. Fallback: c
 ---
 
 **FINE ACTIVATION PROMPT** — ~140 LOC. Paste-ready. Andrea-honest.
+
+---
+
+## §11 — READ ORDER OBBLIGATORIO next session iter 19+
+
+### TIER 1 — START HERE (decision-ready)
+1. `docs/pdr/2026-04-29-sprint-T-iter-18+/PDR-MASTER-2026-04-29.md` (317 LOC) — master plan iter 18-30
+2. `docs/pdr/2026-04-29-sprint-T-iter-18+/ANDREA-MANDATES-ITER-18-PM-ADDENDUM.md` ⭐ NEW — modalità + ClawBot + safety + Volumi + RunPod
+3. `docs/strategy/2026-04-28-MASTER-SYNTHESIS.md` (676 LOC) — 16 sezioni cross-doc
+
+### TIER 2 — Architecture
+4. `docs/architectures/ADR-023-onniscenza-completa-iter-22-25.md` (562 LOC) — Onniscenza 7-layer
+5. `docs/architectures/ADR-024-onnipotenza-clawbot-iter-22-25.md` (561 LOC) — Onnipotenza ClawBot 4-layer
+6. `docs/adrs/ADR-022-vps-gpu-gdpr-compliant-production-stack-sprint-t.md` — VPS GPU production
+7. `docs/adrs/ADR-019-sense-1.5-morfismo-runtime-docente-classe.md` — Sense 1.5 morfismo
+
+### TIER 3 — Pricing + Cost
+8. `docs/strategy/2026-04-28-software-pricing/03-RECOMMENDATION-MASTER.md` — top 5 formule
+9. `docs/strategy/2026-04-28-cost-stack/03-PRICING-MASTER-UPDATE.md` — cost €100/scuola steady-state
+10. `docs/strategy/2026-04-28-financial-statements/04-variance-sensitivity-analysis.md` — risk 50/100/200
+
+### TIER 4 — Competitor + Market
+11. `docs/pdr/2026-04-29-sprint-T-iter-18+/COMPETITOR-ADVERSARIAL-SCENARIOS.md` — 10 worst-case
+12. `docs/strategy/2026-04-28-research/03-italian-k12-stem-market.md` — PNRR + MePA market
+13. `docs/strategy/2026-04-28-software-pricing/01-competitive-intelligence.md` — 29 competitor
+
+### TIER 5 — Iter 18 evidence
+14. `docs/debug/2026-04-28-iter-18-mount-render-bug-analysis.md` — TEST DRIVER bug
+15. `docs/debug/2026-04-28-iter-18-n8n-cors-bug-analysis.md` — CORS fix
+16. `docs/iter-19-compile-proxy-deployed.md` — Edge Fn compile-proxy live
+17. `automa/state/iter-18-experiments-test-FIXED-driver-results.json` — 10/10 esperimenti verified
+
+### TIER 6 — Tea PDFs + Volumi
+18. `docs/strategy/2026-04-28-tea-pdf-analysis.md` — Glossario Vol1+2+3 (180 termini + 58 analogie)
+19. `/VOLUME 3/TEA/GLOSSARIO TEA 28 APRILE/Glossario_Vol{1,2,3}_ELAB_2026-04-27.pdf` — fonte Tea
+
+### TIER 7 — CLAUDE.md + Brand
+20. `CLAUDE.md` ⭐ — DUE PAROLE D'ORDINE (Principio Zero V3 + Morfismo)
+21. `.impeccable.md` — Design Context (Affidabile/Didattico/Accogliente)
+22. `docs/strategy/2026-04-28-brand-voice/01-brand-voice-master-guidelines.md` — voice mandatory
+
+### TIER 8 — Mac Mini + State files
+23. `automa/state/NEXT-TASK.md` — Mac Mini queue
+24. `docs/handoff/2026-04-28-mac-mini-ssh-access-debug.md` — SSH access paths
+
+### TIER 9 — Master plan giornata oggi/domani
+25. `docs/superpowers/plans/2026-04-29-sprint-T-iter-18-comprehensive-master-plan.md` (2209 LOC) — master plan 16 sezioni
+
+---
+
+## §12 — Reading priority depending on session goal
+
+**Se devi RATIFICARE pricing/business**: TIER 3 + TIER 4
+**Se devi IMPLEMENTARE Onniscenza/Onnipotenza**: TIER 2 + ANDREA-MANDATES + ADR-023+024
+**Se devi FIX esperimenti broken**: TIER 5 + Volumi narrative TIER 6
+**Se devi PROCURE GPU/migrate Scaleway**: ADR-022 + cost-stack + ANDREA-MANDATES §5 RunPod
+**Se vuoi FULL CONTEXT**: tutti TIER 1-9 in ordine
+
+---
+
+**End read order §11+§12**. Activation prompt completo. Cross-link 25+ docs ecosystem.

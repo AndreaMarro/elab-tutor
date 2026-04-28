@@ -237,3 +237,81 @@ NOTA: NO auto-score >9 senza agente Opus indipendente quality-audit.
 ---
 
 **FINE PDR-MASTER iter 18+** — ~880 LOC. Brutally honest. NO compiacenza. Andrea ratify queue 8 voci urgent.
+
+---
+
+## §11 — Documenti utili Sprint T iter 18-30 (cross-link comprehensive)
+
+### Strategy & Pricing (docs/strategy/)
+- `INDEX-2026-04-28.md` — navigator master
+- `MASTER-SYNTHESIS-2026-04-28.md` — 676 LOC synthesis decision-ready
+- `2026-04-28-pricing-strategy/{01,02,03,04}-*.md` — bundle pricing 1523 LOC (cost analysis + 20 formule + API vs VPS + recommendation master)
+- `2026-04-28-software-pricing/{01,02,03}-*.md` — software-only 1309 LOC (29 competitor + 30 combo + recommendation)
+- `2026-04-28-cost-stack/{01,02,03}-*.md` — 30+ providers verified + optimization roadmap + pricing master update
+- `2026-04-28-research/{01,02,03}-*.md` — 1404 LOC API alternatives EU + fallback orchestration + Italian K-12 market
+- `2026-04-28-financial-statements/{01,02,03,04}-*.md` — 2003 LOC ASC 220/210/230 GAAP projection 12mo + variance
+- `2026-04-28-brand-voice/{01..05}-*.md` — 1367 LOC brand guidelines + sales templates + pricing comm + team voice + editorial calendar
+- `2026-04-28-tea-pdf-analysis.md` — 377 LOC Glossario Tea Vol1+2+3 (180 termini + 58 analogie)
+
+### PDR Sprint T (docs/pdr/2026-04-29-sprint-T-iter-18+/)
+- `PDR-MASTER-2026-04-29.md` ⭐ — questo doc, master Sprint T iter 18-30
+- `ACTIVATION-PROMPT-2026-04-29.md` — paste-ready next session
+- `COST-REVENUE-ONGOING-ANALYSIS.md` — 67 sources verbatim Italian K-12 + competitor tracking
+- `COMPETITOR-ADVERSARIAL-SCENARIOS.md` — 10 scenari worst-case big tech + niche
+- `ANDREA-MANDATES-ITER-18-PM-ADDENDUM.md` ⭐ NEW — modalità simplification + ClawBot consapevolezza + content safety guard + Volumi narrative + RunPod stessi modelli
+
+### ADR (docs/adrs/)
+- `ADR-008-buildCapitoloPromptFragment-design.md` — 37 capitoli prompt fragment
+- `ADR-009-principio-zero-validator-middleware.md` — runtime PZ enforcement
+- `ADR-010-together-ai-fallback-gated-2026-04-26.md` — Together fallback truth-table 8 cases
+- `ADR-011-r5-stress-fixture-50-prompts-2026-04-26.md` — R5 50 prompts design
+- `ADR-012-vision-flow-e2e-playwright-2026-04-26.md` — Vision E2E spec
+- `ADR-013-clawbot-composite-handler-l1-morphic-2026-04-26.md` — ClawBot L1 composite
+- `ADR-014-r6-stress-fixture-100-prompts-rag-aware-2026-04-26.md` — R6 100 prompts
+- `ADR-015-hybrid-rag-retriever-bm25-dense-rrf-rerank-2026-04-27.md` — Hybrid RAG architecture
+- `ADR-016-tts-isabella-websocket-deno-migration-2026-04-27.md` — TTS Isabella WS Deno
+- `ADR-019-sense-1.5-morfismo-runtime-docente-classe.md` ⭐ — Morfismo runtime adattabilità
+- `ADR-020-box-1-vps-gpu-strategic-decommission-prep.md` — REJECTED (superseded ADR-022)
+- `ADR-021-box-3-rag-1881-full-coverage-redefine-prep.md` — RAG coverage-first redefine
+- `ADR-022-vps-gpu-gdpr-compliant-production-stack-sprint-t.md` ⭐ — VPS GPU production stack Sprint T
+
+### Architecture (docs/architectures/)
+- `ADR-023-onniscenza-completa-iter-22-25.md` ⭐ NEW — Onniscenza 7-layer (RAG+Wiki+Glossario+Memory+Vision+LLM+OnTheFly)
+- `ADR-024-onnipotenza-clawbot-iter-22-25.md` ⭐ NEW — Onnipotenza ClawBot 4-layer (L1 ToolSpec + L2 Template + L3 Dynamic DEFER + composite-handler)
+- `STACK-V3-DEFINITIVE-2026-04-26.md` — Stack v3 definitive
+- `pdr-sett5-openclaw-onnipotenza-morfica-v4.md` — OpenClaw v4 master
+- `vps-gpu-stack-final-2026-04-26.md` + `vps-gpu-standalone-2026-04-26.md`
+- `openclaw-registry-v2-3-layer.md` — registry v2
+
+### Plan (docs/superpowers/plans/)
+- `2026-04-29-sprint-T-iter-18-comprehensive-master-plan.md` ⭐ — 2209 LOC 16 sezioni master plan giornata oggi/domani
+
+### Audits + Debug + Research
+- `docs/audits/2026-04-28-sprint-s-iter-13-CLOSE-FINAL-audit.md` — Sprint S close final
+- `docs/audits/2026-04-28-iter-14-P0-rag-metadata-backfill-audit.md` — RAG backfill Path A diagnosis
+- `docs/audits/2026-04-28-iter-13-design-D{1,3}-*.md` — design audits Lavagna/Dashboard/Esperimento/Onboarding
+- `docs/specs/2026-04-28-iter-14-LIM-legibility-typography-spec.md` — typography spec
+- `docs/specs/2026-04-28-iter-14-design-tokens-canonical-spec.md` — design tokens canonical
+- `docs/research/2026-04-28-iter-12-research-findings.md` — harness20 + 30 sources
+- `docs/handoff/2026-04-28-mac-mini-ssh-access-debug.md` — Mac Mini SSH paths
+- `docs/handoff/2026-04-28-sprint-s-iter-12-to-iter-13-handoff.md` — iter 12→13 handoff
+- `docs/debug/2026-04-28-iter-18-mount-render-bug-analysis.md` ⭐ — TEST DRIVER bug Object.keys()
+- `docs/debug/2026-04-28-iter-18-n8n-cors-bug-analysis.md` ⭐ — CORS prod fix paths
+- `docs/iter-19-compile-proxy-deployed.md` ⭐ NEW — Edge Fn compile-proxy live
+- `docs/demo/2026-05-06-fiera-trieste-demo-script.md` — demo Fiera (NO demo per Andrea iter 18 PM, defer)
+
+### Project root
+- `CLAUDE.md` ⭐ — DUE PAROLE D'ORDINE (Principio Zero V3 + Morfismo DUAL+SENSE 1.5)
+- `.impeccable.md` — Design Context (Affidabile/Didattico/Accogliente + 5 design principles + 10 anti-pattern)
+
+### State files (automa/state/)
+- `iter-18-experiments-test-results.json` — original test (BUGGY driver false positive)
+- `iter-18-experiments-test-FIXED-driver-results.json` ⭐ — 10/10 esperimenti verified working
+- `iter-12-bench-results.json` + `iter-12-bench-summary.md` — bench infrastructure 10-suite
+- `iter-14-b3-vision-topology-results.json` — Vision E2E latency p95=486ms
+- `NEXT-TASK.md` — Mac Mini iter 13+ task queue D1-D6
+- `MAC-MINI-D6-RAG-BACKFILL.md` — backfill pipeline brief
+
+---
+
+**End cross-link section §11**. All 50+ docs Sprint S+T accessibili tramite questo PDR master. Reading order priority: stars ⭐.
