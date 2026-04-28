@@ -58,10 +58,10 @@
 
 .chapter {
   font-family: 'Fira Code', monospace;
-  /* WCAG AA: bumped from 0.6875rem (11px) — CLAUDE.md Rule 8 requires
-     min 13px body, min 10px secondary labels. 0.75rem = 12px, still
-     a secondary label but paired with bold + monospace so legible. */
-  font-size: 0.75rem;
+  /* iter 14 LIM legibility: 0.75rem (12px) → 0.875rem (14px / var(--font-size-xs)) per spec §6 #6.
+     Prior: bumped from 0.6875rem (11px) per CLAUDE.md Rule 8 min 13px body + min 10px secondary;
+     LIM front-class viewer ≥2m needs ≥14px for chapter chip legibility. */
+  font-size: 0.875rem;
   color: #2d5a18;
   font-weight: 700;
   white-space: nowrap;

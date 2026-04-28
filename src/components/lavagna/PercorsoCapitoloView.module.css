@@ -64,7 +64,8 @@
   background-color: rgba(74, 122, 37, 0.15);
   color: #3a6020;
   border-radius: 10px;
-  font-size: 11px;
+  /* iter 14 LIM legibility: 11px → 14px (var(--font-size-label)) per spec §6 #3 */
+  font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;

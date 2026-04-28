@@ -80,7 +80,8 @@
 }
 
 .page {
-  font-size: 0.75rem;
+  /* iter 14 LIM legibility: 0.75rem (12px) → 0.875rem (14px / var(--font-size-xs)) per spec §6 #4 */
+  font-size: 0.875rem;
   color: #4A7A25;
   font-weight: 600;
 }

@@ -46,7 +46,8 @@
   padding: 2px 8px;
   background-color: var(--color-primary, #1E4D8C);
   color: white;
-  font-size: 11px;
+  /* iter 14 LIM legibility: 11px → 14px (var(--font-size-label)) per spec §6 #12 */
+  font-size: 14px;
   font-weight: 600;
   border-radius: 4px;
   letter-spacing: 0.05em;
@@ -62,7 +63,8 @@
 
 .sectionLabel {
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 11px;
+  /* iter 14 LIM legibility: 11px → 14px (var(--font-size-label)) per spec §6 #12 */
+  font-size: 14px;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
