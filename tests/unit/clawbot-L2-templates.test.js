@@ -46,9 +46,9 @@ describe('Iter 13 U4 — 5 ClawBot L2 templates filesystem presence', () => {
     }
   });
 
-  it('total L2 template count is exactly 15 (iter 15 scope: 10 iter 13-14 + 5 iter 15, target 80)', () => {
+  it('total L2 template count is exactly 20 (iter 15 P2 batch 3: 15 prior + 5 NEW iter 15, target 80)', () => {
     const present = readdirSync(TEMPLATES_DIR).filter(f => f.startsWith('L2-') && f.endsWith('.json'));
-    expect(present.length).toBe(15);
+    expect(present.length).toBe(20);
   });
 });
 

@@ -1,7 +1,8 @@
 ---
 id: ADR-020
-title: Box 1 VPS GPU strategic decommission — honest target redefinition (PREP iter 13 ratify)
-status: PROPOSED
+title: Box 1 VPS GPU strategic decommission — honest target redefinition (PREP iter 13 ratify) [REJECTED 2026-04-28 iter 15, SUPERSEDED by ADR-022]
+status: REJECTED
+superseded_by: ADR-022
 date: 2026-04-28
 deciders:
   - architect-opus (Sprint S iter 12 PHASE 1, Pattern S 5-agent OPUS)
@@ -230,3 +231,46 @@ Lasciare Box 1 = 0.4 fino Sprint T iter 15+ post-vendita. Sprint S close 9.30 ma
 - Action items iter 13 post-ratify: shutdown VPS Brain V13 (€60/mese saving) + audit doc 2026-04-29-sprint-s-iter13-box-1-redefine-evidence.md
 
 — architect-opus iter 12, 2026-04-28. CAVEMAN MODE. ONESTÀ MASSIMA. NO inflation.
+
+---
+
+## Rejection Rationale 2026-04-28
+
+**Status update iter 15 PM**: PROPOSED → **REJECTED**. Superseded by **ADR-022 — VPS GPU GDPR-compliant production stack ripristino Sprint T iter 17+**.
+
+**Decision Andrea iter 15 Q2=Y 2026-04-28** (binary ratify, 5-min review):
+
+> "VPS GPU FONDAMENTALE. GDPR + modelli migliori + controllo totale + costi a scala scuole italiane. Reject ADR-020 decommission. Sprint T iter 17+ ripristino full open-weights stack EU-only."
+
+**Rejection rationale 4 pillars**:
+
+1. **GDPR critico minori 8-14 (target ELAB scuole pubbliche italiane)**: cloud API USA (Gemini, Anthropic, Together, OpenAI) student-runtime trasferisce dati minore italiano fuori EU = fail Schrems II + GDPR Art. 8 consenso minori + EU AI Act Annex III high-risk education + minors. Cloud-only path ADR-020 = MePA listing impossibile + PNRR procurement scuole pubbliche bloccato (deadline 30/06/2026 memory mercato-pnrr-mepa.md). VPS GPU EU-only Hetzner Falkenstein/Helsinki = unica opzione tecnico-legale viable.
+
+2. **Modelli migliori self-hosted vs cloud free-tier constraint**: Llama 3.3 70B Q5_K_M + Qwen 2.5-VL 7B + Voxtral 4B + FLUX.1-schnell + BGE-M3 = qualità superiore use case ELAB educativo italiano vs Gemini Flash-Lite + Edge TTS browser fallback ceiling 0.85 ADR-020 thesis. Voice clone Andrea/Tea custom = impossibile cloud, possibile self-hosted Voxtral 3-sec sample.
+
+3. **Controllo totale stack vs vendor algoritmo silent break risk**: ADR-016 documenta Edge TTS Sec-MS-GEC failure root cause Microsoft algorithm change senza public spec 2025-fine. Cloud-only path ADR-020 rinforza vendor lock-in risk (Gemini API silent change → ELAB break senza preavviso). Open-weights GGUF/safetensors immutabili + versioning hash-pinned = reproducibility audit + zero silent break.
+
+4. **Costi prevedibili a scala scuole italiane**: VPS GPU Hetzner A100 dedicato €430/mese fisso + secondary HA €200 + monitoring €15 + backup €15 + legal €70 = **€730/mese fisso**. Cloud API equivalent stack (Gemini chat + Vision + ElevenLabs TTS + Whisper + Voyage + Cohere + Claude composite + GDPR SCC overhead) stima 100 scuole = **€1735-€2495/mese variabile**. Break-even ≥50 scuole attive favor VPS GPU. ELAB target 100+ scuole entro fine 2026 (memory unlim-subscription-idea.md UNLIM €20/classe/mese model) = VPS GPU = unica opzione tecnico-economica.
+
+**Conseguenze ADR-020 REJECTION**:
+- Score Box 1 Sprint S close mantenuto **0.4 stuck** (ratchet down vs hypothetical 1.0 redefinition).
+- Sprint S close score onesto **9.65/10** (vs 10/10 hypothetical full ripristino impossibile in 8 giorni Fiera Trieste 06/05/2026 deadline).
+- Sprint T iter 17+ scope **ENLARGED**: 6 iter dedicati ripristino full stack (iter 17 procurement Hetzner + DPA, iter 18 Qwen-VL + Voxtral + ClawBot, iter 19 Hybrid RAG migration BGE-M3 + production switch, iter 20 Gemini fallback orchestrator teacher-context only, iter 21 production canary 5% traffic monitoring, iter 22 production cutover 100% VPS GPU + Gemini retire student-runtime).
+- ADR-002 browser fallback ceiling **RIDIMENSIONATO** da fallback permanente a emergency last-resort speech-only (NON più ceiling acceptable Principio Zero V3 thesis ADR-020).
+- ADR-010 Together AI fallback gated **RETIRED student-runtime** post iter 22 cutover, RETAINED solo teacher-context con consenso GDPR esplicito.
+- Mac Mini autonomous orchestration retained: developer-layer USA-OK con Anthropic, NON student data → no GDPR conflict.
+
+**Migration path defined ADR-022**: see ADR-022 §8 (iter 17-22 timeline 6 settimane post Fiera Trieste 06/05/2026, milestone PNRR deadline 30/06/2026 compatible).
+
+**Action items post-rejection**:
+- ADR-022 ACCEPTED iter 15 Q2=Y → Sprint T iter 17 procurement Hetzner GPU + DPA sign + Ollama Llama 3.3 70B deploy
+- Sprint S close audit iter 13/14: cite ADR-020 REJECTED + ADR-022 ACCEPTED, Box 1 score 0.4 stuck (NO redefine, ripristino path Sprint T)
+- CLAUDE.md sprint history iter 15+: aggiorna riflesso decision Q2=Y + ADR-022 reference
+
+**Sign-off rejection**:
+- architect-opus iter 16 PHASE 1: REJECTED ADR-020 + ACCEPTED ADR-022 (this final block)
+- Andrea Marro: explicit ratify Q2=Y 2026-04-28 iter 15 PM (5-min review confirmed binary)
+
+**See ADR-022 for production stack architecture, GDPR compliance, cost analysis, migration path, fallback strategy, alternatives rejected, open questions Andrea ratify queue (Hetzner vs RunPod 13.1 + voice clone 13.2 + budget cap 13.3 + Voxtral vs XTTS-v2 13.4 + canary pilot scuole selection 13.5)**.
+
+— architect-opus iter 16, 2026-04-28. ADR-020 REJECTED. ADR-022 SUPERSEDES. GDPR FONDAMENTALE.
