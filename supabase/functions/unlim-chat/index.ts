@@ -413,9 +413,14 @@ serve(async (req: Request) => {
     } = {
       success: true,
       response: cappedText,
-      source: modelDisplayName(model) || result.model,
+      // iter 24: use result.model (actual provider model) when provider != gemini
+      source: result.provider === 'mistral' ? result.model
+        : result.provider === 'together' ? `together-${result.model}`
+        : result.provider === 'brain' ? 'brain'
+        : modelDisplayName(model) || result.model,
       audio: audioUrl || undefined,
-      dataProcessing: result.provider === 'together' ? 'together-ai'
+      dataProcessing: result.provider === 'mistral' ? 'mistral-eu'
+        : result.provider === 'together' ? 'together-ai'
         : result.provider === 'brain' ? 'local-brain'
         : 'google-gemini',
     };
