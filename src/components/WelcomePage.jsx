@@ -3,7 +3,7 @@
  * Campo chiave univoca → redirect a #lavagna
  * (c) Andrea Marro — 03/04/2026
  */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { setClassKey } from '../services/supabaseSync';
 
 const S = {
@@ -95,6 +95,18 @@ const S = {
 export default function WelcomePage({ onNavigate }) {
   const [key, setKey] = useState('');
   const [error, setError] = useState('');
+
+  // E2E bypass — only when VITE_E2E_AUTH_BYPASS=true on Preview deploy.
+  // NEVER enabled on Production (env var scope: Preview only in Vercel).
+  // Allows Playwright harness to skip license gate WelcomePage and load Lavagna directly.
+  useEffect(() => {
+    if (import.meta.env.VITE_E2E_AUTH_BYPASS === 'true') {
+      try { localStorage.setItem('elab-license-key', 'ELAB2026'); } catch { /* */ }
+      setClassKey('ELAB2026');
+      if (onNavigate) onNavigate('lavagna');
+      else window.location.hash = '#lavagna';
+    }
+  }, [onNavigate]);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
