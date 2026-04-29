@@ -1,0 +1,3285 @@
+{
+  "config": {
+    "configFile": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e/playwright.iter29.config.js",
+    "rootDir": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium-prod",
+        "name": "chromium-prod",
+        "testDir": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/29-92-esperimenti-audit\\.spec\\.js$/"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../automa/state/iter-29-92-esperimenti/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "29-92-esperimenti-audit.spec.js",
+      "file": "29-92-esperimenti-audit.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "iter-29 92-esperimenti audit @ https://elab-tutor-git-e2e-bypass-preview-andreas-projects-6d4e9791.vercel.app",
+          "file": "29-92-esperimenti-audit.spec.js",
+          "line": 183,
+          "column": 6,
+          "specs": [
+            {
+              "title": "audit v1-cap10-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 18732,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:11.018Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-ae685f02ed1d42b97c6b",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap10-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 18390,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:11.023Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-c9d51344fba4bdfad289",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap10-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 18208,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:11.043Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-163e99a351b27886682c",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap10-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 18715,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:11.011Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-3ab9111aee26c4661bf2",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap10-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12927,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:32.445Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-f360005837c6d4d63afe",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap10-esp6",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 12588,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:32.452Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-23f1a8223a10258170dd",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap11-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 13510,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:32.680Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-5d63ee4ae35b2707925e",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap11-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12616,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:32.683Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-0bb840d380d5584d1462",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap12-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10841,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:45.454Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-21d3c6d9c5b8fe4bfa9f",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap12-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 9171,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:45.446Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-3d82d1b62fc5acebbcdf",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap12-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9900,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:45.519Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-6248ac822bf0a27b9867",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap12-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10329,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:46.240Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-f62aea1c98ace46c78ed",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap13-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 11916,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:54.664Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-ec0374b4b85289b81be4",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap13-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11253,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:55.459Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-d2366d66aa3d9a0349fe",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap14-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11334,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:56.360Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-6605751c8573567fc0ca",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap6-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10664,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:26:56.605Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-7bd54f097af83ef00836",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap6-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 9569,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:06.844Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-c3649c54902fc4273915",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap6-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9509,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:06.852Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-9c13bde665fc04d27744",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap7-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 8716,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:07.408Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-e25b7990cfc20856216b",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap7-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8575,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:07.744Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-d053c5a8ec541def2fe1",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap7-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8014,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:16.373Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-bffe2d4134806f3373a6",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap7-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 8524,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:16.384Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-016b9aa1c938efc4814b",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap7-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8905,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:16.405Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-b2adb39311f431b46ab1",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap7-esp6",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 8146,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:16.451Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-953436bf0f1d547c97e5",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap8-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21647,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:24.450Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-e4f894ca4b219ddf1a15",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap8-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 21462,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:24.658Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-09e9a872899097def9a4",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap8-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 21141,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:24.975Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-af3f7a4669e9fb5c74ee",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap8-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 22605,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:25.350Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-842bf757675a55fe07d9",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap8-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17096,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:46.166Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-16c8ad3eeeb43f29b902",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 16106,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:46.185Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-91174da5eea8a0825452",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 15562,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:46.317Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-9f4e1d2004c21646a5bf",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 14256,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:27:48.030Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-0ca7d076bc247170aa3c",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8877,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:02.447Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-22fb4c8dbd763eeea3d0",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 7630,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:02.472Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-c26da160012d8d3cd3b4",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp6",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 9072,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:02.515Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-4ee9b90ac87dcb405f8c",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp7",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8231,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:03.394Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-9a008ce27ed1bbb1ad34",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp8",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 11795,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:10.144Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-11bc5b5ff11bace29282",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v1-cap9-esp9",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10607,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:11.491Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-0d817a22baa57a62c855",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap10-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 10625,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:11.669Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-265c25ced23a7194ed85",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap10-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10383,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:11.807Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-ee1e6c08a6e712f90047",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap10-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 12065,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:22.047Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-f0b8eca566fd263096fb",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap10-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12071,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:22.192Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-a7815953a1034b98b67e",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap12-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17333,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:22.234Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-766be0914c9c9ca96cc4",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap3-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 11809,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:22.329Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-5a1a8589bcc3844673aa",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap3-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 8739,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:34.259Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-5e39d02286da4c5fdbc0",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap3-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 8816,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:34.260Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-d770fb1603e478e0d3fe",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap3-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9424,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:34.410Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-7d4671ea5c82509c1844",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap4-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8582,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:39.617Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-9e5b7aaa9f530c0d4719",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap4-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 8795,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:43.131Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-e0642af428891721a95f",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap4-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 8405,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:43.169Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-09a100bf69a3b6a2eb6d",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap5-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7920,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:43.892Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-02deecf14e6e7bb8243f",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap5-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8156,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:48.318Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-e93f5441c9f603ca77a5",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap6-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 25352,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:51.662Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-209a721823eba4b4a024",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap6-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 25265,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:51.942Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-97f6e9a5e6219c2cf424",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap6-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 24152,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:52.037Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-7e14ec8948c5c9b4927d",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap6-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 31475,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:28:56.539Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-adb43a0ac781353b8706",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap7-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 20116,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:17.271Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-7b984de0a809b67ecdbb",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap7-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 19588,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:17.282Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-6f9d9eecc49f6b228448",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap7-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 19956,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:17.342Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-4c8e028e1405a587de2e",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap7-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 45997,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:30.805Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-a1785ab8caff4b002003",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap8-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 41183,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:37.389Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-821ec0f854a912449390",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap8-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 41067,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:37.566Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-d78e056b04468caf5ca9",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap8-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 40611,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:29:37.588Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-dff58a8011d0078ca987",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap9-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 21524,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:18.899Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-32a4056bb7e1f46b1ebc",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v2-cap9-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 21451,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:18.900Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-9d630469194c6b672a21",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap5-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 23834,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:19.022Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-7f8bbed5fd22171e957d",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap5-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 23976,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:19.222Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-665ac743378e2e285526",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 13061,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:40.705Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-3e83208429a531979c52",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 13789,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:40.717Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-b098c59011e306ab0031",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 11377,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:43.141Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-5ed6896922668c4a2374",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 13237,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:43.320Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-328fc991ea0a0d2dad89",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 12460,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:53.951Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-e4adcee37bf9b79a3de4",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp6",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 12273,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:54.657Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-9c65eac878e269bcbc9a",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-esp7",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12229,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:54.702Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-d2e1c455716949f3ae7f",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-morse",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11263,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:30:56.684Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-f4b6d80cd1e70804123d",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap6-semaforo",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 12913,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:06.550Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-445dc200ee6cd5c0be00",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 13319,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:06.999Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-ea7e05df350c99d32ac7",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 12603,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:07.003Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-01896d9f48cd138b70f1",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 13525,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:08.068Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-639f86dabe619b7dadd2",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10597,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:19.598Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-42e3cdb7194b3974d060",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 11454,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:19.676Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-78f8c9127066aabc2de9",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp6",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11818,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:20.365Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-edf340ea17717196e535",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp7",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10550,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:21.728Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-e51c6b85472b1bbc722e",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-esp8",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10512,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:30.309Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-82c9035ff71ee721102d",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap7-mini",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 9934,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:31.238Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-bd208f2d0378ebcbe3b3",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap8-esp1",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10465,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:32.323Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-125aa0111c0dd9dd9ef1",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap8-esp2",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10016,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:32.475Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-7c407e1f0e48def828c9",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap8-esp3",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10400,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:40.878Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-8c7953a10008010751da",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap8-esp4",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 10503,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:41.233Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-d10f4cc3c213266b3663",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap8-esp5",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10732,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:42.593Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-464ae78d24d31ef9e9ac",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-cap8-serial",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11051,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:43.044Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-f4acf3c2db61dfcb4448",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-extra-lcd-hello",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 8237,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:51.331Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-0f96b2b84197e6f06764",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-extra-servo-sweep",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 8743,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:51.819Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-c582158a2b62f72fad57",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            },
+            {
+              "title": "audit v3-extra-simon",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-prod",
+                  "projectName": "chromium-prod",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8263,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-29T14:31:53.758Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba921efbae2541b1ec09-8ba788e9975cb9428972",
+              "file": "29-92-esperimenti-audit.spec.js",
+              "line": 187,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-29T14:26:07.475Z",
+    "duration": 354893.348,
+    "expected": 94,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
