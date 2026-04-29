@@ -13,7 +13,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
-import { getCorsHeaders, getSecurityHeaders, checkBodySize } from '../_shared/guards.ts';
+import { getCorsHeaders, getSecurityHeaders, checkBodySize, BODY_SIZE_MULTIMODAL } from '../_shared/guards.ts';
 import { cfWhisperSTT } from '../_shared/cloudflare-client.ts';
 
 serve(async (req: Request) => {
@@ -27,7 +27,7 @@ serve(async (req: Request) => {
     });
   }
 
-  const bodyCheck = checkBodySize(req);
+  const bodyCheck = checkBodySize(req, BODY_SIZE_MULTIMODAL);
   if (bodyCheck) return bodyCheck;
 
   try {
