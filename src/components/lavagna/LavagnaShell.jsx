@@ -482,6 +482,17 @@ export default function LavagnaShell() {
         apiReadyRef.current = true;
         clearInterval(check); // Stop polling once API is found
 
+        // iter 26 Bug 2 EXIT HASH NAV restore: re-load last expId on mount
+        // so docente returning to Lavagna sees the experiment + drawing bucket
+        // intact (saved via handleMenuOpen on exit). NOT applied if user already
+        // started a fresh experiment (currentExperiment !== null at restore time).
+        try {
+          const savedExpId = localStorage.getItem('elab-lavagna-last-expId');
+          if (savedExpId && !currentExperiment && api.loadExperiment) {
+            api.loadExperiment(savedExpId);
+          }
+        } catch { /* localStorage quota OR private mode */ }
+
         // Listen for experiment changes
         api.on?.('experimentChange', (data) => {
           // Save entire experiment for child panels (PercorsoPanel, etc.)
@@ -646,10 +657,20 @@ export default function LavagnaShell() {
   }, [isPlaying]);
 
   const handleMenuOpen = useCallback(() => {
+    // iter 26 Bug 2 EXIT HASH NAV fix (Andrea iter 19 PM mandate):
+    // Save current expId to localStorage before exiting Lavagna so re-entry
+    // restores the experiment + drawing bucket. Without this, drawings persisted
+    // to elab-drawing-<expId> become orphaned when DrawingOverlay mounts with null.
     if (typeof window !== 'undefined') {
+      try {
+        const expId = currentExperiment?.id;
+        if (expId) {
+          localStorage.setItem('elab-lavagna-last-expId', String(expId));
+        }
+      } catch { /* localStorage quota OR private mode */ }
       window.location.hash = '#tutor';
     }
-  }, []);
+  }, [currentExperiment]);
 
   const handlePickerOpen = useCallback(() => setPickerOpen(true), []);
   const handlePickerClose = useCallback(() => setPickerOpen(false), []);
