@@ -26,7 +26,7 @@ import { sendChat, analyzeImage, diagnoseCircuit, getExperimentHints } from './a
 /**
  * @typedef {object} RouteResult
  * @property {boolean} ok
- * @property {string} provider — 'gemini'|'together'|'runpod'|'whisper'|'coqui'|'edge-tts-vps'|'clawbot-local'|'gemini-vision'|'flux'|'stub'
+ * @property {string} provider — 'gemini'|'together'|'runpod'|'whisper'|'coqui'|'edge-tts-vps'|'clawbot-local'|'gemini-vision'|'flux'|'stub'|'mistral'|'cloudflare'|'pixtral'
  * @property {*} data
  * @property {number} latencyMs
  * @property {string} [error]
@@ -293,17 +293,118 @@ async function routeTTS(payload, context) {
 }
 
 /**
- * Image generation — FLUX.1 RunPod. Defer Sprint S iter 6+.
+ * Image generation — Cloudflare Workers AI FLUX schnell (Sprint T iter 24).
+ *
+ * Frontend NEVER exposes CLOUDFLARE_API_TOKEN. Goes through Supabase Edge
+ * Function `unlim-imagegen` which proxies to CF `@cf/black-forest-labs/flux-1-schnell`.
+ *
+ * Returns base64 PNG in `data.imageBase64` on success.
+ *
+ * Graceful degradation: if Edge Function returns 404/501 with marker
+ * `{ deferred: true }`, returns ok=false with provider='cloudflare-deferred' so
+ * caller can show "image gen non ancora disponibile" notice.
+ *
+ * © Andrea Marro — 26/04/2026 — ELAB Tutor — Tutti i diritti riservati
  */
-async function routeImageGen(_payload, _context) {
-  return {
-    ok: false,
-    provider: 'flux',
-// © Andrea Marro — 26/04/2026 — ELAB Tutor — Tutti i diritti riservati
-    data: null,
-    latencyMs: 0,
-    error: 'multimodalRouter.imageGen: defer Sprint S iter 6+ (low priority, FLUX.1 RunPod requires GPU boot).',
-  };
+async function routeImageGen(payload, context = {}) {
+  const start = Date.now();
+  if (!payload || typeof payload.prompt !== 'string' || !payload.prompt.trim()) {
+    return {
+      ok: false,
+      provider: 'cloudflare',
+      data: null,
+      latencyMs: 0,
+      error: 'multimodalRouter.imageGen: payload.prompt required (non-empty string)',
+    };
+  }
+  const env = (typeof import.meta !== 'undefined' && import.meta && import.meta.env) ? import.meta.env : {};
+  const supabaseUrl = context.supabaseUrl || env.VITE_SUPABASE_URL || 'https://euqpdueopmlllqjmqnyb.supabase.co';
+  const anonKey = context.anonKey || env.VITE_SUPABASE_ANON_KEY || '';
+  const elabKey = context.elabKey || env.VITE_ELAB_API_KEY || '';
+  const endpoint = context.endpoint || `${supabaseUrl.replace(/\/+$/, '')}/functions/v1/unlim-imagegen`;
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (anonKey) {
+    headers['apikey'] = anonKey;
+    headers['Authorization'] = `Bearer ${anonKey}`;
+  }
+  if (elabKey) headers['X-Elab-Api-Key'] = elabKey;
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        prompt: payload.prompt,
+        numSteps: payload.numSteps || 4,
+        width: payload.width || 1024,
+        height: payload.height || 1024,
+        sessionId: context.sessionId,
+      }),
+    });
+    const latencyMs = Date.now() - start;
+    if (res.status === 404 || res.status === 501) {
+      // Edge function not deployed yet — graceful degradation marker
+      return {
+        ok: false,
+        provider: 'cloudflare-deferred',
+        data: null,
+        latencyMs,
+        error: 'multimodalRouter.imageGen: unlim-imagegen Edge Function not yet deployed (iter 25+).',
+        meta: { httpStatus: res.status },
+      };
+    }
+    if (!res.ok) {
+      return {
+        ok: false,
+        provider: 'cloudflare',
+        data: null,
+        latencyMs,
+        error: `multimodalRouter.imageGen: http ${res.status}`,
+      };
+    }
+    const data = await res.json();
+    return {
+      ok: true,
+      provider: 'cloudflare',
+      data,
+      latencyMs,
+      meta: { model: data?.model || '@cf/black-forest-labs/flux-1-schnell' },
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      provider: 'cloudflare',
+      data: null,
+      latencyMs: Date.now() - start,
+      error: err?.message || String(err),
+    };
+  }
+}
+
+/**
+ * Mistral chat helper — Sprint T iter 24. Frontend never holds MISTRAL_API_KEY.
+ * Goes through Edge Function `unlim-chat` which now includes Mistral in its
+ * fallback chain (RunPod → Mistral EU → Gemini → Together gated).
+ *
+ * Caller selects modality='chat' to use this. The provider field returned by
+ * the Edge Function reflects the actual fallback hit (mistral|gemini|together).
+ *
+ * NOTE: this is a thin wrapper around routeChat that hints provider preference
+ * via context.preferProvider='mistral'. The Edge Function is responsible for
+ * honoring the hint when MISTRAL_API_KEY is configured.
+ */
+async function routeMistralChat(payload, context = {}) {
+  return routeChat(payload, { ...context, preferProvider: 'mistral' });
+}
+
+/**
+ * Pixtral vision helper — Sprint T iter 24. Routes vision intent through
+ * Edge Function with provider hint='mistral' to use Pixtral 12B.
+ * Falls back to Gemini Vision EU automatically.
+ */
+async function routePixtralVision(payload, context = {}) {
+  return routeVision(payload, { ...context, preferProvider: 'mistral' });
 }
 
 /**
@@ -362,6 +463,9 @@ export const multimodalRouter = {
   routeTTS,
   routeImageGen,
   routeClawBot,
+  // iter 24 helpers (provider preference hint to Edge Function)
+  routeMistralChat,
+  routePixtralVision,
 };
 
 export default multimodalRouter;

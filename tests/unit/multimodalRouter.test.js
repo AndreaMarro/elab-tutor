@@ -165,10 +165,12 @@ describe('multimodalRouter — stubs (stt/tts/imageGen/clawbot)', () => {
     expect(r.provider).toBe('edge-tts');
   });
 
-  it('imageGen defers to Sprint S iter 6+', async () => {
+  it('imageGen validates payload (iter 24 wire to Cloudflare FLUX schnell via Edge Function)', async () => {
     const r = await multimodalRouter.route({ modality: 'imageGen', payload: {} });
     expect(r.ok).toBe(false);
-    expect(r.error).toMatch(/iter 6/);
+    // iter 24: missing prompt validation now runs first; provider is cloudflare
+    expect(r.error).toMatch(/prompt required/);
+    expect(r.provider).toBe('cloudflare');
   });
 
   it('clawbot defers to iter 5+ with toolId in meta', async () => {

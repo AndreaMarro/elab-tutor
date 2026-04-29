@@ -16,6 +16,7 @@ import {
   type TogetherContext,
   type SupabaseClientLike,
 } from './together-fallback.ts';
+import { callMistralChat, type MistralChatModel } from './mistral-client.ts';
 
 // Re-export for consumers that need error handling
 export { GeminiError, ErrorCode, callBrainFallback };
@@ -303,10 +304,43 @@ async function callRunPod(options: LLMOptions): Promise<LLMResult> {
 }
 
 /**
- * Sprint S iter 3 fallback chain:
+ * Mistral EU adapter — Sprint T iter 24.
+ *
+ * Picks `mistral-small-latest` by default (cheap primary).
+ * Premium tier (`mistral-large-latest`) selectable via env
+ * `MISTRAL_PREMIUM_TIERS=large` per request tier (caller maps).
+ *
+ * Returns the same LLMResult shape as the rest of the chain.
+ */
+async function callMistral(options: LLMOptions): Promise<LLMResult> {
+  const premiumTiers = (Deno.env.get('MISTRAL_PREMIUM_TIERS') || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const wantsPremium = premiumTiers.includes(String(options.model));
+  const model: MistralChatModel = wantsPremium ? 'mistral-large-latest' : 'mistral-small-latest';
+
+  const r = await callMistralChat({
+    model,
+    systemPrompt: options.systemPrompt,
+    message: options.message,
+    images: options.images,
+    maxOutputTokens: options.maxOutputTokens,
+    temperature: options.temperature,
+  });
+  return {
+    text: r.text,
+    model: options.model, // preserve tier label downstream
+    provider: 'mistral',
+    tokensUsed: r.tokensUsed,
+    latencyMs: r.latencyMs,
+  };
+}
+
+/**
+ * Sprint S iter 3 fallback chain (extended Sprint T iter 24):
  *
  *   RunPod / Hetzner EU GPU
  *     ↓ (down or not configured)
+ *   Mistral EU (FR)  ← NEW iter 24, gated by MISTRAL_API_KEY presence
+ *     ↓ (down)
  *   Gemini EU
  *     ↓ (down)
  *   Together AI  ← only if `canUseTogether(ctx)` AND env flag enabled
@@ -335,6 +369,19 @@ export async function callLLMWithFallback(
     providersDown.push('runpod');
     console.info(JSON.stringify({
       level: 'info', event: 'runpod_down', request_id: reqId,
+      error: e instanceof Error ? e.message : String(e),
+    }));
+  }
+
+  // 1.5. Mistral EU (FR) — iter 24 NEW
+  // Skipped silently if MISTRAL_API_KEY not set (callMistral throws SERVICE_UNAVAILABLE,
+  // we treat it as "down" and proceed to Gemini).
+  try {
+    return await callMistral(options);
+  } catch (e) {
+    providersDown.push('mistral');
+    console.info(JSON.stringify({
+      level: 'info', event: 'mistral_down', request_id: reqId,
       error: e instanceof Error ? e.message : String(e),
     }));
   }

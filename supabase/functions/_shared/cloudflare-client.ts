@@ -1,0 +1,163 @@
+/**
+ * Cloudflare Workers AI client — Sprint T iter 24
+ *
+ * Provider: Cloudflare Workers AI (free tier 10k req/day shared).
+ * Models supported:
+ *   - imageGen: `@cf/black-forest-labs/flux-1-schnell` (FLUX schnell)
+ *   - stt:      `@cf/openai/whisper-large-v3-turbo`
+ *   - embed:    `@cf/baai/bge-m3` (1024-dim)
+ *
+ * API: POST https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/${MODEL}
+ * Auth: `Bearer ${CLOUDFLARE_API_TOKEN}` (env).
+ * Account ID hardcoded fallback: 31b0f72ef02445f6a9987c994fe17b56 (override
+ * via env CLOUDFLARE_ACCOUNT_OR_ZONE_ID per CLAUDE.md infra).
+ *
+ * Iter 24 scope: implement `cfImageGen`, `cfWhisperSTT`, `cfBgeM3Embed`.
+ * Wired into `multimodalRouter.routeImageGen` (replaces stub).
+ *
+ * (c) Andrea Marro 2026-04-29 — ELAB Tutor
+ */
+
+import { GeminiError, ErrorCode } from './gemini.ts';
+
+const CF_DEFAULT_ACCOUNT = '31b0f72ef02445f6a9987c994fe17b56';
+const TIMEOUT_MS = 30_000; // imageGen can be slow
+
+function cfBaseUrl(): string {
+  const acct = (Deno.env.get('CLOUDFLARE_ACCOUNT_OR_ZONE_ID') || CF_DEFAULT_ACCOUNT).trim();
+  return `https://api.cloudflare.com/client/v4/accounts/${acct}/ai/run`;
+}
+
+function cfHeaders(): Record<string, string> {
+  const token = (Deno.env.get('CLOUDFLARE_API_TOKEN') || '').trim();
+  if (!token) throw new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, 'CLOUDFLARE_API_TOKEN not configured');
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+}
+
+async function cfFetch(model: string, body: unknown): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(`${cfBaseUrl()}/${model}`, {
+      method: 'POST',
+      headers: cfHeaders(),
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    return res;
+  } catch (e) {
+    clearTimeout(timeout);
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      throw new GeminiError(ErrorCode.TIMEOUT, `Cloudflare ${model} timed out`);
+    }
+    throw e;
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Image generation — FLUX schnell
+// ────────────────────────────────────────────────────────────────────────────
+
+export interface CfImageGenOptions {
+  prompt: string;
+  numSteps?: number;        // default 4 (schnell), max 8
+  width?: number;           // default 1024
+  height?: number;          // default 1024
+}
+
+export interface CfImageGenResult {
+  imageBase64: string;      // PNG base64 (no data:URL prefix)
+  model: string;
+  provider: 'cloudflare';
+  latencyMs: number;
+}
+
+export async function cfImageGen(opts: CfImageGenOptions): Promise<CfImageGenResult> {
+  const start = Date.now();
+  const body = {
+    prompt: opts.prompt,
+    num_steps: opts.numSteps ?? 4,
+    width: opts.width ?? 1024,
+    height: opts.height ?? 1024,
+  };
+  const res = await cfFetch('@cf/black-forest-labs/flux-1-schnell', body);
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new GeminiError(ErrorCode.API_ERROR, `CF FLUX ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  // CF returns { result: { image: '<base64>' }, success: true, errors, messages }
+  const imageBase64: string = data?.result?.image ?? '';
+  if (!imageBase64) {
+    throw new GeminiError(ErrorCode.EMPTY_RESPONSE, 'CF FLUX empty image');
+  }
+  return {
+    imageBase64,
+    model: '@cf/black-forest-labs/flux-1-schnell',
+    provider: 'cloudflare',
+    latencyMs: Date.now() - start,
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// STT — Whisper Turbo
+// ────────────────────────────────────────────────────────────────────────────
+
+export interface CfWhisperOptions {
+  /** Audio bytes (raw, base64, or Uint8Array). CF expects raw byte array. */
+  audio: Uint8Array | number[];
+  language?: string; // e.g. 'it', 'en'
+}
+
+export interface CfWhisperResult {
+  text: string;
+  model: string;
+  provider: 'cloudflare';
+  latencyMs: number;
+  meta?: Record<string, unknown>;
+}
+
+export async function cfWhisperSTT(opts: CfWhisperOptions): Promise<CfWhisperResult> {
+  const start = Date.now();
+  const audioArray = Array.isArray(opts.audio) ? opts.audio : Array.from(opts.audio);
+  const body: Record<string, unknown> = { audio: audioArray };
+  if (opts.language) body.language = opts.language;
+
+  const res = await cfFetch('@cf/openai/whisper-large-v3-turbo', body);
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new GeminiError(ErrorCode.API_ERROR, `CF Whisper ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  const text: string = data?.result?.text ?? '';
+  if (!text) throw new GeminiError(ErrorCode.EMPTY_RESPONSE, 'CF Whisper empty text');
+  return {
+    text,
+    model: '@cf/openai/whisper-large-v3-turbo',
+    provider: 'cloudflare',
+    latencyMs: Date.now() - start,
+    meta: data?.result || {},
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Embeddings — BGE-M3 (1024-dim, multilingual)
+// ────────────────────────────────────────────────────────────────────────────
+
+export async function cfBgeM3Embed(texts: string[]): Promise<number[][]> {
+  if (!Array.isArray(texts) || texts.length === 0) return [];
+  const res = await cfFetch('@cf/baai/bge-m3', { text: texts });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new GeminiError(ErrorCode.API_ERROR, `CF BGE-M3 ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  const arr: number[][] = data?.result?.data ?? [];
+  return arr;
+}
+
+export const CLOUDFLARE_CLIENT_VERSION = '1.0-iter24';
