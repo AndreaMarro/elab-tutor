@@ -1034,3 +1034,63 @@ Box subtotal 7.20/10 + bonus cumulative 2.10 = **9.30/10 ONESTO Phase 1 close** 
 - Vitest baseline 12290 (file `automa/baseline-tests.txt` reads 12290; PHASE 3 orchestrator MUST re-run + update post test discovery, iter 18 doc claim 12718 unsync flagged).
 - See: `docs/audits/iter-19-PHASE-1-audit-2026-04-29.md` + `docs/handoff/2026-04-29-iter-19-to-iter-20-handoff.md` + `docs/pdr/2026-04-29-sprint-T-iter-18+/PDR-ITER-19-ATOMS.md` + 3 NEW ADR-025/026/027.
 
+## Sprint T iter 26-28 close (2026-04-29 PM) — Mistral routing + Modalità 4 + L2 templates + 370 NEW tests
+
+**Pattern**: 4-agent OPUS PHASE-PHASE iter 26 (Modalità 4 + L2 loader + ricerca-marketing PDF + commit) + iter 27 (harness STRINGENT v2.0 design) + iter 28 (Lavagna Bug 3 sync + Voice wake-word + Pixtral 12B bench + 370 tests). Race-cond fix VALIDATED 7× consecutive.
+
+**Score iter 28 close ONESTO**: **7.5/10** (G45 anti-inflation cap, +0.5 vs iter 27 baseline 7.0).
+
+**MAJOR DELIVERABLES iter 26**:
+- ✅ Mistral routing 65/25/10 LIVE prod (`pickWeightedProvider` + `callLLM` + `callLLMWithFallback`, 84% Mistral hit verified 25 calls)
+- ✅ Multimodal stack: `unlim-imagegen` (CF FLUX schnell, 503KB image 2.19s) + `unlim-stt` (CF Whisper Turbo) + `unlim-vision` (Mistral Pixtral 12B Italian K-12)
+- ✅ Sys-prompt v3.1 deployed Edge Function `unlim-chat` (kit fisico OBBLIGATORIO + 2 NEW few-shot Esempio 4+5)
+- ✅ Modalità 4 UI canonical (ADR-025): `ModalitaSwitch.jsx` 84 LOC + `GiaMontato.jsx` 89 LOC + `LavagnaShell.jsx` +35 LOC modalita state default 'percorso' + Libero auto-Percorso
+- ✅ ClawBot L2 templates runtime loader: `clawbot-templates.ts` 424 LOC (20 templates inlined Deno-compat) + `clawbot-template-router.ts` 300 LOC (`selectTemplate` + `executeTemplate` + RAG injection) + `unlim-chat/index.ts:317-376` pre-LLM check + 19/19 unit tests PASS
+- ✅ Ricerca marketing PDF LaTeX 21 pages (Caso B Hybrid Mistral primary scelto)
+
+**MAJOR DELIVERABLES iter 27**:
+- ✅ Harness STRINGENT v2.0 5-livelli design committed (P1 G45 anti-inflation, computer vision + UX heuristics + linguaggio + narrativa + topology check)
+- ✅ Smoke 5/5 PASS post-Mistral routing v3.1 (Vol/pag verbatim + kit_mention + plurale Ragazzi + ≤60 parole + analogia)
+
+**MAJOR DELIVERABLES iter 28**:
+- ✅ Lavagna Bug 3 Supabase sync 25/25 PASS (drawing paths persistence cross-session)
+- ✅ Voice wake-word "Ehi UNLIM" 9/9 PASS + lavagna 180/180 (no regression)
+- ✅ Pixtral 12B vision bench 14/14 PASS MOCK (Italian K-12 evaluation framework)
+- ✅ test-automator 370 NEW PASS across 11 files (~3162 LOC)
+- ✅ vitest exclude `tests/persona-sim` (Playwright spec antipattern in vitest discovery fix)
+
+**CoV iter 28**: vitest **13212 PASS** (+922 vs iter 19 baseline 12290) + 15 skipped + 8 todo. 0 regressioni. Build NOT re-run iter 28 (defer iter 29 entrance pre-flight CoV).
+
+**SPRINT_T_COMPLETE 10 boxes status post iter 28**:
+- Box 1 VPS GPU 0.4 | Box 2 stack **0.7** (CF Workers AI multimodal LIVE iter 26) | Box 3 RAG 0.7 | Box 4 Wiki 1.0
+- Box 5 R0 1.0 | Box 6 Hybrid RAG 0.85 | Box 7 Vision **0.7** (+0.15 Pixtral live) | Box 8 TTS 0.85
+- Box 9 R5 1.0 | Box 10 ClawBot **1.0** (+0.05 L2 templates 20/20 LIVE)
+
+Box subtotal 8.05/10 + bonus 2.10 → ricalibrato G45 cap **7.5/10 iter 28 close** (NOT 8.05 raw — anti-inflation: 30-prompt scale unverified, harness STRINGENT NOT executed, esperimenti broken Andrea iter 21 mandate NOT addressed).
+
+**Honest gaps iter 28**:
+1. 30-prompt bench v3.1 SCALE NOT executed (smoke 5/5 cherry-pick only).
+2. 92 esperimenti audit Andrea iter 21 mandate NOT started (Playwright UNO PER UNO sweep iter 29 P0).
+3. Persona simulation 5 utenti REAL Playwright iter 27 design NOT executed.
+4. Linguaggio codemod 200 violations imperative singolare → plurale Andrea iter 21 NOT addressed.
+5. Grafica overhaul Andrea iter 21 mandate NOT started.
+6. Vol3 ground truth 0.92 NON re-incorporato lesson-paths schema iter 19 ADR-027.
+7. Mac Mini D1 ToolSpec L2 expand 20→52→80 deferred.
+8. Build (heavy ~14min) NOT re-run iter 28.
+
+**Iter 29 priorities P0** (Andrea mandate iter 21 carryover C+D combo scelto):
+- C. Simulator Arduino+Scratch bug sweep Playwright (deploy gate prod regression)
+- D. Esperimenti broken UNO PER UNO ~92 esperimenti audit (kit fisico mismatch + componenti mal disposti + non-funzionanti)
+- 30-prompt bench v3.1 scale REAL exec
+- L2 templates SCALE bench (50 scenarios composite handler test)
+- Build pre-flight CoV iter 29 entrance
+
+**Commits iter 26-28 close** (branch `e2e-bypass-preview`):
+- `54bfb23` feat(iter-26): Modalità 4 UI canonical + L2 templates runtime loader
+- `e5f9501` docs(iter-26): marketing costi comparata PDF 21 pages
+- `ca9f15c` docs(iter-27): harness STRINGENT v2.0 5-livelli design
+- `29f9026` feat(iter-26): sys-prompt v3.1 kit mandatory + 2 NEW few-shot
+- `1667191` fix(iter-28): vitest exclude persona-sim + iter 28 deliverables (Bug 3 sync + Voice + Pixtral + 370 tests)
+
+**Iter 29 score target**: 7.5 → **8.0+/10** ONESTO post C+D combo Andrea mandate execution.
+
