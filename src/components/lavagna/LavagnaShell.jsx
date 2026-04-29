@@ -426,17 +426,74 @@ export default function LavagnaShell() {
   const [bentornatiVisible, setBentornatiVisible] = useState(() => {
     try { return localStorage.getItem('elab_skip_bentornati') !== 'true'; } catch { return true; }
   });
+  // Sprint T iter 28 — wake-word toggle (default ON; gated by browser support).
+  // Persisted across sessions via localStorage so docente disabled state sticks.
+  const [wakeWordEnabled, setWakeWordEnabled] = useState(() => {
+    try { return localStorage.getItem('elab-lavagna-wake-word') !== 'off'; } catch { return true; }
+  });
   const [wakeWordActive, setWakeWordActive] = useState(false);
   // F2.B: serializzazione primo-accesso. ConsentBanner (se presente) ha
   // priorità su Bentornati/Picker. ExperimentPicker parte ultimo.
   const bentornatiAllowed = useOverlayQueue('bentornati');
   const pickerAllowed = useOverlayQueue('picker');
 
-  // "Ehi UNLIM" wake word — ascolta in background, apre UNLIM e manda il comando
+  // Refs for wake-word callback — avoid re-mounting listener on state change.
+  // The wakeWord service holds module-level singleton state, so re-mounting
+  // would risk double-listener leaks. Refs read latest values without redep.
+  const galileoOpenRef = useRef(galileoOpen);
+  useEffect(() => { galileoOpenRef.current = galileoOpen; }, [galileoOpen]);
+  const lastWakeAtRef = useRef(0);
+
+  // Persist wake-word toggle preference
   useEffect(() => {
-    if (!isWakeWordSupported()) return;
+    try { localStorage.setItem('elab-lavagna-wake-word', wakeWordEnabled ? 'on' : 'off'); } catch {}
+  }, [wakeWordEnabled]);
+
+  /**
+   * Sprint T iter 28 — "Ehi UNLIM" wake-word lifecycle wired to LavagnaShell.
+   *
+   * Behaviour:
+   *   - Mounts a single SpeechRecognition listener on Lavagna entry.
+   *   - On wake detection: opens UNLIM (no-op if already open) + shows feedback.
+   *   - Debounces multiple sequential wakes within 1500ms (avoids re-trigger spam).
+   *   - On unmount or toggle-off: stops listener + cleans state.
+   *
+   * Honest caveats (JSDoc, NOT marketing):
+   *   1. WebSpeech API supported only on Chrome/Edge (not Firefox/Safari).
+   *      Graceful skip with logger warn — feature absent, no error thrown.
+   *   2. Italian phonetic detection delegated to wakeWord.js WAKE_PHRASES list
+   *      (11 variants incl. "ehi unlim", "hey unlim", "ei unlim"). False
+   *      positives possible on similar-sounding speech (ESEMPIO: "ehi anna" può
+   *      essere parsed come "ehi un...") — accepted trade-off for accessibility.
+   *   3. Debouncing is timestamp-based (1.5s) — protects against double-detect
+   *      from interim results, NOT a hard mutex. Concurrent wakes from two
+   *      LavagnaShell instances (impossibile in pratica, single-page app) NON
+   *      sono gestiti.
+   *   4. PZ V3 mandate: wake-word ATTIVO solo dentro LavagnaShell mount lifecycle.
+   *      Quando Tutor / Simulator standalone montati senza Lavagna → listener
+   *      non parte (componente non montato).
+   */
+  useEffect(() => {
+    // Toggle off → ensure listener stopped, do nothing else.
+    if (!wakeWordEnabled) {
+      stopWakeWordListener();
+      setWakeWordActive(false);
+      return undefined;
+    }
+    // Browser support gate (Caveat 1).
+    if (!isWakeWordSupported()) {
+      logger.warn('[LavagnaShell] Wake word "Ehi UNLIM" non supportato dal browser (richiede Chrome/Edge).');
+      setWakeWordActive(false);
+      return undefined;
+    }
     const started = startWakeWordListener({
       onWake: () => {
+        // Debounce: ignora wake successivi entro 1.5s (Caveat 3).
+        const now = Date.now();
+        if (now - lastWakeAtRef.current < 1500) return;
+        lastWakeAtRef.current = now;
+        // No-op when UNLIM già aperto (evita toast spam + auto-focus loop).
+        if (galileoOpenRef.current) return;
         setGalileoOpen(true);
         setToolToast('Ti ascolto!');
         setTimeout(() => setToolToast(null), 2000);
@@ -449,8 +506,11 @@ export default function LavagnaShell() {
       },
     });
     setWakeWordActive(started);
-    return () => stopWakeWordListener();
-  }, []);
+    return () => {
+      stopWakeWordListener();
+      setWakeWordActive(false);
+    };
+  }, [wakeWordEnabled]);
 
   // Persist layout sizes and volume navigation to localStorage
   useEffect(() => {

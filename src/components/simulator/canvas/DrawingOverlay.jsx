@@ -9,6 +9,27 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { loadDrawingPaths, saveDrawingPaths } from '../../../utils/drawingStorage';
+import {
+  loadPaths as loadPathsRemote,
+  debouncedSave as debouncedSaveRemote,
+  cancelDebouncedSave as cancelDebouncedSaveRemote,
+  subscribePaths as subscribePathsRemote,
+} from '../../../services/drawingSync';
+
+/**
+ * Sprint T iter 28 — Bug 3 Supabase sync (drawingPaths cross-device).
+ *
+ * Sync è OPT-IN via prop `syncEnabled` (Lavagna mode). Quando false (simulator
+ * standalone) il comportamento iter 25 è invariato: solo localStorage.
+ *
+ * HONEST CAVEATS (NOT production-ready):
+ *  - migration `scribble_paths` NOT applied (Andrea decide).
+ *  - last-write-wins on (experiment_id, user_id); NO CRDT merge.
+ *  - realtime channel funziona solo se ALTER PUBLICATION supabase_realtime
+ *    ADD TABLE scribble_paths è stato eseguito (NON automatico in migration).
+ *  - se Supabase non configurato, comportamento === iter 25 invariato.
+ */
+const REMOTE_SAVE_DEBOUNCE_MS = 2000;
 
 const COLORS = [
   { name: 'Rosso', hex: '#EF4444', label: 'Rosso' },
@@ -71,6 +92,8 @@ function pointsToSmoothPath(pointsStr) {
  * - onPathsChange: (paths) => void — callback when paths change
  * - experimentId: string | null — when provided, paths are persisted per-experiment
  *   so drawings do not bleed across lessons (18/04/2026 — Principio Zero fix).
+ * - syncEnabled: boolean — opt-in Supabase cross-device sync (iter 28 Bug 3).
+ *   ON only in Lavagna mode; OFF in simulator standalone (Principio Zero V3 enforce).
  */
 export default function DrawingOverlay({
   drawingEnabled = false,
@@ -80,6 +103,7 @@ export default function DrawingOverlay({
   onClose,
   initialFullscreen = false,
   experimentId = null,
+  syncEnabled = false,
 }) {
   const svgRef = useRef(null);
   const [paths, setPaths] = useState(() => loadDrawingPaths(experimentId));
@@ -96,6 +120,10 @@ export default function DrawingOverlay({
   const undoStackRef = useRef([]);
   const redoStackRef = useRef([]);
   const MAX_UNDO = 50;
+
+  // iter 28 Bug 3 — track last local save timestamp so realtime echoes from
+  // our own writes don't overwrite live paint state. (cheap monotonic clock)
+  const lastLocalSaveAtRef = useRef(0);
 
   // When the active experiment changes, load THAT experiment's paths.
   // Without this the overlay would keep showing ink from whichever lesson
@@ -123,6 +151,59 @@ export default function DrawingOverlay({
     // paths intentionally not in deps — we read it via closure for the migration check.
     // Re-running this effect on every paths mutation would double-save and erase undo.
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experimentId]);
+
+  // iter 28 Bug 3 — Supabase remote load (Lavagna sync mode only).
+  // Hydrate state from remote ONCE on mount / experimentId change. Last-write-wins:
+  // if remote has more recent paths, replace local. If remote returns null (no row,
+  // not configured, error), we keep the localStorage fallback we already loaded.
+  // Principio Zero V3: gated by syncEnabled — simulator standalone mai sync.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    let cancelled = false;
+    loadPathsRemote(experimentId).then((remote) => {
+      if (cancelled || !remote) return;
+      if (Array.isArray(remote.paths)) {
+        setPaths(remote.paths);
+        // mirror to localStorage so cross-device load == local cache next visit
+        saveDrawingPaths(remote.paths, experimentId);
+      }
+    }).catch(() => { /* swallow */ });
+    return () => { cancelled = true; };
+  }, [syncEnabled, experimentId]);
+
+  // iter 28 Bug 3 — debounced remote save on paths change.
+  // We DO NOT call savePaths inline in handlePointerUp/Undo/Redo/Clear to avoid
+  // hammering Supabase on every stroke. Debounce 2s after last change.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    debouncedSaveRemote(experimentId, paths, REMOTE_SAVE_DEBOUNCE_MS);
+    return undefined;
+  }, [syncEnabled, experimentId, paths]);
+
+  // iter 28 Bug 3 — realtime subscription so other devices' updates appear here.
+  // Only re-renders when remote `updated_at` is newer than our last local save.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    const unsubscribe = subscribePathsRemote(experimentId, ({ paths: remotePaths, updatedAt }) => {
+      try {
+        const remoteTs = updatedAt ? Date.parse(updatedAt) : 0;
+        if (!remoteTs || remoteTs <= lastLocalSaveAtRef.current) return;
+        if (!Array.isArray(remotePaths)) return;
+        setPaths(remotePaths);
+        saveDrawingPaths(remotePaths, experimentId);
+      } catch { /* swallow */ }
+    });
+    return () => {
+      try { unsubscribe?.(); } catch { /* ignore */ }
+    };
+  }, [syncEnabled, experimentId]);
+
+  // iter 28 Bug 3 — flush any pending debounced remote save on unmount.
+  useEffect(() => {
+    return () => {
+      try { cancelDebouncedSaveRemote(experimentId); } catch { /* ignore */ }
+    };
   }, [experimentId]);
 
   // Current stroke width: eraser is always large, pen uses selected size
