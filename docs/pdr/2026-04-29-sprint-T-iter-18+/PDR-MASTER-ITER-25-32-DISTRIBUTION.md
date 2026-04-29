@@ -338,3 +338,61 @@
 Andrea: domani Davide Fagherazzi + Davide Omaric. Tea oggi consegna.
 
 GO.
+
+---
+
+## Addendum 2026-04-29 PM — Iter 26-28 close + Iter 29-32 plan refinement
+
+**Score iter 28 close ONESTO**: **7.5/10** (G45 anti-inflation cap).
+
+**Plan iter 29-32 refined**: `docs/superpowers/plans/2026-04-29-iter-29-32-sprint-T-close.md` (988 LOC, 18 task, 4 iter).
+
+**Decisioni ONESTE** (vs PDR original 25-32):
+- A: Close iter 32-33 May 3-5 (ricalibrato — NOT iter 35, timing aggressive)
+- B: Vol3 narrative refactor → DEFERRED Sprint U iter 36+ (Andrea iter 26 mandate "NON PENSARE A DAVIDE TEA")
+- C: Mac Mini D1 trigger START iter 30 (parallel autonomous)
+- D: Harness STRINGENT v2.0 EXEC iter 30 first run (then iter 31 stringent FULL)
+
+**Score progression target ONESTO**:
+- Iter 29: 7.5 → 8.0 (wires fix + Agent C bugs)
+- Iter 30: 8.0 → 8.3 (bench scale + persona sim + Mac Mini D1)
+- Iter 31: 8.3 → 8.6 (harness STRINGENT FULL + lingua codemod 200)
+- Iter 32: 8.6 → **8.9** (grafica overhaul + Sprint T CLOSE)
+
+**Bug closure projection iter 29**:
+- Agent D 70.2% non-WORKING → ≤5% (single root cause wires fix lift 28→92)
+- Agent C 3/4 bugs CLOSED (P0 BUG-29-01 CORS + P1 BUG-29-02 Blockly btn + P1 BUG-29-03 wire flake)
+- Agent C P2 BUG-29-04 elab-galileo CORS deferred Sprint U (Render endpoint deprecated)
+
+**Audit baseline iter 29 entrance**:
+- Agent D: `docs/audits/2026-04-29-iter-29-92-esperimenti-uno-per-uno-audit.md` (53KB, 94 esperimenti)
+- Agent C: `docs/audits/2026-04-29-iter-29-simulator-arduino-scratch-sweep.md` (~250 LOC, 10 tests)
+- Test artifacts: `tests/e2e/29-{92-esperimenti,simulator-arduino-scratch}-*.spec.js` + `automa/state/iter-29-92-esperimenti/results.jsonl`
+- Screenshots: `docs/audits/iter-29-92-esperimenti-screenshots/` (94 PNG) + `docs/audits/iter-29-screenshots/` (10 PNG)
+
+**Activation prompt next session**: `docs/prompts/2026-04-29-PROMPT-ITER-29-EXECUTION-NEXT-SESSION.md` (paste-ready Subagent-Driven Pattern S).
+
+**Sprint T close projection**: iter 32-33 May 3-5 (NOT firm, slippage 1-2 day probable).
+
+**Sprint U preview** (out of scope iter 29-32):
+- Vol3 narrative refactor (Davide co-author)
+- ClawBot composite L1 morphic full live (52→80 ToolSpec)
+- Hybrid RAG live A/B 50/50 prod traffic
+- Together AI fallback gated full audit
+- Documentazione utente finale (manuali docente + studente PDF)
+- Mac Mini autonomous loop H24 stable
+
+**Commits iter 26-28 close** (branch `e2e-bypass-preview`):
+```
+a16d212 feat(iter-29): plan + Agent C+D deliverables (4 iter Sprint T close ONESTO)
+cc095cd docs(iter-28): CLAUDE.md sprint history iter 26-28 close (score 7.5/10 ONESTO)
+1667191 fix(iter-28): vitest exclude persona-sim Playwright spec + iter 28 deliverables
+54bfb23 feat(iter-26): Modalità 4 UI canonical + L2 templates runtime loader (PZ V3)
+e5f9501 docs(iter-26): marketing costi comparata PDF 21 pages + LaTeX
+ca9f15c docs(iter-27): harness STRINGENT v2.0 5-livelli design (P1 G45)
+29f9026 feat(iter-26): sys-prompt v3.1 kit mandatory + 2 NEW few-shot
+```
+
+**PRINCIPIO ZERO V3 imperativo. Mai dimenticato.**
+
+GO ITER 29 (next session paste activation prompt).
