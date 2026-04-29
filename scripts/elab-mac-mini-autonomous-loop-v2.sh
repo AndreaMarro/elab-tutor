@@ -72,8 +72,15 @@ process_task() {
     attempt=$((attempt + 1))
     log "  ATTEMPT $attempt/$((max_retry + 1)) timeout=${timeout}s"
 
-    timeout "$timeout" bash -c "$cmd" > "$task_log" 2>&1
+    # macOS-compatible timeout (no GNU coreutils dependency)
+    bash -c "$cmd" > "$task_log" 2>&1 &
+    cmd_pid=$!
+    ( sleep "$timeout" && kill -TERM "$cmd_pid" 2>/dev/null ) &
+    timer_pid=$!
+    wait "$cmd_pid" 2>/dev/null
     exit_code=$?
+    kill -TERM "$timer_pid" 2>/dev/null
+    wait "$timer_pid" 2>/dev/null || true
 
     if [ $exit_code -eq 0 ]; then
       log "  TASK_SUCCESS id=$task_id attempt=$attempt"
