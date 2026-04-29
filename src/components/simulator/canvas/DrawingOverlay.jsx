@@ -100,11 +100,29 @@ export default function DrawingOverlay({
   // When the active experiment changes, load THAT experiment's paths.
   // Without this the overlay would keep showing ink from whichever lesson
   // was open at mount time — exactly the bug reported on the lavagna.
+  //
+  // iter 25 fix (Andrea mandate "contenuto sparisce SOLO con cancellazione esplicita"):
+  // on null → real expId transition, MIGRATE current paths into the new experiment
+  // bucket instead of resetting. Otherwise the user who drew in sandbox loses ink
+  // the moment they pick an experiment. See investigation
+  // docs/audits/2026-04-29-iter-25-LAVAGNA-PERSISTENCE-investigation.md (Bug 1).
+  const prevExpIdRef = useRef(experimentId);
   useEffect(() => {
-    setPaths(loadDrawingPaths(experimentId));
-    // Clear undo/redo stacks on experiment switch — they belong to the previous lesson
-    undoStackRef.current = [];
-    redoStackRef.current = [];
+    const prevId = prevExpIdRef.current;
+    const newId = experimentId;
+    if (prevId === null && newId && paths.length > 0) {
+      // migrate sandbox paths into the new experiment bucket; do NOT clear local state
+      saveDrawingPaths(paths, newId);
+      saveDrawingPaths([], null);
+    } else {
+      setPaths(loadDrawingPaths(newId));
+      undoStackRef.current = [];
+      redoStackRef.current = [];
+    }
+    prevExpIdRef.current = newId;
+    // paths intentionally not in deps — we read it via closure for the migration check.
+    // Re-running this effect on every paths mutation would double-save and erase undo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [experimentId]);
 
   // Current stroke width: eraser is always large, pen uses selected size
