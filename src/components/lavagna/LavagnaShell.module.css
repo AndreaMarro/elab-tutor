@@ -352,3 +352,13 @@
     min-height: 48px;
   }
 }
+
+/* ADR-025 iter 26 — Modalità switch slot (4 modes canonical) */
+.modalitaSwitchSlot {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: auto;
+}

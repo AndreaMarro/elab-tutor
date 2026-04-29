@@ -27,6 +27,8 @@ import VisionButton from '../tutor/VisionButton';
 import logger from '../../utils/logger';
 // Sprint S iter 2 Task B — Capitolo lookup service
 import { getCapitolo, listAllCapitoli } from '../../services/percorsoService';
+// ADR-025 iter 26 — Modalità 4 modes canonical UI (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso)
+import ModalitaSwitch from './ModalitaSwitch';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -412,6 +414,14 @@ export default function LavagnaShell() {
       return ['complete', 'guided', 'sandbox'].includes(v) ? v : 'complete';
     } catch { return 'complete'; }
   }); // complete | guided | sandbox
+  // ADR-025 iter 26 — modalità canonical 4 modes (Percorso default, Passo Passo, Già Montato, Libero)
+  // Default 'percorso' (NOT 'libero'). Libero auto-mounts Percorso (NON sandbox vuoto).
+  const [modalita, setModalita] = useState(() => {
+    try {
+      const v = localStorage.getItem('elab-lavagna-modalita');
+      return ['percorso', 'passo-passo', 'gia-montato', 'libero'].includes(v) ? v : 'percorso';
+    } catch { return 'percorso'; }
+  });
   const [drawingEnabled, setDrawingEnabled] = useState(false);
   const [bentornatiVisible, setBentornatiVisible] = useState(() => {
     try { return localStorage.getItem('elab_skip_bentornati') !== 'true'; } catch { return true; }
@@ -452,6 +462,32 @@ export default function LavagnaShell() {
   useEffect(() => {
     try { localStorage.setItem('elab-lavagna-buildmode', buildMode); } catch {}
   }, [buildMode]);
+  // ADR-025 iter 26 — persist modalità canonical
+  useEffect(() => {
+    try { localStorage.setItem('elab-lavagna-modalita', modalita); } catch {}
+  }, [modalita]);
+
+  // ADR-025 §4.4 — Libero auto-Percorso behavior:
+  // when user selects 'libero', auto-mount Percorso narrative (NON sandbox vuoto).
+  // Diagnose flow integrato dentro Già Montato + Passo Passo (mode 'guida-da-errore' REMOVED).
+  const handleModalitaChange = useCallback((nextMode) => {
+    if (nextMode === 'libero') {
+      // ADR-025 §4.4 mandate: Libero click → setMode('percorso') auto-Percorso
+      setModalita('percorso');
+      return;
+    }
+    if (!['percorso', 'passo-passo', 'gia-montato', 'libero'].includes(nextMode)) {
+      return; // defensive: ignore unknown modes (e.g. legacy 'guida-da-errore')
+    }
+    setModalita(nextMode);
+    // Già Montato NEW: signal pre-assembled diagnose mode to simulator if API present
+    if (nextMode === 'gia-montato' && typeof window !== 'undefined') {
+      const api = window.__ELAB_API;
+      if (api?.unlim?.setDiagnoseMode) {
+        try { api.unlim.setDiagnoseMode(true); } catch { /* noop */ }
+      }
+    }
+  }, []);
   useEffect(() => {
     try { localStorage.setItem('elab-lavagna-volume', String(currentVolume)); } catch {}
   }, [currentVolume]);
@@ -932,6 +968,11 @@ export default function LavagnaShell() {
       <div className={css.body}>
         {/* === LAVAGNA VIEW (simulatore + pannelli) === */}
         <div className={css.lavagnaView} style={{ display: activeTab === 'lavagna' ? 'contents' : 'none' }}>
+          {/* ADR-025 iter 26 — Modalità switch 4 modes canonical (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso) */}
+          <div className={css.modalitaSwitchSlot} data-testid="modalita-switch-slot">
+            <ModalitaSwitch activeMode={modalita} onModeChange={handleModalitaChange} />
+          </div>
+
           {/* Left panel — quick component palette (hidden in Libero/sandbox: solo canvas pulito) */}
           {hasExperiment && buildMode !== 'sandbox' && (
             <RetractablePanel

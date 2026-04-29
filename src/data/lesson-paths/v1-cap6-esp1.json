@@ -10,6 +10,13 @@
   "volume": 1,
   "chapter": 6,
   "title": "Accendi il tuo primo LED",
+  "modes_supported": ["percorso", "passo-passo", "gia-montato", "libero"],
+  "modes_entry_state": {
+    "percorso": "passive_view",
+    "passo-passo": "build_step_1",
+    "gia-montato": "final_assembled_state",
+    "libero": "passive_view_with_proactive_unlim"
+  },
   "chapter_title": "Cos'è il diodo LED?",
   "difficulty": 1,
   "duration_minutes": 45,

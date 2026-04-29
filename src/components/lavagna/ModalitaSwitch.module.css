@@ -1,0 +1,79 @@
+/* ModalitaSwitch — 4 modes UI ADR-025 iter 26
+   Palette ELAB CLAUDE.md §Design rule 16: Navy #1E4D8C primary, Lime #4A7A25 accent
+   Touch target ≥44px (rule 9), font ≥13px (rule 8) */
+
+.modalitaSwitch {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #f5f7fa;
+  border-radius: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.modeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 14px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1E4D8C;
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+
+.modeBtn:hover {
+  background: #e8f0fa;
+  border-color: rgba(30, 77, 140, 0.3);
+}
+
+.modeBtn:focus-visible {
+  outline: 3px solid #E8941C;
+  outline-offset: 2px;
+}
+
+.modeBtn:active {
+  transform: scale(0.97);
+}
+
+.modeBtnActive {
+  background: #1E4D8C;
+  color: #ffffff;
+  border-color: #153d6e;
+  box-shadow: 0 2px 8px rgba(30, 77, 140, 0.25);
+}
+
+.modeBtnActive:hover {
+  background: #19467f;
+  border-color: #102e54;
+}
+
+.modeIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.modeLabel {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.defaultStar {
+  font-size: 11px;
+  margin-left: 2px;
+  opacity: 0.85;
+}
+
+/* Mobile / portrait LIM: stack buttons vertical compact */
+@media (max-width: 640px) {
+  .modeLabel { font-size: 13px; }
+  .modeBtn { padding: 8px 10px; }
+}

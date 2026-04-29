@@ -16,6 +16,7 @@ import type { ChatRequest, ChatResponse, CircuitState } from '../_shared/types.t
 import { retrieveVolumeContext, hybridRetrieve, formatHybridContext } from '../_shared/rag.ts';
 import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shared/capitoli-loader.ts';
 import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
+import { selectTemplate, executeTemplate } from '../_shared/clawbot-template-router.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
@@ -313,6 +314,69 @@ serve(async (req: Request) => {
     const systemPrompt = buildSystemPrompt(studentContext, safeCircuitState as CircuitState | null, experimentContext, capitoloFragment)
       + (ragContext ? `\n\n${ragContext}` : '')
       + imagePiiGuard;
+
+    // 3.5 ClawBot L2 template short-circuit (Sprint T iter 26).
+    // Try keyword/category match BEFORE invoking the LLM. If a template fits,
+    // execute it server-side, return [AZIONE:...] tags + speakTTS text. This
+    // gives a deterministic morphic path for the 20 documented patterns
+    // (introduce/explain/diagnose/guide/celebrate/recap/critique/debug/
+    // reroute) and falls back to the LLM otherwise.
+    try {
+      const tpl = selectTemplate(safeMessage, {
+        experimentId: safeExperimentId ?? undefined,
+      });
+      if (tpl) {
+        const exec = await executeTemplate(tpl, { experimentId: safeExperimentId ?? undefined }, {
+          ragRetrieve: async (q: string, k: number) => {
+            try {
+              return await hybridRetrieve(q, k, {});
+            } catch {
+              return [];
+            }
+          },
+        });
+        const tplText = exec.responseText;
+        // Best-effort TTS (non-blocking, capped 3s)
+        let tplAudio: string | null = null;
+        try {
+          tplAudio = await Promise.race([
+            requestTTS(tplText),
+            new Promise<null>(resolve => setTimeout(() => resolve(null), 3000)),
+          ]);
+        } catch {
+          tplAudio = null;
+        }
+        // Save short audit row to student memory (non-blocking)
+        const topicCategory = safeExperimentId || tpl.category;
+        saveInteraction(sessionId, safeExperimentId || null, topicCategory, `tpl:${tpl.id}`, 'clawbot-l2')
+          .catch(err => console.warn('[Nanobot V2] Memory save error:', err));
+
+        const tplResponse: ChatResponse & {
+          template_id?: string;
+          template_category?: string;
+          template_latency_ms?: number;
+        } = {
+          success: true,
+          response: tplText,
+          source: `clawbot-l2-${tpl.id}`,
+          audio: tplAudio || undefined,
+          dataProcessing: 'local-template',
+          template_id: tpl.id,
+          template_category: tpl.category,
+          template_latency_ms: exec.latencyMs,
+        };
+        return new Response(JSON.stringify(tplResponse), {
+          status: 200,
+          headers: getSecurityHeaders(req),
+        });
+      }
+    } catch (tplErr) {
+      // Template router must NEVER break chat flow — fall through to LLM
+      console.warn(JSON.stringify({
+        level: 'warn', event: 'clawbot_template_error',
+        error: tplErr instanceof Error ? tplErr.message : 'unknown',
+      }));
+    }
 
     // 4. Route to optimal model
     const model = routeModel(safeMessage, hasImages, safeCircuitState as CircuitState | null);
