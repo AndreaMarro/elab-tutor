@@ -649,7 +649,14 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
       id="unlim-v3"
       title="UNLIM"
       defaultPosition={{ x: typeof window !== 'undefined' ? window.innerWidth - 420 : 800, y: 56 }}
-      defaultSize={{ w: 400, h: Math.min(580, typeof window !== 'undefined' ? window.innerHeight - 140 : 580) }}
+      defaultSize={{
+        // Atom A6 iter 36 H1 fix: responsive width min(90vw, 400px) prevents mobile overflow.
+        // Z-index hierarchy: lavagna/FloatingWindow dynamic 1010+ (normal), 10000 maximized;
+        // common/FloatingWindow Passo Passo: 10001 > UNLIM maximized.
+        // H4 mitigated: PercorsoCapitoloView no explicit z-index → browser stacking 0 < UNLIM 1010+.
+        w: typeof window !== 'undefined' ? Math.min(400, Math.round(window.innerWidth * 0.9)) : 400,
+        h: Math.min(580, typeof window !== 'undefined' ? window.innerHeight - 140 : 580),
+      }}
       maximized={maximized}
       onMaximize={() => setMaximized(m => !m)}
       onClose={onClose}

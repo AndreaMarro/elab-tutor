@@ -80,9 +80,25 @@
 }
 
 .defaultStar {
-  font-size: 11px;
-  margin-left: 2px;
-  opacity: 0.85;
+  /* iter 36 Atom A4 fix — default-star più visibile (era 11px opacity 0.85,
+     poco riconoscibile su LIM 1080p a 5m). Lift size + opacity + Lime drop-shadow
+     per indicare default canonical Percorso. */
+  font-size: 14px;
+  margin-left: 4px;
+  opacity: 1;
+  filter: drop-shadow(0 0 2px rgba(74, 122, 37, 0.45));
+}
+
+/* iter 36 Atom A4 — bottone default (Percorso) con bordo Lime accent quando inattivo
+   per indicare visivamente "questa è la modalità predefinita consigliata". */
+.modeBtnDefault:not(.modeBtnActive) {
+  border-color: rgba(74, 122, 37, 0.45);
+  box-shadow: 0 0 0 1px rgba(74, 122, 37, 0.15);
+}
+
+.modeBtnDefault:not(.modeBtnActive):hover {
+  border-color: rgba(74, 122, 37, 0.7);
+  background: #f0f7e8;
 }
 
 /* Mobile / portrait LIM: stack buttons vertical compact */

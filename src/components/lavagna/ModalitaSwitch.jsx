@@ -10,9 +10,14 @@
  * Mode "guida-da-errore" REMOVED iter 26 (ADR-025 §4.5) — diagnose flow integrato
  * dentro Già Montato + Passo Passo inline.
  *
+ * Iter 36 Phase 1 Atom A4 fix (PDR §3) — Modalità Percorso visibile:
+ *   • availableModes prop opzionale: filter difensivo (mai escludere 'percorso')
+ *   • defaultStar visivamente prominente (lift opacity + size + Lime accent)
+ *   • Percorso renderizzato SEMPRE first (anche se prop array escluso percorso → forza re-include)
+ *
  * Touch target ≥44px (CLAUDE.md §Qualita rule 9). Active state Navy #1E4D8C palette.
  *
- * Andrea Marro — iter 26 gen-app caveman 2026-04-29
+ * Andrea Marro — iter 26 gen-app caveman 2026-04-29 + iter 36 WebDesigner-1 Phase 1 2026-04-30
  */
 import React from 'react';
 import css from './ModalitaSwitch.module.css';
@@ -46,12 +51,19 @@ const MODE_META = {
   },
 };
 
-export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange }) {
+export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange, availableModes }) {
   const handleClick = (mode) => {
     if (typeof onModeChange === 'function') {
       onModeChange(mode);
     }
   };
+
+  // iter 36 Atom A4 fix — defensive filter: never exclude 'percorso' (default canonical).
+  // If parent passes availableModes array, intersect with MODALITA + force-include percorso.
+  // This protects against H3 hypothesis (filter excludes percorso accidentally).
+  const visibleModes = Array.isArray(availableModes) && availableModes.length > 0
+    ? Array.from(new Set(['percorso', ...availableModes.filter((m) => MODALITA.includes(m))]))
+    : MODALITA;
 
   return (
     <div
@@ -60,8 +72,9 @@ export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange }
       aria-label="Modalità lavagna"
       data-testid="modalita-switch"
     >
-      {MODALITA.map((mode) => {
+      {visibleModes.map((mode) => {
         const meta = MODE_META[mode];
+        if (!meta) return null;
         const active = activeMode === mode;
         return (
           <button
@@ -73,12 +86,15 @@ export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange }
             title={meta.tooltip}
             data-testid={`modalita-btn-${mode}`}
             data-active={active ? 'true' : 'false'}
-            className={`${css.modeBtn} ${active ? css.modeBtnActive : ''}`}
+            data-default={meta.isDefault ? 'true' : 'false'}
+            className={`${css.modeBtn} ${active ? css.modeBtnActive : ''} ${meta.isDefault ? css.modeBtnDefault : ''}`}
             onClick={() => handleClick(mode)}
           >
             <span className={css.modeIcon} aria-hidden="true">{meta.icon}</span>
             <span className={css.modeLabel}>{meta.label}</span>
-            {meta.isDefault && <span className={css.defaultStar} aria-hidden="true">⭐</span>}
+            {meta.isDefault && (
+              <span className={css.defaultStar} aria-label="Modalità predefinita" title="Modalità predefinita">⭐</span>
+            )}
           </button>
         );
       })}

@@ -18,6 +18,12 @@ import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shar
 import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
 import { selectTemplate, executeTemplate } from '../_shared/clawbot-template-router.ts';
 import { aggregateOnniscenza } from '../_shared/onniscenza-bridge.ts';
+// iter 36 Phase 1 Atom A1 — Onnipotenza dispatcher 62-tool wire post-LLM.
+// Parses `[INTENT:{...}]` tags from LLM response, returns parsed intents in
+// the API response so the client (browser-side __ELAB_API) can dispatch.
+// `cleanText` strips the tags before TTS / display (Principio Zero V3
+// preservation: tags don't pollute the user-facing line count / Vol/pag check).
+import { parseIntentTags, stripIntentTags, type IntentTag } from '../_shared/intent-parser.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
@@ -488,19 +494,47 @@ serve(async (req: Request) => {
     // 6. Cap response length
     const cappedText = capWords(result.text);
 
+    // 6a. Sprint T iter 36 Phase 1 — Atom A1 — Onnipotenza dispatcher wire-up.
+    // Parse `[INTENT:{tool:"...",args:{...}}]` tags from the LLM response and
+    // surface them as `intents_parsed` for the client (browser `__ELAB_API`)
+    // to dispatch. Server-side dispatch is NOT performed here because the
+    // 62-tool registry handlers live in the browser context (see
+    // `scripts/openclaw/dispatcher.ts` which resolves `globalThis.__ELAB_API`).
+    // Defensive: never throws — empty array on any error / no tags.
+    let parsedIntents: IntentTag[] = [];
+    let cleanText = cappedText;
+    try {
+      parsedIntents = parseIntentTags(cappedText);
+      cleanText = stripIntentTags(cappedText);
+      if (parsedIntents.length > 0) {
+        console.info(JSON.stringify({
+          level: 'info', event: 'intents_parsed',
+          count: parsedIntents.length,
+          tools: parsedIntents.map(i => i.tool),
+          experimentId: safeExperimentId || null,
+          timestamp: new Date().toISOString(),
+        }));
+      }
+    } catch (intentErr) {
+      // Parser must NEVER break chat flow.
+      console.warn('[Nanobot V2] intent-parser error (non-blocking):', intentErr);
+      parsedIntents = [];
+      cleanText = cappedText;
+    }
+
     // 6b. Sprint S iter 2 — Task A4: post-LLM PRINCIPIO ZERO validation.
     // Append-warning pattern: log violations, NEVER reject/modify response.
     // CRITICAL severity → console.error; lower → no-op (telemetry future).
     try {
       const isConceptIntro = false; // best-guess; future: derive from experimentContext metadata
-      const pzValidation = validatePrincipioZero(cappedText, { isConceptIntro });
+      const pzValidation = validatePrincipioZero(cleanText, { isConceptIntro });
       if (pzValidation.severity === 'CRITICAL') {
         console.error(JSON.stringify({
           level: 'error', event: 'pz_critical_violation',
           violations: pzValidation.violations,
           experimentId: safeExperimentId || null,
           model: result.model,
-          sample: cappedText.slice(0, 200),
+          sample: cleanText.slice(0, 200),
           timestamp: new Date().toISOString(),
         }));
       } else if (pzValidation.violations.length > 0) {
@@ -523,7 +557,7 @@ serve(async (req: Request) => {
     // separate /unlim-tts call when needed. Effect: -3s perceived latency.
     // 7. Save interaction to memory (async, non-blocking)
     const topicCategory = safeExperimentId || 'general';
-    saveInteraction(sessionId, safeExperimentId || null, topicCategory, cappedText.slice(0, 100), result.model)
+    saveInteraction(sessionId, safeExperimentId || null, topicCategory, cleanText.slice(0, 100), result.model)
       .catch(err => console.warn('[Nanobot V2] Memory save error:', err));
 
     const audioUrl: string | null = null; // decoupled — frontend fetches separately
@@ -532,9 +566,10 @@ serve(async (req: Request) => {
     const response: ChatResponse & {
       debug_retrieval?: Array<Record<string, unknown>>;
       retrieval_mode?: string;
+      intents_parsed?: Array<{ tool: string; args: Record<string, unknown> }>;
     } = {
       success: true,
-      response: cappedText,
+      response: cleanText,
       // iter 24: use result.model (actual provider model) when provider != gemini
       source: result.provider === 'mistral' ? result.model
         : result.provider === 'together' ? `together-${result.model}`
@@ -550,6 +585,12 @@ serve(async (req: Request) => {
     if (debugRetrieval) {
       response.debug_retrieval = retrievedChunksDebug;
       response.retrieval_mode = retrievalModeUsed;
+    }
+
+    // iter 36 Phase 1 Atom A1: surface parsed intents for client-side dispatch
+    // via window.__ELAB_API. Empty array omitted to keep payload minimal.
+    if (parsedIntents.length > 0) {
+      response.intents_parsed = parsedIntents.map(i => ({ tool: i.tool, args: i.args }));
     }
 
     return new Response(JSON.stringify(response), {
