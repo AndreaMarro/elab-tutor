@@ -269,6 +269,7 @@ export default function DrawingOverlay({
     const updatedPaths = [...paths, newPath];
     setPaths(updatedPaths);
     saveDrawingPaths(updatedPaths, experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence: track local write timestamp for remote-vs-local race condition
     setCurrentPath(null);
     onPathsChange?.(updatedPaths);
   }, [isDrawing, currentPath, paths, onPathsChange, experimentId]);
@@ -279,6 +280,7 @@ export default function DrawingOverlay({
     redoStackRef.current.push(paths);
     setPaths(prev);
     saveDrawingPaths(prev, experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence
     onPathsChange?.(prev);
   }, [paths, onPathsChange, experimentId]);
 
@@ -288,6 +290,7 @@ export default function DrawingOverlay({
     undoStackRef.current.push(paths);
     setPaths(next);
     saveDrawingPaths(next, experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence
     onPathsChange?.(next);
   }, [paths, onPathsChange, experimentId]);
 
@@ -298,6 +301,7 @@ export default function DrawingOverlay({
     }
     setPaths([]);
     saveDrawingPaths([], experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence
     setCurrentPath(null);
     onPathsChange?.([]);
   }, [paths, onPathsChange, experimentId]);
@@ -316,6 +320,7 @@ export default function DrawingOverlay({
       const updatedPaths = [...paths, newPath];
       setPaths(updatedPaths);
       saveDrawingPaths(updatedPaths, experimentId);
+      lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence: handleClose flush mid-stroke
       setIsDrawing(false);
       setCurrentPath(null);
       onPathsChange?.(updatedPaths);

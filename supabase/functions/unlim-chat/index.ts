@@ -318,7 +318,7 @@ serve(async (req: Request) => {
         onniscenzaSnapshot = await aggregateOnniscenza({
           query: safeMessage,
           experiment_id: safeExperimentId,
-          session_id: safeSessionId,
+          session_id: sessionId, // iter 35 fix Agent C audit: was undefined ref `safeSessionId` masked while ENABLE_ONNISCENZA off
           history: [], // caller history injection iter 31+
           supabase: supaClient,
           enable: { L1_rag: false /* already done above */, L3_glossario: false },

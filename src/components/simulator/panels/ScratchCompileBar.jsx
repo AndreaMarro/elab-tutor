@@ -10,10 +10,23 @@ import { friendlyError } from '../utils/friendlyError';
 
 // ErrorBoundary for ScratchEditor — graceful fallback on Blockly crash
 // S161.4: retryKey forces full React remount on retry (cleans orphaned Blockly DOM)
+// Iter 35 fix Andrea screenshot: capture error stack + componentStack for diagnosi prod
+//   (era solo logger.error → in production minified niente stack utile).
+//   Now stores errorMsg + stack in state, exposes diagnostic toggle.
 export class ScratchErrorBoundary extends React.Component {
-  constructor(props) { super(props); this.state = { hasError: false, retryKey: 0 }; }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch(err) { logger.error('[ScratchErrorBoundary]', err); }
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, retryKey: 0, errorMsg: '', errorStack: '', componentStack: '', showDiag: false };
+  }
+  static getDerivedStateFromError(err) {
+    return { hasError: true, errorMsg: err?.message || String(err), errorStack: err?.stack || '' };
+  }
+  componentDidCatch(err, info) {
+    logger.error('[ScratchErrorBoundary]', err, info?.componentStack);
+    this.setState({ componentStack: info?.componentStack || '' });
+    // Iter 35: surface to window for prod diagnostic via DevTools console
+    try { if (typeof window !== 'undefined') window.__elabBlocklyError = { msg: err?.message, stack: err?.stack, componentStack: info?.componentStack, ts: Date.now() }; } catch (_) { /* ignore */ }
+  }
   render() {
     if (this.state.hasError) {
       return (
@@ -25,13 +38,20 @@ export class ScratchErrorBoundary extends React.Component {
           <span style={{ fontSize: 32 }}>!</span>
           <p style={{ fontSize: 14, margin: 0 }}>Errore nell'editor blocchi.</p>
           <button
-            onClick={() => this.setState(prev => ({ hasError: false, retryKey: prev.retryKey + 1 }))}
+            onClick={() => this.setState(prev => ({ hasError: false, retryKey: prev.retryKey + 1, errorMsg: '', errorStack: '', componentStack: '', showDiag: false }))}
             style={{
               padding: '8px 16px', borderRadius: 6, border: 'none', cursor: 'pointer',
               background: 'var(--color-accent)', color: 'var(--color-text)', fontSize: 14, fontWeight: 600,
             }}
           >Riprova</button>
           <p style={{ fontSize: 14, color: 'var(--color-muted)', margin: 0 }}>Oppure usa la tab "Arduino C++"</p>
+          {/* Iter 35: diagnostic disclosure (collapsed by default) */}
+          {this.state.errorMsg && (
+            <details style={{ marginTop: 12, fontSize: 11, color: 'var(--color-muted)', textAlign: 'left', maxWidth: '100%', overflow: 'auto' }}>
+              <summary style={{ cursor: 'pointer', userSelect: 'none' }}>Dettagli tecnici (per Andrea)</summary>
+              <pre style={{ margin: '8px 0 0', padding: 8, fontSize: 10, fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.3)', borderRadius: 4, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{this.state.errorMsg}{this.state.errorStack ? '\n\n' + this.state.errorStack.slice(0, 800) : ''}</pre>
+            </details>
+          )}
         </div>
       );
     }

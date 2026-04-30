@@ -28,6 +28,9 @@ import logger from '../../utils/logger';
 import ErrorBoundary from '../common/ErrorBoundary';
 // Sprint S iter 2 Task B — Capitolo lookup service
 import { getCapitolo, listAllCapitoli } from '../../services/percorsoService';
+// iter 35 fix Bug 5 Fumetto: static import preserves user-gesture chain (was async dynamic import → window.open() blocked browser popup policy).
+import { openReportWindow } from '../unlim/UnlimReport';
+import { showToast as showToastSync } from '../common/Toast';
 // ADR-025 iter 26 — Modalità 4 modes canonical UI (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso)
 import ModalitaSwitch from './ModalitaSwitch';
 import css from './LavagnaShell.module.css';
@@ -513,6 +516,20 @@ export default function LavagnaShell() {
     };
   }, [wakeWordEnabled]);
 
+  // iter 35 fix Bug 8: ascolta errori wake word + toast feedback docente.
+  useEffect(() => {
+    const onWakeError = (ev) => {
+      const msg = ev?.detail?.message || 'Microfono non autorizzato per "Ehi UNLIM".';
+      try { showToastSync?.(msg, 'warning'); } catch (_) { /* ignore */ }
+      setWakeWordActive(false);
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('elab-wake-word-error', onWakeError);
+      return () => window.removeEventListener('elab-wake-word-error', onWakeError);
+    }
+    return undefined;
+  }, []);
+
   // Persist layout sizes and volume navigation to localStorage
   useEffect(() => {
     try { localStorage.setItem('elab-lavagna-left-panel', String(leftPanelSize)); } catch {}
@@ -957,22 +974,21 @@ export default function LavagnaShell() {
   }, [videoOpen, videoMinimized]);
 
   // ── Fumetto Report open (Regola 0: riuso UnlimReport existing system) ──
-  const handleFumettoOpen = useCallback(async () => {
+  // iter 35 fix Bug 5: SYNC handler preserva user-gesture chain (async breaks window.open browser popup policy).
+  // openReportWindow + showToast static-imported = call in same tick come click event.
+  const handleFumettoOpen = useCallback(() => {
     try {
-      const mod = await import('../unlim/UnlimReport');
       const expId = currentExperiment?.id || null;
-      const result = mod.openReportWindow(expId);
+      const result = openReportWindow(expId);
       // Feedback UX: avoid silent failure that was masking "nothing happens" bug
-      // iter 35 P0: ora il fumetto si apre SEMPRE (stub session locale se mancano dati).
-      const toast = await import('../common/Toast').catch(() => null);
       if (result === 'error') {
-        toast?.showToast?.('Errore nella generazione del Fumetto. Riprova.', 'error');
+        showToastSync?.('Errore nella generazione del Fumetto. Riprova.', 'error');
       } else if (result === 'downloaded') {
-        toast?.showToast?.('Fumetto scaricato come file HTML (popup bloccato dal browser).', 'success');
+        showToastSync?.('Fumetto scaricato come file HTML (popup bloccato dal browser).', 'success');
       } else if (result === 'downloaded-stub') {
-        toast?.showToast?.('Fumetto avviato (sessione vuota): completate un esperimento per arricchirlo.', 'info');
+        showToastSync?.('Fumetto avviato (sessione vuota): completate un esperimento per arricchirlo.', 'info');
       } else if (result === 'ok-stub') {
-        toast?.showToast?.('Fumetto aperto: completate un esperimento per arricchirlo coi dettagli.', 'info');
+        showToastSync?.('Fumetto aperto: completate un esperimento per arricchirlo coi dettagli.', 'info');
       }
     } catch (err) {
       logger.warn('[Fumetto] Unable to open report window:', err?.message || err);
