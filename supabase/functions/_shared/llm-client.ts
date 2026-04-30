@@ -208,19 +208,33 @@ export async function callLLM(options: LLMOptions): Promise<LLMResult> {
     };
   }
 
-  // Iter 24 NEW: weighted routing 65/25/10 (Andrea ratify) for text-only chat
-  // Active when LLM_ROUTING_WEIGHTS env set (default '65,25,10' if ROUTING_MODE=weighted).
+  // Iter 24 + 35 NEW: weighted routing for text-only chat
+  // iter 35 default 50/15/15/20 (Gemini Flash-Lite primary fast EU; Andrea: "Mistral lento")
+  // Active when LLM_ROUTING_WEIGHTS env set (default if ROUTING_MODE=weighted).
   const routingMode = (Deno.env.get('ROUTING_MODE') || 'weighted').toLowerCase();
   if (routingMode === 'weighted') {
     const pick = pickWeightedProvider();
-    if (pick === 'mistral-small') {
+    if (pick === 'gemini-flash-lite') {
+      try {
+        const r = await callGemini({ ...options, model: 'gemini-2.5-flash-lite' });
+        return {
+          text: r.text,
+          model: r.model,
+          provider: r.model === 'galileo-brain-v13' ? 'brain' : 'gemini',
+          tokensUsed: { input: r.tokensUsed?.input ?? 0, output: r.tokensUsed?.output ?? 0 },
+          latencyMs: r.latencyMs,
+        };
+      } catch (e) {
+        console.info(JSON.stringify({ level: 'info', event: 'weighted_gemini_flash_lite_down', error: e instanceof Error ? e.message : String(e) }));
+      }
+    } else if (pick === 'mistral-small') {
       try { return await callMistral(options, 'mistral-small-latest'); }
       catch (e) { console.info(JSON.stringify({ level: 'info', event: 'weighted_mistral_small_down', error: e instanceof Error ? e.message : String(e) })); }
     } else if (pick === 'mistral-large') {
       try { return await callMistral(options, 'mistral-large-latest'); }
       catch (e) { console.info(JSON.stringify({ level: 'info', event: 'weighted_mistral_large_down', error: e instanceof Error ? e.message : String(e) })); }
     }
-    // For 'together' pick OR Mistral failure, fall through to legacy chain below
+    // For 'together' pick OR provider failure, fall through to legacy chain below
   }
 
   // Reviewer issue #5 (Day 01): explicit LLMResult mapping for strict TS safety.
@@ -365,21 +379,36 @@ async function callMistral(options: LLMOptions, forceModel?: MistralChatModel): 
 }
 
 /**
- * Weighted random provider picker iter 24+ (Andrea routing 65/20/15):
- * - 65% Mistral Small (primary cheap)
- * - 20% Mistral Large (premium complex)
- * - 15% Together Llama 70B Turbo (high quality fallback)
+ * Weighted random provider picker iter 35+ (Andrea: "Mistral lento vs Gemini/DeepSeek/Nanobot era veloce"):
+ * Default iter 35 (LLM_ROUTING_WEIGHTS env): 50,15,15,20 = Gemini Flash-Lite primary fast EU
+ * - 50% Gemini Flash-Lite (primary fast EU, p50 ~1.5s)
+ * - 15% Mistral Small (cheap fallback)
+ * - 15% Mistral Large (premium complex)
+ * - 20% Together Llama 70B Turbo (high quality, gated)
+ * Backward compatible: 3-value weight strings (Mistral Small / Large / Together)
+ * still parse and gemini weight = 0 (legacy iter 24 behavior).
  * Returns null if env override (ROUTING_MODE=legacy) or weighted-mode disabled.
  */
-function pickWeightedProvider(): 'mistral-small' | 'mistral-large' | 'together' | null {
+function pickWeightedProvider(): 'gemini-flash-lite' | 'mistral-small' | 'mistral-large' | 'together' | null {
   if ((Deno.env.get('ROUTING_MODE') || '').toLowerCase() === 'legacy') return null;
-  const weights = (Deno.env.get('LLM_ROUTING_WEIGHTS') || '65,20,15').split(',').map((n) => parseInt(n.trim(), 10) || 0);
-  const [wSmall, wLarge, wTogether] = [weights[0] ?? 65, weights[1] ?? 20, weights[2] ?? 15];
-  const total = wSmall + wLarge + wTogether;
+  // iter 35: weighted routing solo se LLM_ROUTING_WEIGHTS è impostato esplicitamente
+  // (backward compat con test integrazione che usano LLM_PROVIDER=together puro).
+  const weightsEnv = (Deno.env.get('LLM_ROUTING_WEIGHTS') || '').trim();
+  if (!weightsEnv) return null;
+  const raw = weightsEnv.split(',').map((n) => parseInt(n.trim(), 10) || 0);
+  // 4-value: gemini, small, large, together — 3-value: small, large, together (legacy)
+  let wGemini = 0, wSmall = 0, wLarge = 0, wTogether = 0;
+  if (raw.length >= 4) {
+    [wGemini, wSmall, wLarge, wTogether] = [raw[0] ?? 0, raw[1] ?? 0, raw[2] ?? 0, raw[3] ?? 0];
+  } else {
+    [wSmall, wLarge, wTogether] = [raw[0] ?? 65, raw[1] ?? 20, raw[2] ?? 15];
+  }
+  const total = wGemini + wSmall + wLarge + wTogether;
   if (total <= 0) return null;
   const r = Math.random() * total;
-  if (r < wSmall) return 'mistral-small';
-  if (r < wSmall + wLarge) return 'mistral-large';
+  if (r < wGemini) return 'gemini-flash-lite';
+  if (r < wGemini + wSmall) return 'mistral-small';
+  if (r < wGemini + wSmall + wLarge) return 'mistral-large';
   return 'together';
 }
 
@@ -411,10 +440,24 @@ export async function callLLMWithFallback(
   const providersDown: string[] = [];
   const reqId = context.request_id ?? cryptoRandomId();
 
-  // Iter 24 NEW: weighted routing 65/20/15 (Andrea ratify)
-  // 65% Mistral Small primary, 20% Mistral Large premium, 15% Together Llama 70B
+  // Iter 24 + 35 NEW: weighted routing 50/15/15/20 (iter 35 Gemini Flash-Lite primary fast EU)
+  // Andrea iter 34: "Mistral lento vs Gemini/DeepSeek/Nanobot era veloce"
   const pick = pickWeightedProvider();
-  if (pick === 'mistral-small') {
+  if (pick === 'gemini-flash-lite') {
+    try {
+      const r = await callGemini({ ...options, modelOverride: 'gemini-2.5-flash-lite' });
+      return {
+        text: r.text,
+        model: r.model,
+        provider: r.model === 'galileo-brain-v13' ? 'brain' : 'gemini',
+        tokensUsed: { input: r.tokensUsed?.input ?? 0, output: r.tokensUsed?.output ?? 0 },
+        latencyMs: r.latencyMs,
+      };
+    } catch (e) {
+      providersDown.push('gemini-flash-lite-weighted');
+      console.info(JSON.stringify({ level: 'info', event: 'gemini_flash_lite_weighted_down', request_id: reqId, error: e instanceof Error ? e.message : String(e) }));
+    }
+  } else if (pick === 'mistral-small') {
     try {
       return await callMistral(options, 'mistral-small-latest');
     } catch (e) {
