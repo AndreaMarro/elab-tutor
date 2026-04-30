@@ -13,7 +13,7 @@ import { ALL_EXPERIMENTS, VOLUMES, findExperimentById } from '../../../src/data/
 import VOLUME_REFERENCES, { getVolumeRef, getBookPage, getVolumeLabel } from '../../../src/data/volume-references';
 
 // ─── Costanti attese ──────────────────────────────────────────────────────────
-const EXPECTED_COUNTS = { vol1: 38, vol2: 27, vol3: 27, total: 92 };
+const EXPECTED_COUNTS = { vol1: 38, vol2: 27, vol3: 29, total: 94 };
 const EXPERIMENT_ID_PATTERN = /^v[1-3]-cap\d+(-esp\d+|-[a-z]+)$/;
 
 // ─── Campi obbligatori per la parità con il volume fisico ─────────────────────
@@ -40,11 +40,11 @@ describe('Volume distribution', () => {
     expect(VOLUMES[1].experiments).toHaveLength(EXPECTED_COUNTS.vol2);
   });
 
-  it('Vol3 ha esattamente 27 esperimenti', () => {
+  it('Vol3 ha esattamente 29 esperimenti', () => {
     expect(VOLUMES[2].experiments).toHaveLength(EXPECTED_COUNTS.vol3);
   });
 
-  it('ALL_EXPERIMENTS aggrega tutti e 92 gli esperimenti', () => {
+  it('ALL_EXPERIMENTS aggrega tutti e 94 gli esperimenti', () => {
     expect(ALL_EXPERIMENTS).toHaveLength(EXPECTED_COUNTS.total);
   });
 
@@ -104,7 +104,7 @@ describe('Experiment IDs — unicità e formato', () => {
 // =============================================================================
 // 3. CAMPI BOOK-PARALLEL — ogni esperimento deve affiancare il volume fisico
 // =============================================================================
-describe('Book-parallel fields — tutti e 92 gli esperimenti', () => {
+describe('Book-parallel fields — tutti e 94 gli esperimenti', () => {
   it('Ogni esperimento ha "title" non vuoto', () => {
     const failing = ALL_EXPERIMENTS
       .map(e => ({ id: e.id, issue: getFieldMissing(e, 'title') }))

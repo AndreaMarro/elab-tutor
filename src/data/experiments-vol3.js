@@ -5665,6 +5665,247 @@ void loop() {
           explanation: "tone() genera un segnale a onda quadra alla frequenza specificata. L'array NOTE[] contiene 4 frequenze diverse: Do=262Hz (rosso), Mi=330Hz (verde), Sol=392Hz (blu), Do alto=523Hz (giallo). Ogni colore ha la sua nota!"
         }
       ]
+    },
+
+    // ═══════════════════════════════════════════════════
+    // Sprint T iter 37 Phase 3 — Maker-3 atom A9-FIX (Andrea iter 37 mandate "no debito tecnico")
+    // 2/7 deferred Maker-1 iter 37 Phase 1: chapter sintesi (cap7-mini) + Cap 8 ESERCIZIO 8.1 (cap8-serial)
+    // Source: Vol3 ODT extract /tmp/manuale-vol3-iter37.txt verbatim
+    // ═══════════════════════════════════════════════════
+    {
+      id: "v3-cap7-mini",
+      title: "Cap. 7 Mini - Potenziometro ADC + LED PWM",
+      desc: "Mini progetto Cap.7: leggiamo la tensione su A0 con analogRead() e accendiamo il LED su pin 13 quando supera 512 (~2,5V).",
+      chapter: "Capitolo 7 - Il mondo continuo: i pin analogici",
+      difficulty: 2,
+      icon: "\u{1F39B}\u{FE0F}",
+      simulationMode: "avr",
+      components: [
+        { type: "breadboard-half", id: "bb1" },
+        { type: "nano-r4", id: "nano1" },
+        { type: "potentiometer", id: "pot1" },
+        { type: "resistor", id: "r1", value: 470 },
+        { type: "led", id: "led1", color: "green" }
+      ],
+      connections: [
+        { from: "nano1:5V", to: "bb1:bus-bot-plus-1", color: "red" },
+        { from: "nano1:GND_R", to: "bb1:bus-bot-minus-1", color: "black" },
+        { from: "bb1:bus-bot-plus-15", to: "bb1:a15", color: "red" },
+        { from: "bb1:bus-bot-minus-17", to: "bb1:a17", color: "black" },
+        { from: "nano1:W_A0", to: "bb1:a16", color: "yellow" },
+        { from: "nano1:W_D13", to: "bb1:a23", color: "orange" },
+        { from: "bb1:a30", to: "bb1:bus-bot-minus-30", color: "black" }
+      ],
+      pinAssignments: {
+        "pot1:vcc": "bb1:b15",
+        "pot1:signal": "bb1:b16",
+        "pot1:gnd": "bb1:b17",
+        "r1:pin1": "bb1:c23",
+        "r1:pin2": "bb1:c29",
+        "led1:anode": "bb1:d29",
+        "led1:cathode": "bb1:d30"
+      },
+      code: `// Mini progetto Cap 7: Potenziometro + LED a soglia 2.5V
+// Vol.3 pag.75 - ESERCIZIO 7.1
+// © Andrea Marro - ELAB Tutor
+
+void setup() {
+  pinMode(A0, INPUT);   // trimmer come partitore di tensione
+  pinMode(13, OUTPUT);  // LED verde
+}
+
+void loop() {
+  int valoreLetto = analogRead(A0);  // legge 0-1023
+  if (valoreLetto > 512) {           // soglia ~2.5V
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`,
+      layout: {
+        "nano1": { x: 230, y: 10, parentId: "bb1" },
+        "bb1": { x: 280, y: 10 },
+        "pot1": { x: 405, y: 36.25 },
+        "r1": { x: 488.25, y: 58.75 },
+        "led1": { x: 533.25, y: 43.75 }
+      },
+      concept: "Pin analogici, analogRead, ADC 10 bit (1024 valori), trimmer come partitore di tensione, soglia decisionale",
+      layer: "schema",
+      estimatedMinutes: 30,
+      observe: "Il LED verde si accende solo quando il trimmer e ruotato oltre meta corsa (tensione > 2,5V, valore numerico > 512). Sotto soglia il LED resta spento.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando il mini progetto del Capitolo 7 (Vol. 3 pag. 75): potenziometro come partitore + LED a soglia. Concetti: analogRead(A0) restituisce 0-1023 su risoluzione 10 bit (1024 valori), il valore 512 corrisponde circa a 2,5V, formula V = (5 * numero) / 1023, sensibilita 5 mV. Rispondi in italiano usando 'Ragazzi' e cita la pagina del volume.",
+      hexFile: "/hex/v3-cap7-mini.hex",
+      steps: [
+        "Costruisci il circuito: trimmer su A0 come partitore + LED verde con resistore 470Ohm su pin 13.",
+        "Scrivi nel setup(): pinMode(A0, INPUT); pinMode(13, OUTPUT);",
+        "Nel loop() leggi: int valoreLetto = analogRead(A0); poi confronta con 512 per decidere se accendere il LED.",
+        "Carica il programma e ruota il trimmer: il LED si accende solo oltre meta corsa (~2,5V)."
+      ],
+      buildSteps: [
+        {
+          step: 1,
+          text: "Prendi il trimmer (potenziometro) e posizionalo nei fori B15, B16, B17",
+          componentId: "pot1",
+          componentType: "potentiometer",
+          targetPins: { "pot1:vcc": "bb1:b15", "pot1:signal": "bb1:b16", "pot1:gnd": "bb1:b17" },
+          hint: "Il trimmer ha 3 pin: VCC (alimentazione), SIGNAL (uscita centrale), GND (massa)."
+        },
+        {
+          step: 2,
+          text: "Prendi il resistore R1 (470Ω) e mettilo nei fori C23 e C29",
+          componentId: "r1",
+          componentType: "resistor",
+          targetPins: { "r1:pin1": "bb1:c23", "r1:pin2": "bb1:c29" },
+          hint: "Resistore di limitazione corrente per il LED."
+        },
+        {
+          step: 3,
+          text: "Prendi il LED verde e mettilo nei fori D29 e D30. Anodo (+) in D29!",
+          componentId: "led1",
+          componentType: "led",
+          targetPins: { "led1:anode": "bb1:d29", "led1:cathode": "bb1:d30" },
+          hint: "LED verde: si accendera quando supera la soglia 2,5V."
+        },
+        {
+          step: 4,
+          text: "Collega un filo ROSSO dal pin 5V al binario + (alimentazione)",
+          wireFrom: "nano1:5V",
+          wireTo: "bb1:bus-bot-plus-1",
+          wireColor: "red",
+          hint: "Alimentazione 5V."
+        },
+        {
+          step: 5,
+          text: "Collega un filo NERO dal pin GND al binario - (massa)",
+          wireFrom: "nano1:GND_R",
+          wireTo: "bb1:bus-bot-minus-1",
+          wireColor: "black",
+          hint: "Massa Arduino."
+        },
+        {
+          step: 6,
+          text: "Collega un filo GIALLO dal pin A0 al foro A16 (signal del trimmer)",
+          wireFrom: "nano1:W_A0",
+          wireTo: "bb1:a16",
+          wireColor: "yellow",
+          hint: "Pin A0 legge il segnale analogico."
+        },
+        {
+          step: 7,
+          text: "Collega un filo ARANCIONE dal pin D13 al foro A23 (resistore R1)",
+          wireFrom: "nano1:W_D13",
+          wireTo: "bb1:a23",
+          wireColor: "orange",
+          hint: "D13 controlla il LED quando supera la soglia."
+        }
+      ],
+      quiz: [
+        {
+          question: "Perche confrontiamo analogRead(A0) con 512 invece che con 2,5?",
+          options: ["Perche 512 e piu facile da scrivere", "Perche analogRead restituisce 0-1023, non Volt", "Perche 2,5V non funziona con Arduino"],
+          correct: 1,
+          explanation: "analogRead() restituisce un numero intero da 0 a 1023 (risoluzione 10 bit = 1024 valori). Il valore 512 corrisponde circa a meta della scala, cioe 2,5V. Formula esatta: V = (5 * numero) / 1023."
+        },
+        {
+          question: "Qual e il passo minimo (sensibilita) di analogRead su Arduino Nano R4?",
+          options: ["1 mV", "5 mV", "100 mV"],
+          correct: 1,
+          explanation: "Risoluzione 10 bit = 1024 valori su 5V. Quindi 5V/1024 = 4,88 mV circa 5 mV. Arduino non rileva variazioni piu piccole di 5 mV."
+        }
+      ]
+    },
+    {
+      id: "v3-cap8-serial",
+      title: "Cap. 8 Esp. 1 - Comunicazione seriale: primo messaggio",
+      desc: "Arduino invia un messaggio di saluto al computer tramite Serial Monitor. Niente componenti, solo il cavo USB! Impariamo Serial.begin(9600) e Serial.println().",
+      chapter: "Capitolo 8 - Visualizzare dati: il Monitor Seriale",
+      difficulty: 1,
+      icon: "\u{1F4AC}",
+      simulationMode: "avr",
+      components: [
+        { type: "nano-r4", id: "nano1" }
+      ],
+      connections: [],
+      pinAssignments: {},
+      code: `// ESERCIZIO 8.1: Primo messaggio sul Serial Monitor
+// Vol.3 pag.87
+// © Andrea Marro - ELAB Tutor
+
+void setup() {
+  Serial.begin(9600);              // attiva comunicazione seriale
+  while(!Serial);                  // aspetta che sia pronta
+  Serial.println("Ciao dal Team di ELAB!");
+}
+
+void loop() {
+  // Vuoto: il messaggio e nel setup, si invia una sola volta
+}`,
+      layout: {
+        "nano1": { x: 320, y: 50 }
+      },
+      concept: "Comunicazione seriale, Serial.begin(baud), Serial.println(), stringhe tra virgolette doppie, debug",
+      layer: "schema",
+      estimatedMinutes: 30,
+      observe: "Il Monitor Seriale (aperto a 9600 baud) mostra il messaggio 'Ciao dal Team di ELAB!' nella finestra bianca, una sola volta dopo il caricamento del programma.",
+      unlimPrompt: "Sei UNLIM, il tutor AI di ELAB. Lo studente sta guardando l'ESERCIZIO 8.1 del Volume 3 (pag. 87): primo messaggio dal Nano al PC via Monitor Seriale. Concetti: Serial.begin(9600) attiva la comunicazione, while(!Serial); aspetta che sia pronta, Serial.println() invia un messaggio con a-capo. Le virgolette doppie indicano che e una stringa (String). 9600 e la velocita in baud. Rispondi in italiano usando 'Ragazzi' e cita la pagina del volume.",
+      hexFile: "/hex/v3-cap8-serial.hex",
+      steps: [
+        "Collega la scheda Arduino Nano R4 al PC con il cavo USB. Niente breadboard, niente componenti.",
+        "Nel setup() scrivi: Serial.begin(9600); while(!Serial); Serial.println(\"Ciao dal Team di ELAB!\");",
+        "Apri il Monitor Seriale dell'IDE Arduino e imposta la velocita su 9600 baud.",
+        "Carica il programma e osserva il messaggio nella finestra bianca."
+      ],
+      // Sprint T iter 37 Phase 3 — Maker-3 atom A9-FIX: USB-only (no breadboard wiring).
+      // buildSteps presenti per simmetria con altri esperimenti (test minimo 1 buildStep).
+      // Step 1 ha componentId=nano1 (la scheda da collegare). Step 2-4 sono software-only via wireFrom 'usb' marker.
+      buildSteps: [
+        {
+          step: 1,
+          text: "Prendi la scheda Arduino Nano R4 e collegala al PC con il cavo USB",
+          componentId: "nano1",
+          componentType: "nano-r4",
+          targetPins: {},
+          hint: "Niente breadboard, niente componenti. Solo il cavo USB."
+        },
+        {
+          step: 2,
+          text: "Apri il Monitor Seriale dell'IDE Arduino: Strumenti -> Monitor Seriale",
+          componentId: "nano1",
+          hint: "Oppure clicca sulla lente di ingrandimento in alto a destra dello sketch."
+        },
+        {
+          step: 3,
+          text: "Imposta la velocita su 9600 baud (in basso a destra del Monitor Seriale)",
+          componentId: "nano1",
+          hint: "Deve corrispondere al valore in Serial.begin(9600)."
+        },
+        {
+          step: 4,
+          text: "Carica il programma e osserva il messaggio nella finestra bianca",
+          componentId: "nano1",
+          hint: "Vedrai 'Ciao dal Team di ELAB!' apparire una sola volta."
+        }
+      ],
+      quiz: [
+        {
+          question: "Cosa fa Serial.begin(9600)?",
+          options: ["Accende il LED integrato", "Attiva la comunicazione seriale a 9600 baud", "Aspetta 9600 millisecondi"],
+          correct: 1,
+          explanation: "Serial.begin(9600) attiva la comunicazione seriale tra Arduino e PC alla velocita di 9600 baud. Per i nostri esercizi useremo sempre 9600."
+        },
+        {
+          question: "Perche il messaggio appare una sola volta e non in continuazione?",
+          options: ["Perche Serial.println e lento", "Perche e dentro setup(), che si esegue una sola volta", "Perche il PC blocca i messaggi ripetuti"],
+          correct: 1,
+          explanation: "setup() si esegue una sola volta all'avvio del programma. loop() invece si ripete all'infinito. Per ripetere il messaggio bisogna spostarlo nel loop()."
+        },
+        {
+          question: "Cosa significa 'baud' nel contesto Serial?",
+          options: ["La quantita di memoria usata", "La velocita di comunicazione in simboli al secondo", "Il numero di caratteri del messaggio"],
+          correct: 1,
+          explanation: "Baud e la velocita di trasmissione (simboli al secondo). PC e Arduino devono usare la stessa velocita: 9600 nell'IDE = 9600 in Serial.begin(). Altrimenti caratteri illeggibili."
+        }
+      ]
     }
   ]
 };

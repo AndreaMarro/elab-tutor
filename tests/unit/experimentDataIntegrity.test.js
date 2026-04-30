@@ -1,5 +1,5 @@
 /**
- * Experiment Data Integrity — Comprehensive verification of ALL 92 experiments
+ * Experiment Data Integrity — Comprehensive verification of ALL 94 experiments (Sprint T iter 37 Phase 3 +2 Vol3)
  * Verifies counts, uniqueness, required fields, components, lesson groups,
  * volume references, difficulty ranges, and simulation modes.
  * Target: ~300 test cases
@@ -42,12 +42,12 @@ describe('1. Count Integrity', () => {
     expect(vol2Experiments.length).toBe(27);
   });
 
-  test('Volume 3 has exactly 27 experiments', () => {
-    expect(vol3Experiments.length).toBe(27);
+  test('Volume 3 has exactly 29 experiments', () => {
+    expect(vol3Experiments.length).toBe(29);
   });
 
-  test('Total experiments is 38 + 27 + 27 = 92', () => {
-    expect(allExperiments.length).toBe(92);
+  test('Total experiments is 38 + 27 + 29 = 94', () => {
+    expect(allExperiments.length).toBe(94);
   });
 
   test('Sum of volumes equals total', () => {
@@ -169,8 +169,8 @@ describe('5. Lesson Group Coverage', () => {
     }
   });
 
-  test('Lesson group experiment IDs total matches 92', () => {
-    expect(lessonGroupExperimentIds.size).toBe(92);
+  test('Lesson group experiment IDs total matches 94', () => {
+    expect(lessonGroupExperimentIds.size).toBe(94);
   });
 
   test('Every lesson group experiment ID corresponds to a real experiment', () => {
@@ -336,11 +336,11 @@ describe('10. SimulationMode Valid', () => {
     });
   });
 
-  test('Circuit mode count (65) + AVR mode count (27) = 92', () => {
+  test('Circuit mode count (65) + AVR mode count (29) = 94', () => {
     const circuitCount = allExperiments.filter(e => e.simulationMode === 'circuit').length;
     const avrCount = allExperiments.filter(e => e.simulationMode === 'avr').length;
     expect(circuitCount).toBe(65);
-    expect(avrCount).toBe(27);
-    expect(circuitCount + avrCount).toBe(92);
+    expect(avrCount).toBe(29);
+    expect(circuitCount + avrCount).toBe(94);
   });
 });

@@ -85,6 +85,6 @@ describe('Experiment icons and metadata', () => {
   });
 
   it('Vol3 has 27 experiments', () => {
-    expect(EXPERIMENTS_VOL3.experiments.length).toBe(27);
+    expect(EXPERIMENTS_VOL3.experiments.length).toBe(29);
   });
 });

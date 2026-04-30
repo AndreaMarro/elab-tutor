@@ -29,6 +29,15 @@
       "Reference narrative-progression analysis: docs/audits/2026-04-24-narrative-progression-analysis.md",
       "Vol3 Cap 9 ora marked 'wip_with_capstone_candidate' invece di puro WIP"
     ],
+    "extensions_v1.2_iter37_phase3_close": [
+      "Sprint T iter 37 Phase 3 — Maker-3 atom A9-FIX (2026-04-30, Andrea iter 37 mandate 'no debito tecnico'): chiusura 2/7 deferred Maker-1 iter 37 Phase 1",
+      "Lesson-path JSON v3-cap7-mini.json shipped (Vol3 ODT line 2851-3000 verbatim Cap 7 ESERCIZIO 7.1 mini sintesi: potenziometro ADC + LED PWM)",
+      "Lesson-path JSON v3-cap8-serial.json shipped (Vol3 ODT line 3864-4100 verbatim Cap 8 ESERCIZIO 8.1: Serial.begin + Serial.println primo messaggio)",
+      "experiments-vol3.js ALL_EXPERIMENTS aggregator +2 entries (id + chapter + page + bookText verbatim + components + buildSteps + quiz)",
+      "volume-references.js VOLUME_REFERENCES +2 entries (volume + bookPage + chapter + bookText verbatim ODT-sourced + bookInstructions + bookQuote + bookContext)",
+      "Total esperimenti: 92 → 94 (38 Vol1 + 27 Vol2 + 29 Vol3, di cui Vol3 = 27 chapter-numbered + 2 chapter-mini/serial + 3 extras simon/lcd/servo, ma simon/lcd/servo gia counted in 27 numbered cap5-8 mapping)",
+      "Hardcoded toBe(92) test assertions aggiornati a toBe(94) in 22+ test files unit/ (volumeParallelism + experimentDataIntegrity + experimentQuiz + ALL_EXPERIMENTS aggregator tests)"
+    ],
     "notes": [
       "Grep pattern originale usava `Capitolo` lowercase = solo TOC. Body usa `CAPITOLO` uppercase = caught now.",
       "Vol3 ODT body ha solo 1 marker 'CAPITOLO' uppercase (line 655 Cap3). Struttura Vol3 ODT è ESERCIZIO-driven.",

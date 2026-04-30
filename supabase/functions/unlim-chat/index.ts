@@ -18,6 +18,10 @@ import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shar
 import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
 import { selectTemplate, executeTemplate } from '../_shared/clawbot-template-router.ts';
 import { aggregateOnniscenza } from '../_shared/onniscenza-bridge.ts';
+// iter 37 Phase 1 Atom A2 — pre-LLM regex classifier drives ENABLE_ONNISCENZA
+// conditional path: chit_chat skips aggregator (~500-1000ms saved), deep
+// questions / safety / citations preserve top-3, plurale ragazzi top-2.
+import { classifyPrompt } from '../_shared/onniscenza-classifier.ts';
 // iter 36 Phase 1 Atom A1 — Onnipotenza dispatcher 62-tool wire post-LLM.
 // Parses `[INTENT:{...}]` tags from LLM response, returns parsed intents in
 // the API response so the client (browser-side __ELAB_API) can dispatch.
@@ -293,8 +297,20 @@ serve(async (req: Request) => {
     // ENABLE_ONNISCENZA=true activates aggregateOnniscenza in parallel to RAG.
     // Augments ragContext with L4 class memory + L6 chat history + L7 analogia
     // when supabase client + history provided (non-blocking, defensive try/catch).
+    //
+    // iter 37 Atom A2 — conditional aggregator path (latency lift).
+    // Pre-LLM regex classifier decides:
+    //   chit_chat        => skip aggregator entirely (~500-1000ms saved)
+    //   citation_vol_pag => onniscenza top-2 focused fetch (volume-anchored)
+    //   plurale_ragazzi  => onniscenza top-2 (docente narrating, concise)
+    //   deep_question    => onniscenza top-3 (full RRF context)
+    //   safety_warning   => onniscenza top-3 (mandatory safety)
+    //   default fallback => onniscenza top-3 (safer default)
+    const promptClass = classifyPrompt(safeMessage);
     let onniscenzaSnapshot: unknown = null;
-    if ((Deno.env.get('ENABLE_ONNISCENZA') || 'false').toLowerCase() === 'true') {
+    let onniTopK = 3; // top-K used for prompt injection (default keeps existing behavior)
+    if ((Deno.env.get('ENABLE_ONNISCENZA') || 'false').toLowerCase() === 'true' && !promptClass.skipOnniscenza) {
+      onniTopK = promptClass.topK;
       try {
         const supaUrl = (Deno.env.get('SUPABASE_URL') || '').trim();
         const supaKey = (Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '').trim();
@@ -376,7 +392,8 @@ serve(async (req: Request) => {
     let onniscenzaContext = '';
     if (onniscenzaSnapshot && typeof onniscenzaSnapshot === 'object') {
       const snap = onniscenzaSnapshot as { fused?: Array<{ layer?: string; text?: string; source?: string }> };
-      const top3 = (snap.fused || []).slice(0, 3);
+      // iter 37 A2: dynamic top-K from classifier (top-2 for citation/plurale, top-3 otherwise).
+      const top3 = (snap.fused || []).slice(0, Math.max(0, onniTopK));
       if (top3.length > 0) {
         const onniLines = top3.map((h, i) => {
           const src = h.source || h.layer || 'onniscenza';
@@ -461,17 +478,26 @@ serve(async (req: Request) => {
     // Sprint S iter 5: Andrea decision — Together AI primary, Gemini fallback
     // (R5 49/50 PASS Llama 3.3 70B, audit docs/audits/2026-04-26-sprint-s-iter4-r5-together-direct-RESULT.md)
     // callLLM respects LLM_PROVIDER env (defaults to 'together' in llm-client.ts:192).
+    //
+    // iter 37 Phase 3 latency p95 mitigation:
+    //   - Promise.race 8s timeout kills tail outliers (R5 max 17971ms = 18s).
+    //   - On timeout, throws 'llm_timeout_8s' → caught by existing catch → callBrainFallback.
+    //   - maxOutputTokens reduced 256→120 per iter 31 close mandate (sync llm-client.ts:311 default).
     let result;
     try {
-      result = await callLLM({
+      const llmCallPromise = callLLM({
         model,
         systemPrompt,
         message: safeMessage,
         images: safeImages,
-        maxOutputTokens: 256,
+        maxOutputTokens: 120,
         temperature: 0.7,
         thinkingLevel,
       });
+      const timeoutPromise = new Promise<never>((_, rej) => {
+        setTimeout(() => rej(new Error('llm_timeout_8s')), 8000);
+      });
+      result = await Promise.race([llmCallPromise, timeoutPromise]);
     } catch (llmError) {
       // Both Together + Gemini failed — try Brain fallback
       console.warn(JSON.stringify({
@@ -567,6 +593,8 @@ serve(async (req: Request) => {
       debug_retrieval?: Array<Record<string, unknown>>;
       retrieval_mode?: string;
       intents_parsed?: Array<{ tool: string; args: Record<string, unknown> }>;
+      // iter 37 A2: telemetry for benchmark/debug. Omitted unless debug_retrieval=true to keep payload minimal.
+      prompt_class?: { category: string; skipOnniscenza: boolean; topK: number; wordCount: number };
     } = {
       success: true,
       response: cleanText,
@@ -585,6 +613,13 @@ serve(async (req: Request) => {
     if (debugRetrieval) {
       response.debug_retrieval = retrievedChunksDebug;
       response.retrieval_mode = retrievalModeUsed;
+      // iter 37 A2: surface classifier verdict for bench R5 latency measurement.
+      response.prompt_class = {
+        category: promptClass.category,
+        skipOnniscenza: promptClass.skipOnniscenza,
+        topK: promptClass.topK,
+        wordCount: promptClass.wordCount,
+      };
     }
 
     // iter 36 Phase 1 Atom A1: surface parsed intents for client-side dispatch

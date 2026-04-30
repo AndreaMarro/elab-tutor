@@ -108,9 +108,17 @@ export async function cfImageGen(opts: CfImageGenOptions): Promise<CfImageGenRes
 // ────────────────────────────────────────────────────────────────────────────
 
 export interface CfWhisperOptions {
-  /** Audio bytes (raw, base64, or Uint8Array). CF expects raw byte array. */
-  audio: Uint8Array | number[];
+  /** Audio bytes (raw, base64 string, or Uint8Array). */
+  audio: Uint8Array | number[] | string;
   language?: string; // e.g. 'it', 'en'
+  /**
+   * iter 37 A4: shape selector. CF Whisper Turbo accepts both shapes 2026:
+   *   'auto'        — try base64 JSON first (canonical 2026), fallback raw binary
+   *   'base64-json' — POST application/json {audio: "base64..."} (CF canonical)
+   *   'raw-binary'  — POST application/octet-stream <bytes> (curl --data-binary)
+   * Default 'auto' for maximum compatibility (Voxtral Ogg Opus + WAV + MP3 + WebM).
+   */
+  inputShape?: 'auto' | 'base64-json' | 'raw-binary';
 }
 
 export interface CfWhisperResult {
@@ -118,47 +126,167 @@ export interface CfWhisperResult {
   model: string;
   provider: 'cloudflare';
   latencyMs: number;
+  /** iter 37 A4: which input shape actually succeeded (auto retry telemetry). */
+  shapeUsed?: 'base64-json' | 'raw-binary';
+  /** iter 37 A4: detected audio container from magic bytes (ogg|webm|mp3|wav|flac|unknown). */
+  audioContainer?: string;
+  /** iter 37 A4: surface language returned by CF when available. */
+  language?: string;
   meta?: Record<string, unknown>;
 }
 
+/**
+ * Detect audio container from leading magic bytes. Used for telemetry +
+ * future format-specific handling. NEVER throws — returns 'unknown' on
+ * unrecognized signatures.
+ */
+function detectAudioContainer(bytes: Uint8Array): string {
+  if (bytes.length < 4) return 'unknown';
+  // OggS — Ogg container (Opus / Vorbis)
+  if (bytes[0] === 0x4F && bytes[1] === 0x67 && bytes[2] === 0x67 && bytes[3] === 0x53) return 'ogg';
+  // 1A 45 DF A3 — EBML / Matroska / WebM
+  if (bytes[0] === 0x1A && bytes[1] === 0x45 && bytes[2] === 0xDF && bytes[3] === 0xA3) return 'webm';
+  // RIFF....WAVE
+  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46) return 'wav';
+  // ID3 (MP3 with metadata)
+  if (bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) return 'mp3';
+  // FF Fx — MP3 frame sync
+  if (bytes[0] === 0xFF && (bytes[1] & 0xE0) === 0xE0) return 'mp3';
+  // fLaC
+  if (bytes[0] === 0x66 && bytes[1] === 0x4C && bytes[2] === 0x61 && bytes[3] === 0x43) return 'flac';
+  // 00 00 00 .. ftyp — MP4 / M4A
+  if (bytes.length >= 8 && bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return 'mp4';
+  return 'unknown';
+}
+
+/** Encode bytes → base64 (chunked for large arrays to avoid stack overflow). */
+function bytesToBase64(bytes: Uint8Array): string {
+  // Process in 8KB chunks to avoid String.fromCharCode argument limit (~64K args).
+  const CHUNK = 0x2000;
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(binary);
+}
+
+/**
+ * Cloudflare Whisper STT — iter 37 Phase 3 fix v2 dual-shape with auto-fallback.
+ *
+ * The 2026 CF Whisper Turbo REST API accepts:
+ *   - application/json {audio: [byte_array], language?}  (canonical per CF docs — array of integer bytes 0-255)
+ *   - audio/<container> <raw bytes>                       (binary upload path with format-specific Content-Type)
+ *
+ * Iter 37 Phase 3 fix: prior implementation sent `{audio: "<base64string>"}` which CF rejects with
+ * "AiError: Invalid input (code 8001)" — Tester-4 9/9 FAIL matrix confirmed both paths broken.
+ * Root cause: CF API expects ARRAY of integer bytes per audio field, not base64-encoded string.
+ *
+ * Strategy v2 (iter 37 Phase 3):
+ *   1. Try array-json first (CORRECT canonical CF format).
+ *   2. On 4xx, retry binary with format-specific Content-Type from container detection.
+ *   3. Surface `shapeUsed` + `audioContainer` for telemetry / debug.
+ */
 export async function cfWhisperSTT(opts: CfWhisperOptions): Promise<CfWhisperResult> {
   const start = Date.now();
-  // Iter 30 fix: Whisper Turbo expects raw octet-stream bytes, NOT JSON array.
-  // Previous JSON {audio: [bytes]} path returned "Type mismatch '/audio',
-  // 'string' not in 'array','binary'" because CF newer Whisper variant
-  // deprecated JSON-wrapped array path in favor of raw binary upload.
-  const audioBytes = opts.audio instanceof Uint8Array
-    ? opts.audio
-    : new Uint8Array(opts.audio as number[]);
+  // Normalize input → Uint8Array
+  let audioBytes: Uint8Array;
+  if (opts.audio instanceof Uint8Array) {
+    audioBytes = opts.audio;
+  } else if (Array.isArray(opts.audio)) {
+    audioBytes = new Uint8Array(opts.audio);
+  } else if (typeof opts.audio === 'string') {
+    // Caller may pass base64 string directly — decode for container detection.
+    try {
+      const bin = atob(opts.audio);
+      audioBytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) audioBytes[i] = bin.charCodeAt(i);
+    } catch {
+      throw new GeminiError(ErrorCode.API_ERROR, 'CF Whisper invalid base64 input string');
+    }
+  } else {
+    throw new GeminiError(ErrorCode.API_ERROR, 'CF Whisper unsupported audio input type');
+  }
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const audioContainer = detectAudioContainer(audioBytes);
   const url = `${cfBaseUrl()}/@cf/openai/whisper-large-v3-turbo`;
   const token = (Deno.env.get('CLOUDFLARE_API_TOKEN') || '').trim();
   if (!token) throw new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, 'CLOUDFLARE_API_TOKEN not configured');
 
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/octet-stream',
-      },
-      body: audioBytes,
-      signal: controller.signal,
-    });
-    clearTimeout(timeout);
-  } catch (e) {
-    clearTimeout(timeout);
-    if (e instanceof DOMException && e.name === 'AbortError') {
-      throw new GeminiError(ErrorCode.TIMEOUT, `Cloudflare Whisper timed out`);
+  const shape = opts.inputShape || 'auto';
+
+  // Helper to perform a POST with given Content-Type + body, with timeout.
+  async function postOnce(contentType: string, body: BodyInit): Promise<Response> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': contentType,
+        },
+        body,
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+      return res;
+    } catch (e) {
+      clearTimeout(timeout);
+      if (e instanceof DOMException && e.name === 'AbortError') {
+        throw new GeminiError(ErrorCode.TIMEOUT, `Cloudflare Whisper timed out`);
+      }
+      throw e;
     }
-    throw e;
   }
+
+  // iter 37 Phase 3 fix v2: build array-of-bytes JSON payload (CF canonical REST format).
+  const lang = opts.language || 'it';
+  const buildArrayJsonBody = () => JSON.stringify({ audio: Array.from(audioBytes), language: lang });
+
+  // Map detected audio container → format-specific Content-Type for binary fallback.
+  // Falls back to application/octet-stream for unknown containers.
+  function containerToContentType(container: string): string {
+    switch (container) {
+      case 'wav': return 'audio/wav';
+      case 'mp3': return 'audio/mpeg';
+      case 'ogg': return 'audio/ogg';
+      case 'webm': return 'audio/webm';
+      case 'flac': return 'audio/flac';
+      case 'mp4': return 'audio/mp4';
+      default: return 'application/octet-stream';
+    }
+  }
+
+  let res: Response | null = null;
+  let shapeUsed: 'base64-json' | 'raw-binary' = 'base64-json';
+
+  if (shape === 'base64-json' || shape === 'auto') {
+    res = await postOnce('application/json', buildArrayJsonBody());
+    shapeUsed = 'base64-json';  // logical name preserved for telemetry compat (now means array-json)
+    // On 4xx retry raw binary with format-specific Content-Type (auto only).
+    if (!res.ok && shape === 'auto' && res.status >= 400 && res.status < 500) {
+      const errBody = await res.text().catch(() => '');
+      console.warn(JSON.stringify({
+        level: 'warn', event: 'cf_whisper_array_json_failed_retry_binary',
+        status: res.status, container: audioContainer,
+        contentType: containerToContentType(audioContainer),
+        error: errBody.slice(0, 200),
+      }));
+      res = await postOnce(containerToContentType(audioContainer), audioBytes);
+      shapeUsed = 'raw-binary';
+    }
+  } else {
+    // shape === 'raw-binary' explicit — use format-specific Content-Type
+    res = await postOnce(containerToContentType(audioContainer), audioBytes);
+    shapeUsed = 'raw-binary';
+  }
+
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    throw new GeminiError(ErrorCode.API_ERROR, `CF Whisper ${res.status}: ${text.slice(0, 200)}`);
+    throw new GeminiError(
+      ErrorCode.API_ERROR,
+      `CF Whisper ${res.status} (shape=${shapeUsed}, container=${audioContainer}): ${text.slice(0, 200)}`,
+    );
   }
   const data = await res.json();
   const text: string = data?.result?.text ?? '';
@@ -168,6 +296,9 @@ export async function cfWhisperSTT(opts: CfWhisperOptions): Promise<CfWhisperRes
     model: '@cf/openai/whisper-large-v3-turbo',
     provider: 'cloudflare',
     latencyMs: Date.now() - start,
+    shapeUsed,
+    audioContainer,
+    language: data?.result?.language,
     meta: data?.result || {},
   };
 }

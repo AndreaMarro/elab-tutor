@@ -91,7 +91,7 @@ describe('LESSON_GROUPS — struttura base', () => {
 
   it('contiene esattamente 92 esperimenti totali', () => {
     const allExpIds = entries.flatMap(([, l]) => l.experiments);
-    expect(allExpIds.length).toBe(92);
+    expect(allExpIds.length).toBe(94);
   });
 });
 
@@ -125,7 +125,7 @@ describe('LESSON_GROUPS — distribuzione volumi', () => {
 
   it('Volume 3 contiene 27 esperimenti', () => {
     const v3Exps = entries.filter(([, l]) => l.volume === 3).flatMap(([, l]) => l.experiments);
-    expect(v3Exps.length).toBe(27);
+    expect(v3Exps.length).toBe(29);
   });
 
   it('experiment IDs del Volume 1 iniziano con v1-', () => {

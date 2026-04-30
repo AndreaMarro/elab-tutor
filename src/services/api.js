@@ -321,11 +321,18 @@ async function tryNanobot(message, circuitState, externalSignal, experimentId, i
         const data = await res.json();
         if (data.success && data.response) {
             const { filtered: safeContent } = filterAIResponse(data.response);
+            // iter 37 Atom B-NEW: surface intents_parsed from Edge Function
+            // (server-side INTENT parser per ADR-028 §14 surface-to-browser pivot).
+            // Caller (useGalileoChat) iterates + dispatches via __ELAB_API.
+            // Defensive: always pass an array (empty when field absent) so consumers
+            // can safely call `.length` / `for...of` without null-guards.
+            const intentsParsed = Array.isArray(data.intents_parsed) ? data.intents_parsed : [];
             return {
                 success: true,
                 response: ensureBookCitation(safeContent, experimentId),
                 source: 'nanobot',
                 actions: extractActions(safeContent),
+                intentsParsed,
             };
         }
         return null;

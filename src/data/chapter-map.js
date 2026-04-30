@@ -66,11 +66,14 @@ export function getDisplayInfo(experimentId) {
   // v1-cap6-esp1 -> v1-cap6
   // v3-cap6-morse -> v3-cap6
   // v3-cap6-semaforo -> v3-cap6
+  // v3-cap7-mini -> v3-cap7 (Sprint T iter 37 Phase 3)
+  // v3-cap8-serial -> v3-cap8 (Sprint T iter 37 Phase 3)
   const chapterKey = experimentId
     .replace(/-esp\d+.*$/, '')
     .replace(/-morse$/, '')
     .replace(/-semaforo$/, '')
-    .replace(/-mini.*$/, '');
+    .replace(/-mini.*$/, '')
+    .replace(/-serial$/, '');
 
   return CHAPTER_MAP[chapterKey] || null;
 }

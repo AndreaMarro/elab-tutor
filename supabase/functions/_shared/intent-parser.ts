@@ -212,15 +212,25 @@ export function parseIntentTags(text: string): IntentTag[] {
     const parsed = tolerantParseObject(span.jsonRaw);
     if (!parsed) continue;
 
-    const tool = typeof parsed.tool === 'string' ? parsed.tool : null;
+    // iter 37 Phase 3 fix: accept both `tool` (canonical) and `action` (alias)
+    // for LLM-emitted intents. Tester-5 R7 found 100% drop when LLM emitted
+    // `{"action":"...","params":{...}}` per system-prompt iter 37 amend.
+    // Parser is now LLM-forgiving on key naming.
+    const tool = typeof parsed.tool === 'string'
+      ? parsed.tool
+      : typeof parsed.action === 'string'
+        ? parsed.action
+        : null;
     if (!tool) {
-      _lastParseErrors.push(`missing_tool_field`);
+      _lastParseErrors.push(`missing_tool_or_action_field`);
       continue;
     }
 
+    // iter 37 Phase 3 fix: accept both `args` (canonical) and `params` (alias).
+    const argsSource = parsed.args ?? parsed.params;
     const args =
-      parsed.args && typeof parsed.args === 'object' && !Array.isArray(parsed.args)
-        ? (parsed.args as Record<string, unknown>)
+      argsSource && typeof argsSource === 'object' && !Array.isArray(argsSource)
+        ? (argsSource as Record<string, unknown>)
         : {};
 
     out.push({

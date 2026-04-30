@@ -1190,6 +1190,35 @@ const VOLUME_REFERENCES = {
     bookQuote: null,
     bookContext: "Progetto finale avanzato: gioco Simon Says. Combina tutti i concetti del Volume 3: pin digitali OUTPUT e INPUT, array, cicli, random. È la sfida più complessa del libro."
   },
+
+  // Sprint T iter 37 Phase 3 — Maker-3 atom A9-FIX (2/7 deferred Maker-1 iter 37 Phase 1 closure)
+  // Source: Vol3 ODT extract /tmp/manuale-vol3-iter37.txt — Cap 7 line 2851-3000 + Cap 8 line 3864-4100 verbatim
+  'v3-cap7-mini': {
+    volume: 3, bookPage: 75, chapter: "Capitolo 7 - Il mondo continuo: i pin analogici", chapterPage: 73,
+    bookText: "ESERCIZIO 7.1: in questo esperimento faremo una cosa molto interessante: accenderemo un LED collegato al pin 13 della Arduino Nano R4 solo quando la tensione letta sul pin A0 supera i 2,5 V. Per realizzare il circuito abbiamo bisogno di: Arduino Nano R4, ELAB Nano Breakout, 1 LED verde, 1 resistore da 470 Ohm, 1 trimmer (potenziometro), 3 cavetti. Ricorda che il trimmer, collegato così, funziona come un partitore di tensione. Quando lo giri verso sinistra la tensione sul pin centrale è circa 0V, verso destra arriva fino a circa 5V, a metà è circa 2,5V. La risoluzione della scheda è di 10 bit: può rappresentare 1024 valori diversi (da 0 a 1023). A 0 V corrisponde 0, a 5 V corrisponde 1023. Il passo minimo è 5V/1024 = 4,88 mV circa 5 mV.",
+    bookInstructions: [
+      "Costruisci il circuito come nella figura 7.2: trimmer su A0 come partitore, LED verde + resistore 470Ω su pin 13",
+      "In setup(): pinMode(A0, INPUT); pinMode(13, OUTPUT); — non serve INPUT_PULLUP perché il trimmer è già un partitore",
+      "Nel loop(): int valoreLetto = analogRead(A0); — usa UN solo = perché stiamo assegnando, non confrontando",
+      "Se valoreLetto > 512 (circa metà, ~2,5V), accendi il LED su pin 13; altrimenti spegnilo",
+      "Ruota il trimmer oltre la metà per accendere il LED; riportalo indietro per spegnerlo"
+    ],
+    bookQuote: "Il valore cambia solo se la tensione aumenta (o diminuisce) di almeno 5 millivolt.",
+    bookContext: "Mini progetto sintesi del Capitolo 7: lettura analogica con potenziometro come partitore + decisione con soglia. Introduce ADC, quantizzazione (1024 gradini, passo 5 mV), pin analogici A0-A7. Prepara al Capitolo 8 dove vedremo i valori letti tramite Serial Monitor."
+  },
+  'v3-cap8-serial': {
+    volume: 3, bookPage: 87, chapter: "Capitolo 8 - Visualizzare dati: il Monitor Seriale", chapterPage: 82,
+    bookText: "ESERCIZIO 8.1: in questo esperimento faremo una cosa molto semplice ma importante: Arduino invierà un messaggio di saluto al computer! Per farlo non serve costruire nessun circuito complicato. Ti basta collegare la scheda Arduino al PC con il cavo USB. Per prima cosa dobbiamo attivare la comunicazione seriale: Serial.begin(9600). Questa istruzione significa 'inizia la comunicazione tra Arduino e il computer'. Serial è un oggetto, begin() è un comando per avviarlo, 9600 è la velocità di comunicazione (baud). Poi while(!Serial); aspetta finché la comunicazione seriale non è pronta. Infine Serial.println(\"Ciao dal Team di ELAB!\") scrive il messaggio nel Serial Monitor. println stampa il testo e va a capo.",
+    bookInstructions: [
+      "Collega la scheda Arduino Nano R4 al PC con il cavo USB",
+      "Apri il Monitor Seriale: clicca su Strumenti -> Monitor Seriale, oppure sulla lente di ingrandimento in alto a destra dello sketch",
+      "Imposta la velocità su 9600 baud (in basso a destra del Monitor Seriale)",
+      "Nel setup() scrivi: Serial.begin(9600); while(!Serial); Serial.println(\"Ciao dal Team di ELAB!\");",
+      "Carica il programma e osserva il messaggio nella finestra bianca del Monitor Seriale"
+    ],
+    bookQuote: "Le virgolette sono fondamentali perché indicano che quello che c'è dentro è testo. Questo tipo di dato si chiama stringa (String).",
+    bookContext: "Primo esercizio del Capitolo 8: introduzione alla comunicazione seriale. Lo studente impara che Arduino può PARLARE al computer (debug, sensori, log). Concetti chiave: Serial.begin(baud), while(!Serial), Serial.println(), stringhe tra virgolette doppie, baud rate (9600 standard). Strumento fondamentale per il debug: trovare e correggere errori."
+  },
 };
 
 export default VOLUME_REFERENCES;

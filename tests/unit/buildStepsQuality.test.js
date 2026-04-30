@@ -38,7 +38,7 @@ function getStepTexts(experiment) {
 
 describe('buildStepsQuality — sanity', () => {
   it('ALL_EXPERIMENTS contains 92 experiments', () => {
-    expect(ALL_EXPERIMENTS.length).toBe(92);
+    expect(ALL_EXPERIMENTS.length).toBe(94);
   });
 });
 

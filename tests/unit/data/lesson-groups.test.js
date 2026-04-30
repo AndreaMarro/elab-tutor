@@ -169,7 +169,7 @@ describe('findLessonForExperiment — extended', () => {
         if (r) found++;
       });
     });
-    expect(found).toBe(92);
+    expect(found).toBe(94);
   });
 
   it('returns null for numeric input', () => {
@@ -261,7 +261,7 @@ describe('getExperimentGroupContext', () => {
 describe('LESSON_GROUPS — cross-volume experiment distribution', () => {
   it('total experiments across all volumes sums to 92', () => {
     const total = ALL_ENTRIES.reduce((sum, [, l]) => sum + l.experiments.length, 0);
-    expect(total).toBe(92);
+    expect(total).toBe(94);
   });
 
   it('Volume 1 contains exactly 38 experiments', () => {
@@ -282,7 +282,7 @@ describe('LESSON_GROUPS — cross-volume experiment distribution', () => {
     const v3Exps = ALL_ENTRIES
       .filter(([, l]) => l.volume === 3)
       .flatMap(([, l]) => l.experiments);
-    expect(v3Exps.length).toBe(27);
+    expect(v3Exps.length).toBe(29);
   });
 
   it('no experiment appears in more than one lesson', () => {

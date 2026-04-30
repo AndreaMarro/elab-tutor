@@ -10,18 +10,18 @@
 
 ## §1 Context
 
-Browser-side **AZIONE legacy** dispatcher (~46 cases in `src/services/simulator-api.js`) had limited domain coverage and security exposure (eval-like patterns). The 62-tool ClawBot dispatcher (`scripts/openclaw/dispatcher.ts`, 386 LOC) is implemented but **NOT in production hot path** — only L2 template router (`_shared/clawbot-template-router.ts`) wired pre-LLM (iter 26).
+Browser-side **AZIONE legacy** dispatcher (~46 cases in `src/services/simulator-api.js`) had limited domain coverage and security exposure (eval-like patterns). The 57-tool ClawBot dispatcher (`scripts/openclaw/dispatcher.ts`, 386 LOC) is implemented but **NOT in production hot path** — only L2 template router (`_shared/clawbot-template-router.ts`) wired pre-LLM (iter 26). [Iter 37 Documenter definitive count: 57 entries via `grep -cE "name: ['\\\"]" scripts/openclaw/tools-registry.ts` strict pattern — supersedes older 52/62 doc claims]
 
 LLM responses produce `[INTENT:{tool:"...", args:{...}}]` tags inline within prosa text. These tags are **NOT currently parsed server-side**. Frontend `useGalileoChat.js` can interpret some `[AZIONE:...]` tags but the surface is incomplete and security-sensitive (eval risk).
 
-**Onniscenza+Onnipotenza audit iter 29** (`docs/audits/2026-04-30-iter-29-ONNISCENZA-ONNIPOTENZA-AUDIT.md` 525 LOC) flagged: "Dispatcher 62-tool path NOT wired post-LLM" as P0 iter 30 carryover, deferred to iter 36.
+**Onniscenza+Onnipotenza audit iter 29** (`docs/audits/2026-04-30-iter-29-ONNISCENZA-ONNIPOTENZA-AUDIT.md` 525 LOC) flagged: "Dispatcher 57-tool path NOT wired post-LLM" as P0 iter 30 carryover, deferred to iter 36.
 
 ## §2 Decision
 
 Implement server-side **INTENT parser + dispatcher** post-LLM in `unlim-chat` Edge Function with:
 
 1. `_shared/intent-parser.ts` (NEW ~120 LOC) — non-greedy regex parse + defensive JSON.parse + strip helper
-2. `_shared/clawbot-dispatcher.ts` (Deno port of `scripts/openclaw/dispatcher.ts` 62-tool registry) — invoke server-side execution
+2. `_shared/clawbot-dispatcher.ts` (Deno port of `scripts/openclaw/dispatcher.ts` 57-tool registry) — invoke server-side execution
 3. `intent_dispatch_log` Supabase table (NEW migration) — append-only audit trail
 4. Env flag `ENABLE_INTENT_DISPATCHER=true|false` — single rollback lever
 5. Surface `intents_executed: DispatchResult[]` in chat response payload — frontend uses for UI feedback
@@ -158,7 +158,7 @@ CREATE POLICY "authenticated_read_own_session" ON intent_dispatch_log
 
 ## §9 MORFISMO compliance Sense 1
 
-- **62-tool registry morphic runtime**: per-classe + per-docente + per-kit ToolSpec selection still applies (kitFilter, levelFilter, modeFilter). Dispatcher resolves tool dynamically via Map lookup — NO static if/else cascade.
+- **57-tool registry morphic runtime**: per-classe + per-docente + per-kit ToolSpec selection still applies (kitFilter, levelFilter, modeFilter). Dispatcher resolves tool dynamically via Map lookup — NO static if/else cascade.
 - **L1 composite invokable from INTENT**: `[INTENT:{tool:"composite-mostra-circuito-led", args:{...}}]` triggers `executeComposite` chain (highlight → mountExperiment → narrate). Composite branches grow without dispatcher core change.
 - **L2 template router still pre-LLM short-circuit primary path**: 22 templates iter 28 (D2 audit verify) handle 80% common requests <500ms latency. INTENT dispatcher post-LLM handles long-tail edge cases the LLM produces.
 - **L3 dynamic JS DEV-only** unchanged — production uses L0+L1+L2 only.
@@ -203,7 +203,7 @@ CREATE POLICY "authenticated_read_own_session" ON intent_dispatch_log
 
 ## §13 Cross-refs verified read-only
 
-- `scripts/openclaw/dispatcher.ts` — 386 LOC, 62-tool registry dispatch L0 Map lookup + L1 composite opt-in + `auditDispatcher`
+- `scripts/openclaw/dispatcher.ts` — 386 LOC, 57-tool registry dispatch L0 Map lookup + L1 composite opt-in + `auditDispatcher`
 - `scripts/openclaw/composite-handler.ts` — 634 LOC iter 19, L1 morphic, `executeComposite`, `CompositeAuditWriter` pattern (referenced for `intent_dispatch_log` schema design)
 - `supabase/functions/_shared/clawbot-template-router.ts` — L2 template router, pre-LLM short-circuit, AZIONE tag emission pattern
 - `supabase/functions/_shared/principio-zero-validator.ts` — `stripTags` already strips `[INTENT:{...}]` lines 48-53 (PZ V3 pipeline integration confirmed; ADR-028 deduplicates)
@@ -213,45 +213,39 @@ CREATE POLICY "authenticated_read_own_session" ON intent_dispatch_log
 - `docs/adrs/ADR-019-*.md` — Sense 1.5 morfismo runtime per-docente per-classe
 - `CLAUDE.md` "DUE PAROLE D'ORDINE" §1 (PRINCIPIO ZERO) + §2 (MORFISMO Sense 1+1.5+2)
 
-## §14 Implementation reference (Atom A1 Maker-1 ownership)
+## §14 Implementation reference (Atom A1 Maker-1 iter 36, AMENDED iter 37)
 
-```typescript
-// supabase/functions/unlim-chat/index.ts post-LLM block insert
-import { parseIntentTags, stripIntentTags } from '../_shared/intent-parser.ts';
-import { dispatchTool } from '../_shared/clawbot-dispatcher.ts';
+**Server-side INTENT parser shipped iter 36** (`supabase/functions/_shared/intent-parser.ts` 270 LOC):
+- Non-greedy regex `/\[INTENT:(\{[\s\S]*?\})\]/g` → estrae JSON tag post-LLM response
+- 6 export helpers: `parseIntentTags` + `stripIntentTags` + `IntentTag` TypeScript type + `validate` + `categorize`
+- 24/24 unit tests PASS (`tests/unit/intent-parser.test.js`)
 
-const ENABLE_DISPATCHER = Deno.env.get('ENABLE_INTENT_DISPATCHER') === 'true';
+**Pivot iter 36 → surface-to-browser** (NON server-side dispatchTool execution):
+- Server-side parse + surface `intents_parsed: IntentTag[]` array nella response JSON unlim-chat
+- Browser `useGalileoChat.js` itera + dispatch via `__ELAB_API`
+- Rationale: 57-tool registry ToolSpec resolves `__ELAB_API` browser context only (window.__ELAB_API). Deno port heavy work (mock browser context Deno-side, ricostruire CircuitSolver state, ecc.) → DEFERRED iter 38.
+- Iter 36 compromise: server parses, browser dispatches. Riduce latenza percepita parser senza bloccare su Deno port.
 
-// after llmResult.text obtained:
-const intents = ENABLE_DISPATCHER ? parseIntentTags(llmResult.text) : [];
-const cleanText = stripIntentTags(llmResult.text);
-const dispatchResults = await Promise.all(
-  intents.map(async (intent) => {
-    const t0 = Date.now();
-    try {
-      const result = await Promise.race([
-        dispatchTool(intent.tool, intent.args, { sessionId, experimentId }),
-        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000)),
-      ]);
-      const latency = Date.now() - t0;
-      await logIntentDispatch({ sessionId, experimentId, tool: intent.tool, args: intent.args, status: 'ok', payload: result, latency });
-      return { ok: true, tool: intent.tool, payload: result, latency_ms: latency };
-    } catch (e) {
-      const latency = Date.now() - t0;
-      const status = e.message === 'timeout' ? 'timeout' : 'dispatcher_throw';
-      await logIntentDispatch({ sessionId, experimentId, tool: intent.tool, args: intent.args, status, error: e.message, latency });
-      return { ok: false, tool: intent.tool, error: e.message, latency_ms: latency };
-    }
-  })
-);
+**Wire-up `unlim-chat/index.ts` (line 228-330)**:
+1. Post-LLM response received → block 6a tra `capWords` e `validatePrincipioZero`
+2. `try { intents_parsed = parseIntentTags(rawText) } catch` → defensive fallback `cappedText`, NEVER break chat flow
+3. Response JSON shape esteso: `{ text, debug_retrieval, intents_parsed: IntentTag[] }`
 
-return { text: cleanText, intents_executed: dispatchResults, ... };
-```
+**Iter 37 frontend wire-up Atom B-NEW** (defer Maker-1 successivo):
+- `src/components/lavagna/useGalileoChat.js` consume `intents_parsed`
+- Itera array, ogni intent `{ action, params }` → dispatch via `window.__ELAB_API[action](params)`
+- Validation pre-dispatch: filtra action non in 57-tool registry (security gate)
+
+**Future iter 38 server-side dispatchTool**:
+- Deno port 62-tool subset (highlight, mountExperiment, captureScreenshot — server-safe)
+- Restanti tool browser-side (CircuitSolver state, drag, drop)
+- Canary 5%→25%→100% rollout per §7
 
 ---
 
-**Status**: PROPOSED
-**Andrea ratify**: iter 37 entrance gate (~6 min decision queue)
-**Implementation**: iter 36 Phase 1 Atom A1 Maker-1 (intent-parser.ts + tests + unlim-chat wire-up)
+**Status**: ACCEPTED iter 37 (Andrea ratify Phase 1 post-amend 2026-04-30 + Atom B-NEW browser wire-up scope added per "no debito tecnico" mandate)
+**Andrea ratify**: CONFIRMED iter 37 Phase 1 — see `automa/team-state/messages/andrea-ratify-adr028-CONFIRMED.md`
+**Implementation**: iter 36 Phase 1 Atom A1 Maker-1 (intent-parser.ts 270 LOC + tests 259 LOC + unlim-chat wire-up +45 LOC)
 **Migration apply**: iter 37 P0 (Andrea `supabase db push --linked` post ratify)
 **Rollout**: iter 37 Shadow → iter 38 Canary 5% → ramp per §7 schedule
+**ADR-029 cross-ref**: LLM_ROUTING_WEIGHTS 70/20/10 conservative tune (latency companion decision)

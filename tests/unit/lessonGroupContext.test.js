@@ -244,7 +244,7 @@ describe('Cross-validation with experiments-index', () => {
   });
 
   it('LESSON_GROUPS contains exactly 92 experiment IDs', () => {
-    expect(ALL_LESSON_EXP_IDS.length).toBe(92);
+    expect(ALL_LESSON_EXP_IDS.length).toBe(94);
   });
 
   it('every experiment in LESSON_GROUPS exists in experiments-index', () => {

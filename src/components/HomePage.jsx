@@ -39,6 +39,22 @@ import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 // Cronologia sessioni — sezione sotto le card (iter 35 Task 2, preserved iter 36)
 const HomeCronologia = lazy(() => import('./HomeCronologia'));
 
+// Iter 37 Atom A6 — route hash routing chatbot-only + about-easter
+const ChatbotOnly = lazy(() => import('./chatbot/ChatbotOnly'));
+const EasterModal = lazy(() => import('./easter/EasterModal'));
+
+// Hash routes managed inline (NO react-router) — pattern consistent with
+// existing app routing convention.
+const HASH_ROUTES = {
+  CHATBOT: '#chatbot-only',
+  ABOUT: '#about-easter',
+};
+
+function readHash() {
+  if (typeof window === 'undefined') return '';
+  return window.location.hash || '';
+}
+
 // Palette tokens — fallback ai valori se le CSS vars non esistono ancora.
 // CLAUDE.md §Design rule 16: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D
 const PALETTE = {
@@ -378,6 +394,8 @@ function HomeCard({ card, onActivate }) {
 export default function HomePage({ onNavigate }) {
   const [showGreeting, setShowGreeting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  // Iter 37 Atom A6 — hash route awareness for #chatbot-only and #about-easter
+  const [hash, setHash] = useState(() => readHash());
 
   // Track viewport for mascotte size (240 desktop / 160 mobile)
   useEffect(() => {
@@ -386,6 +404,14 @@ export default function HomePage({ onNavigate }) {
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
+  }, []);
+
+  // Iter 37 Atom A6 — listen to hashchange for #chatbot-only / #about-easter
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateRoute = () => setHash(readHash());
+    window.addEventListener('hashchange', updateRoute);
+    return () => window.removeEventListener('hashchange', updateRoute);
   }, []);
 
   // Auto-hide greeting bubble after 4s
@@ -400,23 +426,58 @@ export default function HomePage({ onNavigate }) {
     if (href.startsWith('#')) {
       // Internal hash route: strip leading '#' for onNavigate convention
       const page = href.slice(1);
-      // about-easter + chatbot-only routes are iter 37 placeholders.
-      // Per spec iter 36: link target presente, modal/route NON implementato.
-      // Fallback: scroll into view footer credits per about-easter, no-op chatbot-only.
-      if (page === 'about-easter') {
-        // Footer credits sono già visibili in homepage → soft anchor scroll.
-        const el = document.getElementById('elab-home-footer');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      if (page === 'chatbot-only') {
-        // Iter 37 atom A13b — placeholder fallback su lavagna chat panel.
-        if (typeof onNavigate === 'function') onNavigate('lavagna');
-        else if (typeof window !== 'undefined') window.location.hash = '#lavagna';
+
+      // Iter 37 Atom A6 — chatbot-only + about-easter sono ora route LIVE
+      // gestite tramite hash: aggiorniamo window.location.hash e lasciamo
+      // che il listener hashchange aggiorni `hash` state per montare
+      // <ChatbotOnly /> o <EasterModal /> sotto.
+      if (page === 'chatbot-only' || page === 'about-easter') {
+        if (typeof window !== 'undefined') {
+          window.location.hash = href;
+          setHash(href);
+        }
         return;
       }
       if (typeof onNavigate === 'function') onNavigate(page);
       else if (typeof window !== 'undefined') window.location.hash = href;
+    }
+  }, [onNavigate]);
+
+  // Iter 37 Atom A6 — close handler for EasterModal (clears #about-easter hash)
+  const handleEasterClose = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      // Clear hash but stay on home (avoid scroll jump)
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+        setHash('');
+      } catch {
+        window.location.hash = '';
+        setHash('');
+      }
+    }
+  }, []);
+
+  // Iter 37 Atom A6 — back home from ChatbotOnly
+  const handleChatbotBackHome = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+        setHash('');
+      } catch {
+        window.location.hash = '';
+        setHash('');
+      }
+    }
+  }, []);
+
+  // Iter 37 Atom A6 — open Lavagna from ChatbotOnly tools palette
+  const handleChatbotOpenLavagna = useCallback(() => {
+    if (typeof onNavigate === 'function') {
+      onNavigate('lavagna');
+      return;
+    }
+    if (typeof window !== 'undefined') {
+      window.location.hash = '#lavagna';
     }
   }, [onNavigate]);
 
@@ -431,8 +492,27 @@ export default function HomePage({ onNavigate }) {
     }
   }, [handleActivate]);
 
+  // Iter 37 Atom A6 — route hash mounts ChatbotOnly / EasterModal
+  // Mount BEFORE the home grid se hash corrisponde alle nuove route.
+  if (hash === HASH_ROUTES.CHATBOT) {
+    return (
+      <Suspense fallback={<div data-testid="chatbot-only-loading" style={{ padding: 24 }}>Caricamento chat UNLIM…</div>}>
+        <ChatbotOnly
+          onBackHome={handleChatbotBackHome}
+          onOpenLavagna={handleChatbotOpenLavagna}
+        />
+      </Suspense>
+    );
+  }
+
   return (
     <div style={styles.page} data-testid="elab-home-page">
+      {/* Iter 37 Atom A6 — Easter modal overlay quando hash = #about-easter */}
+      {hash === HASH_ROUTES.ABOUT && (
+        <Suspense fallback={null}>
+          <EasterModal isOpen={true} onClose={handleEasterClose} />
+        </Suspense>
+      )}
       <header style={styles.hero}>
         <div style={styles.heroLeft}>
           <h1 style={styles.brandTitle}>
