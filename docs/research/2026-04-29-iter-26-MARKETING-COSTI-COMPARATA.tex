@@ -132,6 +132,102 @@ Cloudflare MeloTTS & \$0 free tier & 200-500 & 7.0 \\
 \end{tabular}
 \end{center}
 
+\subsection*{Update iter 31 (2026-04-30 PM) — Voice clone IT Andrea LIVE + cost matrix granulare}
+
+\textbf{Aggiornamento materiale iter 31}: Andrea ha attivato Mistral La Plateforme Scale tier subscription (€18/mese) + voice cloning Voxtral Italiano LIVE prod 2026-04-30 PM. Voice ID \texttt{9234f1b6-766a-485f-acc4-e2cf6dc42327} (sample audio Andrea narrazione registrazione iPhone Voice Memos m4a 173 KB). Verifica live: 38 KB MP3 generato per "Ragazzi, oggi accendiamo il primo LED rosso del kit ELAB. Prendete la breadboard." latenza 2.66 s.
+
+\textbf{Cost matrix esclude kit Omaric + volumi cartacei Davide} (procurement separato MePA, NOT software AI cost). Solo infrastruttura cloud AI + hosting.
+
+\subsubsection*{Stato modelli LIVE iter 31 verified}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+\textbf{Capability} & \textbf{Provider} & \textbf{Modello} & \textbf{Stato live} \\
+\midrule
+LLM chat 65\% & Mistral & mistral-small-latest & ✅ R5 91.80\% PASS \\
+LLM premium 20\% & Mistral & mistral-large-latest & ✅ smoke OK \\
+LLM emergency 15\% & Together AI & Llama-3.3-70B-Instruct-Turbo & ✅ gated GDPR \\
+LLM fallback & Google Gemini & gemini-2.5-flash-lite/flash/pro & ✅ smoke OK \\
+Vision & Mistral & pixtral-12b-2409 & ✅ live 1.3 s \\
+\textbf{TTS} & \textbf{Mistral Voxtral + voice clone Andrea IT} & \textbf{voxtral-mini-tts-2603} & ✅ \textbf{LIVE 2.66 s} \\
+STT & Cloudflare WAI & whisper-large-v3-turbo & ⚠️ 400 input fix iter 31 \\
+ImgGen & Cloudflare WAI & flux-1-schnell & ✅ live 2.4 s \\
+Embeddings & Voyage AI & voyage-3 + rerank-2.5 & ✅ live 300 ms \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Cost matrix granulare 5--1000 classi (NUOVO iter 31 — solo infrastruttura AI)}
+
+Assunzioni per classe per mese: 30 sessioni × 60 chat msg × 80 tok output = 144k tok output LLM. TTS 6k char audio. Vision 60 call/mese. STT/ImgGen/Embeddings free tier Cloudflare + Voyage.
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+\textbf{Classi} & \textbf{Var €/mese} & \textbf{Fix €/mese} & \textbf{TOT €/mese} & \textbf{TOT €/anno} & \textbf{Margine A €240/anno} \\
+\midrule
+5     & €2     & €63 & €65   & €780    & 35\% (sotto break-even) \\
+10    & €4     & €63 & €67   & €804    & 66\% \\
+50    & €20    & €63 & €83   & €996    & 92\% \\
+100   & €40    & €63 & €103  & €1.236  & 95\% \\
+300   & €120   & €63 & €183  & €2.196  & 97\% \\
+500   & €200   & €63 & €263  & €3.156  & 97.4\% \\
+1.000 & €400   & €63 & €463  & €5.556  & 97.7\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Costi fissi €63/mese}: Mistral Scale tier €18 + Supabase EU Pro €25 + Vercel Pro €20.
+
+\textbf{Costo variabile €0.40/classe/mese}: 65\% Mistral Small €0.06 + 20\% Mistral Large €0.17 + 15\% Together €0.02 + Voxtral TTS €0.09 + Pixtral Vision €0.06 + STT/ImgGen/Embeddings free tier.
+
+\textbf{Break-even Pacchetto A €240/anno}: 3.21 classi (sotto = LOSS). Da 4° classe profit.
+
+\subsubsection*{Margine vs 4 Pacchetti commerciali (1000 classi)}
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Pacchetto} & \textbf{€/anno classe} & \textbf{Revenue 1000} & \textbf{Costo 1000} & \textbf{Margine \%} \\
+\midrule
+1. Solo Lavagna+UNLIM      & €300      & €300k    & €5.5k & 98.2\% \\
+2. TUTTO                    & €800      & €800k    & €5.5k & 99.3\% \\
+3. TUTTO + voce proattiva   & €1.200    & €1.2M    & €5.5k & 99.5\% \\
+4. TUTTO + voce + video ⭐  & €1.800    & €1.8M    & €5.5k & 99.7\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{5 scenari infrastruttura (con/senza VPS, esclusi kit + volumi)}
+
+\begin{center}
+\begin{tabular}{lrrrl}
+\toprule
+\textbf{Scenario} & \textbf{€/mese 1000 classi} & \textbf{Scaling} & \textbf{GDPR} & \textbf{Best per} \\
+\midrule
+\textbf{A. Hybrid Mistral primary ⭐} & \textbf{€463} & 5 → 5000 & ✅ EU FR & \textbf{2026 ELAB target} \\
+B. VPS Hetzner GEX130 GPU & €1.748 & sopra 6000 & ✅ EU DE & enterprise scale \\
+C. Scaleway H100 Paris on-demand & €235--1.085 & flex spot & ✅ EU FR & scaling demand \\
+D. RunPod A6000 spot 4h/giorno & €129 & <2000 & ⚠️ US/EU mix & dev/bench only \\
+E. Free tier max Cloudflare & €63 & <200 classi & ✅ EU edge & MVP/POC \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Verdetto iter 31}: Caso A Hybrid Mistral primary domina 5--5000 classi (target ELAB 2026 PNRR). VPS migration sopra 6000 classi (Sprint U iter 36+).
+
+\subsubsection*{Andrea iter 21+ mandate compliance (verificato live)}
+
+\begin{itemize}[leftmargin=*]
+  \item ✅ \textbf{4/9 stack omogeneo Mistral EU FR}: LLM Small + LLM Large + Vision Pixtral + TTS Voxtral
+  \item ✅ \textbf{GDPR student runtime EU-only}: Mistral FR + Gemini Frankfurt + CF EU edge + Supabase Frankfurt + Vercel EU edge
+  \item ✅ \textbf{Voice clone Italiano Andrea narratore}: Voxtral voice\_id \texttt{9234f1b6-766a-485f-acc4-e2cf6dc42327} LIVE prod (Morfismo Sense 2 perfetto)
+  \item ✅ \textbf{PRINCIPIO ZERO V3}: kit fisico OBBLIGATORIO + plurale Ragazzi + Vol/pag VERBATIM (BASE\_PROMPT v3.1 deployed)
+  \item ✅ \textbf{Frugale RunPod $13}: Path A decommission iter 5 P3, no waste
+  \item ⚠️ \textbf{Latency optimization iter 31 P0}: streaming SSE Mistral (-80\% perceived) + warm-up Cron 30 s (-1.2 s cold start) + Edge Function pre-loading
+\end{itemize}
+
 \subsection*{Costi RICALCOLATI iter 29 — Voxtral primary (NEW)}
 
 Stima a regime con Voxtral PRIMARY (sostituisce Edge TTS \$0/1k):
