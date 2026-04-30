@@ -25,6 +25,7 @@ import LessonReader from './LessonReader';
 import LessonSelector from './LessonSelector';
 import VisionButton from '../tutor/VisionButton';
 import logger from '../../utils/logger';
+import ErrorBoundary from '../common/ErrorBoundary';
 // Sprint S iter 2 Task B — Capitolo lookup service
 import { getCapitolo, listAllCapitoli } from '../../services/percorsoService';
 // ADR-025 iter 26 — Modalità 4 modes canonical UI (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso)
@@ -962,15 +963,16 @@ export default function LavagnaShell() {
       const expId = currentExperiment?.id || null;
       const result = mod.openReportWindow(expId);
       // Feedback UX: avoid silent failure that was masking "nothing happens" bug
+      // iter 35 P0: ora il fumetto si apre SEMPRE (stub session locale se mancano dati).
       const toast = await import('../common/Toast').catch(() => null);
-      if (result === 'no-session') {
-        toast?.showToast?.('Nessuna sessione salvata. Fai almeno un esperimento prima di generare il Fumetto.', 'info');
-      } else if (result === 'no-content') {
-        toast?.showToast?.('La sessione corrente non ha ancora contenuto. Interagisci con UNLIM o completa un esperimento.', 'info');
-      } else if (result === 'error') {
+      if (result === 'error') {
         toast?.showToast?.('Errore nella generazione del Fumetto. Riprova.', 'error');
       } else if (result === 'downloaded') {
         toast?.showToast?.('Fumetto scaricato come file HTML (popup bloccato dal browser).', 'success');
+      } else if (result === 'downloaded-stub') {
+        toast?.showToast?.('Fumetto avviato (sessione vuota): completate un esperimento per arricchirlo.', 'info');
+      } else if (result === 'ok-stub') {
+        toast?.showToast?.('Fumetto aperto: completate un esperimento per arricchirlo coi dettagli.', 'info');
       }
     } catch (err) {
       logger.warn('[Fumetto] Unable to open report window:', err?.message || err);
@@ -1167,14 +1169,16 @@ export default function LavagnaShell() {
               >
                 ×
               </button>
-              <Suspense fallback={<div className={css.loading}><span>Caricamento capitoli...</span></div>}>
-                <CapitoloPicker
-                  capitoli={allCapitoli}
-                  volume={currentVolume}
-                  onVolumeChange={setCurrentVolume}
-                  onSelectCapitolo={handleCapitoloSelect}
-                />
-              </Suspense>
+              <ErrorBoundary>
+                <Suspense fallback={<div className={css.loading}><span>Caricamento capitoli...</span></div>}>
+                  <CapitoloPicker
+                    capitoli={allCapitoli}
+                    volume={currentVolume}
+                    onVolumeChange={setCurrentVolume}
+                    onSelectCapitolo={handleCapitoloSelect}
+                  />
+                </Suspense>
+              </ErrorBoundary>
             </div>
           </div>
         )}
@@ -1185,13 +1189,15 @@ export default function LavagnaShell() {
             className={css.percorsoCapitoloOverlay}
             data-testid="percorso-capitolo-view"
           >
-            <Suspense fallback={<div className={css.loading}><span>Caricamento capitolo...</span></div>}>
-              <PercorsoCapitoloView
-                capitolo={activeCapitolo}
-                onClose={handlePercorsoCapitoloClose}
-                onCitationClick={handleCitationClick}
-              />
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={<div className={css.loading}><span>Caricamento capitolo...</span></div>}>
+                <PercorsoCapitoloView
+                  capitolo={activeCapitolo}
+                  onClose={handlePercorsoCapitoloClose}
+                  onCitationClick={handleCitationClick}
+                />
+              </Suspense>
+            </ErrorBoundary>
           </div>
         )}
       </div>

@@ -362,3 +362,73 @@
   z-index: 50;
   pointer-events: auto;
 }
+
+/* iter 35 P0 — CapitoloPicker overlay (fix scroll + crash: classi mancanti)
+   Prima erano referenziate da JSX ma non definite -> nessun overflow,
+   nessun max-height, contenuto si estendeva fuori viewport e i click
+   passavano sotto al backdrop causando comportamento "crash". */
+.capitoloPickerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 27, 46, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.capitoloPickerContent {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  padding: 24px 24px 32px;
+  outline: none;
+}
+
+.capitoloPickerClose {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(30, 77, 140, 0.2);
+  background: #ffffff;
+  color: #1E4D8C;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.capitoloPickerClose:hover {
+  background: rgba(30, 77, 140, 0.08);
+  border-color: #1E4D8C;
+}
+
+.capitoloPickerClose:focus-visible {
+  outline: 3px solid #E8941C;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .capitoloPickerOverlay { padding: 12px; }
+  .capitoloPickerContent { padding: 16px; max-height: calc(100dvh - 24px); }
+}
