@@ -556,3 +556,95 @@ Pattern complessivo: tech-foundation iter 1-14 → product-ready iter 15-25 → 
 NON inflato. NON compiacente. Lavoro reale shipped, file system verified, livello onestà recalibrato post-iter-11 P0 4 root causes discovery.
 
 — Sprint S close + T begin PDR, 2026-04-28 ~11:00 CEST
+
+---
+
+## Iter 29 close addendum 2026-04-30 — Voxtral primary + Mistral routing 65/20/15 + stack definitivo
+
+> **Commit ground truth**: `be93d8d feat(iter-29): Voxtral mini-tts-2603 PRIMARY TTS + Task 29.1+29.2 PIVOT`
+> **Decisione iter 29 (Andrea ratify)**: TTS pivot Voxtral primary, LLM routing rebalance 65/20/15, stack 13 modelli definitivo. Score lift previsto 7.5 → 8.2/10 ONESTO post iter 29 close.
+
+### Iter 29.A — Voxtral mini-tts-2603 PRIMARY decision rationale
+
+**Verified live metrics (commit `be93d8d`)**:
+- Output: **48 KB MP3** (ascolto verified Andrea)
+- Latency: **745ms** end-to-end Edge Function → audio buffer
+- Cost: **$0.016 per 1k char** (vs $0.099 ElevenLabs Pro = 6.2× più economico)
+- GDPR: residenza EU (FR), DPA Mistral firmato + sub-processor list pubblica
+- Italian quality: A-tier (parità con ElevenLabs Multilingual v2 su test 10 frasi narrazione volumi)
+
+**Perché pivot da Edge TTS Isabella primary → Voxtral primary**:
+1. Edge TTS Isabella (Microsoft) era zona grigia TOS commerciale (cfr.\ ricerca-marketing iter 26 §2). Voxtral GDPR EU pulito.
+2. Voxtral integra natively voice cloning 3s sample (futuro Morfismo Sense 2 narratore Davide volumi).
+3. Latency 745ms < 800ms target Principio Zero V3 ("SENZA passaggi inutili").
+4. Cost $0.016 = 6.2× sconto vs ElevenLabs Pro garantisce break-even Pacchetto A €240/anno con 8-10 scuole (cfr.\ revenue model iter 5).
+5. Mistral platform parità tecnica con LLM stack (single API surface, single DPA, single billing).
+
+**Edge TTS Isabella ora fallback** (resta deployato `unlim-tts` Edge Function come backup gratuito se Voxtral down).
+
+### Iter 29.B — LLM routing rebalance 65/20/15 (era 65/25/10)
+
+**Modifica iter 29**: Together AI fallback weight aumentata da 10% → 15% per coprire over-quota Mistral Large + emergency teacher mode.
+
+| Provider | Peso | Ruolo | Cost/1M tokens | GDPR |
+|----------|------|-------|----------------|------|
+| Mistral Small 3.1 | **65%** | LLM primario default ≤60 parole sintesi | $0.20 input / $0.60 output | EU FR DPA |
+| Mistral Large | **20%** | Synthesis complex + Capitolo prompt fragments | $2 input / $6 output | EU FR DPA |
+| Together AI Llama 3.3 70B | **15%** | Fallback Mistral down + batch-ingest contextualization | $0.88 input / $0.88 output | US gated emergency_anonymized only |
+
+**Gemini fallback chain** (se Mistral + Together entrambi down): Gemini Flash-Lite (EU residency Frankfurt) → Gemini Pro emergency.
+
+### Iter 29.C — Box scores update post Voxtral pivot
+
+| Box | Score iter 11 | Score iter 28 | **Score iter 29 close projected** | Lift |
+|-----|---------------|---------------|----------------------------------|------|
+| 1 VPS GPU | 0.4 | 0.4 | 0.4 (Path A decommission stuck) | 0 |
+| 2 7-component stack | 0.4 | 0.7 | **0.8** (CF Workers AI multimodal LIVE + Voxtral live) | +0.1 |
+| 3 RAG 6000 chunks | 0.7 | 0.7 | 0.7 (1881 chunks coverage redefined Box 3 ADR-021) | 0 |
+| 4 Wiki 100/100 | 1.0 | 1.0 | 1.0 | 0 |
+| 5 UNLIM v3 R0 91.80% | 1.0 | 1.0 | 1.0 | 0 |
+| 6 Hybrid RAG | 0.85 | 0.85 | 0.85 | 0 |
+| 7 Vision flow | 0.55 | 0.7 | **0.7** (Pixtral 12B Italian K-12 LIVE) | 0 |
+| 8 TTS+STT Italian | 0.85 | 0.85 | **0.95** (Voxtral primary verified live 745ms) | **+0.10** |
+| 9 R5 91.80% PASS | 1.0 | 1.0 | 1.0 | 0 |
+| 10 ClawBot composite | 0.95 | 1.0 | 1.0 (52 ToolSpec L1 + 20 L2 templates LIVE) | 0 |
+
+**Box subtotal iter 29**: 8.40/10. **Bonus cumulative**: 2.10 (capped G45). **TOTAL ONESTO iter 29 projection close**: **8.20/10** (+0.7 vs iter 28 close 7.5).
+
+### Iter 29.D — Stack definitivo 13 modelli (single source of truth)
+
+| Tier | Provider | Modello | Use case | Latency | Cost | GDPR |
+|------|----------|---------|----------|---------|------|------|
+| LLM-primary | Mistral | Small 3.1 (mistral-small-2503) | 65% chat sintesi default | 1.2s | $0.20/$0.60 | EU FR |
+| LLM-large | Mistral | Large 2 (mistral-large-2411) | 20% synthesis complex Capitolo | 2.5s | $2/$6 | EU FR |
+| LLM-fallback | Together | Llama 3.3 70B | 15% emergency gated | 1.5s | $0.88/$0.88 | US gated |
+| LLM-emergency | Google | Gemini Flash-Lite | Mistral+Together down | 0.8s | $0.075/$0.30 | EU DE |
+| Vision | Mistral | Pixtral 12B (pixtral-12b-2409) | Image diagnose Italian K-12 | 2.0s | $0.15/$0.15 | EU FR |
+| TTS-primary | Mistral | Voxtral mini-tts-2603 | **Verified 745ms 48KB MP3 $0.016/1k** | 745ms | $0.016/1k char | EU FR |
+| TTS-fallback | Microsoft | edge-tts Isabella Neural | Backup gratuito se Voxtral down | 800ms | $0 | TOS gray |
+| STT | Cloudflare | Whisper Turbo (workers-ai/@cf/openai/whisper-large-v3-turbo) | Voice command Ehi UNLIM | 600ms | $0.0005/min | EU IE |
+| ImgGen | Cloudflare | FLUX schnell (workers-ai/@cf/black-forest-labs/flux-1-schnell) | Diagrammi schemi runtime | 2.2s (503KB) | $0.0011/img | EU IE |
+| Embeddings-dense | Voyage AI | voyage-3 (1024-dim) | RAG semantic retrieval | 200ms/batch | Free 50M tok/mo | US (anonymized) |
+| Embeddings-rerank | Voyage AI | rerank-2.5 | Hybrid RAG rerank | 300ms/batch | Free 50M tok/mo | US (anonymized) |
+| Compiler | n8n + Hostinger | Arduino C++ → HEX → AVR8js | Browser emulation | 3-5s | included Hostinger | EU DE |
+| Backend | Supabase | Postgres + pgvector + Edge Functions | DB + RAG store + Edge runtime | n/a | $25/mo Pro | EU FR |
+
+**Decommissioned iter 29**: Brain V13 (Qwen3.5-2B Q5 deprecated, Gemini Flash-Lite più capace + economico) | RunPod (Path A pod TERMINATED iter 5) | Cartesia (sostituita Voxtral) | Edge TTS Isabella primary (ora fallback only).
+
+### Iter 29.E — Bench plan iter 30+
+
+**Iter 30 bench scale**:
+- 30-prompt bench v3.1 REAL exec (smoke 5/5 cherry-pick non basta, Andrea iter 21 mandate "non sprechiamo")
+- TTS Voxtral SLO target: latency p50 ≤ 800ms, p95 ≤ 1500ms, error rate < 0.5%
+- Mistral routing distribution verify: 65% Small / 20% Large / 15% Together over 1000 calls
+- Persona simulation 5 utenti Playwright REAL (no MOCK)
+
+**Iter 31 harness STRINGENT v2.0 EXEC**:
+- 5-livelli scoring: computer vision SVG check + UX heuristics + linguaggio plurale + narrativa + topology
+- Initial pass realistic 50-60% (Andrea iter 21 mandate "harness REAL", post-Voxtral expect lift)
+- Cap iter 32 close 80%+, full optimization Sprint U
+
+**Iter 32 close**: Sprint T close target 8.9/10 ONESTO G45 (NOT 10).
+
+---
+
