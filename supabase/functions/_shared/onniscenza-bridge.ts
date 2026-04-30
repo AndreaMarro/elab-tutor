@@ -306,13 +306,20 @@ export async function aggregateOnniscenza(input: OnniscenzaInput): Promise<Onnis
     ...(input.enable || {}),
   };
 
+  // Iter 34 P0 Andrea "davvero lentissimo": cap each layer 200ms (fail-fast).
+  // Slow layers timeout silently → empty hits → aggregator continues parallel
+  // without blocking total. Effect: max latency 200ms per layer (vs unlimited).
+  const LAYER_TIMEOUT_MS = 200;
   async function timed(layer: LayerName, fetcher: () => Promise<LayerHit[]>): Promise<{ layer: LayerName; status: LayerStatus; hits: LayerHit[] }> {
     if (!enable[layer]) {
       return { layer, status: { ok: true, latency_ms: 0, hits_count: 0, is_stub: true }, hits: [] };
     }
     const t0 = Date.now();
     try {
-      const hits = await fetcher();
+      const hits = await Promise.race([
+        fetcher(),
+        new Promise<LayerHit[]>((_, reject) => setTimeout(() => reject(new Error(`layer_timeout_${LAYER_TIMEOUT_MS}ms`)), LAYER_TIMEOUT_MS)),
+      ]);
       return {
         layer,
         status: { ok: true, latency_ms: Date.now() - t0, hits_count: hits.length, is_stub: true },
