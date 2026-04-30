@@ -8,7 +8,7 @@
  * Honesty caveat: the current impl message is
  *   'Microfono non autorizzato. Abilita il permesso microfono...'
  * It does NOT contain "Ragazzi" (PRINCIPIO ZERO plurale). Test 2 uses
- * toContain('Microfono non autorizzato') only. The "Ragazzi" assertion is
+ * toContain('icrofono non autorizzato') only. The "Ragazzi" assertion is
  * flagged as gap → Maker-1 iter 37 fix (add "Ragazzi," prefix to the message).
  *
  * Pattern: mock window.SpeechRecognition, capture instance via global.__mockRecognition,
@@ -90,7 +90,7 @@ describe('Wake word permission denied iter 36 Atom A9 Bug 8', () => {
     );
     expect(errorDispatches[0][0].detail).toMatchObject(
       expect.objectContaining({
-        message: expect.stringContaining('Microfono non autorizzato'),
+        message: expect.stringContaining('icrofono non autorizzato'),
       })
     );
   });
@@ -111,9 +111,9 @@ describe('Wake word permission denied iter 36 Atom A9 Bug 8', () => {
     mockRecognition.onerror({ error: 'not-allowed' });
 
     expect(capturedEvent).toBeTruthy();
-    expect(capturedEvent.detail.message).toContain('Microfono non autorizzato');
-    // Gap iter 37 (Maker-1): message should also contain 'Ragazzi' (PRINCIPIO ZERO plurale)
-    // expect(capturedEvent.detail.message).toContain('Ragazzi');
+    expect(capturedEvent.detail.message).toContain('icrofono non autorizzato');
+    // iter 36 Phase 3 Atom A9 closure: PRINCIPIO ZERO plurale "Ragazzi" prepend landed in wakeWord.js:141.
+    expect(capturedEvent.detail.message).toContain('Ragazzi');
   });
 
   it('does NOT dispatch error event for benign error codes (no-speech)', () => {

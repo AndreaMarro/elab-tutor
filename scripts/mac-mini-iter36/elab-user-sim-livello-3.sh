@@ -60,7 +60,7 @@ for i in "${!PROMPTS[@]}"; do
     -H "Authorization: Bearer $ANON_KEY" \
     -H "x-elab-api-key: $ELAB_KEY" \
     -H "Content-Type: application/json" \
-    -d "{\"prompt\":\"$P\",\"session_id\":\"$SESS\",\"experiment_id\":\"v1-cap6-esp1\"}")
+    -d "{\"message\":\"$P\",\"sessionId\":\"$SESS\",\"experimentId\":\"v1-cap6-esp1\"}")
   T1=$(date +%s%N)
   L=$(( (T1 - T0) / 1000000 ))
   TOTAL_LATENCY=$((TOTAL_LATENCY + L))

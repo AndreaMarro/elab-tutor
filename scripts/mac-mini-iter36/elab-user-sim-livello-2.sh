@@ -48,7 +48,7 @@ if [ -n "$ANON_KEY" ] && [ -n "$ELAB_KEY" ]; then
     -H "Authorization: Bearer $ANON_KEY" \
     -H "x-elab-api-key: $ELAB_KEY" \
     -H "Content-Type: application/json" \
-    -d "{\"prompt\":\"$PROMPT\",\"session_id\":\"l2-$PERSONA-$TS\",\"experiment_id\":\"v1-cap6-esp1\"}")
+    -d "{\"message\":\"$PROMPT\",\"sessionId\":\"$(uuidgen)\",\"experimentId\":\"v1-cap6-esp1\"}")
   T1=$(date +%s%N)
   CHAT_LATENCY=$(( (T1 - T0) / 1000000 ))
   if echo "$RESP" | grep -q "Ragazzi"; then PZ_R=1; else PZ_R=0; fi

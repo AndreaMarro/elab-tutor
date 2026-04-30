@@ -138,7 +138,8 @@ export function startWakeWordListener({ onWake, onCommand, lang = 'it-IT' } = {}
         try {
           if (typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent('elab-wake-word-error', {
-              detail: { code: event.error, message: 'Microfono non autorizzato. Abilita il permesso microfono nelle impostazioni del browser per usare "Ehi UNLIM".' },
+              // iter 36 Atom A9 honesty caveat fix: prepend "Ragazzi, " plurale (PRINCIPIO ZERO V3 mandate).
+              detail: { code: event.error, message: 'Ragazzi, microfono non autorizzato. Abilitate il permesso microfono nelle impostazioni del browser per usare "Ehi UNLIM".' },
             }));
           }
         } catch (_) { /* ignore */ }
