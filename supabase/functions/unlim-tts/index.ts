@@ -119,7 +119,12 @@ serve(async (req: Request) => {
     if (useVoxtral) {
       const voxRes = await synthesizeVoxtral({
         text: cappedText,
-        voiceId: body.voice_id || VOXTRAL_DEFAULTS.voiceId,
+        // Iter 34 P0 fix Andrea "voglio mia voce clonata":
+        // body.voice_id has priority → VOXTRAL_VOICE_ID env (clone Andrea IT
+        // `9234f1b6-...`) → DEFAULT_VOICE_ID en_us (last resort). Pass undefined
+        // when body.voice_id missing so client picks env var (was passing
+        // VOXTRAL_DEFAULTS.voiceId = en_us default, masking env override).
+        voiceId: body.voice_id || undefined,
         format: body.format || VOXTRAL_DEFAULTS.format,
       });
       if (voxRes.ok && voxRes.audio) {
