@@ -406,6 +406,74 @@ ssh -i ~/.ssh/id_ed25519_elab progettibelli@100.124.198.59 \
 
 ---
 
+### Atom A13 — WebDesigner-1 + WebDesigner-2 — Homepage redesign Tea-style + Cronologia ChatGPT + Easter egg
+
+**Mandate Andrea iter 36 PM**: pagina iniziale come Tea pushato (`elab-tutor-glossario.vercel.app` style + credits Tea), più belle, link sensati, Cronologia Google-style descrizioni UNLIM-generated furbe, "Chi siamo" easter egg foto divertente.
+
+**Skills used**: `/impeccable:colorize` (palette Navy/Lime/Orange/Red coverage + accent gradients) + `/impeccable:typeset` (Oswald hero + Open Sans body harmony) + `/impeccable:arrange` (4-card grid spacing rhythm) + `/impeccable:delight` (easter egg + micro-animations card hover) + `/impeccable:bolder` (hero "ELAB TUTOR" prominenza) + `design:design-critique` (review pre-merge accessibilità WCAG AA).
+
+**Spec layout 4 card primary** (più "Chi siamo" easter):
+
+| Card | Link | Preview/microcopy |
+|------|------|-------------------|
+| **🧠 Chatbot UNLIM** | `#chatbot-only` (NEW route) | "Chiedi a UNLIM. Sa tutto delle tue lezioni passate. Stile ChatGPT, strumenti integrati." |
+| **📚 Glossario Tea** | `https://elab-tutor-glossario.vercel.app` (external) | "174 termini elettronica spiegati semplici. Fatto da Tea." |
+| **⚡ Lavagna ELAB Tutor** | `#lavagna` | "Lavagna interattiva + UNLIM + Simulatore. La modalità lezione completa." |
+| **🐒 Chi siamo** | `#about-easter` | (click → modal con foto scimpanzè/meme rotation) |
+
+**Card "Chatbot UNLIM" route NEW** `#chatbot-only`:
+- Scaffold component `src/components/chatbot/ChatbotOnly.jsx` (~250 LOC)
+- Reuse `useGalileoChat` hook + Onniscenza 7-layer wired
+- UI ChatGPT-style: sidebar history sessioni Cronologia + main chat panel + tool palette right (Vision upload + Compile arduino + Genera fumetto + Reset)
+- Memoria sessioni passate via Supabase `unlim_sessions` table query (load last 50 per `class_key`)
+- Tools palette: 5 quick action button (📷 Vision + ⚙️ Compile + 📔 Fumetto + 🎨 Lavagna mini + 🔄 Reset)
+
+**Cronologia ChatGPT-style sidebar**:
+- Sezione "Oggi" + "Ieri" + "Settimana scorsa" + "Più vecchie" (Google search-style)
+- Per ogni sessione: 1-line description UNLIM-generated 80-char (via `unlim-session-description` Edge Function iter 35 da Tea homepage)
+- Reminder furbo: se sessione incompleta (<3 messaggi) badge "🟡 Sospesa"; se cap.6 LED → badge "📍 Cap.6 LED"; se >7 giorni fa → badge "⏰ Vecchia, riprendi?"
+- Click sessione → carica context UNLIM con full history + ultimo experiment
+
+**"Chi siamo" easter egg** `#about-easter`:
+- Modal full-screen: 4 random scimpanzè memes rotation `public/easter/scimpanze-{1,2,3,4}.gif` (download Andrea-curated memes pre-iter)
+- Tagline: "Andrea + Tea + Davide + Omaric + Giovanni — il team scimmie programmatrici di ELAB Tutor 🐒💻"
+- Crediti dettaglio: "Tea ha pushato il glossario standalone + idee UX brilliant" + photo Tea (placeholder se non disponibile)
+- Easter egg #2: 5 click sequenziali su scimpanzè → unlock "Banana mode" CSS theme yellow accent (5 secondi tributo)
+
+**HomePage redesign current**:
+- File: `src/components/HomePage.jsx` (290 LOC iter 35 a1438eb subagent shipped) → REWRITE ~400 LOC
+- Hero "ELAB TUTOR" Oswald 64px + sottolineatura Lime gradient
+- Sub-hero: "Tutor educativo elettronica + Arduino bambini 8-14. Kit fisici + volumi + software morfico."
+- 4 card grid `auto-fit minmax(280px, 1fr)` + hover scale 1.03 + shadow elevate
+- Footer credits: "Andrea Marro coding + Tea co-dev/UX/QA + Davide Fagherazzi volumi cartacei + Omaric Elettronica kit + Giovanni Fagherazzi network commerciale"
+- Footer link "🐒 Chi siamo" subtle bottom-right (NON main card, easter egg)
+
+**Skills chain orchestrazione iter 36**:
+1. WebDesigner-1 `/impeccable:colorize` audit palette + tokens
+2. WebDesigner-1 `/impeccable:typeset` font scale Oswald 64-32-24 + Open Sans 16-14
+3. WebDesigner-2 `/impeccable:arrange` 4-card grid spacing 24px gutter + 32px outer
+4. WebDesigner-2 `/impeccable:bolder` hero amplify + Lime gradient accent
+5. WebDesigner-2 `/impeccable:delight` card hover micro-anim + scimpanzè easter egg
+6. Tester-1 Playwright snapshot test 4 viewport (1920 + 1024 + 768 + 414)
+7. Tester-2 `design:accessibility-review` WCAG AA contrast 4.5:1 + touch ≥44px
+
+**Reference**:
+- Tea standalone `https://elab-tutor-glossario.vercel.app` (style copy + credit visibile)
+- Glossario data 174 termini (Atom C7 iter 38 port full app, iter 36 link external solo)
+
+**Chatbot-only Edge Function**: NO new endpoint. Reuse `unlim-chat` existing + add query param `?ui=chatbot` per response style ChatGPT (no Lavagna actions, plain chat focus).
+
+**Acceptance**:
+- HomePage 4 card visibili + Hero + Footer credits Tea+Davide+Omaric+Giovanni
+- Click Glossario → external `elab-tutor-glossario.vercel.app` opens new tab
+- Click Chatbot UNLIM → `#chatbot-only` route + sidebar Cronologia 50 sessioni + tools palette 5 button + chat funzionante
+- Click Lavagna → `#lavagna` flow corrente preservato
+- Click "Chi siamo" footer → modal scimpanzè + crediti dettaglio
+- Lighthouse score ≥90 perf + ≥95 a11y + ≥100 SEO
+- Mac Mini Cron Livello 1 cycle include navigate `#chatbot-only` + Cronologia load test
+
+**Time**: 8h totali (4h WebDesigner-1 redesign + 3h WebDesigner-2 chatbot route + 1h Tester verify).
+
 ### Atom A12 — Documenter — Mem-search + research 2 sessioni precedenti
 
 **Spec**:
@@ -501,6 +569,12 @@ Activation iter 37 in audit close §7.
 | Telemetry | `mcp__plugin_posthog_*` (insights + errors) `mcp__plugin_sentry_sentry__*` | Mac Mini Cron metrics dashboard |
 | GitHub | `mcp__plugin_engineering_github__*` `gh` CLI | iter close commit + PR + push |
 | Cron | `mcp__scheduled-tasks__*` `/loop` | Mac Mini Cron 5min mapping setup |
+| Homepage redesign | `/impeccable:colorize` `/impeccable:typeset` `/impeccable:arrange` `/impeccable:bolder` `/impeccable:delight` `/impeccable:polish` `design:design-critique` `design:accessibility-review` `design:ux-copy` | Atom A13 4-card hero + footer credits Tea + Cronologia ChatGPT-style + scimpanzè easter egg |
+| Chatbot-only route | `/feature-dev:code-architect` reuse `useGalileoChat` + Onniscenza wired + Cronologia Supabase 50 sessioni + tools palette 5 button | Atom A13 NEW route `#chatbot-only` |
+| Easter egg | `/canvas-design` `/algorithmic-art` 4 scimpanzè GIF rotation + 5-click banana mode CSS theme | Atom A13 Chi siamo modal |
+| External link Glossario Tea | static link `https://elab-tutor-glossario.vercel.app` + credits Tea visibile | Atom A13 4° card |
+| Lighthouse | Vercel Speed Insights + manual `npx lighthouse https://www.elabtutor.school` ≥90 perf + ≥95 a11y + ≥100 SEO | Atom A13 acceptance |
+| HomePage current | `src/components/HomePage.jsx` (290 LOC iter 35 a1438eb subagent) → REWRITE ~400 LOC | Atom A13 base |
 
 ---
 
