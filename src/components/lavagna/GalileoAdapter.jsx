@@ -437,7 +437,9 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
 
 export default function GalileoAdapter({ visible, onClose, onSpeakingChange, activeTab: initialTab = 'chat' }) {
   const chat = useGalileoChat();
-  const [activeTab, setActiveTab] = useState(initialTab); // 'chat' | 'percorso' | 'guida'
+  // Iter 34 P0 fix crash: tabs PERCORSO + GUIDA rimosse iter 34. Force activeTab='chat'
+  // ALWAYS to prevent crash when localStorage saved 'percorso'/'guida' → renders broken section.
+  const [activeTab, setActiveTab] = useState('chat');
   const [currentExperiment, setCurrentExperiment] = useState(null);
 
   // Sync initial tab when prop changes (e.g. Percorso button in header)
@@ -685,33 +687,10 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
               voicePlaying={voicePlaying}
             />
           )}
-          {activeTab === 'percorso' && (
-            <div style={{ height: '100%', overflow: 'hidden', padding: '8px 12px', display: 'flex', flexDirection: 'column' }}>
-              {currentExperiment ? (
-                <EmbeddedPercorso
-                  experiment={currentExperiment}
-                  onAskUNLIM={(msg) => { setActiveTab('chat'); chat.setInput(msg); }}
-                />
-              ) : (
-                <div style={{ padding: 32, textAlign: 'center', color: '#1E4D8C', fontFamily: 'Open Sans, sans-serif' }}>
-                  <p style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Nessun esperimento caricato</p>
-                  <p style={{ fontSize: 14, color: '#737373' }}>Scegli un esperimento per vedere il percorso.</p>
-                </div>
-              )}
-            </div>
-          )}
-          {activeTab === 'guida' && (
-            <div style={{ height: '100%', overflow: 'auto', padding: 12 }}>
-              {currentExperiment ? (
-                <EmbeddedGuide experiment={currentExperiment} onAskUNLIM={(msg) => { setActiveTab('chat'); chat.setInput(msg); }} />
-              ) : (
-                <div style={{ padding: 32, textAlign: 'center', color: '#1E4D8C', fontFamily: 'Open Sans, sans-serif' }}>
-                  <p style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Nessun esperimento caricato</p>
-                  <p style={{ fontSize: 14, color: '#737373' }}>Scegli un esperimento per la guida passo passo.</p>
-                </div>
-              )}
-            </div>
-          )}
+          {/* Iter 34 P0 fix crash: removed PERCORSO + GUIDA render blocks
+              (tab bar removed earlier commit 7f963c4, blocks not removed
+              caused crash when localStorage saved activeTab='percorso'/'guida').
+              UNLIM panel ora CHAT only (single primary interaction). */}
         </div>
       </div>
     </FloatingWindow>
