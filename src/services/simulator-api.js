@@ -331,11 +331,11 @@ function createPublicAPI() {
       const expName = exp.title ? `Esperimento: "${exp.title}". ` : '';
       const simStatus = state.isSimulating ? 'Simulazione in corso. ' : '';
       const compText = compList.length > 0
-        ? `Componenti: ${compList.join(', ')}.`
-        : 'Nessun componente attivo.';
+        ? `Componenti sul kit fisico ELAB (breadboard): ${compList.join(', ')}.`
+        : 'Nessun componente attivo sul kit.';
       const wireText = conns.length > 0
-        ? ` Fili: ${conns.length} collegament${conns.length > 1 ? 'i' : 'o'}.`
-        : ' Nessun filo collegato.';
+        ? ` Fili: ${conns.length} collegament${conns.length > 1 ? 'i' : 'o'} sulla breadboard.`
+        : ' Nessun filo collegato sulla breadboard.';
 
       return `${expName}${simStatus}${compText}${wireText}`;
     },

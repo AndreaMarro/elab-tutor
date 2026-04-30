@@ -96,7 +96,7 @@ export async function callMistralChat(opts: MistralChatOptions): Promise<Mistral
       { role: 'system', content: opts.systemPrompt },
       { role: 'user', content: userContent },
     ],
-    max_tokens: opts.maxOutputTokens ?? 256,
+    max_tokens: opts.maxOutputTokens ?? 120,
     temperature: opts.temperature ?? 0.7,
   };
 

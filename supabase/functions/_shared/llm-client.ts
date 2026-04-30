@@ -75,7 +75,10 @@ async function callTogether(options: LLMOptions): Promise<LLMResult> {
     model,
     systemPrompt,
     message,
-    maxOutputTokens = 256,
+    // Iter 31 P0 latency fix: cap output ~120 token (≈90 parole, fits ≤60 mandate
+    // PZ V3 + 50% safety) — was 256 = 192 parole = oltre limite + lento. Riduce
+    // output time ~40% (LLM gen ~50 token/s, 256→120 = 5s→2.4s).
+    maxOutputTokens = 120,
     temperature = 0.7,
   } = options;
 
@@ -291,7 +294,7 @@ async function callRunPod(options: LLMOptions): Promise<LLMResult> {
           { role: 'system', content: options.systemPrompt },
           { role: 'user', content: options.message },
         ],
-        max_tokens: options.maxOutputTokens ?? 256,
+        max_tokens: options.maxOutputTokens ?? 120,
         temperature: options.temperature ?? 0.7,
         stream: false,
       }),

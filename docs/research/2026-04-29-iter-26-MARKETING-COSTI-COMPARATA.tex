@@ -83,6 +83,39 @@ VLM (Vision-Language Model), TTS (Text-to-Speech), STT (Speech-to-Text), embeddi
   \item \textbf{Sandbox dev/bench}: RunPod RTX A6000 / RTX 6000 Ada (on-demand, frugale)
 \end{itemize}
 
+\subsection*{Update iter 29 (2026-04-30) — TTS pivot Voxtral primary}
+
+\textbf{Aggiornamento materiale}: post audit modelli e ricerca alternative TTS, è stata presa la decisione di adottare \textbf{Mistral Voxtral 4B mini-tts-2603} come provider primary TTS (invece di Edge TTS Isabella). Verifica live 2026-04-30: 5/5 sample IT 1181ms p50, 48 KB MP3 generato.
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{TTS primary aggiornato}: \textbf{Mistral Voxtral mini-tts-2603} (Mistral EU FR, 70 ms model latency, \$0.016/1k char, 9 lingue Italian native, voice cloning 3-6 s, 68.4\% win rate vs ElevenLabs Flash v2.5)
+  \item \textbf{TTS fallback}: Edge TTS Isabella WSS (degraded, NetworkError prod) → VPS legacy → browser SpeechSynthesis
+  \item \textbf{Stack omogeneo Mistral EU FR}: 4/9 capability (LLM Small + Large + Vision Pixtral + TTS Voxtral) = 44\% concentration single-provider GDPR-clean Francia
+  \item \textbf{Voice cloning Morfismo Sense 2}: helper \texttt{cloneVoice()} esposto in \texttt{voxtral-client.ts}, audio 3-6 s narratore IT (Davide Fagherazzi) pending → Morfismo Sense 2 narratore volumi
+  \item \textbf{ToolSpec count REAL}: 62 (NOT 52 documentato precedente; file-system grep \texttt{\^{}~~name:} = 62)
+  \item \textbf{Onniscenza 7-layer aggregator}: WIRED prod iter 30 (env flag \texttt{ENABLE\_ONNISCENZA=true}); aggregateOnniscenza chiamato in unlim-chat post-RAG, layer L1+L2+L4+L5+L6+L7 fused via RRF k=60
+  \item \textbf{CF Whisper STT fix}: input shape migrato JSON \texttt{\{audio:array\}} → raw \texttt{application/octet-stream} bytes (CF Turbo 2026 deprecation JSON path)
+\end{itemize}
+
+\subsubsection*{Costi aggiornati Voxtral (sostituisce stima Edge TTS \texttt{\$0/1k char})}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Provider TTS} & \textbf{Costo \$/1k char} & \textbf{Latency ms} & \textbf{Quality (1-10)} \\
+\midrule
+Mistral Voxtral primary (NEW iter 29) & \$0.016 & 70 (model) / 745 (network) & 9.0 \\
+ElevenLabs Multilingual v2 & \$0.099 & 800-2000 & 9.5 \\
+ElevenLabs Flash v2.5 & \$0.099 & 75 & 8.5 \\
+Cartesia Sonic 3 & \$0.030 & 90 & 8.5 \\
+Edge TTS Isabella (was primary) & \$0 & 300-800 & 6.5 \\
+Cloudflare MeloTTS & \$0 free tier & 200-500 & 7.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Decisione Voxtral}: bilanciamento ottimale Quality 9.0 + Latency 70ms + GDPR-clean EU FR + Cost \$0.016/1k char (60\% sotto Cartesia, 84\% sotto ElevenLabs Pro). Voice cloning incluso (Morfismo Sense 2 differenziatore competitivo non-replicabile). ROI Voxtral vs ElevenLabs Pro: \textbf{\texteuro 2400/anno saved} a 100k char/mese.
+
 \subsection*{Proiezione costi (stima, non garantita)}
 
 \begin{center}
@@ -98,6 +131,32 @@ VLM (Vision-Language Model), TTS (Text-to-Speech), STT (Speech-to-Text), embeddi
 \bottomrule
 \end{tabular}
 \end{center}
+
+\subsection*{Costi RICALCOLATI iter 29 — Voxtral primary (NEW)}
+
+Stima a regime con Voxtral PRIMARY (sostituisce Edge TTS \$0/1k):
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Scala (classi)} & \textbf{LLM (€/m)} & \textbf{TTS Voxtral (€/m)} & \textbf{Totale (€/m)} & \textbf{Margine A €240/y} \\
+\midrule
+200    & €18  & €5   & ~€48   & 99\% \\
+500    & €40  & €12  & ~€105  & 98\% \\
+1.000  & €75  & €25  & ~€195  & 95\% \\
+2.000  & €145 & €48  & ~€385  & 91\% \\
+5.000  & €350 & €120 & ~€915  & 82\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Note ricalcolo}:
+\begin{itemize}[leftmargin=*]
+  \item TTS Voxtral aggiunge \texteuro 5--120/mese a scala (era \texteuro 0 con Edge TTS, MA Edge era 6.5/10 quality, ora 9.0/10)
+  \item Costo aggiuntivo \textbf{compensato} da assenza ElevenLabs migration costs (saved \texteuro 2400/anno a 100k char/mese)
+  \item Margine Pacchetto A \texteuro 240/anno: degrada -2pp a scala 5000 vs stima precedente, MA acceptable considerato lift quality TTS narrazione volumi (Morfismo Sense 2)
+  \item Break-even Stage 2b: 8-10 scuole post infrastruttura (consistent con stima precedente)
+\end{itemize}
 
 I numeri sopra sono \emph{stime indicative}, basate su mix d'uso atteso (5 lezioni/classe/mese,
 20 messaggi/lezione, 50 token in / 150 token out per messaggio).

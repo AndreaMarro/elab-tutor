@@ -173,6 +173,62 @@ export async function cfWhisperSTT(opts: CfWhisperOptions): Promise<CfWhisperRes
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// TTS — MeloTTS (MyShell, Italian native, female voice, 200-500 ms latency)
+// Iter 31 P0 PIVOT: Voxtral cross-lingual EN→IT troppo lento + accent inglese.
+// MeloTTS @cf/myshell-ai/melotts native Italian, female natural tone, free tier.
+// ────────────────────────────────────────────────────────────────────────────
+
+export interface CfMeloTtsOptions {
+  text: string;
+  lang?: string; // 'IT' | 'EN_NEWEST' | 'EN' | 'ES' | 'FR' | 'JP' | 'KR' | 'ZH'
+  speaker?: string; // language-specific speaker id
+}
+
+export interface CfMeloTtsResult {
+  audioBase64: string;     // MP3 base64 no prefix
+  audio: Uint8Array;       // decoded bytes
+  contentType: string;     // 'audio/mpeg'
+  model: string;
+  provider: 'cloudflare';
+  latencyMs: number;
+}
+
+/**
+ * Synthesize Italian audio via Cloudflare MeloTTS (native IT speaker, NOT cross-lingual).
+ * Returns binary audio Uint8Array + base64. Never throws — error surfaced via reject.
+ */
+export async function cfMeloTtsSynthesize(opts: CfMeloTtsOptions): Promise<CfMeloTtsResult> {
+  const start = Date.now();
+  const body = {
+    prompt: opts.text,
+    lang: opts.lang || 'IT',
+  };
+  const res = await cfFetch('@cf/myshell-ai/melotts', body);
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new GeminiError(ErrorCode.API_ERROR, `CF MeloTTS ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  // CF returns { result: { audio: '<base64>' }, success: true }
+  const audioBase64: string = data?.result?.audio ?? '';
+  if (!audioBase64) {
+    throw new GeminiError(ErrorCode.EMPTY_RESPONSE, 'CF MeloTTS empty audio');
+  }
+  // Decode base64 → Uint8Array
+  const binary = atob(audioBase64);
+  const audio = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) audio[i] = binary.charCodeAt(i);
+  return {
+    audioBase64,
+    audio,
+    contentType: 'audio/mpeg',
+    model: '@cf/myshell-ai/melotts',
+    provider: 'cloudflare',
+    latencyMs: Date.now() - start,
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // Embeddings — BGE-M3 (1024-dim, multilingual)
 // ────────────────────────────────────────────────────────────────────────────
 

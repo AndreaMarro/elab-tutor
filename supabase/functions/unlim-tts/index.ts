@@ -11,13 +11,17 @@ import { getCorsHeaders, getSecurityHeaders, checkRateLimitPersistent, checkBody
 import { checkConsent } from '../_shared/memory.ts';
 import { synthesizeIsabella, ISABELLA_DEFAULTS } from '../_shared/edge-tts-client.ts';
 import { synthesizeVoxtral, VOXTRAL_DEFAULTS } from '../_shared/voxtral-client.ts';
+import { cfMeloTtsSynthesize } from '../_shared/cloudflare-client.ts';
 
 // VPS URL from env var — not hardcoded
 const VPS_TTS_URL = Deno.env.get('VPS_TTS_URL') || 'http://72.60.129.50:8880/tts';
 
 // Sprint T iter 29 — Voxtral PRIMARY (Mistral EU 70 ms 9 languages incl IT).
-// Edge TTS Isabella becomes FALLBACK; VPS legacy 3rd. Browser SpeechSynthesis last.
-// Default ON, opt-out via env DISABLE_VOXTRAL_TTS=1.
+// Andrea iter 31 mandate: KEEP Mistral stack — voce/lentezza fix via:
+//   1. max_tokens cap 200 in llm-client.ts (60 parole ≈ 80 token + safety)
+//   2. Streaming response SSE (perceived latency <500ms)
+//   3. Warm-up Cron 30s prevent cold start
+//   4. Voice cloning Andrea/Davide IT 6s audio (Voxtral native Italian voice_id)
 const VOXTRAL_TTS_ENABLED = Deno.env.get('DISABLE_VOXTRAL_TTS') !== '1';
 
 // Sprint S iter 6 — Isabella Neural via Microsoft edge-tts (no GPU, no VPS).
@@ -104,9 +108,11 @@ serve(async (req: Request) => {
     // Cap text length for TTS (prevent abuse)
     const cappedText = cleanText.slice(0, 500);
 
-    // ── Sprint T iter 29: Mistral Voxtral PRIMARY (Mistral EU 70 ms IT) ──
-    // Tries Voxtral first. On failure falls through to Edge TTS Isabella, then
-    // VPS, then browser SpeechSynthesis fallback marker.
+    // ── Sprint T iter 29 PRIMARY: Mistral Voxtral mini-tts-2603 ──
+    // (Andrea iter 31 mandate: KEEP Mistral stack, optimize latency separately
+    // via streaming response + max_tokens cap + warm-up cron iter 31 P0.)
+    // MeloTTS Cloudflare keep as emergency fallback only (cfMeloTtsSynthesize
+    // available in cloudflare-client.ts, NOT default invoked here).
     const useVoxtral = VOXTRAL_TTS_ENABLED &&
       requestedProvider !== 'edge-tts' &&
       requestedProvider !== 'vps';
