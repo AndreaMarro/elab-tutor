@@ -15,7 +15,7 @@
 ## Sezione 1 — Vol/Pag Regression 30 Prompts
 
 **Endpoint**: `https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/unlim-chat`
-**Auth**: SUPABASE_ANON_KEY + X-Elab-Api-Key (`f673b9a0...`)
+**Auth**: SUPABASE_ANON_KEY + X-Elab-Api-Key (REDACTED-rotated-iter31)
 **Output**: `automa/state/vol-pag-regression-iter23.json` + `scripts/bench/output/vol-pag-regression-responses-2026-04-29T05-49-04-941Z.jsonl`
 
 ### Aggregate per metric (n=30)

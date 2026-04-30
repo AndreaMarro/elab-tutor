@@ -37,6 +37,12 @@ serve(async (req: Request) => {
 
     const contentType = req.headers.get('content-type') || '';
 
+    // Iter 32 P0 fix — handle 3 input shapes:
+    //   1. multipart/form-data (audio File field)
+    //   2. application/json {audio_base64, sessionId, language}
+    //   3. audio/* (audio/mpeg, audio/wav, audio/mp4, audio/x-m4a, audio/webm, ...) raw binary
+    // Previous iter 30 fix only handled 1+2; massive E2E test iter 31 (Batch E)
+    // confirmed harness sent audio/mpeg directly → JSON parse error "Unexpected token I".
     if (contentType.includes('multipart/form-data')) {
       const formData = await req.formData();
       const audioFile = formData.get('audio') as File | null;
@@ -48,10 +54,17 @@ serve(async (req: Request) => {
       audioBytes = new Uint8Array(await audioFile.arrayBuffer());
       language = (formData.get('language') as string) || 'it';
       sessionId = (formData.get('sessionId') as string) || '';
+    } else if (contentType.startsWith('audio/')) {
+      // Raw audio binary upload (audio/mpeg, audio/wav, audio/mp4, audio/x-m4a, etc.)
+      const buf = await req.arrayBuffer();
+      audioBytes = new Uint8Array(buf);
+      language = (req.headers.get('x-language') as string) || 'it';
+      sessionId = (req.headers.get('x-session-id') as string) || '';
     } else {
+      // application/json path
       const body = await req.json();
       if (!body.audio_base64 || typeof body.audio_base64 !== 'string') {
-        return new Response(JSON.stringify({ success: false, error: 'audio_base64 OR multipart audio required' }), {
+        return new Response(JSON.stringify({ success: false, error: 'audio_base64 OR multipart audio OR audio/* binary required' }), {
           status: 400, headers: getSecurityHeaders(req),
         });
       }

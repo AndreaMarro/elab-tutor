@@ -99,7 +99,7 @@ Output: `automa/state/iter-25-clawbot-multitool-results.jsonl`
 cd "/VOLUME 3/PRODOTTO/elab-builder"
 export SUPABASE_URL="https://euqpdueopmlllqjmqnyb.supabase.co"
 export SUPABASE_ANON_KEY=$(grep "^VITE_SUPABASE_EDGE_KEY" .env | cut -d= -f2-)
-export ELAB_API_KEY="f673b9a0ba541addb02d69912611a92941359b63fa29ff666153433c3419326d"
+export ELAB_API_KEY="REDACTED-rotated-iter31-2026-04-30"
 node scripts/bench/clawbot-multi-tool-50-scenarios.mjs --full
 ```
 
