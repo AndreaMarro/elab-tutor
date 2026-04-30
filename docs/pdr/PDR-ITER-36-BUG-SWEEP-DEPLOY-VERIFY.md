@@ -441,12 +441,25 @@ ssh -i ~/.ssh/id_ed25519_elab progettibelli@100.124.198.59 \
 - Easter egg #2: 5 click sequenziali su scimpanzè → unlock "Banana mode" CSS theme yellow accent (5 secondi tributo)
 
 **HomePage redesign current**:
-- File: `src/components/HomePage.jsx` (290 LOC iter 35 a1438eb subagent shipped) → REWRITE ~400 LOC
-- Hero "ELAB TUTOR" Oswald 64px + sottolineatura Lime gradient
+- File: `src/components/HomePage.jsx` (290 LOC iter 35 a1438eb subagent shipped) → REWRITE ~450 LOC
+- **Mascotte UNLIM hero protagonist** (left side hero, 240×240 desktop / 160×160 mobile): reuse `src/components/unlim/MascotPresence.jsx` componente esistente in modalità `idle-greeting` con micro-animazione pulse (2s cycle) + occhi blink random ogni 3-7s + click → "Ciao Ragazzi!" speech bubble + audio Voxtral voice clone Andrea IT 1 frase greeting (lazy-load voce su click NO autoplay)
+- Hero "ELAB TUTOR" Oswald 64px + sottolineatura Lime gradient (right side hero)
 - Sub-hero: "Tutor educativo elettronica + Arduino bambini 8-14. Kit fisici + volumi + software morfico."
-- 4 card grid `auto-fit minmax(280px, 1fr)` + hover scale 1.03 + shadow elevate
+- 4 card grid `auto-fit minmax(280px, 1fr)` + hover scale 1.03 + shadow elevate + mascotte UNLIM mini su ogni card hover (mascotte "indica" con braccino animato direzione card)
+- Mascotte UNLIM persistent floating bottom-right (anche post-scroll) → click apre Chatbot-only route diretto (shortcut)
 - Footer credits: "Andrea Marro coding + Tea co-dev/UX/QA + Davide Fagherazzi volumi cartacei + Omaric Elettronica kit + Giovanni Fagherazzi network commerciale"
 - Footer link "🐒 Chi siamo" subtle bottom-right (NON main card, easter egg)
+
+**Mascotte morphic states homepage** (`/impeccable:animate` `/impeccable:delight`):
+- `idle-greeting`: pulse soft + occhi blink (homepage default)
+- `pointing`: braccino indica card hover (UX guidance)
+- `talking`: bocca lip-sync mentre legge greeting/intro audio (1 frase Voxtral lazy)
+- `chatbot-shortcut`: floating mascotte click → naviga `#chatbot-only` con animazione transition slide-in
+
+**Chatbot-only route mascotte**:
+- Sidebar header: mascotte UNLIM mini 64×64 + "UNLIM — il tuo tutor che ricorda tutto"
+- Empty state main panel: mascotte 320×320 + "Ciao Ragazzi! Cosa vuoi imparare oggi? Ho letto i volumi e le tue lezioni passate."
+- Streaming response: mascotte mouth animation lip-sync (iter 37 atom B6 carryover)
 
 **Skills chain orchestrazione iter 36**:
 1. WebDesigner-1 `/impeccable:colorize` audit palette + tokens
