@@ -1582,3 +1582,105 @@ Box subtotal **8.14/10** + bonus cumulative iter 37 (+0.35 vs iter 36 +2.10 = 2.
 - A4 rationale: `docs/audits/iter-37-stt-fix-rationale.md`
 - 4 completion msgs Phase 1: `automa/team-state/messages/{maker1,maker2,webdesigner1,tester1}-iter37-phase1-completed.md`
 - Documenter Phase 2 completion: `automa/team-state/messages/documenter-iter37-phase2-completed.md`
+
+## Sprint T iter 38 PHASE 3 CLOSE (2026-05-01) — Latency Mitigation + Mistral Function Calling + DEGRADED Pattern S
+
+**Score iter 38 PHASE 3 close ONESTO ricalibrato G45**: **8.0/10** (G45 mechanical cap A10 Onnipotenza Deno port NOT shipped + Lighthouse perf 26+23 FAIL ≥90 target + 3/4 BG agents hit Anthropic org monthly usage limit pre-completion-msg).
+
+**Pattern S r3 4-agent OPUS PHASE-PHASE r2 DEGRADED**: Maker-2 (feature-dev:code-architect) completed text return only — orchestrator inline wrote 3 ADR files. Maker-1 + Maker-3 + WebDesigner-1 BG agents hit org monthly usage limit ~27 min mark, returned `"You've hit your org's monthly usage limit"`. Maker-1 + WebDesigner-1 had shipped substantial pre-fail work (file-system verified). Maker-3 ZERO deliverables. Sprint T close target 9.5/10 NOT achieved iter 38; Sprint T close path moves to iter 40+ post org-limit-reset session.
+
+**10 atoms shipped iter 38** (file-system verified):
+
+- ✅ **A3 Promise.all parallelize** loadStudentContext + RAG retrieve in `unlim-chat/index.ts:266-283` (within +221 LOC) — projected -800-1200ms p95 lift
+- ✅ **A5 Cron warmup SQL** `migrations/20260430220000_unlim_chat_warmup_cron.sql` NEW (pg_cron + pg_net 30s HEAD ping unlim-chat) + `onniscenza-classifier.ts` M (+31 LOC iter 38 doc-only, topK kept at 3 — Maker-1 caveat tests/ ownership)
+- ✅ **A7 Mistral function calling impl** `_shared/intent-tools-schema.ts` NEW (canonical INTENT_TOOLS_SCHEMA `args.id` per ADR-030 §3 — fixes 4-way schema drift Tester-6 iter 37 R7 v53 evidence) + `llm-client.ts` M (+12 responseFormat optional + structuredIntents post-call) + `mistral-client.ts` M (+28 MistralResponseFormat + request body pass-through) + `system-prompt.ts` M (+30 drop legacy `[INTENT:...]` MANDATORY block, preserve `[AZIONE:...]`) + `unlim-chat/index.ts` M (full wire-up step 5 callLLM responseFormat + step 6a structuredIntents consumption)
+- ✅ **A7 ADR-030** `docs/adrs/ADR-030-mistral-function-calling-intent-canonical.md` NEW ~280 LOC (Mistral La Plateforme `response_format: json_schema` design, projected R7 ≥95% canonical post-deploy vs 12.5% iter 37 v53 baseline)
+- ✅ **A9 ADR-031 design** `docs/adrs/ADR-031-stt-migration-voxtral-transcribe-2.md` NEW ~270 LOC (Voxtral Transcribe 2 $0.003/min 4% WER FLEURS Italian K-12 EU France GDPR-clean, impl deferred iter 39+, completes 100% Mistral EU FR stack Sense 2)
+- ✅ **ADR-028 §14.b amend** (+58 LOC 4-way schema canonical resolution, single source of truth ADR-030, action items Tester-2 + Maker-1/WebDesigner-1)
+- ✅ **A6 Lighthouse measured** `docs/audits/iter-38-lighthouse-{chatbot-only,easter-modal}.json` (~411+434KB reports) — **a11y 100/SEO 100/BP 96 PASS**, **perf 26+23 FAIL ≥90 target** (defer iter 39+ optim)
+- ✅ **A11 Wake word UX flow** `MicPermissionNudge.jsx` NEW 317 LOC (post-orchestrator hotfix `useCallback handleDeniedClick:254` Rules of Hooks violation moved BEFORE early returns) + `LavagnaShell.jsx` M (+37) + `HomePage.jsx` M (+42) — pre-emptive Permissions API query + plurale "Ragazzi, autorizza il microfono"
+- ✅ **A12 PWA SW Workbox prompt-update** `UpdatePrompt.jsx` NEW 322 LOC (controllerchange listener + plurale "Ragazzi, c'è una nuova versione" toast + 5s countdown + manual reload) + `vite.config.js` M (+23 `registerType: 'prompt'`)
+- ✅ **Test coverage NEW** 6 files +989 LOC (`tests/unit/components/{chatbot,easter,lavagna}/*.{jsx,js}`)
+
+**9+ atoms NOT shipped (defer iter 39+)** :
+- A1 R6 fixture v2 + page metadata SQL — Phase 3 Tester-2 NOT spawned (org limit cascade)
+- A1.b R5 re-run post-A3+A5 — bench env req + Phase 3 deferred
+- A2 Fumetto fix — no separate Edge Function exists; defer src/components/lavagna/Fumetto.jsx iter 39+
+- A4 Mistral streaming SSE — Path B explicit defer (breaks client parsing 4h risky)
+- A8 Vision Gemini Flash smoke — Phase 3 Tester-3 NOT spawned
+- A9 STT Voxtral migration impl — Path B explicit defer (design only iter 38)
+- **A10 Onnipotenza Deno port 12-tool subset** — Path B explicit defer + **PDR §4 cap 8.5 mechanical trigger** (Sprint T close gate)
+- A13 Canary 5%→25%→100% rollout — depends A10
+- **A14 Linguaggio codemod 200 violations** — Maker-3 BG agent ZERO deliverables (Andrea iter 21+ mandate carryover NOT closed)
+- **A15 94 esperimenti Playwright UNO PER UNO** — Tester-1 NOT spawned (Andrea iter 21+ mandate carryover NOT closed)
+- A16 Tres Jolie volumi audit — P2 explicit defer
+- A6.b Cronologia Google-style — P2 explicit defer
+- D1+D2+D3+D4 Andrea ratify queue — Path B explicit defer iter 39+ entrance
+
+**SPRINT_T_COMPLETE 14 boxes status post iter 38 close**:
+
+- Box 1 VPS GPU 0.4 (UNCHANGED Path A) | Box 2 stack 0.7 | Box 3 RAG 0.7 | Box 4 Wiki 1.0 (126/100)
+- Box 5 R0 1.0 | Box 6 Hybrid RAG 0.85 | Box 7 Vision 0.75 | Box 8 TTS 0.95
+- Box 9 R5 1.0 | Box 10 ClawBot 1.0
+- **Box 11 Onniscenza 0.85** (+0.05 A5 Cron warmup SQL shipped, apply pending Andrea)
+- Box 12 GDPR 0.75
+- **Box 13 UI/UX 0.75** (+0.05 A11 wake word UX live + A12 PWA prompt-update wired)
+- **Box 14 INTENT exec end-to-end 0.90** (+0.05 ADR-030 design + Mistral function calling wire-up shipped, deploy + R7 verify pending)
+
+Box subtotal **11.65/14** → normalizzato 8.32/10 + bonus iter 38 (+0.30 ADR-030+031+028§14.b doc + intent-tools-schema canonical + warmup_cron SQL + MicPermissionNudge UX + UpdatePrompt PWA + Lighthouse measured) = raw **8.62 → G45 mechanical cap 8.0/10 ONESTO** (A10 not shipped 8.5 ceiling - 0.50 onesti penalties Lighthouse perf FAIL + A14 zero + A15 not spawned + 3/4 BG fail).
+
+**5 honesty caveats critical iter 38**:
+
+1. **3/4 BG agents hit Anthropic org monthly usage limit pre-completion-msg**: Maker-1, Maker-3, WebDesigner-1 returned `"You've hit your org's monthly usage limit"` ~27 min mark. Maker-1 + WebDesigner-1 shipped substantial pre-fail work (file-system verified). Maker-3 ZERO deliverables. Orchestrator inline file-system verified all and authored 4 completion msgs on behalf (`automa/team-state/messages/{maker1,maker2,maker3,webdesigner1}-iter38-phase1-completed.md`).
+
+2. **A10 Onnipotenza Deno port NOT shipped → cap 8.5/10 mechanical PDR §4**: Sprint T close 9.5/10 ONESTO target NOT achievable iter 38 without A10. Defer iter 40+ post org-limit-reset session with parallel agents capable.
+
+3. **No bench re-run executed**: R5 + R6 + R7 post-deploy verification deferred. Tester-2 + Tester-3 + Tester-4 NOT spawned (org limit cascade). R7 ≥95% canonical projection per ADR-030 §6 UNVERIFIED — current canonical rate 12.5% (Tester-6 iter 37 v53 baseline). Mistral function calling impl shipped but not deployed prod yet (deploy gate Phase 4 OR iter 39+ entrance).
+
+4. **Lighthouse perf 26+23 FAIL ≥90 target**: A6 acceptance gate iter 38 P0.10 perf gate FAILED both routes (chatbot-only + easter-modal). a11y 100/SEO 100/BP 96 PASS. Defer iter 39+ optimization pass: lazy mount route components, defer non-critical chunks, image optimization, font preload. -0.10 onesto cap.
+
+5. **A14 codemod + A15 94 esperimenti NOT addressed**: Andrea iter 21+ mandate carryover NOT closed iter 38. Maker-3 ZERO deliverables. Tester-1 NOT spawned. Both deferred iter 39+ entrance — explicit acknowledged technical debt. -0.10 onesto cap each.
+
+**MicPermissionNudge Rules of Hooks hotfix**: orchestrator inline iter 38 fix `MicPermissionNudge.jsx:254` `useCallback handleDeniedClick` was AFTER 3 early returns lines 158-160 → React Rules of Hooks violation broke `tests/unit/lavagna/wakeWord-integration.test.jsx` "respects 'off' preference" 1/9 case (vitest -1 = 13473 pre-fix). Moved declaration BEFORE early returns. **9/9 wakeWord PASS post-fix + full vitest 13474 PRESERVED**.
+
+**Pattern S r3 race-cond fix iter 38**: 1/4 agents emitted own completion msg (Maker-2 only via text return, no Write tool); Maker-1 + Maker-3 + WebDesigner-1 BG agents fail pre-msg. File ownership rigid + filesystem barrier substantively respected (deliverables artifacts present + zero file write conflict between Maker-1 supabase/functions and WebDesigner-1 src/components). Pattern S race-cond fix VALIDATED iter 5 P1+P2, iter 6 P1, iter 8 r2, iter 11, iter 12 r2, iter 19, iter 36, iter 37, **iter 38 (degraded but no conflict)**.
+
+**Iter 39 priorities P0 preview** (vedi handoff §3 dettaglio):
+
+- Phase 4 commit + push iter 38 deliverables (build PASS pre-commit ~14min, NO `--no-verify`)
+- Andrea: `supabase db push --linked` (apply A5 warmup_cron migration)
+- Andrea: deploy unlim-chat v54 + decide ENABLE_INTENT_JSON_SCHEMA env flag (canary 5% OR keep false)
+- Andrea: Vercel deploy verify A12 PWA prompt LIVE post key rotation iter 32
+- Spawn Maker-3 retry A14 codemod (post org reset, 4h)
+- Spawn Tester-1 retry A15 94 esperimenti Playwright (post org reset, 3h)
+- Spawn Tester-2 R5 + R6 + R7 re-bench post-deploy (3h)
+- Spawn Tester-3 A8 Vision smoke + A2 Fumetto E2E (1h)
+- Spawn Maker-1 A10 Deno port + A4 SSE + A9 STT impl (post org reset, 16h batch)
+- Spawn WebDesigner-1 A6 Lighthouse perf optim + A6.b Cronologia (post org reset, 4h)
+- Andrea ratify queue D1+D2+D3+D4 + ADR-030 + ADR-031
+
+**Iter 39 score target**: 8.0 → **8.7+/10 ONESTO** conditional Phase 4 deploy verify + Andrea ratify queue close + R7 ≥95% post Mistral function calling deploy.
+
+**Sprint T close projection iter 40+**: 9.5/10 ONESTO conditional A10 Onnipotenza Deno port + A13 canary rollout + A14 codemod + A15 92→94 esperimenti audit complete — Opus indipendente review G45 mandate.
+
+**Anti-inflation G45 mandate iter 38 enforced** (cap finale + razionale):
+- cap 8.0/10 (raw 8.62 → 8.0). NO override.
+- NO claim "Sprint T close achieved" (A10 pending PDR §4 mechanical cap)
+- NO claim "INTENT canonical ≥95% LIVE" (R7 re-bench post-deploy pending — code shipped but Edge Function deploy + canary flag pending Phase 4)
+- NO claim "Lighthouse ≥90 perf" (26+23 FAIL admitted)
+- NO claim "Vercel deploy LIVE" (deferred Phase 4 pending)
+- NO claim "A14 codemod closed" (Maker-3 ZERO deliverables)
+- NO claim "A15 94 esperimenti audit closed" (Tester-1 not spawned)
+- NO claim "Andrea ratify queue closed" (Path B explicit defer iter 39+)
+
+**Cross-link docs iter 38**:
+- Audit Phase 3 close: `docs/audits/2026-05-01-iter-38-PHASE3-CLOSE-audit.md`
+- Handoff iter 39: `docs/handoff/2026-05-01-iter-38-to-iter-39-handoff.md`
+- ADR-030: `docs/adrs/ADR-030-mistral-function-calling-intent-canonical.md`
+- ADR-031: `docs/adrs/ADR-031-stt-migration-voxtral-transcribe-2.md`
+- ADR-028 §14.b amend: `docs/adrs/ADR-028-onnipotenza-intent-dispatcher-server-side.md`
+- A5 SQL migration: `supabase/migrations/20260430220000_unlim_chat_warmup_cron.sql`
+- A7 schema canonical: `supabase/functions/_shared/intent-tools-schema.ts`
+- A11 UX: `src/components/common/MicPermissionNudge.jsx`
+- A12 UX: `src/components/common/UpdatePrompt.jsx`
+- 4 completion msgs Phase 1: `automa/team-state/messages/{maker1,maker2,maker3,webdesigner1}-iter38-phase1-completed.md`

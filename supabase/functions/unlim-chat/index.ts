@@ -28,6 +28,11 @@ import { classifyPrompt } from '../_shared/onniscenza-classifier.ts';
 // `cleanText` strips the tags before TTS / display (Principio Zero V3
 // preservation: tags don't pollute the user-facing line count / Vol/pag check).
 import { parseIntentTags, stripIntentTags, type IntentTag } from '../_shared/intent-parser.ts';
+// iter 38 A7 — Mistral function calling (structured output) opt-in for action prompts.
+// Replaces legacy `[INTENT:{...}]` regex parsing path on a heuristic match.
+// Falls through to legacy regex when ENABLE_INTENT_TOOLS_SCHEMA != true OR
+// when the model didn't return parseable JSON (defensive).
+import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
@@ -237,59 +242,90 @@ serve(async (req: Request) => {
       }
     }
 
-    // 1. Load student memory (non-blocking if DB unavailable)
-    const studentContext = await loadStudentContext(sessionId);
-
-    // 2. Retrieve RAG context from volumes
+    // 1+2. Parallelize student memory load + RAG retrieval — Sprint T iter 38 Atom A3.
+    //
+    // Pre-iter-38 these were sequential awaits (~600ms loadStudentContext +
+    // ~600-1200ms hybrid/dense retrieval). Both calls are independent: student
+    // memory is per-sessionId DB read, RAG retrieval is embedding+vector search
+    // and never reads the student row. Running them in parallel via Promise.all
+    // saves ~800-1200ms p95 on cold-cache requests (PDR §3 A3 acceptance).
+    //
+    // Defensive: each branch keeps its own try/catch internally (loadStudentContext
+    // already returns null on DB failure; hybrid path falls back to dense; dense
+    // path itself catches downstream). Promise.all therefore cannot reject here
+    // unless something synchronous throws before the promises start, which is
+    // why we still leave the surrounding try/catch on the outer route handler.
+    //
     // Sprint S iter 8 ATOM-S8-A2: optional hybrid retrieval (BM25+dense+RRF) gated
     // by env RAG_HYBRID_ENABLED=true. Default false → preserves iter 7 dense-only path.
     // Iter 10: request param retrieval_mode='hybrid' overrides env to force hybrid (debug/bench).
     const envHybrid = (Deno.env.get('RAG_HYBRID_ENABLED') || 'false').toLowerCase() === 'true';
     const useHybrid = retrievalModeReq === 'hybrid' || (retrievalModeReq !== 'dense' && envHybrid);
+
+    // Launch both independent fetches in parallel.
+    const studentContextPromise = loadStudentContext(sessionId);
+    const ragRetrievePromise = useHybrid
+      ? hybridRetrieve(safeMessage, topKReq, {}).then(
+          (chunks): { kind: 'hybrid'; chunks: typeof chunks } => ({ kind: 'hybrid', chunks }),
+          // Hybrid threw — defensively fall back to dense at the same await
+          async (): Promise<{ kind: 'fallback'; text: string }> => ({
+            kind: 'fallback',
+            text: await retrieveVolumeContext(safeMessage, safeExperimentId, 3),
+          }),
+        )
+      : retrieveVolumeContext(safeMessage, safeExperimentId, 3).then(
+          (text): { kind: 'dense'; text: string } => ({ kind: 'dense', text }),
+        );
+
+    const [studentContext, ragResult] = await Promise.all([
+      studentContextPromise,
+      ragRetrievePromise,
+    ]);
+
     let ragContext: string;
     let retrievedChunksDebug: Array<Record<string, unknown>> = [];
     let retrievalModeUsed: 'hybrid' | 'dense' | 'fallback' = 'dense';
-    if (useHybrid) {
-      try {
-        const chunks = await hybridRetrieve(safeMessage, topKReq, {});
-        if (chunks.length > 0) {
-          ragContext = formatHybridContext(chunks);
-          retrievedChunksDebug = chunks.map(c => {
-            const cr = c as Record<string, unknown>;
-            const rrf = typeof cr.rrf_score === 'number' ? cr.rrf_score : null;
-            const sim = typeof cr.similarity === 'number' ? cr.similarity : null;
-            const contentStr = typeof cr.content === 'string' ? cr.content as string : '';
-            return {
-              // Iter 12 ATOM-S12-A4: surface unified score + chunk_id alias + content_preview (60 chars).
-              // Preserve legacy fields (id, content) for backward compat with iter 10 bench scripts.
-              chunk_id: cr.id ?? null,
-              id: cr.id ?? null,
-              score: rrf !== null ? rrf : sim,
-              source: cr.source ?? null,
-              // Iter 13 U3: corpus tag — 'rag' (volumi) | 'wiki' (concept).
-              corpus: cr.corpus ?? null,
-              chapter: cr.chapter ?? null,
-              page: cr.page ?? null,
-              figure_id: cr.figure_id ?? null,
-              section_title: cr.section_title ?? null,
-              content_preview: contentStr.slice(0, 60),
-              content: contentStr.slice(0, 240),
-              rrf_score: rrf,
-              similarity: sim,
-            };
-          });
-          retrievalModeUsed = 'hybrid';
-        } else {
-          ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
-          retrievalModeUsed = 'fallback';
-        }
-      } catch (_err) {
-        // Defensive fallback to dense-only path if hybrid fails for any reason
+
+    if (ragResult.kind === 'hybrid') {
+      const chunks = ragResult.chunks;
+      if (chunks.length > 0) {
+        ragContext = formatHybridContext(chunks);
+        retrievedChunksDebug = chunks.map(c => {
+          const cr = c as Record<string, unknown>;
+          const rrf = typeof cr.rrf_score === 'number' ? cr.rrf_score : null;
+          const sim = typeof cr.similarity === 'number' ? cr.similarity : null;
+          const contentStr = typeof cr.content === 'string' ? cr.content as string : '';
+          return {
+            // Iter 12 ATOM-S12-A4: surface unified score + chunk_id alias + content_preview (60 chars).
+            // Preserve legacy fields (id, content) for backward compat with iter 10 bench scripts.
+            chunk_id: cr.id ?? null,
+            id: cr.id ?? null,
+            score: rrf !== null ? rrf : sim,
+            source: cr.source ?? null,
+            // Iter 13 U3: corpus tag — 'rag' (volumi) | 'wiki' (concept).
+            corpus: cr.corpus ?? null,
+            chapter: cr.chapter ?? null,
+            page: cr.page ?? null,
+            figure_id: cr.figure_id ?? null,
+            section_title: cr.section_title ?? null,
+            content_preview: contentStr.slice(0, 60),
+            content: contentStr.slice(0, 240),
+            rrf_score: rrf,
+            similarity: sim,
+          };
+        });
+        retrievalModeUsed = 'hybrid';
+      } else {
+        // Hybrid returned empty — defensive fallback to dense (preserves iter 7
+        // pre-A3 behavior: empty hybrid result should not produce empty context).
         ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
         retrievalModeUsed = 'fallback';
       }
+    } else if (ragResult.kind === 'fallback') {
+      ragContext = ragResult.text;
+      retrievalModeUsed = 'fallback';
     } else {
-      ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
+      ragContext = ragResult.text;
       retrievalModeUsed = 'dense';
     }
 
@@ -404,7 +440,21 @@ serve(async (req: Request) => {
       }
     }
 
-    const systemPrompt = buildSystemPrompt(studentContext, safeCircuitState as CircuitState | null, experimentContext, capitoloFragment)
+    // iter 38 A7 — Mistral structured output gate (computed early so the
+    // system prompt can include the schema override). Heuristic: action-verb
+    // detector + env opt-in. When true, BASE_PROMPT's legacy [INTENT:...]
+    // block is superseded by a JSON output instruction (see system-prompt.ts).
+    const intentSchemaEnabled =
+      (Deno.env.get('ENABLE_INTENT_TOOLS_SCHEMA') || 'false').toLowerCase() === 'true';
+    const useIntentSchema = intentSchemaEnabled && shouldUseIntentSchema(safeMessage);
+
+    const systemPrompt = buildSystemPrompt(
+      studentContext,
+      safeCircuitState as CircuitState | null,
+      experimentContext,
+      capitoloFragment,
+      useIntentSchema,
+    )
       + (ragContext ? `\n\n${ragContext}` : '')
       + onniscenzaContext
       + imagePiiGuard;
@@ -483,7 +533,17 @@ serve(async (req: Request) => {
     //   - Promise.race 8s timeout kills tail outliers (R5 max 17971ms = 18s).
     //   - On timeout, throws 'llm_timeout_8s' → caught by existing catch → callBrainFallback.
     //   - maxOutputTokens reduced 256→120 per iter 31 close mandate (sync llm-client.ts:311 default).
+    // iter 38 A7 — Mistral structured-output flow.
+    // `useIntentSchema` already computed earlier (BEFORE buildSystemPrompt) so
+    // the system prompt could conditionally include the JSON output override.
+    // Schema only takes effect when:
+    //   1. env flag ENABLE_INTENT_TOOLS_SCHEMA enabled
+    //   2. heuristic shouldUseIntentSchema(message) detects an action verb
+    //   3. provider routing lands on Mistral (other providers ignore field)
+    // When all three hold, Mistral returns a JSON object {text, intents?[]}
+    // that we project to cappedText + parsed intents (replacing regex parse).
     let result;
+    let preparsedIntents: unknown[] | null = null;
     try {
       const llmCallPromise = callLLM({
         model,
@@ -493,11 +553,42 @@ serve(async (req: Request) => {
         maxOutputTokens: 120,
         temperature: 0.7,
         thinkingLevel,
+        // Iter 38 A7: structured output for Mistral when opt-in. Defensive:
+        // other providers ignore this field; Mistral validates server-side.
+        ...(useIntentSchema ? { responseFormat: INTENT_TOOLS_SCHEMA } : {}),
       });
       const timeoutPromise = new Promise<never>((_, rej) => {
         setTimeout(() => rej(new Error('llm_timeout_8s')), 8000);
       });
       result = await Promise.race([llmCallPromise, timeoutPromise]);
+
+      // iter 38 A7 — when schema mode used + provider is Mistral, parse the
+      // JSON object out of result.text and project text/intents back into
+      // the legacy flow shape. If parse fails for any reason (provider
+      // didn't honor schema, or Gemini fallback ran), we leave the original
+      // text intact and rely on the legacy `parseIntentTags` regex below.
+      if (useIntentSchema && result && typeof result.text === 'string' && result.provider === 'mistral') {
+        try {
+          const parsed = JSON.parse(result.text) as { text?: string; intents?: unknown[] };
+          if (parsed && typeof parsed.text === 'string' && parsed.text.trim()) {
+            // Cleanly substitute prose; cap + intent dispatch downstream still runs.
+            result = { ...result, text: parsed.text };
+            if (Array.isArray(parsed.intents) && parsed.intents.length > 0) {
+              // Filter to canonical tool whitelist defensively (iter 38 4-way drift fix).
+              preparsedIntents = parsed.intents.filter((i) => {
+                const t = (i as { tool?: string })?.tool;
+                return typeof t === 'string' && (CANONICAL_INTENT_TOOLS as readonly string[]).includes(t);
+              });
+            }
+          }
+        } catch (_parseErr) {
+          // Defensive: legacy [INTENT:...] regex below will pick up any tags.
+          console.info(JSON.stringify({
+            level: 'info', event: 'intent_schema_parse_fallback',
+            timestamp: new Date().toISOString(),
+          }));
+        }
+      }
     } catch (llmError) {
       // Both Together + Gemini failed — try Brain fallback
       console.warn(JSON.stringify({
@@ -530,16 +621,42 @@ serve(async (req: Request) => {
     let parsedIntents: IntentTag[] = [];
     let cleanText = cappedText;
     try {
-      parsedIntents = parseIntentTags(cappedText);
-      cleanText = stripIntentTags(cappedText);
-      if (parsedIntents.length > 0) {
-        console.info(JSON.stringify({
-          level: 'info', event: 'intents_parsed',
-          count: parsedIntents.length,
-          tools: parsedIntents.map(i => i.tool),
-          experimentId: safeExperimentId || null,
-          timestamp: new Date().toISOString(),
-        }));
+      // iter 38 A7: when Mistral structured-output produced intents, prefer
+      // them (already validated against canonical schema). Otherwise fall
+      // back to legacy regex parse on capped text.
+      if (preparsedIntents && preparsedIntents.length > 0) {
+        parsedIntents = preparsedIntents
+          .map((i) => {
+            const o = i as { tool?: unknown; args?: unknown };
+            const tool = typeof o.tool === 'string' ? o.tool : '';
+            const args = (o.args && typeof o.args === 'object' && !Array.isArray(o.args))
+              ? (o.args as Record<string, unknown>)
+              : {};
+            return tool ? ({ tool, args } as IntentTag) : null;
+          })
+          .filter((x): x is IntentTag => x !== null);
+        cleanText = cappedText; // schema mode already returned clean prose
+        if (parsedIntents.length > 0) {
+          console.info(JSON.stringify({
+            level: 'info', event: 'intents_parsed_schema',
+            count: parsedIntents.length,
+            tools: parsedIntents.map(i => i.tool),
+            experimentId: safeExperimentId || null,
+            timestamp: new Date().toISOString(),
+          }));
+        }
+      } else {
+        parsedIntents = parseIntentTags(cappedText);
+        cleanText = stripIntentTags(cappedText);
+        if (parsedIntents.length > 0) {
+          console.info(JSON.stringify({
+            level: 'info', event: 'intents_parsed',
+            count: parsedIntents.length,
+            tools: parsedIntents.map(i => i.tool),
+            experimentId: safeExperimentId || null,
+            timestamp: new Date().toISOString(),
+          }));
+        }
       }
     } catch (intentErr) {
       // Parser must NEVER break chat flow.

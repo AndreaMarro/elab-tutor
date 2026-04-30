@@ -218,7 +218,9 @@ export default function EasterModal({ isOpen = true, onClose }) {
             type="button"
             className={styles.scimpanzeFrame}
             onClick={handleScimpanzeClick}
-            aria-label="Scimpanzè ELAB — clic per sorpresa"
+            aria-label={imgError
+              ? 'Ragazzi, ancora niente scimpanze qui — torneranno presto!'
+              : 'Scimpanzè ELAB — clic per sorpresa'}
             data-testid="easter-scimpanze-trigger"
           >
             {imgError ? (

@@ -249,3 +249,64 @@ CREATE POLICY "authenticated_read_own_session" ON intent_dispatch_log
 **Migration apply**: iter 37 P0 (Andrea `supabase db push --linked` post ratify)
 **Rollout**: iter 37 Shadow → iter 38 Canary 5% → ramp per §7 schedule
 **ADR-029 cross-ref**: LLM_ROUTING_WEIGHTS 70/20/10 conservative tune (latency companion decision)
+
+---
+
+## §14.b 4-way schema drift resolution — iter 38 (ADR-030 supersedes)
+
+**Added**: iter 38 Phase 1 by Maker-2 (ATOM-S38-A7 deliverable per PDR iter 38 §3)
+**Evidence source**: `automa/team-state/messages/tester6-iter37-phase3-completed.md` §3.4 + §4
+
+### Finding summary
+
+Tester-6 iter 37 Phase 3 R7 bench (200 prompts, v53 ACTIVE) confirmed **17/200 params_fail** traced to a 4-way key-name mismatch across the INTENT pipeline:
+
+| Source | Tool | Key | Literal |
+|--------|------|-----|---------|
+| Bench scorer `scripts/bench/run-sprint-r7-stress.mjs:92` | `mountExperiment` | `experimentId` | `typeof args?.experimentId === 'string'` |
+| System-prompt few-shot `_shared/system-prompt.ts:78` | `mountExperiment` | `id` | `[INTENT:{"tool":"mountExperiment","args":{"id":"v1-cap6-esp1"}}]` |
+| ADR-028 §14 contract (pre-amend) | `mountExperiment` | `id` | (aligned with system-prompt) |
+| Browser API `src/services/simulator-api.js:264` | `mountExperiment` | positional string | `mountExperiment(experimentId)` |
+
+Secondary drifts confirmed by Tester-6 §4 (same params_fail bucket):
+
+| Bench scorer expects | System-prompt emits | Tool |
+|---------------------|---------------------|------|
+| `args.pins` (array) | `args.ids` (array) | `highlightPin` |
+| `args.param` (string) | `args.field` (string) | `setComponentValue` |
+| `args.enabled` (boolean) | `args.on` (boolean) | `toggleDrawing` |
+
+### Resolution — ADR-030 as single source of truth
+
+**ADR-030 (iter 38) defines the canonical params schema** resolving all 4-way drift. The canonical table (ADR-030 §3) uses:
+
+- `mountExperiment.args.id` — aligned with system-prompt few-shot (LLM was correct; bench was wrong)
+- `highlightPin.args.ids` — array, aligned with system-prompt
+- `setComponentValue.args.field` — aligned with system-prompt
+- `toggleDrawing.args.on` — aligned with system-prompt
+
+ADR-030 also replaces prompt-teaching entirely with Mistral `response_format: json_schema` — eliminating the regex-parse approach and making params shape validation moot for the primary Mistral path.
+
+### Action items iter 38
+
+1. **Bench scorer rules update** (Tester-2, ATOM-S38-A1.b sub-task):
+   - `scripts/bench/run-sprint-r7-stress.mjs:92`: change `mountExperiment` rule from `args?.experimentId` to `args?.id`
+   - `:91`: change `highlightPin` from `args?.pins` to `args?.ids`
+   - `:94`: change `setComponentValue` from `args?.param` to `args?.field`
+   - `:96`: change `toggleDrawing` from `args?.enabled` to `args?.on`
+
+2. **Browser dispatcher object accept** (Maker-1 OR WebDesigner-1):
+   - `src/components/lavagna/intentsDispatcher.js`: update `mountExperiment` dispatch to destructure `args.id` → call `api.mountExperiment(args.id)` (positional string as required by browser API)
+   - Similar fixes for `highlightPin` (pass `args.ids`) and `setComponentValue` (pass `args.id`, `args.field`, `args.value`)
+
+3. **System-prompt [INTENT:...] block drop** (Maker-1, ADR-030 §4.2):
+   - `_shared/system-prompt.ts:68-109`: remove MANDATORY INTENT block post-ADR-030 json_schema implementation
+   - Preserves `[AZIONE:...]` legacy tags (play/pause/compile)
+
+4. **Validate end-to-end via R7 re-bench post-deploy**:
+   - Tester-2 Phase 3 re-run `scripts/bench/run-sprint-r7-stress.mjs` post-v54 deploy
+   - Acceptance: ≥95% canonical rate (ADR-030 §6 target) vs 12.5% pre-ADR-030
+
+### Honesty note
+
+The §14 implementation block (iter 36) and B-NEW browser wire-up (iter 37) were correct in using `args.id` (aligned with system-prompt). The bench scorer was using `args.experimentId` — a divergence introduced when the scorer was authored in iter 12 before the system-prompt was aligned. This ADR-028 §14.b amendment closes the documentation gap and directs the authoritative resolution to ADR-030.

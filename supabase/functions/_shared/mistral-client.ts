@@ -32,6 +32,22 @@ export type MistralChatModel =
   | 'mistral-large-latest'
   | 'pixtral-12b-2409';
 
+/**
+ * Mistral La Plateforme `response_format` parameter — JSON schema mode.
+ *
+ * When set, Mistral returns a JSON object that conforms to the supplied
+ * schema. Used by Sprint T iter 38 Atom A7 to replace the legacy
+ * `[INTENT:{...}]` regex parsing with structured outputs (eliminates
+ * Tester-6 R7 v53 4-way schema drift: canonical 12.5%, 17/200 params_fail).
+ *
+ * Reference: https://docs.mistral.ai/capabilities/structured-output/json_schema/
+ *
+ * Type: 'json_schema' wraps a strict subset (Mistral validates server-side).
+ */
+export type MistralResponseFormat =
+  | { type: 'json_schema'; json_schema: { name?: string; strict?: boolean; schema: Record<string, unknown> } }
+  | { type: 'json_object' };
+
 export interface MistralChatOptions {
   model?: MistralChatModel;
   systemPrompt: string;
@@ -39,6 +55,8 @@ export interface MistralChatOptions {
   images?: ImageData[];          // Pixtral when present
   maxOutputTokens?: number;
   temperature?: number;
+  /** Iter 38 A7: optional JSON schema constraint on the model output. */
+  responseFormat?: MistralResponseFormat;
 }
 
 export interface MistralChatResult {
@@ -90,7 +108,12 @@ export async function callMistralChat(opts: MistralChatOptions): Promise<Mistral
     ? buildVisionContent(opts.message, opts.images!)
     : opts.message;
 
-  const body = {
+  // Build base body. response_format is optional and only emitted when the
+  // caller explicitly opts in (iter 38 A7). When present, Mistral La Plateforme
+  // returns a JSON object that matches the supplied schema; we still consume
+  // it as `content` (string) and let the caller JSON.parse — this keeps the
+  // contract identical to the regex-based legacy path for downstream code.
+  const body: Record<string, unknown> = {
     model,
     messages: [
       { role: 'system', content: opts.systemPrompt },
@@ -99,6 +122,9 @@ export async function callMistralChat(opts: MistralChatOptions): Promise<Mistral
     max_tokens: opts.maxOutputTokens ?? 120,
     temperature: opts.temperature ?? 0.7,
   };
+  if (opts.responseFormat) {
+    body.response_format = opts.responseFormat;
+  }
 
   const start = Date.now();
   const controller = new AbortController();

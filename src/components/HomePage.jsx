@@ -43,6 +43,12 @@ const HomeCronologia = lazy(() => import('./HomeCronologia'));
 const ChatbotOnly = lazy(() => import('./chatbot/ChatbotOnly'));
 const EasterModal = lazy(() => import('./easter/EasterModal'));
 
+// Iter 38 Atom A11 — mic permission UX nudge (pre-emptive grant request).
+// Lazy-loaded: il banner appare solo se Permissions API segnala state='prompt',
+// quindi caricarlo on-demand evita di gonfiare il main chunk per docenti che
+// hanno già autorizzato il microfono nelle sessioni passate.
+const MicPermissionNudge = lazy(() => import('./common/MicPermissionNudge.jsx'));
+
 // Hash routes managed inline (NO react-router) — pattern consistent with
 // existing app routing convention.
 const HASH_ROUTES = {
@@ -485,6 +491,35 @@ export default function HomePage({ onNavigate }) {
     setShowGreeting(true);
   }, []);
 
+  // Iter 38 Atom A11 — wake word pre-warm. Quando i docenti autorizzano il
+  // microfono dal nudge, partiamo subito il listener "Ehi UNLIM" così è
+  // pronto al primo ingresso in Lavagna (no più "Ti ascolto" silent fail).
+  // Il listener gira come singleton modulo (idempotente), nessun rischio
+  // doppio-mount: LavagnaShell.startWakeWordListener no-op se già attivo.
+  const handleMicGrant = useCallback(() => {
+    // Dynamic import per non bloccare main chunk con SpeechRecognition module.
+    import('../services/wakeWord').then((mod) => {
+      if (typeof mod?.isWakeWordSupported === 'function' && !mod.isWakeWordSupported()) {
+        return; // Browser non supporta WebSpeech → skip silenzioso
+      }
+      if (typeof mod?.startWakeWordListener === 'function') {
+        mod.startWakeWordListener({
+          onWake: () => {
+            // Wake from Home → suggest entering Lavagna (route handoff).
+            try {
+              window.dispatchEvent(new CustomEvent('elab-wake-from-home'));
+            } catch { /* no-op */ }
+          },
+          onCommand: (text) => {
+            try {
+              window.dispatchEvent(new CustomEvent('elab-wake-command', { detail: { text } }));
+            } catch { /* no-op */ }
+          },
+        });
+      }
+    }).catch(() => { /* best-effort */ });
+  }, []);
+
   const handleResume = useCallback((target) => {
     // Cronologia onResume: target may be a hash or a page id.
     if (typeof target === 'string') {
@@ -513,6 +548,13 @@ export default function HomePage({ onNavigate }) {
           <EasterModal isOpen={true} onClose={handleEasterClose} />
         </Suspense>
       )}
+      {/* Iter 38 Atom A11 — pre-emptive mic permission nudge. Self-managed
+          visibility: returns null se permission già 'granted' o se docente
+          ha cliccato "Più tardi" (localStorage flag). Plurale "Ragazzi" + kit
+          fisico mention. Click "Autorizza" → getUserMedia → wake word start. */}
+      <Suspense fallback={null}>
+        <MicPermissionNudge onGrant={handleMicGrant} />
+      </Suspense>
       <header style={styles.hero}>
         <div style={styles.heroLeft}>
           <h1 style={styles.brandTitle}>

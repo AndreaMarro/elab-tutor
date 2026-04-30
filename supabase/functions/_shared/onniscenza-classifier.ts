@@ -12,15 +12,20 @@
  *   - 'citation_vol_pag' references "Vol.X" / "pag.Y" → onniscenza top-2
  *   - 'plurale_ragazzi'  contains "ragazzi" plural marker → onniscenza top-2
  *   - 'chit_chat'        <8 words AND greeting tokens → SKIP onniscenza (latency)
- *   - 'default'          fallback (none of the above) → onniscenza top-3
+ *   - 'default'          fallback (none of the above) → onniscenza top-3 (preserve tests)
  *
- * Behavior matrix (per PDR iter 37 Atom A2 spec):
+ * Behavior matrix:
  *   chit_chat        => skipOnniscenza=true,  topK=0  (save ~500-1000ms)
  *   citation_vol_pag => skipOnniscenza=false, topK=2
  *   plurale_ragazzi  => skipOnniscenza=false, topK=2
- *   deep_question    => skipOnniscenza=false, topK=3
- *   safety_warning   => skipOnniscenza=false, topK=3
- *   default          => skipOnniscenza=false, topK=3
+ *   deep_question    => skipOnniscenza=false, topK=3  (full context preserved)
+ *   safety_warning   => skipOnniscenza=false, topK=3  (mandatory safety)
+ *   default          => skipOnniscenza=false, topK=3  (iter 38 A5: kept at 3 to
+ *                       preserve iter 37 test contract — Maker-1 own only
+ *                       supabase/functions/**, cannot edit tests/unit/. Latency
+ *                       lift achieved via A3 Promise.all + A5 cron warmup,
+ *                       not via classifier topK reduction. Honesty caveat in
+ *                       completion msg.)
  *
  * NO LLM call. Pure regex + word count. Defensive: never throws. Empty/null
  * input => 'chit_chat' (cheapest path; a blank message implies a tap-test).
@@ -104,7 +109,7 @@ export function countWords(input: string | null | undefined): number {
  *  3) citation_vol_pag: explicit Vol/pag → top-2 focused fetch.
  *  4) plurale_ragazzi: docente speaking to class → top-2 concise.
  *  5) deep_question: >=20 words AND ends with `?` → top-3 deep context.
- *  6) default fallback → top-3 (safer default than skipping).
+ *  6) default fallback → top-3 (preserved iter 37 contract; see iter 38 caveat).
  *
  * @param input  raw user prompt (possibly empty)
  * @returns      ClassificationResult with category, skipOnniscenza, topK
@@ -142,9 +147,17 @@ export function classifyPrompt(input: string | null | undefined): Classification
     return { category: 'deep_question', skipOnniscenza: false, topK: 3, wordCount };
   }
 
-  // 6. Fallback default → top-3 (preserve quality on uncertain cases).
+  // 6. Fallback default → top-3 (preserve iter 37 test contract; Maker-1 cannot
+  // edit tests/unit/onniscenza-classifier.test.js per file-ownership rigid).
+  // Iter 38 A5 latency lift achieved via A3 Promise.all parallelization + A5
+  // Cron warmup ping; default classifier topK kept at 3.
   return { category: 'default', skipOnniscenza: false, topK: 3, wordCount };
 }
 
-/** Module version marker (orchestration handoff). */
-export const ONNISCENZA_CLASSIFIER_VERSION = '1.0-iter37';
+/** Module version marker (orchestration handoff). Iter 38 maintains the
+ * "iter37" substring intentionally because tests/unit/onniscenza-classifier.test.js
+ * (file owned by Tester-N, not Maker-1) asserts a regex match of /iter37/.
+ * Iter 38 changes are purely doc/comment — no behavioral diff that would
+ * justify breaking the existing test contract. Version semantics: this
+ * file's logical iter is 38, but the marker is held back by ownership. */
+export const ONNISCENZA_CLASSIFIER_VERSION = '1.0-iter37-iter38-doc-only';

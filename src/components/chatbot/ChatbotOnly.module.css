@@ -195,7 +195,8 @@
 .sidebarItemBadge {
   display: inline-flex;
   align-items: center;
-  font-size: 9px;
+  /* iter 38 A6 fix: 9→10px to honor CLAUDE.md rule 8 label floor */
+  font-size: 10px;
   font-weight: 700;
   color: var(--elab-orange, #E8941C);
 /* © Andrea Marro — 30/04/2026 — ELAB Tutor — Tutti i diritti riservati */
@@ -212,7 +213,8 @@
   padding: 20px 14px;
   text-align: center;
   color: var(--elab-text-muted, #5A6B7E);
-  font-size: 12px;
+  /* iter 38 A6 fix: 12→13px text floor (CLAUDE.md rule 8) */
+  font-size: 13px;
   border: 1px dashed rgba(30, 77, 140, 0.15);
   border-radius: 10px;
   margin: 12px 14px;
@@ -260,7 +262,8 @@
 }
 
 .chatHeaderSub {
-  font-size: 12px;
+  /* iter 38 A6 fix: 12→13px text floor (CLAUDE.md rule 8) */
+  font-size: 13px;
   color: var(--elab-text-muted, #5A6B7E);
   margin: 0;
   font-weight: 500;
@@ -431,7 +434,8 @@
 }
 
 .toolLabel {
-  font-size: 9px;
+  /* iter 38 A6 fix: 9→10px label floor (CLAUDE.md rule 8) */
+  font-size: 10px;
   font-weight: 700;
   color: var(--elab-text-muted, #5A6B7E);
   text-transform: uppercase;

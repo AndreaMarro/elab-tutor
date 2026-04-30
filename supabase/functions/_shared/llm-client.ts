@@ -16,7 +16,8 @@ import {
   type TogetherContext,
   type SupabaseClientLike,
 } from './together-fallback.ts';
-import { callMistralChat, type MistralChatModel } from './mistral-client.ts';
+import { callMistralChat, type MistralChatModel, type MistralResponseFormat } from './mistral-client.ts';
+export type { MistralResponseFormat };
 
 // Re-export for consumers that need error handling
 export { GeminiError, ErrorCode, callBrainFallback };
@@ -31,6 +32,10 @@ const TOGETHER_TIMEOUT_MS = 15000;
 
 /**
  * LLMOptions — identical to GeminiOptions so callers don't change signature.
+ *
+ * Iter 38 A7: optional `responseFormat` (JSON schema) for Mistral structured
+ * output. When set, only Mistral honors it; Gemini/Together/RunPod ignore
+ * (defensive fall-through preserves backward compatibility).
  */
 export interface LLMOptions {
   model: GeminiModel;
@@ -40,6 +45,8 @@ export interface LLMOptions {
   maxOutputTokens?: number;
   temperature?: number;
   thinkingLevel?: 'minimal' | 'low' | 'medium' | 'high'; // Ignored by Together
+  /** Iter 38 A7: JSON schema constraint forwarded only to Mistral. */
+  responseFormat?: MistralResponseFormat;
 }
 
 /**
@@ -368,6 +375,9 @@ async function callMistral(options: LLMOptions, forceModel?: MistralChatModel): 
     images: options.images,
     maxOutputTokens: options.maxOutputTokens,
     temperature: options.temperature,
+    // Iter 38 A7: forward responseFormat (json_schema) only to Mistral.
+    // Other providers' branches do not read this field; defensive ignore.
+    responseFormat: options.responseFormat,
   });
   return {
     text: r.text,

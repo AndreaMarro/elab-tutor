@@ -33,6 +33,16 @@ import { getCapitolo, listAllCapitoli } from '../../services/percorsoService';
 // iter 35 fix Bug 5 Fumetto: static import preserves user-gesture chain (was async dynamic import → window.open() blocked browser popup policy).
 import { openReportWindow } from '../unlim/UnlimReport';
 import { showToast as showToastSync } from '../common/Toast';
+// iter 38 Atom A11 + A12 (WebDesigner-1): pre-emptive UX nudges.
+//   - MicPermissionNudge: chiede mic ai docenti PRIMA di entrare in Lavagna
+//     così wake word "Ehi UNLIM" è caldo al primo uso (browser cache grant
+//     per origin tra getUserMedia e SpeechRecognition).
+//   - UpdatePrompt: toast plurale "Ragazzi, c'è una nuova versione…" quando
+//     vite-plugin-pwa rileva nuovo SW (registerType:'prompt' → no auto-skip).
+// Lazy-load: nessun footprint sul main chunk per docenti già autorizzati /
+// senza aggiornamenti pending.
+const MicPermissionNudge = lazy(() => import('../common/MicPermissionNudge.jsx'));
+const UpdatePrompt = lazy(() => import('../common/UpdatePrompt.jsx'));
 // ADR-025 iter 26 — Modalità 4 modes canonical UI (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso)
 import ModalitaSwitch from './ModalitaSwitch';
 import css from './LavagnaShell.module.css';
@@ -1078,6 +1088,33 @@ export default function LavagnaShell() {
       <h1 className="visually-hidden">
         {experimentName ? `Lavagna ELAB — ${experimentName}` : 'Lavagna ELAB'}
       </h1>
+      {/* iter 38 Atom A11 — mic permission nudge (self-managed visibility).
+          Returns null se permesso 'granted' o se docente ha cliccato "Più tardi".
+          onGrant: avvia warm-up wake word IMMEDIATAMENTE così LavagnaShell
+          successivo .startWakeWordListener() trova permission cached. */}
+      <Suspense fallback={null}>
+        <MicPermissionNudge
+          onGrant={() => {
+            // Pre-warm wake word: idempotente (modulo singleton). Se già
+            // attivo via useEffect lavagna sotto, è no-op.
+            if (typeof window !== 'undefined' && isWakeWordSupported()) {
+              try {
+                startWakeWordListener({
+                  onWake: () => { /* listener lavagna sotto sovrascrive callbacks reali */ },
+                  onCommand: () => { /* idem */ },
+                });
+              } catch { /* best effort */ }
+            }
+          }}
+        />
+      </Suspense>
+      {/* iter 38 Atom A12 — PWA update prompt. Toast plurale "Ragazzi…"
+          appare quando vite-plugin-pwa segnala onNeedRefresh (registerType:
+          'prompt'). Self-managed: needRefresh flag interno; component
+          returns null fino a SW update. */}
+      <Suspense fallback={null}>
+        <UpdatePrompt autoReloadSeconds={5} />
+      </Suspense>
       <AppHeader
         experimentName={experimentName}
         totalSteps={totalSteps}

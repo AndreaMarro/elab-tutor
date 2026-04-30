@@ -236,6 +236,12 @@ export function buildSystemPrompt(
   circuitState?: CircuitState | null,
   experimentContext?: string | null,
   capitoloFragment?: string | null,
+  /** Iter 38 A7: when true, append an override that supersedes the legacy
+   * `[INTENT:...]` block in BASE_PROMPT and instructs the model to emit a
+   * single JSON object {text, intents?[]} matching INTENT_TOOLS_SCHEMA.
+   * Default false preserves the iter 37 contract for callers that don't
+   * opt into structured output. */
+  useIntentSchema?: boolean,
 ): string {
   const parts = [BASE_PROMPT];
 
@@ -270,6 +276,30 @@ ${stateStr}`);
     parts.push(`
 [ESPERIMENTO ATTIVO]
 ${experimentContext}`);
+  }
+
+  // Iter 38 A7: when schema mode active, append override that replaces the
+  // legacy `[INTENT:{...}]` block. Mistral La Plateforme will validate the
+  // output server-side against INTENT_TOOLS_SCHEMA so we ask for a single
+  // JSON object rather than embedded brackets in prose.
+  if (useIntentSchema) {
+    parts.push(`
+[OUTPUT FORMAT — IMPORTANT]
+Devi rispondere con un SINGOLO oggetto JSON valido, NIENTE altro testo:
+{"text":"<risposta in italiano K-12 plurale Ragazzi, max 60 parole>","intents":[{"tool":"<nome>","args":{...}}]}
+
+Regole rigide:
+- Inizia "text" SEMPRE con "Ragazzi,".
+- "text" cita Vol/pag verbatim quando il contesto RAG lo include (regola PRINCIPIO ZERO V3).
+- "text" termina con un invito al kit fisico ELAB (breadboard, montate, cablate, costruite).
+- "intents" e' opzionale: includilo SOLO se serve un'azione UI (highlight, mountExperiment, captureScreenshot, ecc.).
+- mountExperiment usa SEMPRE la chiave "id" (NON "experimentId"). Esempio: {"tool":"mountExperiment","args":{"id":"v3-cap6-semaforo"}}.
+- highlightComponent.args.ids e' un array di stringhe (es. ["led1","r1"]).
+- NON emettere tag [INTENT:...] o [AZIONE:...] dentro "text". Tutto in JSON.
+- Tools whitelist: highlightComponent, mountExperiment, captureScreenshot, highlightPin, clearHighlights, clearCircuit, getCircuitState, getCircuitDescription, setComponentValue, toggleDrawing, serialWrite, clearHighlightPins.
+
+Esempio risposta valida (singolo JSON, niente altro):
+{"text":"Ragazzi, evidenzio il LED rosso sulla breadboard del vostro kit ELAB.","intents":[{"tool":"highlightComponent","args":{"ids":["led1"]}}]}`);
   }
 
   return parts.join('\n');

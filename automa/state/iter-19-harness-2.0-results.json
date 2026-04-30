@@ -6,7 +6,7 @@
   "skipped": 0,
   "fail": 0,
   "expected_skip": [],
-  "timestamp": "2026-04-28T14:11:17.688Z",
+  "timestamp": "2026-04-30T23:14:53.415Z",
   "results": [
     {
       "experiment_id": "v1-cap10-esp1",
@@ -1526,9 +1526,9 @@
       "status": "pass",
       "sim_summary": {
         "components_count": 6,
-        "wires_count": 10,
+        "wires_count": 3,
         "state_keys": 6,
-        "description_len": 97
+        "description_len": 126
       },
       "interaction_checks": {
         "mounted_components_count": true,
@@ -1633,10 +1633,10 @@
       "filename": "v3-cap8-serial.json",
       "status": "pass",
       "sim_summary": {
-        "components_count": 3,
-        "wires_count": 5,
-        "state_keys": 3,
-        "description_len": 82
+        "components_count": 2,
+        "wires_count": 0,
+        "state_keys": 2,
+        "description_len": 119
       },
       "interaction_checks": {
         "mounted_components_count": true,
