@@ -8,6 +8,45 @@
 
 ---
 
+## §0 — PRINCIPIO ZERO + MORFISMO compliance gate (OBBLIGATORIO ogni atom)
+
+**Reference autoritativo**: `CLAUDE.md` "DUE PAROLE D'ORDINE" §1+§2.
+
+**PRINCIPIO ZERO** (pedagogico): Docente è tramite. UNLIM strumento docente. Studenti lavorano kit fisico. Linguaggio plurale "Ragazzi," + cita Vol/pag VERBATIM tra «caporali». ≤60 parole + 1 analogia. Kit fisico ELAB (breadboard) SEMPRE menzione. NO "puoi fare in simulatore" — sempre "costruite sul vostro kit + verifichiamo insieme".
+
+**MORFISMO Sense 1** (tecnico-architetturale): Software morfico runtime. ToolSpec 62 declarative + L1 composite + L2 templates 20/20 LIVE + L3 morphic DEV. Mutaforma per-classe/per-docente/per-kit. Onniscenza 7-layer cross-pollination. Ogni feature iter 36 atom DEVE preservare morphic runtime adapt (NO static config).
+
+**MORFISMO Sense 1.5** (adattabilità docente/classe/UI): Esperienza adattiva multi-dimensionale. Mascotte morphic states (idle/pointing/talking/chatbot-shortcut iter 36 Atom A13). Finestre morfiche resolution-aware (LIM 1080p vs 4K vs iPad vs mobile). Toolbar morphic 4 strumenti core. Layout LIM hero state vs Dashboard puntuale.
+
+**MORFISMO Sense 2** (strategico-competitivo triplet): Software ↔ Kit Omaric ↔ Volumi Davide cartacei = singola esperienza unificata. SVG simulator identici Arduino Nano kit fisico. Palette ELAB = palette stampa volumi (Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D). Iconografia derivata volumi NON material-design generic. Voxtral voice clone Andrea narratore = stesso registro Volumi Davide. 92 esperimenti software = 92 esperimenti libri (numerazione + ordine + parole-chiave identici).
+
+### Gate compliance check ogni atom (Pattern S r3)
+
+Prima merge ogni atom DEVE PASS:
+
+1. ✅ **Linguaggio**: plurale "Ragazzi," + Vol/pag verbatim + ≤60 parole + analogia (PZ V3 12-rule scorer)
+2. ✅ **Kit fisico mandatory**: mention "breadboard" / "kit ELAB" / "vostro kit" almeno 1 volta per ogni response/tooltip/empty state
+3. ✅ **Palette compliance**: hard-coded colors VIETATI (use design-tokens variables Navy/Lime/Orange/Red)
+4. ✅ **Iconografia volumi-derived**: NO material-design generic icons (use ElabIcons 24 SVG existing)
+5. ✅ **Morphic runtime**: NO static config (es. L2 template router DEVE selectTemplate dinamicamente)
+6. ✅ **Cross-pollination Onniscenza**: layer L1+L4+L7 minimum injected ogni response chat
+7. ✅ **Triplet coerenza**: nuovo SVG component → identico kit Omaric (verify foto fisico)
+8. ✅ **Multimodale**: Voxtral voice clone Andrea IT preserved + Vision Gemini Flash EU + STT CF Whisper EU edge
+
+**Anti-pattern rejection automatica** (Test Morfismo `.impeccable.md`):
+- ❌ Componenti SVG palette generica (es. blu/rosso standard)
+- ❌ UNLIM parafrasa libro invece citarlo
+- ❌ Capitoli software titoli inventati (NO "Cap. 1: Introduzione")
+- ❌ Esperimenti software che esistono SOLO software (NON in libro)
+- ❌ Layout simulatore non riconducibile setup fisico kit
+- ❌ Imperative singolare "fai/collega/premi" → MUST plurale "Ragazzi" + "fate/collegate/premete"
+
+**Test Morfismo finale**: prendi pagina random Volume + screenshot random software iter 36. Se NON sembrano "lo stesso prodotto fatto da persone che hanno parlato" → ATOM REJECTED + revert.
+
+**Anti-inflation G45**: NO claim "Morfismo compliant" senza gate 8/8 PASS file-system verified Opus-indipendente review.
+
+---
+
 ## §1 — Goal imperativo
 
 A fine sessione TUTTI i seguenti DEVONO essere VERIFIED LIVE prod:

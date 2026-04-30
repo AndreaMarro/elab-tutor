@@ -8,6 +8,48 @@
 
 ---
 
+## §0 — PRINCIPIO ZERO + MORFISMO compliance gate (OBBLIGATORIO ogni atom — Sprint T close ENFORCEMENT MAX)
+
+**Reference autoritativo**: `CLAUDE.md` "DUE PAROLE D'ORDINE" §1+§2 + `.impeccable.md` 5 Design Principles + `docs/pdr/PDR-ITER-36-*.md §0` + `docs/pdr/PDR-ITER-37-*.md §0`.
+
+**Iter 38 = Sprint T CLOSE**: PZ V3 + MORFISMO compliance massimo enforcement. Ogni atom 12 (C1-C12) DEVE PASS gate 8/8 + gate 8/8 specifici Sprint T close.
+
+### Gate compliance iter 38 (cumulative iter 36 §0 + iter 37 §0 + Sprint T close):
+
+1. ✅ **92 esperimenti audit**: per ogni esperimento verifica Vol/pag mention + kit Omaric components match + lesson-path schema canonical (`v{N}-cap{M}-esp{X}` ID format Sense 2 triplet)
+2. ✅ **30 fix top broken**: ogni fix preserva narrativa libro Davide (NO esperimento inventato software-only) + svg components identici kit fisico
+3. ✅ **Lingua codemod 200 violazioni**: regex `\b(fai|prendi|metti|premi|collega|usa)\b` → plurale `\b(fate|prendete|mettete|premete|collegate|usate)\b` lesson-paths/components/empty states. PZ V3 plurale_ragazzi 100% prod target
+4. ✅ **Grafica overhaul Triplet Sense 2**: design-tokens.css palette = palette stampa volumi Davide cartacei. Iconografia derivata disegni volumi NON material-design generic. Test Morfismo: pagina Vol1 random + screenshot Lavagna iter 38 → "stesso prodotto fatto da persone che hanno parlato"
+5. ✅ **Onboard + Adapt + Overdrive**: walkthrough docente PZ V3 plurale "Ragazzi" + 4 device profiles morphic Sense 1.5 + LIM hero state vs iPad puntuale
+6. ✅ **PWA SW versioning**: cache invalidation preserva PZ V3 prompt v3.3 deploy + Voxtral voice clone Andrea
+7. ✅ **Glossario port Tea**: 174 termini schema preservato + plurale "Ragazzi" + Vol/pag link cross-reference rag_chunks volume_id+page_number canonical
+8. ✅ **Dashboard docente**: section "Progressi classe" lessons memoria sessioni passate (Sense 1 Onniscenza L4 class memory) + plurale narrative
+9. ✅ **R7 200-prompt ≥95% PZ V3**: cumulative verifica score post prompt v3.3 + RAG rerank Vol/pag chunks priority + harness STRINGENT 5-livelli (computer vision + UX heuristics + linguaggio + narrativa + topology) ≥85%
+10. ✅ **Sprint T 11/12 boxes LIVE**: Box 1 VPS GPU 0.4 mantenuto Path A decommission; Box 2-12 ≥0.85 (target ceiling)
+11. ✅ **Vol3 narrative refactor 92→140 lesson-paths**: Davide co-author signoff + ground truth 0.92 reincorporated (ADR-027 wire-up Sense 2 triplet)
+12. ✅ **Cross-iteration regression sweep**: 30 acceptance test (10 iter 36 + 10 iter 37 + 10 iter 38) ≥28/30 PASS — qualsiasi regression PZ V3 / MORFISMO = REJECT iter close
+
+**Test Morfismo finale Sprint T close** (atom C12 Documenter): pagina random Vol1+2+3 + screenshot random Lavagna + Simulator + UNLIM panel + Dashboard + Cronologia + Chatbot-only iter 38 → "stesso prodotto Andrea+Tea+Davide+Omaric+Giovanni" coerente Sense 2 triplet. Viola 1 → REJECT.
+
+**Anti-pattern auto-rejection iter 38** (oltre iter 36 §0):
+- ❌ Esperimento Vol3 nuovo che NON esiste lesson-paths-davide-v2.json schema
+- ❌ Codemod plurale che rompe `[AZIONE:...]` o `[INTENT:{...}]` tags (whitelist mandatory)
+- ❌ Grafica overhaul che cambia palette Lime #4A7A25 → variante senza Davide signoff
+- ❌ Mascotte morphic states inventate non in volumi (NO Disney cartoon vibe)
+- ❌ Glossario port che inventa termini non Tea-curated (174 termini canonical)
+- ❌ Dashboard data finta/demo (mandate Andrea "MAI dati finti — tutto deve funzionare con dati reali")
+
+**Anti-inflation G45 cap iter 38 Sprint T close**: NO claim 9.5/10 ONESTO senza:
+1. Mac Mini Livello 3 PASS rate ≥85% verified
+2. R7 ≥95% + harness STRINGENT 5-livelli ≥85%
+3. Cross-iter regression sweep ≥28/30
+4. Test Morfismo finale 6/6 screenshot match Davide volumi cartacei
+5. Opus-indipendente review file-system verified
+
+**Closure mandate Sprint T**: TUTTI bug Andrea iter 33-35 risolti prod verified + 92 esperimenti audit + 30 fix + lingua codemod + grafica overhaul + Dashboard + Glossario + Cronologia + Chatbot-only + mascotte morphic + Onniscenza 7-layer + ClawBot 100% INTENT + R7+harness STRINGENT score ≥95%/≥85%. Sprint U opening preview: Davide volumi v2 + iPad student + LIM 4K hero state.
+
+---
+
 ## §1 — Goal imperativo (closure 3-PDR cascade)
 
 A fine sessione TUTTI i seguenti DEVONO essere VERIFIED LIVE prod:

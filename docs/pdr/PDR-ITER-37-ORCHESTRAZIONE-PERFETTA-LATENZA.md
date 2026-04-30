@@ -8,6 +8,32 @@
 
 ---
 
+## §0 — PRINCIPIO ZERO + MORFISMO compliance gate (OBBLIGATORIO ogni atom)
+
+**Reference autoritativo**: `CLAUDE.md` "DUE PAROLE D'ORDINE" §1+§2 + `docs/pdr/PDR-ITER-36-*.md §0`.
+
+**PRINCIPIO ZERO** (pedagogico): plurale "Ragazzi," + Vol/pag VERBATIM «caporali» + ≤60 parole + 1 analogia + kit fisico ELAB mention OBBLIGATORIO ogni response chat/streaming SSE/voice TTS.
+
+**MORFISMO Sense 1+1.5+2** preservato iter 37 lift orchestrazione perfetta:
+- Sense 1 morphic runtime: Onniscenza 7-layer cross-pollination LIVE prod (lift Box 11)
+- Sense 1.5 mascotte streaming animation lip-sync (Atom B6) + loading state morphic (Atom B7)
+- Sense 2 triplet Voxtral voice clone Andrea narratore = stesso registro Volumi Davide cartacei
+
+### Gate compliance iter 37 (oltre iter 36 §0):
+
+1. ✅ **Streaming SSE preserva PZ V3**: ogni chunk DELTA preserva plurale + Vol/pag verbatim (NO drift mid-stream)
+2. ✅ **TTS chunking preserva voce clone Andrea IT**: chunk audio Voxtral mantenuti identici registro Volumi (NON cross-lingual EN→IT fallback)
+3. ✅ **Onniscenza 7-layer hit ≥5/7 prod cycle**: L1 RAG + L2 Wiki + L3 Glossario + L4 Memoria + L5 Vision + L6 LLM-history + L7 Circuit-state — measure Mac Mini Cron Livello 3 metric
+4. ✅ **ClawBot 100% prod path**: L2 template short-circuit pre-LLM ALWAYS first + dispatcher post-LLM solo se INTENT tag (morphic dispatcher dynamic)
+5. ✅ **Vision Gemini Flash EU**: response Italian K-12 + cita Vol/pag se riconosce esperimento ELAB (Pixtral fallback identical PZ V3 compliant)
+6. ✅ **R6 100-prompt ≥93%**: PZ V3 score lift +1.5pp post-Onniscenza inject (vs R5 91.45%)
+7. ✅ **Cross-pollination test 6° prompt**: ricorda L6 history 5-turn Ragazzi + plurale + Vol/pag preserved
+8. ✅ **Multimodal stress**: Voxtral + Vision Gemini + STT CF + Onniscenza 4/4 capabilities <8s totale, voice clone Andrea preserved
+
+**Anti-inflation G45 cap iter 37**: NO claim score >9.0 senza Mac Mini Livello 3 PASS rate ≥80% verified Opus-indipendente.
+
+---
+
 ## §1 — Goal imperativo
 
 A fine sessione TUTTI i seguenti DEVONO essere VERIFIED LIVE prod:
