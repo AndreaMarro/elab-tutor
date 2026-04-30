@@ -34,6 +34,8 @@ const UnlimWrapper = lazy(() => import('./components/unlim/UnlimWrapper'));
 const LavagnaShell = lazy(() => import('./components/lavagna/LavagnaShell'));
 const VetrinaV2 = lazy(() => import('./components/lavagna/VetrinaV2'));
 const DashboardShell = lazy(() => import('./components/dashboard'));
+// iter 35 P0 — Tea HomePage integrata main app (5 card hero + cronologia)
+const HomePage = lazy(() => import('./components/HomePage'));
 
 function LoadingFallback() {
     return (
@@ -56,7 +58,8 @@ function LoadingFallback() {
 }
 
 // Hash-based routing: maps hash fragments to page names (P0-6)
-const VALID_HASHES = ['tutor', 'admin', 'teacher', 'vetrina', 'vetrina2', 'login', 'register', 'dashboard', 'dashboard-v2', 'showcase', 'prova', 'lavagna'];
+// iter 35 P0: 'home' added as new default landing (Tea-style 5 card grid + cronologia)
+const VALID_HASHES = ['home', 'tutor', 'admin', 'teacher', 'vetrina', 'vetrina2', 'login', 'register', 'dashboard', 'dashboard-v2', 'showcase', 'prova', 'lavagna'];
 
 function getPageFromHash() {
     const raw = window.location.hash.replace('#', '').split('?')[0].toLowerCase();
@@ -107,7 +110,8 @@ function getPathnameRoute() {
 
 function AppRouter() {
     const [pathnameRoute, setPathnameRoute] = useState(getPathnameRoute);
-    const initialPage = getPageFromHash() || 'showcase';
+    // iter 35 P0: nuova homepage Tea-style come default (era 'showcase' = WelcomePage classe)
+    const initialPage = getPageFromHash() || 'home';
     const [currentPage, setCurrentPage] = useState(initialPage);
     const { user, isAdmin, isDocente } = useAuth();
     const isMobile = useIsMobile();
@@ -173,7 +177,16 @@ function AppRouter() {
         );
     }
 
-    // Tutte le vetrine → WelcomePage unica
+    // iter 35 P0 — HomePage Tea-style 5 card grid + cronologia (nuovo default)
+    if (currentPage === 'home') {
+        return (
+            <Suspense fallback={<LoadingFallback />}>
+                <HomePage onNavigate={navigate} />
+            </Suspense>
+        );
+    }
+
+    // Tutte le vetrine → WelcomePage unica (resta accessibile via #showcase per legacy login class_key)
     if (currentPage === 'showcase' || currentPage === 'vetrina2' || currentPage === 'vetrina') {
         return (
             <Suspense fallback={<LoadingFallback />}>
