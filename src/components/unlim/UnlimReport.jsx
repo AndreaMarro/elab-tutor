@@ -552,16 +552,48 @@ ${photoScript(volCol, SVG_X)}
  *   no-content — session exists but has 0 messages AND 0 errors (nothing to report)
  *   error      — unexpected runtime error
  */
+/**
+ * iter 35 P0 — fallback session locale quando Supabase/localStorage vuoti.
+ * Andrea iter 34: "il fumetto non viene mai fatto generare". Causa: nuovi
+ * docenti senza sessione salvata vedevano solo toast "no-session" e nessun
+ * fumetto generato. Adesso costruiamo una sessione minima dal contesto
+ * corrente (esperimento attivo + lesson path) così il docente vede SEMPRE
+ * un fumetto avviato anche al primo click.
+ */
+function buildStubSession(experimentId) {
+  const expId = experimentId || (typeof window !== 'undefined' ? window.__ELAB_API?.getCurrentExperiment?.()?.id : null) || 'sessione';
+  const now = new Date().toISOString();
+  return {
+    id: `stub-${Date.now()}`,
+    experimentId: expId,
+    startedAt: now,
+    endedAt: now,
+    messages: [],
+    errors: [],
+    summary: { stub: true },
+    isStub: true,
+  };
+}
+
 export function openReportWindow(experimentId) {
   let session;
+  let isStub = false;
   if (experimentId) {
     const sessions = getSavedSessions();
     session = [...sessions].reverse().find(s => s.experimentId === experimentId);
   }
   if (!session) session = getLastSession();
 
-  if (!session) return 'no-session';
-  if (!session.messages?.length && !session.errors?.length) return 'no-content';
+  // iter 35 P0: NON ritornare più 'no-session' / 'no-content' senza output —
+  // costruisci stub session locale così il fumetto si apre sempre.
+  if (!session) {
+    session = buildStubSession(experimentId);
+    isStub = true;
+  } else if (!session.messages?.length && !session.errors?.length) {
+    // sessione esiste ma vuota: usala con flag stub-like per messaggio fumetto
+    session = { ...session, isStub: true };
+    isStub = true;
+  }
 
   try {
     const lessonPath = getLessonPath(session.experimentId);
@@ -578,11 +610,11 @@ export function openReportWindow(experimentId) {
       a.download = `fumetto-elab-${session.experimentId || 'sessione'}.html`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
-      return 'downloaded';
+      return isStub ? 'downloaded-stub' : 'downloaded';
     }
 
     setTimeout(() => URL.revokeObjectURL(url), 60000);
-    return 'ok';
+    return isStub ? 'ok-stub' : 'ok';
   } catch {
     return 'error';
   }
