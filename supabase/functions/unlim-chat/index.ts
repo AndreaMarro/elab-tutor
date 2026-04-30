@@ -407,16 +407,12 @@ serve(async (req: Request) => {
           },
         });
         const tplText = exec.responseText;
-        // Best-effort TTS (non-blocking, capped 3s)
-        let tplAudio: string | null = null;
-        try {
-          tplAudio = await Promise.race([
-            requestTTS(tplText),
-            new Promise<null>(resolve => setTimeout(() => resolve(null), 3000)),
-          ]);
-        } catch {
-          tplAudio = null;
-        }
+        // Iter 34 P0 latency fix Andrea "troppo lento":
+        // PREVIOUSLY blocked chat response up to 3s waiting TTS render.
+        // NOW return chat text IMMEDIATELY + frontend fetches TTS audio async
+        // via separate /unlim-tts call when needed (audio decoupled from text).
+        // Effect: -3s perceived latency template path.
+        const tplAudio: string | null = null;
         // Save short audit row to student memory (non-blocking)
         const topicCategory = safeExperimentId || tpl.category;
         saveInteraction(sessionId, safeExperimentId || null, topicCategory, `tpl:${tpl.id}`, 'clawbot-l2')
@@ -521,25 +517,16 @@ serve(async (req: Request) => {
       console.warn('[Nanobot V2] PZ validator error (non-blocking):', pzErr);
     }
 
-    // 7. Request TTS audio (parallel, non-blocking)
-    const audioPromise = requestTTS(cappedText);
-
-    // 8. Save interaction to memory (async, non-blocking)
-    // GDPR: pass topic category instead of raw message to avoid storing PII
+    // Iter 34 P0 latency fix Andrea "troppo lento":
+    // PREVIOUSLY blocked chat response up to 3s waiting TTS render (Promise.race).
+    // NOW return chat text IMMEDIATELY + frontend fetches TTS audio async via
+    // separate /unlim-tts call when needed. Effect: -3s perceived latency.
+    // 7. Save interaction to memory (async, non-blocking)
     const topicCategory = safeExperimentId || 'general';
     saveInteraction(sessionId, safeExperimentId || null, topicCategory, cappedText.slice(0, 100), result.model)
       .catch(err => console.warn('[Nanobot V2] Memory save error:', err));
 
-    // 9. Wait for TTS (with timeout — don't delay text response too long)
-    let audioUrl: string | null = null;
-    try {
-      audioUrl = await Promise.race([
-        audioPromise,
-        new Promise<null>(resolve => setTimeout(() => resolve(null), 3000)),
-      ]);
-    } catch {
-      audioUrl = null;
-    }
+    const audioUrl: string | null = null; // decoupled — frontend fetches separately
 
     // 10. Return response — include data processing transparency (GDPR)
     const response: ChatResponse & {
