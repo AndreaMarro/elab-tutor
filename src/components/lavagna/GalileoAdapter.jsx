@@ -656,12 +656,9 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
       className={css.galileoWindow}
     >
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {/* Tab bar */}
-        <div style={tabBarStyle}>
-          <button style={tabStyle(activeTab === 'chat')} onClick={() => setActiveTab('chat')}>CHAT</button>
-          <button style={tabStyle(activeTab === 'percorso')} onClick={() => setActiveTab('percorso')}>PERCORSO</button>
-          <button style={tabStyle(activeTab === 'guida')} onClick={() => setActiveTab('guida')}>GUIDA</button>
-        </div>
+        {/* Iter 34 P0 fix: removed PERCORSO + GUIDA tabs — duplicates with
+             ModalitaSwitch top + GUIDA legacy iter 26 ADR-025 deprecated.
+             UNLIM panel now CHAT only (single primary interaction). */}
 
         {/* Tab content */}
         <div style={{ flex: 1, overflow: 'hidden', position: 'relative', minHeight: 0 }}>
