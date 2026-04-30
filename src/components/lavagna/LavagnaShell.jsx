@@ -527,15 +527,12 @@ export default function LavagnaShell() {
     try { localStorage.setItem('elab-lavagna-modalita', modalita); } catch {}
   }, [modalita]);
 
-  // ADR-025 §4.4 — Libero auto-Percorso behavior:
-  // when user selects 'libero', auto-mount Percorso narrative (NON sandbox vuoto).
+  // Iter 34 P0 fix Andrea bug "lavagna bianca quando selezionata non è mai vuota":
+  // ADR-025 §4.4 iter 26 forced Libero → auto-Percorso (NON sandbox). Andrea iter
+  // 34 ha invertito il mandate: Libero DEVE essere blank sandbox (true empty
+  // canvas) per consentire creazione libera senza esperimento pre-mounted.
   // Diagnose flow integrato dentro Già Montato + Passo Passo (mode 'guida-da-errore' REMOVED).
   const handleModalitaChange = useCallback((nextMode) => {
-    if (nextMode === 'libero') {
-      // ADR-025 §4.4 mandate: Libero click → setMode('percorso') auto-Percorso
-      setModalita('percorso');
-      return;
-    }
     if (!['percorso', 'passo-passo', 'gia-montato', 'libero'].includes(nextMode)) {
       return; // defensive: ignore unknown modes (e.g. legacy 'guida-da-errore')
     }
@@ -546,6 +543,15 @@ export default function LavagnaShell() {
       if (api?.unlim?.setDiagnoseMode) {
         try { api.unlim.setDiagnoseMode(true); } catch { /* noop */ }
       }
+    }
+    // Iter 34 P0 fix Andrea bug "lavagna bianca selezionata non è mai vuota":
+    // Libero mode → clear circuit + setBuildMode('sandbox') = blank canvas true.
+    if (nextMode === 'libero' && typeof window !== 'undefined') {
+      const api = window.__ELAB_API;
+      try {
+        if (api?.clearAll) api.clearAll();
+        if (api?.setBuildMode) api.setBuildMode('sandbox');
+      } catch { /* noop */ }
     }
   }, []);
   useEffect(() => {

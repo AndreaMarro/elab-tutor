@@ -164,6 +164,24 @@ export default function DrawingOverlay({
     loadPathsRemote(experimentId).then((remote) => {
       if (cancelled || !remote) return;
       if (Array.isArray(remote.paths)) {
+        // Iter 34 P0 fix Andrea bug "Lavagna persistence: premi Esci scritti
+        // spariscono" — root cause: empty remote array overwrites local cache
+        // on hydration. Last-write-wins should NOT trigger when remote is empty
+        // and local has paths (user just drew before navigation).
+        // Use timestamp comparison: only replace if remote.updatedAt > local
+        // OR if local cache is empty. Otherwise local takes precedence.
+        const localPaths = loadDrawingPaths(experimentId);
+        const remoteIsEmpty = remote.paths.length === 0;
+        const localHasPaths = Array.isArray(localPaths) && localPaths.length > 0;
+        const remoteTs = remote.updatedAt ? Date.parse(remote.updatedAt) : 0;
+        const localTs = lastLocalSaveAtRef.current || 0;
+        const remoteIsNewer = remoteTs > localTs;
+
+        // Skip remote overwrite when remote=empty + local has paths + remote
+        // not newer (prevent accidental wipe by stale empty remote row)
+        if (remoteIsEmpty && localHasPaths && !remoteIsNewer) {
+          return;
+        }
         setPaths(remote.paths);
         // mirror to localStorage so cross-device load == local cache next visit
         saveDrawingPaths(remote.paths, experimentId);
