@@ -10,13 +10,18 @@ import type { TTSRequest } from '../_shared/types.ts';
 import { getCorsHeaders, getSecurityHeaders, checkRateLimitPersistent, checkBodySize, validateTTSVoice, validateTTSLanguage, validateTTSSpeed } from '../_shared/guards.ts';
 import { checkConsent } from '../_shared/memory.ts';
 import { synthesizeIsabella, ISABELLA_DEFAULTS } from '../_shared/edge-tts-client.ts';
+import { synthesizeVoxtral, VOXTRAL_DEFAULTS } from '../_shared/voxtral-client.ts';
 
 // VPS URL from env var — not hardcoded
 const VPS_TTS_URL = Deno.env.get('VPS_TTS_URL') || 'http://72.60.129.50:8880/tts';
 
+// Sprint T iter 29 — Voxtral PRIMARY (Mistral EU 70 ms 9 languages incl IT).
+// Edge TTS Isabella becomes FALLBACK; VPS legacy 3rd. Browser SpeechSynthesis last.
+// Default ON, opt-out via env DISABLE_VOXTRAL_TTS=1.
+const VOXTRAL_TTS_ENABLED = Deno.env.get('DISABLE_VOXTRAL_TTS') !== '1';
+
 // Sprint S iter 6 — Isabella Neural via Microsoft edge-tts (no GPU, no VPS).
-// Approvato Andrea 2026-04-26. Default ON, opt-out via env DISABLE_EDGE_TTS=1.
-// Caller can force legacy VPS path with body { provider: 'vps' } (debug).
+// Approvato Andrea 2026-04-26. Now FALLBACK chain step 2 (post Voxtral primary).
 const EDGE_TTS_ENABLED = Deno.env.get('DISABLE_EDGE_TTS') !== '1';
 
 serve(async (req: Request) => {
@@ -37,9 +42,11 @@ serve(async (req: Request) => {
   try {
     const body: TTSRequest & {
       sessionId?: string;
-      provider?: 'edge-tts' | 'vps' | 'auto';
+      provider?: 'voxtral' | 'edge-tts' | 'vps' | 'auto';
       rate?: string;
       pitch?: string;
+      voice_id?: string;     // Voxtral cloned voice override
+      format?: 'mp3' | 'wav' | 'flac' | 'opus' | 'pcm';
     } = await req.json();
     const { text, sessionId } = body;
     // Validate TTS-specific fields (legacy VPS path)
@@ -97,9 +104,50 @@ serve(async (req: Request) => {
     // Cap text length for TTS (prevent abuse)
     const cappedText = cleanText.slice(0, 500);
 
-    // ── Sprint S iter 6: Microsoft edge-tts Isabella Neural (default ON) ──
-    // Tries Microsoft endpoint first (no GPU, no VPS). On failure falls
-    // through to VPS path. On both failures returns browser-fallback marker.
+    // ── Sprint T iter 29: Mistral Voxtral PRIMARY (Mistral EU 70 ms IT) ──
+    // Tries Voxtral first. On failure falls through to Edge TTS Isabella, then
+    // VPS, then browser SpeechSynthesis fallback marker.
+    const useVoxtral = VOXTRAL_TTS_ENABLED &&
+      requestedProvider !== 'edge-tts' &&
+      requestedProvider !== 'vps';
+    if (useVoxtral) {
+      const voxRes = await synthesizeVoxtral({
+        text: cappedText,
+        voiceId: body.voice_id || VOXTRAL_DEFAULTS.voiceId,
+        format: body.format || VOXTRAL_DEFAULTS.format,
+      });
+      if (voxRes.ok && voxRes.audio) {
+        return new Response(voxRes.audio, {
+          status: 200,
+          headers: {
+            ...getSecurityHeaders(req),
+            'Content-Type': voxRes.contentType || 'audio/mpeg',
+            'Content-Length': String(voxRes.audio.byteLength),
+            'Cache-Control': 'public, max-age=3600',
+            'X-Tts-Provider': 'voxtral',
+            'X-Tts-Voice': voxRes.voiceId || '',
+            'X-Tts-Model': voxRes.model || '',
+            'X-Tts-Latency-Ms': String(voxRes.latencyMs),
+          },
+        });
+      }
+      // Voxtral failed → fall through to Edge TTS Isabella.
+      // If caller explicitly forced 'voxtral', return browser fallback marker.
+      if (requestedProvider === 'voxtral') {
+        return new Response(JSON.stringify({
+          success: true,
+          source: 'browser',
+          text: cappedText,
+          message: 'Usa la sintesi vocale del browser.',
+          voxtral_error: voxRes.errorReason,
+          voxtral_status: voxRes.statusCode,
+        }), {
+          status: 200, headers: getSecurityHeaders(req),
+        });
+      }
+    }
+
+    // ── Sprint S iter 6 (now FALLBACK 2): Microsoft edge-tts Isabella Neural ──
     const useEdge = EDGE_TTS_ENABLED && requestedProvider !== 'vps';
     if (useEdge) {
       const edgeRes = await synthesizeIsabella({

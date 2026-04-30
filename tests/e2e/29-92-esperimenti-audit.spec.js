@@ -36,6 +36,7 @@ import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { extractWireCount } from './helpers/wire-count.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -162,17 +163,26 @@ async function tryMountExperiment(page, id) {
 }
 
 async function captureCircuitState(page) {
+  // NOTE: in-page eval cannot import Node modules. The wire-count read
+  // here MUST match tests/e2e/helpers/wire-count.js#extractWireCount —
+  // see tests/unit/audit/wires-measurement-source.test.js for the contract.
+  // (connections is canonical per useSimulatorAPI.js:136; wires is legacy fallback.)
   return page.evaluate(() => {
     try {
       const api = window.__ELAB_API;
       if (!api) return null;
       const state = api.getCircuitState?.() || api.unlim?.getCircuitState?.() || null;
       const desc = api.getCircuitDescription?.() || null;
+      const wireSource = Array.isArray(state?.connections)
+        ? state.connections
+        : Array.isArray(state?.wires)
+        ? state.wires
+        : [];
       return {
         state,
         desc,
         components: state?.components || [],
-        wires: state?.wires || [],
+        wires: wireSource,
       };
     } catch (e) {
       return { error: String(e?.message || e) };
@@ -249,7 +259,10 @@ test.describe(`iter-29 92-esperimenti audit @ ${PROD_URL}`, () => {
         // 4. Capture circuit state
         const circuit = await captureCircuitState(page);
         const actualCompCount = circuit?.components?.length ?? 0;
-        const actualWireCount = circuit?.wires?.length ?? 0;
+        // extractWireCount: canonical read on raw state (connections | wires fallback).
+        // Iter-29 root cause: harness previously read state.wires only, which is
+        // undefined per useSimulatorAPI.js:136 (canonical field is `connections`).
+        const actualWireCount = extractWireCount(circuit?.state);
         const actualCompTypes = (circuit?.components || []).map((c) => c.type).sort();
         result.steps.circuit = {
           has_state: !!circuit?.state,
