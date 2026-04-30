@@ -4442,3 +4442,27 @@ This is a recurring blocker (≥3 PRs affected). Tag `watchdog-pattern`.
 **Pattern hint**: Check Edge Function logs in Supabase dashboard
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-30T16:59:36Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-30T16:59:36Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che il tuo ambiente di sviluppo sia configurato correttamente per questo esperimento. Verifica la presenza di tutte le librerie necessarie e che le impostazioni di 
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-04-30T16:59:36Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"C'è un errore nel circuito: il componente [AZIONE:highlight:led1] non è collegato a nulla. \nQuesto è un problema perché un LED senza alimentazione è come una lampadi
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
