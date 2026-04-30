@@ -361,8 +361,29 @@ serve(async (req: Request) => {
     const imagePiiGuard = hasImages
       ? '\n\nREGOLA IMMAGINI: Se l\'immagine contiene volti, nomi, indirizzi o dati personali, IGNORA queste informazioni. Analizza SOLO i componenti elettronici visibili. MAI menzionare persone o dati personali nelle risposte.'
       : '';
+
+    // Iter 31 P0 Andrea mandate: Onniscenza snapshot inject prompt LLM.
+    // 7-layer aggregator (RAG + Wiki + Glossario + Sessione + Vision + LLM-knowledge
+    // + Analogia) fused via RRF k=60. Inject top-3 fused hits as additional context
+    // to enable cross-layer reasoning ("incrociare tutto"). Defensive — only when
+    // ENABLE_ONNISCENZA=true env flag set + snapshot non-null.
+    let onniscenzaContext = '';
+    if (onniscenzaSnapshot && typeof onniscenzaSnapshot === 'object') {
+      const snap = onniscenzaSnapshot as { fused?: Array<{ layer?: string; text?: string; source?: string }> };
+      const top3 = (snap.fused || []).slice(0, 3);
+      if (top3.length > 0) {
+        const onniLines = top3.map((h, i) => {
+          const src = h.source || h.layer || 'onniscenza';
+          const txt = (h.text || '').slice(0, 200).replace(/\n/g, ' ');
+          return `${i + 1}. [${src}] ${txt}`;
+        }).join('\n');
+        onniscenzaContext = `\n\nCONTESTO ONNISCENZA (incrocio 7-layer RRF top-3 — usa per coerenza risposta):\n${onniLines}`;
+      }
+    }
+
     const systemPrompt = buildSystemPrompt(studentContext, safeCircuitState as CircuitState | null, experimentContext, capitoloFragment)
       + (ragContext ? `\n\n${ragContext}` : '')
+      + onniscenzaContext
       + imagePiiGuard;
 
     // 3.5 ClawBot L2 template short-circuit (Sprint T iter 26).
