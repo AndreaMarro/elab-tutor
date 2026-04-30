@@ -24,6 +24,14 @@
  */
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
+import {
+  CORS_ALLOWED_ORIGINS,
+  VERCEL_PREVIEW_REGEX,
+  isOriginAllowed,
+} from './cors.ts';
+
+// Re-export for vitest integration test (`tests/integration/compile-proxy-cors.test.js`).
+export { CORS_ALLOWED_ORIGINS, VERCEL_PREVIEW_REGEX, isOriginAllowed };
 
 // ── n8n upstream ──────────────────────────────────────────────────────────
 const N8N_COMPILE_URL =
@@ -34,19 +42,14 @@ const UPSTREAM_TIMEOUT_MS = 30_000; // n8n compile can take ~10–20 s
 const MAX_BODY_BYTES = 50_000;      // 50 KB Arduino sketch ceiling
 
 // ── CORS allow-list ───────────────────────────────────────────────────────
-const ALLOWED_ORIGINS = [
-  'https://www.elabtutor.school',
-  'https://elabtutor.school',
-  'https://elab-builder.vercel.app',
-  'https://elab-tutor.it',
-  'https://www.elab-tutor.it',
-  'http://localhost:5173',
-  'http://localhost:3000',
-];
+// Iter 29 Task 29.5 (BUG-29-01): regex-based allowlist for Vercel preview
+// deployments — branch-specific URLs follow pattern
+// `elab-tutor-<branch-slug>-andreas-projects-6d4e9791.vercel.app`.
+// Source of truth lives in `./cors.ts` (testable, no Deno deps).
 
 function corsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get('origin') || '';
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowed = isOriginAllowed(origin) ? origin : CORS_ALLOWED_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',

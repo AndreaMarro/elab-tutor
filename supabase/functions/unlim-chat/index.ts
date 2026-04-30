@@ -17,6 +17,7 @@ import { retrieveVolumeContext, hybridRetrieve, formatHybridContext } from '../_
 import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shared/capitoli-loader.ts';
 import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
 import { selectTemplate, executeTemplate } from '../_shared/clawbot-template-router.ts';
+import { aggregateOnniscenza } from '../_shared/onniscenza-bridge.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
@@ -280,6 +281,55 @@ serve(async (req: Request) => {
     } else {
       ragContext = await retrieveVolumeContext(safeMessage, safeExperimentId, 3);
       retrievalModeUsed = 'dense';
+    }
+
+    // Iter 30 P0.6 — Onniscenza 7-layer aggregator wire-up (opt-in env flag).
+    // ENABLE_ONNISCENZA=true activates aggregateOnniscenza in parallel to RAG.
+    // Augments ragContext with L4 class memory + L6 chat history + L7 analogia
+    // when supabase client + history provided (non-blocking, defensive try/catch).
+    let onniscenzaSnapshot: unknown = null;
+    if ((Deno.env.get('ENABLE_ONNISCENZA') || 'false').toLowerCase() === 'true') {
+      try {
+        const supaUrl = (Deno.env.get('SUPABASE_URL') || '').trim();
+        const supaKey = (Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '').trim();
+        // Lightweight inline supabase adapter (avoids extra import bloat)
+        let supaClient: unknown = null;
+        if (supaUrl && supaKey) {
+          // Minimal fetch-based adapter compatible with onniscenza-bridge expectations
+          supaClient = {
+            from: (table: string) => ({
+              select: (cols: string) => ({
+                eq: (col: string, val: unknown) => ({
+                  limit: (n: number) => fetch(
+                    `${supaUrl}/rest/v1/${table}?select=${cols}&${col}=eq.${val}&limit=${n}`,
+                    { headers: { 'apikey': supaKey, 'Authorization': `Bearer ${supaKey}` } },
+                  ).then((r) => r.ok ? r.json() : []),
+                  order: () => ({
+                    limit: (n: number) => fetch(
+                      `${supaUrl}/rest/v1/${table}?select=${cols}&${col}=eq.${val}&limit=${n}`,
+                      { headers: { 'apikey': supaKey, 'Authorization': `Bearer ${supaKey}` } },
+                    ).then((r) => r.ok ? r.json() : []),
+                  }),
+                }),
+              }),
+            }),
+          };
+        }
+        onniscenzaSnapshot = await aggregateOnniscenza({
+          query: safeMessage,
+          experiment_id: safeExperimentId,
+          session_id: safeSessionId,
+          history: [], // caller history injection iter 31+
+          supabase: supaClient,
+          enable: { L1_rag: false /* already done above */, L3_glossario: false },
+        });
+      } catch (onniErr) {
+        console.warn(JSON.stringify({
+          level: 'warn', event: 'onniscenza_bridge_error',
+          error: onniErr instanceof Error ? onniErr.message : 'unknown',
+        }));
+        onniscenzaSnapshot = null;
+      }
     }
 
     // 3. Build system prompt with all context

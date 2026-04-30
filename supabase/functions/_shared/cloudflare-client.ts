@@ -123,11 +123,39 @@ export interface CfWhisperResult {
 
 export async function cfWhisperSTT(opts: CfWhisperOptions): Promise<CfWhisperResult> {
   const start = Date.now();
-  const audioArray = Array.isArray(opts.audio) ? opts.audio : Array.from(opts.audio);
-  const body: Record<string, unknown> = { audio: audioArray };
-  if (opts.language) body.language = opts.language;
+  // Iter 30 fix: Whisper Turbo expects raw octet-stream bytes, NOT JSON array.
+  // Previous JSON {audio: [bytes]} path returned "Type mismatch '/audio',
+  // 'string' not in 'array','binary'" because CF newer Whisper variant
+  // deprecated JSON-wrapped array path in favor of raw binary upload.
+  const audioBytes = opts.audio instanceof Uint8Array
+    ? opts.audio
+    : new Uint8Array(opts.audio as number[]);
 
-  const res = await cfFetch('@cf/openai/whisper-large-v3-turbo', body);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const url = `${cfBaseUrl()}/@cf/openai/whisper-large-v3-turbo`;
+  const token = (Deno.env.get('CLOUDFLARE_API_TOKEN') || '').trim();
+  if (!token) throw new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, 'CLOUDFLARE_API_TOKEN not configured');
+
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/octet-stream',
+      },
+      body: audioBytes,
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+  } catch (e) {
+    clearTimeout(timeout);
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      throw new GeminiError(ErrorCode.TIMEOUT, `Cloudflare Whisper timed out`);
+    }
+    throw e;
+  }
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     throw new GeminiError(ErrorCode.API_ERROR, `CF Whisper ${res.status}: ${text.slice(0, 200)}`);
