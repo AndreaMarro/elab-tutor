@@ -680,10 +680,14 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
               socraticMode={true}
               onToggleSocraticMode={null}
               onScreenshot={chat.handleScreenshot}
-              voiceEnabled={voiceEnabled}
-              onVoiceToggle={voiceAvailable ? handleVoiceToggle : undefined}
-              voiceRecording={voiceRecording}
-              onVoiceRecord={handleVoiceRecord}
+              /* Iter 35 fix Andrea mandate: NO voice buttons UI — wake word "Ehi UNLIM" only.
+                 Pass undefined onVoiceToggle + onVoiceRecord → ChatOverlay nasconde pulsanti.
+                 voicePlaying mantenuto per audio playback feedback (NON pulsante record).
+                 Voice capabilities ancora detect on mount (caps.stt+tts+microphone) per wake-word listener. */
+              voiceEnabled={false}
+              onVoiceToggle={undefined}
+              voiceRecording={false}
+              onVoiceRecord={undefined}
               voicePlaying={voicePlaying}
             />
           )}

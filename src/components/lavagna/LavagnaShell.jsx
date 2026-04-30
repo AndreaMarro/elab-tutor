@@ -490,6 +490,46 @@ export default function LavagnaShell() {
       setWakeWordActive(false);
       return undefined;
     }
+    // Iter 35 fix Andrea "modalità vocale non riesco a farla andare":
+    // Browser policy SpeechRecognition richiede user gesture per mic permission.
+    // Su mount Lavagna NO gesture → onerror not-allowed silent. Fix: warm-up
+    // mic via getUserMedia su prima interazione (click/touch any anywhere LavagnaShell).
+    // Permission cached browser per origine → SpeechRecognition successivi OK.
+    let micWarmedUp = false;
+    const warmUpMic = () => {
+      if (micWarmedUp || typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) return;
+      micWarmedUp = true;
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          // Subito chiudi: serve solo permission grant, non recording.
+          stream.getTracks().forEach(t => t.stop());
+          // Re-start wake word listener post permission (fresh state).
+          stopWakeWordListener();
+          setTimeout(() => {
+            const restarted = startWakeWordListener({
+              onWake: () => {
+                const now = Date.now();
+                if (now - lastWakeAtRef.current < 1500) return;
+                lastWakeAtRef.current = now;
+                if (galileoOpenRef.current) return;
+                setGalileoOpen(true);
+                setToolToast('Ti ascolto!');
+                setTimeout(() => setToolToast(null), 2000);
+              },
+              onCommand: (text) => {
+                const api = typeof window !== 'undefined' && window.__ELAB_API;
+                if (api?.unlim?.sendMessage) api.unlim.sendMessage(text);
+              },
+            });
+            setWakeWordActive(restarted);
+          }, 100);
+        })
+        .catch(() => { /* permission denied → wake-word-error event già dispatched */ });
+    };
+    if (typeof document !== 'undefined') {
+      document.addEventListener('click', warmUpMic, { once: true });
+      document.addEventListener('touchstart', warmUpMic, { once: true });
+    }
     const started = startWakeWordListener({
       onWake: () => {
         // Debounce: ignora wake successivi entro 1.5s (Caveat 3).
@@ -513,6 +553,10 @@ export default function LavagnaShell() {
     return () => {
       stopWakeWordListener();
       setWakeWordActive(false);
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('click', warmUpMic);
+        document.removeEventListener('touchstart', warmUpMic);
+      }
     };
   }, [wakeWordEnabled]);
 
@@ -562,13 +606,17 @@ export default function LavagnaShell() {
         try { api.unlim.setDiagnoseMode(true); } catch { /* noop */ }
       }
     }
-    // Iter 34 P0 fix Andrea bug "lavagna bianca selezionata non è mai vuota":
-    // Libero mode → clear circuit + setBuildMode('sandbox') = blank canvas true.
+    // Iter 34 P0 fix Andrea bug "lavagna bianca selezionata non è mai vuota".
+    // Iter 35 P1 fix Andrea bug "premo libera e circuito rimane":
+    // - clearAll() pulisce simulator MA currentExperiment riresta settato → re-render ripopola componenti
+    // - setBuildMode('sandbox') NON è method API top-level → no-op
+    // Fix: set currentExperiment = null (deselect) + clearAll + remove localStorage exp id
     if (nextMode === 'libero' && typeof window !== 'undefined') {
       const api = window.__ELAB_API;
       try {
+        setCurrentExperiment(null);
         if (api?.clearAll) api.clearAll();
-        if (api?.setBuildMode) api.setBuildMode('sandbox');
+        try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
       } catch { /* noop */ }
     }
   }, []);
