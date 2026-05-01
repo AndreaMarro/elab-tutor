@@ -76,7 +76,7 @@ const ExperimentPicker = ({ onSelectExperiment, currentExperimentId = null, user
     return (
       <div style={S.panel}>
         <div style={S.panelHeader}>
-          <span style={S.panelHeaderTitle}>Scegli un Volume</span>
+          <span style={S.panelHeaderTitle}>Scegliete un Volume</span>
         </div>
         <div style={S.panelBody}>
           <div style={S.volGrid}>

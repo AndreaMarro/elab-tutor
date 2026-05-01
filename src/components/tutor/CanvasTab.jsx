@@ -415,7 +415,7 @@ export default function CanvasTab({
             )}
 
             {canvasTool === 'text' && !textPosition && (
-                <div className="v4-text-hint">Clicca dove vuoi inserire il testo</div>
+                <div className="v4-text-hint">Cliccate dove volete inserire il testo</div>
             )}
 
             <canvas

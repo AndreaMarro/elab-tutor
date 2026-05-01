@@ -164,7 +164,7 @@ const SerialMonitor = ({ serialOutput = '', onSerialInput, onClear, isRunning = 
               <path d="M7 9L10 12L7 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <line x1="13" y1="15" x2="17" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-            <span style={{ fontWeight: 600, fontSize: 15 }}>Premi Play per vedere i dati</span>
+            <span style={{ fontWeight: 600, fontSize: 15 }}>Premete Play per vedere i dati</span>
             <span style={{ fontSize: 14, opacity: 0.7, marginTop: 2 }}>Il Serial Monitor mostra i messaggi inviati da Arduino con Serial.println()</span>
           </div>
         )}

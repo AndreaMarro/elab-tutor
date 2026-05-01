@@ -79,6 +79,35 @@ Sprint T close projection iter 40+: 9.5/10 ONESTO conditional A10 Onnipotenza De
 
 ---
 
+## §3.bis Carryover session 2026-05-01 ~07:50 CEST deliverables (iter 38 add-ons inline)
+
+User directive: "NON HO COMPLETATO ITER 38 e cose di 36 e 37 continua con massima sistematicità e senza compiacenza" + "non fare nulla con mac mini".
+
+Strategy: inline work only (NO BG agent + NO Mac Mini). 3 P0 deterministic deliverables shipped + vitest 13474 PRESERVED.
+
+### Deliverables shipped (3 atoms close)
+
+| # | Atom | File | Line/LOC |
+|---|------|------|----------|
+| 1 | A14 Linguaggio codemod TRUE 14 violations | 5 components + 4 lesson-paths JSON | 14 surgical replacements |
+| 2 | R6 page metadata SQL backfill (Path A fuzzy match) | `supabase/migrations/20260501073000_rag_chunks_metadata_backfill.sql` NEW | ~85 LOC |
+| 3 | A2 Fumetto Playwright spec selector fix (test artifact) | `tests/e2e/03-fumetto-flow.spec.js:21-29` | 6 LOC scope tighten |
+
+### Audit docs
+
+- `docs/audits/iter-38-linguaggio-codemod.md` (~150 LOC) — A14 triage methodology + 14 TRUE violations table + ~180 false-positive narrative analogies preserved per Sense 2 + iter 39+ deferred items
+- `docs/audits/2026-05-01-iter-38-carryover-session-audit.md` (~250 LOC) — full session audit + Andrea ratify queue paste-ready
+
+### Honest scope revision
+
+PDR claim "A14 200 violations" was inflated baseline. Real triage: ~13-15 TRUE UI/mascotte violations (UI chrome + lesson titles + mascotte UNLIM welcome) + ~180 narrative analogies in lesson-paths bookText (Italian "tu generico" intentionally preserved per Sense 2 Morfismo "stessa voce dei volumi cartacei"). A14 mandate fulfilled in spirit (UI plural 100%) with revised scope.
+
+### Anti-regression
+
+vitest 13474 PASS PRESERVED post-codemod (verified). Zero functional change, only string literals. 269 test files passed + 1 skipped.
+
+---
+
 ## §3 Priorities iter 39 P0 (carryover iter 38)
 
 ### Tier 1 carryover MUST DO iter 39

@@ -162,9 +162,9 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
     // Welcome message adapts: if volume already chosen, show context; if not, volume chooser overlay handles it
     const _welcomeText = activeVolume
         ? (activeVolume === 'inventor'
-            ? `**Modalità Inventore attiva!**\n\nHai tutti i componenti a disposizione. Costruisci quello che vuoi!`
+            ? `**Modalità Inventore attiva!**\n\nAvete tutti i componenti a disposizione. Costruite quello che volete!`
             : _nextSuggestion
-                ? `**Pronti!**\n\nVolume ${activeVolume} attivo. Oggi: **${_nextSuggestion.title}** — premi Inizia!`
+                ? `**Pronti!**\n\nVolume ${activeVolume} attivo. Oggi: **${_nextSuggestion.title}** — premete Inizia!`
                 : `**Pronti!**\n\nVolume ${activeVolume} attivo. Scegliete un esperimento o chiedetemi qualcosa!`)
         : `**Ciao! Sono UNLIM**\n\nScegliete il volume per iniziare!`;
     const [messages, setMessages] = useState([{

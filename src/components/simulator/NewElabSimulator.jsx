@@ -943,15 +943,15 @@ const NewElabSimulator = ({
                       <span className="sim-welcome__step-num">1</span>
                       <span className="sim-welcome__step-icon">&#x1F4D6;</span>
                       <span className="sim-welcome__step-text">
-                        <strong>Scegli un esperimento</strong>
-                        <span>Dalla lista a sinistra, tocca un esperimento</span>
+                        <strong>Scegliete un esperimento</strong>
+                        <span>Dalla lista a sinistra, toccate un esperimento</span>
                       </span>
                     </button>
                     <button className="sim-welcome__step" onClick={() => { if (!showSidebar) setShowSidebar(true); }}>
                       <span className="sim-welcome__step-num">2</span>
                       <span className="sim-welcome__step-icon">&#x1F50D;</span>
                       <span className="sim-welcome__step-text">
-                        <strong>Guarda il circuito</strong>
+                        <strong>Guardate il circuito</strong>
                         <span>Qui al centro apparirà il circuito da esplorare</span>
                       </span>
                     </button>
@@ -959,7 +959,7 @@ const NewElabSimulator = ({
                       <span className="sim-welcome__step-num">3</span>
                       <span className="sim-welcome__step-icon">&#x1F916;</span>
                       <span className="sim-welcome__step-text">
-                        <strong>Chiedi aiuto a UNLIM</strong>
+                        <strong>Chiedete aiuto a UNLIM</strong>
                         <span>Il bottone in alto a destra spiega tutto</span>
                       </span>
                     </button>
@@ -970,7 +970,7 @@ const NewElabSimulator = ({
                 <>
                   <span className="elab-simulator__placeholder-icon">&#x26A1;</span>
                   <span className="elab-simulator__placeholder-text">ELAB Simulator</span>
-                  <span style={{ fontSize: 14, color: 'var(--color-text-gray-100, #AAA)' }}>Seleziona un esperimento dalla sidebar</span>
+                  <span style={{ fontSize: 14, color: 'var(--color-text-gray-100, #AAA)' }}>Selezionate un esperimento dalla sidebar</span>
                   {!showSidebar && (<button onClick={() => setShowSidebar(true)} style={{ marginTop: 12, padding: '6px 16px', border: `1px solid ${LIME}`, borderRadius: 6, background: 'transparent', color: LIME, cursor: 'pointer', fontFamily: FONT_BODY, fontSize: 14 }}>Mostra Esperimenti</button>)}
                 </>
               )}

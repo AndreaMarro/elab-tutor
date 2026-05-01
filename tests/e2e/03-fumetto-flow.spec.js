@@ -19,7 +19,13 @@ test.describe('Fumetto flow iter 36 Atom A7 (gate refactor iter 37 Phase 3)', ()
     await page.waitForTimeout(3000);
 
     // verify NO toast "Nessuna sessione salvata"
-    const noSessionToast = await page.locator('text=Nessuna sessione salvata').count();
+    // iter 38 fix A2: scope to actual toast notification region — generic text=
+    // matched HomeCronologia.jsx:287 static empty-state placeholder cross-route.
+    // Real toasts live under [role="status"], [aria-live], .toast, or .elab-toast.
+    const noSessionToast = await page
+      .locator('[role="status"], [aria-live="polite"], [aria-live="assertive"], .toast, .elab-toast')
+      .filter({ hasText: 'Nessuna sessione salvata' })
+      .count();
     expect(noSessionToast).toBe(0);
 
     // verify popup or download triggered (output present)
