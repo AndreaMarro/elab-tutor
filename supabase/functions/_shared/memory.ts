@@ -60,6 +60,11 @@ export async function checkConsent(sessionId: string): Promise<'granted' | 'revo
 /**
  * Load student context for a session.
  * Returns null if DB is not configured (graceful degradation).
+ *
+ * iter 39 Tier 1 T1.3: prefer single-RPC `student_context_v1` (1 round-trip)
+ * over legacy 2-call sequential path. Projected p95 saving ~250-500ms.
+ * Falls back to legacy path if RPC missing OR errors.
+ * Gate: STUDENT_CONTEXT_RPC_V1 env flag (default 'true' iter 39 entrance).
  */
 export async function loadStudentContext(
   sessionId: string,
@@ -67,6 +72,47 @@ export async function loadStudentContext(
   const client = getClient();
   if (!client) return null;
 
+  // Default empty context shape
+  const empty: StudentContext = {
+    completedExperiments: 0,
+    totalExperiments: 62,
+    commonMistakes: [],
+    lastSession: null,
+    level: 'principiante',
+    currentChapter: null,
+  };
+
+  const useRpc = (Deno.env.get('STUDENT_CONTEXT_RPC_V1') || 'true').toLowerCase() === 'true';
+
+  // Tier 1 T1.3 fast path: single RPC round-trip
+  if (useRpc) {
+    try {
+      const { data, error } = await client.rpc('student_context_v1', { p_session_id: sessionId });
+      if (!error && data) {
+        const progress = data.progress;
+        if (!progress) return empty;
+        const completed = progress.completed_experiments || [];
+        const mistakes = progress.common_mistakes || [];
+        const chapterMatch = progress.last_experiment_id?.match(/cap(\d+)/);
+        const currentChapter = chapterMatch ? parseInt(chapterMatch[1], 10) : null;
+        return {
+          completedExperiments: completed.length,
+          totalExperiments: 62,
+          commonMistakes: mistakes.slice(0, 5),
+          lastSession: data.last_session_started_at || null,
+          level: completed.length < 10 ? 'principiante'
+            : completed.length < 30 ? 'intermedio'
+            : 'avanzato',
+          currentChapter,
+        };
+      }
+      // RPC missing or error — fall through to legacy path
+    } catch (err) {
+      console.warn('[Memory] T1.3 RPC failed, fallback legacy:', err);
+    }
+  }
+
+  // Legacy 2-call path (fallback)
   try {
     const { data: progress } = await client
       .from('student_progress')
@@ -76,16 +122,7 @@ export async function loadStudentContext(
       .limit(1)
       .single();
 
-    if (!progress) {
-      return {
-        completedExperiments: 0,
-        totalExperiments: 62,
-        commonMistakes: [],
-        lastSession: null,
-        level: 'principiante',
-        currentChapter: null,
-      };
-    }
+    if (!progress) return empty;
 
     const { data: lastSession } = await client
       .from('student_sessions')

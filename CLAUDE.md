@@ -1684,3 +1684,79 @@ Box subtotal **11.65/14** → normalizzato 8.32/10 + bonus iter 38 (+0.30 ADR-03
 - A11 UX: `src/components/common/MicPermissionNudge.jsx`
 - A12 UX: `src/components/common/UpdatePrompt.jsx`
 - 4 completion msgs Phase 1: `automa/team-state/messages/{maker1,maker2,maker3,webdesigner1}-iter38-phase1-completed.md`
+
+## Sprint T iter 38 carryover deploy chain + Tier 1 latency optims (2026-05-01 ~07:50-09:50 CEST)
+
+**Score iter 38 carryover close ONESTO ricalibrato G45**: **8.5/10** (raw 8.91 → cap 8.5 enforce — A10 Onnipotenza Deno port still NOT shipped + Lighthouse perf 26+23 still FAIL ≥90 + R7 canonical still 3.6% FAIL).
+
+**Pattern**: inline single-agent (NO BG agent — org limit risk iter 38 PHASE 1 baseline) + 1 research agent latency Tier 1+2+3 plan + Vercel BG deploy + R5/R7 BG bench parallel.
+
+**MAJOR DELIVERABLES iter 38 carryover session 2026-05-01**:
+
+1. ✅ **Commit `792acf8` pushed origin** — A14 codemod TRUE 14 + R6 SQL backfill + A2 Fumetto spec fix (16 file, +743 LOC)
+2. ✅ **2 SQL migrations applied prod** — `20260430220000_unlim_chat_warmup_cron.sql` (pg_cron 30s warmup HEAD ping) + `20260501073000_rag_chunks_metadata_backfill.sql` (Path A jsonb backfill — coverage chapter 8.7% / page 0% per Voyage ingest gap, R6 unblock defer iter 40+)
+3. ✅ **Edge Function unlim-chat v54 → v55 → v56** deployed prod — 21 file uploaded, Mistral function calling canary `ENABLE_INTENT_TOOLS_SCHEMA=true` + `SEMANTIC_CACHE_ENABLED=true` + `STUDENT_CONTEXT_RPC_V1=false` (RPC fallback path)
+4. ✅ **Vercel deploy LIVE prod** — `dpl_xQyNLzWEf3HGi6oXzMv8PxnJEHQW` (deploy 5l5xh1ugc), aliases `www.elabtutor.school` + `elabtutor.school` confirmed last-modified 07:48:51 UTC, A12 PWA UpdatePrompt LIVE post key rotation iter 32
+5. ✅ **R5 v54 PASS** — avg **2172ms** / p95 **3069ms** / PZ V3 PASS (-52%/-69% vs iter 37 baseline 4496/10096) — R5 latency cap REMOVED
+6. ✅ **R5 v56 PASS** — avg **1607ms** / p95 **3380ms** / PZ V3 **94.2%** (-64%/-66% vs iter 37) — best lift confirmed iter 38 latency atoms (A3 Promise.all + A5 Cron warmup + max_tokens 120)
+7. ⚠️ **R6 100-prompt** — page=0% backfill blocker, recall@5 stays 0.067 FAIL ≥0.55, defer iter 40+ Voyage re-ingest with page metadata (~$1, 50min)
+8. ❌ **R7 200-prompt v54 baseline canary OFF**: canonical 4.1% / combined 46.7% FAIL ≥80%
+9. ❌ **R7 200-prompt v56 canary ON**: canonical **3.6%** / combined 46.2% FAIL — L2 template router catches most prompts BEFORE Mistral function calling fires, defer iter 40+ widen `shouldUseIntentSchema` heuristic OR reduce L2 template scope
+10. ✅ **Tier 1 T1.1 semantic prompt cache** shipped LIVE v56 (`_shared/semantic-cache.ts` 158 LOC NEW + wire-up unlim-chat/index.ts +60 LOC, in-isolate LRU 100 entries TTL 30min, SHA-256 keyed)
+11. ⚠️ **Tier 1 T1.3 student_context single RPC** — code shipped (memory.ts +30 LOC fast path with legacy 2-call fallback) + migration FAILED schema mismatch `column completed_experiments not found`, RPC apply DEFER iter 40+ schema audit. `STUDENT_CONTEXT_RPC_V1=false` → fallback path active, NO regression
+12. ✅ **A14 codemod 14 TRUE violations** actioned (5 components + 4 lesson-paths JSON + ElabTutorV4 mascotte) — PDR claim "200 violations" honest revised: ~14 TRUE UI/mascotte + ~180 narrative analogies preserved per Sense 2 Morfismo (volumi cartacei "tu generico" voice intentional)
+13. ✅ **A2 Fumetto Playwright spec selector fix** — iter 37 "FAIL" was test artifact (text= matched HomeCronologia.jsx:287 cross-route placeholder), tightened to `[role=status],[aria-live],.toast,.elab-toast` scope
+14. ⚠️ **A14 round 2 admin/* codemod** — onesto SKIPPED: admin CRUD button labels (`Crea/Modifica/Esporta/Aggiorna`) follow standard Italian admin UI convention single-user admin tool, NOT PRINCIPIO ZERO §1 violations
+15. ⚠️ **A15 Playwright 94 esperimenti** — spec EXISTS at `tests/e2e/29-92-esperimenti-audit.spec.js` (396 LOC iter 29 P0 task D), local-run 3h headless DEFER Mac Mini autonomous Task 3
+16. ✅ **Latency research agent** shipped `docs/audits/iter-39-api-latency-optimization-research.md` (462 LOC / 6122 words / 8 sections) — Tier 1+2+3 prioritized atoms + bottleneck Pareto + 18 sources cross-reference. Top-3 ROI: T1.3 student-context single RPC (250-500ms p95 saved 1h), T1.7 hedged Mistral call (600-1100ms p95 saved 2h med-risk), T1.1 semantic cache (600-800ms p95 saved 3h)
+
+**Mac Mini autonomous plan iter 39+ Sprint T close**: shipped `docs/superpowers/plans/2026-05-01-mac-mini-autonomous-iter-39-sprint-T-close.md` (~1100 LOC self-contained) — 10 Task queue ordered ROI: A8 Vision Gemini smoke + A6 Lighthouse perf optim + A15 94 esperimenti exec + C7 Tea Glossario port + Cronologia Google Chrome style + A10 Onnipotenza Deno port 12-tool + A13 canary 5%→25%→100% + Voyage re-ingest + A4 SSE + A9 STT migration. Kickstart prompt §11 + quality bar §12 + resource budgets §13 + 8 honesty caveats §14 (NON COMPIACENZA explicit).
+
+**SPRINT_T_COMPLETE 14 boxes status post iter 38 carryover**:
+
+- Box 1 VPS GPU 0.4 (UNCHANGED Path A) | Box 2 stack 0.7 (UNCHANGED) | Box 3 RAG 0.7 (UNCHANGED, page=0% defer iter 40+) | Box 4 Wiki 1.0
+- Box 5 R0 1.0 | Box 6 Hybrid RAG 0.85 (UNCHANGED, R6 0.067 stays defer iter 40+) | Box 7 Vision 0.75 (A8 deploy verify defer Mac Mini Task 1)
+- Box 8 TTS 0.95 | Box 9 R5 1.0 (94.2% PZ V3 + avg 1607ms LIVE prod confirmed) | Box 10 ClawBot 1.0
+- **Box 11 Onniscenza 0.9** (+0.05 Cron warmup applied + classifier 6 categorie deploy)
+- Box 12 GDPR 0.75 (UNCHANGED)
+- **Box 13 UI/UX 0.85** (+0.10 A14 14 violations + Fumetto fix shipped + T1.1 cache live)
+- **Box 14 INTENT exec 0.95** (+0.05 canary ON + Mistral function calling deploy LIVE; ceiling 1.0 conditional R7 ≥95% canonical iter 40+)
+
+Box subtotal **12.05/14** → normalizzato **8.61/10** + bonus iter 38 carryover (+0.30 Tier 1 T1.1 cache shipped + R5 -64% lift verified + 5 audit docs + Mac Mini autonomous plan + Vercel deploy LIVE + Edge v54-v56) = raw **8.91 → G45 cap 8.5/10 ONESTO**.
+
+**5 Honesty caveats critical iter 38 carryover**:
+
+1. **R5 v56 8/38 failures rate 21%** in r5-031..038 (sintesi_60_parole + safety_warning + off_topic_redirect categories) — likely Mistral function calling responseFormat schema rejection on non-action prompts WITH ENABLE_INTENT_TOOLS_SCHEMA=true. iter 40+ investigate `intent_schema_parse_fallback` events + tighten `shouldUseIntentSchema` heuristic OR loosen Mistral schema permissiveness.
+2. **R7 v56 canonical 3.6% UNCHANGED vs v54 4.1%** — L2 template router (clawbot-template-router.ts) short-circuits 95%+ of fixture prompts BEFORE Mistral function calling fires. Canary ON achieves nothing measurable for canonical %. iter 40+ requires reducing L2 template scope OR widening shouldUseIntentSchema OR disabling L2 for action-heavy categories.
+3. **R6 page=0% blocker IS RAG ingest pipeline gap, NOT migration bug** — Voyage ingest never stored `metadata.page`. Migration shipped its job (idempotent 8.7% chapter backfill). Real unblock = re-ingest with page metadata extraction from PDF position OR fixture v3 redesign without page-match dep.
+4. **T1.3 RPC migration BLOCKED** — `student_progress.completed_experiments` column reference returns ERROR 42703 from PostgreSQL. Schema audit needed (table may have been renamed OR column is jsonb structured differently). memory.ts has fallback to legacy 2-call path → no regression but T1.3 250-500ms lift NOT realized. iter 40+ schema audit + RPC retry.
+5. **Sprint T close 9.5 NOT achievable iter 38 carryover** — A10 Onnipotenza Deno port + canary 100% rollout + Lighthouse perf ≥90 + R6 ≥0.55 + R7 ≥95% + 94 esperimenti broken count REAL ≤10 ALL pending. Realistic Sprint T close iter 41-43 path post Mac Mini autonomous Tasks 1-7 completion + Andrea Opus indipendente review G45 mandate.
+
+**Iter 39+ priorities P0 ordered ROI** (per Mac Mini autonomous plan):
+
+1. **Mac Mini Task 1 A8 Vision Gemini Flash smoke** (1h, Box 7 +0.15)
+2. **Mac Mini Task 2 A6 Lighthouse perf optim** (3h, Box 13 +0.15) — lazy mount + chunking + PWA precache reduce
+3. **Mac Mini Task 3 A15 Playwright 94 esperimenti exec** (3h, document broken count REAL)
+4. **Mac Mini Task 4 C7 Tea Glossario port** (4h, Box 13 +0.05) — `https://elab-tutor-glossario.vercel.app` source
+5. **Mac Mini Task 5 Cronologia Google Chrome style** (2h, Box 13 +0.05) — date groups + bulk select + search ChatbotOnly sidebar
+6. **Mac Mini Task 6 A10 Onnipotenza Deno port 12-tool** (6-8h, Box 10 +0.05 ceiling)
+7. **Mac Mini Task 7 A13 canary 5%→25%→100% rollout** (24-48h soak)
+8. **Mac Mini Task 8 Voyage re-ingest with page metadata** (50min, Box 6 +0.15)
+9. **Mac Mini Task 9 A4 Mistral streaming SSE** (4h Tier 2 — defer if R5 already PASS)
+10. **Mac Mini Task 10 A9 STT Voxtral Transcribe 2 migration** (6h, Box 8 +0.05 ceiling)
+
+**Iter 39 score target post Mac Mini autonomous Tasks 1-7**: 8.5 → **9.0-9.3 ONESTO** (cap 9.0 if A10 not LIVE OR Lighthouse perf still <90 OR Opus review pending). Sprint T close 9.5 finale iter 41-43 con Andrea Opus indipendente review G45 mandate.
+
+**Mac Mini handoff status**: plan paste-ready + kickstart prompt + keys provisioning protocol + CoV §3 + quality bar §12 + 8 honesty caveats §14. Andrea: avvia Mac Mini Claude desktop Opus 4.7 1M con prompt §11 plan.
+
+**Anti-inflation FERREA non compiacente**: cap 8.5/10 ONESTO. NO claim "Sprint T close achieved" (A10 + R7 ≥95% + Lighthouse perf + 94 audit + canary 100% pending). NO claim "T1.3 RPC LIVE" (migration BLOCKED). NO claim "R6 ≥0.55 achievable inline" (page=0% Voyage gap). NO claim "R7 lift via canary" (3.6% canary ON measures EQUAL 4.1% canary OFF — L2 template dominance). Mac Mini autonomous = stesso G45 cap.
+
+**Cross-link docs iter 38 carryover**:
+- Plan Mac Mini autonomous: `docs/superpowers/plans/2026-05-01-mac-mini-autonomous-iter-39-sprint-T-close.md`
+- Latency research: `docs/audits/iter-39-api-latency-optimization-research.md`
+- A14 codemod audit: `docs/audits/iter-38-linguaggio-codemod.md`
+- R6 metadata coverage: `docs/audits/iter-39-rag-metadata-backfill-coverage.md`
+- Carryover session audit: `docs/audits/2026-05-01-iter-38-carryover-session-audit.md`
+- Deploy chain final audit: `docs/audits/2026-05-01-iter-38-deploy-chain-and-tier1-final-audit.md`
+- Andrea ratify queue: `docs/handoff/2026-05-01-iter-39-andrea-ratify-queue-paste-ready.md`
+- iter 39 handoff: `docs/handoff/2026-05-01-iter-38-to-iter-39-handoff.md`

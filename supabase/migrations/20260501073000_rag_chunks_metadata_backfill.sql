@@ -31,18 +31,16 @@ UPDATE rag_chunks
 SET section_title = COALESCE(section_title, NULLIF(metadata->>'section_title', ''))
 WHERE section_title IS NULL AND metadata->>'section_title' IS NOT NULL;
 
--- Step 4: Path A fuzzy match — extract from chunk_id pattern `vol{N}_cap{N}_pag{N}_*`
--- Example chunk_ids observed in fixture-aligned format: `vol1_cap6_pag27_led_intro`
--- Extract:
---   source = "vol{N}" → already in dedicated `source` column (TEXT) iter 8 schema
---   chapter = capture group cap{N}
---   page = capture group pag{N}
+-- Step 4: Path A fuzzy match via metadata->>'chunk_id' if Voyage ingest stored it
+-- Schema (20260426160000_rag_chunks_hybrid.sql): NO `chunk_id` column on table.
+-- Fuzzy fallback uses jsonb `metadata->>'chunk_id'` IF present (fixture-aligned ingest).
 UPDATE rag_chunks
 SET
-  chapter = COALESCE(chapter, NULLIF(substring(chunk_id from 'cap(\d+)'), '')::int),
-  page    = COALESCE(page,    NULLIF(substring(chunk_id from 'pag(\d+)'), '')::int)
+  chapter = COALESCE(chapter, NULLIF(substring(metadata->>'chunk_id' from 'cap(\d+)'), '')::int),
+  page    = COALESCE(page,    NULLIF(substring(metadata->>'chunk_id' from 'pag(\d+)'), '')::int)
 WHERE (chapter IS NULL OR page IS NULL)
-  AND chunk_id ~ 'cap\d+_pag\d+';
+  AND metadata->>'chunk_id' IS NOT NULL
+  AND metadata->>'chunk_id' ~ 'cap\d+_pag\d+';
 
 -- Step 5: Source canonical normalization — `vol1`/`vol2`/`vol3` lowercase
 UPDATE rag_chunks

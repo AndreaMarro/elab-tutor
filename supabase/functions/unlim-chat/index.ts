@@ -33,6 +33,8 @@ import { parseIntentTags, stripIntentTags, type IntentTag } from '../_shared/int
 // Falls through to legacy regex when ENABLE_INTENT_TOOLS_SCHEMA != true OR
 // when the model didn't return parseable JSON (defensive).
 import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
+// iter 39 Tier 1 T1.1 — semantic prompt cache (in-isolate LRU, ~5ms p95 hit)
+import { lookupCache, storeCache, digestSystemPrompt, getCacheStats } from '../_shared/semantic-cache.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
@@ -518,6 +520,54 @@ serve(async (req: Request) => {
       }));
     }
 
+    // iter 39 Tier 1 T1.1 — semantic cache lookup AFTER L2 miss, BEFORE LLM call.
+    // Class scenario: same prompt by different students within 30min → ~5ms p95 hit
+    // vs ~2200ms p50 / ~5500ms p95 LLM. Defensive: cache miss falls through to LLM.
+    let cachedSystemPromptDigest: string | undefined;
+    try {
+      cachedSystemPromptDigest = await digestSystemPrompt(systemPrompt);
+      const cached = await lookupCache({
+        experimentId: safeExperimentId,
+        safeMessage,
+        systemPromptDigest: cachedSystemPromptDigest,
+        topK: classification?.topK ?? 3,
+        classId: (req.headers.get('x-elab-class-id') || null),
+      });
+      if (cached) {
+        console.info(JSON.stringify({
+          level: 'info', event: 'semantic_cache_hit',
+          source: cached.source,
+          hit_count: cached.hitCount,
+          stats: getCacheStats(),
+          timestamp: new Date().toISOString(),
+        }));
+        const cachedResponse: ChatResponse & {
+          cache_hit?: boolean;
+          source: string;
+        } = {
+          success: true,
+          response: cached.text,
+          source: `semantic-cache-${cached.source}`,
+          dataProcessing: 'in-isolate-cache',
+          cache_hit: true,
+        };
+        // Surface canonical intents if cached
+        if (cached.intentsParsed && Array.isArray(cached.intentsParsed) && cached.intentsParsed.length > 0) {
+          (cachedResponse as Record<string, unknown>).intents_parsed = cached.intentsParsed;
+        }
+        return new Response(JSON.stringify(cachedResponse), {
+          status: 200,
+          headers: getSecurityHeaders(req),
+        });
+      }
+    } catch (cacheErr) {
+      // Cache must NEVER break chat flow
+      console.warn(JSON.stringify({
+        level: 'warn', event: 'semantic_cache_lookup_error',
+        error: cacheErr instanceof Error ? cacheErr.message : 'unknown',
+      }));
+    }
+
     // 4. Route to optimal model
     const model = routeModel(safeMessage, hasImages, safeCircuitState as CircuitState | null);
 
@@ -704,6 +754,37 @@ serve(async (req: Request) => {
       .catch(err => console.warn('[Nanobot V2] Memory save error:', err));
 
     const audioUrl: string | null = null; // decoupled — frontend fetches separately
+
+    // iter 39 Tier 1 T1.1 — store successful response in semantic cache.
+    // Fire-and-forget: NEVER blocks response. Cache module gates on pzScore +
+    // text length defensively (see semantic-cache.ts). LRU eviction at 100 entries.
+    try {
+      const sourceLabel = result.provider === 'mistral' ? result.model
+        : result.provider === 'together' ? `together-${result.model}`
+        : result.provider === 'brain' ? 'brain'
+        : modelDisplayName(model) || result.model;
+      storeCache(
+        {
+          experimentId: safeExperimentId,
+          safeMessage,
+          systemPromptDigest: cachedSystemPromptDigest,
+          topK: classification?.topK ?? 3,
+          classId: (req.headers.get('x-elab-class-id') || null),
+        },
+        {
+          text: cleanText,
+          intentsParsed: parsedIntents.map(i => ({ tool: i.tool, args: i.args })),
+          source: sourceLabel,
+        },
+      ).catch((cacheStoreErr) => {
+        console.warn(JSON.stringify({
+          level: 'warn', event: 'semantic_cache_store_error',
+          error: cacheStoreErr instanceof Error ? cacheStoreErr.message : 'unknown',
+        }));
+      });
+    } catch (_e) {
+      // Defensive — never break flow on cache store
+    }
 
     // 10. Return response — include data processing transparency (GDPR)
     const response: ChatResponse & {
