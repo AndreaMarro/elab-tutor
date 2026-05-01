@@ -87,9 +87,11 @@ async function requestTTS(text: string): Promise<string | null> {
 }
 
 /**
- * Cap response to ~60 words (ELAB brevity rule)
+ * Cap response to ~150 words (ELAB brevity rule, iter 39 relaxed
+ * per Andrea mandate "le risposte UNLIM possono anche essere più lunghe").
+ * Was 60 iter 31-38 — too short for proper Vol/pag verbatim citations + analogie + orchestration RAG/Wiki/Glossario.
  */
-function capWords(text: string, maxWords = 60): string {
+function capWords(text: string, maxWords = 150): string {
   const words = text.split(/\s+/).filter(Boolean);
   if (words.length <= maxWords) return text;
   const truncated = words.slice(0, maxWords).join(' ');
