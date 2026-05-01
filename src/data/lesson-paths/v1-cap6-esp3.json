@@ -184,7 +184,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Fai provare le 3 resistenze una alla volta. Chiedi di metterle in ordine dalla più luminosa alla meno luminosa.",
+      "teacher_message": "Fate provare le 3 resistenze una alla volta. Chiedete di metterle in ordine dalla più luminosa alla meno luminosa.",
       "teacher_tip": "NON introdurre formule. L'obiettivo è che scoprano da soli: 'resistenza grande = LED meno luminoso'. Chiedi: 'Secondo voi, perché cambia?'",
       "provocative_question": "Se metto una resistenza grandissima, il LED si spegne del tutto? E se ne metto una piccolissima?",
       "components_list": null,

@@ -164,7 +164,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
         ? (activeVolume === 'inventor'
             ? `**Modalità Inventore attiva!**\n\nHai tutti i componenti a disposizione. Costruisci quello che vuoi!`
             : _nextSuggestion
-                ? `**Pronti!**\n\nVolume ${activeVolume} attivo. Oggi: **${_nextSuggestion.title}** — premi Inizia!`
+                ? `**Pronti!**\n\nVolume ${activeVolume} attivo. Oggi: **${_nextSuggestion.title}** — premete Inizia!`
                 : `**Pronti!**\n\nVolume ${activeVolume} attivo. Scegliete un esperimento o chiedetemi qualcosa!`)
         : `**Ciao! Sono UNLIM**\n\nScegliete il volume per iniziare!`;
     const [messages, setMessages] = useState([{
@@ -345,7 +345,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
                 setMessages(prev => [...prev, {
                     id: 'voice-err-' + Date.now(),
                     role: 'assistant',
-                    content: 'Scusa, c\'è stato un problema con la voce. Prova a scrivere oppure riprova!',
+                    content: 'Scusa, c\'è stato un problema con la voce. Provate a scrivere oppure riprovate!',
                 }]);
             } finally {
                 setIsLoading(false);
@@ -570,7 +570,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
         if (!state) {
             setMessages(prev => [...prev, {
                 id: Date.now(), role: 'assistant',
-                content: 'Non c\'è un circuito attivo da analizzare. Apri un esperimento nel simulatore e costruisci qualcosa!',
+                content: 'Non c\'è un circuito attivo da analizzare. Aprite un esperimento nel simulatore e costruite qualcosa!',
                 proactive: true,
             }]);
             setShowChat(true);
@@ -2438,7 +2438,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
             <div className={`elab-v4 ${isFullscreen ? 'fullscreen-mode' : ''}`}>
                 {provaMode && (
                     <div style={{
-                        background: 'linear-gradient(90deg, #1E4D8C, #2563EB)',
+                        background: 'linear-gradient(90deg, var(--elab-navy), #2563EB)',
                         color: 'white',
                         padding: '8px 16px',
                         fontSize: '14px',
@@ -2455,7 +2455,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                             <button
                                 onClick={() => onNavigate('register')}
                                 style={{
-                                    background: '#4A7A25',
+                                    background: 'var(--elab-lime)',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '6px',
@@ -2587,7 +2587,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                         <TabHint tabId={activeTab} onDismiss={() => { }} />
 
                         {activeTab === 'manual' && (
-                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: '#1E4D8C' }}>Caricamento...</div>}>
+                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: 'var(--elab-navy)' }}>Caricamento...</div>}>
                             <ManualTab
                                 selectedVolume={selectedVolume}
                                 volumePages={volumePages}
@@ -2677,7 +2677,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                         )}
 
                         {activeTab === 'canvas' && (
-                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: '#1E4D8C' }}>Caricamento...</div>}>
+                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: 'var(--elab-navy)' }}>Caricamento...</div>}>
                             <CanvasTab
                                 canvasRef={canvasRef}
                                 ctxRef={ctxRef}
@@ -2697,7 +2697,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                         )}
 
                         {activeTab === 'notebooks' && (
-                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: '#1E4D8C' }}>Caricamento...</div>}>
+                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: 'var(--elab-navy)' }}>Caricamento...</div>}>
                             <NotebooksTab
                                 notebooks={notebooks}
                                 activeNotebookId={activeNotebookId}
@@ -2716,7 +2716,7 @@ REGOLE CRITICHE PER QUESTA RISPOSTA:
                         )}
 
                         {activeTab === 'videos' && (
-                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: '#1E4D8C' }}>Caricamento...</div>}>
+                            <Suspense fallback={<div style={{ padding: 24, textAlign: 'center', color: 'var(--elab-navy)' }}>Caricamento...</div>}>
                             <VideosTab
                                 youtubeUrl={youtubeUrl}
                                 currentVideoId={currentVideoId}

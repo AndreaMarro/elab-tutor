@@ -19,3 +19,6 @@
 2026-05-01T08:10:00Z sprint-u ralph-iter4 F6-NOMOUNT-investigated data-correct routing-issue-deferred vitest=13473
 2026-05-01T08:15:00Z sprint-u ralph-iter4 CLOSED score=7.8/10 UNCHANGED no-new-fixes-possible vitest=13473 PR=#57
 2026-05-01T08:15:00Z sprint-u ralph-loop COMPLETE all-P0-blockers-resolved deferred-P1/P2-require-live-env RECOMMEND-MERGE-PR57
+2026-05-01T07:52:53Z sprint-u ralph-iter 4 complete
+2026-05-01T08:30:00Z sprint-u ralph-iter5 START Category-B-codemod+lesson-path-fixes vitest=13473
+2026-05-01T08:45:00Z sprint-u ralph-iter5 codemod-11-JSX+2-lesson-paths singolare→plurale vitest=13473

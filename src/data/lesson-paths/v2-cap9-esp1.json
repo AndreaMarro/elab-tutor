@@ -203,7 +203,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premete Play. Il simulatore mostra la risposta alla luce. Fai variare la luce nel simulatore: il multimetro cambia! Con luce intensa, tensione alta. Al buio, tensione vicina a zero.",
+      "teacher_message": "Premete Play. Il simulatore mostra la risposta alla luce. Fate variare la luce nel simulatore: il multimetro cambia! Con luce intensa, tensione alta. Al buio, tensione vicina a zero.",
       "teacher_tip": "Evidenzia il fototransistor e il multimetro. Fai variare la luce nel simulatore e osserva il multimetro in tempo reale. 'Questo è un sensore continuo: non è ON/OFF come un interruttore, ma varia gradualmente con la luce!'",
       "components_list": null,
       "class_hook": null,
