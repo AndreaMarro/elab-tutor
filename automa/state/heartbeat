@@ -13,3 +13,9 @@
 2026-05-01T07:50:00Z sprint-u ralph-iter3 singolare-0-violations-all-94 ragazzi-94/94 palette-CSS-clean
 2026-05-01T07:55:00Z sprint-u ralph-iter3 CLOSED score=7.8/10 vitest=13473 PR=#57
 2026-05-01T07:29:24Z sprint-u ralph-iter 2 complete
+2026-05-01T07:43:22Z sprint-u ralph-iter 3 complete
+2026-05-01T07:44:53Z sprint-u directive-02 SHIPPED iter4-mandate-andrea-no-merge
+2026-05-01T07:46:16Z sprint-u iter4-deferred-emergency LAUNCHED PID=90264 mandate=NO-MERGE-PR57-finché-deferred-complete
+2026-05-01T08:10:00Z sprint-u ralph-iter4 F6-NOMOUNT-investigated data-correct routing-issue-deferred vitest=13473
+2026-05-01T08:15:00Z sprint-u ralph-iter4 CLOSED score=7.8/10 UNCHANGED no-new-fixes-possible vitest=13473 PR=#57
+2026-05-01T08:15:00Z sprint-u ralph-loop COMPLETE all-P0-blockers-resolved deferred-P1/P2-require-live-env RECOMMEND-MERGE-PR57
