@@ -35,6 +35,9 @@ import { parseIntentTags, stripIntentTags, type IntentTag } from '../_shared/int
 import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
 // iter 39 Tier 1 T1.1 — semantic prompt cache (in-isolate LRU, ~5ms p95 hit)
 import { lookupCache, storeCache, digestSystemPrompt, getCacheStats } from '../_shared/semantic-cache.ts';
+// iter 39 A1 SSE — Mistral chat streaming (TTFB perceived <500ms).
+// Branch fires when body.stream === true AND ENABLE_SSE env true (canary gate).
+import { callMistralChatStream, type MistralStreamChunk } from '../_shared/mistral-client.ts';
 
 // CORS headers dynamically generated per-request via getCorsHeaders(req)
 
