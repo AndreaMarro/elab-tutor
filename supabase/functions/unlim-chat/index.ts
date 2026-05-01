@@ -979,6 +979,13 @@ serve(async (req: Request) => {
       response.intents_parsed = parsedIntents.map(i => ({ tool: i.tool, args: i.args }));
     }
 
+    // iter 39 ralph A3: surface dispatcher_results when canary fired server-side.
+    // Browser inspects each result; if server_executed=true, skips redundant
+    // browser dispatch. If surface_to_browser=true, browser executes via __ELAB_API.
+    if (Array.isArray(dispatcherResults) && dispatcherResults.length > 0) {
+      (response as Record<string, unknown>).dispatcher_results = dispatcherResults;
+    }
+
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: getSecurityHeaders(req),
