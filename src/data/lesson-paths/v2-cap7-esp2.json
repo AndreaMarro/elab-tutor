@@ -80,7 +80,7 @@
         },
         {
           "mistake": "Non capire perché serve il resistore se c'è già il LED",
-          "teacher_response": "Il LED da solo ha una resistenza molto bassa: senza resistore, al momento del pulsante la corrente sarebbe enorme e potrebbe bruciarlo! Il resistore da 1kΩ protegge il LED e controlla la velocità di scarica (Tau = R × C).",
+          "teacher_response": "Il LED da solo ha una resistenza molto bassa: senza resistore, al momento del pulsante la corrente sarebbe enorme e potrebbe bruciarlo! Il resistore da 1kΩ protegge il LED e regola la velocità di scarica (Tau = R × C).",
           "analogy": "Il resistore è come il freno di una bicicletta: senza freni la bicicletta (il LED) andrebbe troppo veloce e si romperebbe in curva!"
         }
       ]

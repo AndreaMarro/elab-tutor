@@ -203,7 +203,7 @@
         {
           "mistake": "Pensano di avere bisogno di 3 reed switch",
           "teacher_response": "No! Se il reed switch è nel punto giusto (prima della divisione ai 3 canali), uno solo basta per controllare tutto!",
-          "analogy": "Come un rubinetto principale che controlla l'acqua di tutta la casa"
+          "analogy": "Come un rubinetto principale che regola l'acqua di tutta la casa"
         },
         {
           "mistake": "Collegano i canali senza resistore",

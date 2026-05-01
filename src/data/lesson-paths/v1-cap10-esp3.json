@@ -94,8 +94,8 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi 3 fotoresistenze controllano i 3 colori del LED RGB! Copri o illumina ogni sensore per cambiare colore.",
-      "teacher_tip": "Tre canali indipendenti: LDR1→R1→rosso, LDR2→R2→verde, LDR3→R3→blu. Ogni fotoresistenza controlla un solo canale.",
+      "teacher_message": "Ragazzi, oggi 3 fotoresistenze controllano i 3 colori del LED RGB! Copri o illumina ogni sensore per cambiare colore.",
+      "teacher_tip": "Tre canali indipendenti: LDR1→R1→rosso, LDR2→R2→verde, LDR3→R3→blu. Ogni fotoresistenza regola un solo canale.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 fotoresistenze, 3 resistori 220Ω, 1 LED RGB, 12 fili.",
       "class_hook": "La lampada RGB aveva 3 manopole. E se le manopole fossero sostituite da 3 SENSORI di luce? Il circuito 'vedrebbe' la luce!",
       "action_tags": [],
@@ -237,7 +237,7 @@
       "common_mistakes": [
         {
           "mistake": "Un canale non risponde alla luce",
-          "teacher_response": "Controlla il collegamento: la fotoresistenza deve essere collegata al resistore, e il resistore al canale corrispondente.",
+          "teacher_response": "Regola il collegamento: la fotoresistenza deve essere collegata al resistore, e il resistore al canale corrispondente.",
           "analogy": null
         },
         {
@@ -251,7 +251,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premete Play e sperimenta con la luce! Ogni fotoresistenza controlla un colore. Copri il verde: resta rosso+blu = viola!",
+      "teacher_message": "Premete Play e sperimenta con la luce! Ogni fotoresistenza regola un colore. Copri il verde: resta rosso+blu = viola!",
       "teacher_tip": "Evidenzia le 3 fotoresistenze. Chiedi di creare colori specifici coprendo le giuste combinazioni.",
       "components_list": null,
       "class_hook": null,

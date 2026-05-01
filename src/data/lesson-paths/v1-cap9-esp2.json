@@ -231,7 +231,7 @@
       "icon": "✅",
       "duration_minutes": 5,
       "teacher_message": "Oggi abbiamo scoperto che il potenziometro è simmetrico — scambiando i pin laterali, la rotazione si inverte!",
-      "teacher_tip": "Chiedi: 'Dove potrebbe servire un controllo invertito nella vita reale?' (freno = più premi più frena, gas = più premi più accelera)",
+      "teacher_tip": "Chiedi: 'Dove potrebbe servire un controllo invertito nella vita reale?' (freno = più si preme più frena, gas = più si preme più accelera)",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],

@@ -202,7 +202,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Premete il pulsante E girate la manopola. Cosa succede se giri al massimo ma NON premi? E se premi ma la manopola è al minimo?",
+      "teacher_message": "Premete il pulsante E girate la manopola. Cosa succede se giri al massimo ma NON premete? E se premete ma la manopola è al minimo?",
       "teacher_tip": "Se non premono il pulsante, nessuna corrente passa — la manopola non fa niente. Questo è il concetto chiave della catena di controllo.",
       "provocative_question": "Cosa cambia se metti il pulsante DOPO la manopola invece che prima? Il circuito funziona lo stesso?",
       "components_list": null,
@@ -212,7 +212,7 @@
       "common_mistakes": [
         {
           "mistake": "Il LED non si accende",
-          "teacher_response": "Controlla la catena completa: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED.",
+          "teacher_response": "Regola la catena completa: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED.",
           "analogy": null
         },
         {

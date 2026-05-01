@@ -83,7 +83,7 @@
   "next_experiment": {
     "id": "v1-cap11-esp2",
     "title": "Campanello con pulsante",
-    "preview": "E se aggiungiamo un pulsante? Il buzzer suona solo quando premi — come un campanello!"
+    "preview": "E se aggiungiamo un pulsante? Il buzzer suona solo quando premete — come un campanello!"
   },
   "phases": [
     {
@@ -102,7 +102,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Mostra il circuito sulla LIM: batteria → bus → cicalino → bus → batteria. Il cicalino è collegato direttamente ai bus della breadboard.",
-      "teacher_tip": "Usa il Passo Passo. Fai notare che la struttura è identica al primo circuito LED: cambiano solo i componenti. Il filo rosso va al + del cicalino.",
+      "teacher_tip": "Usa il Passo Passo. Fate notare che la struttura è identica al primo circuito LED: cambiano solo i componenti. Il filo rosso va al + del cicalino.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -176,7 +176,7 @@
       "common_mistakes": [
         {
           "mistake": "Il cicalino non suona",
-          "teacher_response": "Controlla la polarità: il filo rosso deve andare al piedino + del cicalino. Cerca il segno + stampato sopra.",
+          "teacher_response": "Regola la polarità: il filo rosso deve andare al piedino + del cicalino. Cerca il segno + stampato sopra.",
           "analogy": null
         },
         {
@@ -229,7 +229,7 @@
         "polarità dei componenti",
         "corrente → suono"
       ],
-      "next_preview": "E se aggiungiamo un pulsante? Il buzzer suonerà solo quando premi — come un vero campanello di casa!"
+      "next_preview": "E se aggiungiamo un pulsante? Il buzzer suonerà solo quando premete — come un vero campanello di casa!"
     }
   ],
   "assessment_invisible": [

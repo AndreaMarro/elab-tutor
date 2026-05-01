@@ -38,7 +38,7 @@
       "duration_minutes": 5,
       "teacher_message": "Finora abbiamo usato il LED integrato al pin 13. Ma Arduino ha tanti pin digitali. Oggi colleghiamo un LED esterno a un pin diverso e cambiamo il codice.",
       "teacher_tip": "Mostrare sulla scheda dove sono i pin digitali numerati. Far contare alla classe quanti ce ne sono.",
-      "class_hook": "Arduino ha 14 pin digitali. Se ognuno controlla un LED, quanti LED possiamo accendere insieme?",
+      "class_hook": "Arduino ha 14 pin digitali. Se ognuno regola un LED, quanti LED possiamo accendere insieme?",
       "action_tags": [],
       "auto_action": null
     },

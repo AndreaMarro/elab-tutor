@@ -76,8 +76,8 @@
       "icon": "✅",
       "duration_minutes": 7,
       "teacher_message": "Ora sapete controllare la luminosita di un LED! analogWrite e il PWM vi aprono un mondo: non solo LED, ma anche la velocita dei motori e il volume dei buzzer. Tutto con 256 livelli di controllo.",
-      "teacher_tip": "Recap: analogWrite(pin, valore) controlla il duty cycle del PWM. 0 = sempre spento, 255 = sempre acceso, 128 = acceso meta del tempo. Solo i pin con ~ supportano il PWM. Il nome 'analogWrite' e fuorviante: e digitale mascherato!",
-      "summary_for_class": "Il PWM (Pulse Width Modulation) e il trucco di Arduino per simulare valori analogici usando solo ON e OFF. analogWrite controlla per quanto tempo il pin resta acceso in ogni ciclo. 256 livelli di luminosita, da 0 (spento) a 255 (massimo). Funziona solo sui pin marcati con ~.",
+      "teacher_tip": "Recap: analogWrite(pin, valore) regola il duty cycle del PWM. 0 = sempre spento, 255 = sempre acceso, 128 = acceso meta del tempo. Solo i pin con ~ supportano il PWM. Il nome 'analogWrite' e fuorviante: e digitale mascherato!",
+      "summary_for_class": "Il PWM (Pulse Width Modulation) e il trucco di Arduino per simulare valori analogici usando solo ON e OFF. analogWrite regola per quanto tempo il pin resta acceso in ogni ciclo. 256 livelli di luminosita, da 0 (spento) a 255 (massimo). Funziona solo sui pin marcati con ~.",
       "concepts_learned": [
         "analogWrite() e range 0-255",
         "PWM (Pulse Width Modulation)",

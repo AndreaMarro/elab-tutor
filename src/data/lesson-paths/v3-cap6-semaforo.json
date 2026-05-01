@@ -96,7 +96,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 6,
-      "teacher_message": "Oggi costruiamo un semaforo vero con Arduino! Tre LED colorati, un programma che li controlla in sequenza: verde, giallo, rosso. Esattamente come i semafori della strada!",
+      "teacher_message": "Ragazzi, oggi costruiamo un semaforo vero con Arduino! Tre LED colorati, un programma che li regola in sequenza: verde, giallo, rosso. Esattamente come i semafori della strada!",
       "teacher_tip": "Chiedi ai ragazzi: 'Avete mai visto un semaforo? Quanto tempo rimane verde? E rosso?' Questo aggancia subito la realtà al progetto. Spiega che Arduino è il 'cervello' del semaforo: il programma dice a ogni LED quando accendersi e per quanto tempo.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4 con breakout wing, 3 LED (verde, giallo, rosso), 3 resistori 470Ω, fili di collegamento.",
       "class_hook": "Sapete come funziona un semaforo? Chi decide quando si accende il verde? Oggi costruiamo noi il 'cervello' del semaforo con Arduino e un piccolo programma!",
@@ -228,12 +228,12 @@
       "common_mistakes": [
         {
           "mistake": "Un LED resta sempre acceso, anche quando dovrebbe spegnersi",
-          "teacher_response": "Controlla il codice: ogni fase deve mettere LOW tutti i pin tranne quello acceso. Se manca un digitalWrite LOW su un pin, quel LED resta acceso!",
+          "teacher_response": "Regola il codice: ogni fase deve mettere LOW tutti i pin tranne quello acceso. Se manca un digitalWrite LOW su un pin, quel LED resta acceso!",
           "analogy": "È come le luci di casa: se vuoi che solo il salotto sia illuminato, devi SPEGNERE le altre stanze, non basta accendere il salotto."
         },
         {
           "mistake": "Il LED non si accende affatto o è molto fioco",
-          "teacher_response": "Controlla i collegamenti: il resistore è tra il pin Arduino e il LED? Il catodo del LED va a GND? Ricorda che il LED ha una direzione!",
+          "teacher_response": "Regola i collegamenti: il resistore è tra il pin Arduino e il LED? Il catodo del LED va a GND? Ricorda che il LED ha una direzione!",
           "analogy": null
         }
       ]
@@ -242,8 +242,8 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 12,
-      "teacher_message": "Premete Play! Il semaforo prende vita: verde 3 secondi, giallo 1 secondo, rosso 3 secondi. Guardate come il programma controlla ogni LED in modo preciso e ripetuto all'infinito!",
-      "teacher_tip": "Evidenzia i tre LED e i tre pin. Chiedi: 'Quanto dura il giallo rispetto al verde? Perché è più corto?' Fai notare che il loop() ripete il ciclo all'infinito — esattamente come i semafori reali che non si spengono mai.",
+      "teacher_message": "Premete Play! Il semaforo prende vita: verde 3 secondi, giallo 1 secondo, rosso 3 secondi. Guardate come il programma regola ogni LED in modo preciso e ripetuto all'infinito!",
+      "teacher_tip": "Evidenzia i tre LED e i tre pin. Chiedi: 'Quanto dura il giallo rispetto al verde? Perché è più corto?' Fate notare che il loop() ripete il ciclo all'infinito — esattamente come i semafori reali che non si spengono mai.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -272,12 +272,12 @@
       "icon": "✅",
       "duration_minutes": 7,
       "teacher_message": "Ottimo lavoro! Avete costruito il vostro primo progetto Arduino con sequenza di stati. Il semaforo usa tre pin OUTPUT, delay() per il timing, e un loop infinito che non si ferma mai.",
-      "teacher_tip": "Fai un recap veloce: 'setup() = configuriamo i pin una volta sola. loop() = ripetiamo la sequenza per sempre. digitalWrite HIGH = accendiamo. digitalWrite LOW = spegniamo. delay(3000) = aspettiamo 3 secondi.' Questi quattro concetti sono la base di TUTTI i programmi Arduino!",
+      "teacher_tip": "Fate un recap veloce: 'setup() = configuriamo i pin una volta sola. loop() = ripetiamo la sequenza per sempre. digitalWrite HIGH = accendiamo. digitalWrite LOW = spegniamo. delay(3000) = aspettiamo 3 secondi.' Questi quattro concetti sono la base di TUTTI i programmi Arduino!",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Il semaforo funziona grazie a tre concetti chiave: pin OUTPUT (Arduino comanda i LED), delay() (controlla il tempo di ogni colore), e loop infinito (il ciclo non si ferma mai). Con questi stessi strumenti si possono costruire mille altri progetti!",
+      "summary_for_class": "Il semaforo funziona grazie a tre concetti chiave: pin OUTPUT (Arduino comanda i LED), delay() (regola il tempo di ogni colore), e loop infinito (il ciclo non si ferma mai). Con questi stessi strumenti si possono costruire mille altri progetti!",
       "concepts_learned": [
         "pin digitali OUTPUT",
         "digitalWrite HIGH/LOW",

@@ -228,7 +228,7 @@
       "icon": "👀",
       "duration_minutes": 10,
       "teacher_message": "Premete Play: il pulsante è l'ON/OFF, la manopola regola la luminosità. Due livelli di controllo sullo stesso canale!",
-      "teacher_tip": "Evidenzia pulsante e potenziometro. Chiedi: 'Cosa succede se giri la manopola al massimo ma non premi il pulsante?' (niente!)",
+      "teacher_tip": "Evidenzia pulsante e potenziometro. Chiedi: 'Cosa succede se giri la manopola al massimo ma non premete il pulsante?' (niente!)",
       "components_list": null,
       "class_hook": null,
       "action_tags": [

@@ -134,7 +134,7 @@
       "icon": "❓",
       "duration_minutes": 7,
       "teacher_message": "Il servo è collegato. Il codice usa delay(15) tra ogni grado di movimento. Cosa succederebbe se usassimo delay(1) invece di delay(15)? E se usassimo delay(500)?",
-      "teacher_tip": "Con delay(1) il movimento sarebbe rapidissimo, quasi istantaneo. Con delay(500) ci vorrebbe 90 secondi per fare mezzo giro (500ms × 180 gradi = 90 secondi!). Il delay controlla la VELOCITÀ del movimento.",
+      "teacher_tip": "Con delay(1) il movimento sarebbe rapidissimo, quasi istantaneo. Con delay(500) ci vorrebbe 90 secondi per fare mezzo giro (500ms × 180 gradi = 90 secondi!). Il delay regola la VELOCITÀ del movimento.",
       "provocative_question": "Il servo si muove da 0 a 180 gradi con delay(15) per ogni grado. Quanto tempo ci vuole per fare UN giro completo andata e ritorno? Prova a calcolare: 180 gradi × 15ms + 180 gradi × 15ms = ?",
       "components_list": null,
       "class_hook": null,
@@ -148,7 +148,7 @@
         },
         {
           "mistake": "Il servo va solo in una direzione e non torna indietro",
-          "teacher_response": "Controlla che ci siano ENTRAMBI i cicli for nel codice: uno da 0 a 180 (angle++) e uno da 180 a 0 (angle--). Se manca il secondo ciclo, il servo arriva a 180 e riparte da 0 di scatto!",
+          "teacher_response": "Regola che ci siano ENTRAMBI i cicli for nel codice: uno da 0 a 180 (angle++) e uno da 180 a 0 (angle--). Se manca il secondo ciclo, il servo arriva a 180 e riparte da 0 di scatto!",
           "analogy": null
         }
       ]
@@ -158,7 +158,7 @@
       "icon": "👀",
       "duration_minutes": 11,
       "teacher_message": "Premete Play! Il braccio del servo comincia a muoversi lentamente da sinistra verso destra, poi torna indietro. Il movimento è fluido perché si sposta di un grado alla volta ogni 15ms!",
-      "teacher_tip": "Evidenzia il servo. Chiedi: 'Il movimento è fluido o a scatti? Riesci a vedere il braccio fermarsi ai 180 gradi prima di tornare?' Fai notare che il servo non gira all'infinito — si ferma a 180, poi inverte. Questa precisione lo rende ideale per bracci robotici e comandi precisi.",
+      "teacher_tip": "Evidenzia il servo. Chiedi: 'Il movimento è fluido o a scatti? Riesci a vedere il braccio fermarsi ai 180 gradi prima di tornare?' Fate notare che il servo non gira all'infinito — si ferma a 180, poi inverte. Questa precisione lo rende ideale per bracci robotici e comandi precisi.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
