@@ -38,8 +38,8 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:loadexp:v2-cap7-esp1]"], "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta circuito RC con condensatore 1000µF, pulsante, resistore 1kΩ e multimetro",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate circuito RC con condensatore 1000µF, pulsante, resistore 1kΩ e multimetro",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },

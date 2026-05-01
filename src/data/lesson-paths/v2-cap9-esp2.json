@@ -39,8 +39,8 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:loadexp:v2-cap9-esp2]"], "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta la luce notturna automatica sulla breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate la luce notturna automatica sulla breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },
@@ -84,7 +84,7 @@
     },
     {
       "name": "OSSERVA", "icon": "👀", "duration_minutes": 8,
-      "teacher_message": "Premi Play, poi usa il cursore della luce sul fototransistor: abbassa la luce e guarda il LED accendersi!",
+      "teacher_message": "Premete Play, poi usa il cursore della luce sul fototransistor: abbassa la luce e guardate il LED accendersi!",
       "teacher_tip": "Usa il cursore LDR del fototransistor per simulare il passaggio giorno/notte. Evidenzia il fototransistor, poi il Gate del MOSFET, poi il LED. Spiega il percorso del segnale: luce → fototransistor → Gate → MOSFET → LED.",
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pt1]", "[AZIONE:highlight:mos1]", "[AZIONE:highlight:led1]"],

@@ -110,8 +110,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta due LED rossi in serie con un resistore 330Ω su breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate due LED rossi in serie con un resistore 330Ω su breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {

@@ -115,8 +115,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta un LED rosso e uno verde in serie con resistore 330Ω",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate un LED rosso e uno verde in serie con resistore 330Ω",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {

@@ -112,8 +112,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito MOSFET con Gate flottante (nessun filo al Gate)",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito MOSFET con Gate flottante (nessun filo al Gate)",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -226,7 +226,7 @@
       "icon": "✅",
       "duration_minutes": 5,
       "teacher_message": "Il Gate del MOSFET ha un'impedenza altissima: basta la carica elettrostatica del corpo per attivarlo! Questo è meraviglioso ma anche pericoloso: i MOSFET si possono danneggiare con l'elettricità statica se non protetti.",
-      "teacher_tip": "Collega il concetto al prossimo esperimento: 'Nel prossimo esperimento useremo un potenziometro per controllare con precisione la tensione al Gate. Troveremo esattamente Vth, la soglia di attivazione!'",
+      "teacher_tip": "Collegate il concetto al prossimo esperimento: 'Nel prossimo esperimento useremo un potenziometro per controllare con precisione la tensione al Gate. Troveremo esattamente Vth, la soglia di attivazione!'",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],

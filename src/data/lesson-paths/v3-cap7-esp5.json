@@ -65,7 +65,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play! Osservate il LED che si accende lentamente e poi si spegne lentamente, come un respiro. Il ciclo si ripete all'infinito. Provate a contare quanti secondi dura un ciclo completo.",
+      "teacher_message": "Premete Play! Osservate il LED che si accende lentamente e poi si spegne lentamente, come un respiro. Il ciclo si ripete all'infinito. Provate a contare quanti secondi dura un ciclo completo.",
       "teacher_tip": "Fai misurare il tempo di un ciclo completo (up + down). Con delay(10) e passo 5, ogni fase dura circa 0.5 secondi, quindi un ciclo completo e circa 1 secondo. Chiedi: come lo rallenterei a 3 secondi per fase?",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
       "auto_action": "play_and_highlight",

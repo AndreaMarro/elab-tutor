@@ -94,7 +94,7 @@
   "next_experiment": {
     "id": "v1-cap12-esp3",
     "title": "Sfida: RGB + reed switch",
-    "preview": "Sfida! Collega il reed switch al LED RGB — il magnete accende i colori!"
+    "preview": "Sfida! Collegate il reed switch al LED RGB — il magnete accende i colori!"
   },
   "phases": [
     {
@@ -113,7 +113,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Il circuito è lo stesso dell'esperimento precedente. Questa volta sperimentiamo cambiando il valore del resistore.",
-      "teacher_tip": "Fai montare il circuito base, poi chiedi di provare resistori diversi. Ogni volta: avvicina il magnete e osserva la luminosità.",
+      "teacher_tip": "Fai montare il circuito base, poi chiedi di provare resistori diversi. Ogni volta: avvicinate il magnete e osserva la luminosità.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -121,8 +121,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito reed switch + LED con resistore variabile",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito reed switch + LED con resistore variabile",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -182,7 +182,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Prova resistori diversi: con quale il LED è più luminoso? Con quale è più fioco? Perché?",
+      "teacher_message": "Provate resistori diversi: con quale il LED è più luminoso? Con quale è più fioco? Perché?",
       "teacher_tip": "Guida la scoperta: 'Resistore piccolo = più corrente = più luce. Resistore grande = meno corrente = meno luce.' Come il rubinetto aperto o chiuso a metà.",
       "provocative_question": "Se il resistore è molto piccolo, il LED è fortissimo. Se è molto grande, il LED è debolissimo. Il resistore è come una manopola di luminosità?",
       "components_list": null,
@@ -206,7 +206,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e avvicina il magnete. Osserva: il resistore controlla la luminosità anche con l'interruttore magnetico!",
+      "teacher_message": "Premete Play e avvicinate il magnete. Osservate: il resistore controlla la luminosità anche con l'interruttore magnetico!",
       "teacher_tip": "Evidenzia reed switch, resistore e LED. Spiega i due ruoli: 'Il reed switch decide SE la corrente passa. Il resistore decide QUANTA corrente passa.'",
       "components_list": null,
       "class_hook": null,

@@ -38,8 +38,8 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:loadexp:v2-cap7-esp3]"], "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito con 3 condensatori in parallelo",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito con 3 condensatori in parallelo",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },
@@ -80,7 +80,7 @@
     },
     {
       "name": "OSSERVA", "icon": "👀", "duration_minutes": 8,
-      "teacher_message": "Premi Play, poi carica i condensatori e premi il pulsante. Il LED sfuma MOLTO più lentamente: quasi 3 secondi! Confrontate con 1 solo condensatore.",
+      "teacher_message": "Premete Play, poi carica i condensatori e premi il pulsante. Il LED sfuma MOLTO più lentamente: quasi 3 secondi! Confrontate con 1 solo condensatore.",
       "teacher_tip": "Evidenzia i tre condensatori e il LED. Fai notare che sfuma circa 3 volte più lentamente rispetto all'esperimento precedente. 'La capacità si è triplicata, e Tau si è triplicato!'",
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:c1]", "[AZIONE:highlight:c2]", "[AZIONE:highlight:c3]", "[AZIONE:highlight:led1]"],

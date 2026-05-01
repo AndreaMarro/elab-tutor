@@ -107,8 +107,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito RGB — canale blu",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito RGB — canale blu",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {

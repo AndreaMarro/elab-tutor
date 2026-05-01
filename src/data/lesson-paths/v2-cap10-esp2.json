@@ -100,8 +100,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il motore DC con polarità invertita rispetto all'esperimento 1",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il motore DC con polarità invertita rispetto all'esperimento 1",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -170,7 +170,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play e confronta la rotazione con l'esperimento 1. Stessa batteria, stessi fili, ma motore invertito!",
+      "teacher_message": "Premete Play e confronta la rotazione con l'esperimento 1. Stessa batteria, stessi fili, ma motore invertito!",
       "teacher_tip": "Evidenzia i fili di collegamento al motore e mostra come sono invertiti. Se possibile, apri l'esperimento 1 e l'esperimento 2 in sequenza per far vedere la differenza di rotazione.",
       "components_list": null,
       "class_hook": null,

@@ -79,7 +79,7 @@
   "next_experiment": {
     "id": "v1-cap7-esp6",
     "title": "Crea il tuo colore!",
-    "preview": "Ora che sai come funziona la mescolanza, prova a creare il TUO colore cambiando i resistori!"
+    "preview": "Ora che sai come funziona la mescolanza, provate a creare il TUO colore cambiando i resistori!"
   },
   "phases": [
     {
@@ -106,8 +106,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito RGB completo — R+G+B",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito RGB completo — R+G+B",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -211,7 +211,7 @@
           "analogy": "I pixel del tuo telefono fanno esattamente questo"
         },
         {
-          "mistake": "Collega 3 resistori ma dimentica un filo al canale",
+          "mistake": "Collegate 3 resistori ma dimentica un filo al canale",
           "teacher_response": "Ogni resistore deve essere collegato al suo canale specifico: R1→rosso, R2→verde, R3→blu.",
           "analogy": null
         }
@@ -221,7 +221,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play: R+G+B = BIANCO! Gli schermi dei nostri dispositivi funzionano proprio così.",
+      "teacher_message": "Premete Play: R+G+B = BIANCO! Gli schermi dei nostri dispositivi funzionano proprio così.",
       "teacher_tip": "Momento WOW della lezione. Spiega: ogni pixel del telefono è un mini LED RGB. Milioni di pixel fanno le foto!",
       "components_list": null,
       "class_hook": null,

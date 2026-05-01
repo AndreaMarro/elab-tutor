@@ -114,8 +114,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito RGB + pulsante viola",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito RGB + pulsante viola",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -204,7 +204,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Premi il pulsante: che colore vedete? Perché non è né rosso né blu ma un colore nuovo?",
+      "teacher_message": "Premete il pulsante: che colore vedete? Perché non è né rosso né blu ma un colore nuovo?",
       "teacher_tip": "Se vedono solo rosso o solo blu, uno dei due resistori potrebbe non essere collegato. Controllare entrambi i rami.",
       "provocative_question": "Con un solo pulsante riusciamo a controllare DUE colori contemporaneamente. Come è possibile?",
       "components_list": null,
@@ -233,7 +233,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e poi premi il pulsante: il LED diventa VIOLA! Rosso + Blu = Viola nella luce!",
+      "teacher_message": "Premete Play e poi premi il pulsante: il LED diventa VIOLA! Rosso + Blu = Viola nella luce!",
       "teacher_tip": "Evidenzia il LED RGB e il pulsante. Spiega: 'I colori della luce si mescolano in modo diverso dai colori a tempera!'",
       "components_list": null,
       "class_hook": null,
@@ -243,7 +243,7 @@
         "[AZIONE:highlight:btn1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Premi il pulsante: VIOLA! Rosso + Blu si mescolano. Nella luce i colori si sommano — è la sintesi additiva, diversa dai colori a tempera!",
+      "observation_prompt": "Premete il pulsante: VIOLA! Rosso + Blu si mescolano. Nella luce i colori si sommano — è la sintesi additiva, diversa dai colori a tempera!",
       "analogies": [
         {
           "concept": "sintesi_additiva",

@@ -59,8 +59,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap4-esp3]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta un partitore di tensione con 3 resistori 1kohm in serie",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate un partitore di tensione con 3 resistori 1kohm in serie",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },

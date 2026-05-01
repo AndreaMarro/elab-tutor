@@ -113,8 +113,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito RGB con resistori misti",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito RGB con resistori misti",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -275,7 +275,7 @@
   "assessment_invisible": [
     "Se crea un colore intenzionalmente → padroneggia la relazione resistore/colore",
     "Se spiega ad altri come ha ottenuto il colore → transfer di conoscenza",
-    "Se prova combinazioni estreme → spirito sperimentale"
+    "Se provate combinazioni estreme → spirito sperimentale"
   ],
   "session_save": {
     "concepts_covered": [

@@ -58,8 +58,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap3-esp2]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega il multimetro alla batteria per la misurazione giornaliera",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate il multimetro alla batteria per la misurazione giornaliera",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },

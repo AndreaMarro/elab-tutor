@@ -112,8 +112,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito LED + pulsante",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito LED + pulsante",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -208,7 +208,7 @@
         },
         {
           "mistake": "LED resta sempre acceso o sempre spento",
-          "teacher_response": "Controlla se il pulsante è inserito nel verso giusto — prova a ruotarlo di 90 gradi.",
+          "teacher_response": "Controlla se il pulsante è inserito nel verso giusto — provate a ruotarlo di 90 gradi.",
           "analogy": null
         }
       ]
@@ -217,7 +217,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play, poi premi il pulsante: il LED si accende! Rilascia: si spegne. Circuito aperto e chiuso!",
+      "teacher_message": "Premete Play, poi premi il pulsante: il LED si accende! Rilascia: si spegne. Circuito aperto e chiuso!",
       "teacher_tip": "Evidenzia il pulsante e il LED. Chiedi: 'Vedete? Premendo, il circuito si chiude e la corrente passa.'",
       "components_list": null,
       "class_hook": null,
@@ -227,7 +227,7 @@
         "[AZIONE:highlight:led1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Premi il pulsante: LED acceso! Rilascia: LED spento! Il pulsante apre e chiude il circuito — come un ponte levatoio per la corrente.",
+      "observation_prompt": "Premete il pulsante: LED acceso! Rilascia: LED spento! Il pulsante apre e chiude il circuito — come un ponte levatoio per la corrente.",
       "analogies": [
         {
           "concept": "pulsante",
@@ -262,7 +262,7 @@
   "assessment_invisible": [
     "Se capisce che il LED si spegne rilasciando → ha capito circuito aperto/chiuso",
     "Se chiede 'posso fare che resta acceso senza tenere premuto?' → pronto per interruttore a scorrimento",
-    "Se prova a mettere due pulsanti → curiosità verso combinazioni di controlli"
+    "Se provate a mettere due pulsanti → curiosità verso combinazioni di controlli"
   ],
   "session_save": {
     "concepts_covered": [

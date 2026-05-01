@@ -66,7 +66,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play! Provate a premere il pulsante velocemente tante volte. Con il debounce millis() ogni pressione viene registrata correttamente, senza salti o doppie letture. Il LED fa toggle pulito ad ogni pressione.",
+      "teacher_message": "Premete Play! Provate a premere il pulsante velocemente tante volte. Con il debounce millis() ogni pressione viene registrata correttamente, senza salti o doppie letture. Il LED fa toggle pulito ad ogni pressione.",
       "teacher_tip": "Fai confrontare mentalmente con il debounce a delay: il risultato sembra lo stesso, ma con delay il LED non puo fare nient'altro durante quei 50ms. Con millis() Arduino e libero di controllare sensori, muovere motori, aggiornare display. Nella pratica professionale non si usa mai delay per il debounce.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]", "[AZIONE:highlight:led1]"],
       "auto_action": "play_and_highlight",

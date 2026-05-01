@@ -66,11 +66,11 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play! Il LED rosso si accende. Ora cliccate sul pulsante nel simulatore e tenetelo premuto: il LED si spegne. Rilasciate: torna acceso. E un comportamento momentaneo, non un toggle.",
+      "teacher_message": "Premete Play! Il LED rosso si accende. Ora cliccate sul pulsante nel simulatore e tenetelo premuto: il LED si spegne. Rilasciate: torna acceso. E un comportamento momentaneo, non un toggle.",
       "teacher_tip": "Fai notare la differenza con un interruttore di casa: quello resta nella posizione in cui lo metti. Il pulsante invece torna su da solo quando lo lasci. Chiedi: servirebbe una variabile per farlo restare spento?",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]", "[AZIONE:highlight:btn1]"],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "LED acceso normalmente. Premi il pulsante: si spegne. Rilascia: torna acceso. Il comportamento e immediato perche il loop legge il pulsante migliaia di volte al secondo."
+      "observation_prompt": "LED acceso normalmente. Premete il pulsante: si spegne. Rilascia: torna acceso. Il comportamento e immediato perche il loop legge il pulsante migliaia di volte al secondo."
     },
     {
       "name": "CONCLUDI",

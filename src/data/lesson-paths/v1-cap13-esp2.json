@@ -101,7 +101,7 @@
       "name": "MOSTRA",
       "icon": "🔧",
       "duration_minutes": 10,
-      "teacher_message": "Crea una zona positiva e una zona negativa con l'elettropongo. Inserisci i LED con l'anodo nella zona + e il catodo nella zona −.",
+      "teacher_message": "Crea una zona positiva e una zona negativa con l'elettropongo. Inserite i LED con l'anodo nella zona + e il catodo nella zona −.",
       "teacher_tip": "Mostra prima un esempio semplice: due strisce parallele con 3 LED in mezzo. Poi lascia che i ragazzi inventino le proprie forme. L'unica regola: + e − separati!",
       "components_list": null,
       "class_hook": null,
@@ -110,8 +110,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito artistico con 3 LED (simulato con fili)",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito artistico con 3 LED (simulato con fili)",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -197,7 +197,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 12,
-      "teacher_message": "Premi Play: tutti i LED si accendono! La corrente della batteria si distribuisce tra tutti i LED attraverso la plastilina.",
+      "teacher_message": "Premete Play: tutti i LED si accendono! La corrente della batteria si distribuisce tra tutti i LED attraverso la plastilina.",
       "teacher_tip": "Evidenzia i LED. Fai osservare: 'Ogni LED ha il suo percorso tra zona + e zona −. La corrente trova la strada da sola!' Celebra le creazioni artistiche dei ragazzi.",
       "components_list": null,
       "class_hook": null,

@@ -57,8 +57,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap5-esp2]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega due batterie 9V in antiserie (polo + con polo +)",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate due batterie 9V in antiserie (polo + con polo +)",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },

@@ -65,8 +65,8 @@
       "action_tags": ["[AZIONE:loadexp:v3-cap8-esp5]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il progetto finale: pot + 3 LED + Serial",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il progetto finale: pot + 3 LED + Serial",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "breadboard-half", "id": "bb1" },
@@ -117,7 +117,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 16,
-      "teacher_message": "Premi Play! Gira il potenziometro lentamente: il LED verde si accende nella zona bassa, poi passa al giallo, poi al rosso. Il Serial Monitor mostra il valore e il colore attivo. E il vostro primo sistema di controllo!",
+      "teacher_message": "Premete Play! Girate il potenziometro lentamente: il LED verde si accende nella zona bassa, poi passa al giallo, poi al rosso. Il Serial Monitor mostra il valore e il colore attivo. E il vostro primo sistema di controllo!",
       "teacher_tip": "Evidenzia tutti i componenti. Sfida: 'Trovate il punto esatto in cui il LED cambia colore!' I ragazzi scopriranno le soglie sperimentalmente. Fai collegare il concetto al mondo reale: termostati, indicatori di livello, semafori intelligenti.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pot1]", "[AZIONE:highlight:led1]", "[AZIONE:highlight:led2]", "[AZIONE:highlight:led3]"],
       "auto_action": "play_and_highlight",

@@ -65,7 +65,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play! Il LED si accende gradualmente da spento a piena luminosita. Osservate come la luce cresce in modo fluido. Il ciclo for aumenta il valore da 0 a 255, un passo alla volta.",
+      "teacher_message": "Premete Play! Il LED si accende gradualmente da spento a piena luminosita. Osservate come la luce cresce in modo fluido. Il ciclo for aumenta il valore da 0 a 255, un passo alla volta.",
       "teacher_tip": "Chiedi agli studenti di contare mentalmente i livelli di luminosita che riescono a distinguere a occhio. Probabilmente ne distinguono 10-15, non 256. Questo apre una discussione interessante sulla percezione umana vs la precisione digitale.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
       "auto_action": "play_and_highlight",

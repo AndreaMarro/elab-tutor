@@ -61,8 +61,8 @@
       "action_tags": ["[AZIONE:loadexp:v3-cap8-esp4]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta 2 potenziometri sui pin A3 e A4 di Arduino",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate 2 potenziometri sui pin A3 e A4 di Arduino",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "breadboard-half", "id": "bb1" },
@@ -111,7 +111,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 14,
-      "teacher_message": "Premi Play e apri il Serial Plotter! Vedete due linee colorate. Girate una manopola alla volta: vedrete una linea salire/scendere mentre l'altra resta ferma. Poi giratele entrambe!",
+      "teacher_message": "Premete Play e aprite il Serial Plotter! Vedete due linee colorate. Girate una manopola alla volta: vedrete una linea salire/scendere mentre l'altra resta ferma. Poi giratele entrambe!",
       "teacher_tip": "Evidenzia entrambi i potenziometri. Fai notare: le due linee hanno colori diversi. Sfida: 'Riuscite a fare un disegno con le due manopole? Una montagna con una valle?' Rende il concetto divertente.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pot1]", "[AZIONE:highlight:pot2]"],
       "auto_action": "play_and_highlight",
