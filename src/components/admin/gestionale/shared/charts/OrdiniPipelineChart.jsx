@@ -4,7 +4,7 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { COLORS } from '../../GestionaleStyles';
 
-const PIPELINE_COLORS = ['#94A3B8', '#3B82F6', '#F59E0B', '#8B5CF6', '#059669'];
+const PIPELINE_COLORS = ['var(--elab-hex-94a3b8)', 'var(--elab-hex-3b82f6)', 'var(--elab-hex-f59e0b)', 'var(--elab-hex-8b5cf6)', 'var(--elab-hex-059669)'];
 
 export default function OrdiniPipelineChart({ data = [], isMobile }) {
     if (!data.length) {

@@ -10,6 +10,7 @@ import { sendChat, analyzeImage, checkRateLimit } from '../../services/api';
 import { validateMessage, sanitizeOutput } from '../../utils/contentFilter';
 import { isLessonPrepCommand, getLessonSummary, prepareLesson } from '../../services/lessonPrepService';
 import { collectFullContext } from '../../services/unlimContextCollector';
+import { executeServerIntents } from './intentsDispatcher';
 import logger from '../../utils/logger';
 
 // ── Welcome message ──
@@ -386,6 +387,11 @@ async function executeIntentTags(rawResponse) {
   return executed;
 }
 
+// ── iter 37 Atom B-NEW — server-side intents_parsed dispatcher ──
+// `executeServerIntents` lives in `./intentsDispatcher.js` so it can be
+// unit-tested without rendering the React hook. Whitelist gate + error
+// isolation per intent. See ADR-028 §14 surface-to-browser amend.
+
 // ── Implicit intent detection — fallback when AI doesn't emit [AZIONE:] tags ──
 // Scans user message + AI response for Italian patterns like "accendi", "evidenzia il LED", etc.
 function detectImplicitActions(userMessage, aiResponse) {
@@ -755,17 +761,26 @@ export default function useGalileoChat() {
         _executedActions: [],
       }]);
 
-      // Execute actions asynchronously — explicit tags first, then implicit fallback
+      // Execute actions asynchronously — explicit tags first, then implicit fallback.
+      // iter 37 Atom B-NEW: also dispatch server-parsed `intents_parsed` from
+      // the Edge Function (ADR-028 §14 surface-to-browser pivot). Each entry
+      // is whitelisted + dispatched via __ELAB_API with error isolation.
       const actionResults = executeActionTags(aiResponse);
       const intentResults = await executeIntentTags(aiResponse);
-      const implicitResults = (actionResults.length === 0 && intentResults.length === 0)
+      const serverIntentResults = await executeServerIntents(result.intentsParsed || []);
+      const serverIntentLabels = serverIntentResults
+        .filter(r => r.ok && r.action)
+        .map(r => `intent:${r.action}`);
+      const implicitResults = (actionResults.length === 0 && intentResults.length === 0 && serverIntentLabels.length === 0)
         ? detectImplicitActions(userMessage, aiResponse)
         : [];
-      const allActions = [...actionResults, ...intentResults, ...implicitResults];
+      const allActions = [...actionResults, ...intentResults, ...serverIntentLabels, ...implicitResults];
 
-      if (allActions.length > 0) {
+      if (allActions.length > 0 || serverIntentResults.length > 0) {
         setMessages(prev => prev.map(m =>
-          m.id === msgId ? { ...m, _executedActions: allActions } : m
+          m.id === msgId
+            ? { ...m, _executedActions: allActions, _intentsExecuted: serverIntentResults }
+            : m
         ));
       }
     } else {

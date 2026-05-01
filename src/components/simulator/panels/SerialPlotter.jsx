@@ -8,7 +8,7 @@
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
-const CHANNEL_COLORS = ['#4A7A25', '#3498DB', '#E54B3D', '#E8941C', '#9B59B6', '#1ABC9C'];
+const CHANNEL_COLORS = ['var(--elab-lime)', '#3498DB', 'var(--elab-red)', 'var(--elab-orange)', '#9B59B6', '#1ABC9C'];
 const MAX_POINTS = 200;
 const PLOT_PADDING = { top: 12, right: 10, bottom: 20, left: 40 };
 
@@ -73,7 +73,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
       const data = dataRef.current;
 
       // Clear with dark bg
-      ctx.fillStyle = '#1E1E2E';
+      ctx.fillStyle = '#1e1e2e'; // palette
       ctx.fillRect(0, 0, w, h);
 
       const plotX = PLOT_PADDING.left;
@@ -82,7 +82,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
       const plotH = h - PLOT_PADDING.top - PLOT_PADDING.bottom;
 
       if (data.length < 2) {
-        ctx.fillStyle = '#6B7280';
+        ctx.fillStyle = '#6b7280'; // palette
         ctx.font = '11px "Fira Code", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('In attesa di dati numerici...', w / 2, h / 2);
@@ -102,7 +102,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
       yMax += yRange * 0.1;
 
       // Grid lines
-      ctx.strokeStyle = '#313244';
+      ctx.strokeStyle = '#313244'; // palette
       ctx.lineWidth = 0.5;
       const ySteps = 5;
       for (let i = 0; i <= ySteps; i++) {
@@ -113,7 +113,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
         ctx.stroke();
 
         const yVal = yMax - ((yMax - yMin) * i) / ySteps;
-        ctx.fillStyle = '#6B7280';
+        ctx.fillStyle = '#6b7280'; // palette
         ctx.font = '9px "Fira Code", monospace';
         ctx.textAlign = 'right';
         ctx.fillText(yVal.toFixed(yVal % 1 === 0 ? 0 : 1), plotX - 4, gy + 3);
@@ -143,7 +143,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
       }
 
       // Plot border
-      ctx.strokeStyle = '#45475A';
+      ctx.strokeStyle = '#45475a'; // palette
       ctx.lineWidth = 1;
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
@@ -161,7 +161,7 @@ const SerialPlotter = ({ serialOutput = '', isRunning = false, onClear }) => {
 
           ctx.fillStyle = color;
           ctx.fillRect(legendX, legendY - 7, 8, 8);
-          ctx.fillStyle = '#CDD6F4';
+          ctx.fillStyle = '#cdd6f4'; // palette
           ctx.fillText(label, legendX + 11, legendY);
           legendX += ctx.measureText(label).width + 20;
         }

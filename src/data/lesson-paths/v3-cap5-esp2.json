@@ -14,15 +14,47 @@
   "target_age": "10-14 anni",
   "objective": "Modificare i valori di delay nel programma Blink per sperimentare con tempi diversi. Capire che 1000 millisecondi = 1 secondo e creare ritmi personalizzati.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "🤖" },
-    { "name": "Cavo USB", "quantity": 1, "icon": "🔌" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "🤖"
+    },
+    {
+      "name": "Cavo USB",
+      "quantity": 1,
+      "icon": "🔌"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "LED", "delay", "millisecondi", "secondo", "HIGH", "LOW", "programma", "sketch", "compilare", "caricare", "veloce", "lento", "ritmo", "LED_BUILTIN"],
-    "forbidden": ["frequenza", "hertz", "duty cycle", "PWM", "variabile"],
+    "allowed": [
+      "Arduino",
+      "LED",
+      "delay",
+      "millisecondi",
+      "secondo",
+      "HIGH",
+      "LOW",
+      "programma",
+      "sketch",
+      "compilare",
+      "caricare",
+      "veloce",
+      "lento",
+      "ritmo",
+      "LED_BUILTIN"
+    ],
+    "forbidden": [
+      "frequenza",
+      "hertz",
+      "duty cycle",
+      "PWM",
+      "variabile"
+    ],
     "note": "Consolidamento del Blink: focus sul rapporto numeri nel codice e comportamento visibile"
   },
-  "prerequisites": ["v3-cap5-esp1"],
+  "prerequisites": [
+    "v3-cap5-esp1"
+  ],
   "next_experiment": {
     "id": "v3-cap6-esp1",
     "title": "Circuito AND/OR con pulsanti",
@@ -33,7 +65,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "L'ultima volta abbiamo fatto lampeggiare il LED ogni secondo. Oggi diventiamo registi del tempo: decidiamo noi quanto resta acceso e quanto spento.",
+      "teacher_message": "Ragazzi, l'ultima volta abbiamo fatto lampeggiare il LED ogni secondo. Oggi diventiamo registi del tempo: decidiamo noi quanto resta acceso e quanto spento.",
       "teacher_tip": "Scrivere alla lavagna: 1000ms = 1 secondo. Chiedere alla classe quanto fanno 500ms, 2000ms, 100ms.",
       "class_hook": "Se metto delay(1), il LED lampeggia cosi veloce che sembra sempre acceso. Ci credete?",
       "action_tags": [],
@@ -45,7 +77,9 @@
       "duration_minutes": 10,
       "teacher_message": "Carichiamo il Blink e cambiamo il primo delay da 1000 a 200. Solo quel numero. Poi proviamo a cambiare anche il secondo delay a un valore diverso.",
       "teacher_tip": "Far cambiare UN solo numero alla volta. Questo insegna il metodo scientifico: una variabile per volta.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap5-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap5-esp2]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -64,7 +98,9 @@
       "duration_minutes": 10,
       "teacher_message": "Premiamo Play con i nuovi tempi. Guardate come cambia il comportamento del LED. Poi provate voi: scegliete due numeri e osservate il risultato.",
       "teacher_tip": "Dare 3 minuti di esplorazione libera. I ragazzi che finiscono prima possono provare delay sotto 50ms per vedere l'effetto 'LED sempre acceso'.",
-      "action_tags": ["[AZIONE:play]"],
+      "action_tags": [
+        "[AZIONE:play]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Con quali valori il LED sembra lampeggiare come una freccia dell'auto? Scriveteli sul quaderno."
     },
@@ -75,12 +111,22 @@
       "teacher_message": "Cambiando un numero nel codice, cambia il comportamento. Questo e il bello della programmazione: ogni riga ha un effetto preciso e prevedibile.",
       "teacher_tip": "Far condividere a 2-3 ragazzi i valori che hanno scelto e perche. Valorizzare la creativita nei ritmi.",
       "summary_for_class": "I numeri dentro delay() controllano il tempo in millisecondi. Cambiando quei numeri creiamo ritmi diversi: veloci, lenti, asimmetrici.",
-      "concepts_learned": ["millisecondi e conversione in secondi", "delay asimmetrici acceso/spento", "modificare il codice e osservare il risultato", "metodo scientifico: una variabile alla volta"],
+      "concepts_learned": [
+        "millisecondi e conversione in secondi",
+        "delay asimmetrici acceso/spento",
+        "modificare il codice e osservare il risultato",
+        "metodo scientifico: una variabile alla volta"
+      ],
       "next_preview": "Nel prossimo capitolo collegheremo componenti esterni alla breadboard e scopriremo i circuiti logici AND e OR."
     }
   ],
   "session_save": {
-    "concepts_covered": ["millisecondi", "delay asimmetrico", "modifica codice", "osservazione risultato"],
+    "concepts_covered": [
+      "millisecondi",
+      "delay asimmetrico",
+      "modifica codice",
+      "osservazione risultato"
+    ],
     "next_suggested": "v3-cap6-esp1",
     "resume_message": "L'ultima volta avete modificato i tempi del Blink creando ritmi personalizzati. Oggi passiamo ai circuiti con pulsanti."
   }

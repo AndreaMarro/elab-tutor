@@ -1,165 +1,163 @@
 ---
 id: pin-mode
 type: concept
-title: "pinMode() — Configurare un pin come ingresso o uscita"
+title: "pinMode() — Configurare la Direzione di un Pin"
 locale: it
 volume_ref: 3
 pagina_ref: 47
 created_at: 2026-04-26
 updated_at: 2026-04-26
 updated_by: scribe
-tags: [pinmode, setup, output, input, input-pullup, pin-digitali, arduino, atm328p, digital-write, digital-read]
+tags: [pinmode, setup, output, input, input-pullup, pin-digitali, arduino, digital-write, digital-read, floating, pullup]
 ---
 
 ## Definizione
 
-`pinMode(pin, modalità)` è la funzione Arduino che dice al Nano *come usare* un pin digitale: se deve mandare corrente verso l'esterno (**OUTPUT**), se deve ascoltare un segnale dall'esterno (**INPUT**), oppure se deve ascoltare con una resistenza interna di sicurezza (**INPUT_PULLUP**). Vol. 3 pag. 47 la introduce per la prima volta nel programma Blink: "prima di accendere o spegnere un pin, devi dire al Nano cosa vuoi che quel pin faccia".
+`pinMode(pin, modalità)` è la funzione Arduino che stabilisce la **direzione** di un pin digitale: se deve mandare segnali verso l'esterno (`OUTPUT`) oppure riceverli dall'esterno (`INPUT` o `INPUT_PULLUP`). Vol. 3 pag. 47 la introduce nel blocco `setup()`: *"Prima di tutto diciamo ad Arduino come usare i pin: pinMode(13, OUTPUT) significa che il pin 13 è un'uscita."*
 
 ## Analogia per la classe
 
-Ragazzi, immaginate ogni pin del Nano come un lavoratore in una squadra. Prima di iniziare il turno, il capocantiere (voi, con `pinMode`) deve dire a ciascuno: "oggi fai il muratore — *mandi* mattoni" (OUTPUT) oppure "oggi fai la guardia — *ascolti* cosa arriva" (INPUT). Se non glielo dite, il lavoratore non sa cosa fare e si comporta in modo imprevedibile. `pinMode()` è quella telefonata di inizio turno, e va fatta **sempre** in `setup()`, prima di qualunque altra cosa.
+Ragazzi, immaginate un cantiere edile: prima che i lavori comincino, il capocantiere assegna a ogni operaio il suo ruolo — chi porta i mattoni (**OUTPUT**, porta corrente fuori), chi controlla cosa arriva (**INPUT**, riceve segnale), chi sta di guardia con la mano sulla recinzione in attesa di un segnale (**INPUT_PULLUP**, attende e abbassa quando qualcuno bussa). Senza questa assegnazione iniziale il cantiere è il caos: ognuno fa quello che vuole e i muri non vengono su. `pinMode` nel `setup()` è il capocantiere che mette ordine prima che il programma cominci a girare nel `loop()`.
 
 ## Cosa succede fisicamente
 
-All'interno dell'ATmega328p ogni pin digitale ha un piccolo circuito configurabile. `pinMode` cambia la configurazione di quel circuito:
+Dentro Arduino Nano ogni pin digitale è collegato a un registro hardware dell'ATmega328p. `pinMode` scrive nei registri **DDR** (Data Direction Register) per dire al microcontrollore se il pin deve guidare tensione verso l'esterno o leggere tensione dall'esterno.
 
-| Modalità        | Il pin è …                          | Tensione sul pin quando libero | Usato con               |
-|-----------------|-------------------------------------|---------------------------------|-------------------------|
-| `OUTPUT`        | Un'uscita: spinge corrente fuori     | Definita dal codice (5V o 0V)   | `digitalWrite()`        |
-| `INPUT`         | Un ingresso: misura la tensione      | Fluttua (pericolo floating)     | `digitalRead()` + pull-down esterno |
-| `INPUT_PULLUP`  | Un ingresso con resistenza interna   | Tenuta a 5V (sicura)            | `digitalRead()` + pulsante verso GND |
+**Le tre modalità a confronto:**
 
-### Sintassi Arduino
+| Modalità        | Registro DDR | Cosa fa il pin                              | Uso tipico                      |
+|-----------------|--------------|---------------------------------------------|---------------------------------|
+| `OUTPUT`        | bit = 1      | Guida attivamente 5 V o 0 V                 | LED, cicalino, relè via transistor |
+| `INPUT`         | bit = 0      | Alta impedenza — legge tensione esterna      | Sensore con pull-down esterno   |
+| `INPUT_PULLUP`  | bit = 0 + PU | Alta impedenza + resistenza interna ~47 kΩ a 5 V | Pulsante senza resistenza esterna |
+
+**Corrente massima per pin in OUTPUT:**
+
+| Limite          | Valore | Conseguenza se superato                      |
+|-----------------|--------|----------------------------------------------|
+| Raccomandato    | 20 mA  | Pin sempre freddo, durata anni               |
+| Assoluto        | 40 mA  | Danno permanente al pin e all'ATmega328p     |
+| Totale I/O Nano | 200 mA | Reset spontaneo o danno se superato          |
+
+> **Regola:** usate sempre una resistenza in serie con il LED (minimo 150 Ω, consigliato 470 Ω) quando il pin è in `OUTPUT`.
+
+**Pin in stato flottante (floating) — il nemico silenzioso:**
+
+Un pin configurato come `INPUT` senza niente collegato flotta nell'aria: la sua tensione cambia in modo casuale tra HIGH e LOW, influenzata dal rumore elettrico, dalla vostra mano vicina, dai cavi. Il programma legge valori a caso — è un bug difficilissimo da trovare. La soluzione è `INPUT_PULLUP` (resistenza interna) oppure una resistenza di pull-down esterna da 10 kΩ verso GND.
+
+```
+Pin flottante (INPUT senza nulla):        Pin con INPUT_PULLUP:
+  Pin ─── ? ─── (rumore elettrico)          5V ─── 47kΩ ─── Pin ─── Pulsante ─── GND
+  Risultato: digitalRead() imprevedibile    Riposo: HIGH  /  Pulsante premuto: LOW
+```
+
+**Logica invertita di INPUT_PULLUP:**
+
+Con `INPUT_PULLUP` il pulsante NON premuto legge `HIGH` (la resistenza tiene il pin a 5 V). Quando il pulsante è premuto, collega il pin a GND e il valore scende a `LOW`. È il contrario dell'intuizione — tenetelo a mente!
+
+**Codice completo con LED + pulsante:**
 
 ```cpp
+const int PIN_LED     = 10;
+const int PIN_PULSANTE = 7;
+
 void setup() {
-  pinMode(13, OUTPUT);        // D13 come uscita → può accendere un LED
-  pinMode(7, INPUT);          // D7 come ingresso → legge un segnale esterno
-  pinMode(2, INPUT_PULLUP);   // D2 come ingresso con pull-up → legge un pulsante (logica invertita)
-}
-```
-
-**Regola d'oro:** `pinMode()` va chiamata **una volta sola** in `setup()`, **prima** di usare `digitalWrite()` o `digitalRead()` nel `loop()`. Se dimenticate `pinMode`, il pin usa la configurazione precedente (o quella di default dopo il reset, che è INPUT) e i risultati sono imprevedibili.
-
-### Le tre modalità in dettaglio
-
-#### OUTPUT
-
-Il pin può erogare fino a **20 mA** in modo continuo (massimo assoluto 40 mA). Con `digitalWrite(pin, HIGH)` porta il pin a 5V; con `digitalWrite(pin, LOW)` a 0V.
-
-```cpp
-pinMode(9, OUTPUT);
-digitalWrite(9, HIGH);   // 5V → LED acceso
-```
-
-#### INPUT
-
-Il pin misura la tensione senza mettere resistenza interna. Se non c'è nulla collegato, il pin "fluttua" e raccoglie interferenze elettriche. **Usare sempre con una resistenza di pull-down da 10 kΩ verso GND** se non si usa `INPUT_PULLUP`.
-
-```cpp
-pinMode(4, INPUT);           // serve resistenza esterna da 10 kΩ verso GND
-int v = digitalRead(4);      // HIGH o LOW
-```
-
-#### INPUT_PULLUP
-
-Il pin misura la tensione **e** attiva una resistenza interna da ~20–50 kΩ verso 5V. Il pin libero legge HIGH in modo stabile; premendo un pulsante verso GND legge LOW. **Logica invertita:** premuto = LOW, rilasciato = HIGH.
-
-```cpp
-pinMode(2, INPUT_PULLUP);    // nessuna resistenza esterna necessaria
-int v = digitalRead(2);      // LOW se pulsante premuto, HIGH se rilasciato
-```
-
-### Pin disponibili su Arduino Nano
-
-| Registro | Pin       | Note                                                   |
-|----------|-----------|--------------------------------------------------------|
-| PORTD    | D0 – D7   | D0, D1 condivisi con UART — evitare per INPUT/OUTPUT se si usa `Serial` |
-| PORTB    | D8 – D13  | D13 ha LED integrato già collegato sulla scheda        |
-| PORTC    | A0 – A5   | Usabili come digitali con `pinMode` se non servono per `analogRead()` |
-
-### Esempio completo — LED + pulsante
-
-```cpp
-void setup() {
-  pinMode(13, OUTPUT);       // LED interno come uscita
-  pinMode(2, INPUT_PULLUP);  // pulsante come ingresso con pull-up
+  pinMode(PIN_LED,      OUTPUT);       // D10 → guida il LED
+  pinMode(PIN_PULSANTE, INPUT_PULLUP); // D7  → legge il pulsante (logica invertita)
 }
 
 void loop() {
-  int stato = digitalRead(2);
-  if (stato == LOW) {          // pulsante premuto → LOW con INPUT_PULLUP
-    digitalWrite(13, HIGH);   // accende LED
+  // pulsante premuto = LOW (INPUT_PULLUP), non premuto = HIGH
+  if (digitalRead(PIN_PULSANTE) == LOW) {
+    digitalWrite(PIN_LED, HIGH); // LED acceso mentre il pulsante è premuto
   } else {
-    digitalWrite(13, LOW);    // spegne LED
+    digitalWrite(PIN_LED, LOW);  // LED spento
   }
 }
 ```
 
+**Pin map ATmega328p — dove agisce `pinMode`:**
+
+| Pin Arduino | Registro DDR | Note                                          |
+|-------------|--------------|-----------------------------------------------|
+| D0-D7       | DDRD         | D0/D1 riservati a Serial RX/TX — non usarli   |
+| D8-D13      | DDRB         | D13 = LED_BUILTIN onboard                     |
+| A0-A5       | DDRC         | Usabili come digitali con `pinMode` se necessario |
+
+> `pinMode` va chiamato **una sola volta nel `setup()`**, non nel `loop()` — riscrivere il registro DDR a ogni ciclo non causa errori ma è inutile e rallenta il programma.
+
 ## Esperimenti correlati
 
-- Vol. 3 pag. 47 — Blink: primo sketch con `pinMode(13, OUTPUT)` e LED integrato (`v3-cap5-esp1`)
-- Vol. 3 pag. 56 — LED esterno su breadboard: `pinMode` + `digitalWrite` + resistenza 470 Ω (`v3-cap6-esp1`)
-- Vol. 3 pag. 57 — Cambiare pin: spostare `pinMode` da D13 a D8 nel codice e sulla breadboard (`v3-cap6-esp2`)
-- Vol. 3 pag. 63 — Pulsante: `pinMode(pin, INPUT_PULLUP)` + `digitalRead()` (`v3-cap7-esp1`)
-- Vedi anche: [concepts/digital-write.md](digital-write.md), [concepts/digital-read.md](digital-read.md), [concepts/pin-digitali.md](pin-digitali.md), [concepts/pulsante.md](pulsante.md)
+- **v3-cap5-esp1** — Vol. 3 pag. 47: primo `pinMode(13, OUTPUT)` + `digitalWrite` nel Blink
+- **v3-cap6-esp1** — Vol. 3 pag. 53: LED esterno su D10 con resistenza 470 Ω (`OUTPUT`)
+- **v3-cap7-esp1** — Vol. 3 pag. 63: pulsante su D7 con `INPUT_PULLUP` + logica invertita
+- **v3-cap7-esp2** — Vol. 3 pag. 65: pulsante controlla LED — combinazione `pinMode` + `digitalRead` + `digitalWrite`
+- **v3-cap8-esp1** — Vol. 3 pag. 75: più pin configurati insieme (`OUTPUT` LED + `INPUT_PULLUP` pulsante + Serial)
 
 ## Errori comuni
 
-1. **Dimenticare `pinMode` completamente**: il comportamento del pin dipende dalla configurazione precedente (default INPUT dopo reset). `digitalWrite()` sembra non fare nulla o il LED rimane acceso debolmente. Verificare sempre che `pinMode(pin, OUTPUT)` sia in `setup()` prima di usare `digitalWrite()`.
+1. **Non chiamare `pinMode` prima di `digitalWrite` o `digitalRead`** — di default tutti i pin sono `INPUT`. Se usate `digitalWrite(10, HIGH)` senza `pinMode(10, OUTPUT)`, il pin resta ad alta impedenza e il LED non si accende. Non dà errore di compilazione: è un bug silenzioso che confonde tutti. Soluzione: ogni pin che usate deve avere il suo `pinMode` nel `setup()`.
 
-2. **Chiamare `pinMode` nel `loop()` invece di `setup()`**: funziona, ma spreca cicli CPU rieseguendo la configurazione a ogni iterazione (migliaia di volte al secondo). La configurazione del pin non cambia — metterla in `setup()` è la pratica corretta.
+2. **Sbagliare il numero del pin tra `pinMode` e `digitalWrite`** — scrivere `pinMode(10, OUTPUT)` ma poi `digitalWrite(11, HIGH)` non accende nulla su D10 e lascia D11 in stato indefinito. I numeri devono essere identici. Usate costanti con nome (`const int PIN_LED = 10;`) per evitare questo errore.
 
-3. **Usare `INPUT` senza resistenza esterna — pin floating**: un pin configurato `INPUT` senza nulla collegato fluttua tra HIGH e LOW raccogliendo interferenze. Il LED si accende e spegne da solo senza motivo. Usare `INPUT_PULLUP` oppure aggiungere una resistenza da 10 kΩ verso GND.
+3. **Aspettarsi logica normale con `INPUT_PULLUP`** — con `INPUT_PULLUP` il pulsante NON premuto vale `HIGH` e premuto vale `LOW`. Se scrivete `if (digitalRead(7) == HIGH)` per "pulsante premuto", ottenete il contrario di quello che volete. Condizione corretta: `if (digitalRead(7) == LOW)`.
 
-4. **Dimenticare la logica invertita di `INPUT_PULLUP`**: con `INPUT_PULLUP`, il pulsante **premuto** legge LOW, non HIGH. Scrivere `if (stato == HIGH)` per rilevare la pressione è l'errore più frequente. Il libro a pag. 63 usa esplicitamente `if (stato == LOW)`.
+4. **Chiamare `pinMode` nel `loop()` invece che nel `setup()`** — funziona tecnicamente ma riscrive il registro DDR centinaia di volte al secondo. Il comportamento è corretto ma è uno spreco e può mascherare errori logici. La regola: configurazione dei pin → `setup()`; azioni → `loop()`.
 
-5. **Usare `pinMode(pin, OUTPUT)` su un pin già collegato a 5V o GND esterno**: se collegato a 5V e poi impostato OUTPUT + LOW, si crea un cortocircuito tra la sorgente e la resistenza interna del Nano. Impostare sempre `OUTPUT` prima di collegare il componente, oppure accertarsi che non ci siano conflitti di tensione.
+5. **Usare D0 o D1 come `OUTPUT` con `Serial.begin()` attivo** — i pin D0 (RX) e D1 (TX) sono usati internamente dalla comunicazione USART. Se li configurate come `OUTPUT` e ci attaccate un LED, il LED lampeggia in modo strano (risponde ai dati seriali) e il Monitor Seriale riceve caratteri corrotti. Regola: non toccare mai D0/D1 se avete `Serial.begin()` nel codice.
 
 ## Domande tipiche degli studenti
 
-**"Perché devo dire al Nano se un pin è ingresso o uscita? Non può capirlo da solo?"**
-Lo stesso pin fisico può fisicamente fare entrambe le cose — è il codice che decide come usarlo. Il Nano non sa se avete collegato un LED (che ha bisogno di OUTPUT) o un pulsante (che ha bisogno di INPUT): glielo dite voi con `pinMode`. È come dire a una presa della corrente: "adesso sei una spina che dà corrente" oppure "adesso sei un sensore che misura". L'hardware da solo non sa quale dei due volete.
+**"Se non metto `pinMode`, cosa usa Arduino per default?"**
+Di default tutti i pin sono `INPUT` — alta impedenza, nessuna forza attiva. Per questo senza `pinMode(pin, OUTPUT)` un `digitalWrite` non ha effetto visibile: il pin non guida nessuna tensione. Il valore di default INPUT è pensato per proteggere il microcontrollore da cortocircuiti accidentali al boot.
 
-**"Posso cambiare `pinMode` durante il programma, ad esempio passare da OUTPUT a INPUT?"**
-Sì, è tecnicamente possibile chiamare `pinMode` anche dentro `loop()`. In alcuni progetti avanzati si fa per risparmiare pin (es. comunicazione bidirezionale su un singolo filo). Nei kit ELAB è raro e non necessario: usate pin separati per ingresso e uscita, è più semplice e più leggibile.
+**"Posso chiamare `pinMode` nel `loop()` per cambiare la direzione a runtime?"**
+Sì, è tecnicamente possibile e a volte utile (es. pin che funge da OUTPUT poi da INPUT per misurare). Ma è una tecnica avanzata — per i circuiti base dei kit ELAB mettete sempre tutto nel `setup()`. Cambiare DDR durante il `loop()` richiede attenzione: assicuratevi che il pin non stia pilotando nulla di attivo nel momento del cambio.
 
-**"Se uso `INPUT_PULLUP` su tutti i pin, funziona sempre?"**
-No: `INPUT_PULLUP` ha senso solo per i pin che leggono segnali — non per i pin che devono comandare LED, motori o altri componenti. Su un pin che poi userete con `digitalWrite()`, la modalità corretta è `OUTPUT`. Usare `INPUT_PULLUP` su un pin OUTPUT e poi chiamare `digitalWrite()` sovrascrive la configurazione in modo confuso.
+**"Perché `INPUT_PULLUP` invece di mettere una resistenza esterna?"**
+Entrambe le soluzioni vanno bene. `INPUT_PULLUP` usa la resistenza interna dell'ATmega328p (~47 kΩ) e risparmia un componente sulla breadboard. La resistenza esterna (10 kΩ) vi dà più controllo sul valore e funziona anche su schede che non hanno pull-up interni. Nei kit ELAB si usa `INPUT_PULLUP` per semplicità — meno fili, stesso risultato.
 
-**"C'è una modalità `OUTPUT_PULLDOWN`?"**
-No, non esiste sull'ATmega328p. Esiste solo `INPUT_PULLUP` (resistenza interna verso 5V). Se avete bisogno di un pull-down esterno (resistenza verso GND), dovete aggiungerla voi fisicamente sul circuito. I pin configurati come OUTPUT non hanno resistenze interne: il pin è connesso direttamente all'uscita del driver digitale.
+**"Devo chiamare `pinMode` anche per `analogRead`?"**
+No! I pin A0-A5 in modalità `analogRead` non hanno bisogno di `pinMode` — l'ADC li gestisce in automatico come ingressi analogici. Se volete usare A0-A5 come pin digitali (con `digitalRead`/`digitalWrite`), allora sì, servono `pinMode(A0, INPUT)` o `pinMode(A0, OUTPUT)`.
 
 ## PRINCIPIO ZERO
 
-**Safety — corrente massima per pin:** `pinMode(pin, OUTPUT)` abilita il pin a erogare corrente. Il limite assoluto è 40 mA per pin, 200 mA totali per la scheda. Collegare carichi pesanti (motori, molti LED) direttamente ai pin può bruciare il Nano in modo permanente. Usate sempre resistenze di limitazione con i LED (≥ 220 Ω) e driver appositi (transistor, MOSFET) per carichi > 20 mA. Il libro usa sempre componenti sicuri — seguite sempre gli schemi del volume.
+**Contesto narrativo per la classe:** `pinMode` è la prima riga del programma che i ragazzi scrivono nel `setup()` — il momento in cui dicono ad Arduino *chi fa cosa*. Prima ancora di accendere un LED, stanno definendo ruoli e responsabilità. È una metafora potente per il concetto di configurazione: nessun sistema funziona senza sapere prima cosa deve fare ogni parte.
 
-**Safety — nessun pericolo per i ragazzi:** i pin del kit ELAB lavorano a 5V e correnti di pochi milliampere. Non vi è alcun rischio elettrico per i ragazzi nel toccare fili, pin e componenti durante gli esperimenti. L'unico rischio è danni al Nano stesso se si sbaglia il cablaggio — per questo si segue lo schema del libro.
+**Cosa fare con i ragazzi:**
+- Prima di aprire l'IDE, chiedete: "Se doveste costruire un robot, come gli direste se una mano deve dare oggetti o riceverli?" — poi mostrate che `OUTPUT`/`INPUT` fa esattamente questo
+- Citate Vol. 3 pag. 47: *"Prima di tutto diciamo ad Arduino come usare i pin: pinMode(13, OUTPUT) significa che il pin 13 è un'uscita"* — leggete la riga insieme
+- Mostrate il Blink: fate notare che `pinMode` è nel `setup()` (eseguito una volta) e `digitalWrite` è nel `loop()` (ripetuto all'infinito) — "setup = preparazione, loop = lavoro"
+- Per il pulsante con `INPUT_PULLUP`: fate premere il pulsante e chiedete "Cosa vi aspettate che legga Arduino?" — poi mostrate il Monitor Seriale con i valori HIGH/LOW invertiti. "Sorpresa! Con INPUT_PULLUP la logica è al contrario — premuto = LOW"
+- Collegamento alla vita reale: "Ogni dispositivo elettronico configura i suoi pin all'avvio. Quando accendete lo smartphone, il processore fa centinaia di `pinMode` prima ancora di mostrarvi lo schermo"
 
-**Narrativa per la classe:** `pinMode()` è il primo passo di ogni programma Arduino che interagisce con il mondo fisico. Il libro lo introduce a pag. 47 come la "dichiarazione di intenti" del codice: prima di fare qualsiasi cosa con un pin, dici al Nano cosa vuoi. Questo concetto — *configurare prima, usare poi* — è fondamentale non solo in Arduino ma in tutta la programmazione embedded. Mostrare agli studenti che la stessa riga `pinMode` appare sia nel programma Blink (OUTPUT per il LED) sia nel programma con il pulsante (INPUT_PULLUP per il tasto) aiuta a capire che è una struttura universale, non un dettaglio da memorizzare a caso.
+**Sicurezza:**
+- Un pin in `OUTPUT` può erogare massimo 40 mA prima di danneggiarsi in modo permanente — ricordate sempre la resistenza in serie con il LED
+- Non collegare mai un pin `OUTPUT` direttamente a GND o 5V: è un cortocircuito che brucia il pin in millisecondi
+- I pin A0-A5 in modalità analogica reggono al massimo 5 V in ingresso — tensioni superiori danneggiano l'ADC irreversibilmente
+- D0/D1 sono riservati alla comunicazione seriale: non usarli mai come `OUTPUT` nei circuiti ELAB
 
-**Cosa dire ai ragazzi:**
-- "Prima di tutto diciamo al Nano cosa vogliamo che faccia ogni pin — trovate pagina 47 del libro"
-- "Il libro dice: *prima di accendere o spegnere un pin, devi dire al Nano cosa vuoi che quel pin faccia* — `pinMode` è esattamente questo"
-- "OUTPUT significa 'manda corrente fuori', INPUT significa 'ascolta cosa arriva', INPUT_PULLUP significa 'ascolta con una resistenza di sicurezza dentro'"
-- "Se dimenticate `pinMode`, il LED non si accende — non è un bug nel codice, è che il Nano non sa ancora cosa deve fare quel pin"
-- "Provate: commentate la riga `pinMode` con `//` e ricaricate. Poi ripristinatela. Vedete la differenza?"
+**Cosa NON fare:**
+- Non mostrare `pinMode` nel `loop()` come pratica normale — confonde la distinzione fondamentale setup/loop
+- Non dimenticare di spiegare la logica invertita di `INPUT_PULLUP` prima che i ragazzi si chiedano perché il pulsante fa il contrario
 
-**Progressione didattica consigliata:**
-1. `pinMode(13, OUTPUT)` → sketch Blink, LED integrato D13 (Vol. 3 pag. 47) — nessun componente fisico
-2. LED esterno con `pinMode(pin, OUTPUT)` su D8 — resistenza 470 Ω su breadboard (pag. 56–57)
-3. Cambiare il numero di pin nel `pinMode` e sul circuito → generalizzazione (pag. 57)
-4. `pinMode(pin, INPUT_PULLUP)` + pulsante verso GND (pag. 63) — introduce logica invertita
-5. Combinare OUTPUT + INPUT_PULLUP nello stesso `setup()` → LED comandato da pulsante (pag. 63–65)
-6. Spiegare perché `INPUT` puro senza pull-down dà letture strane → pin floating come esperimento visivo
+**Cosa dire ai ragazzi** (citazione diretta Vol. 3):
+> *"Prima di tutto diciamo ad Arduino come usare i pin: pinMode(13, OUTPUT) significa che il pin 13 è un'uscita."* — Vol. 3 pag. 47
 
-## Link L1 (raw)
+**Progressione didattica consigliata (6 step):**
+1. `pinMode(13, OUTPUT)` + `digitalWrite(13, HIGH/LOW)` — LED di bordo D13, codice Blink stock
+2. LED esterno su D10 con resistenza 470 Ω — stessa logica, pin diverso, circuito fisico
+3. Aggiungere secondo LED su D11 — due `pinMode` nel `setup()`, due `digitalWrite` nel `loop()`
+4. Pulsante su D7 con `INPUT_PULLUP` — primo `INPUT`, Monitor Seriale per vedere HIGH/LOW
+5. Pulsante che controlla LED — combina `digitalRead` + `if/else` + `digitalWrite`
+6. Sfida: pulsante toggle (premuto una volta = accende, premuto di nuovo = spegne) — introduce la variabile di stato `bool statoLed`
 
-Query RAG che attivano questo concetto in `src/data/rag-chunks.json`:
-- `"pinMode OUTPUT INPUT"` — spiegazione modalità pin Arduino
-- `"pinMode setup arduino"` — Vol. 3 pag. 47 bookText Blink
-- `"INPUT_PULLUP pulsante"` — Vol. 3 pag. 63 bookText
-- `"pin digitale configurazione arduino nano"` — tabella PORTD PORTB PORTC
-- `"pin floating pull-up pull-down"` — errori comuni ingresso digitale
-- `"pinMode LED resistenza 470 breadboard"` — Vol. 3 pag. 56 bookText
-- `"setup loop arduino struttura programma"` — Vol. 3 pag. 47 contesto generale
+## Link L1 (raw RAG queries)
+
+Frasi di ricerca per recuperare chunk L1 correlati da `src/data/rag-chunks.json`:
+
+- `"pinMode OUTPUT INPUT INPUT_PULLUP setup pin"`
+- `"pin flottante floating digitalRead imprevedibile"`
+- `"INPUT_PULLUP pulsante resistenza interna logica invertita"`
+- `"DDR registro direzione pin ATmega328p"`
+- `"pinMode OUTPUT LED resistenza 470 corrente massima 40mA"`

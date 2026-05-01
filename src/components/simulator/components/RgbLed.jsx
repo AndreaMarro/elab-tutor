@@ -20,8 +20,8 @@ const RgbLed = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id 
   const mixedColor = `rgb(${mixR}, ${mixG}, ${mixB})`;
 
   /* Body color: mixed when on, milky grey when off */
-  const bodyFill = isOn ? mixedColor : '#DADADA';
-  const bodyStroke = isOn ? `rgb(${Math.round(r * 150)},${Math.round(g * 150)},${Math.round(b * 150)})` : '#A3A3A3';
+  const bodyFill = isOn ? mixedColor : 'var(--elab-hex-dadada)';
+  const bodyStroke = isOn ? `rgb(${Math.round(r * 150)},${Math.round(g * 150)},${Math.round(b * 150)})` : 'var(--elab-hex-a3a3a3)';
 
   return (
     <g transform={`translate(${x}, ${y})`} data-component-id={id} data-type="rgb-led" role="img"
@@ -35,19 +35,19 @@ const RgbLed = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id 
           <circle cx="0" cy="-5" r="30" fill={mixedColor} opacity={0.18} />
           <circle cx="0" cy="-5" r="22" fill={mixedColor} opacity={0.30} />
           <circle cx="0" cy="-5" r="14" fill={mixedColor} opacity={0.48} />
-          <circle cx="0" cy="-5" r="8" fill="#FFFFFF" opacity={0.35} />
+          <circle cx="0" cy="-5" r="8" fill="var(--elab-hex-ffffff)" opacity={0.35} />
         </>
       )}
 
       {/* Wire leads — 4 pins, long thin (Tinkercad style) */}
       <line x1="-6.8" y1="0" x2="-11.25" y2="22.5"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
       <line x1="-2.3" y1="0" x2="-3.75" y2="22.5"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
       <line x1="2.3" y1="0" x2="3.75" y2="22.5"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
       <line x1="6.8" y1="0" x2="11.25" y2="22.5"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* RGB LED dome — compact D-shape */}
       <path
@@ -59,13 +59,13 @@ const RgbLed = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id 
       {/* Subtle highlight (flat overlay) */}
       <path
         d="M -8.2 0 L -8.2 -1.7 A 8.2 9.4 0 0 1 -2.6 -9.8 L -2.6 0 Z"
-        fill="#FFFFFF" opacity={isOn ? 0.24 : 0.12}
+        fill="var(--elab-hex-ffffff)" opacity={isOn ? 0.24 : 0.12}
       />
       {/* Bright center dome highlight when ON */}
       {isOn && (
         <path
           d="M -5.5 -1.2 A 5.5 7.2 0 0 1 5.5 -1.2 L 5.5 -0.5 L -5.5 -0.5 Z"
-          fill="#FFFFFF" opacity={0.4}
+          fill="var(--elab-hex-ffffff)" opacity={0.4}
         />
       )}
       <line x1="-9.5" y1="0" x2="9.5" y2="0" stroke={bodyStroke} strokeWidth="0.55" opacity="0.95" />
@@ -73,7 +73,7 @@ const RgbLed = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id 
       {/* AI tutoring highlight */}
       {highlighted && (
         <rect x="-18" y="-26" width="36" height="60" rx="5"
-          fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="5 3">
+          fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="5 3">
           <animate attributeName="stroke-opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

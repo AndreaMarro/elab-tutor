@@ -13,7 +13,7 @@ import GestionaleForm from '../shared/GestionaleForm';
 import logger from '../../../../utils/logger';
 
 const REPARTI = ['produzione', 'amministrazione', 'commerciale', 'logistica', 'didattica'];
-const REPARTI_COLORS = { produzione: '#D97706', amministrazione: '#2563EB', commerciale: '#7C3AED', logistica: '#059669', didattica: '#EC4899' };
+const REPARTI_COLORS = { produzione: 'var(--elab-hex-d97706)', amministrazione: 'var(--elab-hex-2563eb)', commerciale: 'var(--elab-hex-7c3aed)', logistica: 'var(--elab-hex-059669)', didattica: 'var(--elab-hex-ec4899)' };
 const CONTRATTI = [
   { value: 'indeterminato', label: 'Indeterminato' }, { value: 'determinato', label: 'Determinato' },
   { value: 'stage', label: 'Stage' }, { value: 'collaborazione', label: 'Collaborazione' },
@@ -309,7 +309,7 @@ export default function DipendentiModule({ isMobile }) {
           {/* Card Grid */}
           {filteredDip.length === 0 ? (
             <div style={S.emptyState}>
-              <div style={S.emptyIcon}>&#128100;</div>
+              <div style={S.emptyIcon}>&var(--elab-hex-128100);</div>
               <div style={S.emptyText}>Nessun dipendente trovato</div>
             </div>
           ) : (
@@ -387,7 +387,7 @@ export default function DipendentiModule({ isMobile }) {
           </div>
 
           {/* Table */}
-          <GestionaleTable columns={bpColumns} data={filteredBP} isMobile={isMobile} emptyMessage="Nessuna busta paga trovata" emptyIcon="&#128180;" />
+          <GestionaleTable columns={bpColumns} data={filteredBP} isMobile={isMobile} emptyMessage="Nessuna busta paga trovata" emptyIcon="&var(--elab-hex-128180);" />
         </div>
       )}
 

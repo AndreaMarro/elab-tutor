@@ -333,7 +333,7 @@ const S = {
     margin: 0,
     fontSize: 15,
     lineHeight: 1.75,
-    color: '#B8F0B8',
+    color: 'var(--elab-hex-b8f0b8)',
     fontFamily: 'var(--font-mono, "Fira Code", monospace)',
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-all',
@@ -364,7 +364,7 @@ const S = {
   },
 
   sendBtn: {
-    background: 'var(--color-accent, #4A7A25)',
+    background: 'var(--color-accent, var(--elab-lime))',
     border: 'none',
     borderRadius: 8,
     color: 'var(--color-text-inverse, white)',

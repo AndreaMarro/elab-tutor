@@ -40,7 +40,7 @@
   font-family: var(--font-display, Oswald, sans-serif);
   font-size: 24px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -49,7 +49,7 @@
 .subtitle {
   font-family: var(--font-sans, system-ui, sans-serif);
   font-size: 16px;
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary);
   margin: 0 0 8px;
   line-height: 1.5;
 }
@@ -101,7 +101,7 @@
 .cardCount {
   font-family: var(--font-sans, system-ui, sans-serif);
   font-size: 14px;
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary);
 }
 
 .returnButtons {
@@ -127,7 +127,7 @@
 }
 
 .changeBtn {
-  background: #f5f5f5;
-  color: var(--color-text-secondary, #6B6B80);
-  border-color: var(--color-border, #E5E5EA);
+  background: #f5f5f5; /* palette */
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
 }

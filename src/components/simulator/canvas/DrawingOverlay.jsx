@@ -9,16 +9,37 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { loadDrawingPaths, saveDrawingPaths } from '../../../utils/drawingStorage';
+import {
+  loadPaths as loadPathsRemote,
+  debouncedSave as debouncedSaveRemote,
+  cancelDebouncedSave as cancelDebouncedSaveRemote,
+  subscribePaths as subscribePathsRemote,
+} from '../../../services/drawingSync';
+
+/**
+ * Sprint T iter 28 — Bug 3 Supabase sync (drawingPaths cross-device).
+ *
+ * Sync è OPT-IN via prop `syncEnabled` (Lavagna mode). Quando false (simulator
+ * standalone) il comportamento iter 25 è invariato: solo localStorage.
+ *
+ * HONEST CAVEATS (NOT production-ready):
+ *  - migration `scribble_paths` NOT applied (Andrea decide).
+ *  - last-write-wins on (experiment_id, user_id); NO CRDT merge.
+ *  - realtime channel funziona solo se ALTER PUBLICATION supabase_realtime
+ *    ADD TABLE scribble_paths è stato eseguito (NON automatico in migration).
+ *  - se Supabase non configurato, comportamento === iter 25 invariato.
+ */
+const REMOTE_SAVE_DEBOUNCE_MS = 2000;
 
 const COLORS = [
-  { name: 'Rosso', hex: '#EF4444', label: 'Rosso' },
-  { name: 'Blu', hex: '#2563EB', label: 'Blu' },
-  { name: 'Verde', hex: '#16A34A', label: 'Verde' },
-  { name: 'Nero', hex: '#1F2937', label: 'Nero' },
-  { name: 'Arancio', hex: '#F97316', label: 'Arancio' },
+  { name: 'Rosso', hex: 'var(--elab-hex-ef4444)', label: 'Rosso' },
+  { name: 'Blu', hex: 'var(--elab-hex-2563eb)', label: 'Blu' },
+  { name: 'Verde', hex: 'var(--elab-hex-16a34a)', label: 'Verde' },
+  { name: 'Nero', hex: 'var(--elab-hex-1f2937)', label: 'Nero' },
+  { name: 'Arancio', hex: 'var(--elab-hex-f97316)', label: 'Arancio' },
 ];
 
-const DEFAULT_COLOR = '#EF4444';
+const DEFAULT_COLOR = 'var(--elab-hex-ef4444)';
 
 const PEN_SIZES = [
   { label: 'S', value: 1.5, title: 'Sottile' },
@@ -71,6 +92,8 @@ function pointsToSmoothPath(pointsStr) {
  * - onPathsChange: (paths) => void — callback when paths change
  * - experimentId: string | null — when provided, paths are persisted per-experiment
  *   so drawings do not bleed across lessons (18/04/2026 — Principio Zero fix).
+ * - syncEnabled: boolean — opt-in Supabase cross-device sync (iter 28 Bug 3).
+ *   ON only in Lavagna mode; OFF in simulator standalone (Principio Zero V3 enforce).
  */
 export default function DrawingOverlay({
   drawingEnabled = false,
@@ -80,6 +103,7 @@ export default function DrawingOverlay({
   onClose,
   initialFullscreen = false,
   experimentId = null,
+  syncEnabled = false,
 }) {
   const svgRef = useRef(null);
   const [paths, setPaths] = useState(() => loadDrawingPaths(experimentId));
@@ -97,14 +121,107 @@ export default function DrawingOverlay({
   const redoStackRef = useRef([]);
   const MAX_UNDO = 50;
 
+  // iter 28 Bug 3 — track last local save timestamp so realtime echoes from
+  // our own writes don't overwrite live paint state. (cheap monotonic clock)
+  const lastLocalSaveAtRef = useRef(0);
+
   // When the active experiment changes, load THAT experiment's paths.
   // Without this the overlay would keep showing ink from whichever lesson
   // was open at mount time — exactly the bug reported on the lavagna.
+  //
+  // iter 25 fix (Andrea mandate "contenuto sparisce SOLO con cancellazione esplicita"):
+  // on null → real expId transition, MIGRATE current paths into the new experiment
+  // bucket instead of resetting. Otherwise the user who drew in sandbox loses ink
+  // the moment they pick an experiment. See investigation
+  // docs/audits/2026-04-29-iter-25-LAVAGNA-PERSISTENCE-investigation.md (Bug 1).
+  const prevExpIdRef = useRef(experimentId);
   useEffect(() => {
-    setPaths(loadDrawingPaths(experimentId));
-    // Clear undo/redo stacks on experiment switch — they belong to the previous lesson
-    undoStackRef.current = [];
-    redoStackRef.current = [];
+    const prevId = prevExpIdRef.current;
+    const newId = experimentId;
+    if (prevId === null && newId && paths.length > 0) {
+      // migrate sandbox paths into the new experiment bucket; do NOT clear local state
+      saveDrawingPaths(paths, newId);
+      saveDrawingPaths([], null);
+    } else {
+      setPaths(loadDrawingPaths(newId));
+      undoStackRef.current = [];
+      redoStackRef.current = [];
+    }
+    prevExpIdRef.current = newId;
+    // paths intentionally not in deps — we read it via closure for the migration check.
+    // Re-running this effect on every paths mutation would double-save and erase undo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [experimentId]);
+
+  // iter 28 Bug 3 — Supabase remote load (Lavagna sync mode only).
+  // Hydrate state from remote ONCE on mount / experimentId change. Last-write-wins:
+  // if remote has more recent paths, replace local. If remote returns null (no row,
+  // not configured, error), we keep the localStorage fallback we already loaded.
+  // Principio Zero V3: gated by syncEnabled — simulator standalone mai sync.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    let cancelled = false;
+    loadPathsRemote(experimentId).then((remote) => {
+      if (cancelled || !remote) return;
+      if (Array.isArray(remote.paths)) {
+        // Iter 34 P0 fix Andrea bug "Lavagna persistence: premi Esci scritti
+        // spariscono" — root cause: empty remote array overwrites local cache
+        // on hydration. Last-write-wins should NOT trigger when remote is empty
+        // and local has paths (user just drew before navigation).
+        // Use timestamp comparison: only replace if remote.updatedAt > local
+        // OR if local cache is empty. Otherwise local takes precedence.
+        const localPaths = loadDrawingPaths(experimentId);
+        const remoteIsEmpty = remote.paths.length === 0;
+        const localHasPaths = Array.isArray(localPaths) && localPaths.length > 0;
+        const remoteTs = remote.updatedAt ? Date.parse(remote.updatedAt) : 0;
+        const localTs = lastLocalSaveAtRef.current || 0;
+        const remoteIsNewer = remoteTs > localTs;
+
+        // Skip remote overwrite when remote=empty + local has paths + remote
+        // not newer (prevent accidental wipe by stale empty remote row)
+        if (remoteIsEmpty && localHasPaths && !remoteIsNewer) {
+          return;
+        }
+        setPaths(remote.paths);
+        // mirror to localStorage so cross-device load == local cache next visit
+        saveDrawingPaths(remote.paths, experimentId);
+      }
+    }).catch(() => { /* swallow */ });
+    return () => { cancelled = true; };
+  }, [syncEnabled, experimentId]);
+
+  // iter 28 Bug 3 — debounced remote save on paths change.
+  // We DO NOT call savePaths inline in handlePointerUp/Undo/Redo/Clear to avoid
+  // hammering Supabase on every stroke. Debounce 2s after last change.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    debouncedSaveRemote(experimentId, paths, REMOTE_SAVE_DEBOUNCE_MS);
+    return undefined;
+  }, [syncEnabled, experimentId, paths]);
+
+  // iter 28 Bug 3 — realtime subscription so other devices' updates appear here.
+  // Only re-renders when remote `updated_at` is newer than our last local save.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    const unsubscribe = subscribePathsRemote(experimentId, ({ paths: remotePaths, updatedAt }) => {
+      try {
+        const remoteTs = updatedAt ? Date.parse(updatedAt) : 0;
+        if (!remoteTs || remoteTs <= lastLocalSaveAtRef.current) return;
+        if (!Array.isArray(remotePaths)) return;
+        setPaths(remotePaths);
+        saveDrawingPaths(remotePaths, experimentId);
+      } catch { /* swallow */ }
+    });
+    return () => {
+      try { unsubscribe?.(); } catch { /* ignore */ }
+    };
+  }, [syncEnabled, experimentId]);
+
+  // iter 28 Bug 3 — flush any pending debounced remote save on unmount.
+  useEffect(() => {
+    return () => {
+      try { cancelDebouncedSaveRemote(experimentId); } catch { /* ignore */ }
+    };
   }, [experimentId]);
 
   // Current stroke width: eraser is always large, pen uses selected size
@@ -152,6 +269,7 @@ export default function DrawingOverlay({
     const updatedPaths = [...paths, newPath];
     setPaths(updatedPaths);
     saveDrawingPaths(updatedPaths, experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence: track local write timestamp for remote-vs-local race condition
     setCurrentPath(null);
     onPathsChange?.(updatedPaths);
   }, [isDrawing, currentPath, paths, onPathsChange, experimentId]);
@@ -162,6 +280,7 @@ export default function DrawingOverlay({
     redoStackRef.current.push(paths);
     setPaths(prev);
     saveDrawingPaths(prev, experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence
     onPathsChange?.(prev);
   }, [paths, onPathsChange, experimentId]);
 
@@ -171,6 +290,7 @@ export default function DrawingOverlay({
     undoStackRef.current.push(paths);
     setPaths(next);
     saveDrawingPaths(next, experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence
     onPathsChange?.(next);
   }, [paths, onPathsChange, experimentId]);
 
@@ -181,6 +301,7 @@ export default function DrawingOverlay({
     }
     setPaths([]);
     saveDrawingPaths([], experimentId);
+    lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence
     setCurrentPath(null);
     onPathsChange?.([]);
   }, [paths, onPathsChange, experimentId]);
@@ -199,6 +320,7 @@ export default function DrawingOverlay({
       const updatedPaths = [...paths, newPath];
       setPaths(updatedPaths);
       saveDrawingPaths(updatedPaths, experimentId);
+      lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence: handleClose flush mid-stroke
       setIsDrawing(false);
       setCurrentPath(null);
       onPathsChange?.(updatedPaths);
@@ -354,7 +476,7 @@ export default function DrawingOverlay({
                 width: 28,
                 height: 28,
                 borderRadius: 6,
-                border: penSize === ps.value && !isEraser ? '1px solid #6366F1' : '1px solid transparent',
+                border: penSize === ps.value && !isEraser ? '1px solid var(--elab-hex-6366f1)' : '1px solid transparent',
                 background: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
@@ -368,7 +490,7 @@ export default function DrawingOverlay({
                 width: ps.value * 2 + 4,
                 height: ps.value * 2 + 4,
                 borderRadius: '50%',
-                background: penSize === ps.value && !isEraser ? '#6366F1' : '#94A3B8',
+                background: penSize === ps.value && !isEraser ? 'var(--elab-hex-6366f1)' : 'var(--elab-hex-94a3b8)',
               }} />
             </button>
           ))}
@@ -376,22 +498,22 @@ export default function DrawingOverlay({
           <div style={{ width: 1, height: 20, background: 'rgba(71,85,105,0.5)', margin: '0 2px', flexShrink: 0 }} />
 
           {/* Eraser */}
-          <ToolBtn onClick={() => setIsEraser(prev => !prev)} active={isEraser} activeColor="#FCA5A5" title="Gomma" aria-label="Gomma">
+          <ToolBtn onClick={() => setIsEraser(prev => !prev)} active={isEraser} activeColor="var(--elab-hex-fca5a5)" title="Gomma" aria-label="Gomma">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 13h10M5 9l6-6 2 2-6 6H5V9z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </ToolBtn>
 
           {/* Undo */}
-          <ToolBtn onClick={handleUndo} active={false} activeColor="#94A3B8" title="Annulla (Ctrl+Z)" aria-label="Annulla">
+          <ToolBtn onClick={handleUndo} active={false} activeColor="var(--elab-hex-94a3b8)" title="Annulla (Ctrl+Z)" aria-label="Annulla">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 7l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 10h9a4 4 0 000-8H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </ToolBtn>
 
           {/* Redo */}
-          <ToolBtn onClick={handleRedo} active={false} activeColor="#94A3B8" title="Ripristina (Ctrl+Y)" aria-label="Ripristina">
+          <ToolBtn onClick={handleRedo} active={false} activeColor="var(--elab-hex-94a3b8)" title="Ripristina (Ctrl+Y)" aria-label="Ripristina">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M12 7l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M15 10H6a4 4 0 010-8h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </ToolBtn>
 
           {/* Clear */}
-          <ToolBtn onClick={handleClearAll} active={false} activeColor="#94A3B8" title="Cancella tutto" aria-label="Cancella">
+          <ToolBtn onClick={handleClearAll} active={false} activeColor="var(--elab-hex-94a3b8)" title="Cancella tutto" aria-label="Cancella">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 5h10M6 5V3h4v2M5 5l1 9h4l1-9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </ToolBtn>
 
@@ -407,7 +529,7 @@ export default function DrawingOverlay({
               borderRadius: 8,
               border: '1px solid rgba(239,68,68,0.5)',
               background: 'rgba(239,68,68,0.15)',
-              color: '#FCA5A5',
+              color: 'var(--elab-hex-fca5a5)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -441,7 +563,7 @@ export default function DrawingOverlay({
             borderRadius: 10,
             border: '1px solid rgba(71, 85, 105, 0.5)',
             background: 'rgba(15, 23, 42, 0.95)',
-            color: '#94A3B8',
+            color: 'var(--elab-hex-94a3b8)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -472,7 +594,7 @@ function ToolBtn({ children, onClick, active, activeColor, title, style = {}, ..
         borderRadius: 8,
         border: `1px solid ${active ? activeColor : 'rgba(100,116,139,0.4)'}`,
         background: active ? `${activeColor}25` : 'rgba(71,85,105,0.3)',
-        color: active ? activeColor : '#94A3B8',
+        color: active ? activeColor : 'var(--elab-hex-94a3b8)',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',

@@ -5,12 +5,12 @@
 .hint {
   background-color: rgba(74, 122, 37, 0.06);
   border: 1px solid rgba(74, 122, 37, 0.2);
-  border-left: 4px solid #4A7A25;
+  border-left: 4px solid var(--elab-lime);
   border-radius: 0 6px 6px 0;
   padding: 12px 16px;
   font-family: 'Open Sans', system-ui, sans-serif;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
 }
 
 .header {
@@ -25,9 +25,9 @@
 
 .label {
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #3a6020;
+  color: #3a6020; /* palette */
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -42,13 +42,13 @@
   padding: 1px 6px;
   border-radius: 3px;
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
-  color: var(--color-primary, #1E4D8C);
+  font-size: 13px;
+  color: var(--color-primary);
 }
 
 .count {
   margin-left: auto;
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
 }
 
@@ -72,7 +72,7 @@
 
 .opLabel {
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -84,8 +84,8 @@
   padding: 1px 6px;
   border-radius: 3px;
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
-  color: var(--color-primary, #1E4D8C);
+  font-size: 13px;
+  color: var(--color-primary);
 }
 
 .opDetail {
@@ -94,13 +94,13 @@
 }
 
 .op_add .opLabel {
-  color: #3a6020;
+  color: #3a6020; /* palette */
 }
 
 .op_remove .opLabel {
-  color: #c93f30;
+  color: #c93f30; /* palette */
 }
 
 .op_modify .opLabel {
-  color: #c07010;
+  color: #c07010; /* palette */
 }

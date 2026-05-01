@@ -60,7 +60,7 @@
   right: calc(100% + 10px);
   top: 50%;
   transform: translateY(-50%);
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary);
   color: #fff;
   font-family: 'Oswald', sans-serif;
   font-size: 14px;
@@ -92,7 +92,7 @@
 
 /* ── Speaking animation ── */
 .speaking {
-  border-color: var(--color-accent, #4A7A25);
+  border-color: var(--color-accent);
   animation: mascotPulse 1.5s ease-in-out infinite;
 }
 
@@ -141,7 +141,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   animation: dotBounce 1.2s ease-in-out infinite;
 }
 

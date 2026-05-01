@@ -1,0 +1,108 @@
+/* ModalitaSwitch — 4 modes UI ADR-025 iter 26
+   Palette ELAB CLAUDE.md §Design rule 16: Navy var(--elab-navy) primary, Lime var(--elab-lime) accent
+   Touch target ≥44px (rule 9), font ≥13px (rule 8) */
+
+.modalitaSwitch {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #f5f7fa; /* palette */
+  border-radius: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.modeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: #ffffff; /* palette */
+  color: var(--elab-navy);
+  font-family: var(--font-sans, 'Open Sans', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 80ms ease, box-shadow 120ms ease;
+}
+
+.modeBtn:hover {
+  background: #e8f0fa; /* palette */
+  border-color: rgba(30, 77, 140, 0.3);
+}
+
+.modeBtn:focus-visible {
+  outline: 3px solid var(--elab-orange);
+  outline-offset: 2px;
+}
+
+.modeBtn:active {
+  transform: scale(0.97);
+}
+
+.modeBtnActive {
+  background: var(--elab-navy);
+  color: #ffffff; /* palette */
+  border-color: #153d6e; /* palette */
+  box-shadow: 0 2px 8px rgba(30, 77, 140, 0.25);
+}
+
+.modeBtnActive:hover {
+  background: #19467f; /* palette */
+  border-color: #102e54; /* palette */
+}
+
+.modeIcon {
+  /* iter 35 P0 — Andrea: "icona Passo Passo NON allargabile + non leggibile".
+     Aumentiamo da 18px a 24px (icona base) + scale 1.15 hover/active per
+     leggibilità LIM e touch target visivo. */
+  font-size: 24px;
+  line-height: 1;
+  transition: transform 120ms ease;
+  display: inline-block;
+}
+
+.modeBtn:hover .modeIcon {
+  transform: scale(1.15);
+}
+
+.modeBtnActive .modeIcon {
+  transform: scale(1.2);
+}
+
+.modeLabel {
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.defaultStar {
+  /* iter 36 Atom A4 fix — default-star più visibile (era 11px opacity 0.85,
+     poco riconoscibile su LIM 1080p a 5m). Lift size + opacity + Lime drop-shadow
+     per indicare default canonical Percorso. */
+  font-size: 14px;
+  margin-left: 4px;
+  opacity: 1;
+  filter: drop-shadow(0 0 2px rgba(74, 122, 37, 0.45));
+}
+
+/* iter 36 Atom A4 — bottone default (Percorso) con bordo Lime accent quando inattivo
+   per indicare visivamente "questa è la modalità predefinita consigliata". */
+.modeBtnDefault:not(.modeBtnActive) {
+  border-color: rgba(74, 122, 37, 0.45);
+  box-shadow: 0 0 0 1px rgba(74, 122, 37, 0.15);
+}
+
+.modeBtnDefault:not(.modeBtnActive):hover {
+  border-color: rgba(74, 122, 37, 0.7);
+  background: #f0f7e8; /* palette */
+}
+
+/* Mobile / portrait LIM: stack buttons vertical compact */
+@media (max-width: 640px) {
+  .modeLabel { font-size: 13px; }
+  .modeBtn { padding: 8px 10px; }
+}

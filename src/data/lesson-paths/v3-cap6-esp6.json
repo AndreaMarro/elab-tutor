@@ -12,7 +12,7 @@
   "difficulty": 2,
   "duration_minutes": 50,
   "target_age": "10-14 anni",
-  "objective": "Imparare a leggere un pulsante con Arduino usando il pin di INPUT_PULLUP! Ogni volta che premi il pulsante, i due LED si scambiano: se il verde era acceso si spegne e si accende il rosso, e viceversa. Il codice usa variabili di stato e il debounce per evitare i rimbalzi meccanici del pulsante.",
+  "objective": "Imparare a leggere un pulsante con Arduino usando il pin di INPUT_PULLUP! Ogni volta che premete il pulsante, i due LED si scambiano: se il verde era acceso si spegne e si accende il rosso, e viceversa. Il codice usa variabili di stato e il debounce per evitare i rimbalzi meccanici del pulsante.",
   "components_needed": [
     {
       "name": "Arduino Nano R4 (breakout wing)",
@@ -92,8 +92,8 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 7,
-      "teacher_message": "Finora Arduino ha solo comandato i LED (OUTPUT). Oggi impariamo a far ASCOLTARE Arduino: un pulsante che ogni volta che viene premuto alterna due LED. È il primo esperimento con i pin di INPUT!",
-      "teacher_tip": "Parti dall'esperienza: 'Un interruttore della luce, quando lo premi, non resta ON finché lo tieni premuto — cambia stato! Questo si chiama toggle.' Spiega che il toggle è ovunque: il tasto Caps Lock del computer è un toggle!",
+      "teacher_message": "Ragazzi, finora Arduino ha solo comandato i LED (OUTPUT). Oggi impariamo a far ASCOLTARE Arduino: un pulsante che ogni volta che viene premuto alterna due LED. È il primo esperimento con i pin di INPUT!",
+      "teacher_tip": "Parti dall'esperienza: 'Un interruttore della luce, quando lo premete, non resta ON finché lo tieni premuto — cambia stato! Questo si chiama toggle.' Spiega che il toggle è ovunque: il tasto Caps Lock del computer è un toggle!",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 1 pulsante, 2 LED (verde e rosso), 2 resistori 470Ω, fili di collegamento.",
       "class_hook": "Conoscete il tasto Caps Lock del computer? Quando lo premete una volta, le lettere diventano maiuscole. Quando lo ripremete, tornano minuscole. Non serve tenerlo premuto! Oggi costruiamo lo stesso meccanismo con i LED.",
       "action_tags": [],
@@ -104,7 +104,7 @@
       "icon": "🔧",
       "duration_minutes": 13,
       "teacher_message": "Il circuito ha tre parti: il pulsante su D6 (INPUT_PULLUP), il LED verde su D10 e il LED rosso su D9. Con INPUT_PULLUP il pulsante legge 1 quando è rilasciato e 0 quando è premuto — il contrario di quello che ci si aspetta! Il codice viene caricato automaticamente dal simulatore.",
-      "teacher_tip": "Spiega l'INPUT_PULLUP con una analogia: 'Immagina un muretto tenuto su da un elastico — di solito sta su (HIGH). Quando premi, l'abbatti (LOW). L'elastico è la resistenza interna di Arduino.' Poi spiega il debounce: i pulsanti meccanici 'rimbalzano' per qualche millisecondo, come una moneta che cade sul tavolo e rimbalza un po' prima di fermarsi.",
+      "teacher_tip": "Spiega l'INPUT_PULLUP con una analogia: 'Immagina un muretto tenuto su da un elastico — di solito sta su (HIGH). Quando premete, l'abbatti (LOW). L'elastico è la resistenza interna di Arduino.' Poi spiega il debounce: i pulsanti meccanici 'rimbalzano' per qualche millisecondo, come una moneta che cade sul tavolo e rimbalza un po' prima di fermarsi.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -112,8 +112,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito con pulsante toggle e 2 LED con Arduino Nano R4",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito con pulsante toggle e 2 LED con Arduino Nano R4",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -210,7 +210,7 @@
       "duration_minutes": 10,
       "teacher_message": "All'avvio il LED verde è acceso e il rosso è spento. Il codice usa una variabile chiamata 'statoVerde' per ricordare quale LED è acceso. Perché è necessaria una variabile? Arduino non sa già cosa è acceso?",
       "teacher_tip": "Spiega che il loop() riparte da zero ogni ciclo — non ricorda cosa è successo al ciclo precedente! La variabile 'statoVerde' è come un foglio su cui Arduino appunta ogni volta lo stato attuale. Chiedi: 'Cosa succede se tolgo la variabile? Arduino sa ancora quale LED era acceso?'",
-      "provocative_question": "Se il programma non avesse la variabile 'statoVerde', cosa succederebbe quando premi il pulsante? Il toggle funzionerebbe ancora?",
+      "provocative_question": "Se il programma non avesse la variabile 'statoVerde', cosa succederebbe quando premete il pulsante? Il toggle funzionerebbe ancora?",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
@@ -223,7 +223,7 @@
         },
         {
           "mistake": "Il pulsante non fa nulla quando viene premuto",
-          "teacher_response": "Controlla il collegamento: un lato del pulsante va al pin D6 (INPUT_PULLUP), l'altro lato va a GND. Con INPUT_PULLUP non serve un resistore esterno — Arduino ne ha uno interno!",
+          "teacher_response": "Regola il collegamento: un lato del pulsante va al pin D6 (INPUT_PULLUP), l'altro lato va a GND. Con INPUT_PULLUP non serve un resistore esterno — Arduino ne ha uno interno!",
           "analogy": null
         }
       ]
@@ -232,8 +232,8 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 13,
-      "teacher_message": "Premi Play! Il LED verde si accende. Ora clicca sul pulsante nel simulatore: il verde si spegne e il rosso si accende. Premi ancora: si scambiano di nuovo!",
-      "teacher_tip": "Fai notare che è una vera ALTERNANZA di stato: ogni pressione cambia. Non è come tenere premuto un pulsante normale. Questo meccanismo — il toggle — è ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa.",
+      "teacher_message": "Premete Play! Il LED verde si accende. Ora cliccate sul pulsante nel simulatore: il verde si spegne e il rosso si accende. Premete ancora: si scambiano di nuovo!",
+      "teacher_tip": "Fate notare che è una vera ALTERNANZA di stato: ogni pressione cambia. Non è come tenere premuto un pulsante normale. Questo meccanismo — il toggle — è ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -243,7 +243,7 @@
         "[AZIONE:highlight:led2]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Verde acceso, rosso spento. Premi il pulsante: si scambiano! Premi ancora: si scambiano di nuovo. La variabile 'statoVerde' ricorda quale LED è acceso tra una pressione e l'altra.",
+      "observation_prompt": "Verde acceso, rosso spento. Premete il pulsante: si scambiano! Premete ancora: si scambiano di nuovo. La variabile 'statoVerde' ricorda quale LED è acceso tra una pressione e l'altra.",
       "analogies": [
         {
           "concept": "toggle_switch",
@@ -262,7 +262,7 @@
       "icon": "✅",
       "duration_minutes": 7,
       "teacher_message": "Bravi! Avete imparato i pin di INPUT_PULLUP, il toggle e il debounce. Questi tre concetti sono fondamentali per costruire qualsiasi progetto interattivo con Arduino!",
-      "teacher_tip": "Recap finale: 'INPUT_PULLUP = il pin è HIGH di default, diventa LOW quando premi. digitalRead() = leggiamo il valore del pin. Variabile di stato = ricordiamo cosa era acceso. Debounce = aspettiamo che il pulsante smetta di rimbalzare.' Con questi strumenti potete fare qualsiasi tipo di interfaccia!",
+      "teacher_tip": "Recap finale: 'INPUT_PULLUP = il pin è HIGH di default, diventa LOW quando premete. digitalRead() = leggiamo il valore del pin. Variabile di stato = ricordiamo cosa era acceso. Debounce = aspettiamo che il pulsante smetta di rimbalzare.' Con questi strumenti potete fare qualsiasi tipo di interfaccia!",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],

@@ -80,7 +80,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi facciamo girare un motore! Il motore DC trasforma l'energia elettrica in movimento. È lo stesso principio dei ventilatori, dei droni e dei frullatori!",
+      "teacher_message": "Ragazzi, oggi facciamo girare un motore! Il motore DC trasforma l'energia elettrica in movimento. È lo stesso principio dei ventilatori, dei droni e dei frullatori!",
       "teacher_tip": "Porta in classe (o mostra) un oggetto con motore DC: un piccolo ventilatore, un drone giocattolo. Chiedi: 'Quante cose in casa hanno un motore?' Poi spiega: 'Oggi useremo la batteria per far girare il nostro primo motore.'",
       "components_list": "Ti servono: 1 breadboard mezza, 1 batteria 9V, 1 motore DC, fili rosso e nero.",
       "class_hook": "Alzate la mano chi ha in casa un ventilatore, un frullatore o un drone! Tutti hanno un motore dentro. Oggi faremo girare il nostro!",
@@ -100,8 +100,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il motore DC con collegamento diretto alla batteria",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il motore DC con collegamento diretto alla batteria",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -170,7 +170,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play e guarda l'asse del motore che gira! L'energia elettrica della batteria diventa movimento rotatorio.",
+      "teacher_message": "Premete Play e guardate l'asse del motore che gira! L'energia elettrica della batteria diventa movimento rotatorio.",
       "teacher_tip": "Evidenzia il motore durante la simulazione. Fai notare la direzione di rotazione: 'Vedete in che direzione gira? Segnatevela, perché nel prossimo esperimento la cambieremo!'",
       "components_list": null,
       "class_hook": null,

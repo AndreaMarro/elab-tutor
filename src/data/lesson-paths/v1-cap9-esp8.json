@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida! Due potenziometri controllano rosso e blu indipendentemente. Combinazione degli esperimenti 5 e 6!",
+      "teacher_message": "Ragazzi, sfida! Due potenziometri controllano rosso e blu indipendentemente. Combinazione degli esperimenti 5 e 6!",
       "teacher_tip": "Ogni potenziometro ha il suo resistore e il suo canale: pot1→r1→rosso, pot2→r2→blu. La sfida è aggiungere un terzo pot per il verde.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 2 potenziometri 10K, 2 resistori 470Ω, 1 LED RGB, 11 fili.",
       "class_hook": "Avete costruito il miscelatore e la lampada. Ora combiniamoli: due manopole per rosso e blu!",
@@ -110,8 +110,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito sfida 2 pot RGB",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito sfida 2 pot RGB",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -211,7 +211,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Gira le due manopole: una controlla il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
+      "teacher_message": "Girate le due manopole: una regola il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
       "teacher_tip": "Il canale verde resta spento: la sfida è progettare dove aggiungere il terzo potenziometro. Chiedi di disegnare prima su carta.",
       "provocative_question": "Come fareste ad aggiungere il canale verde a questo circuito? Di cosa avete bisogno?",
       "components_list": null,
@@ -221,7 +221,7 @@
       "common_mistakes": [
         {
           "mistake": "Un canale non risponde",
-          "teacher_response": "Controlla il collegamento specifico: il segnale del potenziometro deve arrivare al resistore, e dal resistore al canale corrispondente.",
+          "teacher_response": "Regola il collegamento specifico: il segnale del potenziometro deve arrivare al resistore, e dal resistore al canale corrispondente.",
           "analogy": null
         },
         {
@@ -235,7 +235,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e sperimenta: rosso e blu insieme fanno viola! Ma il verde è spento — la sfida è aggiungerlo!",
+      "teacher_message": "Premete Play e sperimenta: rosso e blu insieme fanno viola! Ma il verde è spento — la sfida è aggiungerlo!",
       "teacher_tip": "Evidenzia i due potenziometri. Spiega che combinare circuiti che funzionano è più facile che costruire tutto da zero.",
       "components_list": null,
       "class_hook": null,

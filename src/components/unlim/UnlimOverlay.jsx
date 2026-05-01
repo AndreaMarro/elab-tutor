@@ -251,9 +251,9 @@ function OverlayMessage({ message, onDismiss, containerRef }) {
 
   // WCAG AA: tutti i bg con testo bianco devono avere contrasto >= 4.5:1
   const typeColors = {
-    info: { bg: 'rgba(30, 77, 140, 0.95)', border: '#1E4D8C' },       // 7.1:1 OK
+    info: { bg: 'rgba(30, 77, 140, 0.95)', border: 'var(--elab-navy)' },       // 7.1:1 OK
     success: { bg: 'rgba(15, 118, 54, 0.95)', border: '#0F7636' },     // 5.2:1 OK (era 3.76:1)
-    hint: { bg: 'rgba(74, 122, 37, 0.95)', border: '#4A7A25' },        // 5.1:1 OK
+    hint: { bg: 'rgba(74, 122, 37, 0.95)', border: 'var(--elab-lime)' },        // 5.1:1 OK
     question: { bg: 'rgba(180, 68, 8, 0.95)', border: '#B44408' },     // 4.8:1 OK (era 2.98:1)
   };
 
@@ -294,7 +294,7 @@ function OverlayMessage({ message, onDismiss, containerRef }) {
         padding: '16px 22px',
         borderRadius: '14px',
         background: colors.bg,
-        color: '#FFFFFF',
+        color: 'var(--elab-hex-ffffff)',
         fontSize: '20px',
         fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
         lineHeight: 1.5,

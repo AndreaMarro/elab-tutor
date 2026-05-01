@@ -266,8 +266,8 @@
 }
 
 .v4-bubble pre {
-    background: var(--color-code-bg, #1E293B);
-    color: var(--color-code-text, #E2E8F0);
+    background: var(--color-code-bg);
+    color: var(--color-code-text);
     padding: var(--space-3);
     border-radius: var(--radius-md);
     overflow-x: auto;
@@ -1174,8 +1174,8 @@
     flex: 1;
     min-height: 180px;
     padding: var(--space-4);
-    background: var(--color-code-bg, #1E293B);
-    color: var(--color-code-text, #E2E8F0);
+    background: var(--color-code-bg);
+    color: var(--color-code-text);
     border: none;
     border-radius: var(--radius-md);
     font-family: var(--font-mono);
@@ -2124,7 +2124,7 @@
     align-items: center;
     justify-content: center;
     height: 200px;
-    color: var(--color-text-secondary, #6B6B80);
+    color: var(--color-text-secondary);
     font-family: var(--font-sans);
     font-size: 14px;
 }

@@ -20,19 +20,19 @@ const STATS = [
 
 const VOLUMES = [
     {
-        num: 1, color: '#4A7A25', gradient: 'linear-gradient(135deg, #4A7A25 0%, #9CCC65 100%)',
+        num: 1, color: 'var(--elab-lime)', gradient: 'linear-gradient(135deg, var(--elab-lime) 0%, #9CCC65 100%)',
         title: 'Basi', experiments: 38,
         desc: 'LED, resistori, condensatori, pulsanti — dal primo circuito alle basi solide',
         chapters: '9 capitoli',
     },
     {
-        num: 2, color: '#E8941C', textColor: '#996600', gradient: 'linear-gradient(135deg, #E8941C 0%, #FFB74D 100%)',
+        num: 2, color: 'var(--elab-orange)', textColor: '#996600', gradient: 'linear-gradient(135deg, var(--elab-orange) 0%, #FFB74D 100%)',
         title: 'Intermedio', experiments: 18,
         desc: 'Sensori, motori, display LCD, servo — progetti via via pi\u00F9 complessi',
         chapters: '9 capitoli',
     },
     {
-        num: 3, color: '#E54B3D', textColor: '#C62828', gradient: 'linear-gradient(135deg, #E54B3D 0%, #EF5350 100%)',
+        num: 3, color: 'var(--elab-red)', textColor: '#C62828', gradient: 'linear-gradient(135deg, var(--elab-red) 0%, #EF5350 100%)',
         title: 'Avanzato', experiments: 14,
         desc: 'Arduino Nano, MOSFET, comunicazione seriale — programmazione e robotica',
         chapters: '6 capitoli',
@@ -40,12 +40,12 @@ const VOLUMES = [
 ];
 
 const FEATURES = [
-    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: '#4A7A25' },
-    { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: '#E8941C' },
-    { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: '#1E4D8C' },
-    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#4A7A25' },
-    { icon: '\uD83E\uDD16', title: 'UNLIM AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
-    { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: '#E8941C' },
+    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: 'var(--elab-lime)' },
+    { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: 'var(--elab-orange)' },
+    { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: 'var(--elab-navy)' },
+    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: 'var(--elab-lime)' },
+    { icon: '\uD83E\uDD16', title: 'UNLIM AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: 'var(--elab-red)' },
+    { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: 'var(--elab-orange)' },
 ];
 
 const SHOWCASE = [
@@ -78,8 +78,8 @@ const ANIM_CSS = `
 .vetrina-thumb:hover { transform: scale(1.05); }
 .vetrina-waFloat:hover { transform: scale(1.1) !important; box-shadow: 0 6px 20px rgba(37,211,102,0.5) !important; }
 .vetrina-waFloat:hover .vetrina-waTip { opacity: 1 !important; }
-.vetrina-waTip strong { color: #075E54; font-size: 14px; }
-.vetrina-waTip > div:not(:first-child) span { color: #25D366; font-weight: 600; }
+.vetrina-waTip strong { color: var(--elab-hex-075e54); font-size: 14px; }
+.vetrina-waTip > div:not(:first-child) span { color: var(--elab-hex-25d366); font-weight: 600; }
 @media(max-width:480px) { .vetrina-waTip { display: none !important; } .vetrina-waFloat { bottom: 16px !important; right: 16px !important; width: 54px !important; height: 54px !important; } }
 `;
 
@@ -220,7 +220,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                         style={{
                             marginTop: '28px',
                             padding: '18px 48px',
-                            background: 'linear-gradient(135deg, #4A7A25 0%, #6B9B3A 100%)',
+                            background: 'linear-gradient(135deg, var(--elab-lime) 0%, #6B9B3A 100%)',
                             color: 'white',
                             border: 'none',
                             borderRadius: '16px',
@@ -463,7 +463,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                 </svg>
                 <div className={vcss.waTip}>
                     <div className={vcss.waTipHeader}>
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="var(--elab-hex-25d366)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
                         <span>Scrivici su WhatsApp</span>
                     </div>
                     <div className={vcss.waTipContact}><strong>ANDREA</strong><span>346 165 3930</span></div>

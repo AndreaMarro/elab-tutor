@@ -306,7 +306,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: var(--color-text-secondary, #64748B);
+  color: var(--color-text-secondary);
   user-select: none;
 }
 
@@ -319,7 +319,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-text-secondary, #64748B);
+  color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 500;
   font-family: var(--font-sans, 'Open Sans', -apple-system, sans-serif);
@@ -620,8 +620,8 @@
 }
 
 .chat-bubble pre {
-  background: var(--color-code-bg, #1e1e2e);
-  color: var(--color-code-text, #cdd6f4);
+  background: var(--color-code-bg);
+  color: var(--color-code-text);
   padding: 10px;
   border-radius: 8px;
   overflow-x: auto;

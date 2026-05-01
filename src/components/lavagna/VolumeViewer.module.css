@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #f5f5f0;
+  background: #f5f5f0; /* palette */
 }
 
 /* ── Volume tabs ── */
@@ -19,7 +19,7 @@
   padding: 6px 14px;
   border: none;
   background: transparent;
-  color: #595959;
+  color: #595959; /* palette */
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -35,12 +35,12 @@
 
 .volTabActive {
   background: #fff;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   box-shadow: 0 -1px 4px rgba(30, 77, 140, 0.08);
 }
 
 .volTab:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -2px;
 }
 
@@ -72,7 +72,7 @@
   border: 1px solid rgba(30, 77, 140, 0.12);
   border-radius: 8px;
   background: #fff;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   cursor: pointer;
   transition: background 150ms, border-color 150ms;
   padding: 0;
@@ -89,13 +89,13 @@
 }
 
 .navBtn:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -1px;
 }
 
 .navBtnActive {
   background: rgba(30, 77, 140, 0.1);
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
 }
 
 /* Page counter */
@@ -105,7 +105,7 @@
   gap: 2px;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .pageInput {
@@ -116,7 +116,7 @@
   padding: 4px;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   background: #fff;
   -moz-appearance: textfield;
 }
@@ -129,7 +129,7 @@
 
 .pageSep {
   margin: 0 2px;
-  color: #666666;
+  color: #666666; /* palette */
 }
 
 /* ── Pen toolbar ── */
@@ -138,7 +138,7 @@
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: #f0f4f8;
+  background: #f0f4f8; /* palette */
   border-bottom: 1px solid rgba(30, 77, 140, 0.1);
   flex-shrink: 0;
   min-height: 44px;
@@ -175,7 +175,7 @@
   border-radius: 6px;
   border: 1px solid rgba(30, 77, 140, 0.12);
   background: #fff;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -197,7 +197,7 @@
 .penCount {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #666666;
+  color: #666666; /* palette */
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   margin-left: 4px;
 }
@@ -205,7 +205,7 @@
 .zoomLabel {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #555555;
+  color: #555555; /* palette */
   min-width: 36px;
   text-align: center;
 }
@@ -223,7 +223,7 @@
   width: 100px;
   overflow-y: auto;
   border-right: 1px solid rgba(30, 77, 140, 0.1);
-  background: #f0f0ec;
+  background: #f0f0ec; /* palette */
   padding: 6px;
   display: flex;
   flex-direction: column;
@@ -250,14 +250,14 @@
 }
 
 .thumbActive {
-  border-color: var(--color-primary, #1E4D8C);
-  box-shadow: 0 0 0 1px var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
 }
 
 .thumbNumber {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #555555;
+  color: #555555; /* palette */
 }
 
 /* ── PDF page container ── */
@@ -289,14 +289,14 @@
   z-index: 5;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .spinner {
   width: 32px;
   height: 32px;
   border: 3px solid rgba(30, 77, 140, 0.15);
-  border-top-color: var(--color-primary, #1E4D8C);
+  border-top-color: var(--color-primary);
   border-radius: 50%;
   animation: spin 800ms linear infinite;
 }
@@ -306,15 +306,15 @@
 }
 
 .errorOverlay {
-  color: var(--color-red, #E54B3D);
+  color: var(--color-red);
 }
 
 .retryBtn {
   padding: 8px 20px;
-  border: 1px solid var(--color-red, #E54B3D);
+  border: 1px solid var(--color-red);
   border-radius: 8px;
   background: #fff;
-  color: var(--color-red, #E54B3D);
+  color: var(--color-red);
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   cursor: pointer;

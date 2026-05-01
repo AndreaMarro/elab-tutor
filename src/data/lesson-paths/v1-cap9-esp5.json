@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi il potenziometro diventa un MISCELATORE! Collegando la corrente al pin centrale, i due pin laterali alimentano i due colori.",
+      "teacher_message": "Ragazzi, oggi il potenziometro diventa un MISCELATORE! Collegando la corrente al pin centrale, i due pin laterali alimentano i due colori.",
       "teacher_tip": "Collegamento speciale: la corrente entra dal pin centrale (signal) del potenziometro. I due pin laterali vanno ciascuno a un resistore e poi a un canale del LED RGB.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 2 resistori 470Ω, 1 LED RGB, 8 fili.",
       "class_hook": "Finora il potenziometro controllava la luminosità. Ma può MESCOLARE due colori? Da un lato blu, dall'altro rosso, nel mezzo il viola?",
@@ -110,8 +110,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito miscelatore blu/rosso",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito miscelatore blu/rosso",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -191,7 +191,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Gira la manopola lentamente: il colore sfuma dal blu al rosso! Nel mezzo appare il viola!",
+      "teacher_message": "Girate la manopola lentamente: il colore sfuma dal blu al rosso! Nel mezzo appare il viola!",
       "teacher_tip": "Se non vedono la transizione, assicurarsi che l'ambiente non sia troppo illuminato. La differenza si vede meglio al buio.",
       "provocative_question": "Come fa un solo potenziometro a dare più corrente al blu E meno al rosso contemporaneamente?",
       "components_list": null,
@@ -215,7 +215,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e gira: il colore sfuma! Tutto blu → viola → tutto rosso. Il potenziometro mescola i colori!",
+      "teacher_message": "Premete Play e girate: il colore sfuma! Tutto blu → viola → tutto rosso. Il potenziometro mescola i colori!",
       "teacher_tip": "Evidenzia il potenziometro. Spiega: 'Il cursore divide la corrente: più va verso un lato, più quel colore domina.'",
       "components_list": null,
       "class_hook": null,

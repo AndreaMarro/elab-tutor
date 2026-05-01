@@ -24,8 +24,8 @@ const CATEGORIE_MOV = [
   { value: 'altro', label: 'Altro' },
 ];
 const CAT_COLORS = {
-  vendita: '#059669', acquisto: '#D97706', stipendio: '#2563EB', tasse: '#DC2626',
-  utenze: '#7C3AED', affitto: '#0891B2', altro: '#64748B',
+  vendita: 'var(--elab-hex-059669)', acquisto: 'var(--elab-hex-d97706)', stipendio: 'var(--elab-hex-2563eb)', tasse: 'var(--elab-hex-dc2626)',
+  utenze: 'var(--elab-hex-7c3aed)', affitto: 'var(--elab-hex-0891b2)', altro: 'var(--elab-hex-64748b)',
 };
 
 const emptyContoForm = () => ({
@@ -258,7 +258,7 @@ export default function BancheFinanzeModule({ isMobile }) {
 
           {contiConSaldo.length === 0 ? (
             <div style={S.emptyState}>
-              <div style={S.emptyIcon}>&#127974;</div>
+              <div style={S.emptyIcon}>&var(--elab-hex-127974);</div>
               <div style={S.emptyText}>Nessun conto bancario configurato</div>
             </div>
           ) : (
@@ -361,7 +361,7 @@ export default function BancheFinanzeModule({ isMobile }) {
           )}
 
           {/* Table */}
-          <GestionaleTable columns={movColumns} data={filteredMov} isMobile={isMobile} emptyMessage="Nessun movimento trovato" emptyIcon="&#128182;" />
+          <GestionaleTable columns={movColumns} data={filteredMov} isMobile={isMobile} emptyMessage="Nessun movimento trovato" emptyIcon="&var(--elab-hex-128182);" />
         </div>
       )}
 

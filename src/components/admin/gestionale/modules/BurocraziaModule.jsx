@@ -55,10 +55,10 @@ const STATI_SCADENZA = [
 
 // ── Colori per tipo scadenza ──────────────────
 const TIPO_SCAD_COLORS = {
-  fiscale: '#DC2626',
-  legale: '#7C3AED',
-  amministrativa: '#2563EB',
-  contrattuale: '#D97706',
+  fiscale: 'var(--elab-hex-dc2626)',
+  legale: 'var(--elab-hex-7c3aed)',
+  amministrativa: 'var(--elab-hex-2563eb)',
+  contrattuale: 'var(--elab-hex-d97706)',
 };
 
 // ── Helper: colore scadenza in base ai giorni ──

@@ -25,6 +25,26 @@ import LessonReader from './LessonReader';
 import LessonSelector from './LessonSelector';
 import VisionButton from '../tutor/VisionButton';
 import logger from '../../utils/logger';
+import ErrorBoundary from '../common/ErrorBoundary';
+// Atom A5 iter 36 — Passo Passo LessonReader in draggable FloatingWindow
+import FloatingWindowCommon from '../common/FloatingWindow';
+// Sprint S iter 2 Task B — Capitolo lookup service
+import { getCapitolo, listAllCapitoli } from '../../services/percorsoService';
+// iter 35 fix Bug 5 Fumetto: static import preserves user-gesture chain (was async dynamic import → window.open() blocked browser popup policy).
+import { openReportWindow } from '../unlim/UnlimReport';
+import { showToast as showToastSync } from '../common/Toast';
+// iter 38 Atom A11 + A12 (WebDesigner-1): pre-emptive UX nudges.
+//   - MicPermissionNudge: chiede mic ai docenti PRIMA di entrare in Lavagna
+//     così wake word "Ehi UNLIM" è caldo al primo uso (browser cache grant
+//     per origin tra getUserMedia e SpeechRecognition).
+//   - UpdatePrompt: toast plurale "Ragazzi, c'è una nuova versione…" quando
+//     vite-plugin-pwa rileva nuovo SW (registerType:'prompt' → no auto-skip).
+// Lazy-load: nessun footprint sul main chunk per docenti già autorizzati /
+// senza aggiornamenti pending.
+const MicPermissionNudge = lazy(() => import('../common/MicPermissionNudge.jsx'));
+const UpdatePrompt = lazy(() => import('../common/UpdatePrompt.jsx'));
+// ADR-025 iter 26 — Modalità 4 modes canonical UI (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso)
+import ModalitaSwitch from './ModalitaSwitch';
 import css from './LavagnaShell.module.css';
 
 const NewElabSimulator = lazy(() => import('../simulator/NewElabSimulator'));
@@ -33,6 +53,9 @@ const StudentDashboard = lazy(() => import('../student/StudentDashboard'));
 const VolumeViewer = lazy(() => import('./VolumeViewer'));
 const PercorsoPanel = lazy(() => import('./PercorsoPanel'));
 const DrawingOverlay = lazy(() => import('../simulator/canvas/DrawingOverlay'));
+// Sprint S iter 2 Task B — lazy load Capitolo flow components
+const CapitoloPicker = lazy(() => import('./CapitoloPicker'));
+const PercorsoCapitoloView = lazy(() => import('./PercorsoCapitoloView'));
 
 // Component quick-add buttons for left panel (uses __ELAB_API)
 // Realistic component icons — recognizable by a 10-year-old
@@ -43,9 +66,9 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     // ── Volume 1: Le Basi ──
     { type: 'led', label: 'LED', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><radialGradient id={`${prefix}ledDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#a4e65e" /><stop offset="60%" stopColor="#4A7A25" /><stop offset="100%" stopColor="#2d5a10" /></radialGradient></defs>
+        <defs><radialGradient id={`${prefix}ledDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#a4e65e" /><stop offset="60%" stopColor="var(--elab-lime)" /><stop offset="100%" stopColor="#2d5a10" /></radialGradient></defs>
         <ellipse cx="14" cy="10" rx="6" ry="8" fill={`url(#${prefix}ledDome)`} />
-        <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="#3a6a1a" strokeWidth="0.5" />
+        <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="var(--elab-hex-3a6a1a)" strokeWidth="0.5" />
         <ellipse cx="11.5" cy="7" rx="2" ry="3" fill="rgba(255,255,255,0.4)" />
         <rect x="8" y="17" width="12" height="2" rx="0.5" fill="#bbb" stroke="#999" strokeWidth="0.5" />
         <path d="M10 19v5" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
@@ -56,18 +79,18 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     { type: 'resistor', label: 'Resistore', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M2 14h6M20 14h6" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <defs><linearGradient id={`${prefix}resBody`} x1="8" y1="9" x2="8" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#e8d5b0" /><stop offset="50%" stopColor="#d4b896" /><stop offset="100%" stopColor="#c4a87a" /></linearGradient></defs>
-        <rect x="8" y="9" width="12" height="10" rx="2" fill={`url(#${prefix}resBody)`} stroke="#a08a60" strokeWidth="0.5" />
-        <rect x="10" y="9" width="1.5" height="10" rx="0.3" fill="#8B4513" />
+        <defs><linearGradient id={`${prefix}resBody`} x1="8" y1="9" x2="8" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-e8d5b0)" /><stop offset="50%" stopColor="var(--elab-hex-d4b896)" /><stop offset="100%" stopColor="var(--elab-hex-c4a87a)" /></linearGradient></defs>
+        <rect x="8" y="9" width="12" height="10" rx="2" fill={`url(#${prefix}resBody)`} stroke="var(--elab-hex-a08a60)" strokeWidth="0.5" />
+        <rect x="10" y="9" width="1.5" height="10" rx="0.3" fill="var(--elab-hex-8b4513)" />
         <rect x="13" y="9" width="1.5" height="10" rx="0.3" fill="#222" />
-        <rect x="16" y="9" width="1.5" height="10" rx="0.3" fill="#E54B3D" />
-        <rect x="18.5" y="9" width="1" height="10" rx="0.3" fill="#C5A33E" />
+        <rect x="16" y="9" width="1.5" height="10" rx="0.3" fill="var(--elab-red)" />
+        <rect x="18.5" y="9" width="1" height="10" rx="0.3" fill="var(--elab-hex-c5a33e)" />
       </svg>
     )},
     { type: 'push-button', label: 'Pulsante', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <rect x="6" y="10" width="16" height="10" rx="2" fill="#333" stroke="#222" strokeWidth="0.5" />
-        <defs><radialGradient id={`${prefix}btnCap`} cx="45%" cy="40%"><stop offset="0%" stopColor="#E8941C" /><stop offset="100%" stopColor="#c07010" /></radialGradient></defs>
+        <defs><radialGradient id={`${prefix}btnCap`} cx="45%" cy="40%"><stop offset="0%" stopColor="var(--elab-orange)" /><stop offset="100%" stopColor="#c07010" /></radialGradient></defs>
         <circle cx="14" cy="12" r="4" fill={`url(#${prefix}btnCap)`} />
         <circle cx="13" cy="11" r="1.2" fill="rgba(255,255,255,0.3)" />
         <path d="M8 20v4M12 20v4M16 20v4M20 20v4" stroke="#999" strokeWidth="1" strokeLinecap="round" />
@@ -75,18 +98,18 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'battery9v', label: 'Batteria 9V', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="6" y="6" width="16" height="18" rx="2" fill="#1E4D8C" stroke="#153d6e" strokeWidth="0.5" />
+        <rect x="6" y="6" width="16" height="18" rx="2" fill="var(--elab-navy)" stroke="#153d6e" strokeWidth="0.5" />
         <text x="14" y="17" textAnchor="middle" fontSize="7" fill="#fff" fontWeight="bold" fontFamily="sans-serif">9V</text>
         <rect x="9" y="3" width="3" height="4" rx="1" fill="#666" />
         <rect x="16" y="4" width="3" height="3" rx="1" fill="#666" />
-        <text x="10.5" y="3" textAnchor="middle" fontSize="5" fill="#E54B3D" fontFamily="sans-serif">+</text>
+        <text x="10.5" y="3" textAnchor="middle" fontSize="5" fill="var(--elab-red)" fontFamily="sans-serif">+</text>
         <text x="17.5" y="3.5" textAnchor="middle" fontSize="6" fill="#333" fontFamily="sans-serif">-</text>
       </svg>
     )},
     { type: 'potentiometer', label: 'Potenziometro', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="4" y="7" width="20" height="14" rx="2" fill="#2980b9" stroke="#1a6fa0" strokeWidth="0.5" />
-        <defs><radialGradient id={`${prefix}potKnob`} cx="45%" cy="38%"><stop offset="0%" stopColor="#f0f0f0" /><stop offset="60%" stopColor="#ccc" /><stop offset="100%" stopColor="#888" /></radialGradient></defs>
+        <rect x="4" y="7" width="20" height="14" rx="2" fill="var(--elab-hex-2980b9)" stroke="var(--elab-hex-1a6fa0)" strokeWidth="0.5" />
+        <defs><radialGradient id={`${prefix}potKnob`} cx="45%" cy="38%"><stop offset="0%" stopColor="var(--elab-hex-f0f0f0)" /><stop offset="60%" stopColor="#ccc" /><stop offset="100%" stopColor="#888" /></radialGradient></defs>
         <circle cx="14" cy="14" r="6" fill={`url(#${prefix}potKnob)`} stroke="#777" strokeWidth="0.5" />
         <circle cx="13" cy="12" r="1.5" fill="rgba(255,255,255,0.5)" />
         <path d="M14 8v4" stroke="#444" strokeWidth="2" strokeLinecap="round" />
@@ -98,17 +121,17 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <circle cx="14" cy="13" r="8" fill="#222" stroke="#111" strokeWidth="0.5" />
         <circle cx="14" cy="13" r="6" fill="#333" />
         <circle cx="14" cy="13" r="1.5" fill="#111" />
-        <text x="14" y="6" textAnchor="middle" fontSize="5" fill="#E54B3D" fontWeight="bold" fontFamily="sans-serif">+</text>
+        <text x="14" y="6" textAnchor="middle" fontSize="5" fill="var(--elab-red)" fontWeight="bold" fontFamily="sans-serif">+</text>
         <path d="M10 21v3M18 21v3" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     )},
     { type: 'photo-resistor', label: 'LDR', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><radialGradient id={`${prefix}ldrBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="#d4a574" /><stop offset="100%" stopColor="#8B6914" /></radialGradient></defs>
-        <circle cx="14" cy="12" r="7" fill={`url(#${prefix}ldrBody)`} stroke="#7a5a10" strokeWidth="0.5" />
-        <path d="M14 5.5c1.5 0 2.5 1.2 2.5 2.8s-1 2.8-2.5 2.8-2.5-1.2-2.5-2.8S12.5 5.5 14 5.5z" fill="#a07830" stroke="#7a5a10" strokeWidth="0.3" />
+        <defs><radialGradient id={`${prefix}ldrBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="var(--elab-hex-d4a574)" /><stop offset="100%" stopColor="var(--elab-hex-8b6914)" /></radialGradient></defs>
+        <circle cx="14" cy="12" r="7" fill={`url(#${prefix}ldrBody)`} stroke="var(--elab-hex-7a5a10)" strokeWidth="0.5" />
+        <path d="M14 5.5c1.5 0 2.5 1.2 2.5 2.8s-1 2.8-2.5 2.8-2.5-1.2-2.5-2.8S12.5 5.5 14 5.5z" fill="var(--elab-hex-a07830)" stroke="var(--elab-hex-7a5a10)" strokeWidth="0.3" />
         <path d="M10 19v5M18 19v5" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M3 6l3 3M3 3l2 2" stroke="#E8941C" strokeWidth="1" strokeLinecap="round" />
+        <path d="M3 6l3 3M3 3l2 2" stroke="var(--elab-orange)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
     { type: 'reed-switch', label: 'Interruttore Reed', vol: 1, icon: (
@@ -124,10 +147,10 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     { type: 'capacitor', label: 'Condensatore', vol: 2, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M14 2v7M14 19v7" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <defs><linearGradient id={`${prefix}capBody`} x1="7" y1="9" x2="21" y2="9" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#2a6496" /><stop offset="40%" stopColor="#3498db" /><stop offset="100%" stopColor="#2472a4" /></linearGradient></defs>
-        <rect x="7" y="9" width="14" height="10" rx="2" fill={`url(#${prefix}capBody)`} stroke="#1a5276" strokeWidth="0.5" />
-        <rect x="7" y="9" width="3" height="10" rx="1" fill="#1a3a5c" opacity="0.5" />
-        <text x="18" y="8" fontSize="6" fill="#E54B3D" fontFamily="sans-serif">+</text>
+        <defs><linearGradient id={`${prefix}capBody`} x1="7" y1="9" x2="21" y2="9" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-2a6496)" /><stop offset="40%" stopColor="var(--elab-hex-3498db)" /><stop offset="100%" stopColor="var(--elab-hex-2472a4)" /></linearGradient></defs>
+        <rect x="7" y="9" width="14" height="10" rx="2" fill={`url(#${prefix}capBody)`} stroke="var(--elab-hex-1a5276)" strokeWidth="0.5" />
+        <rect x="7" y="9" width="3" height="10" rx="1" fill="var(--elab-hex-1a3a5c)" opacity="0.5" />
+        <text x="18" y="8" fontSize="6" fill="var(--elab-red)" fontFamily="sans-serif">+</text>
       </svg>
     )},
     { type: 'motor-dc', label: 'Motore DC', vol: 2, icon: (
@@ -136,7 +159,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <rect x="5" y="7" width="18" height="14" rx="3" fill={`url(#${prefix}motorBody)`} stroke="#888" strokeWidth="0.5" />
         <rect x="23" y="12" width="4" height="4" rx="1" fill="#888" />
         <text x="14" y="17" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#555" fontFamily="sans-serif">M</text>
-        <path d="M8 21v3M18 21v3" stroke="#E54B3D" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M8 21v3M18 21v3" stroke="var(--elab-red)" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     )},
     { type: 'diode', label: 'Diodo', vol: 2, icon: (
@@ -158,38 +181,38 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'phototransistor', label: 'Fototransistore', vol: 2, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><radialGradient id={`${prefix}ptBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="#e0e8ef" /><stop offset="100%" stopColor="#8899aa" /></radialGradient></defs>
-        <circle cx="14" cy="13" r="7" fill={`url(#${prefix}ptBody)`} stroke="#667788" strokeWidth="0.5" />
-        <circle cx="14" cy="13" r="3" fill="#334455" />
+        <defs><radialGradient id={`${prefix}ptBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="var(--elab-hex-e0e8ef)" /><stop offset="100%" stopColor="var(--elab-hex-8899aa)" /></radialGradient></defs>
+        <circle cx="14" cy="13" r="7" fill={`url(#${prefix}ptBody)`} stroke="var(--elab-hex-667788)" strokeWidth="0.5" />
+        <circle cx="14" cy="13" r="3" fill="var(--elab-hex-334455)" />
         <path d="M10 20v4M18 20v4" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M3 6l3 3M3 3l2 2" stroke="#E8941C" strokeWidth="1" strokeLinecap="round" />
+        <path d="M3 6l3 3M3 3l2 2" stroke="var(--elab-orange)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
     // ── Volume 3: Arduino ──
     { type: 'nano-r4', label: 'Arduino Nano', vol: 3, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><linearGradient id={`${prefix}nanoBoard`} x1="4" y1="4" x2="4" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#008080" /><stop offset="100%" stopColor="#005555" /></linearGradient></defs>
-        <rect x="4" y="4" width="20" height="20" rx="2" fill={`url(#${prefix}nanoBoard)`} stroke="#004040" strokeWidth="0.5" />
+        <defs><linearGradient id={`${prefix}nanoBoard`} x1="4" y1="4" x2="4" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-008080)" /><stop offset="100%" stopColor="var(--elab-hex-005555)" /></linearGradient></defs>
+        <rect x="4" y="4" width="20" height="20" rx="2" fill={`url(#${prefix}nanoBoard)`} stroke="var(--elab-hex-004040)" strokeWidth="0.5" />
         <rect x="10" y="2" width="8" height="4" rx="1" fill="#888" stroke="#666" strokeWidth="0.5" />
         <rect x="8" y="10" width="12" height="6" rx="1" fill="#222" />
         <text x="14" y="15" textAnchor="middle" fontSize="5" fill="#0f0" fontFamily="monospace">NANO</text>
-        {Array.from({length: 7}, (_, i) => <circle key={`l${i}`} cx={6} cy={6 + i * 2.5} r="0.8" fill="#C5A33E" />)}
-        {Array.from({length: 7}, (_, i) => <circle key={`r${i}`} cx={22} cy={6 + i * 2.5} r="0.8" fill="#C5A33E" />)}
+        {Array.from({length: 7}, (_, i) => <circle key={`l${i}`} cx={6} cy={6 + i * 2.5} r="0.8" fill="var(--elab-hex-c5a33e)" />)}
+        {Array.from({length: 7}, (_, i) => <circle key={`r${i}`} cx={22} cy={6 + i * 2.5} r="0.8" fill="var(--elab-hex-c5a33e)" />)}
       </svg>
     )},
     { type: 'servo', label: 'Servo', vol: 3, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><linearGradient id={`${prefix}servoBody`} x1="3" y1="8" x2="3" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#4488cc" /><stop offset="100%" stopColor="#2266aa" /></linearGradient></defs>
-        <rect x="3" y="8" width="22" height="14" rx="2" fill={`url(#${prefix}servoBody)`} stroke="#1a5276" strokeWidth="0.5" />
+        <defs><linearGradient id={`${prefix}servoBody`} x1="3" y1="8" x2="3" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-4488cc)" /><stop offset="100%" stopColor="var(--elab-hex-2266aa)" /></linearGradient></defs>
+        <rect x="3" y="8" width="22" height="14" rx="2" fill={`url(#${prefix}servoBody)`} stroke="var(--elab-hex-1a5276)" strokeWidth="0.5" />
         <circle cx="20" cy="15" r="3.5" fill="#ddd" stroke="#999" strokeWidth="0.5" />
         <path d="M20 15l-2 -5h4z" fill="#fff" stroke="#999" strokeWidth="0.5" />
-        <path d="M6 8v-3M10 8v-3M14 8v-3" stroke="#E54B3D" strokeWidth="1" strokeLinecap="round" />
+        <path d="M6 8v-3M10 8v-3M14 8v-3" stroke="var(--elab-red)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
     { type: 'lcd16x2', label: 'LCD 16x2', vol: 3, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="2" y="6" width="24" height="16" rx="2" fill="#2d8b2d" stroke="#1a6b1a" strokeWidth="0.5" />
-        <rect x="4" y="8" width="20" height="12" rx="1" fill="#90EE90" stroke="#60c060" strokeWidth="0.5" />
+        <rect x="2" y="6" width="24" height="16" rx="2" fill="var(--elab-hex-2d8b2d)" stroke="var(--elab-hex-1a6b1a)" strokeWidth="0.5" />
+        <rect x="4" y="8" width="20" height="12" rx="1" fill="var(--elab-hex-90ee90)" stroke="var(--elab-hex-60c060)" strokeWidth="0.5" />
         <text x="14" y="14" textAnchor="middle" fontSize="4" fill="#333" fontFamily="monospace">Hello!</text>
         <text x="14" y="18" textAnchor="middle" fontSize="4" fill="#333" fontFamily="monospace">ELAB</text>
       </svg>
@@ -199,9 +222,9 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <defs><radialGradient id={`${prefix}rgbDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#fff" /><stop offset="30%" stopColor="#eef" /><stop offset="100%" stopColor="#aab" /></radialGradient></defs>
         <ellipse cx="14" cy="10" rx="6" ry="8" fill={`url(#${prefix}rgbDome)`} />
         <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="#889" strokeWidth="0.5" />
-        <circle cx="11" cy="9" r="2" fill="#E54B3D" opacity="0.5" />
-        <circle cx="17" cy="9" r="2" fill="#2563EB" opacity="0.5" />
-        <circle cx="14" cy="12" r="2" fill="#16A34A" opacity="0.5" />
+        <circle cx="11" cy="9" r="2" fill="var(--elab-red)" opacity="0.5" />
+        <circle cx="17" cy="9" r="2" fill="var(--elab-hex-2563eb)" opacity="0.5" />
+        <circle cx="14" cy="12" r="2" fill="var(--elab-hex-16a34a)" opacity="0.5" />
         <rect x="8" y="17" width="12" height="2" rx="0.5" fill="#bbb" stroke="#999" strokeWidth="0.5" />
         <path d="M9 19v5M12 19v5M16 19v5M19 19v5" stroke="#999" strokeWidth="0.8" strokeLinecap="round" />
       </svg>
@@ -396,6 +419,9 @@ export default function LavagnaShell() {
     try { return parseInt(localStorage.getItem('elab-lavagna-page') || '1', 10) || 1; } catch { return 1; }
   });
   const [percorsoOpen, setPercorsoOpen] = useState(false);
+  // Sprint S iter 2 Task B — Capitolo (Modalita Percorso Capitolo)
+  const [capitoloPickerOpen, setCapitoloPickerOpen] = useState(false);
+  const [activeCapitoloId, setActiveCapitoloId] = useState(null);
   const [activeLessonId, setActiveLessonId] = useState('v1-accendi-led');
   const [unlimTab, setUnlimTab] = useState('chat'); // 'chat' | 'percorso'
   const [buildMode, setBuildMode] = useState(() => {
@@ -404,9 +430,34 @@ export default function LavagnaShell() {
       return ['complete', 'guided', 'sandbox'].includes(v) ? v : 'complete';
     } catch { return 'complete'; }
   }); // complete | guided | sandbox
+  // ADR-025 iter 26 — modalità canonical 4 modes (Percorso default, Passo Passo, Già Montato, Libero)
+  // Default 'percorso' (NOT 'libero'). Libero auto-mounts Percorso (NON sandbox vuoto).
+  // iter 36 Atom A4 fix — H4 mitigation: migrate stale legacy values (e.g. 'guida-da-errore'
+  // removed iter 26) to canonical 'percorso'. Without this, a docente che aveva selezionato
+  // un mode legacy in iter <26 vedeva localStorage stale → re-mount restava su valore
+  // invalid filtered out → setModalita default 'percorso' attivo MA bottone non mostrato attivo
+  // perché il browser ricaricava su modalità non più rendered. Forziamo cleanup al mount.
+  const [modalita, setModalita] = useState(() => {
+    const CANONICAL = ['percorso', 'passo-passo', 'gia-montato', 'libero'];
+    try {
+      const v = localStorage.getItem('elab-lavagna-modalita');
+      if (CANONICAL.includes(v)) return v;
+      // Stale or unknown value (legacy 'guida-da-errore', 'complete', 'guided', 'sandbox', null)
+      // → reset localStorage + default to 'percorso' canonical default.
+      if (v != null) {
+        try { localStorage.removeItem('elab-lavagna-modalita'); } catch {}
+      }
+      return 'percorso';
+    } catch { return 'percorso'; }
+  });
   const [drawingEnabled, setDrawingEnabled] = useState(false);
   const [bentornatiVisible, setBentornatiVisible] = useState(() => {
     try { return localStorage.getItem('elab_skip_bentornati') !== 'true'; } catch { return true; }
+  });
+  // Sprint T iter 28 — wake-word toggle (default ON; gated by browser support).
+  // Persisted across sessions via localStorage so docente disabled state sticks.
+  const [wakeWordEnabled, setWakeWordEnabled] = useState(() => {
+    try { return localStorage.getItem('elab-lavagna-wake-word') !== 'off'; } catch { return true; }
   });
   const [wakeWordActive, setWakeWordActive] = useState(false);
   // F2.B: serializzazione primo-accesso. ConsentBanner (se presente) ha
@@ -414,11 +465,103 @@ export default function LavagnaShell() {
   const bentornatiAllowed = useOverlayQueue('bentornati');
   const pickerAllowed = useOverlayQueue('picker');
 
-  // "Ehi UNLIM" wake word — ascolta in background, apre UNLIM e manda il comando
+  // Refs for wake-word callback — avoid re-mounting listener on state change.
+  // The wakeWord service holds module-level singleton state, so re-mounting
+  // would risk double-listener leaks. Refs read latest values without redep.
+  const galileoOpenRef = useRef(galileoOpen);
+  useEffect(() => { galileoOpenRef.current = galileoOpen; }, [galileoOpen]);
+  const lastWakeAtRef = useRef(0);
+
+  // Persist wake-word toggle preference
   useEffect(() => {
-    if (!isWakeWordSupported()) return;
+    try { localStorage.setItem('elab-lavagna-wake-word', wakeWordEnabled ? 'on' : 'off'); } catch {}
+  }, [wakeWordEnabled]);
+
+  /**
+   * Sprint T iter 28 — "Ehi UNLIM" wake-word lifecycle wired to LavagnaShell.
+   *
+   * Behaviour:
+   *   - Mounts a single SpeechRecognition listener on Lavagna entry.
+   *   - On wake detection: opens UNLIM (no-op if already open) + shows feedback.
+   *   - Debounces multiple sequential wakes within 1500ms (avoids re-trigger spam).
+   *   - On unmount or toggle-off: stops listener + cleans state.
+   *
+   * Honest caveats (JSDoc, NOT marketing):
+   *   1. WebSpeech API supported only on Chrome/Edge (not Firefox/Safari).
+   *      Graceful skip with logger warn — feature absent, no error thrown.
+   *   2. Italian phonetic detection delegated to wakeWord.js WAKE_PHRASES list
+   *      (11 variants incl. "ehi unlim", "hey unlim", "ei unlim"). False
+   *      positives possible on similar-sounding speech (ESEMPIO: "ehi anna" può
+   *      essere parsed come "ehi un...") — accepted trade-off for accessibility.
+   *   3. Debouncing is timestamp-based (1.5s) — protects against double-detect
+   *      from interim results, NOT a hard mutex. Concurrent wakes from two
+   *      LavagnaShell instances (impossibile in pratica, single-page app) NON
+   *      sono gestiti.
+   *   4. PZ V3 mandate: wake-word ATTIVO solo dentro LavagnaShell mount lifecycle.
+   *      Quando Tutor / Simulator standalone montati senza Lavagna → listener
+   *      non parte (componente non montato).
+   */
+  useEffect(() => {
+    // Toggle off → ensure listener stopped, do nothing else.
+    if (!wakeWordEnabled) {
+      stopWakeWordListener();
+      setWakeWordActive(false);
+      return undefined;
+    }
+    // Browser support gate (Caveat 1).
+    if (!isWakeWordSupported()) {
+      logger.warn('[LavagnaShell] Wake word "Ehi UNLIM" non supportato dal browser (richiede Chrome/Edge).');
+      setWakeWordActive(false);
+      return undefined;
+    }
+    // Iter 35 fix Andrea "modalità vocale non riesco a farla andare":
+    // Browser policy SpeechRecognition richiede user gesture per mic permission.
+    // Su mount Lavagna NO gesture → onerror not-allowed silent. Fix: warm-up
+    // mic via getUserMedia su prima interazione (click/touch any anywhere LavagnaShell).
+    // Permission cached browser per origine → SpeechRecognition successivi OK.
+    let micWarmedUp = false;
+    const warmUpMic = () => {
+      if (micWarmedUp || typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) return;
+      micWarmedUp = true;
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          // Subito chiudi: serve solo permission grant, non recording.
+          stream.getTracks().forEach(t => t.stop());
+          // Re-start wake word listener post permission (fresh state).
+          stopWakeWordListener();
+          setTimeout(() => {
+            const restarted = startWakeWordListener({
+              onWake: () => {
+                const now = Date.now();
+                if (now - lastWakeAtRef.current < 1500) return;
+                lastWakeAtRef.current = now;
+                if (galileoOpenRef.current) return;
+                setGalileoOpen(true);
+                setToolToast('Ti ascolto!');
+                setTimeout(() => setToolToast(null), 2000);
+              },
+              onCommand: (text) => {
+                const api = typeof window !== 'undefined' && window.__ELAB_API;
+                if (api?.unlim?.sendMessage) api.unlim.sendMessage(text);
+              },
+            });
+            setWakeWordActive(restarted);
+          }, 100);
+        })
+        .catch(() => { /* permission denied → wake-word-error event già dispatched */ });
+    };
+    if (typeof document !== 'undefined') {
+      document.addEventListener('click', warmUpMic, { once: true });
+      document.addEventListener('touchstart', warmUpMic, { once: true });
+    }
     const started = startWakeWordListener({
       onWake: () => {
+        // Debounce: ignora wake successivi entro 1.5s (Caveat 3).
+        const now = Date.now();
+        if (now - lastWakeAtRef.current < 1500) return;
+        lastWakeAtRef.current = now;
+        // No-op when UNLIM già aperto (evita toast spam + auto-focus loop).
+        if (galileoOpenRef.current) return;
         setGalileoOpen(true);
         setToolToast('Ti ascolto!');
         setTimeout(() => setToolToast(null), 2000);
@@ -431,7 +574,28 @@ export default function LavagnaShell() {
       },
     });
     setWakeWordActive(started);
-    return () => stopWakeWordListener();
+    return () => {
+      stopWakeWordListener();
+      setWakeWordActive(false);
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('click', warmUpMic);
+        document.removeEventListener('touchstart', warmUpMic);
+      }
+    };
+  }, [wakeWordEnabled]);
+
+  // iter 35 fix Bug 8: ascolta errori wake word + toast feedback docente.
+  useEffect(() => {
+    const onWakeError = (ev) => {
+      const msg = ev?.detail?.message || 'Microfono non autorizzato per "Ehi UNLIM".';
+      try { showToastSync?.(msg, 'warning'); } catch (_) { /* ignore */ }
+      setWakeWordActive(false);
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('elab-wake-word-error', onWakeError);
+      return () => window.removeEventListener('elab-wake-word-error', onWakeError);
+    }
+    return undefined;
   }, []);
 
   // Persist layout sizes and volume navigation to localStorage
@@ -444,6 +608,42 @@ export default function LavagnaShell() {
   useEffect(() => {
     try { localStorage.setItem('elab-lavagna-buildmode', buildMode); } catch {}
   }, [buildMode]);
+  // ADR-025 iter 26 — persist modalità canonical
+  useEffect(() => {
+    try { localStorage.setItem('elab-lavagna-modalita', modalita); } catch {}
+  }, [modalita]);
+
+  // Iter 34 P0 fix Andrea bug "lavagna bianca quando selezionata non è mai vuota":
+  // ADR-025 §4.4 iter 26 forced Libero → auto-Percorso (NON sandbox). Andrea iter
+  // 34 ha invertito il mandate: Libero DEVE essere blank sandbox (true empty
+  // canvas) per consentire creazione libera senza esperimento pre-mounted.
+  // Diagnose flow integrato dentro Già Montato + Passo Passo (mode 'guida-da-errore' REMOVED).
+  const handleModalitaChange = useCallback((nextMode) => {
+    if (!['percorso', 'passo-passo', 'gia-montato', 'libero'].includes(nextMode)) {
+      return; // defensive: ignore unknown modes (e.g. legacy 'guida-da-errore')
+    }
+    setModalita(nextMode);
+    // Già Montato NEW: signal pre-assembled diagnose mode to simulator if API present
+    if (nextMode === 'gia-montato' && typeof window !== 'undefined') {
+      const api = window.__ELAB_API;
+      if (api?.unlim?.setDiagnoseMode) {
+        try { api.unlim.setDiagnoseMode(true); } catch { /* noop */ }
+      }
+    }
+    // Iter 34 P0 fix Andrea bug "lavagna bianca selezionata non è mai vuota".
+    // Iter 35 P1 fix Andrea bug "premo libera e circuito rimane":
+    // - clearAll() pulisce simulator MA currentExperiment riresta settato → re-render ripopola componenti
+    // - setBuildMode('sandbox') NON è method API top-level → no-op
+    // Fix: set currentExperiment = null (deselect) + clearAll + remove localStorage exp id
+    if (nextMode === 'libero' && typeof window !== 'undefined') {
+      const api = window.__ELAB_API;
+      try {
+        setCurrentExperiment(null);
+        if (api?.clearAll) api.clearAll();
+        try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
+      } catch { /* noop */ }
+    }
+  }, []);
   useEffect(() => {
     try { localStorage.setItem('elab-lavagna-volume', String(currentVolume)); } catch {}
   }, [currentVolume]);
@@ -473,6 +673,17 @@ export default function LavagnaShell() {
       if (api && !apiReadyRef.current) {
         apiReadyRef.current = true;
         clearInterval(check); // Stop polling once API is found
+
+        // iter 26 Bug 2 EXIT HASH NAV restore: re-load last expId on mount
+        // so docente returning to Lavagna sees the experiment + drawing bucket
+        // intact (saved via handleMenuOpen on exit). NOT applied if user already
+        // started a fresh experiment (currentExperiment !== null at restore time).
+        try {
+          const savedExpId = localStorage.getItem('elab-lavagna-last-expId');
+          if (savedExpId && !currentExperiment && api.loadExperiment) {
+            api.loadExperiment(savedExpId);
+          }
+        } catch { /* localStorage quota OR private mode */ }
 
         // Listen for experiment changes
         api.on?.('experimentChange', (data) => {
@@ -638,10 +849,20 @@ export default function LavagnaShell() {
   }, [isPlaying]);
 
   const handleMenuOpen = useCallback(() => {
+    // iter 26 Bug 2 EXIT HASH NAV fix (Andrea iter 19 PM mandate):
+    // Save current expId to localStorage before exiting Lavagna so re-entry
+    // restores the experiment + drawing bucket. Without this, drawings persisted
+    // to elab-drawing-<expId> become orphaned when DrawingOverlay mounts with null.
     if (typeof window !== 'undefined') {
+      try {
+        const expId = currentExperiment?.id;
+        if (expId) {
+          localStorage.setItem('elab-lavagna-last-expId', String(expId));
+        }
+      } catch { /* localStorage quota OR private mode */ }
       window.location.hash = '#tutor';
     }
-  }, []);
+  }, [currentExperiment]);
 
   const handlePickerOpen = useCallback(() => setPickerOpen(true), []);
   const handlePickerClose = useCallback(() => setPickerOpen(false), []);
@@ -732,6 +953,63 @@ export default function LavagnaShell() {
     }
   }, []);
 
+  // ── Sprint S iter 2 Task B — Capitolo Picker + Percorso Capitolo View ──
+  const handleCapitoliOpen = useCallback(() => {
+    setCapitoloPickerOpen(true);
+  }, []);
+
+  const handleCapitoliClose = useCallback(() => {
+    setCapitoloPickerOpen(false);
+  }, []);
+
+  const handleCapitoloSelect = useCallback((capId) => {
+    setActiveCapitoloId(capId);
+    setCapitoloPickerOpen(false);
+    // Detect volume from capitolo for VolumeViewer alignment
+    try {
+      const cap = getCapitolo(capId);
+      if (cap?.volume) setCurrentVolume(cap.volume);
+    } catch (err) {
+      logger.warn('[Lavagna] getCapitolo failed:', err?.message || err);
+    }
+  }, []);
+
+  const handlePercorsoCapitoloClose = useCallback(() => {
+    setActiveCapitoloId(null);
+  }, []);
+
+  // VolumeCitation onClick wired → opens VolumeViewer at vol/page (lazy-loaded already)
+  const handleCitationClick = useCallback(({ volume, page }) => {
+    if (typeof volume === 'number' && volume >= 1 && volume <= 3) {
+      setCurrentVolume(volume);
+    }
+    if (typeof page === 'number' && page > 0) {
+      setCurrentVolumePage(page);
+    }
+    setVolumeOpen(true);
+  }, []);
+
+  // Resolve Capitolo object from id (memoized)
+  const activeCapitolo = useMemo(() => {
+    if (!activeCapitoloId) return null;
+    try {
+      return getCapitolo(activeCapitoloId);
+    } catch (err) {
+      logger.warn('[Lavagna] getCapitolo lookup failed:', err?.message || err);
+      return null;
+    }
+  }, [activeCapitoloId]);
+
+  // Capitoli full list for picker (memoized)
+  const allCapitoli = useMemo(() => {
+    try {
+      return listAllCapitoli();
+    } catch (err) {
+      logger.warn('[Lavagna] listAllCapitoli failed:', err?.message || err);
+      return [];
+    }
+  }, []);
+
   // Clear volume context when viewer closes
   useEffect(() => {
     if (!volumeOpen) {
@@ -768,21 +1046,21 @@ export default function LavagnaShell() {
   }, [videoOpen, videoMinimized]);
 
   // ── Fumetto Report open (Regola 0: riuso UnlimReport existing system) ──
-  const handleFumettoOpen = useCallback(async () => {
+  // iter 35 fix Bug 5: SYNC handler preserva user-gesture chain (async breaks window.open browser popup policy).
+  // openReportWindow + showToast static-imported = call in same tick come click event.
+  const handleFumettoOpen = useCallback(() => {
     try {
-      const mod = await import('../unlim/UnlimReport');
       const expId = currentExperiment?.id || null;
-      const result = mod.openReportWindow(expId);
+      const result = openReportWindow(expId);
       // Feedback UX: avoid silent failure that was masking "nothing happens" bug
-      const toast = await import('../common/Toast').catch(() => null);
-      if (result === 'no-session') {
-        toast?.showToast?.('Nessuna sessione salvata. Fai almeno un esperimento prima di generare il Fumetto.', 'info');
-      } else if (result === 'no-content') {
-        toast?.showToast?.('La sessione corrente non ha ancora contenuto. Interagisci con UNLIM o completa un esperimento.', 'info');
-      } else if (result === 'error') {
-        toast?.showToast?.('Errore nella generazione del Fumetto. Riprova.', 'error');
+      if (result === 'error') {
+        showToastSync?.('Errore nella generazione del Fumetto. Riprova.', 'error');
       } else if (result === 'downloaded') {
-        toast?.showToast?.('Fumetto scaricato come file HTML (popup bloccato dal browser).', 'success');
+        showToastSync?.('Fumetto scaricato come file HTML (popup bloccato dal browser).', 'success');
+      } else if (result === 'downloaded-stub') {
+        showToastSync?.('Fumetto avviato (sessione vuota): completate un esperimento per arricchirlo.', 'info');
+      } else if (result === 'ok-stub') {
+        showToastSync?.('Fumetto aperto: completate un esperimento per arricchirlo coi dettagli.', 'info');
       }
     } catch (err) {
       logger.warn('[Fumetto] Unable to open report window:', err?.message || err);
@@ -810,6 +1088,33 @@ export default function LavagnaShell() {
       <h1 className="visually-hidden">
         {experimentName ? `Lavagna ELAB — ${experimentName}` : 'Lavagna ELAB'}
       </h1>
+      {/* iter 38 Atom A11 — mic permission nudge (self-managed visibility).
+          Returns null se permesso 'granted' o se docente ha cliccato "Più tardi".
+          onGrant: avvia warm-up wake word IMMEDIATAMENTE così LavagnaShell
+          successivo .startWakeWordListener() trova permission cached. */}
+      <Suspense fallback={null}>
+        <MicPermissionNudge
+          onGrant={() => {
+            // Pre-warm wake word: idempotente (modulo singleton). Se già
+            // attivo via useEffect lavagna sotto, è no-op.
+            if (typeof window !== 'undefined' && isWakeWordSupported()) {
+              try {
+                startWakeWordListener({
+                  onWake: () => { /* listener lavagna sotto sovrascrive callbacks reali */ },
+                  onCommand: () => { /* idem */ },
+                });
+              } catch { /* best effort */ }
+            }
+          }}
+        />
+      </Suspense>
+      {/* iter 38 Atom A12 — PWA update prompt. Toast plurale "Ragazzi…"
+          appare quando vite-plugin-pwa segnala onNeedRefresh (registerType:
+          'prompt'). Self-managed: needRefresh flag interno; component
+          returns null fino a SW update. */}
+      <Suspense fallback={null}>
+        <UpdatePrompt autoReloadSeconds={5} />
+      </Suspense>
       <AppHeader
         experimentName={experimentName}
         totalSteps={totalSteps}
@@ -821,6 +1126,8 @@ export default function LavagnaShell() {
         videoOpen={videoOpen}
         onVolumeToggle={toggleVolume}
         volumeOpen={volumeOpen}
+        onCapitoliOpen={handleCapitoliOpen}
+        capitoliOpen={capitoloPickerOpen || !!activeCapitoloId}
         onPercorsoToggle={() => {
           // Open UNLIM with Percorso tab instead of separate panel
           if (galileoOpen && unlimTab === 'percorso') {
@@ -844,6 +1151,11 @@ export default function LavagnaShell() {
       <div className={css.body}>
         {/* === LAVAGNA VIEW (simulatore + pannelli) === */}
         <div className={css.lavagnaView} style={{ display: activeTab === 'lavagna' ? 'contents' : 'none' }}>
+          {/* ADR-025 iter 26 — Modalità switch 4 modes canonical (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso) */}
+          <div className={css.modalitaSwitchSlot} data-testid="modalita-switch-slot">
+            <ModalitaSwitch activeMode={modalita} onModeChange={handleModalitaChange} />
+          </div>
+
           {/* Left panel — quick component palette (hidden in Libero/sandbox: solo canvas pulito) */}
           {hasExperiment && buildMode !== 'sandbox' && (
             <RetractablePanel
@@ -949,6 +1261,96 @@ export default function LavagnaShell() {
           onMinimize={() => setVideoMinimized(true)}
           onRestore={() => setVideoMinimized(false)}
         />
+
+        {/* Sprint S iter 2 Task B — CapitoloPicker overlay (modal) */}
+        {capitoloPickerOpen && (
+          <div
+            className={css.capitoloPickerOverlay}
+            data-testid="capitolo-picker-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Selezione capitolo"
+            onClick={(e) => {
+              // Click backdrop closes picker; clicks inside content do not
+              if (e.target === e.currentTarget) handleCapitoliClose();
+            }}
+          >
+            <div className={css.capitoloPickerContent}>
+              <button
+                type="button"
+                className={css.capitoloPickerClose}
+                onClick={handleCapitoliClose}
+                aria-label="Chiudi selezione capitolo"
+              >
+                ×
+              </button>
+              <ErrorBoundary>
+                <Suspense fallback={<div className={css.loading}><span>Caricamento capitoli...</span></div>}>
+                  <CapitoloPicker
+                    capitoli={allCapitoli}
+                    volume={currentVolume}
+                    onVolumeChange={setCurrentVolume}
+                    onSelectCapitolo={handleCapitoloSelect}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
+          </div>
+        )}
+
+        {/* Sprint S iter 2 Task B — PercorsoCapitoloView overlay (side panel) */}
+        {activeCapitoloId && (
+          <div
+            className={css.percorsoCapitoloOverlay}
+            data-testid="percorso-capitolo-view"
+          >
+            <ErrorBoundary>
+              <Suspense fallback={<div className={css.loading}><span>Caricamento capitolo...</span></div>}>
+                <PercorsoCapitoloView
+                  capitolo={activeCapitolo}
+                  onClose={handlePercorsoCapitoloClose}
+                  onCitationClick={handleCitationClick}
+                />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+        )}
+
+        {/* Atom A5 iter 36 — Passo Passo: LessonReader in resizable/draggable FloatingWindow.
+             Principio Zero: se nessun esperimento caricato, empty state plurale + kit reference.
+             Z-index 10001 > UNLIM panel (lavagna/FloatingWindow maximized = 10000). */}
+        {modalita === 'passo-passo' && (
+          <FloatingWindowCommon
+            title="Passo Passo"
+            initialPosition={{ x: 100, y: 100 }}
+            initialSize={{ width: 480, height: 600 }}
+            minSize={{ width: 320, height: 400 }}
+            resizable
+            draggable
+            zIndex={10001}
+            onClose={() => setModalita('percorso')}
+          >
+            {!activeLessonId ? (
+              <div style={{
+                padding: 32, textAlign: 'center', color: 'var(--elab-hex-737373)',
+                fontFamily: "'Open Sans', sans-serif", fontSize: 16, lineHeight: 1.6,
+              }}>
+                <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 12 }}>
+                  Ragazzi, scegliete un esperimento dalla lista
+                </p>
+                <p style={{ fontSize: 15 }}>
+                  Aprite il kit ELAB e trovate l&apos;esperimento nel volume.
+                </p>
+              </div>
+            ) : (
+              <LessonReader
+                lessonId={activeLessonId}
+                currentExperimentId={currentExperiment?.id}
+                onExperimentSelect={handleLessonExperimentSelect}
+              />
+            )}
+          </FloatingWindowCommon>
+        )}
       </div>
 
       {/* Bottom panel — placeholder for code/serial (simulator handles its own) */}
@@ -971,7 +1373,7 @@ export default function LavagnaShell() {
 
       {/* Tool feedback toast */}
       {toolToast && (
-        <div role="status" aria-live="polite" style={{ position: 'fixed', bottom: 120, left: '50%', transform: 'translateX(-50%)', background: '#E8941C', color: '#fff', padding: '10px 20px', borderRadius: 10, fontSize: 15, fontWeight: 600, fontFamily: 'var(--font-sans)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)', zIndex: 9999, pointerEvents: 'none' }}>
+        <div role="status" aria-live="polite" style={{ position: 'fixed', bottom: 120, left: '50%', transform: 'translateX(-50%)', background: 'var(--elab-orange)', color: '#fff', padding: '10px 20px', borderRadius: 10, fontSize: 15, fontWeight: 600, fontFamily: 'var(--font-sans)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)', zIndex: 9999, pointerEvents: 'none' }}>
           {toolToast}
         </div>
       )}

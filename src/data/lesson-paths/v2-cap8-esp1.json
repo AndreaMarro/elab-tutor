@@ -78,7 +78,7 @@
       "diodo",
       "fototransistor"
     ],
-    "note": "Cap 8 Vol 2 — MOSFET N-channel come interruttore, Gate controlla Drain-Source."
+    "note": "Cap 8 Vol 2 — MOSFET N-channel come interruttore, Gate regola Drain-Source."
   },
   "prerequisites": [
     "v2-cap7-esp4"
@@ -93,8 +93,8 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Benvenuti al Capitolo 8! Oggi incontriamo un componente nuovo e speciale: il MOSFET. È un interruttore, ma non lo si preme con le dita. Si controlla con la tensione!",
-      "teacher_tip": "Mostra fisicamente un MOSFET (se disponibile): 'Ha 3 gambe: Gate, Drain e Source. Il Gate è il controllo. Drain e Source sono i due terminali che si collegano o si scollegano.' Fai vedere la differenza con un pulsante meccanico.",
+      "teacher_message": "Ragazzi, benvenuti al Capitolo 8! Oggi incontriamo un componente nuovo e speciale: il MOSFET. È un interruttore, ma non lo si preme con le dita. Si regola con la tensione!",
+      "teacher_tip": "Mostra fisicamente un MOSFET (se disponibile): 'Ha 3 gambe: Gate, Drain e Source. Il Gate è il controllo. Drain e Source sono i due terminali che si collegano o si scollegano.' Fate vedere la differenza con un pulsante meccanico.",
       "components_list": "Ti servono: 1 breadboard mezza, 1 batteria 9V, 1 MOSFET N-channel (3 gambe), 1 resistore 470Ω, 1 LED rosso, fili.",
       "class_hook": "Avete mai pensato che un interruttore potesse accendersi da solo, senza che nessuno lo tocchi? Il MOSFET lo fa! È controllato dalla tensione elettrica, non dalle dita.",
       "action_tags": [],
@@ -113,8 +113,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito MOSFET come interruttore con LED",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito MOSFET come interruttore con LED",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -199,7 +199,7 @@
         },
         {
           "mistake": "Pensare che il MOSFET si controlli con la corrente come un pulsante",
-          "teacher_response": "Il MOSFET si controlla con la TENSIONE al Gate, non con la corrente! Il Gate ha un'impedenza altissima: quasi nessuna corrente entra nel Gate. Basta la tensione!",
+          "teacher_response": "Il MOSFET si regola con la TENSIONE al Gate, non con la corrente! Il Gate ha un'impedenza altissima: quasi nessuna corrente entra nel Gate. Basta la tensione!",
           "analogy": null
         }
       ]
@@ -208,7 +208,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play: il LED si accende perché il Gate è a 9V. Ora stacca il filo verde dal Gate: il LED si spegne immediatamente! Il MOSFET è davvero un interruttore controllato dalla tensione.",
+      "teacher_message": "Premete Play: il LED si accende perché il Gate è a 9V. Ora stacca il filo verde dal Gate: il LED si spegne immediatamente! Il MOSFET è davvero un interruttore controllato dalla tensione.",
       "teacher_tip": "Evidenzia il Gate e il filo verde. 'Questo è il segreto del MOSFET: basta cambiare la tensione al Gate per aprire o chiudere il percorso Drain-Source!' Fallo provare agli studenti: Gate ON, Gate OFF.",
       "components_list": null,
       "class_hook": null,
@@ -219,7 +219,7 @@
         "[AZIONE:highlight:r1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Gate a 9V → LED acceso. Gate scollegato → LED spento. Il MOSFET è un interruttore elettronico: la tensione al Gate controlla il flusso di corrente tra Drain e Source.",
+      "observation_prompt": "Gate a 9V → LED acceso. Gate scollegato → LED spento. Il MOSFET è un interruttore elettronico: la tensione al Gate regola il flusso di corrente tra Drain e Source.",
       "analogies": [
         {
           "concept": "cancello_elettronico",
@@ -243,10 +243,10 @@
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Il MOSFET è un interruttore elettronico a 3 pin: Gate, Drain, Source. La tensione al Gate controlla se la corrente passa da Drain a Source. Gate alto = LED acceso. Gate basso o scollegato = LED spento!",
+      "summary_for_class": "Il MOSFET è un interruttore elettronico a 3 pin: Gate, Drain, Source. La tensione al Gate regola se la corrente passa da Drain a Source. Gate alto = LED acceso. Gate basso o scollegato = LED spento!",
       "concepts_learned": [
         "MOSFET N-channel come interruttore",
-        "Gate controlla Drain-Source",
+        "Gate regola Drain-Source",
         "tensione al Gate apre il canale",
         "differenza tra interruttore meccanico ed elettronico"
       ],
@@ -255,7 +255,7 @@
   ],
   "assessment_invisible": [
     "Se nomina correttamente Gate, Drain, Source → comprensione della struttura",
-    "Se spiega che il Gate si controlla con la tensione → comprensione del principio",
+    "Se spiega che il Gate si regola con la tensione → comprensione del principio",
     "Se prevede correttamente lo stato del LED con Gate ON/OFF → applicazione logica"
   ],
   "session_save": {

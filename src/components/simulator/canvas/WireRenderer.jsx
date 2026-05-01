@@ -1168,7 +1168,7 @@ const WireRenderer = ({
           if (electronViewEnabled) {
             // ── ELECTRON VIEW: Enhanced particle system ──
             // More particles, glow effect, color by magnitude thresholds
-            const evColor = mag > 50 ? '#F44336' : mag > 5 ? '#FF9800' : '#FFD54F';
+            const evColor = mag > 50 ? 'var(--elab-hex-f44336)' : mag > 5 ? 'var(--elab-hex-ff9800)' : 'var(--elab-hex-ffd54f)';
             const evParticleCount = Math.min(12, Math.max(3, Math.round(mag / 8)));
             const evRadius = mag > 50 ? 2.5 : mag > 5 ? 2.0 : 1.6;
             const evDuration = duration * 0.8; // slightly faster for drama
@@ -1208,7 +1208,7 @@ const WireRenderer = ({
                         )}
                       </circle>
                       {/* Bright center dot */}
-                      <circle r={evRadius * 0.4} fill="#FFFFFF" opacity="0.7">
+                      <circle r={evRadius * 0.4} fill="var(--elab-hex-ffffff)" opacity="0.7">
                         <animateMotion
                           path={dir < 0 ? reversePath : path}
                           dur={`${evDuration}s`}

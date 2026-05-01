@@ -10,8 +10,8 @@
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: var(--color-bg, #FFFFFF);
-  border-top: 1px solid var(--color-border, #E5E5EA);
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
   z-index: 1001;
 }
@@ -36,25 +36,25 @@
 
 .micBtn {
   composes: circleBtn;
-  background: var(--color-bg-tertiary, #ECECF1);
-  color: var(--color-text-secondary, #6B6B80);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
 }
 
 .micBtnActive {
   composes: circleBtn;
-  background: var(--color-danger, #DC2626);
+  background: var(--color-danger);
   color: #fff;
 }
 
 .ttsBtn {
   composes: circleBtn;
-  background: var(--color-bg-tertiary, #ECECF1);
-  color: #595959;
+  background: var(--color-bg-tertiary);
+  color: #595959; /* palette */
 }
 
 .ttsBtnActive {
   composes: circleBtn;
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary);
   color: #fff;
 }
 
@@ -62,20 +62,20 @@
   flex: 1;
   height: 44px;
   padding: 0 16px;
-  border: 2px solid var(--color-border, #E5E5EA);
+  border: 2px solid var(--color-border);
   border-radius: var(--radius-full, 9999px);
   font-size: var(--font-size-lg, 18px);
   font-family: var(--font-sans);
-  color: var(--color-text, #1A1A2E);
-  background: var(--color-bg-secondary, #F7F7F8);
+  color: var(--color-text);
+  background: var(--color-bg-secondary);
   outline: none;
   transition: border-color 0.2s ease;
 }
 
 .reportBtn {
   composes: circleBtn;
-  background: var(--color-bg-tertiary, #ECECF1);
-  color: var(--color-text-secondary, #6B6B80);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
 }
 
 .reportBtn:disabled {
@@ -84,13 +84,13 @@
 
 .sendBtn {
   composes: circleBtn;
-  background: var(--color-bg-tertiary, #ECECF1);
-  color: var(--color-text-tertiary, #6B6B78);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-tertiary);
 }
 
 .sendBtnActive {
   composes: circleBtn;
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary);
   color: #fff;
   cursor: pointer;
 }
@@ -106,8 +106,8 @@
   position: absolute;
   bottom: calc(100% + 8px);
   right: 0;
-  background: var(--color-bg, #FFFFFF);
-  border: 1px solid var(--color-border, #E5E5EA);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md, 10px);
   box-shadow: var(--shadow-lg, 0 10px 20px rgba(0, 0, 0, 0.07));
   padding: 4px;
@@ -125,7 +125,7 @@
   border: none;
   border-radius: var(--radius-sm, 6px);
   background: transparent;
-  color: var(--color-text, #1A1A2E);
+  color: var(--color-text);
   font-size: 14px;
   font-family: var(--font-sans);
   font-weight: 500;
@@ -135,7 +135,7 @@
 }
 
 .menuItem:hover {
-  background: var(--color-bg-secondary, #F7F7F8);
+  background: var(--color-bg-secondary);
 }
 
 @keyframes menuFadeIn {

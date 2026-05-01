@@ -17,12 +17,12 @@ const LIME = 'var(--color-accent)';
 const VOL3_RED = 'var(--color-vol3)';
 
 const LED_COLORS = ['red', 'green', 'yellow', 'blue', 'white'];
-const LED_COLOR_HEX = { red: '#EF4444', green: '#22C55E', yellow: '#EAB308', blue: '#3B82F6', white: '#E5E7EB' };
+const LED_COLOR_HEX = { red: '#ef4444', green: '#22c55e', yellow: '#eab308', blue: '#3b82f6', white: '#e5e7eb' }; // palette
 const LED_LABELS = { red: 'Rosso', green: 'Verde', yellow: 'Giallo', blue: 'Blu', white: 'Bianco' };
 
 const WIRE_COLORS = ['green', 'yellow', 'orange', 'red', 'brown', 'black', 'white', 'blue', 'purple', 'gray'];
 // Hex values MUST match Wire.jsx WIRE_COLORS (source of truth for rendering)
-const WIRE_COLOR_HEX = { green: '#16A34A', yellow: '#CA8A04', orange: '#EA580C', red: '#DC2626', brown: '#795548', black: '#1A1A1A', white: '#D4D4D4', blue: '#2563EB', purple: '#9333EA', gray: '#9E9E9E' };
+const WIRE_COLOR_HEX = { green: '#16a34a', yellow: '#ca8a04', orange: '#ea580c', red: '#dc2626', brown: '#795548', black: '#1a1a1a', white: '#d4d4d4', blue: '#2563eb', purple: '#9333ea', gray: '#9e9e9e' }; // palette
 const WIRE_LABELS = { green: 'Verde', yellow: 'Giallo', orange: 'Arancione', red: 'Rosso', brown: 'Marrone', black: 'Nero', white: 'Bianco', blue: 'Blu', purple: 'Viola', gray: 'Grigio' };
 
 const COMP_NAMES = {

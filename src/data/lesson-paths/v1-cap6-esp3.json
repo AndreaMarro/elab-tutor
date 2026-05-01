@@ -102,7 +102,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
       "teacher_tip": "Prepara 3 resistori con valori diversi (220Ω, 470Ω, 1kΩ). NON dire i valori — i ragazzi devono osservare l'effetto sulla luminosità.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 resistori diversi, 1 LED verde, 4 fili.",
       "class_hook": "L'ultima volta abbiamo acceso un LED e scoperto che serve un resistore per proteggerlo. Ma cosa succede se cambiamo il resistore?",
@@ -122,8 +122,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito con resistore 220Ω",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito con resistore 220Ω",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -184,7 +184,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Fai provare le 3 resistenze una alla volta. Chiedi di metterle in ordine dalla più luminosa alla meno luminosa.",
+      "teacher_message": "Fate provare le 3 resistenze una alla volta. Chiedete di metterle in ordine dalla più luminosa alla meno luminosa.",
       "teacher_tip": "NON introdurre formule. L'obiettivo è che scoprano da soli: 'resistenza grande = LED meno luminoso'. Chiedi: 'Secondo voi, perché cambia?'",
       "provocative_question": "Se metto una resistenza grandissima, il LED si spegne del tutto? E se ne metto una piccolissima?",
       "components_list": null,
@@ -194,12 +194,12 @@
       "common_mistakes": [
         {
           "mistake": "Pensa che la resistenza consumi corrente",
-          "teacher_response": "La resistenza non consuma, LIMITA. Come un rubinetto non beve l'acqua, la controlla.",
+          "teacher_response": "La resistenza non consuma, LIMITA. Come un rubinetto non beve l'acqua, la regola.",
           "analogy": null
         },
         {
           "mistake": "Confonde resistenza grande con LED più luminoso",
-          "teacher_response": "Fai riprovare e osservare. 'Resistenza grande = tubo stretto = meno acqua = meno luce'",
+          "teacher_response": "Fate riprovare e osservare. 'Resistenza grande = tubo stretto = meno acqua = meno luce'",
           "analogy": "Come stringere un tubo dell'acqua"
         },
         {
@@ -213,7 +213,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play con ogni resistore e confronta. Con 220Ω il LED è più luminoso, con 1kΩ è più fioco.",
+      "teacher_message": "Premete Play con ogni resistore e confronta. Con 220Ω il LED è più luminoso, con 1kΩ è più fioco.",
       "teacher_tip": "Chiedi ai ragazzi di ordinare le resistenze dalla più luminosa alla meno luminosa. Se lo fanno correttamente, hanno capito!",
       "components_list": null,
       "class_hook": null,

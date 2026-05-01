@@ -8,10 +8,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const COLORS = [
-  { id: 'navy', color: '#1E4D8C', label: 'Blu' },
-  { id: 'lime', color: '#4A7A25', label: 'Verde' },
-  { id: 'red', color: '#E54B3D', label: 'Rosso' },
-  { id: 'black', color: '#1A1A2E', label: 'Nero' },
+  { id: 'navy', color: 'var(--elab-navy)', label: 'Blu' },
+  { id: 'lime', color: 'var(--elab-lime)', label: 'Verde' },
+  { id: 'red', color: 'var(--elab-red)', label: 'Rosso' },
+  { id: 'black', color: 'var(--elab-hex-1a1a2e)', label: 'Nero' },
 ];
 
 const WEIGHTS = [
@@ -59,7 +59,7 @@ const NotesPanel = ({ experimentId, visible, onClose }) => {
 
   if (!visible) return null;
 
-  const selectedColor = COLORS.find(c => c.id === activeColor)?.color || '#1E4D8C';
+  const selectedColor = COLORS.find(c => c.id === activeColor)?.color || 'var(--elab-navy)';
   const selectedWeight = WEIGHTS.find(w => w.id === activeWeight)?.weight || 600;
 
   return (

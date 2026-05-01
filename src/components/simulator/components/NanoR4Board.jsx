@@ -124,23 +124,23 @@ const JACK_Y = 4;
 // ─── Colors (ORDINE 3 + user spec) ────────────────────────────────────────
 
 const PCB_FILL = '#EEEEF5';           // light lavender PCB (ORDINE 1)
-const PCB_FILL_DARK = '#D5D5DF';
-const PCB_FILL_LIGHT = '#F5F5FB';
+const PCB_FILL_DARK = 'var(--elab-hex-d5d5df)';
+const PCB_FILL_LIGHT = 'var(--elab-hex-f5f5fb)';
 const PCB_BORDER = '#1a1a2e';          // dark navy border (ORDINE 1)
 const PAD_GOLD = '#c8a84b';            // gold pads (ORDINE 3)
-const PAD_STROKE = '#8B7430';
+const PAD_STROKE = 'var(--elab-hex-8b7430)';
 const BOARD_BLUE = '#1a3a6e';          // Nano body navy (ORDINE 3)
-const BOARD_BLUE_DARK = '#0D2A52';
-const BOARD_BLUE_LIGHT = '#3A6A9E';
-const HOLE_DARK = '#2A2E33';
+const BOARD_BLUE_DARK = 'var(--elab-hex-0d2a52)';
+const BOARD_BLUE_LIGHT = 'var(--elab-hex-3a6a9e)';
+const HOLE_DARK = 'var(--elab-hex-2a2e33)';
 const CHIP_BLACK = '#111111';          // central chip (ORDINE 3)
 const SILK_DARK = '#1a1a2e';           // silkscreen (matches border)
 const SILK_GRAY = '#333';
-const CONNECTOR_BODY = '#2C2F33';
-const CONNECTOR_DARK = '#1A1C1F';
+const CONNECTOR_BODY = 'var(--elab-hex-2c2f33)';
+const CONNECTOR_DARK = 'var(--elab-hex-1a1c1f)';
 const LED_BLUE = '#4488ff';            // power LED (ORDINE 3)
-const LED_BLUE_GLOW = '#6699ff';
-const SOCKET_BG = '#3A3D42';
+const LED_BLUE_GLOW = 'var(--elab-hex-6699ff)';
+const SOCKET_BG = 'var(--elab-hex-3a3d42)';
 
 // ─── SVG Defs sub-component (gradients, patterns, filters) ───────────
 
@@ -170,40 +170,40 @@ function BoardDefs({ id }) {
 
       {/* Gold metallic gradient for pads */}
       <linearGradient id={`gold-pad-${id}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#E8D06A" />
-        <stop offset="40%" stopColor="#D4B84E" />
-        <stop offset="60%" stopColor="#C8A84B" />
-        <stop offset="100%" stopColor="#9E8235" />
+        <stop offset="0%" stopColor="var(--elab-hex-e8d06a)" />
+        <stop offset="40%" stopColor="var(--elab-hex-d4b84e)" />
+        <stop offset="60%" stopColor="var(--elab-hex-c8a84b)" />
+        <stop offset="100%" stopColor="var(--elab-hex-9e8235)" />
       </linearGradient>
 
       {/* Nano board navy gradient */}
       <linearGradient id={`nano-board-${id}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#2A5A8E" />
+        <stop offset="0%" stopColor="var(--elab-hex-2a5a8e)" />
         <stop offset="30%" stopColor={BOARD_BLUE} />
         <stop offset="100%" stopColor={BOARD_BLUE_DARK} />
       </linearGradient>
 
       {/* Chip gradient (subtle sheen) */}
       <linearGradient id={`chip-grad-${id}`} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#222222" />
+        <stop offset="0%" stopColor="var(--elab-hex-222222)" />
         <stop offset="30%" stopColor={CHIP_BLACK} />
-        <stop offset="70%" stopColor="#0A0A0A" />
-        <stop offset="100%" stopColor="#1A1A1A" />
+        <stop offset="70%" stopColor="var(--elab-hex-0a0a0a)" />
+        <stop offset="100%" stopColor="var(--elab-hex-1a1a1a)" />
       </linearGradient>
 
       {/* USB-C metallic gradient */}
       <linearGradient id={`usb-metal-${id}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#D8DEE4" />
-        <stop offset="30%" stopColor="#C0C6CC" />
-        <stop offset="70%" stopColor="#A8AEB4" />
-        <stop offset="100%" stopColor="#888E96" />
+        <stop offset="0%" stopColor="var(--elab-hex-d8dee4)" />
+        <stop offset="30%" stopColor="var(--elab-hex-c0c6cc)" />
+        <stop offset="70%" stopColor="var(--elab-hex-a8aeb4)" />
+        <stop offset="100%" stopColor="var(--elab-hex-888e96)" />
       </linearGradient>
 
       {/* Drop shadow filter for board depth */}
       <filter id={`board-shadow-${id}`} x="-5%" y="-5%" width="115%" height="120%">
         <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
         <feOffset dx="1.5" dy="2.5" result="offsetBlur" />
-        <feFlood floodColor="#000000" floodOpacity="0.18" result="color" />
+        <feFlood floodColor="var(--elab-hex-000000)" floodOpacity="0.18" result="color" />
         <feComposite in="color" in2="offsetBlur" operator="in" result="shadow" />
         <feMerge>
           <feMergeNode in="shadow" />
@@ -292,8 +292,8 @@ function HeaderPinPad({ pin, stateValue, boardId }) {
 
   const isPower5V = pin.id === '5V' || pin.id === '3V3' || pin.id === 'VIN';
   const isGround = pin.id === 'GND' || pin.id === 'GND_R' || pin.id === 'MINUS';
-  const padColor = isPower5V ? '#E85040' : isGround ? '#333' : `url(#gold-pad-${boardId})`;
-  const padStroke = isPower5V ? '#B53030' : isGround ? '#1A1A1A' : PAD_STROKE;
+  const padColor = isPower5V ? 'var(--elab-hex-e85040)' : isGround ? '#333' : `url(#gold-pad-${boardId})`;
+  const padStroke = isPower5V ? 'var(--elab-hex-b53030)' : isGround ? 'var(--elab-hex-1a1a1a)' : PAD_STROKE;
 
   return (
     <g data-pin={pin.id} className="pin-pad">
@@ -310,15 +310,15 @@ function HeaderPinPad({ pin, stateValue, boardId }) {
       {/* Top highlight for metallic sheen */}
       <rect
         x={pin.x - 1.8} y={pin.y - 2.2} width="3.6" height="1.8" rx="0.5"
-        fill="#FFFFFF" opacity="0.12"
+        fill="var(--elab-hex-ffffff)" opacity="0.12"
       />
       <circle
         cx={pin.x} cy={pin.y} r="1.0"
-        fill={isHigh ? '#F3A500' : HOLE_DARK}
-        stroke={isActive ? '#F5C244' : '#555'}
+        fill={isHigh ? 'var(--elab-hex-f3a500)' : HOLE_DARK}
+        stroke={isActive ? 'var(--elab-hex-f5c244)' : '#555'}
         strokeWidth={isActive ? '0.35' : '0.2'}
       />
-      {isHigh && <circle cx={pin.x} cy={pin.y} r="3.6" fill="#F3C65C" opacity="0.25" />}
+      {isHigh && <circle cx={pin.x} cy={pin.y} r="3.6" fill="var(--elab-hex-f3c65c)" opacity="0.25" />}
       <text
         x={pin.x}
         y={pin.side === 'top' ? pin.y - 4.5 : pin.y + 6.0}
@@ -335,13 +335,13 @@ function HeaderPinPad({ pin, stateValue, boardId }) {
   );
 }
 
-function WingPinPad({ pin, stateValue, boardId }) {
+function WingPinPad({ pin, stateValue, boardId, textCounterRot = 270 }) {
   const isHigh = stateValue === 'HIGH' || stateValue === 1 || stateValue === true;
   const isActive = stateValue !== undefined && stateValue !== null;
 
   const isPowerVCC = pin.id === 'W_VCC1' || pin.id === 'W_VCC2';
   const isPowerGND = pin.id === 'W_GND1' || pin.id === 'W_GND2';
-  const padFill = isPowerVCC ? '#E85040' : isPowerGND ? '#333' : `url(#gold-pad-${boardId})`;
+  const padFill = isPowerVCC ? 'var(--elab-hex-e85040)' : isPowerGND ? '#333' : `url(#gold-pad-${boardId})`;
 
   return (
     <g data-pin={pin.id} className="pin-pad">
@@ -354,15 +354,15 @@ function WingPinPad({ pin, stateValue, boardId }) {
       />
       {/* Metallic highlight */}
       <ellipse cx={pin.x - 0.3} cy={pin.y - 0.6} rx="1.5" ry="1.0"
-        fill="#FFFFFF" opacity="0.1" />
+        fill="var(--elab-hex-ffffff)" opacity="0.1" />
       <circle
         cx={pin.x} cy={pin.y} r="1.0"
-        fill={isHigh ? '#F3A500' : HOLE_DARK}
-        stroke={isActive ? '#F5C244' : '#555'}
+        fill={isHigh ? 'var(--elab-hex-f3a500)' : HOLE_DARK}
+        stroke={isActive ? 'var(--elab-hex-f5c244)' : '#555'}
         strokeWidth="0.2"
       />
-      {isHigh && <circle cx={pin.x} cy={pin.y} r="3.5" fill="#F3C65C" opacity="0.25" />}
-      {/* Label rotated -90° above pin (ORDINE 2) */}
+      {isHigh && <circle cx={pin.x} cy={pin.y} r="3.5" fill="var(--elab-hex-f3c65c)" opacity="0.25" />}
+      {/* Label rotated -90° above pin (ORDINE 2) — iter 13 R1: counter-rotate when parent rotated */}
       <text
         x={pin.x}
         y={pin.y - 5}
@@ -372,7 +372,7 @@ function WingPinPad({ pin, stateValue, boardId }) {
         fill={SILK_DARK}
         opacity="0.9"
         fontWeight="600"
-        transform={`rotate(-90, ${pin.x}, ${pin.y - 5})`}
+        transform={`rotate(${textCounterRot}, ${pin.x}, ${pin.y - 5})`}
       >
         {pin.label}
       </text>
@@ -390,15 +390,15 @@ function NanoSocket() {
         fill="#00000015" />
       {/* Main socket body */}
       <rect x={SOCKET_X} y={SOCKET_Y} width={SOCKET_W} height={SOCKET_H} rx="2"
-        fill={SOCKET_BG} stroke="#2A2D31" strokeWidth="0.8" />
+        fill={SOCKET_BG} stroke="var(--elab-hex-2a2d31)" strokeWidth="0.8" />
       {/* Inner bevel highlight (top edge catches light) */}
       <rect x={SOCKET_X + 0.8} y={SOCKET_Y + 0.5}
         width={SOCKET_W - 1.6} height="1.2" rx="0.6"
-        fill="#FFFFFF" opacity="0.06" />
+        fill="var(--elab-hex-ffffff)" opacity="0.06" />
       {/* Inner bevel shadow (bottom edge) */}
       <rect x={SOCKET_X + 0.8} y={SOCKET_Y + SOCKET_H - 1.5}
         width={SOCKET_W - 1.6} height="1.2" rx="0.6"
-        fill="#000000" opacity="0.15" />
+        fill="var(--elab-hex-000000)" opacity="0.15" />
       {/* Inner border */}
       <rect x={SOCKET_X + 0.8} y={SOCKET_Y + 0.8}
         width={SOCKET_W - 1.6} height={SOCKET_H - 1.6} rx="1.5"
@@ -423,19 +423,19 @@ function UsbConnector({ boardId }) {
         fill="#00000018" />
       {/* Outer shell with metallic gradient */}
       <rect x={USB_X} y={USB_Y} width={USB_W} height={USB_H} rx="1.8"
-        fill={`url(#usb-metal-${boardId})`} stroke="#7A8088" strokeWidth="0.6" />
+        fill={`url(#usb-metal-${boardId})`} stroke="var(--elab-hex-7a8088)" strokeWidth="0.6" />
       {/* Top bevel highlight */}
       <rect x={USB_X + 0.6} y={USB_Y + 0.4} width={USB_W - 1.2} height="1.5" rx="0.8"
-        fill="#FFFFFF" opacity="0.2" />
+        fill="var(--elab-hex-ffffff)" opacity="0.2" />
       {/* Inner recess */}
       <rect x={USB_X + 0.8} y={USB_Y + 1.2} width={USB_W - 1.6} height={USB_H - 2.4} rx="1.0"
-        fill="#888E96" />
+        fill="var(--elab-hex-888e96)" />
       {/* Port opening */}
       <rect x={USB_X + 1.8} y={USB_Y + 2.0} width={USB_W - 3.6} height={USB_H - 4.0} rx="0.6"
-        fill="#1A1E22" />
+        fill="var(--elab-hex-1a1e22)" />
       {/* Inner tongue (USB-C has center tongue) */}
       <rect x={USB_X + 2.2} y={USB_Y + 2.6} width={USB_W - 4.4} height={USB_H - 5.2} rx="0.3"
-        fill="#555D65" />
+        fill="var(--elab-hex-555d65)" />
     </g>
   );
 }
@@ -460,14 +460,14 @@ function NanoModule({ leds, running, onReset, boardId }) {
         fill={`url(#nano-board-${boardId})`} stroke={BOARD_BLUE_DARK} strokeWidth="0.6" />
       {/* Top edge highlight */}
       <rect x={x + 1} y={y + 0.4} width={w - 2} height="1.5" rx="0.8"
-        fill="#FFFFFF" opacity="0.08" />
+        fill="var(--elab-hex-ffffff)" opacity="0.08" />
       {/* Bottom edge shadow */}
       <rect x={x + 1} y={y + h - 1.5} width={w - 2} height="1.2" rx="0.6"
-        fill="#000000" opacity="0.12" />
+        fill="var(--elab-hex-000000)" opacity="0.12" />
 
       {/* MCU — RA4M1 (ORDINE 3 — chip gradient) */}
       <rect x={x + 30} y={y + 3} width={22} height={h - 6} rx="0.8"
-        fill={`url(#chip-grad-${boardId})`} stroke="#2A2F35" strokeWidth="0.35" />
+        fill={`url(#chip-grad-${boardId})`} stroke="var(--elab-hex-2a2f35)" strokeWidth="0.35" />
       {/* Chip pin legs (left and right edges) */}
       {Array.from({length: 5}, (_, i) => {
         const py = y + 5 + i * ((h - 10) / 4);
@@ -490,7 +490,7 @@ function NanoModule({ leds, running, onReset, boardId }) {
 
       {/* WiFi module — ESP32-S3 */}
       <rect x={x + 60} y={y + 4} width={12} height={h - 8} rx="0.6"
-        fill="#B0B8C0" stroke="#7C8893" strokeWidth="0.25" />
+        fill="var(--elab-hex-b0b8c0)" stroke="var(--elab-hex-7c8893)" strokeWidth="0.25" />
       <text x={x + 66} y={cy - 0.5}
         textAnchor="middle" fontSize="0.8" fill="#555" fontFamily="Arial, sans-serif">
         ESP32
@@ -502,7 +502,7 @@ function NanoModule({ leds, running, onReset, boardId }) {
 
       {/* Crystal oscillator */}
       <rect x={x + 10} y={cy - 4} width={5} height={8} rx="0.6"
-        fill="#C4CCD3" stroke="#7C8893" strokeWidth="0.2" />
+        fill="var(--elab-hex-c4ccd3)" stroke="var(--elab-hex-7c8893)" strokeWidth="0.2" />
 
       {/* Voltage regulator */}
       <rect x={x + 80} y={cy - 4} width={5} height={8} rx="0.4"
@@ -511,50 +511,50 @@ function NanoModule({ leds, running, onReset, boardId }) {
       {/* Capacitors */}
       {[-3, 0, 3].map((dy, i) => (
         <rect key={`cap-${i}`} x={x + 55} y={cy + dy - 0.5} width={2} height={1} rx="0.2"
-          fill="#A08860" stroke="#806840" strokeWidth="0.12" opacity="0.7" />
+          fill="var(--elab-hex-a08860)" stroke="var(--elab-hex-806840)" strokeWidth="0.12" opacity="0.7" />
       ))}
 
       {/* Reset button */}
       <g style={{ cursor: 'pointer' }} onClick={() => onReset && onReset({ action: 'reset' })}>
         <rect x={x + 22} y={cy - 2} width="4" height="4" rx="0.5"
-          fill="#C7CCD2" stroke="#7B838D" strokeWidth="0.3" />
+          fill="var(--elab-hex-c7ccd2)" stroke="var(--elab-hex-7b838d)" strokeWidth="0.3" />
         <circle cx={x + 24} cy={cy} r="1.0"
-          fill="#9DA5AD" stroke="#666E77" strokeWidth="0.2" />
+          fill="var(--elab-hex-9da5ad)" stroke="var(--elab-hex-666e77)" strokeWidth="0.2" />
       </g>
 
       {/* LEDs */}
       <g>
         <circle cx={x + 4} cy={y + 4} r="0.8"
-          fill={power ? '#49D35C' : '#2B5A34'} />
-        {power && <circle cx={x + 4} cy={y + 4} r="2" fill="#6DFF85" opacity="0.25" />}
-        <text x={x + 7} y={y + 4.5} fontSize="0.7" fill="#0D6B40"
+          fill={power ? 'var(--elab-hex-49d35c)' : 'var(--elab-hex-2b5a34)'} />
+        {power && <circle cx={x + 4} cy={y + 4} r="2" fill="var(--elab-hex-6dff85)" opacity="0.25" />}
+        <text x={x + 7} y={y + 4.5} fontSize="0.7" fill="var(--elab-hex-0d6b40)"
           fontFamily="Fira Code, monospace" fontWeight="600">PWR</text>
 
         <circle cx={x + w - 6} cy={y + 4} r="0.8"
-          fill={d13 ? '#F3A500' : '#6A4A1F'} />
-        {d13 && <circle cx={x + w - 6} cy={y + 4} r="2" fill="#F9C75D" opacity="0.25" />}
-        <text x={x + w - 9} y={y + 4.5} fontSize="0.7" fill="#553C1A"
+          fill={d13 ? 'var(--elab-hex-f3a500)' : 'var(--elab-hex-6a4a1f)'} />
+        {d13 && <circle cx={x + w - 6} cy={y + 4} r="2" fill="var(--elab-hex-f9c75d)" opacity="0.25" />}
+        <text x={x + w - 9} y={y + 4.5} fontSize="0.7" fill="var(--elab-hex-553c1a)"
           fontFamily="Fira Code, monospace" fontWeight="600">L</text>
 
         <circle cx={x + 4} cy={y + h - 4} r="0.6"
-          fill={tx ? '#F28F2D' : '#6A4A1F'} />
-        <text x={x + 6.5} y={y + h - 3.5} fontSize="0.6" fill="#6A4A1F"
+          fill={tx ? 'var(--elab-hex-f28f2d)' : 'var(--elab-hex-6a4a1f)'} />
+        <text x={x + 6.5} y={y + h - 3.5} fontSize="0.6" fill="var(--elab-hex-6a4a1f)"
           fontFamily="Fira Code, monospace">TX</text>
 
         <circle cx={x + 14} cy={y + h - 4} r="0.6"
-          fill={rx ? '#F28F2D' : '#6A4A1F'} />
-        <text x={x + 16.5} y={y + h - 3.5} fontSize="0.6" fill="#6A4A1F"
+          fill={rx ? 'var(--elab-hex-f28f2d)' : 'var(--elab-hex-6a4a1f)'} />
+        <text x={x + 16.5} y={y + h - 3.5} fontSize="0.6" fill="var(--elab-hex-6a4a1f)"
           fontFamily="Fira Code, monospace">RX</text>
       </g>
 
       {/* Board text */}
       <text x={x + w / 2} y={y + 4.5} textAnchor="middle"
-        fontSize="2.2" fill="#DDF4FA" fontFamily="Oswald, Arial, sans-serif"
+        fontSize="2.2" fill="var(--elab-hex-ddf4fa)" fontFamily="Oswald, Arial, sans-serif"
         fontWeight="700" letterSpacing="0.6">
         ARDUINO
       </text>
       <text x={x + w / 2} y={y + 7.5} textAnchor="middle"
-        fontSize="1.3" fill="#B0DCE8" fontFamily="Oswald, Arial, sans-serif"
+        fontSize="1.3" fill="var(--elab-hex-b0dce8)" fontFamily="Oswald, Arial, sans-serif"
         fontWeight="500" letterSpacing="0.4">
         NANO R4
       </text>
@@ -577,7 +577,7 @@ function NanoModule({ leds, running, onReset, boardId }) {
 
 // ─── Sub-component: Wing breakout connector (ORDINE 2 — on upper arm) ─────
 
-function WingConnector({ wingPins, pinStateFor, boardId }) {
+function WingConnector({ wingPins, pinStateFor, boardId, textCounterRot = 270 }) {
   const midX = WING_PIN_START_X + (WING_PINS.length - 1) * WING_PIN_PITCH / 2;
 
   return (
@@ -589,7 +589,7 @@ function WingConnector({ wingPins, pinStateFor, boardId }) {
         BREAKOUT PINS
       </text>
       {wingPins.map((pin) => (
-        <WingPinPad key={pin.id} pin={pin} stateValue={pinStateFor(pin)} boardId={boardId} />
+        <WingPinPad key={pin.id} pin={pin} stateValue={pinStateFor(pin)} boardId={boardId} textCounterRot={textCounterRot} />
       ))}
     </g>
   );
@@ -602,24 +602,24 @@ function PowerSection() {
     <g>
       {/* Green 2-pole screw terminal (20x14px, fill #2d6a2d) */}
       <rect x={JACK_X} y={JACK_Y} width="20" height="14" rx="1"
-        fill="#2d6a2d" stroke="#1E4D1E" strokeWidth="0.6" />
+        fill="var(--elab-hex-2d6a2d)" stroke="var(--elab-hex-1e4d1e)" strokeWidth="0.6" />
       {/* Top edge highlight */}
       <rect x={JACK_X + 0.5} y={JACK_Y + 0.5} width="19" height="1.5" rx="0.5"
-        fill="#3A8A3A" opacity="0.5" />
+        fill="var(--elab-hex-3a8a3a)" opacity="0.5" />
       {/* Screw hole 1 */}
       <circle cx={JACK_X + 6} cy={JACK_Y + 8} r="3"
-        fill="#1E4D1E" stroke="#0F3A0F" strokeWidth="0.3" />
+        fill="var(--elab-hex-1e4d1e)" stroke="var(--elab-hex-0f3a0f)" strokeWidth="0.3" />
       <circle cx={JACK_X + 6} cy={JACK_Y + 8} r="1.2"
-        fill="#8A8A8A" stroke="#666" strokeWidth="0.2" />
+        fill="var(--elab-hex-8a8a8a)" stroke="#666" strokeWidth="0.2" />
       <line x1={JACK_X + 5} y1={JACK_Y + 8} x2={JACK_X + 7} y2={JACK_Y + 8}
         stroke="#555" strokeWidth="0.4" />
       <line x1={JACK_X + 6} y1={JACK_Y + 7} x2={JACK_X + 6} y2={JACK_Y + 9}
         stroke="#555" strokeWidth="0.4" />
       {/* Screw hole 2 */}
       <circle cx={JACK_X + 14} cy={JACK_Y + 8} r="3"
-        fill="#1E4D1E" stroke="#0F3A0F" strokeWidth="0.3" />
+        fill="var(--elab-hex-1e4d1e)" stroke="var(--elab-hex-0f3a0f)" strokeWidth="0.3" />
       <circle cx={JACK_X + 14} cy={JACK_Y + 8} r="1.2"
-        fill="#8A8A8A" stroke="#666" strokeWidth="0.2" />
+        fill="var(--elab-hex-8a8a8a)" stroke="#666" strokeWidth="0.2" />
       <line x1={JACK_X + 13} y1={JACK_Y + 8} x2={JACK_X + 15} y2={JACK_Y + 8}
         stroke="#555" strokeWidth="0.4" />
       <line x1={JACK_X + 14} y1={JACK_Y + 7} x2={JACK_X + 14} y2={JACK_Y + 9}
@@ -636,27 +636,27 @@ function PowerSection() {
 
 // ─── Sub-component: Board silkscreen & PCB details ────────────────────────
 
-function BoardSilkscreen() {
+function BoardSilkscreen({ textCounterRot = 270 }) {
   return (
     <g>
-      {/* ORDINE 4 — ELAB branding on semicircle, rotated -90° */}
+      {/* ORDINE 4 — ELAB branding on semicircle — iter 13 R1: counter-rotate when parent rotated */}
       {/* Positioned at x=8 to stay on exposed PCB (socket starts at x=14) */}
       <text
         x={8} y={BOARD_H / 2}
         textAnchor="middle" dominantBaseline="central"
         fontSize="12" fill={PCB_BORDER} fontFamily="Oswald, Arial, sans-serif"
         fontWeight="800" letterSpacing="1.5"
-        transform={`rotate(-90, 8, ${BOARD_H / 2})`}
+        transform={`rotate(${textCounterRot}, 8, ${BOARD_H / 2})`}
       >
         ELAB
       </text>
-      {/* "Electronics Laboratory" — rotated -90° on far-left semicircle */}
+      {/* "Electronics Laboratory" — iter 13 R1: counter-rotate when parent rotated */}
       <text
         x={3} y={BOARD_H / 2}
         textAnchor="middle" dominantBaseline="central"
         fontSize="4" fill={SILK_GRAY} fontFamily="Fira Code, monospace"
         fontWeight="400"
-        transform={`rotate(-90, 3, ${BOARD_H / 2})`}
+        transform={`rotate(${textCounterRot}, 3, ${BOARD_H / 2})`}
       >
         Electronics Laboratory
       </text>
@@ -700,8 +700,8 @@ function BoardSilkscreen() {
       {/* Board status LEDs (decorative, on PCB surface) */}
       {[[SOCKET_X + SOCKET_W + 6, ARM_H + 8], [SOCKET_X + SOCKET_W + 6, NOTCH_BOT - 8]].map(([lx, ly], i) => (
         <g key={`brd-led-${i}`}>
-          <circle cx={lx} cy={ly} r="1.2" fill="#3498db" opacity="0.5" />
-          <circle cx={lx} cy={ly} r="0.5" fill="#5DADE2" />
+          <circle cx={lx} cy={ly} r="1.2" fill="var(--elab-hex-3498db)" opacity="0.5" />
+          <circle cx={lx} cy={ly} r="0.5" fill="var(--elab-hex-5dade2)" />
         </g>
       ))}
     </g>
@@ -718,8 +718,8 @@ function PowerLed({ on }) {
     <g>
       <circle cx={ledX} cy={ledY} r="2.5" fill={PCB_BORDER} opacity="0.3" />
       <circle cx={ledX} cy={ledY} r="2.0"
-        fill={on ? LED_BLUE : '#1E3A6E'}
-        stroke="#0D2A52"
+        fill={on ? LED_BLUE : 'var(--elab-hex-1e3a6e)'}
+        stroke="var(--elab-hex-0d2a52)"
         strokeWidth="0.4"
       />
       {on && (
@@ -748,7 +748,7 @@ function SwitchOnOff() {
         fill="#444" stroke="#333" strokeWidth="0.3" />
       {/* Slider track */}
       <rect x={sx + 0.8} y={sy + 0.8} width="8.4" height="3.4" rx="0.6"
-        fill="#1A1C1F" />
+        fill="var(--elab-hex-1a1c1f)" />
       {/* Slider knob (ON position) */}
       <rect x={sx + 5} y={sy + 1} width="3.8" height="3" rx="0.4"
         fill="#888" stroke="#666" strokeWidth="0.2" />
@@ -774,32 +774,54 @@ function TabPads({ boardId }) {
       {/* + pad (gold gradient, r=3) */}
       <circle cx={tabCX - 6 + 0.3} cy={tabCY + 0.4} r="3" fill="#00000012" />
       <circle cx={tabCX - 6} cy={tabCY} r="3"
-        fill={`url(#gold-pad-${boardId})`} stroke="#D32F2F" strokeWidth="0.5" />
-      <ellipse cx={tabCX - 6.3} cy={tabCY - 0.8} rx="1.8" ry="1.2" fill="#FFFFFF" opacity="0.1" />
+        fill={`url(#gold-pad-${boardId})`} stroke="var(--elab-hex-d32f2f)" strokeWidth="0.5" />
+      <ellipse cx={tabCX - 6.3} cy={tabCY - 0.8} rx="1.8" ry="1.2" fill="var(--elab-hex-ffffff)" opacity="0.1" />
       <circle cx={tabCX - 6} cy={tabCY} r="1.2" fill={HOLE_DARK} />
       <text x={tabCX - 6} y={tabCY - 5} textAnchor="middle"
-        fontSize="5" fill="#D32F2F" fontFamily="Arial, sans-serif" fontWeight="700">+</text>
+        fontSize="5" fill="var(--elab-hex-d32f2f)" fontFamily="Arial, sans-serif" fontWeight="700">+</text>
 
       {/* - pad (gold gradient, r=3) */}
       <circle cx={tabCX + 6 + 0.3} cy={tabCY + 0.4} r="3" fill="#00000012" />
       <circle cx={tabCX + 6} cy={tabCY} r="3"
-        fill={`url(#gold-pad-${boardId})`} stroke="#212121" strokeWidth="0.5" />
-      <ellipse cx={tabCX + 5.7} cy={tabCY - 0.8} rx="1.8" ry="1.2" fill="#FFFFFF" opacity="0.1" />
+        fill={`url(#gold-pad-${boardId})`} stroke="var(--elab-hex-212121)" strokeWidth="0.5" />
+      <ellipse cx={tabCX + 5.7} cy={tabCY - 0.8} rx="1.8" ry="1.2" fill="var(--elab-hex-ffffff)" opacity="0.1" />
       <circle cx={tabCX + 6} cy={tabCY} r="1.2" fill={HOLE_DARK} />
       <text x={tabCX + 6} y={tabCY - 5} textAnchor="middle"
-        fontSize="5" fill="#212121" fontFamily="Arial, sans-serif" fontWeight="700">{'\u2212'}</text>
+        fontSize="5" fill="var(--elab-hex-212121)" fontFamily="Arial, sans-serif" fontWeight="700">{'\u2212'}</text>
     </g>
   );
 }
 
 // ─── Main component ──────────────────────────────────────────────────────
 
-const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }) => {
+/**
+ * iter 13 R1: counter-rotate text labels when parent component rotates.
+ * Pin labels are hardcoded `rotate(-90, ...)` so when parent rotates 90/180/270
+ * the text becomes upside-down or sideways. Counter-rotate computes the text
+ * delta angle so absolute screen orientation stays readable.
+ *
+ * @param {number} parentRot — parent rotation in degrees (0/90/180/270)
+ * @returns {number} text counter-rotation degrees
+ */
+function computeCounterRotation(parentRot) {
+  const p = ((Number(parentRot) || 0) % 360 + 360) % 360;
+  // Original text angle is -90 (pin labels) — we want absolute screen angle = -90
+  // text_absolute = parent_rot + text_local => text_local = -90 - parent_rot
+  // Snap to nearest 90 to avoid float precision issues
+  const target = -90 - p;
+  // Normalize 0..359
+  return ((target % 360) + 360) % 360;
+}
+
+const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id, parentRotation = 0 }) => {
   const { running = false, pinStates = {}, leds = {} } = state;
 
   const topPins = useMemo(() => computePinRow(TOP_PINS, 'top'), []);
   const bottomPins = useMemo(() => computePinRow(BOTTOM_PINS, 'bottom'), []);
   const wingPins = useMemo(() => computeWingPinPositions(), []);
+
+  // iter 13 R1: parentRotation prop for text counter-rotate (pin labels + ELAB branding)
+  const textCounterRot = computeCounterRotation(parentRotation);
 
   const pinStateFor = (pin) => {
     if (pinStates[pin.id] !== undefined) return pinStates[pin.id];
@@ -823,7 +845,7 @@ const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract
       </g>
 
       {/* PCB edge bevel — inner highlight for 3D edge */}
-      <path d={BOARD_PATH} fill="none" stroke="#FFFFFF" strokeWidth="0.5" opacity="0.2"
+      <path d={BOARD_PATH} fill="none" stroke="var(--elab-hex-ffffff)" strokeWidth="0.5" opacity="0.2"
         transform="translate(0.3, 0.3)" />
 
       {/* USB-C connector (outside clipPath — protrudes from semicircle) */}
@@ -846,14 +868,14 @@ const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract
           <HeaderPinPad key={pin.id} pin={pin} stateValue={pinStateFor(pin)} boardId={id} />
         ))}
 
-        {/* Wing breakout connector (ORDINE 2 — on upper arm) */}
-        <WingConnector wingPins={wingPins} pinStateFor={pinStateFor} boardId={id} />
+        {/* Wing breakout connector (ORDINE 2 — on upper arm) — iter 13 R1 textCounterRot threaded */}
+        <WingConnector wingPins={wingPins} pinStateFor={pinStateFor} boardId={id} textCounterRot={textCounterRot} />
 
         {/* VIN morsettiera (ORDINE 5 — far left of arm) */}
         <PowerSection />
 
-        {/* PCB silkscreen & details (ORDINE 4 — branding) */}
-        <BoardSilkscreen />
+        {/* PCB silkscreen & details (ORDINE 4 — branding) — iter 13 R1 textCounterRot threaded */}
+        <BoardSilkscreen textCounterRot={textCounterRot} />
 
         {/* Power LED (ORDINE 3 — blue with glow) */}
         <PowerLed on={leds.power || running} />
@@ -868,7 +890,7 @@ const NanoR4Board = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract
 
       {/* Running indicator */}
       {running && (
-        <circle cx={BOARD_W - 10} cy={12} r="1.3" fill="#89E86F">
+        <circle cx={BOARD_W - 10} cy={12} r="1.3" fill="var(--elab-hex-89e86f)">
           <animate attributeName="opacity" values="0.3;1;0.3" dur="1.4s" repeatCount="indefinite" />
         </circle>
       )}

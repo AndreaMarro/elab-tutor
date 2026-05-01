@@ -12,8 +12,8 @@
 import React, { useRef, useCallback } from 'react';
 import ovStyles from '../overlays.module.css';
 
-const NAVY = '#1E4D8C';
-const LIME = '#4A7A25';
+const NAVY = 'var(--elab-navy)';
+const LIME = 'var(--elab-lime)';
 
 const PotOverlay = React.memo(function PotOverlay({ value, onValueChange, onClose }) {
   const knobRef = useRef(null);
@@ -65,14 +65,14 @@ const PotOverlay = React.memo(function PotOverlay({ value, onValueChange, onClos
         >
           <svg width="180" height="180" viewBox="0 0 180 180">
             {/* Track arc */}
-            <circle cx="90" cy="90" r="72" fill="none" stroke="#D4C9B0" strokeWidth="8"
+            <circle cx="90" cy="90" r="72" fill="none" stroke="var(--elab-hex-d4c9b0)" strokeWidth="8"
               strokeDasharray="339 120" strokeDashoffset="-60" strokeLinecap="round" />
             {/* Filled arc */}
             <circle cx="90" cy="90" r="72" fill="none" stroke={LIME} strokeWidth="8"
               strokeDasharray={`${value * 339} ${459 - value * 339}`}
               strokeDashoffset="-60" strokeLinecap="round" />
             {/* Knob body */}
-            <circle cx="90" cy="90" r="42" fill="#fff" stroke="#D4C9B0" strokeWidth="2" />
+            <circle cx="90" cy="90" r="42" fill="#fff" stroke="var(--elab-hex-d4c9b0)" strokeWidth="2" />
             {/* Indicator line */}
             <line
               x1="90" y1="90"

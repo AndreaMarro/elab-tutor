@@ -192,9 +192,9 @@ export default function useMergedExperiment({
     for (const conn of connections) {
       const wireColor = conn.color || 'gray';
       const colorMap = {
-        red: '#E53935', black: '#333', blue: '#1E88E5', green: '#43A047',
-        yellow: '#FDD835', orange: '#FB8C00', white: '#CCC', gray: '#737373',
-        purple: '#8E24AA', brown: '#6D4C41',
+        red: 'var(--elab-hex-e53935)', black: '#333', blue: 'var(--elab-hex-1e88e5)', green: 'var(--elab-hex-43a047)',
+        yellow: 'var(--elab-hex-fdd835)', orange: 'var(--elab-hex-fb8c00)', white: '#CCC', gray: 'var(--elab-hex-737373)',
+        purple: 'var(--elab-hex-8e24aa)', brown: 'var(--elab-hex-6d4c41)',
       };
       const holeColor = colorMap[wireColor] || wireColor;
 

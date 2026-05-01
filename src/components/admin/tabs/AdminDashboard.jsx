@@ -16,19 +16,19 @@ import {
 // COSTANTI COLORI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
-    success: '#4A7A25',
-    warning: '#F59E0B',
-    danger: '#EF4444',
-    info: '#06B6D4',
-    purple: '#8B5CF6',
-    pink: '#EC4899',
-    teal: '#14B8A6',
-    bg: '#F0F4F8',
+    primary: 'var(--elab-navy)',
+    success: 'var(--elab-lime)',
+    warning: '#f59e0b', // palette
+    danger: '#ef4444', // palette
+    info: '#06b6d4', // palette
+    purple: '#8b5cf6', // palette
+    pink: '#ec4899', // palette
+    teal: '#14b8a6', // palette
+    bg: '#f0f4f8', // palette
     cardBg: 'white',
     text: '#333',
-    textMuted: '#737373',
-    border: '#e0e0e0',
+    textMuted: '#737373', // palette
+    border: '#e0e0e0', // palette
 };
 
 // ============================================
@@ -75,7 +75,7 @@ const QUICK_ACTIONS = [
     { label: 'Gestisci Corsi',   icon: <IcoCourses />, tabId: 'corsi',       color: COLORS.purple },
     { label: 'Gestisci Waitlist', icon: <IcoWaitlist />, tabId: 'waitlist',    color: COLORS.pink },
     { label: 'Verifica Licenze', icon: <IcoLicenses />, tabId: 'licenze',     color: COLORS.info },
-    { label: 'Gestionale ERP',   icon: <IcoGestionale />, tabId: 'gestionale',  color: '#0F172A' },
+    { label: 'Gestionale ERP',   icon: <IcoGestionale />, tabId: 'gestionale',  color: '#0f172a' }, // palette
 ];
 
 // ============================================
@@ -150,7 +150,7 @@ function KPISkeletonLoader({ isMobile }) {
                 alignItems: 'center',
                 gap: isMobile ? '12px' : '16px',
                 boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                borderLeft: '4px solid #E5E5EA',
+                borderLeft: '4px solid #e5e5ea', // palette
                 minWidth: 0,
             }}>
                 {/* Icon placeholder */}
@@ -158,7 +158,7 @@ function KPISkeletonLoader({ isMobile }) {
                     width: isMobile ? '40px' : '48px',
                     height: isMobile ? '40px' : '48px',
                     borderRadius: '12px',
-                    background: '#E5E5EA',
+                    background: '#e5e5ea', // palette
                     flexShrink: 0,
                     animation: `elab-skeleton-pulse 1.6s ease-in-out ${delay}s infinite`,
                 }} />
@@ -169,7 +169,7 @@ function KPISkeletonLoader({ isMobile }) {
                         height: isMobile ? '22px' : '28px',
                         width: '55%',
                         borderRadius: '6px',
-                        background: '#E5E5EA',
+                        background: '#e5e5ea', // palette
                         animation: `elab-skeleton-pulse 1.6s ease-in-out ${delay}s infinite`,
                     }} />
                     {/* Label line */}
@@ -177,7 +177,7 @@ function KPISkeletonLoader({ isMobile }) {
                         height: '12px',
                         width: '75%',
                         borderRadius: '4px',
-                        background: '#E5E5EA',
+                        background: '#e5e5ea', // palette
                         animation: `elab-skeleton-pulse 1.6s ease-in-out ${delay + 0.1}s infinite`,
                     }} />
                 </div>
@@ -186,11 +186,11 @@ function KPISkeletonLoader({ isMobile }) {
     }
 
     return (
-        <div style={{ background: '#F0F4F8' }}>
+        <div style={{ background: '#f0f4f8' }}>
             <style>{`
                 @keyframes elab-skeleton-pulse {
-                    0%, 100% { background-color: #E5E5EA; }
-                    50%       { background-color: #F0F0F5; }
+                    0%, 100% { background-color: #e5e5ea; } // palette
+                    50%       { background-color: #f0f0f5; } // palette
                 }
             `}</style>
 
@@ -226,7 +226,7 @@ function KPISkeletonLoader({ isMobile }) {
                             height: '16px',
                             width: '40%',
                             borderRadius: '6px',
-                            background: '#E5E5EA',
+                            background: '#e5e5ea', // palette
                             marginBottom: '18px',
                             animation: `elab-skeleton-pulse 1.6s ease-in-out ${idx * 0.12}s infinite`,
                         }} />
@@ -236,7 +236,7 @@ function KPISkeletonLoader({ isMobile }) {
                                 height: '12px',
                                 width: `${70 - r * 10}%`,
                                 borderRadius: '4px',
-                                background: '#E5E5EA',
+                                background: '#e5e5ea', // palette
                                 marginBottom: '10px',
                                 animation: `elab-skeleton-pulse 1.6s ease-in-out ${idx * 0.12 + r * 0.08}s infinite`,
                             }} />
@@ -256,7 +256,7 @@ function KPISkeletonLoader({ isMobile }) {
                     height: '16px',
                     width: '30%',
                     borderRadius: '6px',
-                    background: '#E5E5EA',
+                    background: '#e5e5ea', // palette
                     marginBottom: '18px',
                     animation: 'elab-skeleton-pulse 1.6s ease-in-out 0s infinite',
                 }} />
@@ -264,7 +264,7 @@ function KPISkeletonLoader({ isMobile }) {
                     <div key={r} style={{
                         height: '38px',
                         borderRadius: '8px',
-                        background: '#E5E5EA',
+                        background: '#e5e5ea', // palette
                         marginBottom: r === 0 ? '10px' : 0,
                         animation: `elab-skeleton-pulse 1.6s ease-in-out ${r * 0.1}s infinite`,
                     }} />
@@ -278,24 +278,24 @@ function BackendWarningBanner({ isMobile }) {
     return (
         <div style={{
             padding: isMobile ? '20px 16px' : '28px 24px',
-            background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+            background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', // palette
             borderRadius: '14px',
             border: `1px solid ${COLORS.warning}40`,
             marginBottom: '20px',
             textAlign: 'center',
         }}>
-            <div style={{ fontSize: '36px', marginBottom: '10px', color: '#92400E', fontWeight: 700 }}>{'\u26A0'}</div>
+            <div style={{ fontSize: '36px', marginBottom: '10px', color: '#92400e', fontWeight: 700 }}>{'\u26A0'}</div>
             <div style={{
                 fontWeight: '700',
                 fontSize: isMobile ? '15px' : '17px',
-                color: '#92400E',
+                color: '#92400e', // palette
                 marginBottom: '6px',
             }}>
                 Server backend non raggiungibile
             </div>
             <div style={{
                 fontSize: isMobile ? '13px' : '14px',
-                color: '#A16207',
+                color: '#a16207', // palette
                 lineHeight: '1.6',
                 maxWidth: '480px',
                 margin: '0 auto 16px',
@@ -307,7 +307,7 @@ function BackendWarningBanner({ isMobile }) {
                 display: 'inline-flex', alignItems: 'center', gap: '6px',
                 padding: '6px 14px', borderRadius: '8px',
                 background: 'rgba(146, 64, 14, 0.08)', fontSize: '14px',
-                color: '#92400E', fontWeight: '600',
+                color: '#92400e', fontWeight: '600', // palette
             }}>
                 I dati si aggiorneranno automaticamente quando il backend sarà online
             </div>
@@ -322,26 +322,26 @@ function ErrorCard({ message, isMobile }) {
             alignItems: 'flex-start',
             gap: isMobile ? '10px' : '14px',
             padding: isMobile ? '14px' : '18px 22px',
-            background: '#FEF2F2',
+            background: '#fef2f2', // palette
             borderRadius: '12px',
-            border: '1px solid #FECACA',
+            border: '1px solid #fecaca', // palette
             marginBottom: '20px',
         }}>
-            <span style={{ fontSize: isMobile ? '20px' : '24px', flexShrink: 0, lineHeight: 1, color: '#DC2626', fontWeight: 700 }}>
+            <span style={{ fontSize: isMobile ? '20px' : '24px', flexShrink: 0, lineHeight: 1, color: '#dc2626', fontWeight: 700 }}>
                 {'\u2716'}
             </span>
             <div style={{ flex: 1 }}>
                 <div style={{
                     fontWeight: '700',
                     fontSize: isMobile ? '13px' : '14px',
-                    color: '#991B1B',
+                    color: '#991b1b', // palette
                     marginBottom: '4px',
                 }}>
                     Errore di connessione
                 </div>
                 <div style={{
                     fontSize: isMobile ? '12px' : '13px',
-                    color: '#B91C1C',
+                    color: '#b91c1c', // palette
                     lineHeight: '1.5',
                 }}>
                     {message || 'Impossibile recuperare i dati. Controlla la connessione e lo stato del server backend.'}
@@ -607,7 +607,7 @@ function SystemStatusCard({ isMobile }) {
                     disabled={checking}
                     style={{
                         padding: '6px 12px',
-                        background: checking ? '#f0f0f0' : `${COLORS.primary}10`,
+                        background: checking ? '#f0f0f0' : `${COLORS.primary}10`, // palette
                         color: checking ? COLORS.textMuted : COLORS.primary,
                         border: 'none',
                         borderRadius: '6px',
@@ -638,7 +638,7 @@ function SystemStatusCard({ isMobile }) {
                             alignItems: 'center',
                             gap: '10px',
                             padding: '10px 14px',
-                            background: svc.ok ? '#F0FDF4' : '#FEF2F2',
+                            background: svc.ok ? '#f0fdf4' : '#fef2f2', // palette
                             borderRadius: '8px',
                         }}>
                             <div style={{
@@ -663,7 +663,7 @@ function SystemStatusCard({ isMobile }) {
                             <div style={{
                                 fontSize: '14px',
                                 fontWeight: '500',
-                                color: svc.ok ? '#16A34A' : '#DC2626',
+                                color: svc.ok ? '#16a34a' : '#dc2626', // palette
                             }}>
                                 {svc.detail}
                             </div>
@@ -789,7 +789,7 @@ export default function AdminDashboard({ isMobile, onNavigate }) {
                     disabled={loading}
                     style={{
                         padding: isMobile ? '8px 14px' : '10px 20px',
-                        background: loading ? '#f0f0f0' : COLORS.primary,
+                        background: loading ? '#f0f0f0' : COLORS.primary, // palette
                         color: loading ? COLORS.textMuted : 'white',
                         border: 'none',
                         borderRadius: '10px',

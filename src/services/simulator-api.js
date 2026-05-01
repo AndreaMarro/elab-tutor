@@ -331,11 +331,11 @@ function createPublicAPI() {
       const expName = exp.title ? `Esperimento: "${exp.title}". ` : '';
       const simStatus = state.isSimulating ? 'Simulazione in corso. ' : '';
       const compText = compList.length > 0
-        ? `Componenti: ${compList.join(', ')}.`
-        : 'Nessun componente attivo.';
+        ? `Componenti sul kit fisico ELAB (breadboard): ${compList.join(', ')}.`
+        : 'Nessun componente attivo sul kit.';
       const wireText = conns.length > 0
-        ? ` Fili: ${conns.length} collegament${conns.length > 1 ? 'i' : 'o'}.`
-        : ' Nessun filo collegato.';
+        ? ` Fili: ${conns.length} collegament${conns.length > 1 ? 'i' : 'o'} sulla breadboard.`
+        : ' Nessun filo collegato sulla breadboard.';
 
       return `${expName}${simStatus}${compText}${wireText}`;
     },
@@ -865,17 +865,29 @@ function createPublicAPI() {
       },
 
       /**
-       * Request fumetto export. Event-stub: UnlimReport listener wires Day 38+.
-       * @param {{sessionData?:object, format?:'pdf'|'png'}} opts
+       * Request fumetto export. Iter 13 atom F3: also dispatches voice-style
+       * 'createReport' event so LavagnaShell handler opens the report window
+       * even if the consumer of __ELAB_API has no fumettoExportRequested
+       * listener wired (preserves Day 38+ event-stub path while making the
+       * action work end-to-end via the existing LavagnaShell wire-up).
+       * @param {{sessionData?:object, format?:'pdf'|'png', preview?:boolean}} opts
        */
       exportFumetto(opts = {}) {
         const payload = {
           sessionData: opts.sessionData || {},
           format: opts.format || 'pdf',
+          preview: !!opts.preview,
           requestedAt: new Date().toISOString(),
         };
         emitSimulatorEvent('fumettoExportRequested', payload);
-        return { ok: true, format: payload.format };
+        if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+          try {
+            window.dispatchEvent(new CustomEvent('elab-voice-command', {
+              detail: { action: 'createReport', source: 'exportFumetto' },
+            }));
+          } catch { /* silent */ }
+        }
+        return { ok: true, format: payload.format, preview: payload.preview };
       },
 
       /**

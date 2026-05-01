@@ -96,7 +96,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida finale del capitolo! Pulsante → Manopola → Resistore → LED. Una catena di controllo completa!",
+      "teacher_message": "Ragazzi, sfida finale del capitolo! Pulsante → Manopola → Resistore → LED. Una catena di controllo completa!",
       "teacher_tip": "Il pulsante è il primo stadio (ON/OFF), il potenziometro è il secondo (regolazione), il resistore è la protezione. Tre ruoli diversi in catena.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED rosso, 9 fili.",
       "class_hook": "Abbiamo scoperto il pulsante (ON/OFF) e la manopola (regolazione). Cosa succede se li mettiamo INSIEME in catena?",
@@ -116,8 +116,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito sfida pulsante + pot + LED",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito sfida pulsante + pot + LED",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -202,7 +202,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Premi il pulsante E gira la manopola. Cosa succede se giri al massimo ma NON premi? E se premi ma la manopola è al minimo?",
+      "teacher_message": "Premete il pulsante E girate la manopola. Cosa succede se giri al massimo ma NON premete? E se premete ma la manopola è al minimo?",
       "teacher_tip": "Se non premono il pulsante, nessuna corrente passa — la manopola non fa niente. Questo è il concetto chiave della catena di controllo.",
       "provocative_question": "Cosa cambia se metti il pulsante DOPO la manopola invece che prima? Il circuito funziona lo stesso?",
       "components_list": null,
@@ -212,7 +212,7 @@
       "common_mistakes": [
         {
           "mistake": "Il LED non si accende",
-          "teacher_response": "Controlla la catena completa: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED.",
+          "teacher_response": "Regola la catena completa: il positivo deve passare dal pulsante, poi al potenziometro, poi al resistore, poi al LED.",
           "analogy": null
         },
         {
@@ -226,7 +226,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play: pulsante = ON/OFF, manopola = luminosità, resistore = protezione. Ogni componente ha un ruolo preciso!",
+      "teacher_message": "Premete Play: pulsante = ON/OFF, manopola = luminosità, resistore = protezione. Ogni componente ha un ruolo preciso!",
       "teacher_tip": "Evidenzia ogni componente uno alla volta. Chiedi: 'Quale toglieresti se potessi toglierne solo uno?' (il resistore NO — il LED si brucia!)",
       "components_list": null,
       "class_hook": null,

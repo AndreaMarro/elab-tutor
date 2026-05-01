@@ -13,11 +13,11 @@ import React from 'react';
 import { registerComponent } from './registry';
 
 const LED_COLORS = {
-  red:    { body: '#CC2222', tint: '#FF3333', dark: '#991111', vf: 1.8 },
-  green:  { body: '#4CAF50', tint: '#81C784', dark: '#2E7D32', vf: 2.0 },
-  blue:   { body: '#1565C0', tint: '#1976D2', dark: '#0D47A1', vf: 3.0 },
-  yellow: { body: '#E6A800', tint: '#FFEE58', dark: '#C17A00', vf: 2.0 },
-  white:  { body: '#BDBDBD', tint: '#F5F5F5', dark: '#757575', vf: 3.2 },
+  red:    { body: 'var(--elab-hex-cc2222)', tint: 'var(--elab-hex-ff3333)', dark: 'var(--elab-hex-991111)', vf: 1.8 },
+  green:  { body: 'var(--elab-hex-4caf50)', tint: 'var(--elab-hex-81c784)', dark: 'var(--elab-hex-2e7d32)', vf: 2.0 },
+  blue:   { body: 'var(--elab-hex-1565c0)', tint: 'var(--elab-hex-1976d2)', dark: 'var(--elab-hex-0d47a1)', vf: 3.0 },
+  yellow: { body: 'var(--elab-hex-e6a800)', tint: 'var(--elab-hex-ffee58)', dark: 'var(--elab-hex-c17a00)', vf: 2.0 },
+  white:  { body: 'var(--elab-hex-bdbdbd)', tint: 'var(--elab-hex-f5f5f5)', dark: 'var(--elab-hex-757575)', vf: 3.2 },
 };
 
 const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color = 'red', id }) => {
@@ -43,15 +43,15 @@ const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color 
          </filter>
          {/* Radial gradient for glass dome effect */}
          <radialGradient id={`${uid}-dome`} cx="35%" cy="30%" r="65%">
-           <stop offset="0%" stopColor={isOn ? '#FFFFFF' : c.tint} stopOpacity={isOn ? 0.6 : 0.3} />
+           <stop offset="0%" stopColor={isOn ? 'var(--elab-hex-ffffff)' : c.tint} stopOpacity={isOn ? 0.6 : 0.3} />
            <stop offset="40%" stopColor={isOn ? c.tint : c.body} />
            <stop offset="100%" stopColor={c.dark} />
          </radialGradient>
          {/* Wire lead gradient for metallic effect */}
          <linearGradient id={`${uid}-wire`} x1="0" y1="0" x2="1" y2="0">
-           <stop offset="0%" stopColor="#B0B0B0" />
-           <stop offset="50%" stopColor="#9E9E9E" />
-           <stop offset="100%" stopColor="#808080" />
+           <stop offset="0%" stopColor="var(--elab-hex-b0b0b0)" />
+           <stop offset="50%" stopColor="var(--elab-hex-9e9e9e)" />
+           <stop offset="100%" stopColor="var(--elab-hex-808080)" />
          </linearGradient>
        </defs>
 
@@ -65,7 +65,7 @@ const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color 
            <circle cx="0" cy="-5" r="24" fill={c.tint} opacity={glowOpacity * 0.20} />
            <circle cx="0" cy="-5" r="16" fill={c.tint} opacity={glowOpacity * 0.35} />
            <circle cx="0" cy="-5" r="10" fill={c.tint} opacity={glowOpacity * 0.52} />
-           <circle cx="0" cy="-5" r="5" fill="#FFFFFF" opacity={glowOpacity * 0.40} />
+           <circle cx="0" cy="-5" r="5" fill="var(--elab-hex-ffffff)" opacity={glowOpacity * 0.40} />
          </g>
        )}
 
@@ -81,7 +81,7 @@ const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color 
        {/* LED dome shadow */}
        <path
          d="M -5.4 0.6 L -5.4 -1.2 A 5.4 8.8 0 0 1 5.4 -1.2 L 5.4 0.6 Z"
-         fill="#000000" opacity="0.08"
+         fill="var(--elab-hex-000000)" opacity="0.08"
        />
 
        {/* LED dome — D-shape with radial gradient for glass look */}
@@ -95,14 +95,14 @@ const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color 
        {isOn && (
          <path
            d="M -3.5 -1.2 A 3.5 6.2 0 0 1 3.5 -1.2 L 3.5 -0.5 L -3.5 -0.5 Z"
-           fill="#FFFFFF" opacity={glowOpacity * 0.55}
+           fill="var(--elab-hex-ffffff)" opacity={glowOpacity * 0.55}
          />
        )}
 
        {/* Glass specular highlight (top-left) */}
        <path
          d="M -4.2 -2 A 4 7 0 0 1 -0.5 -9.2 L -1.8 -8 A 3.2 5.5 0 0 0 -4.2 -2.5 Z"
-         fill="#FFFFFF" opacity={isOn ? 0.28 : 0.18}
+         fill="var(--elab-hex-ffffff)" opacity={isOn ? 0.28 : 0.18}
        />
 
        {/* Small flat base line to show LED sitting on breadboard */}
@@ -112,10 +112,10 @@ const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color 
       {burned && (
          <>
            <path d="M -5.8 0 L -5.8 -1.8 A 5.8 9.4 0 0 1 5.8 -1.8 L 5.8 0 Z"
-             fill="#1A1A1A" opacity={0.88} />
-           <line x1="-5" y1="-8" x2="5" y2="0" stroke="#FF3333" strokeWidth="1.8" strokeLinecap="round" />
-           <line x1="5" y1="-8" x2="-5" y2="0" stroke="#FF3333" strokeWidth="1.8" strokeLinecap="round" />
-          <text x="0" y="-16" textAnchor="middle" fontSize="4.5" fill="#FF3333"
+             fill="var(--elab-hex-1a1a1a)" opacity={0.88} />
+           <line x1="-5" y1="-8" x2="5" y2="0" stroke="var(--elab-hex-ff3333)" strokeWidth="1.8" strokeLinecap="round" />
+           <line x1="5" y1="-8" x2="-5" y2="0" stroke="var(--elab-hex-ff3333)" strokeWidth="1.8" strokeLinecap="round" />
+          <text x="0" y="-16" textAnchor="middle" fontSize="4.5" fill="var(--elab-hex-ff3333)"
             fontFamily="Oswald, sans-serif" fontWeight="700" letterSpacing="0.5">
             BRUCIATO!
           </text>
@@ -125,7 +125,7 @@ const Led = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, color 
       {/* AI tutoring highlight */}
       {highlighted && (
         <rect x="-12" y="-16" width="24" height="46" rx="3"
-          fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="4 2" opacity="0.8">
+          fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="4 2" opacity="0.8">
           <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

@@ -167,12 +167,12 @@ describe('Chapter Map -- Tea Alias Mapping', () => {
       'v3-cap6-esp1', 'v3-cap6-esp2', 'v3-cap6-morse', 'v3-cap6-esp3', 'v3-cap6-esp4', 'v3-cap6-semaforo',
       'v3-cap6-esp5', 'v3-cap6-esp6', 'v3-cap6-esp7',
       'v3-cap7-esp1', 'v3-cap7-esp2', 'v3-cap7-esp3', 'v3-cap7-esp4',
-      'v3-cap7-esp5', 'v3-cap7-esp6', 'v3-cap7-esp7', 'v3-cap7-esp8',
-      'v3-cap8-esp1', 'v3-cap8-esp2', 'v3-cap8-esp3', 'v3-cap8-esp4', 'v3-cap8-esp5',
+      'v3-cap7-esp5', 'v3-cap7-esp6', 'v3-cap7-esp7', 'v3-cap7-esp8', 'v3-cap7-mini',
+      'v3-cap8-esp1', 'v3-cap8-esp2', 'v3-cap8-esp3', 'v3-cap8-esp4', 'v3-cap8-esp5', 'v3-cap8-serial',
       'v3-extra-lcd-hello', 'v3-extra-servo-sweep', 'v3-extra-simon',
     ];
 
-    expect(allIds.length).toBe(92);
+    expect(allIds.length).toBe(94);
 
     allIds.forEach(id => {
       const info = getDisplayInfo(id);

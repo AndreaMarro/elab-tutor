@@ -12,18 +12,18 @@ import { utentiService } from '../../../services/notionService';
 // COSTANTI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
-    success: '#4A7A25',
-    warning: '#F59E0B',
-    danger: '#EF4444',
-    bg: '#F0F4F8',
-    white: '#ffffff',
-    border: '#e0e0e0',
-    lightBorder: '#f0f0f0',
-    text: '#333333',
-    textSecondary: '#666666',
-    textMuted: '#737373',
-    headerBg: '#f8f9fa',
+    primary: 'var(--elab-navy)',
+    success: 'var(--elab-lime)',
+    warning: '#f59e0b', // palette
+    danger: '#ef4444', // palette
+    bg: '#f0f4f8', // palette
+    white: '#ffffff', // palette
+    border: '#e0e0e0', // palette
+    lightBorder: '#f0f0f0', // palette
+    text: '#333333', // palette
+    textSecondary: '#666666', // palette
+    textMuted: '#737373', // palette
+    headerBg: '#f8f9fa', // palette
 };
 
 const PAGE_SIZE = 20;
@@ -87,8 +87,8 @@ function getSubStatusColor(status) {
 }
 
 function getRowBg(stato) {
-    if (stato === 'bannato') return '#fef2f2';
-    if (stato === 'sospeso') return '#fffbeb';
+    if (stato === 'bannato') return '#fef2f2'; // palette
+    if (stato === 'sospeso') return '#fffbeb'; // palette
     return COLORS.white;
 }
 
@@ -612,7 +612,7 @@ export default function AdminUtenti({ isMobile }) {
                                     style={{
                                         ...S.tableRow,
                                         minWidth: '900px',
-                                        background: isEditing ? '#fffbeb' : getRowBg(stato),
+                                        background: isEditing ? '#fffbeb' : getRowBg(stato), // palette
                                         opacity: isSaving ? 0.6 : 1,
                                     }}
                                 >
@@ -625,7 +625,7 @@ export default function AdminUtenti({ isMobile }) {
                                     <span style={{ width: '40px', flexShrink: 0 }}>
                                         <div style={{
                                             ...S.avatar,
-                                            background: ruolo === 'admin' ? COLORS.primary : '#e0e0e0',
+                                            background: ruolo === 'admin' ? COLORS.primary : '#e0e0e0', // palette
                                             color: ruolo === 'admin' ? COLORS.white : COLORS.textSecondary,
                                         }}>
                                             {getInitial(nome)}
@@ -938,8 +938,8 @@ const S = {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '12px 16px',
-        background: '#FEF2F2',
-        border: '1px solid #FECACA',
+        background: '#fef2f2', // palette
+        border: '1px solid #fecaca', // palette
         borderRadius: '8px',
         marginBottom: '16px',
         gap: '12px',
@@ -1111,7 +1111,7 @@ const S = {
         display: 'flex',
         padding: '12px 16px',
         background: COLORS.headerBg,
-        borderBottom: '2px solid #e8e8e8',
+        borderBottom: '2px solid #e8e8e8', // palette
         fontSize: '14px',
         fontWeight: '700',
         color: COLORS.textMuted,
@@ -1169,14 +1169,14 @@ const S = {
         outline: 'none',
         width: '100%',
         boxSizing: 'border-box',
-        background: '#fffbeb',
+        background: '#fffbeb', // palette
         fontFamily: 'inherit',
     },
 
     // Tiny buttons
     tinyBtn: {
         padding: '4px 10px',
-        background: '#f0f0f0',
+        background: '#f0f0f0', // palette
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
@@ -1187,18 +1187,18 @@ const S = {
     },
     tinyBtnSuccess: {
         padding: '4px 10px',
-        background: '#dcfce7',
+        background: '#dcfce7', // palette
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
         fontSize: '14px',
         fontWeight: '600',
-        color: '#16a34a',
+        color: '#16a34a', // palette
         whiteSpace: 'nowrap',
     },
     tinyBtnDanger: {
         padding: '4px 10px',
-        background: '#FEE2E2',
+        background: '#fee2e2', // palette
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
@@ -1211,7 +1211,7 @@ const S = {
     // Primary buttons
     cancelBtn: {
         padding: '8px 18px',
-        background: '#f0f0f0',
+        background: '#f0f0f0', // palette
         border: 'none',
         borderRadius: '6px',
         cursor: 'pointer',

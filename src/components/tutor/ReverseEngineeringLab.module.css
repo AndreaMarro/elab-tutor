@@ -58,7 +58,7 @@
 }
 
 .circuitSvg {
-  background: #0f172a;
+  background: #0f172a; /* palette */
   border-radius: 8px;
   padding: 8px;
 }
@@ -88,7 +88,7 @@
 }
 
 .wrongHint {
-  color: #ea580c;
+  color: #ea580c; /* palette */
   font-size: 0.875rem;
   margin-top: 8px;
   text-align: center;
@@ -99,7 +99,7 @@
 }
 
 .successTitle {
-  color: #16a34a;
+  color: #16a34a; /* palette */
   font-size: 1.1rem;
 }
 

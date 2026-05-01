@@ -21,7 +21,7 @@ export default function TutorTopBar({
     sessionLogLength,
 }) {
     // WCAG AA: sfondo badge con testo bianco ≥ 4.5:1 contrasto
-    const volumeColors = { 1: '#4A7A25', 2: '#C47A0A', 3: '#C43A2D', inventor: '#1E4D8C' };
+    const volumeColors = { 1: 'var(--elab-lime)', 2: '#C47A0A', 3: '#C43A2D', inventor: 'var(--elab-navy)' };
 
     // Build volume label with experiment count
     const getVolumeInfo = () => {
@@ -31,7 +31,7 @@ export default function TutorTopBar({
         }
         const vol = VOLUMES[activeVolume - 1];
         const count = vol?.experiments?.length || 0;
-        return { label: `Volume ${activeVolume}`, count, color: volumeColors[activeVolume] || '#1E4D8C' };
+        return { label: `Volume ${activeVolume}`, count, color: volumeColors[activeVolume] || 'var(--elab-navy)' };
     };
 
     const volInfo = getVolumeInfo();

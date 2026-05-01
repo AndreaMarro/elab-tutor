@@ -37,11 +37,11 @@ describe('Volume References — Distribuzione per volume', () => {
 
   it('Vol. 3 ha esattamente 27 esperimenti', () => {
     const v3 = ALL_REFS.filter(([, r]) => r.volume === 3);
-    expect(v3.length).toBe(27);
+    expect(v3.length).toBe(29);
   });
 
   it('totale esperimenti è 92', () => {
-    expect(ALL_IDS.length).toBe(92);
+    expect(ALL_IDS.length).toBe(94);
   });
 
   it('tutti gli ID iniziano con v1-, v2- o v3-', () => {

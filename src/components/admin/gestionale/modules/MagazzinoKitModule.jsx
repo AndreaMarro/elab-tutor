@@ -11,7 +11,7 @@ import { showToast } from '../../../common/Toast';
 
 const TIPI_MOVIMENTO = ['carico', 'scarico', 'rettifica'];
 const TIPI_LABELS = { carico: 'Carico', scarico: 'Scarico', rettifica: 'Rettifica' };
-const TIPI_COLORS = { carico: '#27ae60', scarico: '#e74c3c', rettifica: '#f39c12' };
+const TIPI_COLORS = { carico: '#27ae60', scarico: '#e74c3c', rettifica: '#f39c12' }; // palette
 
 const emptyProdotto = () => ({
   codice: '', nome: '', categoria: '', descrizione: '', giacenza: 0, giacenzaMinima: 0,
@@ -354,7 +354,7 @@ export default function MagazzinoKitModule({ isMobile }) {
                       <span style={{
                         padding: '4px 10px', borderRadius: 8, fontSize: 14, fontWeight: 600,
                         background: tuttiDisponibili ? '#27ae6022' : '#e74c3c22',
-                        color: tuttiDisponibili ? '#27ae60' : '#e74c3c'
+                        color: tuttiDisponibili ? '#27ae60' : '#e74c3c' // palette
                       }}>{tuttiDisponibili ? 'Assemblabile' : 'Componenti mancanti'}</span>
                     </div>
 

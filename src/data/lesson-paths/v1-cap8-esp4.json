@@ -94,8 +94,8 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi ogni colore ha il suo pulsante! Un pulsante per il rosso, uno per il verde, uno per il blu. Premendo combinazioni si creano 7 colori!",
-      "teacher_tip": "Tre pulsanti separati, tre resistori, un LED RGB. Ogni pulsante controlla un canale indipendente. Il catodo comune va direttamente al negativo.",
+      "teacher_message": "Ragazzi, oggi ogni colore ha il suo pulsante! Un pulsante per il rosso, uno per il verde, uno per il blu. Premendo combinazioni si creano 7 colori!",
+      "teacher_tip": "Tre pulsanti separati, tre resistori, un LED RGB. Ogni pulsante regola un canale indipendente. Il catodo comune va direttamente al negativo.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 pulsanti, 3 resistori 470Ω, 1 LED RGB, 9 fili.",
       "class_hook": "La scorsa volta un solo pulsante faceva il viola. Ma se aveste TRE pulsanti — uno per ogni colore — quanti colori potreste creare?",
       "action_tags": [],
@@ -114,8 +114,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito 3 pulsanti RGB",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito 3 pulsanti RGB",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -212,7 +212,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Prova ogni pulsante singolarmente. Poi prova a premerne due insieme. E tutti e tre?",
+      "teacher_message": "Provate ogni pulsante singolarmente. Poi provate a premerne due insieme. E tutti e tre?",
       "teacher_tip": "Se un colore non si accende, controllare il collegamento tra quel pulsante e il suo resistore, e tra il resistore e il canale RGB corrispondente.",
       "provocative_question": "Con 3 pulsanti che possono essere accesi o spenti, quante combinazioni diverse esistono?",
       "components_list": null,
@@ -231,7 +231,7 @@
           "analogy": "Come le torce colorate: puntale sullo stesso muro e i colori si sommano"
         },
         {
-          "mistake": "Confusione su quale pulsante controlla quale colore",
+          "mistake": "Confusione su quale pulsante regola quale colore",
           "teacher_response": "Segui i fili: ogni pulsante ha un filo colorato che va al suo resistore e poi al canale corrispondente del LED RGB.",
           "analogy": null
         }
@@ -241,7 +241,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e prova le combinazioni: R+G=giallo, R+B=viola, G+B=ciano, R+G+B=bianco!",
+      "teacher_message": "Premete Play e prova le combinazioni: R+G=giallo, R+B=viola, G+B=ciano, R+G+B=bianco!",
       "teacher_tip": "Evidenzia i pulsanti uno alla volta. Chiedi ai ragazzi di prevedere il colore PRIMA di premere la combinazione.",
       "components_list": null,
       "class_hook": null,
@@ -270,7 +270,7 @@
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 5,
-      "teacher_message": "Oggi abbiamo scoperto il controllo indipendente: ogni pulsante controlla un colore, e le combinazioni creano 7 colori diversi!",
+      "teacher_message": "Oggi abbiamo scoperto il controllo indipendente: ogni pulsante regola un colore, e le combinazioni creano 7 colori diversi!",
       "teacher_tip": "Chiedi: 'I pulsanti sono acceso/spento. E se poteste regolare QUANTO è luminoso ogni colore?' Anticipa il prossimo capitolo.",
       "components_list": null,
       "class_hook": null,

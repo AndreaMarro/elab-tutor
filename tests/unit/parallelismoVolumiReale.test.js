@@ -161,11 +161,14 @@ describe('Parallelismo Volumi — il prompt richiede linguaggio classe', () => {
 describe('Parallelismo Volumi — lessonPrepService exports', () => {
   // Static import hoisted to module top avoids dynamic-import contention that
   // caused intermittent 5s timeout in full-suite runs (see ralph-metrics.json
-  // flaky_known entry 2026-04-17). 10s budget is belt-and-suspenders for CI.
+  // flaky_known entry 2026-04-17). Iter 36 Phase 3 close: 10s → 30s belt-and-
+  // suspenders post anti-regression FERREA mandate (M4 16GB cold start variance
+  // + concurrent vitest worker pool saturation can extend dynamic import path).
+  // Test re-failed iter 36 push 4 retry: timeout 10s exceeded under contention.
   it('esporta prepareLesson e getLessonSummary', async () => {
     const mod = await import('../../src/services/lessonPrepService');
     expect(typeof mod.prepareLesson).toBe('function');
     expect(typeof mod.getLessonSummary).toBe('function');
     expect(typeof mod.isLessonPrepCommand).toBe('function');
-  }, 10_000);
+  }, 30_000);
 });

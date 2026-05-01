@@ -378,7 +378,7 @@ const ComponentDrawer = ({
               {isIntro ? (
                 <div style={styles.introText}>
                   <span style={{ fontSize: 22 }}>{'\u{1F9F0}'}</span>
-                  <span>Banco vuoto: breadboard e batteria pronti. Premi <strong>Avanti</strong> per iniziare!</span>
+                  <span>Banco vuoto: breadboard e batteria pronti. Premete <strong>Avanti</strong> per iniziare!</span>
                 </div>
               ) : isComplete ? (
                 /* S86: Completion card with compile+play button */
@@ -390,8 +390,8 @@ const ComponentDrawer = ({
                     </div>
                     <div style={styles.completionSubtitle}>
                       {hasScratch
-                        ? 'Premi Compila e Prova per vedere il risultato!'
-                        : 'Premi \u25B6 Avvia per simulare il circuito.'
+                        ? 'Premete Compila e Provate per vedere il risultato!'
+                        : 'Premete \u25B6 Avvia per simulare il circuito.'
                       }
                     </div>
                   </div>
@@ -483,10 +483,10 @@ const ComponentDrawer = ({
                       style={{
                         ...styles.navBtn,
                         flex: 1,
-                        background: 'var(--color-accent, #4A7A25)',
+                        background: 'var(--color-accent, var(--elab-lime))',
                         color: 'var(--color-text-inverse)',
                         fontWeight: 700,
-                        borderColor: 'var(--color-accent, #4A7A25)',
+                        borderColor: 'var(--color-accent, var(--elab-lime))',
                       }}
                     >
                       {'</>'} Codice
@@ -571,7 +571,7 @@ const styles = {
     fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     flex: 1,
@@ -614,7 +614,7 @@ const styles = {
   collapsedBadgeText: {
     fontSize: 'var(--font-size-sm, 16px)',
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
   },
 
@@ -717,7 +717,7 @@ const styles = {
   stepCounter: {
     fontSize: '16px',
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontFamily: "var(--font-display, 'Oswald', sans-serif)",
     textTransform: 'uppercase',
     letterSpacing: '0.8px',
@@ -768,13 +768,13 @@ const styles = {
 
   scratchHint: {
     fontSize: '16px',
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontStyle: 'normal',
     lineHeight: 1.45,
     padding: '6px 10px',
     background: 'var(--color-primary-light)',
     borderRadius: 'var(--radius-sm, 6px)',
-    borderLeft: '3px solid var(--color-primary, #1E4D8C)',
+    borderLeft: '3px solid var(--color-primary, var(--elab-navy))',
     marginTop: 6,
   },
 
@@ -786,7 +786,7 @@ const styles = {
     padding: '4px 8px',
     background: 'var(--color-accent-light, #E8F5E9)',
     borderRadius: 'var(--radius-sm, 6px)',
-    borderLeft: '3px solid var(--color-accent, #4A7A25)',
+    borderLeft: '3px solid var(--color-accent, var(--elab-lime))',
     marginTop: 4,
   },
 
@@ -818,7 +818,7 @@ const styles = {
   },
   compilePlayBtn: {
     padding: '8px 16px',
-    background: 'var(--color-accent, #4A7A25)',
+    background: 'var(--color-accent, var(--elab-lime))',
     color: 'var(--color-text-inverse, #fff)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',

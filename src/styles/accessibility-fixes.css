@@ -124,7 +124,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary);
   cursor: pointer;
 }
 input[type="range"]::-webkit-slider-runnable-track {
@@ -167,8 +167,8 @@ textarea:focus-visible,
 /* Ensure focus is visible on dark backgrounds */
 .code-editor button:focus-visible,
 .dark-theme button:focus-visible {
-  outline-color: #4A7A25 !important;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 0 4px #4A7A25 !important;
+  outline-color: var(--elab-lime) !important;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 0 4px var(--elab-lime) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════ */
@@ -252,22 +252,22 @@ textarea:focus-visible,
 /* ═══════════════════════════════════════════════════════════════ */
 
 .chat-youtube-link:hover {
-  border-color: var(--color-youtube-red, #FF0000) !important;
+  border-color: var(--color-youtube-red) !important;
   box-shadow: 0 2px 8px rgba(255,0,0,0.1) !important;
 }
 
 .gestionale-field:focus {
-  border-color: #60A5FA !important;
+  border-color: #60A5FA !important; /* palette */
   box-shadow: 0 0 0 3px rgba(96,165,250,0.12) !important;
   outline: none;
 }
 
 .gestionale-field.has-error:not(:focus) {
-  border-color: #EF4444 !important;
+  border-color: #EF4444 !important; /* palette */
 }
 
 .gestionale-table-row:hover {
-  border-color: #60A5FA !important;
+  border-color: #60A5FA !important; /* palette */
   box-shadow: 0 2px 8px rgba(37,99,235,0.08) !important;
 }
 
@@ -312,10 +312,10 @@ textarea:focus-visible,
 
 @media (prefers-contrast: high) {
   :root {
-    --color-text-secondary: #3A3A4B;
-    --color-text-tertiary: #3A3A49; 
-    --color-border: #999999;
-    --color-border-hover: #666666;
+    --color-text-secondary: #3A3A4B; /* palette */
+    --color-text-tertiary: #3A3A49; /* palette */
+    --color-border: #999999; /* palette */
+    --color-border-hover: #666666; /* palette */
   }
   
   .btn {
@@ -355,7 +355,7 @@ textarea:focus-visible,
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .gest-hover-card:hover {
-  border-color: #93C5FD !important;
+  border-color: #93C5FD !important; /* palette */
   box-shadow: 0 2px 10px rgba(37,99,235,0.1) !important;
 }
 

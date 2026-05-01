@@ -95,7 +95,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il motore girava con il pulsante. Come facciamo a sapere se il motore sta davvero girando senza guardarlo? Aggiungiamo una spia luminosa: il LED!",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il motore girava con il pulsante. Come facciamo a sapere se il motore sta davvero girando senza guardarlo? Aggiungiamo una spia luminosa: il LED!",
       "teacher_tip": "Porta l'analogia della cruscotto dell'auto: 'Nell'auto ci sono spie luminose che vi dicono cosa sta succedendo al motore. Oggi costruiamo la nostra spia!' Mostra il LED verde che userete.",
       "components_list": "Ti servono: breadboard mezza, batteria 9V, motore DC, 1 pulsante, 1 resistore 470Ω, 1 LED verde, fili.",
       "class_hook": "Avete mai notato le spie sul cruscotto dell'auto? Una si accende quando il motore è acceso. Oggi costruiamo la nostra spia luminosa per il motore!",
@@ -106,7 +106,7 @@
       "name": "MOSTRA",
       "icon": "🔧",
       "duration_minutes": 10,
-      "teacher_message": "Il LED e il motore sono collegati in parallelo dopo il pulsante. Quando premi, entrambi ricevono tensione: il motore gira E il LED si accende contemporaneamente!",
+      "teacher_message": "Il LED e il motore sono collegati in parallelo dopo il pulsante. Quando premete, entrambi ricevono tensione: il motore gira E il LED si accende contemporaneamente!",
       "teacher_tip": "Spiega il parallelo con semplicità: 'In parallelo, ogni componente ha il suo percorso diretto verso la batteria. La tensione è la stessa per tutti, ma la corrente si divide.' Il resistore da 470Ω è necessario per proteggere il LED (il motore non ne ha bisogno perché ha la sua resistenza interna).",
       "components_list": null,
       "class_hook": null,
@@ -115,8 +115,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta motore DC con pulsante e LED indicatore in parallelo",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate motore DC con pulsante e LED indicatore in parallelo",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -205,7 +205,7 @@
         },
         {
           "mistake": "Il LED non si accende affatto",
-          "teacher_response": "Controlla che il filo di collegamento dal punto comune del pulsante vada sia al motore che al resistore del LED. Se manca questo filo di raccordo, il ramo del LED è aperto!",
+          "teacher_response": "Regola che il filo di collegamento dal punto comune del pulsante vada sia al motore che al resistore del LED. Se manca questo filo di raccordo, il ramo del LED è aperto!",
           "analogy": null
         }
       ]
@@ -214,7 +214,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play, poi premi il pulsante. Guarda: LED verde acceso E motore in rotazione, tutto insieme!",
+      "teacher_message": "Premete Play, poi premete il pulsante. Guardate: LED verde acceso E motore in rotazione, tutto insieme!",
       "teacher_tip": "Evidenzia il LED verde e il motore in parallelo. Mostra come il filo dal pulsante si biforca: un ramo va al motore, un ramo va al resistore del LED. La corrente si divide in due percorsi.",
       "components_list": null,
       "class_hook": null,
@@ -250,7 +250,7 @@
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "LED e motore in parallelo: quando premi il pulsante, entrambi funzionano insieme. Il LED verde è un indicatore visivo — una spia che dice 'il motore sta girando'. In parallelo ogni componente ha la sua strada verso la batteria.",
+      "summary_for_class": "LED e motore in parallelo: quando premete il pulsante, entrambi funzionano insieme. Il LED verde è un indicatore visivo — una spia che dice 'il motore sta girando'. In parallelo ogni componente ha la sua strada verso la batteria.",
       "concepts_learned": [
         "LED come indicatore visivo",
         "componenti in parallelo",

@@ -88,7 +88,7 @@ function CorsoCard({ corso, unlocked, onClick }) {
       disabled={!unlocked}
     >
       <div className={css.cardThumb}>
-        <div className={css.corsoThumbPlaceholder} style={{ background: corso.color || '#1E4D8C' }}>
+        <div className={css.corsoThumbPlaceholder} style={{ background: corso.color || 'var(--elab-navy)' }}>
           <span className={css.corsoVolume}>{corso.volumeLabel || 'ELAB'}</span>
         </div>
         {!unlocked && (
@@ -304,7 +304,7 @@ export default function VideoFloat({
                   aria-label="Cerca su YouTube"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <rect x="1" y="3" width="14" height="10" rx="3" fill="#E54B3D" />
+                    <rect x="1" y="3" width="14" height="10" rx="3" fill="var(--elab-red)" />
                     <polygon points="6.5,5.5 11.5,8 6.5,10.5" fill="#fff" />
                   </svg>
                   {searchInput ? `Cerca "${searchInput}" su YouTube` : 'Cerca su YouTube'}

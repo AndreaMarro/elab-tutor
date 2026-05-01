@@ -7,9 +7,9 @@
 import React from 'react';
 
 export const LAYER_COLORS = {
-  terra: { bg: '#dcfce7', text: '#16a34a', label: 'Terra', emoji: '' },
-  schema: { bg: '#dbeafe', text: '#1E4D8C', label: 'Schema', emoji: '' },
-  cielo: { bg: '#ffedd5', text: '#ea580c', label: 'Cielo', emoji: '' }
+  terra: { bg: 'var(--elab-hex-dcfce7)', text: 'var(--elab-hex-16a34a)', label: 'Terra', emoji: '' },
+  schema: { bg: '#dbeafe', text: 'var(--elab-navy)', label: 'Schema', emoji: '' },
+  cielo: { bg: 'var(--elab-hex-ffedd5)', text: 'var(--elab-hex-ea580c)', label: 'Cielo', emoji: '' }
 };
 
 const LAYER_INFO = {

@@ -10,7 +10,7 @@
  */
 
 import React, { useRef, useEffect, useCallback, useState, useMemo } from 'react';
-const COLORS_PRESET = ['#1E4D8C', '#E54B3D', '#4A7A25', '#E8941C', '#333333', '#FFFFFF'];
+const COLORS_PRESET = ['var(--elab-navy)', 'var(--elab-red)', 'var(--elab-lime)', 'var(--elab-orange)', '#333333', '#FFFFFF'];
 const THICKNESS = [2, 4, 8];
 const MAX_HISTORY = 30;
 const HANDLE_SIZE = 7;
@@ -205,7 +205,7 @@ export default function WhiteboardOverlay({
     const dpr = window.devicePixelRatio || 1;
     ctx.save();
     ctx.setLineDash([6 * dpr, 4 * dpr]);
-    ctx.strokeStyle = '#1E4D8C';
+    ctx.strokeStyle = 'var(--elab-navy)';
     ctx.lineWidth = 1.5 * dpr;
     ctx.strokeRect(bounds.x - 4 * dpr, bounds.y - 4 * dpr, bounds.w + 8 * dpr, bounds.h + 8 * dpr);
     ctx.setLineDash([]);
@@ -221,7 +221,7 @@ export default function WhiteboardOverlay({
       for (const c of corners) {
         ctx.fillStyle = '#fff';
         ctx.fillRect(c.x - hs / 2, c.y - hs / 2, hs, hs);
-        ctx.strokeStyle = '#1E4D8C';
+        ctx.strokeStyle = 'var(--elab-navy)';
         ctx.lineWidth = 1.5 * dpr;
         ctx.strokeRect(c.x - hs / 2, c.y - hs / 2, hs, hs);
       }
@@ -758,7 +758,7 @@ export default function WhiteboardOverlay({
       {showGrid && (
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle, #c0c0c0 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, var(--elab-hex-c0c0c0) 1px, transparent 1px)',
           backgroundSize: `${20 * zoom}px ${20 * zoom}px`,
           pointerEvents: 'none', zIndex: 19, opacity: 0.5,
         }} />
@@ -901,7 +901,7 @@ function ToolBtn({ children, label, active, onClick, disabled, danger }) {
     <button onClick={onClick} title={label} aria-label={label} disabled={disabled}
       style={{ ...toolBtnStyle(active), opacity: disabled ? 0.35 : 1,
         cursor: disabled ? 'default' : 'pointer',
-        color: danger ? 'var(--color-vol3, #E54B3D)' : (active ? 'var(--color-primary, #1E4D8C)' : 'var(--color-text-gray-500, #555)'),
+        color: danger ? 'var(--color-vol3, var(--elab-red))' : (active ? 'var(--color-primary, var(--elab-navy))' : 'var(--color-text-gray-500, #555)'),
       }}>
       {children}
     </button>
@@ -918,7 +918,7 @@ function toolBtnStyle(active) {
     border: 'none', cursor: 'pointer', display: 'flex',
     alignItems: 'center', justifyContent: 'center',
     background: active ? 'var(--color-accent-light, #E8F5E9)' : 'transparent',
-    color: active ? 'var(--color-primary, #1E4D8C)' : 'var(--color-text-gray-500, #555)',
+    color: active ? 'var(--color-primary, var(--elab-navy))' : 'var(--color-text-gray-500, #555)',
     transition: 'background 0.15s', padding: 0, flexShrink: 0,
   };
 }

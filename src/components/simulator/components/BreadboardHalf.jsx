@@ -42,15 +42,15 @@ const Y_BUS_BOT_PLUS = Y_SECTION_BOT + SECTION_H + BUS_GAP;
 const Y_BUS_BOT_MINUS = Y_BUS_BOT_PLUS + BUS_ROW_H;
 
 // Tinkercad-matched colors — light board, light rim + dark core holes, red + black rails
-const BOARD_BG = '#F2F2F2';
-const BOARD_EDGE = '#D2D2D2';
-const HOLE_RIM = '#BDBDBD';
-const HOLE_CORE = '#2F2F2F';
-const BUS_RED = '#D32F2F';
-const BUS_NEG = '#424242';
-const LABEL_COLOR = '#4A4A4A';
-const CHANNEL_BG = '#DADADA';
-const CHANNEL_NOTCH = '#CFCFCF';
+const BOARD_BG = 'var(--elab-hex-f2f2f2)';
+const BOARD_EDGE = 'var(--elab-hex-d2d2d2)';
+const HOLE_RIM = 'var(--elab-hex-bdbdbd)';
+const HOLE_CORE = 'var(--elab-hex-2f2f2f)';
+const BUS_RED = 'var(--elab-hex-d32f2f)';
+const BUS_NEG = 'var(--elab-hex-424242)';
+const LABEL_COLOR = 'var(--elab-hex-4a4a4a)';
+const CHANNEL_BG = 'var(--elab-hex-dadada)';
+const CHANNEL_NOTCH = 'var(--elab-hex-cfcfcf)';
 
 // Row labels
 const TOP_LABELS = ['a', 'b', 'c', 'd', 'e'];
@@ -72,13 +72,13 @@ function darkenColor(hex, factor) {
  * Single hole — Tinkercad style: simple dark circle with depth
  * `active` can be:
  *   - falsy → default dark hole
- *   - true / '#6AAF35' → green (component pin inserted)
+ *   - true / 'var(--elab-hex-6aaf35)' → green (component pin inserted)
  *   - any other color string → wire endpoint color
  * When onClick is provided (wire mode), the hole becomes clickable
  */
 const Hole = React.memo(({ cx, cy, active, onClick }) => {
   const isActive = !!active;
-  const activeColor = typeof active === 'string' ? active : '#6AAF35';
+  const activeColor = typeof active === 'string' ? active : 'var(--elab-hex-6aaf35)';
   const innerColor = isActive ? darkenColor(activeColor, 0.45) : HOLE_CORE;
   const outerColor = isActive ? activeColor : HOLE_RIM;
 
@@ -96,7 +96,7 @@ const Hole = React.memo(({ cx, cy, active, onClick }) => {
       <circle cx={cx} cy={cy} r={HOLE_INNER_R} fill={innerColor} />
       {/* Subtle highlight */}
       {!isActive && (
-        <circle cx={cx - 0.35} cy={cy - 0.35} r={HOLE_INNER_R * 0.65} fill="#FFFFFF" opacity={0.18} />
+        <circle cx={cx - 0.35} cy={cy - 0.35} r={HOLE_INNER_R * 0.65} fill="var(--elab-hex-ffffff)" opacity={0.18} />
       )}
       {/* Clickable hit area for iPad (slightly overlapping to remove deadzones) */}
       {onClick && (
@@ -220,9 +220,9 @@ const BreadboardHalf = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
        aria-label={`Breadboard Half ${id}`}>
       <defs>
         <linearGradient id={`${id}-bbh-surface`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="40%" stopColor="#F5F5F5" />
-          <stop offset="100%" stopColor="#E8E8E8" />
+          <stop offset="0%" stopColor="var(--elab-hex-ffffff)" />
+          <stop offset="40%" stopColor="var(--elab-hex-f5f5f5)" />
+          <stop offset="100%" stopColor="var(--elab-hex-e8e8e8)" />
         </linearGradient>
         <pattern id={`${id}-bbh-texture`} width="3" height="3" patternUnits="userSpaceOnUse">
           <rect width="1" height="1" x="0" y="0" fill="#000" opacity="0.02" />
@@ -246,9 +246,9 @@ const BreadboardHalf = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
         fill={`url(#${id}-bbh-texture)`} />
 
       {/* Top edge highlight bevel */}
-      <line x1="4" y1="0.5" x2={BOARD_W - 4} y2="0.5" stroke="#FFFFFF" strokeWidth="0.5" opacity="0.6" />
+      <line x1="4" y1="0.5" x2={BOARD_W - 4} y2="0.5" stroke="var(--elab-hex-ffffff)" strokeWidth="0.5" opacity="0.6" />
       {/* Bottom edge shadow */}
-      <line x1="4" y1={BOARD_H - 0.3} x2={BOARD_W - 4} y2={BOARD_H - 0.3} stroke="#C0C0C0" strokeWidth="0.4" opacity="0.5" />
+      <line x1="4" y1={BOARD_H - 0.3} x2={BOARD_W - 4} y2={BOARD_H - 0.3} stroke="var(--elab-hex-c0c0c0)" strokeWidth="0.4" opacity="0.5" />
 
       {/* === TOP POWER BUS === */}
       <BusRow y={Y_BUS_TOP_PLUS} color={BUS_RED} label="top-plus" activeHoles={activeHoles} onHoleClick={onHoleClick} />
@@ -282,7 +282,7 @@ const BreadboardHalf = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
       {/* Highlight for AI tutoring */}
       {highlighted && (
         <rect x="-3" y="-3" width={BOARD_W + 6} height={BOARD_H + 6} rx="6"
-          fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="6 3">
+          fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="6 3">
           <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

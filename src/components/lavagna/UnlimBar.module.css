@@ -45,14 +45,14 @@
   background: transparent;
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 15px;
-  color: var(--color-text, #1A1A2E);
+  color: var(--color-text);
   padding: 8px 4px;
   outline: none;
   min-height: 44px;
 }
 
 .input::placeholder {
-  color: #9CA3AF;
+  color: #9CA3AF; /* palette */
 }
 
 /* Icon buttons — 44px (padded to 48px touch target via padding) */
@@ -62,7 +62,7 @@
   min-width: 44px;
   border: none;
   background: transparent;
-  color: #595959;
+  color: #595959; /* palette */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -75,22 +75,22 @@
 
 .iconBtn:hover {
   background: rgba(30, 77, 140, 0.08);
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .sendBtn {
   color: #fff;
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   border-radius: 10px;
 }
 
 .sendBtn:hover {
-  background: #3d6620;
+  background: #3d6620; /* palette */
 }
 
 .sendBtn:disabled {
-  background: #E2E8F0;
-  color: #9CA3AF;
+  background: #E2E8F0; /* palette */
+  color: #9CA3AF; /* palette */
   cursor: default;
 }
 

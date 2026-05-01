@@ -52,11 +52,11 @@ class ErrorBoundary extends React.Component {
       return (
         <div style={{
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          minHeight: '100vh', background: '#FFF8E7', fontFamily: 'Open Sans, sans-serif',
+          minHeight: '100vh', background: 'var(--elab-hex-fff8e7)', fontFamily: 'Open Sans, sans-serif',
           padding: '40px', textAlign: 'center'
         }}>
-          <div style={{ fontSize: '32px', fontWeight: 700, color: '#1E4D8C', marginBottom: '24px' }}>ELAB</div>
-          <h1 style={{ color: '#1E4D8C', fontSize: '28px', marginBottom: '16px', fontFamily: 'Oswald, sans-serif' }}>
+          <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--elab-navy)', marginBottom: '24px' }}>ELAB</div>
+          <h1 style={{ color: 'var(--elab-navy)', fontSize: '28px', marginBottom: '16px', fontFamily: 'Oswald, sans-serif' }}>
             Ops! Qualcosa è andato storto
           </h1>
           <p style={{ color: '#555', fontSize: '18px', marginBottom: '24px', maxWidth: '500px' }}>
@@ -65,7 +65,7 @@ class ErrorBoundary extends React.Component {
           <button
             onClick={() => window.location.reload()}
             style={{
-              background: '#1E4D8C', color: 'white', border: 'none', padding: '14px 32px',
+              background: 'var(--elab-navy)', color: 'white', border: 'none', padding: '14px 32px',
               borderRadius: '8px', fontSize: '18px', cursor: 'pointer', minHeight: '44px'
             }}
           >
@@ -77,7 +77,7 @@ class ErrorBoundary extends React.Component {
               onClick={() => this.setState(s => ({ ...s, showDetails: !s.showDetails }))}
               style={{
                 background: 'transparent',
-                color: '#1E4D8C',
+                color: 'var(--elab-navy)',
                 border: '1px solid rgba(30,77,140,0.35)',
                 padding: '10px 16px',
                 borderRadius: '8px',
@@ -99,7 +99,7 @@ class ErrorBoundary extends React.Component {
                   }
                 }}
                 style={{
-                  background: '#ffffff',
+                  background: 'var(--elab-hex-ffffff)',
                   color: '#111',
                   border: '1px solid rgba(0,0,0,0.12)',
                   padding: '10px 16px',

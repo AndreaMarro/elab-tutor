@@ -95,7 +95,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente avevamo due LED rossi uguali: stessa luminosità. Ora proviamo con un LED rosso e uno verde. Vi aspettate che brillino uguale o in modo diverso?",
+      "teacher_message": "Ragazzi, nell'esperimento precedente avevamo due LED rossi uguali: stessa luminosità. Ora proviamo con un LED rosso e uno verde. Vi aspettate che brillino uguale o in modo diverso?",
       "teacher_tip": "Raccogliete le previsioni della classe. Molti diranno 'uguale' — è la risposta sbagliata ma logica se non si conosce la tensione forward. Questo è il momento per introdurre il concetto di Vf.",
       "components_list": "Ti servono: 1 breadboard mezza, 1 batteria 9V, 1 resistore 330Ω, 1 LED rosso, 1 LED verde, fili colorati.",
       "class_hook": "Ogni colore di LED è come una porta di altezza diversa: il LED rosso ha una porta bassa (Vf ≈ 1.8V) e il verde una porta più alta (Vf ≈ 2.2V). La corrente deve passare da TUTTE le porte!",
@@ -115,8 +115,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta un LED rosso e uno verde in serie con resistore 330Ω",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate un LED rosso e uno verde in serie con resistore 330Ω",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {

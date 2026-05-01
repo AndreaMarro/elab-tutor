@@ -18,7 +18,7 @@ const CIRCUIT_EXPERIMENTS = ALL_EXPERIMENTS.filter(e => e.simulationMode === 'ci
 
 describe('experimentHexFiles — simulation modes', () => {
   it('all 92 experiments are loaded', () => {
-    expect(ALL_EXPERIMENTS.length).toBe(92);
+    expect(ALL_EXPERIMENTS.length).toBe(94);
   });
 
   it('every experiment has a simulationMode', () => {
@@ -37,7 +37,7 @@ describe('experimentHexFiles — simulation modes', () => {
   });
 
   it('there are 27 AVR experiments', () => {
-    expect(AVR_EXPERIMENTS.length).toBe(27);
+    expect(AVR_EXPERIMENTS.length).toBe(29);
   });
 
   it('there are 65 circuit experiments', () => {

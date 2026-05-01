@@ -8,11 +8,11 @@
 @keyframes unlim-speak-glow {
   0%, 100% {
     box-shadow: 0 0 20px rgba(74, 122, 37, 0.5), 0 4px 14px rgba(0,0,0,0.15);
-    border-color: #4A7A25;
+    border-color: var(--elab-lime);
   }
   50% {
     box-shadow: 0 0 40px rgba(74, 122, 37, 0.85), 0 4px 18px rgba(0,0,0,0.2);
-    border-color: #4A7A25;
+    border-color: var(--elab-lime);
   }
 }
 
@@ -43,19 +43,19 @@
 
 @keyframes unlim-long-press {
   0% { transform: scale(1); border-color: rgba(30, 77, 140, 0.15); }
-  50% { transform: scale(0.92); border-color: #E8941C; }
-  100% { transform: scale(0.88); border-color: #4A7A25; box-shadow: 0 0 24px rgba(74, 122, 37, 0.6); }
+  50% { transform: scale(0.92); border-color: var(--elab-orange); }
+  100% { transform: scale(0.88); border-color: var(--elab-lime); box-shadow: 0 0 24px rgba(74, 122, 37, 0.6); }
 }
 
 /* Thinking state — gentle wobble while waiting for AI */
 @keyframes unlim-think-wobble {
   0%, 100% {
     box-shadow: 0 0 16px rgba(232, 148, 28, 0.3), 0 4px 14px rgba(0,0,0,0.12);
-    border-color: #E8941C;
+    border-color: var(--elab-orange);
   }
   50% {
     box-shadow: 0 0 28px rgba(232, 148, 28, 0.55), 0 4px 16px rgba(0,0,0,0.15);
-    border-color: #E8941C;
+    border-color: var(--elab-orange);
   }
 }
 

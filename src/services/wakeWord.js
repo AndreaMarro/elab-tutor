@@ -133,6 +133,16 @@ export function startWakeWordListener({ onWake, onCommand, lang = 'it-IT' } = {}
       if (!terminalErrorLogged) {
         logger.warn('[WakeWord] Permission denied:', event.error, '— disabling wake word until next page load');
         terminalErrorLogged = true;
+        // iter 35 fix Bug 8: surface UI event so docente sees feedback (era silent — Andrea reported "non funziona").
+        // LavagnaShell + similar listeners ascoltano `elab-wake-word-error` per toast/banner.
+        try {
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('elab-wake-word-error', {
+              // iter 36 Atom A9 honesty caveat fix: prepend "Ragazzi, " plurale (PRINCIPIO ZERO V3 mandate).
+              detail: { code: event.error, message: 'Ragazzi, microfono non autorizzato. Abilitate il permesso microfono nelle impostazioni del browser per usare "Ehi UNLIM".' },
+            }));
+          }
+        } catch (_) { /* ignore */ }
       }
       isListening = false;
       return;

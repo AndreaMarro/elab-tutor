@@ -68,7 +68,7 @@ export default function LoginPage({ onNavigate }) {
     const inputStyle = (field) => ({
         ...styles.input,
         borderColor: focusedField === field
-            ? '#4A7A25'
+            ? 'var(--elab-lime)'
             : 'rgba(255,255,255,0.15)',
         boxShadow: focusedField === field
             ? '0 0 0 3px rgba(124,179,66,0.2)'
@@ -86,7 +86,7 @@ export default function LoginPage({ onNavigate }) {
             `}</style>
 
             <div style={styles.card}>
-                <div style={{ ...styles.logo, color: '#1E4D8C', fontWeight: 800, fontFamily: 'Oswald, sans-serif', letterSpacing: '-1px' }}>ELAB</div>
+                <div style={{ ...styles.logo, color: 'var(--elab-navy)', fontWeight: 800, fontFamily: 'Oswald, sans-serif', letterSpacing: '-1px' }}>ELAB</div>
                 <h1 style={styles.title}>Accedi</h1>
                 <p style={styles.subtitle}>Accedi al tuo laboratorio</p>
 
@@ -174,7 +174,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #1E4D8C 0%, #0d1b2a 100%)',
+        background: 'linear-gradient(135deg, var(--elab-navy) 0%, #0d1b2a 100%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         padding: '16px',
     },
@@ -229,14 +229,14 @@ const styles = {
         fontWeight: '600',
         borderRadius: '10px',
         border: 'none',
-        background: 'linear-gradient(135deg, #4A7A25, #6fa030)',
-        color: '#1A1A2E',
+        background: 'linear-gradient(135deg, var(--elab-lime), #6fa030)',
+        color: 'var(--elab-hex-1a1a2e)',
         cursor: 'pointer',
         marginTop: '8px',
         transition: 'opacity 200ms ease, transform 100ms ease',
     },
     error: {
-        color: '#ff6b6b',
+        color: 'var(--elab-hex-ff6b6b)',
         fontSize: '14px',
         margin: '0',
         padding: '10px',
@@ -249,7 +249,7 @@ const styles = {
         marginTop: '24px',
     },
     link: {
-        color: '#4A7A25',
+        color: 'var(--elab-lime)',
         background: 'none',
         border: 'none',
         cursor: 'pointer',

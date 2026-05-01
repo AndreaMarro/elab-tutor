@@ -12,28 +12,28 @@ import { ordiniService } from '../../../services/notionService';
 // COSTANTI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
-    primaryLight: '#2a4fa3',
-    primaryBg: '#eef2fa',
-    success: '#4A7A25',
-    successBg: '#f0f7e4',
-    warning: '#F59E0B',
-    warningBg: '#fef9ee',
-    danger: '#EF4444',
-    dangerBg: '#fef2f2',
-    info: '#06B6D4',
-    infoBg: '#ecfeff',
-    white: '#ffffff',
-    gray50: '#f9fafb',
-    gray100: '#f3f4f6',
-    gray200: '#e5e7eb',
-    gray300: '#d1d5db',
-    gray400: '#9ca3af',
-    gray500: '#6b7280',
-    gray600: '#4b5563',
-    gray700: '#374151',
-    gray800: '#1f2937',
-    gray900: '#111827',
+    primary: 'var(--elab-navy)',
+    primaryLight: '#2a4fa3', // palette
+    primaryBg: '#eef2fa', // palette
+    success: 'var(--elab-lime)',
+    successBg: '#f0f7e4', // palette
+    warning: '#f59e0b', // palette
+    warningBg: '#fef9ee', // palette
+    danger: '#ef4444', // palette
+    dangerBg: '#fef2f2', // palette
+    info: '#06b6d4', // palette
+    infoBg: '#ecfeff', // palette
+    white: '#ffffff', // palette
+    gray50: '#f9fafb', // palette
+    gray100: '#f3f4f6', // palette
+    gray200: '#e5e7eb', // palette
+    gray300: '#d1d5db', // palette
+    gray400: '#9ca3af', // palette
+    gray500: '#6b7280', // palette
+    gray600: '#4b5563', // palette
+    gray700: '#374151', // palette
+    gray800: '#1f2937', // palette
+    gray900: '#111827', // palette
 };
 
 const STATI = ['Completato', 'In attesa', 'Annullato', 'Rimborsato'];

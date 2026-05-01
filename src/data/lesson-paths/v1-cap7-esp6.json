@@ -93,7 +93,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi sperimentano in libertà. Partono dal circuito RGB e cambiano i valori dei resistori.",
+      "teacher_message": "Ragazzi, oggi i ragazzi sperimentano in libertà. Partono dal circuito RGB e cambiano i valori dei resistori.",
       "teacher_tip": "L'obiettivo è esplorare. Nessuna risposta giusta. Chiedi: 'Che colore volete creare? Come potreste farlo?'",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, resistori misti (220Ω, 470Ω), 1 LED RGB, 8 fili.",
       "class_hook": "Avete scoperto come funziona la mescolanza dei colori con la luce. Ora siete VOI gli artisti! Create il vostro colore preferito!",
@@ -113,8 +113,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito RGB con resistori misti",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito RGB con resistori misti",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -275,7 +275,7 @@
   "assessment_invisible": [
     "Se crea un colore intenzionalmente → padroneggia la relazione resistore/colore",
     "Se spiega ad altri come ha ottenuto il colore → transfer di conoscenza",
-    "Se prova combinazioni estreme → spirito sperimentale"
+    "Se provate combinazioni estreme → spirito sperimentale"
   ],
   "session_save": {
     "concepts_covered": [

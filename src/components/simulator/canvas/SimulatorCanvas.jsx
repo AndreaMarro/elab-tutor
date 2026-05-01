@@ -10,6 +10,7 @@ import { getComponent } from '../components/registry';
 import WireRenderer, { resolvePinPosition } from './WireRenderer';
 import PinOverlay from './PinOverlay';
 import Annotation from '../components/Annotation';
+import RotationHandle, { snapToNearestQuadrant } from '../overlays/RotationHandle';
 
 
 // Import componenti (side-effect: si registrano nel registry)
@@ -2329,7 +2330,7 @@ const SimulatorCanvas = ({
                     <line x1="3.5" y1="-3.5" x2="-3.5" y2="3.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
                   </g>
                 )}
-                {/* Rotate hint icon (top-left corner) */}
+                {/* Rotate hint icon (top-left corner) — quick +90 cycle (legacy keyboard-friendly path) */}
                 {canDelete && onLayoutChange && (
                   <g
                     transform={`translate(${btnRotateX}, ${btnRotateY})`}
@@ -2352,6 +2353,28 @@ const SimulatorCanvas = ({
             );
           })()}
 
+          {/* iter 13 R2: RotationHandle visible affordance — 4 buttons 0/90/180/270 snap discrete */}
+          {isSelected && onLayoutChange && (() => {
+            const size = COMP_SIZES[comp.type] || { w: 40, h: 40 };
+            const isTopLeft = comp.type === 'breadboard-half' || comp.type === 'breadboard-full' || comp.type === 'nano-r4';
+            // Anchor handle to the right of component bounding box, vertically centered
+            const handleX = isTopLeft ? pos.x + size.w + 28 : pos.x + size.w / 2 + 28;
+            const handleY = isTopLeft ? pos.y + 8 : pos.y - 75;
+            return (
+              <RotationHandle
+                componentId={comp.id}
+                currentRotation={pos.rotation || 0}
+                anchorX={handleX}
+                anchorY={handleY}
+                visible={true}
+                onRotate={(newRot) => {
+                  const snapped = snapToNearestQuadrant(newRot);
+                  onLayoutChange(comp.id, { ...pos, rotation: snapped });
+                }}
+              />
+            );
+          })()}
+
           {/* The actual component — wrapped in rotation transform */}
           <g transform={rotation ? `rotate(${rotation}, ${pos.x}, ${pos.y})` : undefined}>
             <Component
@@ -2371,6 +2394,7 @@ const SimulatorCanvas = ({
                 probeSnapped: probeSnapped[comp.id] || null,
                 onProbeMove: (probeId, action, ev) => handleProbeMove(comp.id, probeId, action, ev),
               } : {})}
+              {...(comp.type === 'nano-r4' ? { parentRotation: rotation } : {})}
             />
           </g>
 

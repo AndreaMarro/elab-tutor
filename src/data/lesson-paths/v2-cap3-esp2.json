@@ -14,22 +14,50 @@
   "target_age": "10-14 anni",
   "objective": "Misurare la batteria ogni giorno e registrare i valori. Scoprire come una batteria si scarica nel tempo e imparare il metodo scientifico della misurazione ripetuta.",
   "components_needed": [
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Multimetro", "quantity": 1, "icon": "📏" },
-    { "name": "Quaderno per appunti", "quantity": 1, "icon": "📓" }
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Multimetro",
+      "quantity": 1,
+      "icon": "📏"
+    },
+    {
+      "name": "Quaderno per appunti",
+      "quantity": 1,
+      "icon": "📓"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "multimetro", "voltmetro", "tensione", "volt", "batteria",
-      "carica", "scarica", "misurazione", "diario", "dato",
-      "grafico", "tempo", "giorno"
+      "multimetro",
+      "voltmetro",
+      "tensione",
+      "volt",
+      "batteria",
+      "carica",
+      "scarica",
+      "misurazione",
+      "diario",
+      "dato",
+      "grafico",
+      "tempo",
+      "giorno"
     ],
     "forbidden": [
-      "Arduino", "codice", "programma", "condensatore", "transistor"
+      "Arduino",
+      "codice",
+      "programma",
+      "condensatore",
+      "transistor"
     ],
     "note": "Vol 2 Cap 3 — misurazione ripetuta, diario scientifico, scarica batteria."
   },
-  "prerequisites": ["v2-cap3-esp1"],
+  "prerequisites": [
+    "v2-cap3-esp1"
+  ],
   "next_experiment": {
     "id": "v2-cap3-esp3",
     "title": "Misuriamo una resistenza",
@@ -40,7 +68,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi facciamo gli scienziati: misuriamo la batteria e scriviamo il valore nel nostro diario. Lo faremo per piu giorni per capire come si scarica una batteria.",
+      "teacher_message": "Ragazzi, oggi facciamo gli scienziati: misuriamo la batteria e scriviamo il valore nel nostro diario. Lo faremo per piu giorni per capire come si scarica una batteria.",
       "teacher_tip": "Prepara una tabella alla lavagna: Data | Tensione (V) | Note. Questo e il primo esperimento di raccolta dati sistematica per i ragazzi.",
       "components_list": "Ti servono: 1 batteria 9V, 1 multimetro, 1 quaderno per appunti.",
       "class_hook": "Gli scienziati veri non fanno un esperimento e basta — ripetono le misure molte volte! Oggi iniziamo il nostro primo diario scientifico.",
@@ -52,18 +80,26 @@
       "icon": "🔧",
       "duration_minutes": 8,
       "teacher_message": "Colleghiamo il multimetro alla batteria come la volta scorsa. Leggiamo il valore e lo scriviamo nella prima riga del nostro diario con la data di oggi.",
-      "teacher_tip": "Fai misurare la stessa batteria a diversi studenti: i valori saranno leggermente diversi. Spiega che le piccole differenze sono normali (errore di misura).",
+      "teacher_tip": "Fate misurare la stessa batteria a diversi studenti: i valori saranno leggermente diversi. Spiega che le piccole differenze sono normali (errore di misura).",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v2-cap3-esp2]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega il multimetro alla batteria per la misurazione giornaliera",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate il multimetro alla batteria per la misurazione giornaliera",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "multimeter", "id": "mm1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "multimeter",
+              "id": "mm1"
+            }
           ],
           "wires": []
         }
@@ -94,13 +130,16 @@
       "duration_minutes": 8,
       "teacher_message": "Misurate la batteria e annotate il valore. Se avete dati dei giorni precedenti, confrontateli. Vedrete che la tensione cala lentamente giorno dopo giorno.",
       "teacher_tip": "Se e la prima misurazione, mostra un grafico di esempio di come cala la tensione. Se avete piu misure, disegnate il grafico insieme alla lavagna.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:mm1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:mm1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il valore della batteria oggi e un po piu basso di ieri? La scarica e lenta se la batteria non e collegata a nulla, ma diventa veloce quando alimenta un circuito.",
       "analogies": [
         {
           "concept": "scarica_batteria",
-          "text": "La batteria e come un secchio d'acqua con un piccolo buco: l'acqua esce lentamente. Se fai un buco piu grande (circuito che consuma di piu), l'acqua finisce prima!",
+          "text": "La batteria e come un secchio d'acqua con un piccolo buco: l'acqua esce lentamente. Se si fa un buco piu grande (circuito che consuma di piu), l'acqua finisce prima!",
           "evidence": "Curriculum ELAB Vol 2"
         }
       ]
@@ -130,7 +169,11 @@
     "Se fa previsioni sulla durata della batteria → pensiero analitico"
   ],
   "session_save": {
-    "concepts_covered": ["misurazione_ripetuta", "diario_scientifico", "scarica_batteria"],
+    "concepts_covered": [
+      "misurazione_ripetuta",
+      "diario_scientifico",
+      "scarica_batteria"
+    ],
     "next_suggested": "v2-cap3-esp3",
     "resume_message": "Avete iniziato il diario di misurazione! Prossimo passo: misurare le resistenze."
   }

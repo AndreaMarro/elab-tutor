@@ -51,26 +51,26 @@ const Battery9V = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
 
       {/* ── BODY: Dark section (left ~63%) ── */}
       <rect x={BODY_LEFT} y={BODY_TOP} width={DARK_W} height={BODY_H} rx="2"
-        fill="#1A1A1A" stroke="#111" strokeWidth="0.5" />
+        fill="var(--elab-hex-1a1a1a)" stroke="#111" strokeWidth="0.5" />
 
       {/* ── BODY: Orange/copper band (right ~37%) ── */}
       <rect x={BODY_LEFT + DARK_W} y={BODY_TOP} width={ORANGE_W} height={BODY_H}
-        fill="#C9884B" stroke="#A06830" strokeWidth="0.5" />
+        fill="var(--elab-hex-c9884b)" stroke="var(--elab-hex-a06830)" strokeWidth="0.5" />
       {/* Right edge rounding cover */}
       <rect x={BODY_LEFT + BODY_W - 2.5} y={BODY_TOP + 0.25} width="2.5" height={BODY_H - 0.5}
-        fill="#C9884B" />
+        fill="var(--elab-hex-c9884b)" />
 
       {/* ── Orange section: (+) upper and (−) lower imprint ── */}
       <circle cx={BODY_LEFT + DARK_W + ORANGE_W * 0.55} cy={BODY_TOP + BODY_H * 0.28} r="3.4"
-        fill="none" stroke="#A06830" strokeWidth="0.6" opacity="0.6" />
+        fill="none" stroke="var(--elab-hex-a06830)" strokeWidth="0.6" opacity="0.6" />
       <text x={BODY_LEFT + DARK_W + ORANGE_W * 0.55} y={BODY_TOP + BODY_H * 0.28 + 2}
-        textAnchor="middle" fontSize="6.5" fill="#8B5E28" fontWeight="700"
+        textAnchor="middle" fontSize="6.5" fill="var(--elab-hex-8b5e28)" fontWeight="700"
         fontFamily="Arial, Helvetica, sans-serif">+</text>
 
       <circle cx={BODY_LEFT + DARK_W + ORANGE_W * 0.55} cy={BODY_TOP + BODY_H * 0.72} r="3.4"
-        fill="none" stroke="#A06830" strokeWidth="0.6" opacity="0.6" />
+        fill="none" stroke="var(--elab-hex-a06830)" strokeWidth="0.6" opacity="0.6" />
       <text x={BODY_LEFT + DARK_W + ORANGE_W * 0.55} y={BODY_TOP + BODY_H * 0.72 + 1.8}
-        textAnchor="middle" fontSize="5.5" fill="#8B5E28" fontWeight="700"
+        textAnchor="middle" fontSize="5.5" fill="var(--elab-hex-8b5e28)" fontWeight="700"
         fontFamily="Arial, Helvetica, sans-serif">{'\u2212'}</text>
 
       {/* ── "9V" text — upright on dark body ── */}
@@ -80,7 +80,7 @@ const Battery9V = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
         textAnchor="middle"
         dominantBaseline="central"
         fontSize="20" fontWeight="bold"
-        fill="#E8E8E8"
+        fill="var(--elab-hex-e8e8e8)"
         fontFamily="Arial Black, Impact, sans-serif"
         letterSpacing="-0.5"
       >
@@ -89,54 +89,54 @@ const Battery9V = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
 
       {/* ── Dark separator strip between body and clips ── */}
       <rect x={SEP_X} y={BODY_TOP} width={SEP_W} height={BODY_H}
-        fill="#0E0E0E" />
+        fill="var(--elab-hex-0e0e0e)" />
 
       {/* ── UPPER CLIP (+) — gray metallic tab ── */}
       <rect x={CLIP_X} y={CLIP_TOP_Y} width={CLIP_W} height={CLIP_H} rx="1.5"
-        fill="#A0A0A0" stroke="#808080" strokeWidth="0.5" />
+        fill="var(--elab-hex-a0a0a0)" stroke="var(--elab-hex-808080)" strokeWidth="0.5" />
       <line x1={CLIP_X + 1} y1={CLIP_TOP_Y + CLIP_H * 0.35}
         x2={CLIP_X + CLIP_W - 1} y2={CLIP_TOP_Y + CLIP_H * 0.35}
-        stroke="#909090" strokeWidth="0.4" opacity="0.5" />
+        stroke="var(--elab-hex-909090)" strokeWidth="0.4" opacity="0.5" />
       <line x1={CLIP_X + 1} y1={CLIP_TOP_Y + CLIP_H * 0.65}
         x2={CLIP_X + CLIP_W - 1} y2={CLIP_TOP_Y + CLIP_H * 0.65}
-        stroke="#909090" strokeWidth="0.4" opacity="0.5" />
+        stroke="var(--elab-hex-909090)" strokeWidth="0.4" opacity="0.5" />
 
       {/* (+) Terminal — larger ring/socket on upper clip */}
       <circle cx={TERM_X} cy={TERM_PLUS_Y} r="5.5"
-        fill="#808080" stroke="#6A6A6A" strokeWidth="0.4" />
+        fill="var(--elab-hex-808080)" stroke="var(--elab-hex-6a6a6a)" strokeWidth="0.4" />
       <circle cx={TERM_X} cy={TERM_PLUS_Y} r="4.2"
-        fill="#A0A0A0" />
+        fill="var(--elab-hex-a0a0a0)" />
       <circle cx={TERM_X} cy={TERM_PLUS_Y} r="2.8"
-        fill="#606060" stroke="#555" strokeWidth="0.3" />
+        fill="var(--elab-hex-606060)" stroke="#555" strokeWidth="0.3" />
       <circle cx={TERM_X} cy={TERM_PLUS_Y} r="1.5"
-        fill="#1A1A1A" />
+        fill="var(--elab-hex-1a1a1a)" />
 
       {/* ── LOWER CLIP (−) — gray metallic tab ── */}
       <rect x={CLIP_X} y={CLIP_BOT_Y} width={CLIP_W} height={CLIP_H} rx="1.5"
-        fill="#A0A0A0" stroke="#808080" strokeWidth="0.5" />
+        fill="var(--elab-hex-a0a0a0)" stroke="var(--elab-hex-808080)" strokeWidth="0.5" />
       <line x1={CLIP_X + 1} y1={CLIP_BOT_Y + CLIP_H * 0.35}
         x2={CLIP_X + CLIP_W - 1} y2={CLIP_BOT_Y + CLIP_H * 0.35}
-        stroke="#909090" strokeWidth="0.4" opacity="0.5" />
+        stroke="var(--elab-hex-909090)" strokeWidth="0.4" opacity="0.5" />
       <line x1={CLIP_X + 1} y1={CLIP_BOT_Y + CLIP_H * 0.65}
         x2={CLIP_X + CLIP_W - 1} y2={CLIP_BOT_Y + CLIP_H * 0.65}
-        stroke="#909090" strokeWidth="0.4" opacity="0.5" />
+        stroke="var(--elab-hex-909090)" strokeWidth="0.4" opacity="0.5" />
 
       {/* (−) Terminal — smaller metallic nub on lower clip */}
       <circle cx={TERM_X} cy={TERM_MINUS_Y} r="4.5"
-        fill="#808080" stroke="#6A6A6A" strokeWidth="0.4" />
+        fill="var(--elab-hex-808080)" stroke="var(--elab-hex-6a6a6a)" strokeWidth="0.4" />
       <circle cx={TERM_X} cy={TERM_MINUS_Y} r="3.5"
-        fill="#B0B0B0" />
+        fill="var(--elab-hex-b0b0b0)" />
       <circle cx={TERM_X} cy={TERM_MINUS_Y} r="2"
-        fill="#D0D0D0" stroke="#999" strokeWidth="0.3" />
+        fill="var(--elab-hex-d0d0d0)" stroke="#999" strokeWidth="0.3" />
 
       {/* Red wire (+) — from upper clip down to pin positive (0, 32) */}
       <path
         d={`M ${TERM_X} ${CLIP_TOP_Y + CLIP_H + 1} C ${TERM_X} 5, 2 20, 0 32`}
-        stroke="#8B1B1B" strokeWidth="3.2" fill="none" strokeLinecap="round" opacity="0.2"
+        stroke="var(--elab-hex-8b1b1b)" strokeWidth="3.2" fill="none" strokeLinecap="round" opacity="0.2"
       />
       <path
         d={`M ${TERM_X} ${CLIP_TOP_Y + CLIP_H + 1} C ${TERM_X} 5, 2 20, 0 32`}
-        stroke="#D32F2F" strokeWidth="2.4" fill="none" strokeLinecap="round"
+        stroke="var(--elab-hex-d32f2f)" strokeWidth="2.4" fill="none" strokeLinecap="round"
       />
 
       {/* Black wire (−) — from lower clip down to pin negative (0, 58) */}
@@ -146,7 +146,7 @@ const Battery9V = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
       />
       <path
         d={`M ${TERM_X} ${CLIP_BOT_Y + CLIP_H + 1} C ${TERM_X} 20, 2 42, 0 58`}
-        stroke="#1A1A1A" strokeWidth="2.4" fill="none" strokeLinecap="round"
+        stroke="var(--elab-hex-1a1a1a)" strokeWidth="2.4" fill="none" strokeLinecap="round"
       />
 
       {/* ── Interaction area ── */}
@@ -161,7 +161,7 @@ const Battery9V = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
       {highlighted && (
         <rect x={BODY_LEFT - 6} y={BODY_TOP - 8}
           width={BODY_W + CLIP_W + SEP_W + 12} height={BODY_H + 78}
-          rx="5" fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="5 3">
+          rx="5" fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="5 3">
           <animate attributeName="stroke-opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

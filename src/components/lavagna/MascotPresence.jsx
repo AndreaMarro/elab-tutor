@@ -20,30 +20,30 @@ function savePos(pos) {
 function MascotSvg({ size = 44, micActive = false }) {
   return (
     <svg width={size} height={size} viewBox="0 0 44 44" fill="none" aria-hidden="true">
-      <path d="M8 20C8 12.3 14.3 6 22 6s14 6.3 14 14" stroke="#1E4D8C" strokeWidth="2.5" fill="none" />
-      <rect x="10" y="14" width="24" height="20" rx="5" fill="#1E4D8C" />
-      <rect x="13" y="17" width="18" height="12" rx="3" fill="#153d6f" />
-      <circle cx="18" cy="23" r="2.5" fill="#4A7A25" />
-      <circle cx="26" cy="23" r="2.5" fill="#4A7A25" />
+      <path d="M8 20C8 12.3 14.3 6 22 6s14 6.3 14 14" stroke="var(--elab-navy)" strokeWidth="2.5" fill="none" />
+      <rect x="10" y="14" width="24" height="20" rx="5" fill="var(--elab-navy)" />
+      <rect x="13" y="17" width="18" height="12" rx="3" fill="var(--elab-hex-153d6f)" />
+      <circle cx="18" cy="23" r="2.5" fill="var(--elab-lime)" />
+      <circle cx="26" cy="23" r="2.5" fill="var(--elab-lime)" />
       <circle cx="18.8" cy="22.2" r="0.8" fill="#fff" opacity="0.9" />
       <circle cx="26.8" cy="22.2" r="0.8" fill="#fff" opacity="0.9" />
-      <path d="M17 27c0 0 2.5 2.5 5 2.5s5-2.5 5-2.5" stroke="#4A7A25" strokeWidth="1.3" strokeLinecap="round" />
-      <path d="M22 14V9" stroke="#E8941C" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="22" cy="7.5" r="2" fill="#E8941C" />
-      <rect x="4" y="18" width="7" height="11" rx="3.5" fill="#4A7A25" />
-      <rect x="33" y="18" width="7" height="11" rx="3.5" fill="#4A7A25" />
+      <path d="M17 27c0 0 2.5 2.5 5 2.5s5-2.5 5-2.5" stroke="var(--elab-lime)" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M22 14V9" stroke="var(--elab-orange)" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="22" cy="7.5" r="2" fill="var(--elab-orange)" />
+      <rect x="4" y="18" width="7" height="11" rx="3.5" fill="var(--elab-lime)" />
+      <rect x="33" y="18" width="7" height="11" rx="3.5" fill="var(--elab-lime)" />
       {micActive ? (
         /* Microfono in mano */
         <>
-          <rect x="36" y="30" width="4" height="8" rx="2" fill="#E54B3D" />
+          <rect x="36" y="30" width="4" height="8" rx="2" fill="var(--elab-red)" />
           <path d="M36 38h4" stroke="#999" strokeWidth="1.5" strokeLinecap="round" />
-          <circle cx="38" cy="30" r="2.5" fill="#E54B3D" />
+          <circle cx="38" cy="30" r="2.5" fill="var(--elab-red)" />
           <circle cx="38" cy="29" r="0.8" fill="#fff" opacity="0.6" />
         </>
       ) : (
         /* Cacciavite in mano */
         <>
-          <line x1="36" y1="34" x2="40" y2="38" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" />
+          <line x1="36" y1="34" x2="40" y2="38" stroke="var(--elab-lime)" strokeWidth="2" strokeLinecap="round" />
           <line x1="40" y1="38" x2="42" y2="40" stroke="#999" strokeWidth="1.5" strokeLinecap="round" />
         </>
       )}

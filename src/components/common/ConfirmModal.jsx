@@ -45,7 +45,7 @@ const titleStyle = {
   fontSize: 18,
   fontWeight: 700,
   fontFamily: "var(--font-display, 'Oswald', sans-serif)",
-  color: 'var(--color-primary, #1E4D8C)',
+  color: 'var(--color-primary, var(--elab-navy))',
   textTransform: 'uppercase',
   letterSpacing: '0.5px',
 };
@@ -82,7 +82,7 @@ const cancelBtnStyle = {
 
 const confirmBtnStyle = {
   ...btnBase,
-  background: 'var(--color-vol3, #E54B3D)',
+  background: 'var(--color-vol3, var(--elab-red))',
   color: '#fff',
 };
 

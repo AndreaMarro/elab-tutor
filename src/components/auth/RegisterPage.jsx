@@ -96,7 +96,7 @@ export default function RegisterPage({ onNavigate }) {
     const inputStyle = (field) => ({
         ...styles.input,
         borderColor: focusedField === field
-            ? '#4A7A25'
+            ? 'var(--elab-lime)'
             : 'rgba(255,255,255,0.15)',
         boxShadow: focusedField === field
             ? '0 0 0 3px rgba(124,179,66,0.2)'
@@ -114,7 +114,7 @@ export default function RegisterPage({ onNavigate }) {
             `}</style>
 
             <div style={styles.card}>
-                <div style={{ ...styles.logo, color: '#1E4D8C', fontWeight: 800, fontFamily: 'Oswald, sans-serif', letterSpacing: '-1px' }}>ELAB</div>
+                <div style={{ ...styles.logo, color: 'var(--elab-navy)', fontWeight: 800, fontFamily: 'Oswald, sans-serif', letterSpacing: '-1px' }}>ELAB</div>
                 <h1 style={styles.title}>Registrati</h1>
                 <p style={styles.subtitle}>Crea il tuo account ELAB</p>
 
@@ -244,8 +244,8 @@ export default function RegisterPage({ onNavigate }) {
                                 aria-pressed={form.ruolo === 'user'}
                                 style={{
                                     ...styles.roleBtn,
-                                    background: form.ruolo === 'user' ? '#4A7A25' : 'rgba(255,255,255,0.1)',
-                                    color: form.ruolo === 'user' ? '#1A1A2E' : 'rgba(255,255,255,0.6)',
+                                    background: form.ruolo === 'user' ? 'var(--elab-lime)' : 'rgba(255,255,255,0.1)',
+                                    color: form.ruolo === 'user' ? 'var(--elab-hex-1a1a2e)' : 'rgba(255,255,255,0.6)',
                                 }}>
                                 Studente
                             </button>
@@ -254,9 +254,9 @@ export default function RegisterPage({ onNavigate }) {
                                 aria-pressed={form.ruolo === 'docente'}
                                 style={{
                                     ...styles.roleBtn,
-                                    background: form.ruolo === 'docente' ? '#1E4D8C' : 'rgba(255,255,255,0.1)',
+                                    background: form.ruolo === 'docente' ? 'var(--elab-navy)' : 'rgba(255,255,255,0.1)',
                                     color: form.ruolo === 'docente' ? 'white' : 'rgba(255,255,255,0.6)',
-                                    border: form.ruolo === 'docente' ? '2px solid #4A7A25' : '2px solid transparent',
+                                    border: form.ruolo === 'docente' ? '2px solid var(--elab-lime)' : '2px solid transparent',
                                 }}>
                                 Professore
                             </button>
@@ -335,7 +335,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #1E4D8C 0%, #0d1b2a 100%)',
+        background: 'linear-gradient(135deg, var(--elab-navy) 0%, #0d1b2a 100%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         padding: '16px',
     },
@@ -402,14 +402,14 @@ const styles = {
         fontWeight: '600',
         borderRadius: '10px',
         border: 'none',
-        background: 'linear-gradient(135deg, #4A7A25, #6fa030)',
-        color: '#1A1A2E',
+        background: 'linear-gradient(135deg, var(--elab-lime), #6fa030)',
+        color: 'var(--elab-hex-1a1a2e)',
         cursor: 'pointer',
         marginTop: '8px',
         transition: 'opacity 200ms ease, transform 100ms ease',
     },
     error: {
-        color: '#ff6b6b',
+        color: 'var(--elab-hex-ff6b6b)',
         fontSize: '14px',
         margin: '0',
         padding: '10px',
@@ -435,7 +435,7 @@ const styles = {
     },
     footer: { color: 'rgba(255,255,255,0.5)', fontSize: '14px', marginTop: '24px' },
     link: {
-        color: '#4A7A25',
+        color: 'var(--elab-lime)',
         background: 'none',
         border: 'none',
         cursor: 'pointer',

@@ -107,7 +107,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida! Oggi colleghiamo il reed switch al LED RGB. Il magnete accenderà un colore — riuscite ad accenderne di più?",
+      "teacher_message": "Ragazzi, sfida! Oggi colleghiamo il reed switch al LED RGB. Il magnete accenderà un colore — riuscite ad accenderne di più?",
       "teacher_tip": "È una sfida aperta: il circuito base accende solo il rosso. La sfida è pensare a come aggiungere circuiti per verde e blu. Lascia che i ragazzi provino!",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, 1 resistore 470Ω, 1 LED RGB, 6 fili.",
       "class_hook": "Abbiamo acceso un LED rosso con il magnete. Ma il LED RGB ha TRE colori! Riuscite a farli accendere tutti con il magnete?",
@@ -127,8 +127,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito sfida RGB + reed switch",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito sfida RGB + reed switch",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -203,7 +203,7 @@
         {
           "mistake": "Pensano di avere bisogno di 3 reed switch",
           "teacher_response": "No! Se il reed switch è nel punto giusto (prima della divisione ai 3 canali), uno solo basta per controllare tutto!",
-          "analogy": "Come un rubinetto principale che controlla l'acqua di tutta la casa"
+          "analogy": "Come un rubinetto principale che regola l'acqua di tutta la casa"
         },
         {
           "mistake": "Collegano i canali senza resistore",
@@ -216,7 +216,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 12,
-      "teacher_message": "Premi Play e avvicina il magnete: il canale rosso si accende! Prova ad espandere il circuito per accendere più colori.",
+      "teacher_message": "Premete Play e avvicinate il magnete: il canale rosso si accende! Provate ad espandere il circuito per accendere più colori.",
       "teacher_tip": "Evidenzia reed switch e LED RGB. Incoraggia la sperimentazione: 'Non c'è un solo modo giusto! Provate e osservate cosa succede.'",
       "components_list": null,
       "class_hook": null,

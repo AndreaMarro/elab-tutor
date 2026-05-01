@@ -205,7 +205,7 @@ const S = {
     fontFamily: 'var(--font-display, "Oswald", sans-serif)',
     fontSize: 14,
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     textTransform: 'uppercase',
     letterSpacing: '1px',
   },

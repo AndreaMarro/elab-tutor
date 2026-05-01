@@ -14,21 +14,43 @@
   "target_age": "10-14 anni",
   "objective": "Usare il multimetro in modalita ohmmetro per misurare il valore reale di una resistenza e confrontarlo con il codice a bande colorate.",
   "components_needed": [
-    { "name": "Resistore 330ohm", "quantity": 1, "icon": "⚡" },
-    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+    {
+      "name": "Resistore 330ohm",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Multimetro",
+      "quantity": 1,
+      "icon": "📏"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "multimetro", "ohmmetro", "ohm", "resistore", "resistenza",
-      "bande colorate", "tolleranza", "valore nominale", "valore reale",
-      "misurare", "puntale"
+      "multimetro",
+      "ohmmetro",
+      "ohm",
+      "resistore",
+      "resistenza",
+      "bande colorate",
+      "tolleranza",
+      "valore nominale",
+      "valore reale",
+      "misurare",
+      "puntale"
     ],
     "forbidden": [
-      "Arduino", "codice", "programma", "condensatore", "transistor"
+      "Arduino",
+      "codice",
+      "programma",
+      "condensatore",
+      "transistor"
     ],
     "note": "Vol 2 Cap 3 — ohmmetro, bande colorate, tolleranza."
   },
-  "prerequisites": ["v2-cap3-esp2"],
+  "prerequisites": [
+    "v2-cap3-esp2"
+  ],
   "next_experiment": {
     "id": "v2-cap3-esp4",
     "title": "Misuriamo la corrente in un circuito",
@@ -39,7 +61,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi il multimetro cambia ruolo: da voltmetro diventa ohmmetro! Misureremo il valore di una resistenza e verificheremo se le bande colorate dicono la verita.",
+      "teacher_message": "Ragazzi, oggi il multimetro cambia ruolo: da voltmetro diventa ohmmetro! Misureremo il valore di una resistenza e verificheremo se le bande colorate dicono la verita.",
       "teacher_tip": "Mostra il codice colori: arancio-arancio-marrone = 330ohm. Spiega che ogni resistore ha una tolleranza (es. 5%) quindi il valore misurato puo differire leggermente.",
       "components_list": "Ti servono: 1 resistore 330ohm, 1 multimetro.",
       "class_hook": "Le resistenze hanno delle strisce colorate che nascondono un codice segreto. Oggi impariamo a decifrarlo e poi verifichiamo con il multimetro se e vero!",
@@ -54,15 +76,24 @@
       "teacher_tip": "Il circuito deve essere SPENTO per misurare la resistenza! Se il multimetro e collegato a un circuito alimentato, la misura sara sbagliata. Evidenzia questo punto.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp3]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v2-cap3-esp3]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega il multimetro al resistore per misurare la resistenza",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate il multimetro al resistore per misurare la resistenza",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "resistor", "id": "r1", "value": 330 },
-            { "type": "multimeter", "id": "mm1" }
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 330
+            },
+            {
+              "type": "multimeter",
+              "id": "mm1"
+            }
           ],
           "wires": []
         }
@@ -91,9 +122,12 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Osserva il valore sul display. E vicino a 330ohm? Prova con resistori diversi: 1kohm, 10kohm. Confronta sempre il valore misurato con quello delle bande.",
+      "teacher_message": "Osservate il valore sul display. E vicino a 330ohm? Provate con resistori diversi: 1kohm, 10kohm. Confrontate sempre il valore misurato con quello delle bande.",
       "teacher_tip": "Fai compilare una tabella: Resistore | Bande (valore nominale) | Misurato | Differenza %. I ragazzi vedranno che tutti i valori rientrano nella tolleranza.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:r1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:r1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il display mostra un valore molto vicino a 330ohm. Le bande colorate danno un'approssimazione corretta! La piccola differenza e normale ed e chiamata tolleranza.",
       "analogies": [
@@ -130,7 +164,11 @@
     "Se capisce il concetto di tolleranza → pensiero quantitativo"
   ],
   "session_save": {
-    "concepts_covered": ["ohmmetro", "bande_colorate", "tolleranza"],
+    "concepts_covered": [
+      "ohmmetro",
+      "bande_colorate",
+      "tolleranza"
+    ],
     "next_suggested": "v2-cap3-esp4",
     "resume_message": "Avete misurato le resistenze con il multimetro! Prossimo: misurare la corrente."
   }

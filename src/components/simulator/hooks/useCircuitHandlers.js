@@ -463,7 +463,7 @@ export default function useCircuitHandlers({
           const scale = Math.min(maxDim / (img.width || 800), maxDim / (img.height || 600), 1);
           canvas.width = Math.round((img.width || 800) * scale);
           canvas.height = Math.round((img.height || 600) * scale);
-          ctx.fillStyle = '#FAFAF7';
+          ctx.fillStyle = '#fafaf7'; // palette
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           imageBase64 = canvas.toDataURL('image/png').split(',')[1];

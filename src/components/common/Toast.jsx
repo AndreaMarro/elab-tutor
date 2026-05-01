@@ -13,9 +13,9 @@ export function showToast(message, type = 'info') {
 }
 
 const COLORS = {
-    info: { bg: '#1E4D8C', text: '#fff' },
-    success: { bg: '#4A7A25', text: '#fff' },
-    error: { bg: '#E54B3D', text: '#fff' },
+    info: { bg: 'var(--elab-navy)', text: '#fff' },
+    success: { bg: 'var(--elab-lime)', text: '#fff' },
+    error: { bg: 'var(--elab-red)', text: '#fff' },
     warning: { bg: '#E8941C', text: '#1A1A2E' }, /* G42: dark text on orange for WCAG AA (~3.8:1, passes large text) */
 };
 

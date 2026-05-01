@@ -153,7 +153,7 @@
   border: 1px solid rgba(30, 77, 140, 0.12);
   border-radius: 0 8px 8px 0;
   cursor: pointer;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   z-index: 51;
   transition: background 150ms ease;
   padding: 0;
@@ -165,7 +165,7 @@
 }
 
 .toggle:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: 2px;
 }
 

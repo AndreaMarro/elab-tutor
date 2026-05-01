@@ -1,7 +1,7 @@
 ---
 id: analog-read
 type: concept
-title: "analogRead() — Lettura analogica ADC"
+title: "analogRead() — Leggere il Mondo Analogico"
 locale: it
 volume_ref: 3
 pagina_ref: 77
@@ -13,112 +13,120 @@ tags: [analogread, adc, sensori, pin-analogici, potenziometro, fotoresistore, ma
 
 ## Definizione
 
-`analogRead(pin)` è la funzione Arduino che legge la tensione su un pin analogico (A0–A5) e la converte in un numero intero da 0 a 1023 tramite il convertitore analogico-digitale (ADC) a 10 bit dell'ATmega328p. Vol. 3 pag. 77 la introduce come "il modo del Nano per ascoltare il mondo reale".
+`analogRead(pin)` è la funzione Arduino che legge una tensione continua su uno dei pin A0-A5 e la converte in un numero intero da 0 a 1023. Vol. 3 pag. 77 la introduce così: "Leggiamo un valore con analogRead(A0) e lo stampiamo sul Monitor Seriale. Il potenziometro genera numeri da 0 a 1023 che vediamo scorrere sullo schermo."
 
 ## Analogia per la classe
 
-Ragazzi, immaginate un righello speciale con 1024 tacche. Quando il Nano appoggia il dito su un filo, guarda dove si trova la tensione su questo righello: 0 tacche = 0V (silenzio totale), 1023 tacche = 5V (volume al massimo). La funzione `analogRead()` è il Nano che legge la tacca e vi dice il numero.
+Ragazzi, immaginate di misurare la temperatura con un termometro a mercurio: il liquido può salire a ogni altezza, non solo "caldo" o "freddo". Ecco la differenza tra il mondo **analogico** e quello **digitale**. Con `digitalRead` Arduino risponde solo sì/no; con `analogRead` risponde con un numero tra 0 e 1023 — come un righello che misura ogni millimetro tra 0 e 5 volt. Vol. 3 pag. 79: "Arduino non riceve sì/no, riceve un numero."
 
 ## Cosa succede fisicamente
 
-Il pin A0–A5 misura la tensione rispetto a GND. L'ADC divide il range 0–5V in **2¹⁰ = 1024 gradini** uguali.
+Dentro Arduino Nano c'è un componente chiamato **ADC** (Convertitore Analogico-Digitale, Analog-to-Digital Converter). Quando chiamate `analogRead(A0)`:
 
-Valore di ogni gradino:
+1. Arduino "assaggia" la tensione presente sul pin A0
+2. La confronta con la tensione di riferimento (5 V per default)
+3. Fa un calcolo: divide il valore letto per l'intero range e lo mappa su 1024 livelli
+
+**Formula:**
 ```
-V_step = 5V / 1024 ≈ 4.88 mV
+valore = (Vin / Vref) × 1023
 ```
 
-**Tabella di conversione rapida:**
+| Tensione su A0 | Valore restituito |
+|----------------|-------------------|
+| 0.0 V          | 0                 |
+| 1.25 V         | 255               |
+| 2.5 V          | 511               |
+| 3.75 V         | 767               |
+| 5.0 V          | 1023              |
 
-| Tensione sul pin | Valore `analogRead()` |
-|------------------|-----------------------|
-| 0 V              | 0                     |
-| 1.25 V           | 256                   |
-| 2.5 V            | 512                   |
-| 3.75 V           | 768                   |
-| 5 V              | 1023                  |
+**Risoluzione:** 5 V ÷ 1024 ≈ **4.9 mV per passo** — Arduino sente variazioni minuscole di tensione.
 
-### Sintassi Arduino
+**Tempo di conversione:** circa 100 µs per chiamata. Con `delay(250)` nel loop leggete 4 valori al secondo — abbastanza per giochi e sensori base.
 
+**Codice minimo:**
 ```cpp
-int valore = analogRead(A0);              // 0–1023
+void setup() {
+  Serial.begin(9600);
+}
+void loop() {
+  int valore = analogRead(A0);
+  Serial.println(valore);
+  delay(250);
+}
 ```
 
-Conversione in tensione reale:
+**Conversione valore → tensione reale:**
 ```cpp
-float volt = valore * (5.0 / 1023.0);    // da 0–1023 a 0.0–5.0V
+float tensione = valore * 5.0 / 1023.0;
 ```
 
-Mappatura su scala personalizzata con `map()`:
+**Mappatura su altro range** (es. 0-100 per percentuale):
 ```cpp
-int percentuale = map(valore, 0, 1023, 0, 100);  // 0–100%
-int gradi      = map(valore, 0, 1023, 0, 180);   // 0–180° (utile per servo)
+int percentuale = map(valore, 0, 1023, 0, 100);
 ```
-
-### Pin usabili su Arduino Nano
-
-| Pin  | Canale ADC | Note                          |
-|------|-----------|-------------------------------|
-| A0   | ADC0      | Uso più comune                |
-| A1   | ADC1      |                               |
-| A2   | ADC2      |                               |
-| A3   | ADC3      |                               |
-| A4   | ADC4      | Condiviso con I2C SDA         |
-| A5   | ADC5      | Condiviso con I2C SCL         |
 
 ## Esperimenti correlati
 
-- Vol. 3 pag. 77 — Prima lettura potenziometro → Serial Monitor (valore grezzo)
-- Vol. 1 pag. 81 — Fotoresistore in partitore → `analogRead()` per rilevare luce
-- Vol. 2 pag. 45 — Divisore di tensione con LDR + `map()` per regolare luminosità LED
-- Vedi anche: [concepts/pin-analogici.md](pin-analogici.md), [concepts/potenziometro.md](potenziometro.md), [concepts/fotoresistore.md](fotoresistore.md), [concepts/divisore-tensione.md](divisore-tensione.md)
+- **v3-cap7-esp3** — Vol. 3 pag. 75: introduzione pin analogici con potenziometro
+- **v3-cap7-esp5** — Vol. 3 pag. 77: primo `analogRead()` + Monitor Seriale
+- **v3-cap7-esp7** — Vol. 3 pag. 79: approfondimento ADC a 10 bit riga per riga
+- **v3-cap8-esp1** — Vol. 3 pag. 81: uso del Monitor Seriale per vedere i valori
+- **v3-cap8-esp2** — Vol. 3 pag. 82: `analogRead` + `if/else` per soglia (LED on/off)
 
 ## Errori comuni
 
-1. **Leggere un pin D con `analogRead()`**: `analogRead(13)` non funziona come ci si aspetta — i pin D0–D13 sono digitali. Per i pin analogici usare sempre A0–A5.
-2. **Confondere 0–1023 con 0–255**: `analogRead()` restituisce 0–1023 (ADC 10-bit); `analogWrite()` accetta 0–255 (PWM 8-bit). Mescolare le due scale dà risultati errati.
-3. **LDR senza resistenza in serie**: un fotoresistore collegato direttamente tra 5V e A0 non varia la tensione. Serve un partitore con 10 kΩ in serie (vedi [divisore-tensione.md](divisore-tensione.md)).
-4. **Pin non collegato (floating)**: un pin A0 senza sensore legge valori casuali 0–1023. Non è un guasto — il pin raccoglie interferenze dall'aria. Aggiungere una resistenza di pull-down (10 kΩ verso GND) per stabilizzarlo.
-5. **Tensione > 5V sul pin analogico**: superare i 5V sull'ingresso ADC può danneggiare l'ATmega328p in modo permanente. Se il sensore lavora a tensioni diverse (3.3V, 12V), usare un divisore di tensione o un modulo adattatore.
+1. **Leggere un pin non collegato** — il valore fluttua casualmente tra 0 e 1023 perché il pin "flotta" nell'aria. Soluzione: collegare sempre il sensore o usare `pinMode(A0, INPUT_PULLUP)`.
+
+2. **Usare `analogRead` su pin digitali D0-D13** — `analogRead(13)` non legge il pin D13 ma è un errore logico; i pin analogici sono A0-A5 (internamente 14-19). Usate sempre la costante `A0`, `A1` … `A5`.
+
+3. **Dimenticare `Serial.begin(9600)` nel setup** — il Monitor Seriale mostra caratteri strani o niente. La comunicazione seriale va inizializzata prima di usare `Serial.println`.
+
+4. **Aspettarsi valori esatti** — piccole variazioni di ±2-3 unità sono normali (rumore ADC). Non è un bug del circuito: è la fisica del sensore.
+
+5. **Confondere `analogRead` con `analogWrite`** — `analogRead` legge un sensore (A0-A5 in ingresso); `analogWrite` genera un segnale PWM su pin speciali (D3, D5, D6, D9, D10, D11). Sono due funzioni completamente diverse.
 
 ## Domande tipiche degli studenti
 
-**"Perché il massimo è 1023 e non 1024?"**
-Perché 10 bit danno 1024 valori distinti (da 0 a 1023, con lo zero incluso). È come contare da 0 a 99: sono 100 numeri in totale, non 101.
+**"Perché il numero va fino a 1023 e non a 1024?"**
+Perché partiamo da 0: i livelli sono 0, 1, 2 … 1023, cioè 1024 livelli in totale. È lo stesso motivo per cui una scala da 0 a 9 ha 10 gradini.
 
-**"Cosa succede se non collego niente al pin?"**
-Il pin *fluttua*: capta le interferenze elettriche nell'aria e restituisce numeri a caso. Il Nano non sa distinguere "nulla collegato" da "segnale debolissimo" — servono i fili per dargli un riferimento fisso.
+**"Posso usare A0 sia come digitale che come analogico?"**
+Sì! I pin A0-A5 possono fare `digitalRead`/`digitalWrite` (0 o 1) oppure `analogRead` (0-1023). Basta non mischiare le due modalità sullo stesso pin nello stesso momento.
 
-**"Posso leggere tensioni negative o sopra 5V?"**
-No. L'ADC dell'ATmega328p legge solo 0–5V. Sotto 0V legge sempre 0. Sopra 5V si rischia di bruciare il chip in modo permanente.
+**"Se giro il potenziometro piano piano, i numeri cambiano davvero uno alla volta?"**
+Quasi. La risoluzione è ~4.9 mV per passo, quindi con movimenti molto piccoli potreste vedere cambiare i valori di 1-2 unità alla volta. Con movimenti veloci saltano decine di valori in una volta.
 
-**"Quando uso `map()` e quando moltiplico a mano?"**
-`map()` è più leggibile e gestisce i bordi correttamente. Moltiplicare a mano funziona ma è più facile sbagliare il calcolo o perdere precisione. Nelle prime sessioni, usate sempre `map()` — capiremo perché funziona dopo.
+**"Posso usare `analogRead` con il fotoresistore invece del potenziometro?"**
+Assolutamente sì — è uno degli usi più comuni. Il fotoresistore, in un partitore di tensione con una resistenza fissa, genera una tensione variabile in base alla luce, e `analogRead` la legge allo stesso modo.
 
 ## PRINCIPIO ZERO
 
-**Safety — tensione massima 5V:** I pin A0–A5 reggono al massimo 5V. Sensori che producono tensioni più alte (es. 12V, 220V rete) **non si collegano mai direttamente** al Nano — serve un divisore di tensione o un modulo apposito. Il kit ELAB usa sempre sorgenti sicure (batteria 9V regolata a 5V tramite il Nano).
+**Contesto narrativo per la classe:** Questo è il momento in cui i ragazzi scoprono che Arduino non è solo un interruttore on/off — sa *misurare* il mondo. È un passaggio importante: dall'esperienza digitale (sì/no) al mondo reale (sfumature, quantità, grandezze fisiche).
 
-**Narrativa per la classe:** Dopo il "Hello World" con il LED lampeggiante, `analogRead()` è il passo in cui il Nano smette di essere binario (acceso/spento) e inizia a *sentire* le gradazioni del mondo reale — come passare da un interruttore a una manopola del volume. Mostrare i numeri scorrere sul Serial Monitor mentre i ragazzi ruotano il potenziometro crea la connessione immediata tra gesto fisico e numero digitale: il Nano *sta leggendo* le loro mani.
+**Cosa fare con i ragazzi:**
+- Fate girare lentamente il potenziometro mentre il Monitor Seriale è aperto e tutti vedono i numeri cambiare — è il momento "wow" del capitolo
+- Chiedete: "Secondo voi, dove si trova lo 0? E il 1023?" (GND e 5V)
+- Collegare il concetto alla vita reale: "Il termostato di casa fa la stessa cosa — misura gradi, non solo 'caldo/freddo'"
+- Citate Vol. 3 pag. 75: "La luce non è solo 'c'è/non c'è': può essere poca, media, tanta"
 
-**Cosa dire ai ragazzi:**
-- "Vediamo insieme come il Nano legge il mondo reale — non più solo 0 e 1, ma tutti i valori in mezzo"
-- "Ruotate il potenziometro e guardate i numeri scorrere: da 0 a 1023 in entrambe le direzioni"
-- "Il libro a pag. 77 ci spiega che questo numero corrisponde a quanta tensione arriva al pin"
-- "Con `map()` portiamo quel numero a qualcosa che conosciamo già: percentuale, gradi, velocità"
+**Sicurezza:**
+- I pin A0-A5 in modalità `analogRead` sono ingressi: non collegare tensioni superiori a 5 V o negative — si danneggiano irreversibilmente
+- Il potenziometro va sempre collegato con i due estremi a 5V e GND; il piedino centrale ad A0. Invertire GND e 5V non rompe nulla, ma dà valori invertiti
 
-**Progressione didattica consigliata:**
-1. `analogRead()` su potenziometro → Serial Monitor (valore grezzo 0–1023)
-2. Conversione con `map()` → percentuale 0–100% stampata su monitor
-3. Fotoresistore con partitore → lettura luce ambientale
-4. Controllo intensità LED con `analogWrite()` in base al valore di `analogRead()`
-5. Due sensori analogici → decisioni con `if` in base ai valori letti
+**Cosa NON fare:**
+- Non collegare direttamente una batteria 9V su A0 senza partitore
+- Non lasciare A0 scollegato e mostrare i valori fluttuanti come se fosse un bug — spiegate che è normale (pin flottante) e che serve sempre un sensore collegato
 
-## Link L1 (raw)
+**Cosa dire ai ragazzi** (citazione diretta Vol. 3):
+> "Arduino non riceve sì/no, riceve un numero." — Vol. 3 pag. 79
 
-Query RAG che attivano questo concetto in `src/data/rag-chunks.json`:
-- `"analogRead"` — codice e spiegazione funzione
-- `"ADC convertitore analogico digitale"` — teoria 10-bit
-- `"potenziometro analogRead"` — Vol. 3 pag. 77 bookText
-- `"fotoresistore pin analogico"` — Vol. 1 pag. 81 bookText
-- `"map() arduino range"` — funzione helper per mappatura scale
+## Link L1 (raw RAG queries)
+
+Frasi di ricerca per recuperare chunk L1 correlati da `src/data/rag-chunks.json`:
+
+- `"analogRead A0 potenziometro"`
+- `"pin analogici A0-A5 Arduino Nano"`
+- `"ADC 10 bit 0 1023"`
+- `"Monitor Seriale valori analogici"`
+- `"map analogRead percentuale"`

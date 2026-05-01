@@ -125,46 +125,46 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
   const exp = sessionData.experiment;
 
   const st = R.StyleSheet.create({
-    page: { fontFamily: 'OpenSans', fontSize: 10, color: '#333333', paddingTop: 40, paddingBottom: 60, paddingHorizontal: 40 },
-    headerBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 8, backgroundColor: '#1E4D8C' },
+    page: { fontFamily: 'OpenSans', fontSize: 10, color: 'var(--elab-hex-333333)', paddingTop: 40, paddingBottom: 60, paddingHorizontal: 40 },
+    headerBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 8, backgroundColor: 'var(--elab-navy)' },
     footer: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 40, borderTopWidth: 3, borderTopColor: vol },
-    footerText: { fontSize: 8, color: '#737373', fontFamily: 'OpenSans' },
-    coverTitle: { fontFamily: 'Oswald', fontSize: 28, fontWeight: 700, color: '#1E4D8C', marginTop: 100, textAlign: 'center' },
+    footerText: { fontSize: 8, color: 'var(--elab-hex-737373)', fontFamily: 'OpenSans' },
+    coverTitle: { fontFamily: 'Oswald', fontSize: 28, fontWeight: 700, color: 'var(--elab-navy)', marginTop: 100, textAlign: 'center' },
     coverSubtitle: { fontFamily: 'Oswald', fontSize: 16, fontWeight: 400, color: vol, textAlign: 'center', marginTop: 8 },
-    coverDate: { fontSize: 11, color: '#666666', textAlign: 'center', marginTop: 16 },
-    sectionTitle: { fontFamily: 'Oswald', fontSize: 20, fontWeight: 700, color: '#1E4D8C', marginBottom: 12 },
-    narrative: { fontSize: 10, lineHeight: 1.6, color: '#333333', marginBottom: 8 },
-    narrativeItalic: { fontSize: 9, fontStyle: 'italic', color: '#666666', marginBottom: 8 },
-    boxSuccess: { backgroundColor: '#E8F5E9', borderLeftWidth: 4, borderLeftColor: '#4CAF50', padding: 10, marginVertical: 8, borderRadius: 2 },
-    boxEncourage: { backgroundColor: '#FFF3E0', borderLeftWidth: 4, borderLeftColor: '#FF9800', padding: 10, marginVertical: 8, borderRadius: 2 },
+    coverDate: { fontSize: 11, color: 'var(--elab-hex-666666)', textAlign: 'center', marginTop: 16 },
+    sectionTitle: { fontFamily: 'Oswald', fontSize: 20, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 12 },
+    narrative: { fontSize: 10, lineHeight: 1.6, color: 'var(--elab-hex-333333)', marginBottom: 8 },
+    narrativeItalic: { fontSize: 9, fontStyle: 'italic', color: 'var(--elab-hex-666666)', marginBottom: 8 },
+    boxSuccess: { backgroundColor: 'var(--elab-hex-e8f5e9)', borderLeftWidth: 4, borderLeftColor: 'var(--elab-hex-4caf50)', padding: 10, marginVertical: 8, borderRadius: 2 },
+    boxEncourage: { backgroundColor: 'var(--elab-hex-fff3e0)', borderLeftWidth: 4, borderLeftColor: 'var(--elab-hex-ff9800)', padding: 10, marginVertical: 8, borderRadius: 2 },
     boxText: { fontSize: 10, lineHeight: 1.5 },
-    circuitImage: { width: '100%', maxHeight: 340, objectFit: 'contain', marginVertical: 10, borderWidth: 1, borderColor: '#E0E0E0', borderRadius: 4 },
-    codeBlock: { backgroundColor: '#F5F5F5', padding: 10, borderRadius: 4, marginVertical: 8 },
-    codeText: { fontFamily: 'FiraCode', fontSize: 8, color: '#333333', lineHeight: 1.5 },
-    chatUnlim: { backgroundColor: '#E8EDF4', padding: 8, borderRadius: 6, marginBottom: 6, marginRight: 40 },
-    chatStudent: { backgroundColor: '#F5F5F5', padding: 8, borderRadius: 6, marginBottom: 6, marginLeft: 40 },
-    chatRole: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: '#1E4D8C', marginBottom: 2 },
-    chatRoleStudent: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: '#666666', marginBottom: 2, textAlign: 'right' },
-    chatText: { fontSize: 9, lineHeight: 1.4, color: '#333333' },
+    circuitImage: { width: '100%', maxHeight: 340, objectFit: 'contain', marginVertical: 10, borderWidth: 1, borderColor: 'var(--elab-hex-e0e0e0)', borderRadius: 4 },
+    codeBlock: { backgroundColor: 'var(--elab-hex-f5f5f5)', padding: 10, borderRadius: 4, marginVertical: 8 },
+    codeText: { fontFamily: 'FiraCode', fontSize: 8, color: 'var(--elab-hex-333333)', lineHeight: 1.5 },
+    chatUnlim: { backgroundColor: 'var(--elab-hex-e8edf4)', padding: 8, borderRadius: 6, marginBottom: 6, marginRight: 40 },
+    chatStudent: { backgroundColor: 'var(--elab-hex-f5f5f5)', padding: 8, borderRadius: 6, marginBottom: 6, marginLeft: 40 },
+    chatRole: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 2 },
+    chatRoleStudent: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: 'var(--elab-hex-666666)', marginBottom: 2, textAlign: 'right' },
+    chatText: { fontSize: 9, lineHeight: 1.4, color: 'var(--elab-hex-333333)' },
     quizQuestion: { fontFamily: 'OpenSans', fontWeight: 700, fontSize: 10, marginBottom: 6, marginTop: 10 },
     quizOption: { fontSize: 9, paddingVertical: 3, paddingLeft: 12 },
-    quizCorrect: { color: '#2E7D32' },
-    quizWrong: { color: '#E65100' },
-    quizExplanation: { fontSize: 9, fontStyle: 'italic', color: '#555555', marginTop: 4, paddingLeft: 12 },
+    quizCorrect: { color: 'var(--elab-hex-2e7d32)' },
+    quizWrong: { color: 'var(--elab-hex-e65100)' },
+    quizExplanation: { fontSize: 9, fontStyle: 'italic', color: 'var(--elab-hex-555555)', marginTop: 4, paddingLeft: 12 },
     starsRow: { flexDirection: 'row', marginVertical: 6, justifyContent: 'center' },
     starText: { fontSize: 18, marginHorizontal: 2 },
-    componentItem: { fontSize: 9, color: '#444444', marginBottom: 2, paddingLeft: 8 },
-    summaryBullet: { fontSize: 10, lineHeight: 1.6, color: '#333333', marginBottom: 6, paddingLeft: 12 },
+    componentItem: { fontSize: 9, color: 'var(--elab-hex-444444)', marginBottom: 2, paddingLeft: 8 },
+    summaryBullet: { fontSize: 10, lineHeight: 1.6, color: 'var(--elab-hex-333333)', marginBottom: 6, paddingLeft: 12 },
     // Phase 6: Timeline & Measurements styles
-    timelineRow: { flexDirection: 'row', marginBottom: 4, paddingVertical: 2, borderBottomWidth: 0.5, borderBottomColor: '#EEEEEE' },
-    timelineTime: { width: 60, fontSize: 8, color: '#737373', fontFamily: 'FiraCode' },
+    timelineRow: { flexDirection: 'row', marginBottom: 4, paddingVertical: 2, borderBottomWidth: 0.5, borderBottomColor: 'var(--elab-hex-eeeeee)' },
+    timelineTime: { width: 60, fontSize: 8, color: 'var(--elab-hex-737373)', fontFamily: 'FiraCode' },
     timelineIcon: { width: 18, fontSize: 10, textAlign: 'center' },
-    timelineText: { flex: 1, fontSize: 9, color: '#333333' },
+    timelineText: { flex: 1, fontSize: 9, color: 'var(--elab-hex-333333)' },
     measureTable: { marginVertical: 8 },
-    measureHeaderRow: { flexDirection: 'row', backgroundColor: '#1E4D8C', paddingVertical: 4, paddingHorizontal: 6, borderRadius: 2 },
-    measureHeaderText: { color: '#FFFFFF', fontSize: 8, fontFamily: 'Oswald', fontWeight: 700 },
-    measureRow: { flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 6, borderBottomWidth: 0.5, borderBottomColor: '#EEEEEE' },
-    measureCell: { fontSize: 8, fontFamily: 'FiraCode', color: '#333333' },
+    measureHeaderRow: { flexDirection: 'row', backgroundColor: 'var(--elab-navy)', paddingVertical: 4, paddingHorizontal: 6, borderRadius: 2 },
+    measureHeaderText: { color: 'var(--elab-hex-ffffff)', fontSize: 8, fontFamily: 'Oswald', fontWeight: 700 },
+    measureRow: { flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 6, borderBottomWidth: 0.5, borderBottomColor: 'var(--elab-hex-eeeeee)' },
+    measureCell: { fontSize: 8, fontFamily: 'FiraCode', color: 'var(--elab-hex-333333)' },
   });
 
   // Determine which conditional pages exist
@@ -198,7 +198,7 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
       {exp?.chapter && (
         <R.Text style={{ ...st.narrativeItalic, textAlign: 'center', marginTop: 20 }}>{exp.chapter}</R.Text>
       )}
-      <R.Text style={{ ...st.narrativeItalic, textAlign: 'center', marginTop: 60, fontSize: 10, color: '#1E4D8C' }}>
+      <R.Text style={{ ...st.narrativeItalic, textAlign: 'center', marginTop: 60, fontSize: 10, color: 'var(--elab-navy)' }}>
         ELAB — Elettronica Lab
       </R.Text>
     </PageWrap>
@@ -306,7 +306,7 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
               <R.Text style={{ ...st.measureHeaderText, flex: 1, textAlign: 'right' }}>Tensione (V)</R.Text>
             </R.View>
             {Object.entries(measurements.voltages).slice(0, 20).map(([node, v], i) => (
-              <R.View key={i} style={{ ...st.measureRow, backgroundColor: i % 2 === 0 ? '#FAFAFA' : '#FFFFFF' }}>
+              <R.View key={i} style={{ ...st.measureRow, backgroundColor: i % 2 === 0 ? 'var(--elab-hex-fafafa)' : 'var(--elab-hex-ffffff)' }}>
                 <R.Text style={{ ...st.measureCell, flex: 2 }}>{node}</R.Text>
                 <R.Text style={{ ...st.measureCell, flex: 1, textAlign: 'right' }}>{v} V</R.Text>
               </R.View>
@@ -324,7 +324,7 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
             {Object.entries(measurements.currents).slice(0, 20).map(([compId, amps], i) => {
               const compName = COMPONENT_NAMES[compId.replace(/\d+$/, '')] || compId;
               return (
-                <R.View key={i} style={{ ...st.measureRow, backgroundColor: i % 2 === 0 ? '#FAFAFA' : '#FFFFFF' }}>
+                <R.View key={i} style={{ ...st.measureRow, backgroundColor: i % 2 === 0 ? 'var(--elab-hex-fafafa)' : 'var(--elab-hex-ffffff)' }}>
                   <R.Text style={{ ...st.measureCell, flex: 2 }}>{compId} ({compName})</R.Text>
                   <R.Text style={{ ...st.measureCell, flex: 1, textAlign: 'right' }}>{(amps * 1000).toFixed(1)} mA</R.Text>
                 </R.View>
@@ -413,10 +413,10 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
               {q.options.map((opt, oi) => {
                 const isPick = oi === studentAnswer;
                 const isRight = oi === q.correct;
-                let color = '#333333';
-                if (isPick && isRight) color = '#2E7D32';
-                else if (isPick && !isRight) color = '#E65100';
-                else if (isRight) color = '#2E7D32';
+                let color = 'var(--elab-hex-333333)';
+                if (isPick && isRight) color = 'var(--elab-hex-2e7d32)';
+                else if (isPick && !isRight) color = 'var(--elab-hex-e65100)';
+                else if (isRight) color = 'var(--elab-hex-2e7d32)';
                 return (
                   <R.Text key={oi} style={{ ...st.quizOption, color }}>
                     {isPick ? '\u25B8 ' : '  '}{opt}{isRight ? ' \u2713' : ''}{isPick && !isRight ? ' \u2717' : ''}

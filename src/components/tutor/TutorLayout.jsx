@@ -23,7 +23,7 @@ function OnboardingTooltip({ onDismiss, onNavigate, onLoadExperiment, onGoToDash
             icon: null,
             label: 'Lezione pronta',
             desc: 'Primo circuito con LED guidato',
-            color: '#4A7A25',
+            color: 'var(--elab-lime)',
             action: () => {
                 // Load Vol1 Cap6 Esp1 and let UNLIM guide
                 if (window.__ELAB_API?.loadExperiment) {
@@ -37,7 +37,7 @@ function OnboardingTooltip({ onDismiss, onNavigate, onLoadExperiment, onGoToDash
             icon: null,
             label: 'Esplora il simulatore',
             desc: 'Canvas vuoto, costruisci liberamente',
-            color: '#1E4D8C',
+            color: 'var(--elab-navy)',
             action: () => { onNavigate('simulator'); onDismiss(); },
         },
         {
@@ -203,8 +203,8 @@ export default function TutorLayout({
     }, [onTabChange]);
 
     // G38: Volume accent color for top border on content area
-    const volumeAccentColors = { 1: '#4A7A25', 2: '#E8941C', 3: '#E54B3D', inventor: '#1E4D8C' };
-    const volumeAccent = activeVolume ? (volumeAccentColors[activeVolume] || '#1E4D8C') : 'transparent';
+    const volumeAccentColors = { 1: 'var(--elab-lime)', 2: 'var(--elab-orange)', 3: 'var(--elab-red)', inventor: 'var(--elab-navy)' };
+    const volumeAccent = activeVolume ? (volumeAccentColors[activeVolume] || 'var(--elab-navy)') : 'transparent';
 
     return (
         <div

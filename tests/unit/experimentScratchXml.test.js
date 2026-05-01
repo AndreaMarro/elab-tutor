@@ -21,7 +21,7 @@ const SCRATCH_EXPERIMENTS = ALL_EXPERIMENTS.filter(e => e.scratchXml);
 
 describe('experimentScratchXml — count and distribution', () => {
   it('all 92 experiments are loaded', () => {
-    expect(ALL_EXPERIMENTS.length).toBe(92);
+    expect(ALL_EXPERIMENTS.length).toBe(94);
   });
 
   it('there are experiments with scratchXml', () => {

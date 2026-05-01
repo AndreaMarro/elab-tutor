@@ -177,7 +177,7 @@ async function animatedMountExperiment(experimentId, showMessage, speakIfEnabled
   await new Promise(r => setTimeout(r, 400));
 
   // Step 4: Done!
-  const doneMsg = `Circuito pronto! "${exp.title}" montato. Premi Play per vederlo funzionare.`;
+  const doneMsg = `Circuito pronto! "${exp.title}" montato. Premete Play per vederlo funzionare.`;
   showMessage?.(doneMsg, {
     position: 'top-center', icon: <SuccessIcon size={18} />, type: 'success', duration: 7000,
   });
@@ -476,10 +476,10 @@ export default function UnlimWrapper({ children }) {
         speakIfEnabled('Report generato! Usa il pulsante Stampa per salvarlo come PDF.');
         sessionTracker.recordAction('report_generated', currentExperimentId || 'last');
       } else {
-        showMessage('Non ci sono ancora dati per il report. Fai prima una lezione!', {
+        showMessage('Non ci sono ancora dati per il report. Fate prima una lezione!', {
           position: 'top-center', icon: '\u26A0\uFE0F', type: 'info', duration: 5000,
         });
-        speakIfEnabled('Non ci sono ancora dati per il report. Fai prima una lezione!');
+        speakIfEnabled('Non ci sono ancora dati per il report. Fate prima una lezione!');
       }
       return;
     }
@@ -748,7 +748,7 @@ export default function UnlimWrapper({ children }) {
             onClick={(e) => e.stopPropagation()}
             className={css.nudgeDialogAnimated}
           >
-            <div className={css.nudgeIcon} aria-hidden="true"><LetterIcon size={36} color="var(--color-primary, #1E4D8C)" /></div>
+            <div className={css.nudgeIcon} aria-hidden="true"><LetterIcon size={36} color="var(--color-primary, var(--elab-navy))" /></div>
             <p id="nudge-title" className={css.nudgeTitle}>
               {pendingNudge.message}
             </p>
@@ -787,7 +787,7 @@ export default function UnlimWrapper({ children }) {
             onToggleMute={toggleMute}
             onMicClick={() => {
               if (!stt.isSupported) {
-                showMessage('La voce funziona solo su Chrome o Edge. Scrivi qui sotto!', {
+                showMessage('La voce funziona solo su Chrome o Edge. Scrivete qui sotto!', {
                   position: 'top-center', icon: <MicrophoneIcon size={18} />, type: 'info', duration: 5000,
                 });
                 return;

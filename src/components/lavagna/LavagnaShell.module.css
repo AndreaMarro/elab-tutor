@@ -6,7 +6,7 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: var(--color-bg-cool, #F0F4F8);
+  background: var(--color-bg-cool);
 }
 
 .body {
@@ -21,8 +21,8 @@
   position: relative;
   overflow: hidden;
   /* Dot pattern — visible workspace feel (like Excalidraw/Figma) */
-  background-color: #F8FAFB;
-  background-image: radial-gradient(circle, #d0d4d8 0.8px, transparent 0.8px);
+  background-color: #F8FAFB; /* palette */
+  background-image: radial-gradient(circle, #d0d4d8 0.8px, transparent 0.8px); /* palette */
   background-size: 20px 20px;
   /* Smooth push transition when panels open/close */
   transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -35,7 +35,7 @@
   justify-content: center;
   height: 100%;
   font-family: 'Oswald', sans-serif;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   font-size: 18px;
 }
 
@@ -59,7 +59,7 @@
   font-family: 'Oswald', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0 4px 8px;
@@ -91,7 +91,7 @@
               box-shadow var(--duration-fast, 150ms);
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-align: left;
 }
 
@@ -104,14 +104,15 @@
   border-radius: 8px;
   background: none;
   cursor: pointer;
-  font-size: 13px;
+  /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (interactive showAllBtn HIGH severity LIM). */
+  font-size: 14px;
   color: #666;
   transition: all 0.15s;
 }
 .showAllBtn:hover {
   background: rgba(30, 77, 140, 0.04);
   border-color: rgba(30, 77, 140, 0.4);
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }
 
 .componentBtn:hover {
@@ -127,7 +128,7 @@
 }
 
 .componentBtn:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -1px;
 }
 
@@ -161,7 +162,7 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: var(--color-bg, #F0F4F8);
+  background: var(--color-bg);
 }
 
 .lavagnaView {
@@ -176,7 +177,7 @@
   height: 100%;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-muted, #737373);
+  color: var(--color-muted);
 }
 
 /* ── Responsive ── */
@@ -224,7 +225,7 @@
 }
 
 .bentornatiCard {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #f0fdf4 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #f0fdf4 100%); /* palette */
   border-radius: 28px;
   padding: 40px 36px 32px;
   max-width: 420px;
@@ -242,7 +243,7 @@
   width: 64px;
   height: 64px;
   border-radius: 20px;
-  background: linear-gradient(135deg, #1E4D8C 0%, #2a6bc4 100%);
+  background: linear-gradient(135deg, var(--elab-navy) 0%, #2a6bc4 100%);
   color: #fff;
   margin-bottom: 16px;
   box-shadow: 0 6px 20px rgba(30, 77, 140, 0.3);
@@ -252,7 +253,7 @@
   font-family: 'Oswald', sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   margin: 0 0 12px;
   letter-spacing: 0.5px;
 }
@@ -269,7 +270,7 @@
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   line-height: 1.5;
-  color: #1A1A2E;
+  color: #1A1A2E; /* palette */
   margin: 8px 0 20px;
 }
 
@@ -283,7 +284,7 @@
   padding: 14px 28px;
   border: none;
   border-radius: 16px;
-  background: linear-gradient(135deg, #4A7A25 0%, #5a9a30 100%);
+  background: linear-gradient(135deg, var(--elab-lime) 0%, #5a9a30 100%);
   color: #fff;
   font-family: 'Oswald', sans-serif;
   font-size: 20px;
@@ -311,7 +312,7 @@
   border: 2px solid rgba(30, 77, 140, 0.2);
   border-radius: 12px;
   background: transparent;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -350,4 +351,84 @@
     font-size: 18px;
     min-height: 48px;
   }
+}
+
+/* ADR-025 iter 26 — Modalità switch slot (4 modes canonical) */
+.modalitaSwitchSlot {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: auto;
+}
+
+/* iter 35 P0 — CapitoloPicker overlay (fix scroll + crash: classi mancanti)
+   Prima erano referenziate da JSX ma non definite -> nessun overflow,
+   nessun max-height, contenuto si estendeva fuori viewport e i click
+   passavano sotto al backdrop causando comportamento "crash". */
+.capitoloPickerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 27, 46, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.capitoloPickerContent {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #ffffff; /* palette */
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  padding: 24px 24px 32px;
+  outline: none;
+}
+
+.capitoloPickerClose {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(30, 77, 140, 0.2);
+  background: #ffffff; /* palette */
+  color: var(--elab-navy);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.capitoloPickerClose:hover {
+  background: rgba(30, 77, 140, 0.08);
+  border-color: var(--elab-navy);
+}
+
+.capitoloPickerClose:focus-visible {
+  outline: 3px solid var(--elab-orange);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .capitoloPickerOverlay { padding: 12px; }
+  .capitoloPickerContent { padding: 16px; max-height: calc(100dvh - 24px); }
 }

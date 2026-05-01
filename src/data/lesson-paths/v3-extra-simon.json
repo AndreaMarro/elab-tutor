@@ -103,8 +103,8 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 8,
-      "teacher_message": "Questo è il PROGETTO FINALE del Volume 3! Costruiamo Simon Says — il classico gioco di memoria con luci e suoni. Arduino genera una sequenza di colori e note musicali sempre più lunga. Voi la ripetete premendo i pulsanti giusti. Se sbagliate, tutti i LED lampeggiano e il gioco ricomincia!",
-      "teacher_tip": "Fai un recap di tutto il Volume 3: 'Abbiamo imparato i pin OUTPUT (semaforo), i pin INPUT (pulsante), i pin analogici (potenziometro), il display LCD, il servomotore. Oggi usiamo TUTTO insieme!' Questo è il momento di celebrare il percorso fatto.",
+      "teacher_message": "Ragazzi, questo è il PROGETTO FINALE del Volume 3! Costruiamo Simon Says — il classico gioco di memoria con luci e suoni. Arduino genera una sequenza di colori e note musicali sempre più lunga. Voi la ripetete premendo i pulsanti giusti. Se sbagliate, tutti i LED lampeggiano e il gioco ricomincia!",
+      "teacher_tip": "Fate un recap di tutto il Volume 3: 'Abbiamo imparato i pin OUTPUT (semaforo), i pin INPUT (pulsante), i pin analogici (potenziometro), il display LCD, il servomotore. Oggi usiamo TUTTO insieme!' Questo è il momento di celebrare il percorso fatto.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 4 LED (rosso, verde, blu, giallo), 4 pulsanti, 1 cicalino piezo, 4 resistori 470Ω, molti fili!",
       "class_hook": "Chi conosce il gioco Simon Says? Si accende una luce colorata con un suono, devi premere il pulsante dello stesso colore. Poi la sequenza si allunga: rosso-verde, poi rosso-verde-blu, poi rosso-verde-blu-giallo... Quanti livelli riesci a ricordare?",
       "action_tags": [],
@@ -123,8 +123,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il gioco Simon Says con 4 LED, 4 pulsanti e cicalino",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il gioco Simon Says con 4 LED, 4 pulsanti e cicalino",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -306,7 +306,7 @@
       "icon": "❓",
       "duration_minutes": 10,
       "teacher_message": "Il gioco è montato! Prima di provarlo, ragioniamo sulla logica. Il programma deve RICORDARE la sequenza per tutta la partita. Come fa? E se il giocatore non preme nessun pulsante entro 3 secondi, cosa dovrebbe succedere?",
-      "teacher_tip": "Guida verso gli array: 'Il codice usa un array seq[] che può contenere fino a 100 elementi. Ogni turno aggiunge un nuovo numero (0,1,2,3) che corrisponde a un colore. Alla fine del turno, l'array ricorda tutta la sequenza!' Sul timeout: 'leggiPulsante() aspetta 3 secondi — se non premi nulla, restituisce -1 che il codice interpreta come errore e chiama gameOver().'",
+      "teacher_tip": "Guida verso gli array: 'Il codice usa un array seq[] che può contenere fino a 100 elementi. Ogni turno aggiunge un nuovo numero (0,1,2,3) che corrisponde a un colore. Alla fine del turno, l'array ricorda tutta la sequenza!' Sul timeout: 'leggiPulsante() aspetta 3 secondi — se non si preme nulla, restituisce -1 che il codice interpreta come errore e chiama gameOver().'",
       "provocative_question": "Il gioco usa randomSeed(analogRead(A0)) per generare sequenze diverse ogni partita. Se non ci fosse randomSeed, la sequenza sarebbe sempre la stessa ogni volta che si riaccende Arduino. Perché è importante che la sequenza sia diversa ad ogni partita?",
       "components_list": null,
       "class_hook": null,
@@ -315,7 +315,7 @@
       "common_mistakes": [
         {
           "mistake": "I LED si accendono ma il cicalino non suona",
-          "teacher_response": "Controlla il collegamento del cicalino: il pin positivo (+) deve andare al foro collegato a D8, e il negativo (-) a GND. Il cicalino piezo ha una polarità!",
+          "teacher_response": "Regola il collegamento del cicalino: il pin positivo (+) deve andare al foro collegato a D8, e il negativo (-) a GND. Il cicalino piezo ha una polarità!",
           "analogy": "Il cicalino è come una cassa audio: deve essere collegata nel verso giusto, con il + sul segnale e il - a massa. Se lo colleghi al contrario, non suona."
         },
         {
@@ -329,8 +329,8 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 15,
-      "teacher_message": "Premi Play! Tutti e 4 i LED lampeggiano insieme con un suono acuto: è il lampeggio di avvio. Poi si accende un LED con la sua nota: è il primo elemento della sequenza. Premi il pulsante dello stesso colore! Se indovini, la sequenza si allunga di un elemento. Quanti livelli riuscite a fare?",
-      "teacher_tip": "Evidenzia i 4 LED, i 4 pulsanti e il cicalino. Fai giocare tutta la classe insieme: la lavagna mostra la sequenza, i ragazzi la ripetono. Fai notare che il cicalino aiuta la memoria: puoi ricordare la sequenza sia per colori che per melodia! Il game over suona un tono grave e basso — molto diverso dalle note del gioco.",
+      "teacher_message": "Premete Play! Tutti e 4 i LED lampeggiano insieme con un suono acuto: è il lampeggio di avvio. Poi si accende un LED con la sua nota: è il primo elemento della sequenza. Premete il pulsante dello stesso colore! Se indovini, la sequenza si allunga di un elemento. Quanti livelli riuscite a fare?",
+      "teacher_tip": "Evidenzia i 4 LED, i 4 pulsanti e il cicalino. Fate giocare tutta la classe insieme: la lavagna mostra la sequenza, i ragazzi la ripetono. Fate notare che il cicalino aiuta la memoria: puoi ricordare la sequenza sia per colori che per melodia! Il game over suona un tono grave e basso — molto diverso dalle note del gioco.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -365,7 +365,7 @@
       "icon": "✅",
       "duration_minutes": 8,
       "teacher_message": "COMPLIMENTI! Avete completato il Volume 3 e costruito Simon Says — il progetto più complesso dell'intero volume! Dal semaforo (3 LED in sequenza) al gioco interattivo con suoni, memoria e logica di gioco. Che salto!",
-      "teacher_tip": "Questo è un momento da celebrare! Fai un recap del viaggio del Volume 3: 'Cap 6: semaforo (OUTPUT, sequenza). Cap 7: toggle pulsante (INPUT, variabili). Cap 8: potenziometro + Serial Monitor (analogRead). Extra: LCD, Servo, Simon Says. Avete imparato a programmare Arduino!' Chiedi: 'Che altro progetto vorreste costruire con quello che sapete ora?'",
+      "teacher_tip": "Questo è un momento da celebrare! Fate un recap del viaggio del Volume 3: 'Cap 6: semaforo (OUTPUT, sequenza). Cap 7: toggle pulsante (INPUT, variabili). Cap 8: potenziometro + Serial Monitor (analogRead). Extra: LCD, Servo, Simon Says. Avete imparato a programmare Arduino!' Chiedi: 'Che altro progetto vorreste costruire con quello che sapete ora?'",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],

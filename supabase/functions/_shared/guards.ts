@@ -115,22 +115,27 @@ setInterval(() => {
 }, 300_000);
 
 // ── Request Body Size Limit ──
-const MAX_BODY_SIZE = 100_000; // 100KB max request body
+const MAX_BODY_SIZE = 100_000; // 100KB max request body (default chat/text)
+const MAX_BODY_SIZE_MULTIMODAL = 12_000_000; // 12MB for vision/STT (image base64 OR audio file)
 
 /**
  * Check request body size before parsing JSON.
  * Returns null if OK, or an error Response if too large.
+ * iter 25: maxBytes optional param for multimodal endpoints (vision/STT).
  */
-export function checkBodySize(req: Request): Response | null {
+export function checkBodySize(req: Request, maxBytes?: number): Response | null {
+  const limit = maxBytes ?? MAX_BODY_SIZE;
   const contentLength = parseInt(req.headers.get('content-length') || '0', 10);
-  if (contentLength > MAX_BODY_SIZE) {
-    return new Response(JSON.stringify({ success: false, error: 'Request too large' }), {
+  if (contentLength > limit) {
+    return new Response(JSON.stringify({ success: false, error: 'Request too large', limit }), {
       status: 413,
       headers: getSecurityHeaders(req),
     });
   }
   return null;
 }
+
+export const BODY_SIZE_MULTIMODAL = MAX_BODY_SIZE_MULTIMODAL;
 
 // ── SessionId Validation ──
 const SESSION_ID_MAX_LENGTH = 128;

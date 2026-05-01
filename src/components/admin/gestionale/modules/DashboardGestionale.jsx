@@ -363,7 +363,7 @@ export default function DashboardGestionale({ onNavigate, isMobile }) {
                         onClick={() => onNavigate && onNavigate('ordini')}
                         style={{
                             ...S.btnPrimary,
-                            background: '#2563EB',
+                            background: 'var(--elab-hex-2563eb)',
                             display: 'flex', alignItems: 'center', gap: '6px',
                         }}
                     >

@@ -14,23 +14,56 @@
   "target_age": "10-14 anni",
   "objective": "Collegare il multimetro IN SERIE per misurare la corrente che attraversa un circuito con resistore. Verificare la Legge di Ohm con dati reali.",
   "components_needed": [
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Breadboard mezza", "quantity": 1, "icon": "🔲" },
-    { "name": "Resistore 1kohm", "quantity": 1, "icon": "⚡" },
-    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Breadboard mezza",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Resistore 1kohm",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Multimetro",
+      "quantity": 1,
+      "icon": "📏"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "multimetro", "amperometro", "corrente", "ampere", "milliampere",
-      "mA", "serie", "resistore", "ohm", "Legge di Ohm",
-      "tensione", "volt", "batteria", "breadboard"
+      "multimetro",
+      "amperometro",
+      "corrente",
+      "ampere",
+      "milliampere",
+      "mA",
+      "serie",
+      "resistore",
+      "ohm",
+      "Legge di Ohm",
+      "tensione",
+      "volt",
+      "batteria",
+      "breadboard"
     ],
     "forbidden": [
-      "Arduino", "codice", "programma", "condensatore", "transistor"
+      "Arduino",
+      "codice",
+      "programma",
+      "condensatore",
+      "transistor"
     ],
     "note": "Vol 2 Cap 3 — amperometro in serie, Legge di Ohm I=V/R."
   },
-  "prerequisites": ["v2-cap3-esp3"],
+  "prerequisites": [
+    "v2-cap3-esp3"
+  ],
   "next_experiment": {
     "id": "v2-cap4-esp1",
     "title": "Due resistori in parallelo",
@@ -41,7 +74,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi il multimetro diventa amperometro: misura QUANTA corrente passa nel circuito. Attenzione: va collegato IN SERIE, cioe nel percorso della corrente, non ai lati come il voltmetro!",
+      "teacher_message": "Ragazzi, oggi il multimetro diventa amperometro: misura QUANTA corrente passa nel circuito. Attenzione: va collegato IN SERIE, cioe nel percorso della corrente, non ai lati come il voltmetro!",
       "teacher_tip": "IMPORTANTE: il multimetro in modalita amperometro ha resistenza quasi zero. Se collegato in parallelo alla batteria, cortocircuito! Mostra la differenza tra collegamento in serie (corretto) e parallelo (pericoloso).",
       "components_list": "Ti servono: 1 batteria 9V, 1 breadboard mezza, 1 resistore 1kohm, 1 multimetro.",
       "class_hook": "Sapete misurare la tensione (i Volt). Ma quanta corrente passa davvero in un circuito? Oggi lo scopriamo — e verifichiamo una formula famosa: la Legge di Ohm!",
@@ -53,20 +86,35 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Il circuito: batteria 9V → multimetro (in serie) → resistore 1kohm → ritorno a batteria. Il multimetro deve essere nel PERCORSO della corrente, come un casello autostradale.",
-      "teacher_tip": "Fai tracciare il percorso della corrente con il dito: batteria+ → filo → multimetro → filo → resistore → filo → batteria-. Il multimetro e un 'checkpoint' che conta gli elettroni che passano.",
+      "teacher_tip": "Fate tracciare il percorso della corrente con il dito: batteria+ → filo → multimetro → filo → resistore → filo → batteria-. Il multimetro e un 'checkpoint' che conta gli elettroni che passano.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp4]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v2-cap3-esp4]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta un circuito con batteria, resistore e multimetro in serie",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate un circuito con batteria, resistore e multimetro in serie",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 1000 },
-            { "type": "multimeter", "id": "mm1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 1000
+            },
+            {
+              "type": "multimeter",
+              "id": "mm1"
+            }
           ],
           "wires": []
         }
@@ -87,7 +135,7 @@
         {
           "mistake": "Multimetro collegato in parallelo invece che in serie",
           "teacher_response": "ATTENZIONE! L'amperometro in parallelo crea un cortocircuito perche ha resistenza quasi zero. Deve essere nel percorso della corrente, come un casello autostradale!",
-          "analogy": "Un casello funziona solo se l'auto ci passa attraverso. Se fai una strada alternativa che lo aggira, il casello non conta nessuna auto!"
+          "analogy": "Un casello funziona solo se l'auto ci passa attraverso. Se si fa una strada alternativa che lo aggira, il casello non conta nessuna auto!"
         }
       ]
     },
@@ -95,9 +143,13 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e leggi il valore sul multimetro. Mostra circa 9mA! La Legge di Ohm funziona: I = V/R = 9V/1000ohm = 9mA.",
+      "teacher_message": "Premete Play e leggi il valore sul multimetro. Mostra circa 9mA! La Legge di Ohm funziona: I = V/R = 9V/1000ohm = 9mA.",
       "teacher_tip": "Confronta il valore calcolato (9mA) con quello misurato. Saranno molto vicini! La piccola differenza dipende dalla batteria (non e esattamente 9V) e dalla tolleranza del resistore.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:mm1]", "[AZIONE:highlight:r1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:mm1]",
+        "[AZIONE:highlight:r1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il multimetro mostra circa 9mA. Calcolo: I = 9V / 1000ohm = 0.009A = 9mA. La Legge di Ohm e verificata sperimentalmente!",
       "analogies": [
@@ -139,7 +191,11 @@
     "Se prevede correttamente l'effetto del cambio resistore → pensiero proporzionale"
   ],
   "session_save": {
-    "concepts_covered": ["amperometro_serie", "legge_ohm", "corrente_mA"],
+    "concepts_covered": [
+      "amperometro_serie",
+      "legge_ohm",
+      "corrente_mA"
+    ],
     "next_suggested": "v2-cap4-esp1",
     "resume_message": "Avete verificato la Legge di Ohm! Prossimo: resistori in parallelo."
   }

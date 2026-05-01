@@ -87,7 +87,7 @@ export default function Navbar({ currentPage, onNavigate }) {
                                         ? 'rgba(145,191,69,0.25)'
                                         : 'transparent',
                                     color: currentPage === item.id
-                                        ? '#4A7A25'
+                                        ? 'var(--elab-lime)'
                                         : 'rgba(255,255,255,0.7)',
                                 }}
                                 title={item.label}
@@ -158,10 +158,10 @@ export default function Navbar({ currentPage, onNavigate }) {
                                             ? 'rgba(145,191,69,0.15)'
                                             : 'transparent',
                                         color: currentPage === item.id
-                                            ? '#4A7A25'
+                                            ? 'var(--elab-lime)'
                                             : 'rgba(255,255,255,0.85)',
                                         borderLeft: currentPage === item.id
-                                            ? '3px solid #4A7A25'
+                                            ? '3px solid var(--elab-lime)'
                                             : '3px solid transparent',
                                     }}
                                 >
@@ -260,8 +260,8 @@ export default function Navbar({ currentPage, onNavigate }) {
                                 style={{
                                     ...styles.navBtn,
                                     background: currentPage === item.id ? 'rgba(145,191,69,0.2)' : 'transparent',
-                                    color: currentPage === item.id ? '#4A7A25' : 'rgba(255,255,255,0.7)',
-                                    borderBottom: currentPage === item.id ? '2px solid #4A7A25' : '2px solid transparent',
+                                    color: currentPage === item.id ? 'var(--elab-lime)' : 'rgba(255,255,255,0.7)',
+                                    borderBottom: currentPage === item.id ? '2px solid var(--elab-lime)' : '2px solid transparent',
                                 }}
                             >
                                 {item.label}
@@ -304,7 +304,7 @@ const styles = {
     nav: {
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(90deg, #1E4D8C, #152a5e)',
+        background: 'linear-gradient(90deg, var(--elab-navy), #152a5e)',
         borderBottom: '1px solid rgba(255,255,255,0.1)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         position: 'sticky',
@@ -312,7 +312,7 @@ const styles = {
         zIndex: 1000,
     },
     brand: {
-        color: '#4A7A25',
+        color: 'var(--elab-lime)',
         fontSize: '20px',
         fontWeight: '800',
         cursor: 'pointer',
@@ -323,7 +323,7 @@ const styles = {
         width: '32px',
         height: '32px',
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, #4A7A25, #6fa030)',
+        background: 'linear-gradient(135deg, var(--elab-lime), #6fa030)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -336,7 +336,7 @@ const styles = {
     },
     avatarImg: { width: '100%', height: '100%', objectFit: 'cover' },
     adminBadge: {
-        background: '#E53935',
+        background: 'var(--elab-hex-e53935)',
         color: 'white',
         fontSize: '14px',
         fontWeight: '700',
@@ -345,7 +345,7 @@ const styles = {
         letterSpacing: '0.5px',
     },
     docenteBadge: {
-        background: '#1E4D8C',
+        background: 'var(--elab-navy)',
         color: 'white',
         fontSize: '14px',
         fontWeight: '700',
@@ -413,7 +413,7 @@ const styles = {
         fontWeight: '600',
     },
     registerBtn: {
-        background: 'linear-gradient(135deg, #4A7A25, #6fa030)',
+        background: 'linear-gradient(135deg, var(--elab-lime), #6fa030)',
         border: 'none',
         color: 'white',
         padding: '6px 16px',
@@ -481,7 +481,7 @@ const styles = {
     mobileDropdown: {
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(180deg, #152a5e, #0f2050)',
+        background: 'linear-gradient(180deg, var(--elab-hex-152a5e), var(--elab-hex-0f2050))',
         borderTop: '1px solid rgba(255,255,255,0.08)',
         paddingBottom: '12px',
         animation: 'slideDown 0.2s ease-out',
@@ -520,7 +520,7 @@ const styles = {
     mobileLogoutBtn: {
         background: 'rgba(239,68,68,0.15)',
         border: '1px solid rgba(239,68,68,0.3)',
-        color: '#EF4444',
+        color: 'var(--elab-hex-ef4444)',
         padding: '8px 18px',
         borderRadius: '8px',
         cursor: 'pointer',
@@ -547,7 +547,7 @@ const styles = {
     },
     mobileRegisterBtn: {
         flex: 1,
-        background: 'linear-gradient(135deg, #4A7A25, #6fa030)',
+        background: 'linear-gradient(135deg, var(--elab-lime), #6fa030)',
         border: 'none',
         color: 'white',
         padding: '10px 0',

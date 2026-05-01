@@ -17,7 +17,7 @@ const VALID_DURATIONS = [15, 30, 45, 60];
 
 describe('estimatedMinutes — all experiments', () => {
   it('has 92 total experiments', () => {
-    expect(ALL.length).toBe(92);
+    expect(ALL.length).toBe(94);
   });
 
   for (const exp of ALL) {

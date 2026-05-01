@@ -224,6 +224,100 @@ export async function saveConfusionReport(report) {
   }
 }
 
+// ─── iter 13 R3: Experiment Layout persistence (rotation field round-trip) ───
+//
+// HONEST FINDING: Supabase schema does NOT have a `experiment_layouts` table or
+// rotation field today. saveSession() above stores activity log only. Adding a
+// new Supabase table requires a migration (deferred Sprint S iter 14):
+//
+//   CREATE TABLE experiment_layouts (
+//     id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+//     student_id  text NOT NULL,
+//     class_key   text,
+//     experiment_id text NOT NULL,
+//     layout      jsonb NOT NULL,  -- { compId: { x, y, rotation, parentId? } }
+//     updated_at  timestamptz DEFAULT now(),
+//     UNIQUE (student_id, experiment_id)
+//   );
+//
+// iter 13 mitigation: localStorage round-trip helper preserves rotation field
+// across page reload. When migration ships iter 14, swap localStorage for
+// supabase.from('experiment_layouts').upsert(row).
+
+const LAYOUT_KEY_PREFIX = 'elab_layout_';
+
+/**
+ * Salva layout esperimento (incluso rotation field) in localStorage.
+ * Iter 14 swap: supabase.from('experiment_layouts').upsert(...)
+ *
+ * @param {string} experimentId — id esperimento
+ * @param {Object} layout — { compId: { x, y, rotation, parentId? } }
+ * @returns {{success: boolean, error?: string}}
+ */
+export function saveLayout(experimentId, layout) {
+  if (!experimentId || !layout || typeof layout !== 'object') {
+    return { success: false, error: 'Invalid args' };
+  }
+  try {
+    // PRESERVE rotation field explicitly — iter 13 R3 mandate
+    const sanitized = {};
+    for (const compId of Object.keys(layout)) {
+      const pos = layout[compId] || {};
+      sanitized[compId] = {
+        x: Number.isFinite(pos.x) ? pos.x : 0,
+        y: Number.isFinite(pos.y) ? pos.y : 0,
+        rotation: Number.isFinite(pos.rotation) ? pos.rotation : 0,
+        ...(pos.parentId ? { parentId: pos.parentId } : {}),
+      };
+    }
+    localStorage.setItem(LAYOUT_KEY_PREFIX + experimentId, JSON.stringify(sanitized));
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Carica layout esperimento. Backward-compat: posizioni legacy senza rotation
+ * → default rotation 0.
+ *
+ * @param {string} experimentId
+ * @returns {Object|null} layout { compId: { x, y, rotation, parentId? } } | null
+ */
+export function loadLayout(experimentId) {
+  if (!experimentId) return null;
+  try {
+    const raw = localStorage.getItem(LAYOUT_KEY_PREFIX + experimentId);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return null;
+    // Backward-compat: ensure rotation field present (default 0)
+    const out = {};
+    for (const compId of Object.keys(parsed)) {
+      const pos = parsed[compId] || {};
+      out[compId] = {
+        x: Number.isFinite(pos.x) ? pos.x : 0,
+        y: Number.isFinite(pos.y) ? pos.y : 0,
+        rotation: Number.isFinite(pos.rotation) ? pos.rotation : 0,
+        ...(pos.parentId ? { parentId: pos.parentId } : {}),
+      };
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Cancella layout esperimento (testing helper).
+ */
+export function clearLayout(experimentId) {
+  if (!experimentId) return;
+  try {
+    localStorage.removeItem(LAYOUT_KEY_PREFIX + experimentId);
+  } catch { /* localStorage unavailable */ }
+}
+
 // ─── Legacy Sync Functions (kept for compatibility) ───
 
 /**

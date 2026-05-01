@@ -14,20 +14,75 @@
   "target_age": "10-14 anni",
   "objective": "Costruire un circuito toggle: ogni pressione del pulsante alterna quale dei due LED e acceso. Introduciamo le variabili di stato booleane e il concetto di debounce per evitare i rimbalzi meccanici del pulsante.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "breadboard" },
-    { "name": "Pulsante (push button)", "quantity": 1, "icon": "button" },
-    { "name": "LED verde", "quantity": 1, "icon": "led" },
-    { "name": "LED rosso", "quantity": 1, "icon": "led" },
-    { "name": "Resistore 470ohm", "quantity": 2, "icon": "resistor" },
-    { "name": "Fili di collegamento", "quantity": 8, "icon": "wire" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "breadboard"
+    },
+    {
+      "name": "Pulsante (push button)",
+      "quantity": 1,
+      "icon": "button"
+    },
+    {
+      "name": "LED verde",
+      "quantity": 1,
+      "icon": "led"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "led"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 2,
+      "icon": "resistor"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 8,
+      "icon": "wire"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "INPUT_PULLUP", "pulsante", "digitalRead", "toggle", "debounce", "variabile", "stato", "LED", "resistore", "breadboard", "codice", "programma", "GND", "booleano"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "analogico"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "INPUT_PULLUP",
+      "pulsante",
+      "digitalRead",
+      "toggle",
+      "debounce",
+      "variabile",
+      "stato",
+      "LED",
+      "resistore",
+      "breadboard",
+      "codice",
+      "programma",
+      "GND",
+      "booleano"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "analogico"
+    ],
     "note": "Cap 7 Vol 3 — toggle, variabili booleane, debounce con delay."
   },
-  "prerequisites": ["v3-cap7-esp3"],
+  "prerequisites": [
+    "v3-cap7-esp3"
+  ],
   "next_experiment": {
     "id": "v3-cap7-esp7",
     "title": "Contatore con LED binario",
@@ -38,7 +93,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento con il pulsante, il LED si spegneva solo mentre tenevamo premuto. Oggi facciamo un salto: ogni pressione CAMBIA lo stato per sempre. Come il tasto Caps Lock: premi una volta e resta attivo fino alla prossima pressione.",
+      "teacher_message": "Ragazzi, nell'esperimento con il pulsante, il LED si spegneva solo mentre tenevamo premuto. Oggi facciamo un salto: ogni pressione CAMBIA lo stato per sempre. Come il tasto Caps Lock: si preme una volta e resta attivo fino alla prossima pressione.",
       "teacher_tip": "Parti dall'esperienza quotidiana: Caps Lock, tasto Mute, Play/Pausa. Tutti sono toggle. La sfida tecnica e che il loop gira migliaia di volte al secondo: come fa Arduino a capire che e UNA pressione e non mille? Servono due ingredienti: variabile di stato e debounce.",
       "class_hook": "Conoscete il tasto Caps Lock? Quando lo premete una volta, le lettere diventano maiuscole. Quando lo ripremete, tornano minuscole. Non serve tenerlo premuto! Oggi costruiamo lo stesso meccanismo con due LED.",
       "action_tags": [],
@@ -49,8 +104,10 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Il circuito ha tre parti: il pulsante su INPUT_PULLUP, il LED verde e il LED rosso su due pin OUTPUT. Il codice usa una variabile booleana per ricordare quale LED e acceso. A ogni pressione la variabile si inverte: da true diventa false e viceversa.",
-      "teacher_tip": "Spiega la variabile booleana con un esempio fisico: e come un post-it dove scrivi 'verde' o 'rosso'. Ogni volta che premi il pulsante, cancelli e scrivi l'altro colore. Senza il post-it, Arduino non saprebbe quale LED era acceso al ciclo precedente.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap7-esp6]"],
+      "teacher_tip": "Spiega la variabile booleana con un esempio fisico: e come un post-it dove scrivi 'verde' o 'rosso'. Ogni volta che premete il pulsante, cancelli e scrivi l'altro colore. Senza il post-it, Arduino non saprebbe quale LED era acceso al ciclo precedente.",
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap7-esp6]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -67,11 +124,16 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play! Il LED verde si accende. Cliccate sul pulsante: il verde si spegne e il rosso si accende. Cliccate ancora: si scambiano di nuovo! Ogni pressione alterna lo stato per sempre.",
-      "teacher_tip": "Fai notare che e una vera ALTERNANZA di stato: ogni pressione cambia. Non e come tenere premuto un pulsante normale. Questo meccanismo e ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa. La variabile booleana e la chiave.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]", "[AZIONE:highlight:led1]", "[AZIONE:highlight:led2]"],
+      "teacher_message": "Premete Play! Il LED verde si accende. Cliccate sul pulsante: il verde si spegne e il rosso si accende. Cliccate ancora: si scambiano di nuovo! Ogni pressione alterna lo stato per sempre.",
+      "teacher_tip": "Fate notare che e una vera ALTERNANZA di stato: ogni pressione cambia. Non e come tenere premuto un pulsante normale. Questo meccanismo e ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa. La variabile booleana e la chiave.",
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:btn1]",
+        "[AZIONE:highlight:led1]",
+        "[AZIONE:highlight:led2]"
+      ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Verde acceso, rosso spento. Premi il pulsante: si scambiano! Premi ancora: si scambiano di nuovo. La variabile di stato ricorda quale LED e acceso tra una pressione e l'altra."
+      "observation_prompt": "Verde acceso, rosso spento. Premete il pulsante: si scambiano! Premete ancora: si scambiano di nuovo. La variabile di stato ricorda quale LED e acceso tra una pressione e l'altra."
     },
     {
       "name": "CONCLUDI",
@@ -90,7 +152,12 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["toggle", "variabile_booleana", "debounce", "INPUT_PULLUP_con_LED"],
+    "concepts_covered": [
+      "toggle",
+      "variabile_booleana",
+      "debounce",
+      "INPUT_PULLUP_con_LED"
+    ],
     "next_suggested": "v3-cap7-esp7",
     "resume_message": "Avete costruito un toggle con pulsante e due LED! Prossimo: contatore binario con LED."
   }

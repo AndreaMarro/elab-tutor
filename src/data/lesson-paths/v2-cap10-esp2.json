@@ -73,14 +73,14 @@
   "next_experiment": {
     "id": "v2-cap10-esp3",
     "title": "Motore con pulsante",
-    "preview": "Nell'esperimento 3 aggiungerete un pulsante per controllare il motore: gira solo quando premi!"
+    "preview": "Nell'esperimento 3 aggiungerete un pulsante per controllare il motore: gira solo quando premete!"
   },
   "phases": [
     {
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il motore girava in un verso. Oggi invertiamo i fili e vediamo cosa succede! La polarità è tutto.",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il motore girava in un verso. Oggi invertiamo i fili e vediamo cosa succede! La polarità è tutto.",
       "teacher_tip": "Ricorda: 'Nell'esperimento 1 il filo rosso andava al + del motore. Oggi facciamo il contrario: il filo rosso va al - del motore. Cosa cambierà?' Lascia che gli studenti facciano la loro previsione.",
       "components_list": "Ti servono gli stessi componenti dell'esperimento 1: breadboard mezza, batteria 9V, motore DC, fili.",
       "class_hook": "Ricordate in che direzione girava il motore nell'esperimento 1? Segnate mentalmente il verso. Ora indovinate: cosa succede se inverto i fili?",
@@ -92,7 +92,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Il circuito è uguale all'esperimento 1, ma i fili del motore sono invertiti! Il + della batteria va al - del motore e viceversa.",
-      "teacher_tip": "Mostra la differenza rispetto all'esperimento precedente: 'Vedete? Tutto uguale, tranne che i due fili del motore sono scambiati. Il + ora va dove andava il -, e il - dove andava il +.' Fai notare che la batteria non è cambiata.",
+      "teacher_tip": "Mostra la differenza rispetto all'esperimento precedente: 'Vedete? Tutto uguale, tranne che i due fili del motore sono scambiati. Il + ora va dove andava il -, e il - dove andava il +.' Fate notare che la batteria non è cambiata.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -100,8 +100,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il motore DC con polarità invertita rispetto all'esperimento 1",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il motore DC con polarità invertita rispetto all'esperimento 1",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -170,7 +170,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play e confronta la rotazione con l'esperimento 1. Stessa batteria, stessi fili, ma motore invertito!",
+      "teacher_message": "Premete Play e confronta la rotazione con l'esperimento 1. Stessa batteria, stessi fili, ma motore invertito!",
       "teacher_tip": "Evidenzia i fili di collegamento al motore e mostra come sono invertiti. Se possibile, apri l'esperimento 1 e l'esperimento 2 in sequenza per far vedere la differenza di rotazione.",
       "components_list": null,
       "class_hook": null,
@@ -184,7 +184,7 @@
       "analogies": [
         {
           "concept": "inversione_polarita",
-          "text": "È come invertire il flusso dell'acqua in un mulino ad acqua: se fai scorrere l'acqua dall'altra parte, le pale girano al contrario. Nel motore, la corrente è l'acqua: cambia direzione, il motore gira al contrario!",
+          "text": "È come invertire il flusso dell'acqua in un mulino ad acqua: se si fa scorrere l'acqua dall'altra parte, le pale girano al contrario. Nel motore, la corrente è l'acqua: cambia direzione, il motore gira al contrario!",
           "evidence": "Curriculum ELAB Vol 2 Cap 10"
         },
         {

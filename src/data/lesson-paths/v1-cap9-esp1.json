@@ -91,7 +91,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono il potenziometro — una resistenza con la manopola. Il piedino centrale è il cursore.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono il potenziometro — una resistenza con la manopola. Il piedino centrale è il cursore.",
       "teacher_tip": "Inizia chiedendo: 'Finora la resistenza era sempre uguale. Come fareste a cambiare la luminosità SENZA cambiare resistore?' Lascia che pensino.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED rosso, 4 fili.",
       "class_hook": "Finora per cambiare la luminosità dovevate cambiare il resistore. E se esistesse un componente con una MANOPOLA per regolare?",
@@ -111,8 +111,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito dimmer con potenziometro",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito dimmer con potenziometro",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -178,7 +178,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Gira la manopola e osserva: cosa succede? La luminosità cambia gradualmente!",
+      "teacher_message": "Girate la manopola e osserva: cosa succede? La luminosità cambia gradualmente!",
       "teacher_tip": "Se il LED non cambia, probabilmente sono collegati i due piedini esterni senza il centrale. Il cursore non è nel circuito.",
       "provocative_question": "Secondo voi, cosa c'è dentro il potenziometro che lo fa funzionare come un dimmer?",
       "components_list": null,
@@ -207,7 +207,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e gira la manopola del potenziometro. Il LED cambia luminosità gradualmente!",
+      "teacher_message": "Premete Play e girate la manopola del potenziometro. Il LED cambia luminosità gradualmente!",
       "teacher_tip": "Evidenzia il potenziometro. Chiedi: 'Vedete? Girando la manopola, la resistenza cambia e la luminosità del LED pure!'",
       "components_list": null,
       "class_hook": null,
@@ -217,11 +217,11 @@
         "[AZIONE:highlight:led1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Gira la manopola! Il LED diventa più luminoso o più fioco. Il potenziometro è come un rubinetto per la corrente — regola quanta ne passa.",
+      "observation_prompt": "Girate la manopola! Il LED diventa più luminoso o più fioco. Il potenziometro è come un rubinetto per la corrente — regola quanta ne passa.",
       "analogies": [
         {
           "concept": "potenziometro",
-          "text": "Un potenziometro è come il rubinetto della doccia: girando la manopola decidi quanta acqua (corrente) esce. Non cambi la pressione dell'acquedotto, cambi solo quanto ne fai passare.",
+          "text": "Un potenziometro è come il rubinetto della doccia: girando la manopola decidi quanta acqua (corrente) esce. Non cambi la pressione dell'acquedotto, cambi solo quanto ne fate passare.",
           "evidence": "Curriculum ELAB Vol 1"
         },
         {
@@ -252,7 +252,7 @@
   "assessment_invisible": [
     "Se dice 'è come cambiare la resistenza' → ha collegato potenziometro a resistenza",
     "Se nota che serve la resistenza fissa di protezione → ha interiorizzato il concetto dal cap 6",
-    "Se prova a invertire i pin del pot → curiosità esplorativa"
+    "Se provate a invertire i pin del pot → curiosità esplorativa"
   ],
   "session_save": {
     "concepts_covered": [

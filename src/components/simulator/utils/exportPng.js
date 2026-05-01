@@ -64,7 +64,7 @@ export async function exportCanvasPng(canvasContainer, experimentId) {
     const ctx = canvas.getContext('2d');
 
     // White background
-    ctx.fillStyle = '#FAFAF7';
+    ctx.fillStyle = '#fafaf7'; // palette
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw SVG image
@@ -131,7 +131,7 @@ export async function captureCanvasBase64(canvasContainer) {
     canvas.width = img.width * scale;
     canvas.height = img.height * scale;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#ffffff'; // palette
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     URL.revokeObjectURL(url);

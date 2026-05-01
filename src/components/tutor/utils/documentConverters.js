@@ -32,9 +32,9 @@ export const createPlaceholderPage = (fileName, format) => {
     canvas.width = 800;
     canvas.height = 600;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#f5f5f5';
+    ctx.fillStyle = '#f5f5f5'; // palette
     ctx.fillRect(0, 0, 800, 600);
-    ctx.fillStyle = '#1E4D8C';
+    ctx.fillStyle = 'var(--elab-navy)';
     ctx.font = 'bold 24px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(fileName, 400, 280);
@@ -58,17 +58,17 @@ export const htmlToPages = async (html, fileName) => {
             <style>
                 body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; margin: 0;
                        line-height: 1.6; color: #333; max-width: 800px; font-size: 14px; }
-                h1 { color: #1E4D8C; border-bottom: 2px solid #4A7A25; padding-bottom: 8px; }
-                h2 { color: #1E4D8C; }
-                h3 { color: #2d5aa0; }
+                h1 { color: var(--elab-navy); border-bottom: 2px solid var(--elab-lime); padding-bottom: 8px; }
+                h2 { color: var(--elab-navy); }
+                h3 { color: #2d5aa0; } // palette
                 table { border-collapse: collapse; width: 100%; margin: 12px 0; }
                 td, th { border: 1px solid #ddd; padding: 8px; }
-                th { background: #f0f4f8; }
+                th { background: #f0f4f8; } // palette
                 img { max-width: 100%; height: auto; }
-                code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
-                pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
-                blockquote { border-left: 3px solid #4A7A25; margin: 12px 0; padding: 8px 16px; background: #f9fdf5; }
-                .page-header { font-size: 11px; color: #737373; margin-bottom: 16px; }
+                code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-size: 13px; } // palette
+                pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; } // palette
+                blockquote { border-left: 3px solid var(--elab-lime); margin: 12px 0; padding: 8px 16px; background: #f9fdf5; }
+                .page-header { font-size: 11px; color: #737373; margin-bottom: 16px; } // palette
             </style>
         </head><body>
             <div class="page-header">${fileName}</div>
@@ -89,7 +89,7 @@ export const htmlToPages = async (html, fileName) => {
                 canvas.height = pageHeight * 2;
                 const ctx = canvas.getContext('2d');
                 ctx.scale(2, 2);
-                ctx.fillStyle = '#FFFFFF';
+                ctx.fillStyle = '#ffffff'; // palette
                 ctx.fillRect(0, 0, 800, pageHeight);
 
                 // Usa html2canvas-like approach: SVG foreignObject
@@ -191,13 +191,13 @@ export const pptxToPages = async (arrayBuffer) => {
         const ctx = canvas.getContext('2d');
 
         // Sfondo bianco
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#ffffff'; // palette
         ctx.fillRect(0, 0, 1280, 720);
 
         // Numero slide
-        ctx.fillStyle = '#4A7A25';
+        ctx.fillStyle = 'var(--elab-lime)';
         ctx.fillRect(0, 0, 1280, 4);
-        ctx.fillStyle = '#737373';
+        ctx.fillStyle = '#737373'; // palette
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
         ctx.font = '14px sans-serif';
         ctx.fillText(`Slide ${si + 1} / ${slideFiles.length}`, 1140, 700);
@@ -231,7 +231,7 @@ export const pptxToPages = async (arrayBuffer) => {
 
                 if (ti === 0 && isTitle) {
                     ctx.font = 'bold 36px sans-serif';
-                    ctx.fillStyle = '#1E4D8C';
+                    ctx.fillStyle = 'var(--elab-navy)';
                     y = slideImage ? 560 : 180;
                 } else if (ti === 1) {
                     ctx.font = '24px sans-serif';
@@ -266,7 +266,7 @@ export const pptxToPages = async (arrayBuffer) => {
         // Se slide vuota (nessun testo, nessuna immagine)
         if (texts.length === 0 && !slideImage) {
             ctx.font = 'italic 20px sans-serif';
-            ctx.fillStyle = '#737373';
+            ctx.fillStyle = '#737373'; // palette
             ctx.textAlign = 'center';
             ctx.fillText(`Slide ${si + 1} (vuota)`, 640, 360);
             ctx.textAlign = 'left';
@@ -294,14 +294,14 @@ export const textToPages = async (text, fileName) => {
         ctx.scale(2, 2);
 
         // Sfondo
-        ctx.fillStyle = isCode ? '#1e1e1e' : '#FFFFFF';
+        ctx.fillStyle = isCode ? '#1e1e1e' : '#ffffff'; // palette
         ctx.fillRect(0, 0, 800, 1100);
 
         // Header
-        ctx.fillStyle = isCode ? '#333' : '#f0f4f8';
+        ctx.fillStyle = isCode ? '#333' : '#f0f4f8'; // palette
         ctx.fillRect(0, 0, 800, 32);
         ctx.font = '11px monospace';
-        ctx.fillStyle = isCode ? '#737373' : '#666';
+        ctx.fillStyle = isCode ? '#737373' : '#666'; // palette
         ctx.fillText(`${fileName} — Pagina ${p + 1}/${Math.ceil(lines.length / linesPerPage)}`, 12, 21);
 
         // Contenuto
@@ -320,7 +320,7 @@ export const textToPages = async (text, fileName) => {
                 ctx.fillStyle = '#333';
                 ctx.fillRect(48, y - 12, 1, 16);
                 // Codice (colorazione basica)
-                ctx.fillStyle = '#d4d4d4';
+                ctx.fillStyle = '#d4d4d4'; // palette
                 ctx.fillText(pageLines[i].substring(0, 100), 56, y);
             } else {
                 ctx.fillStyle = '#333';

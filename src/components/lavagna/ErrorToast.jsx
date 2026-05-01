@@ -52,8 +52,8 @@ export default function ErrorToast({ onAskUnlim }) {
     <div className={css.toast} role="alert">
       <div className={css.content}>
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true" className={css.icon}>
-          <circle cx="10" cy="10" r="8" stroke="#E54B3D" strokeWidth="1.5" fill="rgba(229,75,61,0.1)" />
-          <path d="M10 6v5M10 13v1" stroke="#E54B3D" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="10" cy="10" r="8" stroke="var(--elab-red)" strokeWidth="1.5" fill="rgba(229,75,61,0.1)" />
+          <path d="M10 6v5M10 13v1" stroke="var(--elab-red)" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
         <span className={css.text}>{error}</span>
       </div>

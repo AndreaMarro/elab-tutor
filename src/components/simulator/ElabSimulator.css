@@ -10,10 +10,10 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--color-sim-bg, #FAFAF7);
+  background: var(--color-sim-bg);
   border-radius: var(--radius-lg, 12px);
   overflow: hidden;
-  border: 1px solid var(--color-sim-border, #E8E4DB);
+  border: 1px solid var(--color-sim-border);
   box-shadow: 0 4px 16px rgba(30, 77, 140, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   /* S110+: Prevent text selection on iPad during component drag */
@@ -33,8 +33,8 @@
   width: 260px;
   min-width: 150px;
   max-width: 500px;
-  border-right: 1px solid var(--color-sim-border, #E8E4DB);
-  background: var(--color-sim-bg, #FAFAF7);
+  border-right: 1px solid var(--color-sim-border);
+  background: var(--color-sim-bg);
   overflow-y: auto;
   overflow-x: hidden;
   resize: horizontal;
@@ -52,7 +52,7 @@
 }
 
 .elab-simulator__sidebar::-webkit-scrollbar-thumb {
-  background: var(--color-sim-scrollbar, #D4C9B0);
+  background: var(--color-sim-scrollbar);
   border-radius: var(--radius-xs, 4px);
 }
 
@@ -80,8 +80,8 @@
 
 /* Pannello inferiore (serial monitor / code preview) */
 .elab-simulator__bottom-panel {
-  border-top: 1px solid var(--color-sim-border, #E8E4DB);
-  background: var(--color-sim-bg-dark, #1E2530);
+  border-top: 1px solid var(--color-sim-border);
+  background: var(--color-sim-bg-dark);
   color: var(--color-code-text-light);
   max-height: 200px;
   overflow-y: auto;
@@ -99,7 +99,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3, 12px);
-  color: var(--color-sim-text-muted, #737373);
+  color: var(--color-sim-text-muted);
   background-image: radial-gradient(circle, rgba(30,77,140,0.06) 1px, transparent 1px);
   background-size: 20px 20px;
 }
@@ -126,7 +126,7 @@
   font-family: var(--font-display, 'Oswald', sans-serif);
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   opacity: 0.6;
 }
 
@@ -166,14 +166,14 @@
   margin: 0;
   font-size: 22px;
   font-family: var(--font-display, 'Oswald', sans-serif);
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   font-weight: 700;
 }
 
 .sim-welcome__subtitle {
   margin: 6px 0 0;
   font-size: 16px;
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
 }
 
@@ -190,9 +190,9 @@
   gap: 14px;
   padding: 14px 18px;
   border-radius: 12px;
-  border: 1.5px solid var(--color-sim-border, #E8E4DB);
-  border-left: 3px solid var(--color-primary, #1E4D8C);
-  background: var(--color-bg, #fff);
+  border: 1.5px solid var(--color-sim-border);
+  border-left: 3px solid var(--color-primary);
+  background: var(--color-bg);
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s, border-left-color 0.2s;
   text-align: left;
@@ -201,8 +201,8 @@
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 
 .sim-welcome__step:hover:not(:disabled) {
-  border-color: var(--color-accent, #4A7A25);
-  border-left-color: var(--color-accent, #4A7A25);
+  border-color: var(--color-accent);
+  border-left-color: var(--color-accent);
   box-shadow: 0 2px 12px rgba(124, 179, 66, 0.15);
   transform: translateY(-1px);
 }
@@ -219,7 +219,7 @@
   height: 44px;
   min-width: 44px;
   border-radius: 50%;
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary);
   color: #fff;
   font-weight: 700;
   font-size: 18px;
@@ -241,19 +241,19 @@
 
 .sim-welcome__step-text strong {
   font-size: 16px;
-  color: var(--color-text, #333);
+  color: var(--color-text);
 }
 
 .sim-welcome__step-text span {
   font-size: 16px;
-  color: var(--color-text-secondary, #737373);
+  color: var(--color-text-secondary);
 }
 
 .sim-welcome__dismiss {
   padding: 12px 32px;
   border-radius: 8px;
   border: none;
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   color: #fff;
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 16px;
@@ -266,7 +266,7 @@
 }
 
 .sim-welcome__dismiss:hover {
-  background: var(--color-accent-dark, #689F38);
+  background: var(--color-accent-dark);
   transform: scale(1.02);
   box-shadow: 0 6px 16px rgba(74,122,37,0.4);
 }
@@ -343,7 +343,7 @@
     max-width: none;
     max-height: 140px;
     border-right: none;
-    border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
+    border-bottom: 1px solid var(--color-sim-border);
     min-width: 0;
     resize: none;
     overflow-y: auto;
@@ -402,7 +402,7 @@
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     max-height: 45vh;
     border-right: none;
-    border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
+    border-bottom: 1px solid var(--color-sim-border);
   }
 
   .elab-simulator__canvas {
@@ -453,7 +453,7 @@
     max-height: 50vh;
     max-height: 50dvh;
     border-right: none;
-    border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
+    border-bottom: 1px solid var(--color-sim-border);
   }
 }
 
@@ -502,8 +502,8 @@
   top: 100%;
   right: 0;
   z-index: var(--z-dropdown, 100);
-  background: var(--color-bg, #FFFFFF);
-  border: 1px solid var(--color-border, #E5E5EA);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md, 8px);
   box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.15));
   min-width: 180px;
@@ -524,7 +524,7 @@
   text-align: left;
   font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
-  color: var(--color-text, #333);
+  color: var(--color-text);
   cursor: pointer;
   white-space: nowrap;
   min-height: var(--touch-min, 56px);
@@ -532,25 +532,25 @@
 
 @media (hover: hover) {
   .toolbar-overflow-item:hover {
-    background: var(--color-bg-tertiary, #F0F0F5);
+    background: var(--color-bg-tertiary);
   }
 }
 
 .toolbar-overflow-item:active {
-  background: var(--color-border-hover, #E0E0E8);
+  background: var(--color-border-hover);
   transition: background var(--transition-fast);
 }
 
 /* ─── Overflow Menu Section Separators ─── */
 .overflow-separator {
-  border-top: 1px solid var(--color-border-hover, #E0E0E8);
+  border-top: 1px solid var(--color-border-hover);
   margin: var(--space-1, 4px) 0;
   padding: var(--space-1, 4px) var(--space-4, 16px) 2px;
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-sim-text-muted, #737373);
+  color: var(--color-sim-text-muted);
   pointer-events: none;
   user-select: none;
 }
@@ -587,8 +587,8 @@
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  background: linear-gradient(180deg, var(--color-bg, #FFFFFF) 0%, var(--color-bg-secondary, #F7F7F8) 100%);
-  border-bottom: 1px solid var(--color-border, #E5E5EA);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-secondary) 100%);
+  border-bottom: 1px solid var(--color-border);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   min-height: var(--touch-min, 56px);
@@ -628,7 +628,7 @@
 .toolbar-separator {
   width: 1px;
   height: 40px;
-  background: var(--color-border, #E5E5EA);
+  background: var(--color-border);
   margin: 0 6px;
   flex-shrink: 0;
 }
@@ -648,7 +648,7 @@
   border-radius: var(--radius-sm, 6px);
   border: 1px solid transparent;
   background: transparent;
-  color: var(--color-text-secondary, #6B6B80);
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-weight: var(--font-weight-medium, 500);
@@ -688,8 +688,8 @@
 /* Hover — only on devices with a real hover cursor (mouse) */
 @media (hover: hover) {
   .toolbar-btn:hover:not(:disabled) {
-    background: var(--color-bg-tertiary, #ECECF1);
-    color: var(--color-text, #1A1A2E);
+    background: var(--color-bg-tertiary);
+    color: var(--color-text);
     border-color: transparent;
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.04);
@@ -699,22 +699,22 @@
 /* Active press — works on touch, pen, AND mouse */
 .toolbar-btn:active:not(:disabled) {
   transform: scale(0.95);
-  background: var(--color-bg-tertiary, #ECECF1);
-  color: var(--color-text, #1A1A2E);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text);
   transition: transform var(--transition-fast), background var(--transition-fast);
 }
 
 /* Focus visible (keyboard navigation) */
 .toolbar-btn:focus-visible {
-  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline: 2px solid var(--color-primary);
   outline-offset: 1px;
   box-shadow: var(--shadow-focus, 0 0 0 3px rgba(30, 77, 140, 0.15));
 }
 
 /* Active toggle state */
 .toolbar-btn--active {
-  background: var(--color-primary-light, #E8EEF6);
-  color: var(--color-primary, #1E4D8C);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
   border-color: rgba(30, 77, 140, 0.18);
   font-weight: var(--font-weight-semibold, 600);
   box-shadow: 0 1px 4px rgba(30, 77, 140, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -722,14 +722,14 @@
 
 @media (hover: hover) {
   .toolbar-btn--active:hover:not(:disabled) {
-    background: var(--color-btn-active-primary, #DCE6F4);
-    color: var(--color-primary-hover, #163A6B);
+    background: var(--color-btn-active-primary);
+    color: var(--color-primary-hover);
   }
 }
 
 .toolbar-btn--active:active:not(:disabled) {
-  background: var(--color-btn-active-primary-dark, #D0DEF0);
-  color: var(--color-primary-hover, #163A6B);
+  background: var(--color-btn-active-primary-dark);
+  color: var(--color-primary-hover);
   transform: scale(0.95);
 }
 
@@ -747,73 +747,73 @@
 
 /* Success (Play) */
 .toolbar-btn--success {
-  color: var(--color-accent, #4A7A25);
+  color: var(--color-accent);
 }
 
 @media (hover: hover) {
   .toolbar-btn--success:hover:not(:disabled) {
-    background: var(--color-accent-light, #E8F5E9);
-    color: var(--color-accent-hover, #457324);
+    background: var(--color-accent-light);
+    color: var(--color-accent-hover);
     border-color: rgba(85, 139, 47, 0.15);
   }
 }
 
 .toolbar-btn--success:active:not(:disabled) {
-  background: var(--color-btn-active-success, #D6EAD8);
-  color: var(--color-accent-hover, #457324);
+  background: var(--color-btn-active-success);
+  color: var(--color-accent-hover);
   transform: scale(0.95);
 }
 
 /* Warning (Pause, Restore) */
 /* © Andrea Marro — 18/02/2026 */
 .toolbar-btn--warning {
-  color: var(--color-warning, #EA580C);
+  color: var(--color-warning);
 }
 
 @media (hover: hover) {
   .toolbar-btn--warning:hover:not(:disabled) {
-    background: var(--color-warning-light, #FFEDD5);
-    color: var(--color-btn-warning, #C2410C);
+    background: var(--color-warning-light);
+    color: var(--color-btn-warning);
     border-color: rgba(234, 88, 12, 0.15);
   }
 }
 
 .toolbar-btn--warning:active:not(:disabled) {
-  background: var(--color-btn-active-warning, #FDDCB5);
-  color: var(--color-btn-warning, #C2410C);
+  background: var(--color-btn-active-warning);
+  color: var(--color-btn-warning);
   transform: scale(0.95);
 }
 
 /* Danger (Reset) */
 .toolbar-btn--danger {
-  color: var(--color-danger, #DC2626);
+  color: var(--color-danger);
 }
 
 @media (hover: hover) {
   .toolbar-btn--danger:hover:not(:disabled) {
-    background: var(--color-danger-light, #FEE2E2);
-    color: var(--color-btn-danger, #B91C1C);
+    background: var(--color-danger-light);
+    color: var(--color-btn-danger);
     border-color: rgba(220, 38, 38, 0.15);
   }
 }
 
 .toolbar-btn--danger:active:not(:disabled) {
-  background: var(--color-btn-active-danger, #FCCFCF);
-  color: var(--color-btn-danger, #B91C1C);
+  background: var(--color-btn-active-danger);
+  color: var(--color-btn-danger);
   transform: scale(0.95);
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
 }
 
 /* Error (Compile failed) */
 .toolbar-btn--error {
-  color: var(--color-danger, #DC2626);
+  color: var(--color-danger);
   animation: toolbar-error-pulse 0.5s ease;
 }
 
 @media (hover: hover) {
   .toolbar-btn--error:hover:not(:disabled) {
-    background: var(--color-danger-light, #FEE2E2);
-    color: var(--color-btn-danger, #B91C1C);
+    background: var(--color-danger-light);
+    color: var(--color-btn-danger);
     border-color: rgba(220, 38, 38, 0.15);
   }
 }
@@ -836,7 +836,7 @@
 
 /* S72 FIX: Component action buttons attention pulse — iPad discoverability */
 @keyframes toolbar-action-highlight {
-  0% { background: var(--color-highlight-pulse, #E3F2FD); }
+  0% { background: var(--color-highlight-pulse); }
   100% { background: transparent; }
 }
 
@@ -847,8 +847,8 @@
 
 /* Wire mode active */
 .toolbar-btn--wire.toolbar-btn--active {
-  background: var(--color-accent-light, #E8F5E9);
-  color: var(--color-accent, #4A7A25);
+  background: var(--color-accent-light);
+  color: var(--color-accent);
   border-color: rgba(85, 139, 47, 0.2);
 }
 
@@ -860,8 +860,8 @@
 
 /* UNLIM (gradient CTA) — S76: uses corrected ELAB Lime #4A7A25 */
 .toolbar-btn--unlim {
-  background: linear-gradient(135deg, var(--color-unlim-gradient-start, #4A7A25) 0%, var(--color-unlim-gradient-end, #4A7A25) 100%);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: linear-gradient(135deg, var(--color-unlim-gradient-start) 0%, var(--color-unlim-gradient-end) 100%);
+  color: var(--color-text-inverse);
   border: none;
   padding: 6px 16px;
   font-weight: var(--font-weight-bold, 700);
@@ -874,8 +874,8 @@
 
 @media (hover: hover) {
   .toolbar-btn--unlim:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--color-unlim-gradient-end, #4A7A25) 0%, var(--color-unlim-gradient-pressed-start) 100%);
-    color: var(--color-text-inverse, #FFFFFF);
+    background: linear-gradient(135deg, var(--color-unlim-gradient-end) 0%, var(--color-unlim-gradient-pressed-start) 100%);
+    color: var(--color-text-inverse);
     box-shadow: var(--shadow-accent-md);
     transform: translateY(-1px);
   }
@@ -883,15 +883,15 @@
 
 .toolbar-btn--unlim:active:not(:disabled) {
   background: linear-gradient(135deg, var(--color-unlim-gradient-pressed-start) 0%, var(--color-unlim-gradient-pressed-end) 100%);
-  color: var(--color-text-inverse, #FFFFFF);
+  color: var(--color-text-inverse);
   transform: translateY(0) scale(0.98);
   box-shadow: var(--shadow-accent-xs);
 }
 
 /* Diagnosi Circuito — navy accent */
 .toolbar-btn--diagnose {
-  background: var(--color-primary, #1E4D8C);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
   border: none;
   padding: 6px 12px;
   font-weight: var(--font-weight-semibold, 600);
@@ -902,22 +902,22 @@
 
 @media (hover: hover) {
   .toolbar-btn--diagnose:hover:not(:disabled) {
-    background: var(--color-primary-hover, #163A6B);
-    color: var(--color-text-inverse, #FFFFFF);
+    background: var(--color-primary-hover);
+    color: var(--color-text-inverse);
     transform: translateY(-1px);
   }
 }
 
 .toolbar-btn--diagnose:active:not(:disabled) {
-  background: var(--color-unlim-dark, #122F57);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: var(--color-unlim-dark);
+  color: var(--color-text-inverse);
   transform: scale(0.95);
 }
 
 /* Suggerimenti — lime accent */
 .toolbar-btn--hints {
-  background: var(--color-accent, #4A7A25);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
   border: none;
   padding: 6px 12px;
   font-weight: var(--font-weight-semibold, 600);
@@ -929,20 +929,20 @@
 @media (hover: hover) {
   .toolbar-btn--hints:hover:not(:disabled) {
     background: var(--color-hints-hover);
-    color: var(--color-text-inverse, #FFFFFF);
+    color: var(--color-text-inverse);
     transform: translateY(-1px);
   }
 }
 
 .toolbar-btn--hints:active:not(:disabled) {
-  background: var(--color-accent-hover, #4A7A25);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: var(--color-accent-hover);
+  color: var(--color-text-inverse);
   transform: scale(0.95);
 }
 
 .toolbar-btn--youtube {
-  background: var(--color-youtube-red, #FF0000);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: var(--color-youtube-red);
+  color: var(--color-text-inverse);
   border: none;
   padding: 6px 12px;
   font-weight: 600;
@@ -953,15 +953,15 @@
 
 @media (hover: hover) {
   .toolbar-btn--youtube:hover:not(:disabled) {
-    background: var(--color-youtube-red-hover, #CC0000);
-    color: var(--color-text-inverse, #FFFFFF);
+    background: var(--color-youtube-red-hover);
+    color: var(--color-text-inverse);
     transform: translateY(-1px);
   }
 }
 
 .toolbar-btn--youtube:active:not(:disabled) {
-  background: var(--color-youtube-red-active, #AA0000);
-  color: var(--color-text-inverse, #FFFFFF);
+  background: var(--color-youtube-red-active);
+  color: var(--color-text-inverse);
   transform: scale(0.95);
 }
 
@@ -1003,16 +1003,16 @@
 @keyframes toolbar-compile-success-flash {
   0% {
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
-    background: var(--color-accent, #4A7A25);
-    color: var(--color-text-inverse, #FFFFFF);
-    border-color: var(--color-unlim-gradient-end, #4A7A25);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+    border-color: var(--color-unlim-gradient-end);
     transform: scale(1.04);
   }
 
   60% {
-    background: var(--color-accent, #4A7A25);
-    color: var(--color-text-inverse, #FFFFFF);
-    border-color: var(--color-unlim-gradient-end, #4A7A25);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+    border-color: var(--color-unlim-gradient-end);
     transform: scale(1.0);
   }
 
@@ -1058,7 +1058,7 @@
 .toolbar-info__title {
   font-size: var(--font-size-sm, 16px);
   font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-text, #1A1A2E);
+  color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1067,7 +1067,7 @@
 
 .toolbar-info__meta {
   font-size: var(--font-size-xs, 16px);
-  color: var(--color-text-tertiary, #6B6B78);
+  color: var(--color-text-tertiary);
   letter-spacing: 0.02em;
 }
 
@@ -1078,9 +1078,9 @@
   gap: var(--space-1);
   font-size: var(--font-size-xs, 16px);
   font-family: var(--font-mono, 'Fira Code', monospace);
-  color: var(--color-text-tertiary, #6B6B78);
+  color: var(--color-text-tertiary);
   padding: 4px 10px;
-  background: var(--color-bg-secondary, #F7F7F8);
+  background: var(--color-bg-secondary);
   border-radius: var(--radius-sm, 6px);
   flex-shrink: 0;
   letter-spacing: 0.05em;
@@ -1151,7 +1151,7 @@
 }
 
 .elab-simulator button:not(.toolbar-btn):focus-visible {
-  outline: 2px solid var(--color-accent, #4A7A25);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -1189,8 +1189,8 @@
   position: absolute;
   pointer-events: none;
   z-index: 50;
-  background: var(--color-text, #1a1a2e);
-  color: var(--color-text-inverse, #fff);
+  background: var(--color-text);
+  color: var(--color-text-inverse);
   padding: var(--space-1, 4px) 10px;
   border-radius: var(--radius-sm, 6px);
   font-family: var(--font-mono, 'Fira Code', monospace);
@@ -1213,11 +1213,11 @@
   transform: translateX(-50%);
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid var(--color-text, #1a1a2e);
+  border-top: 5px solid var(--color-text);
 }
 
 .elab-pin-tooltip__label {
-  color: var(--color-accent, #4A7A25);
+  color: var(--color-accent);
   margin-right: 4px;
 }
 
@@ -1256,7 +1256,7 @@
   bottom: auto;
   top: -5px;
   border-top: none;
-  border-bottom: 5px solid var(--color-text, #1a1a2e);
+  border-bottom: 5px solid var(--color-text);
 }
 @keyframes elab-pin-tooltip-in-below {
   from {
@@ -1302,8 +1302,8 @@
     border-color: transparent;
   }
   .toolbar-btn--active:hover:not(:disabled) {
-    background: var(--color-primary-light, #E8EEF6);
-    color: var(--color-primary, #1E4D8C);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
   }
 }
 
@@ -1341,8 +1341,8 @@
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background: var(--color-surface, #fff);
-  border-bottom: 1px solid var(--color-border, #e0e0e0);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   min-height: 48px;
   position: relative;
   z-index: 10;
@@ -1364,7 +1364,7 @@
   cursor: pointer;
   border-radius: 8px;
   transition: background 0.15s ease, transform 0.1s ease;
-  color: var(--color-text, #333);
+  color: var(--color-text);
   padding: 8px;
   min-width: 44px;
   min-height: 44px;
@@ -1379,7 +1379,7 @@
 }
 
 .minimal-toolbar__btn:focus-visible {
-  outline: 2px solid var(--color-accent, #4A7A25);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -1389,7 +1389,7 @@
 
 /* ── PLAY button — big, lime, unmissable ── */
 .minimal-toolbar__btn--play {
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   color: #fff;
   padding: 8px 16px;
   border-radius: 10px;
@@ -1400,7 +1400,7 @@
 }
 
 .minimal-toolbar__btn--play:hover:not(:disabled) {
-  background: var(--color-accent-dark, #3d6620);
+  background: var(--color-accent-dark);
   box-shadow: 0 4px 12px rgba(74, 122, 37, 0.4);
 }
 
@@ -1412,19 +1412,19 @@
 
 /* Pause state — amber */
 .minimal-toolbar__btn--pause-state {
-  background: var(--color-warning, #FFB300);
+  background: var(--color-warning);
   color: #333;
   box-shadow: 0 2px 8px rgba(255, 179, 0, 0.3);
 }
 
 .minimal-toolbar__btn--pause-state:hover:not(:disabled) {
-  background: var(--color-warning-dark, #E65100);
+  background: var(--color-warning-dark);
   color: #fff;
 }
 
 /* ── Reset — subtle ── */
 .minimal-toolbar__btn--reset {
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-muted);
   padding: 6px;
   min-width: 44px;
   min-height: 44px;
@@ -1432,28 +1432,28 @@
 
 /* ── Compile — subtle ── */
 .minimal-toolbar__btn--compile {
-  color: var(--color-text-muted, #666);
+  color: var(--color-text-muted);
   padding: 6px;
   min-width: 44px;
   min-height: 44px;
 }
 
 .minimal-toolbar__btn--compile-ok {
-  color: var(--color-success, #2E7D32);
+  color: var(--color-success);
 }
 
 .minimal-toolbar__btn--compile-err {
-  color: var(--color-danger, #C62828);
+  color: var(--color-danger);
 }
 
 /* ── Overflow ── */
 .minimal-toolbar__btn--overflow {
-  color: var(--color-text-muted, #737373);
+  color: var(--color-text-muted);
 }
 
 /* ── UNLIM button — branded ── */
 .minimal-toolbar__btn--unlim {
-  background: linear-gradient(135deg, var(--color-primary, #1E4D8C), var(--color-primary-dark, #153a6a));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: #fff;
   padding: 6px 14px;
   border-radius: 10px;
@@ -1463,7 +1463,7 @@
 }
 
 .minimal-toolbar__btn--unlim:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--color-primary-dark, #153a6a), var(--color-primary, #1E4D8C));
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
   box-shadow: 0 4px 12px rgba(30, 77, 140, 0.35);
 }
 
@@ -1485,9 +1485,9 @@
   gap: 8px;
   padding: 6px 16px;
   min-height: 44px;
-  border: 1.5px solid var(--color-border, #e0e0e0);
+  border: 1.5px solid var(--color-border);
   border-radius: 20px;
-  background: var(--color-surface, #fff);
+  background: var(--color-surface);
   cursor: pointer;
   transition: all 0.15s ease;
   max-width: 320px;
@@ -1495,8 +1495,8 @@
 }
 
 .minimal-toolbar__experiment:hover {
-  border-color: var(--color-accent, #4A7A25);
-  background: var(--color-accent-light, #E8F5E9);
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
 }
 
 .minimal-toolbar__experiment:active {
@@ -1504,7 +1504,7 @@
 }
 
 .minimal-toolbar__experiment:focus-visible {
-  outline: 2px solid var(--color-accent, #4A7A25);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -1517,7 +1517,7 @@
   font-family: var(--font-display, 'Oswald', sans-serif);
   font-size: 15px;
   font-weight: 600;
-  color: var(--color-text, #333);
+  color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

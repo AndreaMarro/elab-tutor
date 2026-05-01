@@ -6,10 +6,10 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  border: 2px solid var(--color-border, #E5E5EA);
+  border: 2px solid var(--color-border);
   border-radius: var(--radius-full, 9999px);
-  background: var(--color-bg, #FFFFFF);
-  color: var(--color-text-secondary, #6B6B80);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
   cursor: pointer;
   font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans);
@@ -21,9 +21,9 @@
 
 .switchBtnActive {
   composes: switchBtn;
-  border-color: var(--color-accent, #4A7A25);
-  background: var(--color-accent-light, #E8F5E9);
-  color: var(--color-accent-hover, #4A7A25);
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+  color: var(--color-accent-hover);
 }
 
 .track {
@@ -38,7 +38,7 @@
 
 .trackActive {
   composes: track;
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
 }
 
 .thumb {

@@ -251,23 +251,23 @@ export default function ReverseEngineeringLab({ onOpenSimulator, logSession, onS
         {/* Mini SVG circuit board */}
         <svg viewBox="0 0 100 100" className={`elab-tool__circuit-svg ${css.circuitSvg}`}>
           {/* Board trace lines */}
-          <line x1="10" y1="50" x2="90" y2="50" stroke="#334155" strokeWidth="1" />
-          <line x1="50" y1="10" x2="50" y2="90" stroke="#334155" strokeWidth="1" />
+          <line x1="10" y1="50" x2="90" y2="50" stroke="var(--elab-hex-334155)" strokeWidth="1" />
+          <line x1="50" y1="10" x2="50" y2="90" stroke="var(--elab-hex-334155)" strokeWidth="1" />
           {/* Test points */}
           {selected.testPoints.map((point) => {
             const isRevealed = revealedPoints.includes(point.id);
             return (
               <g key={point.id} onClick={() => !isRevealed && revealPoint(point.id)} style={{ cursor: isRevealed ? 'default' : 'pointer' }}>
                 <circle cx={point.x} cy={point.y} r={isRevealed ? 6 : 4}
-                  fill={isRevealed ? '#4A7A25' : '#64748B'}
-                  stroke={isRevealed ? '#4A7A25' : '#64748B'}
+                  fill={isRevealed ? 'var(--elab-lime)' : '#64748B'}
+                  stroke={isRevealed ? 'var(--elab-lime)' : '#64748B'}
                   strokeWidth="1.5"
                 />
                 {isRevealed && (
-                  <circle cx={point.x} cy={point.y} r="8" fill="none" stroke="#4A7A25" strokeWidth="0.5" opacity="0.5" />
+                  <circle cx={point.x} cy={point.y} r="8" fill="none" stroke="var(--elab-lime)" strokeWidth="0.5" opacity="0.5" />
                 )}
                 <text x={point.x} y={point.y - 8} textAnchor="middle"
-                  fill={isRevealed ? '#4A7A25' : '#64748B'} fontSize="4" fontFamily="monospace"
+                  fill={isRevealed ? 'var(--elab-lime)' : '#64748B'} fontSize="4" fontFamily="monospace"
                 >
                   {point.label.split(' ')[0]}
                 </text>
@@ -276,11 +276,11 @@ export default function ReverseEngineeringLab({ onOpenSimulator, logSession, onS
           })}
           {/* Mystery component */}
           <rect x="38" y="38" width="24" height="24" rx="3"
-            fill="none" stroke={showSolution ? '#4A7A25' : '#ea580c'}
+            fill="none" stroke={showSolution ? 'var(--elab-lime)' : '#ea580c'}
             strokeWidth="1.5" strokeDasharray={showSolution ? 'none' : '3,2'}
           />
           <text x="50" y="53" textAnchor="middle"
-            fill={showSolution ? '#4A7A25' : '#ea580c'} fontSize="6" fontWeight="bold"
+            fill={showSolution ? 'var(--elab-lime)' : '#ea580c'} fontSize="6" fontWeight="bold"
           >
             {showSolution ? '✓' : '?'}
           </text>

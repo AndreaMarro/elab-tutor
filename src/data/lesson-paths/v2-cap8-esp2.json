@@ -92,8 +92,8 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il Gate era collegato a 9V per accendere il LED. Ora costruiamo lo stesso circuito ma SENZA collegare nulla al Gate. Il Gate resta scollegato, 'flottante'. Cosa succederà?",
-      "teacher_tip": "Fai la domanda: 'Se il Gate non è collegato a niente, il MOSFET sarà ON o OFF?' La maggior parte risponderà OFF. Poi rivelate la sorpresa: 'Il Gate è così sensibile che basta il vostro dito!'",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il Gate era collegato a 9V per accendere il LED. Ora costruiamo lo stesso circuito ma SENZA collegare nulla al Gate. Il Gate resta scollegato, 'flottante'. Cosa succederà?",
+      "teacher_tip": "Fate la domanda: 'Se il Gate non è collegato a niente, il MOSFET sarà ON o OFF?' La maggior parte risponderà OFF. Poi rivelate la sorpresa: 'Il Gate è così sensibile che basta il vostro dito!'",
       "components_list": "Ti servono: 1 breadboard mezza, 1 batteria 9V, 1 MOSFET N-channel, 1 resistore 470Ω, 1 LED rosso, fili. NOTA: nessun filo al Gate!",
       "class_hook": "Sapete che il vostro corpo è carico di elettricità statica? Ogni volta che camminate sul tappeto raccogliete carica. Oggi la useremo per accendere un LED!",
       "action_tags": [],
@@ -112,8 +112,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito MOSFET con Gate flottante (nessun filo al Gate)",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito MOSFET con Gate flottante (nessun filo al Gate)",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -197,8 +197,8 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Nel simulatore: clicca sul pin Gate del MOSFET per simulare il tocco del dito. Il LED si accende! Questo è il potere dell'impedenza altissima del Gate.",
-      "teacher_tip": "Fai notare la magia: 'La carica statica del corpo è sufficiente per superare Vth! Il Gate ha un'impedenza così alta che anche pochissime cariche elettrostatiche alzano la tensione sopra la soglia.' Nella realtà, strofina i piedi sul tappeto prima di toccare.",
+      "teacher_message": "Nel simulatore: cliccate sul pin Gate del MOSFET per simulare il tocco del dito. Il LED si accende! Questo è il potere dell'impedenza altissima del Gate.",
+      "teacher_tip": "Fate notare la magia: 'La carica statica del corpo è sufficiente per superare Vth! Il Gate ha un'impedenza così alta che anche pochissime cariche elettrostatiche alzano la tensione sopra la soglia.' Nella realtà, strofina i piedi sul tappeto prima di toccare.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -226,7 +226,7 @@
       "icon": "✅",
       "duration_minutes": 5,
       "teacher_message": "Il Gate del MOSFET ha un'impedenza altissima: basta la carica elettrostatica del corpo per attivarlo! Questo è meraviglioso ma anche pericoloso: i MOSFET si possono danneggiare con l'elettricità statica se non protetti.",
-      "teacher_tip": "Collega il concetto al prossimo esperimento: 'Nel prossimo esperimento useremo un potenziometro per controllare con precisione la tensione al Gate. Troveremo esattamente Vth, la soglia di attivazione!'",
+      "teacher_tip": "Collegate il concetto al prossimo esperimento: 'Nel prossimo esperimento useremo un potenziometro per controllare con precisione la tensione al Gate. Troveremo esattamente Vth, la soglia di attivazione!'",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],

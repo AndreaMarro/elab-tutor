@@ -178,8 +178,8 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
             char={line[col]}
             col={col}
             row={row}
-            onColor="#1A2A1A"
-            offColor={backlight ? '#7BBF5C' : '#556B44'}
+            onColor="var(--elab-hex-1a2a1a)"
+            offColor={backlight ? 'var(--elab-hex-7bbf5c)' : 'var(--elab-hex-556b44)'}
           />
         );
       }
@@ -196,7 +196,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
       <rect x="-25" y="-25" width="50" height="50" fill="transparent" pointerEvents="all" onClick={onInteract} />
       {/* PCB Board — Fritzing 3D */}
       <rect x={-PCB_W/2} y={-PCB_H/2} width={PCB_W} height={PCB_H} rx="2"
-        fill="#2E7D32" stroke="#0D3B0D" strokeWidth="0.6" />
+        fill="var(--elab-hex-2e7d32)" stroke="var(--elab-hex-0d3b0d)" strokeWidth="0.6" />
 
 
       {/* Mounting holes (corners) — Fritzing 3D with metallic ring */}
@@ -207,9 +207,9 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
         { cx: PCB_W/2 - 4, cy: PCB_H/2 - 4 },
       ].map((h, i) => (
         <g key={`mh-${i}`}>
-          <circle cx={h.cx} cy={h.cy} r="2.5" fill="#0D3B0D" stroke="#555" strokeWidth="0.4" />
-          <circle cx={h.cx} cy={h.cy} r="2" fill="#0A2A0A" />
-          <circle cx={h.cx} cy={h.cy} r="1.2" fill="#1B5E20" />
+          <circle cx={h.cx} cy={h.cy} r="2.5" fill="var(--elab-hex-0d3b0d)" stroke="#555" strokeWidth="0.4" />
+          <circle cx={h.cx} cy={h.cy} r="2" fill="var(--elab-hex-0a2a0a)" />
+          <circle cx={h.cx} cy={h.cy} r="1.2" fill="var(--elab-hex-1b5e20)" />
         </g>
       ))}
 
@@ -220,7 +220,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
         width={DISPLAY_W + PADDING * 2 + 1}
         height={DISPLAY_H + PADDING * 2 + 1}
         rx="1.5"
-        fill="#808080" stroke="#505050" strokeWidth="0.5"
+        fill="var(--elab-hex-808080)" stroke="var(--elab-hex-505050)" strokeWidth="0.5"
       />
 
       {/* LCD Screen */}
@@ -230,7 +230,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
         width={DISPLAY_W}
         height={DISPLAY_H}
         rx="0.5"
-        fill={backlight ? '#9CCC65' : '#6B8B4A'}
+        fill={backlight ? 'var(--elab-hex-9ccc65)' : 'var(--elab-hex-6b8b4a)'}
       />
 
       {/* Character Grid */}
@@ -244,7 +244,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
             y={cursorPos.row * (CHAR_H + CHAR_GAP_Y) + 6 * DOT_PITCH}
             width={5 * DOT_PITCH}
             height={DOT_SIZE}
-            fill="#1A2A1A"
+            fill="var(--elab-hex-1a2a1a)"
           >
             <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite" />
           </rect>
@@ -259,7 +259,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
           width={DISPLAY_W}
           height={DISPLAY_H}
           rx="0.5"
-          fill="#3A4A2A"
+          fill="var(--elab-hex-3a4a2a)"
           opacity="0.8"
         />
       )}
@@ -272,7 +272,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
           <g key={label}>
             {/* Pin body */}
             <rect x={px - 1.5} y={py - 1} width="3" height="5" rx="0.5"
-              fill="#C0A030" stroke="#A08020" strokeWidth="0.4" />
+              fill="var(--elab-hex-c0a030)" stroke="var(--elab-hex-a08020)" strokeWidth="0.4" />
           </g>
         );
       })}
@@ -285,7 +285,7 @@ const LCD16x2 = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
           width={PCB_W + 8}
           height={PCB_H + 24}
           rx="5"
-          fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="5 3">
+          fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="5 3">
           <animate attributeName="stroke-opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

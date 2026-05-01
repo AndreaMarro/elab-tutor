@@ -14,22 +14,49 @@
   "target_age": "10-14 anni",
   "objective": "Scoprire che tre resistori in serie hanno una resistenza totale pari alla somma dei singoli. Misurare con il multimetro e confrontare con il calcolo.",
   "components_needed": [
-    { "name": "Breadboard mezza", "quantity": 1, "icon": "🔲" },
-    { "name": "Resistore 1kohm", "quantity": 3, "icon": "⚡" },
-    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+    {
+      "name": "Breadboard mezza",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Resistore 1kohm",
+      "quantity": 3,
+      "icon": "⚡"
+    },
+    {
+      "name": "Multimetro",
+      "quantity": 1,
+      "icon": "📏"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "resistore", "resistenza", "serie", "ohm", "kohm",
-      "multimetro", "ohmmetro", "breadboard", "totale",
-      "somma", "corrente", "percorso"
+      "resistore",
+      "resistenza",
+      "serie",
+      "ohm",
+      "kohm",
+      "multimetro",
+      "ohmmetro",
+      "breadboard",
+      "totale",
+      "somma",
+      "corrente",
+      "percorso"
     ],
     "forbidden": [
-      "Arduino", "codice", "programma", "condensatore", "transistor"
+      "Arduino",
+      "codice",
+      "programma",
+      "condensatore",
+      "transistor"
     ],
     "note": "Vol 2 Cap 4 — resistenze in serie, Rtot = R1 + R2 + R3."
   },
-  "prerequisites": ["v2-cap4-esp1"],
+  "prerequisites": [
+    "v2-cap4-esp1"
+  ],
   "next_experiment": {
     "id": "v2-cap4-esp3",
     "title": "Partitore di tensione",
@@ -40,7 +67,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "L'ultima volta i resistori in parallelo dimezzavano la resistenza. Oggi li mettiamo in serie: uno dietro l'altro. Cosa succede alla resistenza totale?",
+      "teacher_message": "Ragazzi, l'ultima volta i resistori in parallelo dimezzavano la resistenza. Oggi li mettiamo in serie: uno dietro l'altro. Cosa succede alla resistenza totale?",
       "teacher_tip": "In serie le resistenze si sommano: e intuitivo come sommare le lunghezze di tre tubi in fila. 1kohm + 1kohm + 1kohm = 3kohm.",
       "components_list": "Ti servono: 1 breadboard mezza, 3 resistori da 1kohm, 1 multimetro.",
       "class_hook": "Se tre persone si mettono in fila per entrare da una porta stretta, e piu difficile o piu facile passare? In serie gli ostacoli si sommano!",
@@ -55,18 +82,38 @@
       "teacher_tip": "Fai tracciare il percorso con il dito: la corrente deve attraversare tutti e tre i resistori, uno dopo l'altro. Non ci sono scorciatoie!",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v2-cap4-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v2-cap4-esp2]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta tre resistori 1kohm in serie su breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate tre resistori 1kohm in serie su breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "resistor", "id": "r1", "value": 1000 },
-            { "type": "resistor", "id": "r2", "value": 1000 },
-            { "type": "resistor", "id": "r3", "value": 1000 },
-            { "type": "multimeter", "id": "mm1" }
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "resistor",
+              "id": "r1",
+              "value": 1000
+            },
+            {
+              "type": "resistor",
+              "id": "r2",
+              "value": 1000
+            },
+            {
+              "type": "resistor",
+              "id": "r3",
+              "value": 1000
+            },
+            {
+              "type": "multimeter",
+              "id": "mm1"
+            }
           ],
           "wires": []
         }
@@ -97,7 +144,12 @@
       "duration_minutes": 10,
       "teacher_message": "Misurate con il multimetro tra il primo e l'ultimo terminale: circa 3kohm! Provate a rimuovere un resistore e rimisurare: 2kohm. La somma funziona!",
       "teacher_tip": "Evidenzia tutti e tre i resistori. Fai il confronto diretto: 1 resistore = 1kohm, 2 in serie = 2kohm, 3 in serie = 3kohm. La proporzionalita e evidente.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:r1]", "[AZIONE:highlight:r2]", "[AZIONE:highlight:r3]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:r1]",
+        "[AZIONE:highlight:r2]",
+        "[AZIONE:highlight:r3]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il multimetro conferma: 3 resistori da 1kohm in serie = circa 3kohm. La resistenza totale in serie e la somma dei singoli valori!",
       "analogies": [
@@ -133,7 +185,11 @@
     "Se prevede che un resistore rotto interrompe tutto → comprensione del percorso unico"
   ],
   "session_save": {
-    "concepts_covered": ["resistenze_serie", "Rtot_somma", "confronto_serie_parallelo"],
+    "concepts_covered": [
+      "resistenze_serie",
+      "Rtot_somma",
+      "confronto_serie_parallelo"
+    ],
     "next_suggested": "v2-cap4-esp3",
     "resume_message": "Avete scoperto la somma in serie! Prossimo: il partitore di tensione."
   }

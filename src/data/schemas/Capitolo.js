@@ -198,6 +198,7 @@ export function validateCapitolo(obj) {
 export const CAPITOLO_TYPES = ['theory', 'experiment', 'project', 'bonus', 'wip'];
 export const BUILD_MODES = ['from_scratch', 'incremental_from_prev'];
 export const PHASE_NAMES = ['PREPARA', 'MOSTRA', 'CHIEDI', 'OSSERVA', 'CONCLUDI'];
+// © Andrea Marro — 26/04/2026 — ELAB Tutor — Tutti i diritti riservati
 export const INCREMENTAL_MODES = [
   'from_scratch',
   'add_component',

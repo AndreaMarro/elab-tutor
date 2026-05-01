@@ -10,6 +10,18 @@
   "volume": 1,
   "chapter": 6,
   "title": "Accendi il tuo primo LED",
+  "modes_supported": [
+    "percorso",
+    "passo-passo",
+    "gia-montato",
+    "libero"
+  ],
+  "modes_entry_state": {
+    "percorso": "passive_view",
+    "passo-passo": "build_step_1",
+    "gia-montato": "final_assembled_state",
+    "libero": "passive_view_with_proactive_unlim"
+  },
   "chapter_title": "Cos'è il diodo LED?",
   "difficulty": 1,
   "duration_minutes": 45,
@@ -89,7 +101,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
       "teacher_tip": "Non dare il resistore subito — lascia che provino con batteria + LED + fili. L'emozione del 'si accende!' viene PRIMA di qualsiasi teoria.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED rosso, 4 fili.",
       "class_hook": "Avete mai provato ad accendere una lampadina con una pila? Oggi facciamo qualcosa di simile... ma più figo!",
@@ -109,8 +121,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito sulla breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito sulla breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -200,7 +212,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e osserva cosa succede. Il LED si accende! Ora prova a girarlo — si spegne.",
+      "teacher_message": "Premete Play e osserva cosa succede. Il LED si accende! Ora provate a girarlo — si spegne.",
       "teacher_tip": "Evidenzia il LED sul simulatore per attirare l'attenzione. Chiedi: 'Vedete la luce? Perché secondo voi funziona solo in un verso?'",
       "components_list": null,
       "class_hook": null,

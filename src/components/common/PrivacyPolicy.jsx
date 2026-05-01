@@ -601,7 +601,7 @@ export default function PrivacyPolicy({ onClose }) {
               <p style={styles.rightText}>
                 "Diritto all'oblio": richiedere la cancellazione dei dati quando
                 non sono più necessari o revochi il consenso.
-                {' '}<a href="/data-deletion" style={{ color: '#1E4D8C' }}>Richiedi eliminazione dati</a>
+                {' '}<a href="/data-deletion" style={{ color: 'var(--elab-navy)' }}>Richiedi eliminazione dati</a>
               </p>
             </div>
 
@@ -1072,14 +1072,14 @@ const pageStyles = {
   page: {
     height: '100%',
     overflowY: 'auto',
-    background: '#F0F4F8',
+    background: 'var(--elab-hex-f0f4f8)',
     display: 'flex',
     justifyContent: 'center',
     padding: '40px 20px',
     fontFamily: "'Open Sans', sans-serif",
   },
   wrapper: {
-    background: '#ffffff',
+    background: 'var(--elab-hex-ffffff)',
     borderRadius: '16px',
     maxWidth: '900px',
     width: '100%',
@@ -1093,7 +1093,7 @@ const pageStyles = {
     padding: '24px 32px',
     fontSize: '14px',
     color: '#666',
-    borderTop: '1px solid #e0e0e0',
+    borderTop: '1px solid var(--elab-hex-e0e0e0)',
   },
 };
 
@@ -1113,7 +1113,7 @@ const styles = {
     overflow: 'auto',
   },
   modal: {
-    background: '#ffffff',
+    background: 'var(--elab-hex-ffffff)',
     borderRadius: '16px',
     maxWidth: '900px',
     width: '100%',
@@ -1127,14 +1127,14 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     padding: '32px 40px 16px',
-    borderBottom: '1px solid #e0e0e0',
+    borderBottom: '1px solid var(--elab-hex-e0e0e0)',
     flexShrink: 0,
   },
   title: {
     margin: 0,
     fontSize: '28px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontFamily: "'Open Sans', sans-serif",
   },
   subtitle: {
@@ -1146,14 +1146,14 @@ const styles = {
   meta: {
     margin: '8px 0 0 0',
     fontSize: '14px',
-    color: '#737373',
+    color: 'var(--elab-hex-737373)',
     fontFamily: "'Open Sans', sans-serif",
   },
   closeBtn: {
     background: 'none',
     border: 'none',
     fontSize: '32px',
-    color: '#737373',
+    color: 'var(--elab-hex-737373)',
     cursor: 'pointer',
     padding: '0 8px',
     lineHeight: 1,
@@ -1162,17 +1162,17 @@ const styles = {
     display: 'flex',
     gap: '12px',
     padding: '16px 40px',
-    background: '#f8f9fa',
-    borderBottom: '1px solid #e0e0e0',
+    background: 'var(--elab-hex-f8f9fa)',
+    borderBottom: '1px solid var(--elab-hex-e0e0e0)',
     flexWrap: 'wrap',
   },
   quickLink: {
     padding: '8px 16px',
-    background: '#ffffff',
-    border: '1px solid #e0e0e0',
+    background: 'var(--elab-hex-ffffff)',
+    border: '1px solid var(--elab-hex-e0e0e0)',
     borderRadius: '20px',
     textDecoration: 'none',
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontSize: '14px',
     fontWeight: 500,
   },
@@ -1182,11 +1182,11 @@ const styles = {
     flex: 1,
   },
   intro: {
-    background: 'linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%)',
+    background: 'linear-gradient(135deg, var(--elab-hex-e8f4fd) 0%, var(--elab-hex-f0f7ff) 100%)',
     padding: '24px',
     borderRadius: '12px',
     marginBottom: '32px',
-    borderLeft: '4px solid #1E4D8C',
+    borderLeft: '4px solid var(--elab-navy)',
   },
   introText: {
     fontSize: '16px',
@@ -1197,7 +1197,7 @@ const styles = {
   },
   section: {
     marginBottom: '8px',
-    borderBottom: '1px solid #f0f0f0',
+    borderBottom: '1px solid var(--elab-hex-f0f0f0)',
   },
   sectionHeader: {
     display: 'flex',
@@ -1213,13 +1213,13 @@ const styles = {
   sectionTitle: {
     fontSize: '18px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: 0,
     fontFamily: "'Open Sans', sans-serif",
   },
   toggleIcon: {
     fontSize: '24px',
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontWeight: 300,
   },
   sectionContent: {
@@ -1260,7 +1260,7 @@ const styles = {
     fontFamily: "'Open Sans', sans-serif",
   },
   link: {
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     textDecoration: 'underline',
   },
   list: {
@@ -1294,48 +1294,48 @@ const styles = {
     minWidth: '340px',
   },
   th: {
-    background: '#f8f9fa',
+    background: 'var(--elab-hex-f8f9fa)',
     padding: '10px 8px',
     textAlign: 'left',
     fontWeight: 600,
-    borderBottom: '2px solid #e0e0e0',
+    borderBottom: '2px solid var(--elab-hex-e0e0e0)',
     fontFamily: "'Open Sans', sans-serif",
     fontSize: '14px',
     whiteSpace: 'nowrap',
   },
   td: {
     padding: '10px 8px',
-    borderBottom: '1px solid #e0e0e0',
+    borderBottom: '1px solid var(--elab-hex-e0e0e0)',
     fontFamily: "'Open Sans', sans-serif",
     verticalAlign: 'top',
     fontSize: '14px',
   },
   infoBox: {
-    background: '#f8f9fa',
+    background: 'var(--elab-hex-f8f9fa)',
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
   },
   infoBoxHighlight: {
-    background: '#e8f4fd',
+    background: 'var(--elab-hex-e8f4fd)',
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
-    borderLeft: '4px solid #1E4D8C',
+    borderLeft: '4px solid var(--elab-navy)',
   },
   warningBox: {
-    background: '#fff3cd',
+    background: 'var(--elab-hex-fff3cd)',
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
-    borderLeft: '4px solid #ffc107',
+    borderLeft: '4px solid var(--elab-hex-ffc107)',
   },
   highlightBox: {
-    background: '#d4edda',
+    background: 'var(--elab-hex-d4edda)',
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
-    borderLeft: '4px solid #28a745',
+    borderLeft: '4px solid var(--elab-hex-28a745)',
   },
   rightsGrid: {
     display: 'grid',
@@ -1344,15 +1344,15 @@ const styles = {
     margin: '20px 0',
   },
   rightCard: {
-    background: '#f8f9fa',
+    background: 'var(--elab-hex-f8f9fa)',
     padding: '20px',
     borderRadius: '8px',
-    border: '1px solid #e0e0e0',
+    border: '1px solid var(--elab-hex-e0e0e0)',
   },
   rightTitle: {
     fontSize: '15px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: '0 0 8px 0',
   },
   rightText: {
@@ -1362,13 +1362,13 @@ const styles = {
     margin: 0,
   },
   howToBox: {
-    background: '#e8f4fd',
+    background: 'var(--elab-hex-e8f4fd)',
     padding: '20px',
     borderRadius: '8px',
     margin: '20px 0',
   },
   rightsNote: {
-    background: '#fff3cd',
+    background: 'var(--elab-hex-fff3cd)',
     padding: '16px',
     borderRadius: '8px',
     margin: '20px 0',
@@ -1377,17 +1377,17 @@ const styles = {
   childSection: {
     margin: '24px 0',
     padding: '24px',
-    background: '#f8f9fa',
+    background: 'var(--elab-hex-f8f9fa)',
     borderRadius: '12px',
   },
   childTitle: {
     fontSize: '20px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: '0 0 16px 0',
   },
   kidsBox: {
-    background: 'linear-gradient(135deg, #e8f4fd 0%, #f0f7ff 100%)',
+    background: 'linear-gradient(135deg, var(--elab-hex-e8f4fd) 0%, var(--elab-hex-f0f7ff) 100%)',
     padding: '24px',
     borderRadius: '12px',
     margin: '16px 0',
@@ -1395,19 +1395,19 @@ const styles = {
   kidsContact: {
     marginTop: '16px',
     paddingTop: '16px',
-    borderTop: '1px dashed #1E4D8C',
+    borderTop: '1px dashed var(--elab-navy)',
   },
   parentDashboard: {
-    background: '#ffffff',
+    background: 'var(--elab-hex-ffffff)',
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
-    border: '2px solid #1E4D8C',
+    border: '2px solid var(--elab-navy)',
   },
   button: {
     display: 'inline-block',
-    background: '#1E4D8C',
-    color: '#ffffff',
+    background: 'var(--elab-navy)',
+    color: 'var(--elab-hex-ffffff)',
     padding: '12px 24px',
     borderRadius: '8px',
     textDecoration: 'none',
@@ -1415,11 +1415,11 @@ const styles = {
     marginTop: '12px',
   },
   coppaSection: {
-    background: '#f0f7ff',
+    background: 'var(--elab-hex-f0f7ff)',
     padding: '20px',
     borderRadius: '8px',
     margin: '20px 0',
-    border: '1px solid #1E4D8C',
+    border: '1px solid var(--elab-navy)',
   },
   securityGrid: {
     display: 'grid',
@@ -1430,7 +1430,7 @@ const styles = {
   securityItem: {
     textAlign: 'center',
     padding: '20px',
-    background: '#f8f9fa',
+    background: 'var(--elab-hex-f8f9fa)',
     borderRadius: '8px',
   },
   securityIcon: {
@@ -1446,7 +1446,7 @@ const styles = {
     margin: '20px 0',
   },
   emergencyContact: {
-    background: '#f8d7da',
+    background: 'var(--elab-hex-f8d7da)',
     padding: '16px',
     borderRadius: '8px',
     margin: '20px 0',
@@ -1455,7 +1455,7 @@ const styles = {
     margin: '20px 0',
   },
   contactBox: {
-    background: '#e8f4fd',
+    background: 'var(--elab-hex-e8f4fd)',
     padding: '20px',
     borderRadius: '8px',
   },
@@ -1468,13 +1468,13 @@ const styles = {
     margin: '24px 0',
   },
   authorityBox: {
-    background: '#f8f9fa',
+    background: 'var(--elab-hex-f8f9fa)',
     padding: '20px',
     borderRadius: '8px',
     border: '1px solid #ddd',
   },
   conclusion: {
-    background: 'linear-gradient(135deg, #d4edda 0%, #e8f4fd 100%)',
+    background: 'linear-gradient(135deg, var(--elab-hex-d4edda) 0%, var(--elab-hex-e8f4fd) 100%)',
     padding: '32px',
     borderRadius: '12px',
     marginTop: '32px',
@@ -1490,15 +1490,15 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     padding: '24px 40px',
-    borderTop: '1px solid #e0e0e0',
+    borderTop: '1px solid var(--elab-hex-e0e0e0)',
     flexShrink: 0,
   },
   footerBtn: {
     padding: '12px 32px',
     border: 'none',
     borderRadius: '8px',
-    background: '#1E4D8C',
-    color: '#ffffff',
+    background: 'var(--elab-navy)',
+    color: 'var(--elab-hex-ffffff)',
     fontSize: '15px',
     fontWeight: 600,
     cursor: 'pointer',

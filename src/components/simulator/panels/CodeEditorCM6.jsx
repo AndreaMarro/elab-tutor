@@ -272,9 +272,9 @@ const elabHighlightStyle = HighlightStyle.define([
   { tag: tags.operator, color: 'var(--color-syntax-operator, #89DDFF)' },
   { tag: tags.punctuation, color: 'var(--color-syntax-operator, #89DDFF)' },
   { tag: tags.bracket, color: 'var(--color-syntax-operator, #89DDFF)' },
-  { tag: tags.macroName, color: 'var(--color-syntax-macro, #E54B3D)', fontWeight: '600' },
-  { tag: tags.processingInstruction, color: 'var(--color-syntax-macro, #E54B3D)', fontWeight: '600' },
-  { tag: tags.meta, color: 'var(--color-syntax-macro, #E54B3D)' },
+  { tag: tags.macroName, color: 'var(--color-syntax-macro, var(--elab-red))', fontWeight: '600' },
+  { tag: tags.processingInstruction, color: 'var(--color-syntax-macro, var(--elab-red))', fontWeight: '600' },
+  { tag: tags.meta, color: 'var(--color-syntax-macro, var(--elab-red))' },
   { tag: tags.variableName, color: 'var(--color-syntax-variable, #E5E7EB)' },
   { tag: tags.propertyName, color: 'var(--color-syntax-function, #82AAFF)' },
 ]);
@@ -305,7 +305,7 @@ const errorLineTheme = EditorView.baseTheme({
     backgroundColor: 'rgba(229, 75, 61, 0.2)',
   },
   '.cm-errorLine .cm-gutterElement': {
-    color: 'var(--color-vol3, #E54B3D) !important',
+    color: 'var(--color-vol3, var(--elab-red)) !important',
     fontWeight: '700 !important',
   },
 });
@@ -502,8 +502,8 @@ const CodeEditorCM6 = React.memo(function CodeEditorCM6({
                 marginLeft: 6,
                 fontSize: 14,
                 padding: '4px 12px',
-                color: 'var(--color-accent, #4A7A25)',
-                borderColor: 'var(--color-accent, #4A7A25)',
+                color: 'var(--color-accent, var(--elab-lime))',
+                borderColor: 'var(--color-accent, var(--elab-lime))',
               }}
               title="Chiedi a UNLIM di spiegare il codice"
               aria-label="Spiega il codice"
@@ -635,7 +635,7 @@ const codeEditorStyles = {
     padding: '6px 0',
     border: 'none',
     borderRadius: 4,
-    background: 'var(--color-accent, #4A7A25)',
+    background: 'var(--color-accent, var(--elab-lime))',
     color: 'var(--color-text-inverse, #fff)',
     fontFamily: FONT_BODY,
     fontSize: 14,

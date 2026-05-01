@@ -5,81 +5,81 @@
 // ============================================
 
 export const COLORS = {
-    primary: '#0F172A',
-    primaryLight: '#1E293B',
-    primaryHover: '#334155',
-    accent: '#1E4D8C',
-    accentLight: '#2563EB',
-    accentBg: '#EFF6FF',
-    success: '#059669',
-    successBg: '#ECFDF5',
-    warning: '#D97706',
-    warningBg: '#FFFBEB',
-    danger: '#DC2626',
-    dangerBg: '#FEF2F2',
-    info: '#0891B2',
-    infoBg: '#ECFEFF',
-    bg: '#F8FAFC',
-    card: '#FFFFFF',
-    border: '#E2E8F0',
-    borderLight: '#F1F5F9',
-    textPrimary: '#0F172A',
-    textSecondary: '#475569',
-    textMuted: '#64748B',
-    textWhite: '#FFFFFF',
+    primary: '#0f172a', // palette
+    primaryLight: '#1e293b', // palette
+    primaryHover: '#334155', // palette
+    accent: 'var(--elab-navy)',
+    accentLight: '#2563eb', // palette
+    accentBg: '#eff6ff', // palette
+    success: '#059669', // palette
+    successBg: '#ecfdf5', // palette
+    warning: '#d97706', // palette
+    warningBg: '#fffbeb', // palette
+    danger: '#dc2626', // palette
+    dangerBg: '#fef2f2', // palette
+    info: '#0891b2', // palette
+    infoBg: '#ecfeff', // palette
+    bg: '#f8fafc', // palette
+    card: '#ffffff', // palette
+    border: '#e2e8f0', // palette
+    borderLight: '#f1f5f9', // palette
+    textPrimary: '#0f172a', // palette
+    textSecondary: '#475569', // palette
+    textMuted: '#64748b', // palette
+    textWhite: '#ffffff', // palette
 };
 
 export const MODULES = [
     { id: 'dashboard', label: 'Dashboard', icon: '', color: COLORS.accent },
-    { id: 'fatture', label: 'Fatturazione', icon: '', color: '#7C3AED' },
-    { id: 'ordini', label: 'Ordini & Vendite', icon: '', color: '#2563EB' },
-    { id: 'magazzino', label: 'Magazzino & Kit', icon: '', color: '#D97706' },
-    { id: 'dipendenti', label: 'Dipendenti', icon: '', color: '#059669' },
-    { id: 'finanze', label: 'Banche & Finanze', icon: '', color: '#0891B2' },
-    { id: 'documenti', label: 'Burocrazia', icon: '', color: '#DC2626' },
-    { id: 'marketing', label: 'Marketing & Clienti', icon: '', color: '#EC4899' },
-    { id: 'report', label: 'Report', icon: '', color: '#7C3AED' },
-    { id: 'impostazioni', label: 'Impostazioni', icon: '', color: '#64748B' },
+    { id: 'fatture', label: 'Fatturazione', icon: '', color: '#7c3aed' }, // palette
+    { id: 'ordini', label: 'Ordini & Vendite', icon: '', color: '#2563eb' }, // palette
+    { id: 'magazzino', label: 'Magazzino & Kit', icon: '', color: '#d97706' }, // palette
+    { id: 'dipendenti', label: 'Dipendenti', icon: '', color: '#059669' }, // palette
+    { id: 'finanze', label: 'Banche & Finanze', icon: '', color: '#0891b2' }, // palette
+    { id: 'documenti', label: 'Burocrazia', icon: '', color: '#dc2626' }, // palette
+    { id: 'marketing', label: 'Marketing & Clienti', icon: '', color: '#ec4899' }, // palette
+    { id: 'report', label: 'Report', icon: '', color: '#7c3aed' }, // palette
+    { id: 'impostazioni', label: 'Impostazioni', icon: '', color: '#64748b' }, // palette
 ];
 
 export const STATUS_COLORS = {
-    bozza: { bg: '#F1F5F9', text: '#475569', label: 'Bozza' },
-    emessa: { bg: '#DBEAFE', text: '#1D4ED8', label: 'Emessa' },
-    inviata: { bg: '#FEF3C7', text: '#B45309', label: 'Inviata' },
-    pagata: { bg: '#D1FAE5', text: '#065F46', label: 'Pagata' },
-    scaduta: { bg: '#FEE2E2', text: '#991B1B', label: 'Scaduta' },
-    annullata: { bg: '#F1F5F9', text: '#64748B', label: 'Annullata' },
-    confermato: { bg: '#DBEAFE', text: '#1D4ED8', label: 'Confermato' },
-    in_lavorazione: { bg: '#FEF3C7', text: '#B45309', label: 'In Lavorazione' },
-    spedito: { bg: '#E0E7FF', text: '#4338CA', label: 'Spedito' },
-    consegnato: { bg: '#D1FAE5', text: '#065F46', label: 'Consegnato' },
-    attivo: { bg: '#D1FAE5', text: '#065F46', label: 'Attivo' },
-    in_ferie: { bg: '#FEF3C7', text: '#B45309', label: 'In Ferie' },
-    malattia: { bg: '#FEE2E2', text: '#991B1B', label: 'Malattia' },
-    cessato: { bg: '#F1F5F9', text: '#64748B', label: 'Cessato' },
-    pianificata: { bg: '#E0E7FF', text: '#4338CA', label: 'Pianificata' },
-    in_corso: { bg: '#FEF3C7', text: '#B45309', label: 'In Corso' },
-    completata: { bg: '#D1FAE5', text: '#065F46', label: 'Completata' },
-    sospesa: { bg: '#FEE2E2', text: '#991B1B', label: 'Sospesa' },
-    valido: { bg: '#D1FAE5', text: '#065F46', label: 'Valido' },
-    in_scadenza: { bg: '#FEF3C7', text: '#B45309', label: 'In Scadenza' },
-    scaduto: { bg: '#FEE2E2', text: '#991B1B', label: 'Scaduto' },
-    archiviato: { bg: '#F1F5F9', text: '#64748B', label: 'Archiviato' },
-    da_elaborare: { bg: '#F1F5F9', text: '#475569', label: 'Da Elaborare' },
-    elaborata: { bg: '#DBEAFE', text: '#1D4ED8', label: 'Elaborata' },
-    entrata: { bg: '#D1FAE5', text: '#065F46', label: 'Entrata' },
-    uscita: { bg: '#FEE2E2', text: '#991B1B', label: 'Uscita' },
+    bozza: { bg: '#f1f5f9', text: '#475569', label: 'Bozza' }, // palette
+    emessa: { bg: '#dbeafe', text: '#1d4ed8', label: 'Emessa' }, // palette
+    inviata: { bg: '#fef3c7', text: '#b45309', label: 'Inviata' }, // palette
+    pagata: { bg: '#d1fae5', text: '#065f46', label: 'Pagata' }, // palette
+    scaduta: { bg: '#fee2e2', text: '#991b1b', label: 'Scaduta' }, // palette
+    annullata: { bg: '#f1f5f9', text: '#64748b', label: 'Annullata' }, // palette
+    confermato: { bg: '#dbeafe', text: '#1d4ed8', label: 'Confermato' }, // palette
+    in_lavorazione: { bg: '#fef3c7', text: '#b45309', label: 'In Lavorazione' }, // palette
+    spedito: { bg: '#e0e7ff', text: '#4338ca', label: 'Spedito' }, // palette
+    consegnato: { bg: '#d1fae5', text: '#065f46', label: 'Consegnato' }, // palette
+    attivo: { bg: '#d1fae5', text: '#065f46', label: 'Attivo' }, // palette
+    in_ferie: { bg: '#fef3c7', text: '#b45309', label: 'In Ferie' }, // palette
+    malattia: { bg: '#fee2e2', text: '#991b1b', label: 'Malattia' }, // palette
+    cessato: { bg: '#f1f5f9', text: '#64748b', label: 'Cessato' }, // palette
+    pianificata: { bg: '#e0e7ff', text: '#4338ca', label: 'Pianificata' }, // palette
+    in_corso: { bg: '#fef3c7', text: '#b45309', label: 'In Corso' }, // palette
+    completata: { bg: '#d1fae5', text: '#065f46', label: 'Completata' }, // palette
+    sospesa: { bg: '#fee2e2', text: '#991b1b', label: 'Sospesa' }, // palette
+    valido: { bg: '#d1fae5', text: '#065f46', label: 'Valido' }, // palette
+    in_scadenza: { bg: '#fef3c7', text: '#b45309', label: 'In Scadenza' }, // palette
+    scaduto: { bg: '#fee2e2', text: '#991b1b', label: 'Scaduto' }, // palette
+    archiviato: { bg: '#f1f5f9', text: '#64748b', label: 'Archiviato' }, // palette
+    da_elaborare: { bg: '#f1f5f9', text: '#475569', label: 'Da Elaborare' }, // palette
+    elaborata: { bg: '#dbeafe', text: '#1d4ed8', label: 'Elaborata' }, // palette
+    entrata: { bg: '#d1fae5', text: '#065f46', label: 'Entrata' }, // palette
+    uscita: { bg: '#fee2e2', text: '#991b1b', label: 'Uscita' }, // palette
     // SDI - Fatturazione Elettronica
-    xml_generato: { bg: '#DBEAFE', text: '#1D4ED8', label: 'XML Generato' },
-    firmato: { bg: '#E0E7FF', text: '#4338CA', label: 'Firmato' },
-    inviato_sdi: { bg: '#FEF3C7', text: '#B45309', label: 'Inviato SDI' },
-    accettato_sdi: { bg: '#D1FAE5', text: '#065F46', label: 'Accettato SDI' },
-    rifiutato_sdi: { bg: '#FEE2E2', text: '#991B1B', label: 'Rifiutato SDI' },
+    xml_generato: { bg: '#dbeafe', text: '#1d4ed8', label: 'XML Generato' }, // palette
+    firmato: { bg: '#e0e7ff', text: '#4338ca', label: 'Firmato' }, // palette
+    inviato_sdi: { bg: '#fef3c7', text: '#b45309', label: 'Inviato SDI' }, // palette
+    accettato_sdi: { bg: '#d1fae5', text: '#065f46', label: 'Accettato SDI' }, // palette
+    rifiutato_sdi: { bg: '#fee2e2', text: '#991b1b', label: 'Rifiutato SDI' }, // palette
 };
 
 export function getStatusStyle(stato) {
     const s = STATUS_COLORS[stato];
-    if (!s) return { background: '#F1F5F9', color: '#475569' };
+    if (!s) return { background: '#f1f5f9', color: '#475569' }; // palette
     return { background: s.bg, color: s.text, padding: '3px 10px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', display: 'inline-block', textTransform: 'capitalize' };
 }
 

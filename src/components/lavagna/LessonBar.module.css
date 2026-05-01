@@ -32,7 +32,7 @@
   cursor: pointer;
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 14px;
-  color: var(--color-text, #1A1A2E);
+  color: var(--color-text);
   text-align: left;
   transition: background 0.15s, box-shadow 0.15s;
 }
@@ -75,7 +75,7 @@
   font-family: 'Oswald', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   background: rgba(30, 77, 140, 0.08);
   padding: 2px 8px;
   border-radius: 6px;
@@ -99,11 +99,11 @@
 }
 
 .miniDotDone {
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
 }
 
 .miniDotCurrent {
-  background: #1E4D8C;
+  background: var(--elab-navy);
   transform: scale(1.3);
 }
 
@@ -114,7 +114,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #fff;
-  background: var(--color-vol2, #E8941C);
+  background: var(--color-vol2);
   padding: 2px 6px;
   border-radius: 4px;
   flex-shrink: 0;
@@ -130,7 +130,7 @@
 
 .chevron {
   flex-shrink: 0;
-  color: #595959;
+  color: #595959; /* palette */
   transition: transform 0.2s;
 }
 
@@ -160,7 +160,7 @@
 .askUnlim {
   border: 1px solid rgba(74, 122, 37, 0.3);
   background: rgba(74, 122, 37, 0.06);
-  color: var(--color-accent, #4A7A25);
+  color: var(--color-accent);
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -172,7 +172,7 @@
 
 .askUnlim:hover {
   background: rgba(74, 122, 37, 0.12);
-  border-color: var(--color-accent, #4A7A25);
+  border-color: var(--color-accent);
 }
 
 @keyframes detailSlide {

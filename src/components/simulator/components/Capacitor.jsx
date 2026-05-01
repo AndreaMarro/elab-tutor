@@ -31,77 +31,77 @@ const Capacitor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
       {/* Gradient for cylindrical body effect */}
       <defs>
         <linearGradient id={`${uid}-body`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#3A3A3A" />
-          <stop offset="30%" stopColor="#2A2A2A" />
-          <stop offset="70%" stopColor="#222222" />
-          <stop offset="100%" stopColor="#333333" />
+          <stop offset="0%" stopColor="var(--elab-hex-3a3a3a)" />
+          <stop offset="30%" stopColor="var(--elab-hex-2a2a2a)" />
+          <stop offset="70%" stopColor="var(--elab-hex-222222)" />
+          <stop offset="100%" stopColor="var(--elab-hex-333333)" />
         </linearGradient>
       </defs>
 
       {/* Wire leads — vertical alignment for breadboard snap */}
       <line x1="-2" y1="-11" x2="0" y2="-15"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
       <line x1="2" y1="11" x2="0" y2="15"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* + polarity symbol near positive lead */}
-      <text x="-11" y="-13" fontSize="4" fill="#CC0000" fontWeight="700"
+      <text x="-11" y="-13" fontSize="4" fill="var(--elab-hex-cc0000)" fontWeight="700"
         fontFamily="Arial, sans-serif">+</text>
 
       {/* Main cylindrical body */}
       <rect x="-8" y="-11" width="16" height="22" rx="3"
-        fill={`url(#${uid}-body)`} stroke="#111111" strokeWidth="0.6" />
+        fill={`url(#${uid}-body)`} stroke="var(--elab-hex-111111)" strokeWidth="0.6" />
 
       {/* Left highlight (cylinder curvature) */}
       <rect x="-7.2" y="-10.2" width="3.5" height="20.4" rx="1.8"
-        fill="#FFFFFF" opacity="0.07" />
+        fill="var(--elab-hex-ffffff)" opacity="0.07" />
 
       {/* Right edge shadow */}
       <rect x="3.5" y="-10.2" width="3.5" height="20.4" rx="1.8"
-        fill="#000000" opacity="0.08" />
+        fill="var(--elab-hex-000000)" opacity="0.08" />
 
       {/* Polarity stripe — white/silver on left side */}
       <rect x="-8" y="-11" width="4" height="22" rx="0"
-        fill="#CFCFCF" opacity="0.32" />
+        fill="var(--elab-hex-cfcfcf)" opacity="0.32" />
 
       {/* Stripe dash marks (ruler-like ticks) */}
       {[-8, -5.5, -3, -0.5, 2, 4.5, 7].map((dy, i) => (
         <line key={i} x1="-7" y1={dy} x2="-5.2" y2={dy}
-          stroke="#EAEAEA" strokeWidth="0.55" opacity="0.45" />
+          stroke="var(--elab-hex-eaeaea)" strokeWidth="0.55" opacity="0.45" />
       ))}
 
       {/* Value text on body */}
-      <text x="1" y="1" textAnchor="middle" fontSize="3" fill="#AAAAAA"
+      <text x="1" y="1" textAnchor="middle" fontSize="3" fill="var(--elab-hex-aaaaaa)"
         fontFamily="Fira Code, monospace" fontWeight="500" letterSpacing="0.2">
         {formatCapValue(value)}
       </text>
 
       {/* Voltage rating (small, below value) */}
-      <text x="1" y="5" textAnchor="middle" fontSize="2" fill="#777777"
+      <text x="1" y="5" textAnchor="middle" fontSize="2" fill="var(--elab-hex-777777)"
         fontFamily="Fira Code, monospace">
         25V
       </text>
 
       {/* Top face — metallic silver cap */}
       <ellipse cx="0" cy="-11" rx="8" ry="2.4"
-        fill="#D0D0D0" stroke="#707070" strokeWidth="0.4" />
+        fill="var(--elab-hex-d0d0d0)" stroke="var(--elab-hex-707070)" strokeWidth="0.4" />
       {/* Top face highlight */}
       <ellipse cx="-2" cy="-11.5" rx="4" ry="1"
-        fill="#FFFFFF" opacity="0.20" />
+        fill="var(--elab-hex-ffffff)" opacity="0.20" />
 
       {/* K-groove scoring on top */}
       <line x1="-3.5" y1="-11.6" x2="0" y2="-10"
-        stroke="#8A8A8A" strokeWidth="0.5" opacity="0.55" />
+        stroke="var(--elab-hex-8a8a8a)" strokeWidth="0.5" opacity="0.55" />
       <line x1="3.5" y1="-11.6" x2="0" y2="-10"
-        stroke="#8A8A8A" strokeWidth="0.5" opacity="0.55" />
+        stroke="var(--elab-hex-8a8a8a)" strokeWidth="0.5" opacity="0.55" />
 
       {/* Vent scoring (small cross on top) */}
       <line x1="-1.5" y1="-11" x2="1.5" y2="-11"
-        stroke="#888888" strokeWidth="0.3" opacity="0.4" />
+        stroke="var(--elab-hex-888888)" strokeWidth="0.3" opacity="0.4" />
 
       {/* Bottom face */}
       <ellipse cx="0" cy="11" rx="8" ry="2.4"
-        fill="#252525" stroke="#111111" strokeWidth="0.35" />
+        fill="var(--elab-hex-252525)" stroke="var(--elab-hex-111111)" strokeWidth="0.35" />
 
       {/* Charge level fill — rises from bottom like liquid filling the capacitor */}
       {/* Clip path for charge fill — defined once, outside conditional */}
@@ -119,12 +119,12 @@ const Capacitor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
         return (
           <>
             <rect x="-8" y={fillY} width="16" height={fillH}
-              fill="#4FC3F7" opacity={fillOpacity}
+              fill="var(--elab-hex-4fc3f7)" opacity={fillOpacity}
               clipPath={`url(#${uid}-clip)`} />
             {/* Pulsing edge glow at fill level top */}
             {chargePercent > 0.05 && (
               <line x1="-6" y1={fillY + 0.5} x2="6" y2={fillY + 0.5}
-                stroke="#80DEEA" strokeWidth="1.2" opacity="0.6">
+                stroke="var(--elab-hex-80deea)" strokeWidth="1.2" opacity="0.6">
                 <animate attributeName="opacity"
                   values="0.3;0.7;0.3" dur="1.5s" repeatCount="indefinite" />
               </line>
@@ -135,7 +135,7 @@ const Capacitor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
 
       {/* Voltage readout near component when charging */}
       {chargePercent > 0.01 && chargePercent < 0.99 && (
-        <text x="13" y="0" fontSize="3.5" fill="#4FC3F7"
+        <text x="13" y="0" fontSize="3.5" fill="var(--elab-hex-4fc3f7)"
           fontFamily="Fira Code, monospace" fontWeight="600">
           {voltage.toFixed(1)}V
         </text>
@@ -144,7 +144,7 @@ const Capacitor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, 
       {/* AI tutoring highlight */}
       {highlighted && (
         <rect x="-12" y="-18" width="24" height="40" rx="4"
-          fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="4 2">
+          fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="4 2">
           <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

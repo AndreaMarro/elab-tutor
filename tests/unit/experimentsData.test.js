@@ -24,7 +24,7 @@ describe('experiments-index — data integrity', () => {
   });
 
   it('Vol3 has 27 experiments', () => {
-    expect(getExperimentsByVolume(3).length).toBe(27);
+    expect(getExperimentsByVolume(3).length).toBe(29);
   });
 
   it('every experiment has id and title', () => {

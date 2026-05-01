@@ -69,7 +69,14 @@ export default defineConfig(({ mode }) => ({
     plugins: [
         react(),
         VitePWA({
-            registerType: 'autoUpdate',
+            // iter 38 Atom A12 (WebDesigner-1): switch da 'autoUpdate' a 'prompt'
+            // così i docenti vedono un toast (UpdatePrompt.jsx) PRIMA di
+            // ricaricare. Risolve drift osservato post key rotation iter 32
+            // dove SW autoUpdate serviva chunk stale finché il browser
+            // non chiudeva tutte le tab. Il toast plurale "Ragazzi, c'è una
+            // nuova versione…" + countdown 5s mette il docente in controllo.
+            // Source: web.dev/learn/pwa/workbox + Workbox Issue #2767.
+            registerType: 'prompt',
             includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
             manifest: {
                 name: 'ELAB Tutor — Simulatore Arduino',
@@ -88,18 +95,20 @@ export default defineConfig(({ mode }) => ({
             },
             workbox: {
                 maximumFileSizeToCacheInBytes: 2500 * 1024, // 2.5MB max per file — increased for lesson-paths JSON (94 files)
-                // P0 hotfix 2026-04-22 (fix/p0-pwa-stale-precache):
-                // - skipWaiting: new SW activates immediately instead of waiting for
-                //   all tabs to close. Combined with clientsClaim, this narrows the
-                //   window during which a stale precache could serve a mismatched
-                //   index.html after a deploy.
+                // iter 38 Atom A12 (WebDesigner-1): registerType passa a 'prompt'
+                // → skipWaiting deve essere FALSE altrimenti il toast
+                // UpdatePrompt non avrebbe modo di mostrarsi (SW si attiverebbe
+                // immediatamente senza chiedere). updateSW(true) chiamato dal
+                // bottone "Ricarica adesso" passa skipWaiting=true al SW
+                // tramite postMessage, attivando l'aggiornamento solo dopo
+                // conferma docente.
                 // - clientsClaim: new SW takes control of uncontrolled tabs on
                 //   activate, firing `controllerchange` which main.jsx uses to
                 //   trigger a single automatic reload onto the fresh HTML.
                 // - cleanupOutdatedCaches: purge old workbox-precache-v* entries
                 //   so a stale precache from a prior deploy cannot serve stale
                 //   HTML on the next navigation.
-                skipWaiting: true,
+                skipWaiting: false,
                 clientsClaim: true,
                 cleanupOutdatedCaches: true,
                 // G11: Only precache critical path — NOT all chunks

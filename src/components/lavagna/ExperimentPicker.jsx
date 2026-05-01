@@ -12,9 +12,9 @@ import LESSON_GROUPS, { getLessonsForVolume } from '../../data/lesson-groups';
 import css from './ExperimentPicker.module.css';
 
 const VOLUMES = [
-  { key: 1, data: EXPERIMENTS_VOL1, color: '#4A7A25', label: 'Volume 1', sub: 'Le Basi' },
-  { key: 2, data: EXPERIMENTS_VOL2, color: '#E8941C', label: 'Volume 2', sub: 'Approfondiamo' },
-  { key: 3, data: EXPERIMENTS_VOL3, color: '#E54B3D', label: 'Volume 3', sub: 'Arduino' },
+  { key: 1, data: EXPERIMENTS_VOL1, color: 'var(--elab-lime)', label: 'Volume 1', sub: 'Le Basi' },
+  { key: 2, data: EXPERIMENTS_VOL2, color: 'var(--elab-orange)', label: 'Volume 2', sub: 'Approfondiamo' },
+  { key: 3, data: EXPERIMENTS_VOL3, color: 'var(--elab-red)', label: 'Volume 3', sub: 'Arduino' },
 ];
 
 function getChapterGroups(experiments) {
@@ -212,8 +212,8 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
               onClick={() => { onFreeMode(); onClose(); }}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <rect x="2" y="2" width="16" height="16" rx="3" stroke="#4A7A25" strokeWidth="1.5" fill="none" />
-                <path d="M7 10h6M10 7v6" stroke="#4A7A25" strokeWidth="1.5" strokeLinecap="round" />
+                <rect x="2" y="2" width="16" height="16" rx="3" stroke="var(--elab-lime)" strokeWidth="1.5" fill="none" />
+                <path d="M7 10h6M10 7v6" stroke="var(--elab-lime)" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
               <span><strong>Lavagna libera</strong> — breadboard vuota, costruisci quello che vuoi</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -228,9 +228,9 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
               onClick={() => { onAskUnlim('Quale esperimento mi consigli per iniziare?'); onClose(); }}
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <rect x="3" y="5" width="14" height="10" rx="3" fill="#1E4D8C" />
-                <circle cx="8" cy="10" r="1.5" fill="#4A7A25" />
-                <circle cx="12" cy="10" r="1.5" fill="#4A7A25" />
+                <rect x="3" y="5" width="14" height="10" rx="3" fill="var(--elab-navy)" />
+                <circle cx="8" cy="10" r="1.5" fill="var(--elab-lime)" />
+                <circle cx="12" cy="10" r="1.5" fill="var(--elab-lime)" />
               </svg>
               <span>Non sai da dove iniziare? <strong>Chiedi a UNLIM</strong></span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -271,7 +271,7 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
                     <span className={css.lessonCount}>{completedCount}/{lessonExps.length}</span>
                     {allDone && (
                       <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-label="Completata">
-                        <circle cx="10" cy="10" r="8" fill="#4A7A25" />
+                        <circle cx="10" cy="10" r="8" fill="var(--elab-lime)" />
                         <path d="M6 10l3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     )}
@@ -292,7 +292,7 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
                             <span className={css.cardTitle}>{exp.title?.replace(/Cap\.\s*\d+\s*(Esp\.\s*\d+\s*)?-\s*/, '')}</span>
                             {done && (
                               <svg className={css.checkIcon} width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="8" fill="#4A7A25" />
+                                <circle cx="10" cy="10" r="8" fill="var(--elab-lime)" />
                                 <path d="M6 10l3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
                             )}
@@ -344,7 +344,7 @@ export default function ExperimentPicker({ open, onClose, onSelect, completedIds
                         })()}</span>
                         {done && (
                           <svg className={css.checkIcon} width="18" height="18" viewBox="0 0 20 20" fill="none" aria-label="Completato">
-                            <circle cx="10" cy="10" r="8" fill="#4A7A25" />
+                            <circle cx="10" cy="10" r="8" fill="var(--elab-lime)" />
                             <path d="M6 10l3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         )}

@@ -10,16 +10,16 @@ import React from 'react';
 import { registerComponent } from './registry';
 
 const WIRE_COLORS = {
-  red:    '#DC2626',
-  black:  '#1A1A1A',
-  orange: '#EA580C',
-  yellow: '#CA8A04',
-  green:  '#16A34A',
-  blue:   '#2563EB',
-  purple: '#9333EA',
-  white:  '#D4D4D4',
-  brown:  '#795548',
-  gray:   '#9E9E9E',
+  red:    'var(--elab-hex-dc2626)',
+  black:  'var(--elab-hex-1a1a1a)',
+  orange: 'var(--elab-hex-ea580c)',
+  yellow: 'var(--elab-hex-ca8a04)',
+  green:  'var(--elab-hex-16a34a)',
+  blue:   'var(--elab-hex-2563eb)',
+  purple: 'var(--elab-hex-9333ea)',
+  white:  'var(--elab-hex-d4d4d4)',
+  brown:  'var(--elab-hex-795548)',
+  gray:   'var(--elab-hex-9e9e9e)',
 };
 
 function calcWirePath(x1, y1, x2, y2) {
@@ -79,7 +79,7 @@ const Wire = ({
       {/* Subtle highlight */}
       <path
         d={path}
-        stroke="#ffffff"
+        stroke="var(--elab-hex-ffffff)"
         strokeWidth="0.8"
         fill="none"
         strokeLinecap="round"
@@ -89,7 +89,7 @@ const Wire = ({
 
       {/* Current flow animation */}
       {hasFlow && (
-        <circle r="1.5" fill="var(--color-accent, #4A7A25)" opacity="0.7">
+        <circle r="1.5" fill="var(--color-accent, var(--elab-lime))" opacity="0.7">
           <animateMotion
             path={path}
             dur={`${Math.max(0.3, 1 - current * 0.5)}s`}
@@ -110,7 +110,7 @@ const Wire = ({
       {highlighted && (
         <path
           d={path}
-          stroke="var(--color-accent, #4A7A25)"
+          stroke="var(--color-accent, var(--elab-lime))"
           strokeWidth="7"
           fill="none"
           strokeLinecap="round"

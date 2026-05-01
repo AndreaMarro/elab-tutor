@@ -5,7 +5,7 @@ import { COLORS } from '../GestionaleStyles';
 import NotificationService from '../services/NotificationService';
 
 const SEVERITY_ICON = { danger: '', warning: '', info: '' };
-const SEVERITY_BG = { danger: '#FEE2E2', warning: '#FEF3C7', info: '#DBEAFE' };
+const SEVERITY_BG = { danger: 'var(--elab-hex-fee2e2)', warning: 'var(--elab-hex-fef3c7)', info: 'var(--elab-hex-dbeafe)' };
 
 function timeAgo(timestamp) {
     const diff = Date.now() - new Date(timestamp).getTime();
@@ -119,7 +119,7 @@ export default function NotificationCenter({ notifications = [], onRefresh }) {
                                 onClick={() => handleMarkRead(n.id)}
                                 style={{
                                     padding: '10px 14px', cursor: 'pointer',
-                                    background: n.read ? 'transparent' : SEVERITY_BG[n.severity] || '#F8FAFC',
+                                    background: n.read ? 'transparent' : SEVERITY_BG[n.severity] || 'var(--elab-hex-f8fafc)',
                                     borderBottom: `1px solid ${COLORS.borderLight || COLORS.border}`,
                                     transition: 'background 0.15s',
                                     opacity: n.read ? 0.7 : 1,

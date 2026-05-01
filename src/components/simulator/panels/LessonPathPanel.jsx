@@ -157,15 +157,15 @@ function PrerequisiteCards({ experimentId }) {
   if (!prereqs.length && !newConcepts.length) return null;
 
   return (
-    <div style={{ margin: '8px 0 12px', padding: '10px 12px', background: '#F0F7FF', borderRadius: 8, border: '1px solid #D0E0F0' }}>
+    <div style={{ margin: '8px 0 12px', padding: '10px 12px', background: 'var(--elab-hex-f0f7ff)', borderRadius: 8, border: '1px solid var(--elab-hex-d0e0f0)' }}>
       {prereqs.length > 0 && (
         <>
-          <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 16, color: '#1E4D8C' }}>
+          <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 16, color: 'var(--elab-navy)' }}>
             Vi ricordate cosa abbiamo scoperto?
           </p>
           {prereqs.map(p => (
             <div key={p.id} style={{ margin: '4px 0', padding: '6px 8px', background: '#fff', borderRadius: 6, fontSize: 16, lineHeight: 1.5 }}>
-              <strong style={{ color: '#1E4D8C' }}>{p.name}</strong>
+              <strong style={{ color: 'var(--elab-navy)' }}>{p.name}</strong>
               <span style={{ color: '#555', marginLeft: 4 }}>— {p.analogy}</span>
             </div>
           ))}
@@ -173,14 +173,14 @@ function PrerequisiteCards({ experimentId }) {
       )}
       {newConcepts.length > 0 && (
         <>
-          <p style={{ margin: '10px 0 6px 0', fontWeight: 700, fontSize: 16, color: '#4A7A25' }}>
+          <p style={{ margin: '10px 0 6px 0', fontWeight: 700, fontSize: 16, color: 'var(--elab-lime)' }}>
             Oggi scopriamo qualcosa di nuovo:
           </p>
           {newConcepts.map(c => (
-            <div key={c.id} style={{ margin: '4px 0', padding: '6px 8px', background: '#F0FFF0', borderRadius: 6, fontSize: 16, lineHeight: 1.5, border: '1px solid #C8E6C9' }}>
-              <strong style={{ color: '#4A7A25' }}>{c.name}</strong>
+            <div key={c.id} style={{ margin: '4px 0', padding: '6px 8px', background: 'var(--elab-hex-f0fff0)', borderRadius: 6, fontSize: 16, lineHeight: 1.5, border: '1px solid var(--elab-hex-c8e6c9)' }}>
+              <strong style={{ color: 'var(--elab-lime)' }}>{c.name}</strong>
               <span style={{ color: '#555', marginLeft: 4 }}>— {c.description}</span>
-              <div style={{ marginTop: 4, fontStyle: 'italic', color: '#4A7A25', fontSize: 14 }}>
+              <div style={{ marginTop: 4, fontStyle: 'italic', color: 'var(--elab-lime)', fontSize: 14 }}>
                 Pensatela cosi: &laquo;{c.analogy}&raquo;
               </div>
               {c.metaphor && (
@@ -297,7 +297,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
             {phase.common_mistakes.map((m, i) => (
               <li key={i} style={S.errorItem}>
                 <strong>{m.mistake}</strong> → {m.teacher_response}
-                {m.analogy && <em style={{ display: 'block', marginTop: 2, color: '#6B7280' }}>Analogia: {m.analogy}</em>}
+                {m.analogy && <em style={{ display: 'block', marginTop: 2, color: 'var(--elab-hex-6b7280)' }}>Analogia: {m.analogy}</em>}
               </li>
             ))}
           </ul>
@@ -331,7 +331,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
           }}
           style={{
             ...RS.buildBtn,
-            ...(alreadyLoaded ? { background: '#4A7A25', color: '#fff' } : {}),
+            ...(alreadyLoaded ? { background: 'var(--elab-lime)', color: '#fff' } : {}),
           }}
         >
           {alreadyLoaded ? 'Gia caricato!' : `${phase.build_circuit.button_label || 'Monta il circuito per me'}`}
@@ -356,10 +356,10 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
           <p style={S.phaseLabel}>Analogie per spiegare:</p>
           <ul style={S.errorList}>
             {phase.analogies.map((a, i) => (
-              <li key={i} style={{ ...S.errorItem, borderLeftColor: '#4A7A25' }}>
+              <li key={i} style={{ ...S.errorItem, borderLeftColor: 'var(--elab-lime)' }}>
                 <strong>{a.concept.replace(/_/g, ' ')}</strong>
                 <p style={{ margin: '2px 0 0', fontSize: 14 }}>{a.text}</p>
-                {a.evidence && <em style={{ fontSize: 16, color: '#737373' }}>({a.evidence})</em>}
+                {a.evidence && <em style={{ fontSize: 16, color: 'var(--elab-hex-737373)' }}>({a.evidence})</em>}
               </li>
             ))}
           </ul>
@@ -485,8 +485,8 @@ const RS = {
     display: 'flex',
     gap: 2,
     padding: '8px 14px',
-    background: '#F8F9FA',
-    borderBottom: '1px solid #E5E5E5',
+    background: 'var(--elab-hex-f8f9fa)',
+    borderBottom: '1px solid var(--elab-hex-e5e5e5)',
   },
   progressStep: {
     flex: 1,
@@ -502,7 +502,7 @@ const RS = {
     minHeight: 44,
   },
   progressStepActive: {
-    background: '#E3F2FD',
+    background: 'var(--elab-hex-e3f2fd)',
   },
   progressDot: {
     fontSize: 16,
@@ -523,7 +523,7 @@ const RS = {
     fontSize: 16,
     fontWeight: 700,
     color: '#fff',
-    background: '#4A7A25',
+    background: 'var(--elab-lime)',
     padding: '2px 6px',
     borderRadius: 6,
     textTransform: 'uppercase',
@@ -535,8 +535,8 @@ const RS = {
     padding: '8px 14px',
     fontSize: 16,
     color: '#444',
-    background: '#F0F7FF',
-    borderBottom: '1px solid #E5E5E5',
+    background: 'var(--elab-hex-f0f7ff)',
+    borderBottom: '1px solid var(--elab-hex-e5e5e5)',
     lineHeight: 1.5,
   },
   teacherTipBox: {
@@ -544,9 +544,9 @@ const RS = {
     alignItems: 'flex-start',
     gap: 8,
     padding: '8px 12px',
-    background: '#FFF8E1',
+    background: 'var(--elab-hex-fff8e1)',
     borderRadius: 8,
-    border: '1px solid #FFE082',
+    border: '1px solid var(--elab-hex-ffe082)',
     margin: '8px 0',
     fontSize: 16,
     lineHeight: 1.5,
@@ -557,9 +557,9 @@ const RS = {
     alignItems: 'flex-start',
     gap: 8,
     padding: '8px 12px',
-    background: '#E8F5E9',
+    background: 'var(--elab-hex-e8f5e9)',
     borderRadius: 8,
-    border: '1px solid #C8E6C9',
+    border: '1px solid var(--elab-hex-c8e6c9)',
     margin: '8px 0',
     fontSize: 16,
     lineHeight: 1.5,
@@ -575,7 +575,7 @@ const RS = {
     margin: '10px 0',
     border: 'none',
     borderRadius: 10,
-    background: 'linear-gradient(135deg, #1E4D8C, #2A5FA0)',
+    background: 'linear-gradient(135deg, var(--elab-navy), #2A5FA0)',
     color: '#fff',
     fontSize: 16,
     fontWeight: 700,
@@ -588,18 +588,18 @@ const RS = {
     alignItems: 'flex-start',
     gap: 8,
     padding: '8px 12px',
-    background: '#E3F2FD',
+    background: 'var(--elab-hex-e3f2fd)',
     borderRadius: 8,
-    border: '1px solid #BBDEFB',
+    border: '1px solid var(--elab-hex-bbdefb)',
     margin: '8px 0',
     fontSize: 16,
     lineHeight: 1.5,
   },
   summaryBox: {
     padding: '10px 12px',
-    background: '#E8F5E9',
+    background: 'var(--elab-hex-e8f5e9)',
     borderRadius: 8,
-    border: '1px solid #C8E6C9',
+    border: '1px solid var(--elab-hex-c8e6c9)',
     fontSize: 16,
     lineHeight: 1.5,
     margin: '8px 0',
@@ -611,10 +611,10 @@ const RS = {
     width: '100%',
     padding: '10px 16px',
     margin: '8px 0 0',
-    border: '2px solid #1E4D8C',
+    border: '2px solid var(--elab-navy)',
     borderRadius: 10,
     background: 'transparent',
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontSize: 16,
     fontWeight: 700,
     cursor: 'pointer',
@@ -913,7 +913,7 @@ const S = {
     alignItems: 'center',
     gap: 8,
     padding: '12px 14px',
-    background: 'linear-gradient(135deg, var(--color-primary, #1E4D8C) 0%, #2A5FA0 100%)',
+    background: 'linear-gradient(135deg, var(--color-primary, var(--elab-navy)) 0%, #2A5FA0 100%)',
     borderRadius: '14px 14px 0 0',
     color: '#fff',
   },
@@ -998,7 +998,7 @@ const S = {
     width: 22,
     height: 22,
     borderRadius: '50%',
-    background: 'var(--color-primary, #1E4D8C)',
+    background: 'var(--color-primary, var(--elab-navy))',
     color: '#fff',
     fontSize: 16,
     fontWeight: 700,
@@ -1044,7 +1044,7 @@ const S = {
     margin: '8px 0 4px',
     fontSize: 16,
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
   },
@@ -1070,7 +1070,7 @@ const S = {
     color: 'var(--color-vol2-text, #996600)', /* G42: WCAG AA */
     fontWeight: 500,
     padding: '6px 10px',
-    background: '#FFF8E1',
+    background: 'var(--elab-hex-fff8e1)',
     borderRadius: 6,
   },
 
@@ -1093,7 +1093,7 @@ const S = {
 
   materialQty: {
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     minWidth: 22,
   },
 
@@ -1102,16 +1102,16 @@ const S = {
     alignItems: 'flex-start',
     gap: 8,
     padding: '10px 12px',
-    background: '#E3F2FD',
+    background: 'var(--elab-hex-e3f2fd)',
     borderRadius: 8,
-    border: '1px solid #BBDEFB',
+    border: '1px solid var(--elab-hex-bbdefb)',
     margin: '8px 0',
   },
 
   questionMark: {
     fontSize: 18,
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     lineHeight: 1,
     flexShrink: 0,
   },
@@ -1119,7 +1119,7 @@ const S = {
   questionText: {
     fontSize: 16,
     fontWeight: 600,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     lineHeight: 1.4,
     fontStyle: 'italic',
   },
@@ -1138,7 +1138,7 @@ const S = {
     color: 'var(--color-text-gray-600, #444)',
     lineHeight: 1.5,
     paddingLeft: 8,
-    borderLeft: '2px solid var(--color-vol2, #E8941C)',
+    borderLeft: '2px solid var(--color-vol2, var(--elab-orange))',
   },
 
   tipBox: {
@@ -1146,9 +1146,9 @@ const S = {
     alignItems: 'flex-start',
     gap: 8,
     padding: '10px 12px',
-    background: '#E8F5E9',
+    background: 'var(--elab-hex-e8f5e9)',
     borderRadius: 8,
-    border: '1px solid #C8E6C9',
+    border: '1px solid var(--elab-hex-c8e6c9)',
     margin: '8px 0',
     fontSize: 16,
     lineHeight: 1.5,
@@ -1180,8 +1180,8 @@ const S = {
   curatedBadge: {
     fontSize: 16,
     fontWeight: 600,
-    color: '#16A34A',
-    background: '#DCFCE7',
+    color: 'var(--elab-hex-16a34a)',
+    background: 'var(--elab-hex-dcfce7)',
     padding: '2px 8px',
     borderRadius: 10,
     whiteSpace: 'nowrap',
@@ -1193,9 +1193,9 @@ const S = {
     alignItems: 'flex-start',
     gap: 8,
     padding: '10px 12px',
-    background: '#FFF8E1',
+    background: 'var(--elab-hex-fff8e1)',
     borderRadius: 8,
-    border: '1px solid #FFE082',
+    border: '1px solid var(--elab-hex-ffe082)',
     margin: '8px 0',
     fontSize: 16,
     lineHeight: 1.5,
@@ -1209,9 +1209,9 @@ const S = {
     flexDirection: 'column',
     gap: 4,
     padding: '10px 12px',
-    background: '#F3E5F5',
+    background: 'var(--elab-hex-f3e5f5)',
     borderRadius: 8,
-    border: '1px solid #CE93D8',
+    border: '1px solid var(--elab-hex-ce93d8)',
     margin: '8px 0',
     fontSize: 16,
     lineHeight: 1.5,
@@ -1220,7 +1220,7 @@ const S = {
   teacherTipLabel: {
     fontSize: 16,
     fontWeight: 700,
-    color: '#7B1FA2',
+    color: 'var(--elab-hex-7b1fa2)',
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
   },
@@ -1236,9 +1236,9 @@ const S = {
 
   analogyItem: {
     padding: '8px 10px',
-    background: '#E8F5E9',
+    background: 'var(--elab-hex-e8f5e9)',
     borderRadius: 8,
-    border: '1px solid #C8E6C9',
+    border: '1px solid var(--elab-hex-c8e6c9)',
     fontSize: 16,
     lineHeight: 1.5,
   },
@@ -1265,7 +1265,7 @@ const S = {
     color: 'var(--color-text-gray-600, #444)',
     lineHeight: 1.5,
     paddingLeft: 8,
-    borderLeft: '2px solid #16A34A',
+    borderLeft: '2px solid var(--elab-hex-16a34a)',
   },
 
   unlimBtn: {
@@ -1275,10 +1275,10 @@ const S = {
     gap: 6,
     margin: '8px 14px 12px',
     padding: '10px 14px',
-    border: '1px solid var(--color-primary, #1E4D8C)',
+    border: '1px solid var(--color-primary, var(--elab-navy))',
     borderRadius: 8,
     background: 'transparent',
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontSize: 16,
     fontWeight: 600,
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',

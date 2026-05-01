@@ -33,8 +33,8 @@ export default function RequireLicense({ children, onNavigate }) {
         return (
             <div style={{ padding: 20 }}>
                 <div style={{
-                    background: 'linear-gradient(135deg, #FEF3C7, #FDE68A)',
-                    border: '1px solid #F59E0B',
+                    background: 'linear-gradient(135deg, var(--elab-hex-fef3c7), var(--elab-hex-fde68a))',
+                    border: '1px solid var(--elab-hex-f59e0b)',
                     borderRadius: 12,
                     padding: '24px 32px',
                     maxWidth: 520,
@@ -42,17 +42,17 @@ export default function RequireLicense({ children, onNavigate }) {
                     textAlign: 'center',
                 }}>
                     <span style={{ fontSize: 40, display: 'block', marginBottom: 12 }}>Scaduta</span>
-                    <h2 style={{ margin: '0 0 8px', color: '#92400E', fontSize: 20 }}>
+                    <h2 style={{ margin: '0 0 8px', color: 'var(--elab-hex-92400e)', fontSize: 20 }}>
                         Licenza scaduta
                     </h2>
-                    <p style={{ margin: '0 0 16px', color: '#78350F', fontSize: 14, lineHeight: 1.5 }}>
+                    <p style={{ margin: '0 0 16px', color: 'var(--elab-hex-78350f)', fontSize: 14, lineHeight: 1.5 }}>
                         La tua licenza ELAB è scaduta. Rinnovala per continuare ad accedere
                         agli esperimenti e alle sfide.
                     </p>
                     <button
                         onClick={() => onNavigate?.('vetrina')}
                         style={{
-                            background: '#1E4D8C',
+                            background: 'var(--elab-navy)',
                             color: '#fff',
                             border: 'none',
                             borderRadius: 8,

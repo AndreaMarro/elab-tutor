@@ -1,25 +1,25 @@
 .container {
   padding: 1rem;
   font-family: 'Open Sans', sans-serif;
-  color: #1e293b;
+  color: #1e293b; /* palette */
 }
 
 .header {
   margin-bottom: 1rem;
-  border-bottom: 2px solid #1E4D8C;
+  border-bottom: 2px solid var(--elab-navy);
   padding-bottom: 0.5rem;
 }
 
 .title {
   font-family: 'Oswald', sans-serif;
   font-size: 1.25rem;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   margin: 0 0 0.25rem;
 }
 
 .meta {
   font-size: 0.875rem;
-  color: #64748b;
+  color: #64748b; /* palette */
   margin: 0;
 }
 
@@ -42,9 +42,9 @@
   width: 100%;
   padding: 0.75rem 1rem;
   border: 0;
-  border-left: 3px solid #e2e8f0;
+  border-left: 3px solid #e2e8f0; /* palette */
   border-radius: 0 6px 6px 0;
-  background: #f8fafc;
+  background: #f8fafc; /* palette */
   cursor: pointer;
   min-height: 44px;
   display: flex;
@@ -58,36 +58,37 @@
 }
 
 .step:hover {
-  border-left-color: #4A7A25;
-  background: #f0fdf4;
+  border-left-color: var(--elab-lime);
+  background: #f0fdf4; /* palette */
 }
 
 .step:focus-visible {
-  outline: 2px solid #E8941C;
+  outline: 2px solid var(--elab-orange);
   outline-offset: 2px;
 }
 
 .active {
-  border-left-color: #E8941C;
-  background: #fff7ed;
+  border-left-color: var(--elab-orange);
+  background: #fff7ed; /* palette */
   font-weight: 600;
 }
 
 .expId {
   font-family: 'Fira Code', monospace;
   font-size: 0.8125rem;
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }
 
 .page {
-  font-size: 0.75rem;
-  color: #4A7A25;
+  /* iter 14 LIM legibility: 0.75rem (12px) → 0.875rem (14px / var(--font-size-xs)) per spec §6 #4 */
+  font-size: 0.875rem;
+  color: var(--elab-lime);
   font-weight: 600;
 }
 
 .preview {
   font-size: 0.8125rem;
-  color: #475569;
+  color: #475569; /* palette */
   margin: 0.25rem 0 0;
   line-height: 1.4;
 }

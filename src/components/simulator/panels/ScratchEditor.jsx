@@ -19,49 +19,49 @@ const ELAB_THEME = Blockly.Theme.defineTheme('elab', {
     base: Blockly.Themes.Classic,
     blockStyles: {
         // ELAB palette: Navy=control, Lime=digital I/O, Orange=analog, Red=comms
-        logic_blocks:    { colourPrimary: '#1E4D8C', colourSecondary: '#163B6E', colourTertiary: '#0F2A50' },
-        loop_blocks:     { colourPrimary: '#2E7D50', colourSecondary: '#246840', colourTertiary: '#1A5330' },
-        math_blocks:     { colourPrimary: '#3A8A9E', colourSecondary: '#2E7688', colourTertiary: '#226272' },
-        text_blocks:     { colourPrimary: '#5A8DBE', colourSecondary: '#4A7AA8', colourTertiary: '#3A6892' },
-        colour_blocks:   { colourPrimary: '#9E5AC0', colourSecondary: '#8848A8', colourTertiary: '#723890' },
-        variable_blocks: { colourPrimary: '#E8941C', colourSecondary: '#D08018', colourTertiary: '#B86C14' },
-        list_blocks:     { colourPrimary: '#E54B3D', colourSecondary: '#CC3A30', colourTertiary: '#B32A22' },
+        logic_blocks:    { colourPrimary: 'var(--elab-navy)', colourSecondary: '#163B6E', colourTertiary: '#0F2A50' },
+        loop_blocks:     { colourPrimary: '#2e7d50', colourSecondary: '#246840', colourTertiary: '#1a5330' }, // palette
+        math_blocks:     { colourPrimary: '#3a8a9e', colourSecondary: '#2e7688', colourTertiary: '#226272' }, // palette
+        text_blocks:     { colourPrimary: '#5a8dbe', colourSecondary: '#4a7aa8', colourTertiary: '#3a6892' }, // palette
+        colour_blocks:   { colourPrimary: '#9e5ac0', colourSecondary: '#8848a8', colourTertiary: '#723890' }, // palette
+        variable_blocks: { colourPrimary: 'var(--elab-orange)', colourSecondary: '#D08018', colourTertiary: '#B86C14' },
+        list_blocks:     { colourPrimary: 'var(--elab-red)', colourSecondary: '#CC3A30', colourTertiary: '#B32A22' },
         // Arduino ELAB categories — Lime for digital, Orange for analog, Red for comms
-        arduino_io:      { colourPrimary: '#4A7A25', colourSecondary: '#3D6820', colourTertiary: '#30561A' },
-        arduino_sound:   { colourPrimary: '#9E5AC0', colourSecondary: '#8848A8', colourTertiary: '#723890' },
-        arduino_servo:   { colourPrimary: '#0EA87B', colourSecondary: '#0C9068', colourTertiary: '#0A7855' },
-        arduino_time:    { colourPrimary: '#E8941C', colourSecondary: '#D08018', colourTertiary: '#B86C14' },
-        arduino_serial:  { colourPrimary: '#E54B3D', colourSecondary: '#CC3A30', colourTertiary: '#B32A22' },
-        arduino_lcd:     { colourPrimary: '#6E4CA8', colourSecondary: '#5E3E92', colourTertiary: '#4E307C' },
+        arduino_io:      { colourPrimary: 'var(--elab-lime)', colourSecondary: '#3D6820', colourTertiary: '#30561A' },
+        arduino_sound:   { colourPrimary: '#9e5ac0', colourSecondary: '#8848a8', colourTertiary: '#723890' }, // palette
+        arduino_servo:   { colourPrimary: '#0ea87b', colourSecondary: '#0c9068', colourTertiary: '#0a7855' }, // palette
+        arduino_time:    { colourPrimary: 'var(--elab-orange)', colourSecondary: '#D08018', colourTertiary: '#B86C14' },
+        arduino_serial:  { colourPrimary: 'var(--elab-red)', colourSecondary: '#CC3A30', colourTertiary: '#B32A22' },
+        arduino_lcd:     { colourPrimary: '#6e4ca8', colourSecondary: '#5e3e92', colourTertiary: '#4e307c' }, // palette
         // ELAB high-level blocks
-        arduino_elab:    { colourPrimary: '#1E4D8C', colourSecondary: '#163B6E', colourTertiary: '#0F2A50' },
+        arduino_elab:    { colourPrimary: 'var(--elab-navy)', colourSecondary: '#163B6E', colourTertiary: '#0F2A50' },
     },
     categoryStyles: {
-        logic_category:    { colour: '#1E4D8C' },
-        loop_category:     { colour: '#2E7D50' },
-        math_category:     { colour: '#3A8A9E' },
-        text_category:     { colour: '#5A8DBE' },
-        variable_category: { colour: '#E8941C' },
-        arduino_io_cat:    { colour: '#4A7A25' },
-        arduino_sound_cat: { colour: '#9E5AC0' },
-        arduino_servo_cat: { colour: '#0EA87B' },
-        arduino_time_cat:  { colour: '#E8941C' },
-        arduino_serial_cat:{ colour: '#E54B3D' },
-        arduino_lcd_cat:   { colour: '#6E4CA8' },
-        arduino_elab_cat:  { colour: '#1E4D8C' },
+        logic_category:    { colour: 'var(--elab-navy)' },
+        loop_category:     { colour: '#2e7d50' }, // palette
+        math_category:     { colour: '#3a8a9e' }, // palette
+        text_category:     { colour: '#5a8dbe' }, // palette
+        variable_category: { colour: 'var(--elab-orange)' },
+        arduino_io_cat:    { colour: 'var(--elab-lime)' },
+        arduino_sound_cat: { colour: '#9e5ac0' }, // palette
+        arduino_servo_cat: { colour: '#0ea87b' }, // palette
+        arduino_time_cat:  { colour: 'var(--elab-orange)' },
+        arduino_serial_cat:{ colour: 'var(--elab-red)' },
+        arduino_lcd_cat:   { colour: '#6e4ca8' }, // palette
+        arduino_elab_cat:  { colour: 'var(--elab-navy)' },
     },
     componentStyles: {
-        workspaceBackgroundColour: '#1E2530',
-        toolboxBackgroundColour: '#161B22',
-        toolboxForegroundColour: '#C9D1D9',
-        flyoutBackgroundColour: '#21262D',
-        flyoutForegroundColour: '#C9D1D9',
+        workspaceBackgroundColour: '#1e2530', // palette
+        toolboxBackgroundColour: '#161b22', // palette
+        toolboxForegroundColour: '#c9d1d9', // palette
+        flyoutBackgroundColour: '#21262d', // palette
+        flyoutForegroundColour: '#c9d1d9', // palette
         flyoutOpacity: 0.95,
-        scrollbarColour: '#3A4050',
+        scrollbarColour: '#3a4050', // palette
         scrollbarOpacity: 0.6,
-        insertionMarkerColour: '#4A7A25',
+        insertionMarkerColour: 'var(--elab-lime)',
         insertionMarkerOpacity: 0.4,
-        cursorColour: '#4A7A25',
+        cursorColour: 'var(--elab-lime)',
     },
     fontStyle: {
         family: "'Open Sans', 'Helvetica Neue', sans-serif",
@@ -263,7 +263,7 @@ const ELAB_BLOCKLY_CSS = `
   font-size: 14px !important;
   background: var(--color-blockly-input-bg, #0D1117) !important;
   color: var(--color-blockly-text, #C9D1D9) !important;
-  border: 1px solid var(--color-accent, #4A7A25) !important;
+  border: 1px solid var(--color-accent, var(--elab-lime)) !important;
   border-radius: 4px !important;
   padding: 4px 6px !important;
   min-height: 44px !important;
@@ -304,13 +304,13 @@ const ELAB_BLOCKLY_CSS = `
 
 /* Connection highlight — wider for touch precision */
 .blocklyHighlightedConnectionPath {
-  stroke: var(--color-accent, #4A7A25) !important;
+  stroke: var(--color-accent, var(--elab-lime)) !important;
   stroke-width: 4px !important;
 }
 
 /* Selected block glow */
 .blocklySelected > .blocklyPath {
-  stroke: var(--color-accent, #4A7A25) !important;
+  stroke: var(--color-accent, var(--elab-lime)) !important;
   stroke-width: 3px !important;
 }
 
@@ -361,7 +361,7 @@ const ScratchEditor = ({ onChange, initialCode }) => {
             grid: {
                 spacing: 24,
                 length: 2,
-                colour: '#2a3040',
+                colour: '#2a3040', // palette
                 snap: true,
             },
             zoom: {

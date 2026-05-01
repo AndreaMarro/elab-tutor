@@ -85,7 +85,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Stessa configurazione dell'esperimento precedente. L'unica differenza: questa volta colleghiamo il pin VERDE del LED RGB.",
+      "teacher_message": "Ragazzi, stessa configurazione dell'esperimento precedente. L'unica differenza: questa volta colleghiamo il pin VERDE del LED RGB.",
       "teacher_tip": "Chiedi: 'L'ultima volta abbiamo acceso il rosso. Secondo voi, come accendiamo il verde?'",
       "components_list": "Stessi componenti: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED RGB, 4 fili.",
       "class_hook": "L'ultima volta abbiamo acceso il rosso del LED RGB. Ma dentro ci sono 3 colori... riuscite ad accendere il verde?",
@@ -105,8 +105,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito RGB — canale verde",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito RGB — canale verde",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -180,7 +180,7 @@
           "analogy": null
         },
         {
-          "mistake": "Collega il filo al pin sbagliato",
+          "mistake": "Collegate il filo al pin sbagliato",
           "teacher_response": "Ricorda l'ordine: Rosso (F2), Catodo comune (F3), Verde (F4), Blu (F5). Il verde è il terzo!",
           "analogy": null
         }
@@ -190,7 +190,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play e osserva: il LED si accende VERDE! Stesso circuito, colore diverso.",
+      "teacher_message": "Premete Play e osserva: il LED si accende VERDE! Stesso circuito, colore diverso.",
       "teacher_tip": "Chiedi: 'Quanti colori possiamo fare con questo LED?' Prepara i ragazzi per gli esperimenti di mescolanza.",
       "components_list": null,
       "class_hook": null,

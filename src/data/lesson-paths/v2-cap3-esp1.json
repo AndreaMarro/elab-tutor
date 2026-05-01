@@ -14,22 +14,49 @@
   "target_age": "10-14 anni",
   "objective": "Imparare a usare il multimetro in modalita voltmetro per misurare la tensione di una batteria 9V e scoprire se e carica.",
   "components_needed": [
-    { "name": "Batteria 9V con clip", "quantity": 1, "icon": "🔋" },
-    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 1,
+      "icon": "🔋"
+    },
+    {
+      "name": "Multimetro",
+      "quantity": 1,
+      "icon": "📏"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "multimetro", "voltmetro", "tensione", "volt", "batteria",
-      "carica", "scarica", "puntale", "rosso", "nero",
-      "polo positivo", "polo negativo", "display", "misurare"
+      "multimetro",
+      "voltmetro",
+      "tensione",
+      "volt",
+      "batteria",
+      "carica",
+      "scarica",
+      "puntale",
+      "rosso",
+      "nero",
+      "polo positivo",
+      "polo negativo",
+      "display",
+      "misurare"
     ],
     "forbidden": [
-      "Arduino", "codice", "programma", "digitale", "analogico",
-      "condensatore", "transistor", "MOSFET"
+      "Arduino",
+      "codice",
+      "programma",
+      "digitale",
+      "analogico",
+      "condensatore",
+      "transistor",
+      "MOSFET"
     ],
     "note": "Vol 2 Cap 3 — primo uso del multimetro, modalita voltmetro."
   },
-  "prerequisites": ["v1-cap14-esp1"],
+  "prerequisites": [
+    "v1-cap14-esp1"
+  ],
   "next_experiment": {
     "id": "v2-cap3-esp2",
     "title": "Diario di misurazione della pila",
@@ -40,7 +67,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi impariamo a usare uno strumento fondamentale: il multimetro! Iniziamo con la cosa piu semplice: misurare quanti Volt ha la nostra batteria da 9V. Sara davvero 9V?",
+      "teacher_message": "Ragazzi, oggi impariamo a usare uno strumento fondamentale: il multimetro! Iniziamo con la cosa piu semplice: misurare quanti Volt ha la nostra batteria da 9V. Sara davvero 9V?",
       "teacher_tip": "Mostra il multimetro reale se disponibile. Spiega che il puntale rosso va al + e il nero al -. La manopola va posizionata su V (tensione continua, DC).",
       "components_list": "Ti servono: 1 batteria 9V con clip, 1 multimetro.",
       "class_hook": "Avete mai avuto un telecomando che non funzionava? Come fate a sapere se le pile sono scariche? Oggi impariamo a scoprirlo con uno strumento da veri scienziati!",
@@ -55,15 +82,23 @@
       "teacher_tip": "Se il valore e negativo, i puntali sono invertiti — nessun danno, solo il segno cambia. Mostra che una batteria nuova da circa 9.2-9.6V, una usata meno di 7V.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v2-cap3-esp1]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v2-cap3-esp1]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega il multimetro alla batteria 9V",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate il multimetro alla batteria 9V",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "multimeter", "id": "mm1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "multimeter",
+              "id": "mm1"
+            }
           ],
           "wires": []
         }
@@ -97,9 +132,12 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Osserva il valore sul display del multimetro. Una batteria nuova mostra circa 9.4-9.6V. Prova a invertire i puntali: il valore diventa negativo!",
+      "teacher_message": "Osservate il valore sul display del multimetro. Una batteria nuova mostra circa 9.4-9.6V. Provate a invertire i puntali: il valore diventa negativo!",
       "teacher_tip": "Evidenzia il multimetro. Fai notare le cifre decimali: la precisione e importante. Chiedi: 'Quanto vale esattamente? E di piu o meno di 9V?'",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:mm1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:mm1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il display del multimetro mostra la tensione reale della batteria. Una batteria da 9V nuova misura circa 9.4-9.6V. Se la batteria e usata, il valore sara piu basso.",
       "analogies": [
@@ -135,7 +173,11 @@
     "Se chiede quanto dura una batteria → curiosita per approfondire"
   ],
   "session_save": {
-    "concepts_covered": ["multimetro_voltmetro", "tensione_batteria", "polarita_puntali"],
+    "concepts_covered": [
+      "multimetro_voltmetro",
+      "tensione_batteria",
+      "polarita_puntali"
+    ],
     "next_suggested": "v2-cap3-esp2",
     "resume_message": "Hai imparato a misurare la tensione con il multimetro! Prossimo passo: il diario di misurazione."
   }
