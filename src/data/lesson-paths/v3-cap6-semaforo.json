@@ -96,7 +96,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 6,
-      "teacher_message": "Oggi costruiamo un semaforo vero con Arduino! Tre LED colorati, un programma che li controlla in sequenza: verde, giallo, rosso. Esattamente come i semafori della strada!",
+      "teacher_message": "Ragazzi, oggi costruiamo un semaforo vero con Arduino! Tre LED colorati, un programma che li controlla in sequenza: verde, giallo, rosso. Esattamente come i semafori della strada!",
       "teacher_tip": "Chiedi ai ragazzi: 'Avete mai visto un semaforo? Quanto tempo rimane verde? E rosso?' Questo aggancia subito la realtà al progetto. Spiega che Arduino è il 'cervello' del semaforo: il programma dice a ogni LED quando accendersi e per quanto tempo.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4 con breakout wing, 3 LED (verde, giallo, rosso), 3 resistori 470Ω, fili di collegamento.",
       "class_hook": "Sapete come funziona un semaforo? Chi decide quando si accende il verde? Oggi costruiamo noi il 'cervello' del semaforo con Arduino e un piccolo programma!",

@@ -14,25 +14,57 @@
   "target_age": "10-14 anni",
   "objective": "Collegare due potenziometri ai pin A3 e A4 di Arduino e visualizzare i valori nel Serial Plotter come due grafici in tempo reale. Scoprire il formato dati per il plotter.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "🤖" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "🔲" },
-    { "name": "Potenziometro 10kohm", "quantity": 2, "icon": "🎛️" },
-    { "name": "Fili di collegamento", "quantity": 8, "icon": "🔌" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "🤖"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Potenziometro 10kohm",
+      "quantity": 2,
+      "icon": "🎛️"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 8,
+      "icon": "🔌"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "Arduino", "Serial Plotter", "grafico", "analogRead",
-      "potenziometro", "A3", "A4", "pin analogico",
-      "separatore", "tab", "println", "tempo reale",
-      "due canali", "breadboard"
+      "Arduino",
+      "Serial Plotter",
+      "grafico",
+      "analogRead",
+      "potenziometro",
+      "A3",
+      "A4",
+      "pin analogico",
+      "separatore",
+      "tab",
+      "println",
+      "tempo reale",
+      "due canali",
+      "breadboard"
     ],
     "forbidden": [
-      "condensatore", "transistor", "MOSFET", "motore",
-      "diodo", "fototransistor"
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor"
     ],
     "note": "Vol 3 Cap 8 — Serial Plotter multi-canale, formato dati, visualizzazione."
   },
-  "prerequisites": ["v3-cap8-esp3"],
+  "prerequisites": [
+    "v3-cap8-esp3"
+  ],
   "next_experiment": {
     "id": "v3-cap8-esp5",
     "title": "Pot + 3 LED + Serial",
@@ -43,7 +75,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Il Serial Monitor mostra numeri. Ma non sarebbe meglio vedere un GRAFICO? Il Serial Plotter di Arduino fa esattamente questo! E con due potenziometri vedremo DUE grafici sovrapposti in tempo reale.",
+      "teacher_message": "Ragazzi, il Serial Monitor mostra numeri. Ma non sarebbe meglio vedere un GRAFICO? Il Serial Plotter di Arduino fa esattamente questo! E con due potenziometri vedremo DUE grafici sovrapposti in tempo reale.",
       "teacher_tip": "Spiega che il Serial Plotter legge lo stesso output del Monitor ma lo disegna come un grafico. Per avere due linee, i valori vanno separati da un TAB (\\t).",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 2 potenziometri 10kohm, 8 fili di collegamento.",
       "class_hook": "Immaginate di poter vedere la temperatura e l'umidita della vostra stanza disegnate su un grafico in tempo reale. Oggi facciamo qualcosa di simile con due manopole!",
@@ -58,27 +90,75 @@
       "teacher_tip": "Il trucco e nel formato: Serial.print(val1); Serial.print('\\t'); Serial.println(val2). Il TAB separa i canali, il println chiude la riga. Ogni riga = un punto sul grafico.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v3-cap8-esp4]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap8-esp4]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Montate 2 potenziometri sui pin A3 e A4 di Arduino",
         "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "breadboard-half", "id": "bb1" },
-            { "type": "nano-r4", "id": "nano1" },
-            { "type": "potentiometer", "id": "pot1", "value": 10000 },
-            { "type": "potentiometer", "id": "pot2", "value": 10000 }
+            {
+              "type": "breadboard-half",
+              "id": "bb1"
+            },
+            {
+              "type": "nano-r4",
+              "id": "nano1"
+            },
+            {
+              "type": "potentiometer",
+              "id": "pot1",
+              "value": 10000
+            },
+            {
+              "type": "potentiometer",
+              "id": "pot2",
+              "value": 10000
+            }
           ],
           "wires": [
-            { "from": "bb1:f22", "to": "bb1:bus-bot-plus-22", "color": "red" },
-            { "from": "nano1:W_A3", "to": "bb1:f23", "color": "yellow" },
-            { "from": "bb1:f24", "to": "bb1:bus-bot-minus-24", "color": "black" },
-            { "from": "bb1:f27", "to": "bb1:bus-bot-plus-27", "color": "red" },
-            { "from": "nano1:W_A4", "to": "bb1:f28", "color": "orange" },
-            { "from": "bb1:f29", "to": "bb1:bus-bot-minus-29", "color": "black" },
-            { "from": "nano1:GND_R", "to": "bb1:bus-bot-minus-1", "color": "black" },
-            { "from": "nano1:5V", "to": "bb1:bus-bot-plus-1", "color": "red" }
+            {
+              "from": "bb1:f22",
+              "to": "bb1:bus-bot-plus-22",
+              "color": "red"
+            },
+            {
+              "from": "nano1:W_A3",
+              "to": "bb1:f23",
+              "color": "yellow"
+            },
+            {
+              "from": "bb1:f24",
+              "to": "bb1:bus-bot-minus-24",
+              "color": "black"
+            },
+            {
+              "from": "bb1:f27",
+              "to": "bb1:bus-bot-plus-27",
+              "color": "red"
+            },
+            {
+              "from": "nano1:W_A4",
+              "to": "bb1:f28",
+              "color": "orange"
+            },
+            {
+              "from": "bb1:f29",
+              "to": "bb1:bus-bot-minus-29",
+              "color": "black"
+            },
+            {
+              "from": "nano1:GND_R",
+              "to": "bb1:bus-bot-minus-1",
+              "color": "black"
+            },
+            {
+              "from": "nano1:5V",
+              "to": "bb1:bus-bot-plus-1",
+              "color": "red"
+            }
           ]
         }
       }
@@ -113,7 +193,11 @@
       "duration_minutes": 14,
       "teacher_message": "Premete Play e aprite il Serial Plotter! Vedete due linee colorate. Girate una manopola alla volta: vedrete una linea salire/scendere mentre l'altra resta ferma. Poi giratele entrambe!",
       "teacher_tip": "Evidenzia entrambi i potenziometri. Fai notare: le due linee hanno colori diversi. Sfida: 'Riuscite a fare un disegno con le due manopole? Una montagna con una valle?' Rende il concetto divertente.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pot1]", "[AZIONE:highlight:pot2]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:pot1]",
+        "[AZIONE:highlight:pot2]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Due grafici in tempo reale! Ogni potenziometro controlla una linea. Girando pot1 si muove la linea A3, girando pot2 la linea A4. I grafici sono indipendenti e sovrapposti.",
       "analogies": [
@@ -150,7 +234,12 @@
     "Se collega il concetto a monitoraggio reale (temperatura, umidita) → trasferimento"
   ],
   "session_save": {
-    "concepts_covered": ["serial_plotter", "multi_canale", "formato_TAB", "due_analogici"],
+    "concepts_covered": [
+      "serial_plotter",
+      "multi_canale",
+      "formato_TAB",
+      "due_analogici"
+    ],
     "next_suggested": "v3-cap8-esp5",
     "resume_message": "Avete scoperto il Serial Plotter! Prossimo: il progetto finale con pot + 3 LED + Serial."
   }

@@ -95,7 +95,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi un LED ne accende un altro! Il LED bianco illumina la fotoresistenza, che accende il LED blu. Una catena di luce!",
+      "teacher_message": "Ragazzi, oggi un LED ne accende un altro! Il LED bianco illumina la fotoresistenza, che accende il LED blu. Una catena di luce!",
       "teacher_tip": "Due circuiti separati che comunicano attraverso la luce. Il LED bianco è nel circuito 1 (sopra), la fotoresistenza e il LED blu nel circuito 2 (sotto).",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED bianco, 1 fotoresistenza, 1 LED blu, 10 fili.",
       "class_hook": "Due circuiti che non sono collegati da fili possono comunicare? Sì — attraverso la LUCE!",

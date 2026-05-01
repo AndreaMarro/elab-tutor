@@ -94,7 +94,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi ogni colore ha il suo pulsante! Un pulsante per il rosso, uno per il verde, uno per il blu. Premendo combinazioni si creano 7 colori!",
+      "teacher_message": "Ragazzi, oggi ogni colore ha il suo pulsante! Un pulsante per il rosso, uno per il verde, uno per il blu. Premendo combinazioni si creano 7 colori!",
       "teacher_tip": "Tre pulsanti separati, tre resistori, un LED RGB. Ogni pulsante controlla un canale indipendente. Il catodo comune va direttamente al negativo.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 pulsanti, 3 resistori 470Ω, 1 LED RGB, 9 fili.",
       "class_hook": "La scorsa volta un solo pulsante faceva il viola. Ma se aveste TRE pulsanti — uno per ogni colore — quanti colori potreste creare?",

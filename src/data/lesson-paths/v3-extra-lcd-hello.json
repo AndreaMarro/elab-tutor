@@ -70,7 +70,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 6,
-      "teacher_message": "Finora abbiamo controllato LED singoli. Oggi passiamo a un vero display: l'LCD 16x2 può mostrare 16 caratteri per 2 righe, proprio come gli schermi delle calcolatrici o delle casse del supermercato! Arduino lo controlla con 6 pin usando una libreria chiamata LiquidCrystal.",
+      "teacher_message": "Ragazzi, finora abbiamo controllato LED singoli. Oggi passiamo a un vero display: l'LCD 16x2 può mostrare 16 caratteri per 2 righe, proprio come gli schermi delle calcolatrici o delle casse del supermercato! Arduino lo controlla con 6 pin usando una libreria chiamata LiquidCrystal.",
       "teacher_tip": "Mostra dove si trovano display LCD 16x2 nella vita reale: calcolatrici, microonde, vecchie casse del supermercato, stazioni meteo. La libreria LiquidCrystal è come un 'traduttore': noi diciamo lcd.print(\"ciao\") e lei si occupa di inviare tutti i segnali giusti al display.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 1 display LCD 16x2, fili di collegamento.",
       "class_hook": "Avete mai visto le calcolatrici con lo schermo verde o nero che mostra i numeri? Oppure le casse del supermercato con il display che mostra il totale? Oggi costruiamo lo stesso tipo di display! Si chiama LCD 16x2 e può scrivere testo con Arduino.",

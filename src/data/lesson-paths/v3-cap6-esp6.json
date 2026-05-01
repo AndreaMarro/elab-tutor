@@ -92,7 +92,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 7,
-      "teacher_message": "Finora Arduino ha solo comandato i LED (OUTPUT). Oggi impariamo a far ASCOLTARE Arduino: un pulsante che ogni volta che viene premuto alterna due LED. È il primo esperimento con i pin di INPUT!",
+      "teacher_message": "Ragazzi, finora Arduino ha solo comandato i LED (OUTPUT). Oggi impariamo a far ASCOLTARE Arduino: un pulsante che ogni volta che viene premuto alterna due LED. È il primo esperimento con i pin di INPUT!",
       "teacher_tip": "Parti dall'esperienza: 'Un interruttore della luce, quando lo premi, non resta ON finché lo tieni premuto — cambia stato! Questo si chiama toggle.' Spiega che il toggle è ovunque: il tasto Caps Lock del computer è un toggle!",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 1 pulsante, 2 LED (verde e rosso), 2 resistori 470Ω, fili di collegamento.",
       "class_hook": "Conoscete il tasto Caps Lock del computer? Quando lo premete una volta, le lettere diventano maiuscole. Quando lo ripremete, tornano minuscole. Non serve tenerlo premuto! Oggi costruiamo lo stesso meccanismo con i LED.",

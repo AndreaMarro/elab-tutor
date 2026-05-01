@@ -103,7 +103,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 8,
-      "teacher_message": "Questo è il PROGETTO FINALE del Volume 3! Costruiamo Simon Says — il classico gioco di memoria con luci e suoni. Arduino genera una sequenza di colori e note musicali sempre più lunga. Voi la ripetete premendo i pulsanti giusti. Se sbagliate, tutti i LED lampeggiano e il gioco ricomincia!",
+      "teacher_message": "Ragazzi, questo è il PROGETTO FINALE del Volume 3! Costruiamo Simon Says — il classico gioco di memoria con luci e suoni. Arduino genera una sequenza di colori e note musicali sempre più lunga. Voi la ripetete premendo i pulsanti giusti. Se sbagliate, tutti i LED lampeggiano e il gioco ricomincia!",
       "teacher_tip": "Fai un recap di tutto il Volume 3: 'Abbiamo imparato i pin OUTPUT (semaforo), i pin INPUT (pulsante), i pin analogici (potenziometro), il display LCD, il servomotore. Oggi usiamo TUTTO insieme!' Questo è il momento di celebrare il percorso fatto.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 4 LED (rosso, verde, blu, giallo), 4 pulsanti, 1 cicalino piezo, 4 resistori 470Ω, molti fili!",
       "class_hook": "Chi conosce il gioco Simon Says? Si accende una luce colorata con un suono, devi premere il pulsante dello stesso colore. Poi la sequenza si allunga: rosso-verde, poi rosso-verde-blu, poi rosso-verde-blu-giallo... Quanti livelli riesci a ricordare?",

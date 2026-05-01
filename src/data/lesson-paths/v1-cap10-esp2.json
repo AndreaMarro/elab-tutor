@@ -92,7 +92,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi cambiamo il LED: da rosso a blu. Serve la stessa quantità di luce per accenderlo? Scopriamolo!",
+      "teacher_message": "Ragazzi, oggi cambiamo il LED: da rosso a blu. Serve la stessa quantità di luce per accenderlo? Scopriamolo!",
       "teacher_tip": "Stesso circuito dell'esperimento 1 ma con LED blu. Il blu ha bisogno di più corrente, quindi serve più luce sulla fotoresistenza.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 fotoresistenza, 1 resistore 220Ω, 1 LED blu, 6 fili.",
       "class_hook": "La fotoresistenza accendeva il LED rosso facilmente. Ma il LED blu ha bisogno di più o meno luce?",

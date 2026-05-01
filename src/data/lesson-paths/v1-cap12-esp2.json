@@ -101,7 +101,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi usiamo lo stesso circuito con il reed switch, ma proviamo a cambiare il resistore. Come cambia la luminosità del LED?",
+      "teacher_message": "Ragazzi, oggi usiamo lo stesso circuito con il reed switch, ma proviamo a cambiare il resistore. Come cambia la luminosità del LED?",
       "teacher_tip": "Prepara resistori di valore diverso. L'idea è che il reed switch è l'interruttore ON/OFF, ma il resistore controlla QUANTA corrente passa.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, resistori di valore diverso, 1 LED rosso, 5 fili.",
       "class_hook": "L'ultima volta il magnete accendeva il LED. Ma era sempre la stessa luminosità. E se volessimo un LED più forte o più debole?",

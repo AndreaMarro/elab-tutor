@@ -103,7 +103,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi aggiungiamo il potenziometro al circuito! La manopola regola il LED bianco, che a sua volta controlla il LED blu attraverso la fotoresistenza.",
+      "teacher_message": "Ragazzi, oggi aggiungiamo il potenziometro al circuito! La manopola regola il LED bianco, che a sua volta controlla il LED blu attraverso la fotoresistenza.",
       "teacher_tip": "Catena a 3 livelli: potenziometro → LED bianco → luce → fotoresistenza → LED blu. Ogni livello influenza il successivo.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED bianco, 1 fotoresistenza, 1 LED blu, 12 fili.",
       "class_hook": "La scorsa volta il LED bianco era sempre acceso. E se potessimo REGOLARE la sua luminosità? Come cambierebbe il LED blu?",

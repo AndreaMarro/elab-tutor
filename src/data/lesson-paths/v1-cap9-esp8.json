@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida! Due potenziometri controllano rosso e blu indipendentemente. Combinazione degli esperimenti 5 e 6!",
+      "teacher_message": "Ragazzi, sfida! Due potenziometri controllano rosso e blu indipendentemente. Combinazione degli esperimenti 5 e 6!",
       "teacher_tip": "Ogni potenziometro ha il suo resistore e il suo canale: pot1→r1→rosso, pot2→r2→blu. La sfida è aggiungere un terzo pot per il verde.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 2 potenziometri 10K, 2 resistori 470Ω, 1 LED RGB, 11 fili.",
       "class_hook": "Avete costruito il miscelatore e la lampada. Ora combiniamoli: due manopole per rosso e blu!",

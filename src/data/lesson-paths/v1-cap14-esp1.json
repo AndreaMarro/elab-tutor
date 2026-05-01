@@ -121,7 +121,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 8,
-      "teacher_message": "È il PROGETTO FINALE del Volume 1! Costruiamo un robot con occhi verdi, mano colorata e sensore magnetico. Tutto quello che avete imparato converge qui!",
+      "teacher_message": "Ragazzi, è il PROGETTO FINALE del Volume 1! Costruiamo un robot con occhi verdi, mano colorata e sensore magnetico. Tutto quello che avete imparato converge qui!",
       "teacher_tip": "Fai un recap dei componenti: 'Reed switch (cap 12) per accendere il robot col magnete. Potenziometri (cap 9) per controllare i colori. LED (cap 6-7) per occhi e mano. Tutto insieme!' Usa la breadboard grande (full-size).",
       "components_list": "Ti servono: 1 breadboard grande, 1 batteria 9V, 1 reed switch, 3 potenziometri 10kΩ, 5 resistori 220Ω, 2 LED verdi, 1 LED RGB, tanti fili!",
       "class_hook": "Ricordate tutto quello che avete imparato? LED, resistori, pulsanti, potenziometri, fotoresistenze, cicalini, reed switch, plastilina... Oggi UNIAMO TUTTO in un ROBOT!",

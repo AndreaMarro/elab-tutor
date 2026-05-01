@@ -98,7 +98,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono il LED RGB — un componente con 3 LED dentro! Il LED RGB ha 4 piedini: il più lungo è il catodo (GND), gli altri 3 sono rosso, verde, blu.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono il LED RGB — un componente con 3 LED dentro! Il LED RGB ha 4 piedini: il più lungo è il catodo (GND), gli altri 3 sono rosso, verde, blu.",
       "teacher_tip": "Mostra il LED RGB reale alla classe. Chiedi: 'Quanti piedini ha? Perché 4 e non 2 come il LED normale?' Lascia che osservino e facciano ipotesi prima di spiegare.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED RGB (catodo comune), 5 fili.",
       "class_hook": "Avete mai visto quelle luci che cambiano colore? Le strisce LED, le luci della discoteca? Oggi scopriamo come funzionano — con un LED speciale!",

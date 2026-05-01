@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi costruiamo la lampada RGB completa! Tre manopole controllano tre colori indipendentemente — come i pixel del telefono!",
+      "teacher_message": "Ragazzi, oggi costruiamo la lampada RGB completa! Tre manopole controllano tre colori indipendentemente — come i pixel del telefono!",
       "teacher_tip": "Il circuito è il più grande finora: 3 potenziometri, 3 resistori, 1 LED RGB. Ogni potenziometro controlla un canale indipendente.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 potenziometri 10K, 3 resistori 470Ω, 1 LED RGB, 15 fili.",
       "class_hook": "Con i pulsanti potevate fare solo 7 colori (acceso/spento). Con 3 manopole graduali potete creare QUALSIASI sfumatura!",

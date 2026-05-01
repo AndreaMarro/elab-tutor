@@ -91,7 +91,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi scopriamo un trucco: scambiando i pin laterali del potenziometro, la rotazione si inverte! Giri a destra e il LED si spegne!",
+      "teacher_message": "Ragazzi, oggi scopriamo un trucco: scambiando i pin laterali del potenziometro, la rotazione si inverte! Giri a destra e il LED si spegne!",
       "teacher_tip": "Stesso circuito dell'esperimento 1, ma con il positivo collegato al pin GND del potenziometro e il negativo al pin VCC. Il signal resta al centro.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED rosso, 6 fili.",
       "class_hook": "Ricordate il dimmer? Girando a destra il LED si accendeva. E se girando a destra si SPEGNESSE? Si può fare?",

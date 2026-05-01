@@ -72,7 +72,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi usiamo un servomotore! A differenza di un motore normale che gira sempre nello stesso verso, il servo può posizionarsi a un angolo PRECISO da 0 a 180 gradi. Arduino gli manda un segnale PWM sul pin D9 e il servo ubbidisce. Con la libreria Servo, basta scrivere myServo.write(90) per andare a 90 gradi!",
+      "teacher_message": "Ragazzi, oggi usiamo un servomotore! A differenza di un motore normale che gira sempre nello stesso verso, il servo può posizionarsi a un angolo PRECISO da 0 a 180 gradi. Arduino gli manda un segnale PWM sul pin D9 e il servo ubbidisce. Con la libreria Servo, basta scrivere myServo.write(90) per andare a 90 gradi!",
       "teacher_tip": "Mostra dove si usano i servomotori nella vita reale: timone dei droni, articolazioni dei robot, flap degli aeroplani, sterzo dei modellini RC. Il punto chiave: il servo VA a un angolo specifico e CI RESTA — non gira in continuo come un motore normale.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 1 servomotore, solo 3 fili di collegamento!",
       "class_hook": "Avete mai visto i droni o i modellini radiocomandati? Hanno dei piccoli motori che controllano le ali o lo sterzo — si chiamano servomotori! Diversi dai motori normali: non girano sempre, vanno esattamente all'angolo che vuoi e ci restano. Oggi ne costruiamo uno!",

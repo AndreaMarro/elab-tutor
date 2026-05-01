@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi un solo potenziometro controlla DUE colori insieme: verde e blu. Il risultato? Il CIANO, un azzurrino brillante!",
+      "teacher_message": "Ragazzi, oggi un solo potenziometro controlla DUE colori insieme: verde e blu. Il risultato? Il CIANO, un azzurrino brillante!",
       "teacher_tip": "Il segnale del potenziometro si divide in due rami, ciascuno con il suo resistore. Un ramo va al canale verde, l'altro al canale blu.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 2 resistori 470Ω, 1 LED RGB, 9 fili.",
       "class_hook": "Il potenziometro controllava un solo LED. Ma può controllare DUE canali del LED RGB contemporaneamente?",

@@ -88,7 +88,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi cambiamo il LED: da rosso a verde. Si accenderà allo stesso punto della manopola? Scopriamolo!",
+      "teacher_message": "Ragazzi, oggi cambiamo il LED: da rosso a verde. Si accenderà allo stesso punto della manopola? Scopriamolo!",
       "teacher_tip": "Stesso circuito dell'esperimento 1 ma con LED verde. Il verde ha bisogno di più corrente per accendersi, quindi la manopola dovrà essere girata di più.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED verde, 6 fili.",
       "class_hook": "Il LED rosso si accendeva facilmente con il potenziometro. Il LED verde avrà bisogno della stessa quantità di corrente o di più?",

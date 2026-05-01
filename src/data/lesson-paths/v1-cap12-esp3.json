@@ -107,7 +107,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida! Oggi colleghiamo il reed switch al LED RGB. Il magnete accenderà un colore — riuscite ad accenderne di più?",
+      "teacher_message": "Ragazzi, sfida! Oggi colleghiamo il reed switch al LED RGB. Il magnete accenderà un colore — riuscite ad accenderne di più?",
       "teacher_tip": "È una sfida aperta: il circuito base accende solo il rosso. La sfida è pensare a come aggiungere circuiti per verde e blu. Lascia che i ragazzi provino!",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, 1 resistore 470Ω, 1 LED RGB, 6 fili.",
       "class_hook": "Abbiamo acceso un LED rosso con il magnete. Ma il LED RGB ha TRE colori! Riuscite a farli accendere tutti con il magnete?",

@@ -98,7 +98,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi aggiungiamo un pulsante al circuito con la fotoresistenza. Servono DUE condizioni per accendere il LED!",
+      "teacher_message": "Ragazzi, oggi aggiungiamo un pulsante al circuito con la fotoresistenza. Servono DUE condizioni per accendere il LED!",
       "teacher_tip": "Pulsante e fotoresistenza sono nella stessa catena: la corrente deve passare da entrambi. Se uno dei due 'dice no', il LED resta spento.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 fotoresistenza, 1 resistore 220Ω, 1 LED rosso, 7 fili.",
       "class_hook": "La fotoresistenza accendeva il LED con la luce. Ma se volessi anche un bottone per controllare? Il LED si accende solo se premi E c'è luce!",

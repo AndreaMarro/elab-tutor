@@ -17,24 +17,54 @@
   "target_age": "10-14 anni",
   "objective": "I ragazzi imparano a leggere un valore analogico dal potenziometro con analogRead() su pin A0 e a controllare la luminosità di un LED su pin 13 in base alla soglia di 2,5V (valore numerico 512 su risoluzione 10 bit).",
   "components_needed": [
-    { "name": "Arduino Nano R4", "quantity": 1, "icon": "🔌" },
-    { "name": "ELAB Nano Breakout", "quantity": 1, "icon": "🔲" },
-    { "name": "Breadboard", "quantity": 1, "icon": "🔲" },
-    { "name": "LED verde", "quantity": 1, "icon": "💡" },
-    { "name": "Resistore 470Ω", "quantity": 1, "icon": "⚡" },
-    { "name": "Trimmer (potenziometro)", "quantity": 1, "icon": "🎛️" },
-    { "name": "Fili di collegamento", "quantity": 3, "icon": "🔗" }
+    {
+      "name": "Arduino Nano R4",
+      "quantity": 1,
+      "icon": "🔌"
+    },
+    {
+      "name": "ELAB Nano Breakout",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "LED verde",
+      "quantity": 1,
+      "icon": "💡"
+    },
+    {
+      "name": "Resistore 470Ω",
+      "quantity": 1,
+      "icon": "⚡"
+    },
+    {
+      "name": "Trimmer (potenziometro)",
+      "quantity": 1,
+      "icon": "🎛️"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 3,
+      "icon": "🔗"
+    }
   ],
   "phases": [
     {
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Aprite il kit ELAB e trovate l'esperimento ESERCIZIO 7.1 nel Volume 3 a pagina 75. Oggi entriamo nel mondo continuo: i pin analogici. Useremo il potenziometro per leggere una tensione variabile da 0 a 5V e accenderemo il LED solo quando la tensione supera 2,5V.",
+      "teacher_message": "Ragazzi, aprite il kit ELAB e trovate l'esperimento ESERCIZIO 7.1 nel Volume 3 a pagina 75. Oggi entriamo nel mondo continuo: i pin analogici. Useremo il potenziometro per leggere una tensione variabile da 0 a 5V e accenderemo il LED solo quando la tensione supera 2,5V.",
       "teacher_tip": "Il volume spiega che la risoluzione della scheda e di 10 bit, cioe puo rappresentare 1024 valori diversi (da 0 a 1023). Il valore 512 corrisponde circa a 2,5V (meta di 5V).",
       "components_list": "Arduino Nano R4 + ELAB Nano Breakout + 1 LED verde + 1 resistore 470Ohm + 1 trimmer + 3 cavetti",
       "class_hook": "Ragazzi, cosa succede se invece di acceso/spento avessimo tantissimi valori in mezzo? Come misuriamo una tensione di 2,5V se Arduino capisce solo 0 e 1?",
-      "action_tags": ["loadexp:v3-cap7-mini"],
+      "action_tags": [
+        "loadexp:v3-cap7-mini"
+      ],
       "auto_action": null
     },
     {
@@ -45,7 +75,10 @@
       "teacher_tip": "Il volume specifica: in questo esercizio non serve usare il PULLUP. Al pin A0 e collegato il trimmer, che funziona gia come partitore di tensione. Aggiungere un'altra resistenza altererebbe la misura.",
       "components_list": "Trimmer su A0 (partitore), LED verde + resistore 470Ohm su pin 13",
       "class_hook": "Ragazzi, guardate: il trimmer e come un rubinetto della tensione. Lo giriamo e cambiamo il valore che Arduino legge.",
-      "action_tags": ["compile", "play"],
+      "action_tags": [
+        "compile",
+        "play"
+      ],
       "auto_action": null,
       "build_circuit": true
     },

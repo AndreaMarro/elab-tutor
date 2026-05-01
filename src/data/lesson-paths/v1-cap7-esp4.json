@@ -88,7 +88,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi servono DUE resistori — uno per il canale rosso e uno per il blu. Ogni canale ha il suo resistore di protezione.",
+      "teacher_message": "Ragazzi, oggi servono DUE resistori — uno per il canale rosso e uno per il blu. Ogni canale ha il suo resistore di protezione.",
       "teacher_tip": "Chiedi: 'Quanti resistori servono se vogliamo accendere 2 colori?' La risposta è 2 — uno per ogni canale.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 2 resistori 470Ω, 1 LED RGB, 6 fili.",
       "class_hook": "Sapete già accendere rosso, verde e blu separatamente. Ma cosa succede se accendiamo rosso E blu INSIEME?",

@@ -76,7 +76,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 6,
-      "teacher_message": "Finora i pin digitali ci davano solo due valori: 0 o 1, spento o acceso. Oggi passiamo ai pin ANALOGICI che danno 1024 valori diversi! Un potenziometro girato a metà dà 512, tutto a sinistra 0, tutto a destra 1023. E useremo il Serial Monitor per vedere questi numeri in tempo reale!",
+      "teacher_message": "Ragazzi, finora i pin digitali ci davano solo due valori: 0 o 1, spento o acceso. Oggi passiamo ai pin ANALOGICI che danno 1024 valori diversi! Un potenziometro girato a metà dà 512, tutto a sinistra 0, tutto a destra 1023. E useremo il Serial Monitor per vedere questi numeri in tempo reale!",
       "teacher_tip": "Fai la differenza chiara: 'Digitale = solo 0 o 1, come un interruttore. Analogico = qualsiasi valore in mezzo, come il volume della TV.' Il potenziometro è la manopola del volume: gira lentamente e il valore cambia gradualmente.",
       "components_list": "Ti servono: 1 breadboard half-size, 1 Arduino Nano R4, 1 potenziometro 10kΩ, fili di collegamento (solo 5!).",
       "class_hook": "Qual è la differenza tra un interruttore della luce e un dimmer (la manopola che regola la luminosità)? L'interruttore è digitale: solo ON o OFF. Il dimmer è analogico: puoi scegliere qualsiasi intensità! Oggi Arduino legge valori analogici come un dimmer.",

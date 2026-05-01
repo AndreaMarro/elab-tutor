@@ -91,7 +91,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono il potenziometro — una resistenza con la manopola. Il piedino centrale è il cursore.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono il potenziometro — una resistenza con la manopola. Il piedino centrale è il cursore.",
       "teacher_tip": "Inizia chiedendo: 'Finora la resistenza era sempre uguale. Come fareste a cambiare la luminosità SENZA cambiare resistore?' Lascia che pensino.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED rosso, 4 fili.",
       "class_hook": "Finora per cambiare la luminosità dovevate cambiare il resistore. E se esistesse un componente con una MANOPOLA per regolare?",

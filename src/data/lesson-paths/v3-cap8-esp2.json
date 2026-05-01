@@ -14,15 +14,51 @@
   "target_age": "10-14 anni",
   "objective": "Spostare Serial.println nel loop per stampare messaggi continuamente. Aggiungiamo una variabile contatore che si incrementa ad ogni ciclo. Scopriamo l'importanza del delay per rallentare l'output e renderlo leggibile. Il Serial Monitor diventa uno strumento di monitoraggio in tempo reale.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Cavo USB", "quantity": 1, "icon": "cable" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Cavo USB",
+      "quantity": 1,
+      "icon": "cable"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "Serial", "println", "begin", "baud", "rate", "monitor", "seriale", "loop", "contatore", "variabile", "int", "delay", "incremento", "++", "9600"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "I2C", "SPI"],
+    "allowed": [
+      "Arduino",
+      "Serial",
+      "println",
+      "begin",
+      "baud",
+      "rate",
+      "monitor",
+      "seriale",
+      "loop",
+      "contatore",
+      "variabile",
+      "int",
+      "delay",
+      "incremento",
+      "++",
+      "9600"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "I2C",
+      "SPI"
+    ],
     "note": "Cap 8 Vol 3 — Serial.println nel loop, contatore, delay per leggibilita, variabile globale."
   },
-  "prerequisites": ["v3-cap8-esp1"],
+  "prerequisites": [
+    "v3-cap8-esp1"
+  ],
   "next_experiment": {
     "id": "v3-cap8-esp3",
     "title": "analogRead + Serial Monitor",
@@ -33,7 +69,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il messaggio appariva una sola volta perche era nel setup. Oggi lo mettiamo nel loop: si ripetera all'infinito! E aggiungiamo un contatore che numera ogni messaggio. Vedrete i numeri scorrere sul Serial Monitor.",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il messaggio appariva una sola volta perche era nel setup. Oggi lo mettiamo nel loop: si ripetera all'infinito! E aggiungiamo un contatore che numera ogni messaggio. Vedrete i numeri scorrere sul Serial Monitor.",
       "teacher_tip": "Prepara gli studenti a un possibile problema: senza delay il loop gira cosi veloce che il Serial Monitor si riempe di migliaia di righe al secondo e diventa illeggibile. Questo e un ottimo momento per far capire quanto e veloce Arduino (16 milioni di operazioni al secondo).",
       "class_hook": "Immaginate una stampante impazzita che stampa pagine senza fermarsi. Ecco cosa succede se mettiamo Serial.println nel loop senza delay! Oggi impariamo a controllare la velocita dei messaggi di Arduino.",
       "action_tags": [],
@@ -45,7 +81,9 @@
       "duration_minutes": 10,
       "teacher_message": "Il codice ha Serial.begin(9600) nel setup e Serial.println nel loop. Una variabile contatore parte da 0 e si incrementa con contatore++ ad ogni ciclo. Il delay(500) tra un messaggio e l'altro rende l'output leggibile: un messaggio ogni mezzo secondo.",
       "teacher_tip": "Mostra cosa succede concettualmente: ciclo 1 stampa 'Conteggio: 0', ciclo 2 stampa 'Conteggio: 1', ciclo 3 stampa 'Conteggio: 2'... all'infinito. La variabile contatore e dichiarata FUORI dal loop (variabile globale) altrimenti ripartirebbe da 0 ogni ciclo. Fai notare la differenza tra variabile locale e globale.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap8-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap8-esp2]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -64,7 +102,9 @@
       "duration_minutes": 10,
       "teacher_message": "Premete Play e aprite il Serial Monitor! Vedete i numeri che scorrono: 0, 1, 2, 3... uno ogni mezzo secondo. Il contatore non si ferma mai. Osservate la velocita costante dei messaggi grazie al delay.",
       "teacher_tip": "Fai osservare tre cose: la regolarita del timing (un messaggio ogni 500ms), il contatore che cresce senza fermarsi, e cosa succede se si preme Reset (il contatore riparte da 0 perche la variabile si reinizializza). Chiedi: e possibile far partire il contatore da 100 invece che da 0?",
-      "action_tags": ["[AZIONE:play]"],
+      "action_tags": [
+        "[AZIONE:play]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Sul Serial Monitor scorrono righe numerate: Conteggio 0, Conteggio 1, Conteggio 2... La velocita e costante grazie al delay(500). Il contatore cresce all'infinito senza fermarsi."
     },
@@ -86,7 +126,13 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["Serial_println_loop", "contatore", "delay_frequenza", "variabile_globale", "debug_seriale"],
+    "concepts_covered": [
+      "Serial_println_loop",
+      "contatore",
+      "delay_frequenza",
+      "variabile_globale",
+      "debug_seriale"
+    ],
     "next_suggested": "v3-cap8-esp3",
     "resume_message": "Avete fatto stampare messaggi continui con contatore! Prossimo: analogRead + Serial Monitor."
   }

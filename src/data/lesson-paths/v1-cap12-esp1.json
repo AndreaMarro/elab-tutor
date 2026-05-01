@@ -100,7 +100,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi scopriamo un interruttore MAGICO! Il reed switch si attiva avvicinando un magnete — senza toccarlo!",
+      "teacher_message": "Ragazzi, oggi scopriamo un interruttore MAGICO! Il reed switch si attiva avvicinando un magnete — senza toccarlo!",
       "teacher_tip": "Mostra un reed switch reale alla classe: è un tubicino di vetro con due lamelle metalliche dentro. Avvicina un magnete e fai sentire il 'click'. L'effetto WOW è garantito!",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, 1 resistore 470Ω, 1 LED rosso, 5 fili.",
       "class_hook": "Finora abbiamo usato il pulsante per controllare il circuito. Ma esiste un interruttore che funziona SENZA toccarlo! Come fa? Con la MAGIA dei magneti!",

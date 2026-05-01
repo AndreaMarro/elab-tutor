@@ -80,7 +80,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il motore girava in un verso. Oggi invertiamo i fili e vediamo cosa succede! La polarità è tutto.",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il motore girava in un verso. Oggi invertiamo i fili e vediamo cosa succede! La polarità è tutto.",
       "teacher_tip": "Ricorda: 'Nell'esperimento 1 il filo rosso andava al + del motore. Oggi facciamo il contrario: il filo rosso va al - del motore. Cosa cambierà?' Lascia che gli studenti facciano la loro previsione.",
       "components_list": "Ti servono gli stessi componenti dell'esperimento 1: breadboard mezza, batteria 9V, motore DC, fili.",
       "class_hook": "Ricordate in che direzione girava il motore nell'esperimento 1? Segnate mentalmente il verso. Ora indovinate: cosa succede se inverto i fili?",

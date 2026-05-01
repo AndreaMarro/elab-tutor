@@ -95,7 +95,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il motore girava con il pulsante. Come facciamo a sapere se il motore sta davvero girando senza guardarlo? Aggiungiamo una spia luminosa: il LED!",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il motore girava con il pulsante. Come facciamo a sapere se il motore sta davvero girando senza guardarlo? Aggiungiamo una spia luminosa: il LED!",
       "teacher_tip": "Porta l'analogia della cruscotto dell'auto: 'Nell'auto ci sono spie luminose che vi dicono cosa sta succedendo al motore. Oggi costruiamo la nostra spia!' Mostra il LED verde che userete.",
       "components_list": "Ti servono: breadboard mezza, batteria 9V, motore DC, 1 pulsante, 1 resistore 470Ω, 1 LED verde, fili.",
       "class_hook": "Avete mai notato le spie sul cruscotto dell'auto? Una si accende quando il motore è acceso. Oggi costruiamo la nostra spia luminosa per il motore!",

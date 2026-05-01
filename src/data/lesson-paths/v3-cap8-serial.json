@@ -17,19 +17,29 @@
   "target_age": "10-14 anni",
   "objective": "I ragazzi imparano ad aprire il Monitor Seriale dell'IDE Arduino, a configurare la velocita di comunicazione a 9600 baud e a far inviare ad Arduino un messaggio di saluto al computer con Serial.println().",
   "components_needed": [
-    { "name": "Arduino Nano R4", "quantity": 1, "icon": "🔌" },
-    { "name": "Cavo USB", "quantity": 1, "icon": "🔗" }
+    {
+      "name": "Arduino Nano R4",
+      "quantity": 1,
+      "icon": "🔌"
+    },
+    {
+      "name": "Cavo USB",
+      "quantity": 1,
+      "icon": "🔗"
+    }
   ],
   "phases": [
     {
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Aprite il kit ELAB e prendete la scheda Arduino Nano R4 e il cavo USB. Oggi ESERCIZIO 8.1 del Volume 3: faremo qualcosa di molto semplice ma importante. Arduino inviera un messaggio di saluto al computer!",
+      "teacher_message": "Ragazzi, aprite il kit ELAB e prendete la scheda Arduino Nano R4 e il cavo USB. Oggi ESERCIZIO 8.1 del Volume 3: faremo qualcosa di molto semplice ma importante. Arduino inviera un messaggio di saluto al computer!",
       "teacher_tip": "Il volume spiega che fino ad ora Arduino ha lavorato 'in silenzio'. Leggeva dati, faceva calcoli e prendeva decisioni... ma noi non vedevamo nulla. Oggi cambiamo tutto: Arduino comincia a parlare.",
       "components_list": "Solo Arduino Nano R4 + cavo USB. Niente breadboard, niente componenti.",
       "class_hook": "Ragazzi, secondo voi il computer e Arduino possono parlare in due direzioni? Cioe non solo PC -> Arduino, ma anche Arduino -> PC?",
-      "action_tags": ["loadexp:v3-cap8-serial"],
+      "action_tags": [
+        "loadexp:v3-cap8-serial"
+      ],
       "auto_action": null
     },
     {
@@ -40,7 +50,10 @@
       "teacher_tip": "Il volume spiega: 'Serial e un oggetto (puoi immaginarlo come uno strumento pronto all'uso); begin() e un comando che serve per avviarlo; 9600 e la velocita di comunicazione (baud).' Per i nostri esercizi useremo sempre 9600.",
       "components_list": "Arduino Nano R4 collegato al PC via USB",
       "class_hook": "Ragazzi, guardate come aprire il Monitor Seriale: cliccate su Strumenti -> Monitor Seriale, oppure sulla lente di ingrandimento in alto a destra dello sketch.",
-      "action_tags": ["compile", "play"],
+      "action_tags": [
+        "compile",
+        "play"
+      ],
       "auto_action": null,
       "build_circuit": false
     },

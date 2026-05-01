@@ -102,7 +102,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono che cambiando la resistenza, cambia la luminosità del LED. NON dire i valori numerici — devono osservare l'effetto.",
       "teacher_tip": "Prepara 3 resistori con valori diversi (220Ω, 470Ω, 1kΩ). NON dire i valori — i ragazzi devono osservare l'effetto sulla luminosità.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 resistori diversi, 1 LED verde, 4 fili.",
       "class_hook": "L'ultima volta abbiamo acceso un LED e scoperto che serve un resistore per proteggerlo. Ma cosa succede se cambiamo il resistore?",

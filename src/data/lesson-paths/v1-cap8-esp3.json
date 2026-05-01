@@ -94,7 +94,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi combinano il pulsante con il LED RGB! Premendo il pulsante si accendono rosso e blu insieme — e il colore che esce è il VIOLA!",
+      "teacher_message": "Ragazzi, oggi i ragazzi combinano il pulsante con il LED RGB! Premendo il pulsante si accendono rosso e blu insieme — e il colore che esce è il VIOLA!",
       "teacher_tip": "Due resistori separati proteggono i canali rosso e blu. Il catodo comune del LED RGB è collegato al pulsante: premendo si chiude il circuito per entrambi i canali.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 2 resistori 470Ω, 1 LED RGB, 1 pulsante, 10 fili.",
       "class_hook": "Ricordate il LED RGB? Faceva tanti colori. Ma come facciamo ad accenderlo SOLO quando vogliamo? Con il pulsante!",

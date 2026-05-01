@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi entriamo nel mondo del SUONO! Collegheremo un cicalino alla batteria e lo faremo suonare. È come un LED, ma invece della luce produce suono.",
+      "teacher_message": "Ragazzi, oggi entriamo nel mondo del SUONO! Collegheremo un cicalino alla batteria e lo faremo suonare. È come un LED, ma invece della luce produce suono.",
       "teacher_tip": "Il cicalino è polarizzato come il LED: ha un piedino + e uno −. Mostralo alla classe prima di iniziare. Se lo colleghi al contrario, non funziona.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 cicalino (buzzer), 4 fili.",
       "class_hook": "Finora abbiamo fatto circuiti che producono LUCE. Ma l'elettricità può anche fare SUONO! Chi ha mai premuto un campanello?",

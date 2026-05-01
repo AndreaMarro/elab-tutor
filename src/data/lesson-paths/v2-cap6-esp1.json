@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Benvenuti al Volume 2! Iniziamo con qualcosa di familiare: i LED. Ma questa volta li colleghiamo in serie — uno dietro l'altro — con UN solo resistore. Cosa succederà alla luminosità?",
+      "teacher_message": "Ragazzi, benvenuti al Volume 2! Iniziamo con qualcosa di familiare: i LED. Ma questa volta li colleghiamo in serie — uno dietro l'altro — con UN solo resistore. Cosa succederà alla luminosità?",
       "teacher_tip": "Chiedete alla classe: 'Se due LED condividono lo stesso resistore e lo stesso filo, come si dividerà la corrente?' Lasciate che emergano le ipotesi. La risposta sorprenderà: la corrente NON si divide!",
       "components_list": "Ti servono: 1 breadboard mezza, 1 batteria 9V, 1 resistore 330Ω, 2 LED rossi, fili colorati.",
       "class_hook": "Immaginate una fila di persone che entrano da una porta stretta: passano UNA ALLA VOLTA. La corrente in serie funziona allo stesso modo — tutti i componenti condividono la stessa corrente!",

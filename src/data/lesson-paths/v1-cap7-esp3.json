@@ -87,7 +87,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Stessa configurazione. Questa volta colleghiamo il pin BLU (F5) del LED RGB.",
+      "teacher_message": "Ragazzi, stessa configurazione. Questa volta colleghiamo il pin BLU (F5) del LED RGB.",
       "teacher_tip": "Chiedi: 'Avete notato differenze tra rosso e verde? Il blu sarà uguale?' (spoiler: il blu ha bisogno di più energia)",
       "components_list": "Stessi componenti: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED RGB, 4 fili.",
       "class_hook": "Abbiamo acceso rosso e verde. Manca il blu — l'ultimo colore base! Ma il blu nasconde una sorpresa...",

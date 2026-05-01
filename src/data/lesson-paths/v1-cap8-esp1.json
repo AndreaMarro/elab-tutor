@@ -92,7 +92,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono il pulsante — un componente che apre e chiude il circuito. Il LED si accende solo quando premi!",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono il pulsante — un componente che apre e chiude il circuito. Il LED si accende solo quando premi!",
       "teacher_tip": "Il pulsante ha 4 piedini — i due sulla stessa fila sono collegati internamente. Va a cavallo della scanalatura centrale.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 resistore 470Ω, 1 LED blu, 6 fili.",
       "class_hook": "Finora i circuiti erano sempre accesi. Ma come facciamo ad accendere e spegnere il LED SENZA staccare i fili?",

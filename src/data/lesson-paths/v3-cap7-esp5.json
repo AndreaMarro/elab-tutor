@@ -14,18 +14,64 @@
   "target_age": "10-14 anni",
   "objective": "Creare un effetto fade continuo: il LED si accende gradualmente da 0 a 255 e poi si spegne gradualmente da 255 a 0, all'infinito. Usiamo due cicli for consecutivi e analogWrite per un effetto respiro di luce.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "board" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "breadboard" },
-    { "name": "LED rosso", "quantity": 1, "icon": "led" },
-    { "name": "Resistore 470ohm", "quantity": 1, "icon": "resistor" },
-    { "name": "Fili di collegamento", "quantity": 4, "icon": "wire" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "board"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "breadboard"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "led"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 1,
+      "icon": "resistor"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 4,
+      "icon": "wire"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "PWM", "analogWrite", "LED", "resistore", "breadboard", "codice", "programma", "for", "ciclo", "fade", "luminosita", "incremento", "decremento"],
-    "forbidden": ["condensatore", "transistor", "MOSFET", "motore", "diodo", "fototransistor", "DAC"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "PWM",
+      "analogWrite",
+      "LED",
+      "resistore",
+      "breadboard",
+      "codice",
+      "programma",
+      "for",
+      "ciclo",
+      "fade",
+      "luminosita",
+      "incremento",
+      "decremento"
+    ],
+    "forbidden": [
+      "condensatore",
+      "transistor",
+      "MOSFET",
+      "motore",
+      "diodo",
+      "fototransistor",
+      "DAC"
+    ],
     "note": "Cap 7 Vol 3 — doppio for loop, fade up/down, analogWrite continuo."
   },
-  "prerequisites": ["v3-cap7-esp4"],
+  "prerequisites": [
+    "v3-cap7-esp4"
+  ],
   "next_experiment": {
     "id": "v3-cap7-esp6",
     "title": "2 LED con pulsante (toggle)",
@@ -36,7 +82,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Nell'esperimento precedente il LED si accendeva gradualmente ma poi ripartiva da zero. Oggi lo facciamo anche spegnere gradualmente! Due cicli for: uno che sale e uno che scende. L'effetto e come il respiro: inspira (si accende) ed espira (si spegne).",
+      "teacher_message": "Ragazzi, nell'esperimento precedente il LED si accendeva gradualmente ma poi ripartiva da zero. Oggi lo facciamo anche spegnere gradualmente! Due cicli for: uno che sale e uno che scende. L'effetto e come il respiro: inspira (si accende) ed espira (si spegne).",
       "teacher_tip": "L'analogia del respiro funziona benissimo: inspira = luce che cresce, espira = luce che cala. Chiedi a un volontario di respirare lentamente e fai notare che e un ciclo continuo, come il nostro programma nel loop().",
       "class_hook": "Avete mai visto il LED di standby di un MacBook? Pulsa lentamente, come se respirasse. Oggi costruiamo esattamente quell'effetto! Il segreto sono due cicli for: uno che sale e uno che scende.",
       "action_tags": [],
@@ -48,7 +94,9 @@
       "duration_minutes": 10,
       "teacher_message": "Il circuito e identico al precedente: un LED con resistore su un pin PWM. La differenza e nel codice: il primo for va da 0 a 255 (fade up), il secondo for va da 255 a 0 (fade down). Nel loop() si ripetono all'infinito.",
       "teacher_tip": "Spiega la struttura dei due for: for(int i=0; i<=255; i+=5) sale, for(int i=255; i>=0; i-=5) scende. Il passo di 5 rende il fade visibile (51 passaggi invece di 256). Il delay(10) tra ogni passo controlla la velocita dell'effetto.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap7-esp5]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap7-esp5]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -67,7 +115,10 @@
       "duration_minutes": 10,
       "teacher_message": "Premete Play! Osservate il LED che si accende lentamente e poi si spegne lentamente, come un respiro. Il ciclo si ripete all'infinito. Provate a contare quanti secondi dura un ciclo completo.",
       "teacher_tip": "Fai misurare il tempo di un ciclo completo (up + down). Con delay(10) e passo 5, ogni fase dura circa 0.5 secondi, quindi un ciclo completo e circa 1 secondo. Chiedi: come lo rallenterei a 3 secondi per fase?",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:led1]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:led1]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il LED si accende gradualmente fino al massimo, poi si spegne gradualmente fino a zero. Il ciclo si ripete all'infinito. L'effetto ricorda il LED di standby di un computer portatile."
     },
@@ -88,7 +139,12 @@
     }
   ],
   "session_save": {
-    "concepts_covered": ["fade_up_down", "doppio_for_loop", "delay_controllo_velocita", "passo_incremento"],
+    "concepts_covered": [
+      "fade_up_down",
+      "doppio_for_loop",
+      "delay_controllo_velocita",
+      "passo_incremento"
+    ],
     "next_suggested": "v3-cap7-esp6",
     "resume_message": "Avete creato l'effetto respiro con il LED! Prossimo: toggle con pulsante e due LED."
   }

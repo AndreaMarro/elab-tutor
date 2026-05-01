@@ -114,7 +114,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida finale del capitolo! Uniamo TUTTO: magnete (ON/OFF) + manopola (luminosità) + LED RGB (colore). Tre livelli di controllo in un solo circuito!",
+      "teacher_message": "Ragazzi, sfida finale del capitolo! Uniamo TUTTO: magnete (ON/OFF) + manopola (luminosità) + LED RGB (colore). Tre livelli di controllo in un solo circuito!",
       "teacher_tip": "È il circuito più complesso finora. Fai un recap veloce: 'Il reed switch accende/spegne. Il potenziometro regola quanta corrente. Il LED RGB mostra il colore.' Poi lascia che provino!",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, 1 potenziometro 10kΩ, 1 resistore 470Ω, 1 LED RGB, 8 fili.",
       "class_hook": "Abbiamo il magnete che accende, il resistore che regola... e se aggiungessimo anche la manopola del potenziometro? TRE controlli diversi!",
