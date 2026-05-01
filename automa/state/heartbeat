@@ -22,3 +22,4 @@
 2026-05-01T07:52:53Z sprint-u ralph-iter 4 complete
 2026-05-01T08:30:00Z sprint-u ralph-iter5 START Category-B-codemod+lesson-path-fixes vitest=13473
 2026-05-01T08:45:00Z sprint-u ralph-iter5 codemod-11-JSX+2-lesson-paths singolare→plurale vitest=13473
+2026-05-01T08:50:00Z sprint-u ralph-iter5 CLOSED score=8.0/10 +0.2-vs-iter4 vitest=13473 PR=#57
