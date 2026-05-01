@@ -58,8 +58,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap4-esp1]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta due resistori 1kohm in parallelo su breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate due resistori 1kohm in parallelo su breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "breadboard-half", "id": "bb1" },

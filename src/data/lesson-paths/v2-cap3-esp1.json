@@ -58,8 +58,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap3-esp1]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega il multimetro alla batteria 9V",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate il multimetro alla batteria 9V",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },
@@ -97,7 +97,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Osserva il valore sul display del multimetro. Una batteria nuova mostra circa 9.4-9.6V. Prova a invertire i puntali: il valore diventa negativo!",
+      "teacher_message": "Osservate il valore sul display del multimetro. Una batteria nuova mostra circa 9.4-9.6V. Provate a invertire i puntali: il valore diventa negativo!",
       "teacher_tip": "Evidenzia il multimetro. Fai notare le cifre decimali: la precisione e importante. Chiedi: 'Quanto vale esattamente? E di piu o meno di 9V?'",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:mm1]"],
       "auto_action": "play_and_highlight",

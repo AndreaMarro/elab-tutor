@@ -57,8 +57,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap3-esp3]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Collega il multimetro al resistore per misurare la resistenza",
-        "button_label": "Monta il circuito per me",
+        "description": "Collegate il multimetro al resistore per misurare la resistenza",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "resistor", "id": "r1", "value": 330 },
@@ -91,7 +91,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Osserva il valore sul display. E vicino a 330ohm? Prova con resistori diversi: 1kohm, 10kohm. Confronta sempre il valore misurato con quello delle bande.",
+      "teacher_message": "Osservate il valore sul display. E vicino a 330ohm? Provate con resistori diversi: 1kohm, 10kohm. Confrontate sempre il valore misurato con quello delle bande.",
       "teacher_tip": "Fai compilare una tabella: Resistore | Bande (valore nominale) | Misurato | Differenza %. I ragazzi vedranno che tutti i valori rientrano nella tolleranza.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:r1]"],
       "auto_action": "play_and_highlight",

@@ -118,8 +118,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito pulsante + LDR + LED",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito pulsante + LDR + LED",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -193,7 +193,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Premi il pulsante senza luce: LED spento. Illumina senza premere: LED spento. Premi E illumina: LED acceso!",
+      "teacher_message": "Premete il pulsante senza luce: LED spento. Illumina senza premere: LED spento. Premete E illuminate: LED acceso!",
       "teacher_tip": "Fai provare tutte e 4 le combinazioni: (no pulsante, no luce), (pulsante, no luce), (no pulsante, luce), (pulsante, luce). Solo l'ultima accende.",
       "provocative_question": "Quante condizioni servono per accendere il LED? Una sola basta?",
       "components_list": null,
@@ -217,7 +217,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play: servono DUE condizioni — pulsante premuto E luce sulla fotoresistenza. Come una porta con due serrature!",
+      "teacher_message": "Premete Play: servono DUE condizioni — pulsante premuto E luce sulla fotoresistenza. Come una porta con due serrature!",
       "teacher_tip": "Evidenzia pulsante e fotoresistenza. Spiega: 'Questa è la logica AND — entrambe le condizioni devono essere vere!'",
       "components_list": null,
       "class_hook": null,

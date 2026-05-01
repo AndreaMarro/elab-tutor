@@ -120,8 +120,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito LED con reed switch",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito LED con reed switch",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -181,7 +181,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 8,
-      "teacher_message": "Avvicina il magnete al reed switch: LED acceso! Allontana: LED spento. Come funziona questo interruttore invisibile?",
+      "teacher_message": "Avvicinate il magnete al reed switch: LED acceso! Allontana: LED spento. Come funziona questo interruttore invisibile?",
       "teacher_tip": "Fai provare: avvicina lentamente il magnete e fai trovare la distanza minima. 'A che distanza si accende? Provate a trovare il punto esatto!'",
       "provocative_question": "Il reed switch funziona senza toccarlo. Come fa a sapere che il magnete è vicino? Cosa c'è dentro?",
       "components_list": null,
@@ -205,7 +205,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play, poi avvicina il magnete al reed switch: il LED si accende! Le lamelle dentro si toccano e chiudono il circuito.",
+      "teacher_message": "Premete Play, poi avvicinate il magnete al reed switch: il LED si accende! Le lamelle dentro si toccano e chiudono il circuito.",
       "teacher_tip": "Evidenzia il reed switch e il LED. Spiega: 'Dentro il tubicino di vetro ci sono due lamelle. Quando il magnete è vicino, le attira e si toccano — il circuito si chiude!'",
       "components_list": null,
       "class_hook": null,
@@ -215,7 +215,7 @@
         "[AZIONE:highlight:led1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Avvicina il magnete → LED acceso! Allontana → LED spento! Dentro il reed switch, due lamelle metalliche si toccano con il campo magnetico. È un interruttore invisibile!",
+      "observation_prompt": "Avvicinate il magnete → LED acceso! Allontana → LED spento! Dentro il reed switch, due lamelle metalliche si toccano con il campo magnetico. È un interruttore invisibile!",
       "analogies": [
         {
           "concept": "reed_switch",

@@ -67,11 +67,11 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play! Il LED verde si accende. Cliccate sul pulsante: il verde si spegne e il rosso si accende. Cliccate ancora: si scambiano di nuovo! Ogni pressione alterna lo stato per sempre.",
+      "teacher_message": "Premete Play! Il LED verde si accende. Cliccate sul pulsante: il verde si spegne e il rosso si accende. Cliccate ancora: si scambiano di nuovo! Ogni pressione alterna lo stato per sempre.",
       "teacher_tip": "Fai notare che e una vera ALTERNANZA di stato: ogni pressione cambia. Non e come tenere premuto un pulsante normale. Questo meccanismo e ovunque nell'elettronica: interruttori della luce, tasto Mute, tasto Play/Pausa. La variabile booleana e la chiave.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:btn1]", "[AZIONE:highlight:led1]", "[AZIONE:highlight:led2]"],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Verde acceso, rosso spento. Premi il pulsante: si scambiano! Premi ancora: si scambiano di nuovo. La variabile di stato ricorda quale LED e acceso tra una pressione e l'altra."
+      "observation_prompt": "Verde acceso, rosso spento. Premete il pulsante: si scambiano! Premi ancora: si scambiano di nuovo. La variabile di stato ricorda quale LED e acceso tra una pressione e l'altra."
     },
     {
       "name": "CONCLUDI",

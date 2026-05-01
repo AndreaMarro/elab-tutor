@@ -107,8 +107,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito LED verde + pulsante + R 220Ω",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito LED verde + pulsante + R 220Ω",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -183,7 +183,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 7,
-      "teacher_message": "Confronta con l'esperimento 1: LED blu con 470Ω vs LED verde con 220Ω.",
+      "teacher_message": "Confrontate con l'esperimento 1: LED blu con 470Ω vs LED verde con 220Ω.",
       "teacher_tip": "Chiedi: 'Il LED verde con 220Ω sarà più luminoso o meno luminoso del blu con 470Ω?' Ricorda il capitolo 6!",
       "provocative_question": "Il LED verde con un resistore più piccolo sarà più luminoso o meno luminoso del LED blu di prima?",
       "components_list": null,
@@ -207,7 +207,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi il pulsante: LED verde più luminoso del blu! Il resistore 220Ω fa passare più corrente.",
+      "teacher_message": "Premete il pulsante: LED verde più luminoso del blu! Il resistore 220Ω fa passare più corrente.",
       "teacher_tip": "Momento di connessione tra capitoli: il concetto di resistenza dal cap 6 si applica anche qui con il pulsante.",
       "components_list": null,
       "class_hook": null,

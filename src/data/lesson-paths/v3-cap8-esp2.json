@@ -62,7 +62,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e apri il Serial Monitor! Vedete i numeri che scorrono: 0, 1, 2, 3... uno ogni mezzo secondo. Il contatore non si ferma mai. Osservate la velocita costante dei messaggi grazie al delay.",
+      "teacher_message": "Premete Play e aprite il Serial Monitor! Vedete i numeri che scorrono: 0, 1, 2, 3... uno ogni mezzo secondo. Il contatore non si ferma mai. Osservate la velocita costante dei messaggi grazie al delay.",
       "teacher_tip": "Fai osservare tre cose: la regolarita del timing (un messaggio ogni 500ms), il contatore che cresce senza fermarsi, e cosa succede se si preme Reset (il contatore riparte da 0 perche la variabile si reinizializza). Chiedi: e possibile far partire il contatore da 100 invece che da 0?",
       "action_tags": ["[AZIONE:play]"],
       "auto_action": "play_and_highlight",

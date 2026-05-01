@@ -39,8 +39,8 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:loadexp:v2-cap12-esp1]"], "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il Robot Segui Luce sulla breadboard full-size",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il Robot Segui Luce sulla breadboard full-size",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },
@@ -94,7 +94,7 @@
     },
     {
       "name": "OSSERVA", "icon": "👀", "duration_minutes": 15,
-      "teacher_message": "Premi Play, poi usa il cursore della luce sui fototransistor: aumenta la luce su pt1 e guarda mot2 avviarsi!",
+      "teacher_message": "Premete Play, poi usa il cursore della luce sui fototransistor: aumenta la luce su pt1 e guarda mot2 avviarsi!",
       "teacher_tip": "Evidenzia i componenti nell'ordine del segnale: pt1 → filo verde a X → mos2 (Gate) → mot2. Poi ripeti per pt2 → mos1 → mot1. Mostra come i diodi d1 e d2 sono collegati 'al contrario' (catodo verso il positivo) per protezione.",
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:pt1]", "[AZIONE:highlight:pt2]", "[AZIONE:highlight:mos1]", "[AZIONE:highlight:mos2]", "[AZIONE:highlight:mot1]", "[AZIONE:highlight:mot2]", "[AZIONE:highlight:d1]", "[AZIONE:highlight:d2]"],

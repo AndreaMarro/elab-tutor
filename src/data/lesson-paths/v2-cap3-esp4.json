@@ -59,8 +59,8 @@
       "action_tags": ["[AZIONE:loadexp:v2-cap3-esp4]"],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta un circuito con batteria, resistore e multimetro in serie",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate un circuito con batteria, resistore e multimetro in serie",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },
@@ -95,7 +95,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e leggi il valore sul multimetro. Mostra circa 9mA! La Legge di Ohm funziona: I = V/R = 9V/1000ohm = 9mA.",
+      "teacher_message": "Premete Play e leggi il valore sul multimetro. Mostra circa 9mA! La Legge di Ohm funziona: I = V/R = 9V/1000ohm = 9mA.",
       "teacher_tip": "Confronta il valore calcolato (9mA) con quello misurato. Saranno molto vicini! La piccola differenza dipende dalla batteria (non e esattamente 9V) e dalla tolleranza del resistore.",
       "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:mm1]", "[AZIONE:highlight:r1]"],
       "auto_action": "play_and_highlight",

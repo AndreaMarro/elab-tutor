@@ -37,8 +37,8 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:loadexp:v2-cap6-esp4]"], "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta circuito LED con resistore e multimetro in parallelo al LED",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate circuito LED con resistore e multimetro in parallelo al LED",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },

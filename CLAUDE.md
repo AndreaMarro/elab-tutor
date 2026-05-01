@@ -1684,3 +1684,43 @@ Box subtotal **11.65/14** → normalizzato 8.32/10 + bonus iter 38 (+0.30 ADR-03
 - A11 UX: `src/components/common/MicPermissionNudge.jsx`
 - A12 UX: `src/components/common/UpdatePrompt.jsx`
 - 4 completion msgs Phase 1: `automa/team-state/messages/{maker1,maker2,maker3,webdesigner1}-iter38-phase1-completed.md`
+
+## Sprint U — Cycle 1 Iter 1 audit close (2026-05-01)
+
+**Score Cycle 1 ONESTO**: N/A (audit-only, no fixes yet)
+
+**7 agents dispatched**: audit1(vol1+vol2), audit2(vol3), livetest1, livetest2, unlimverify, designcritique, persona(FAILED — stall 600s)
+
+**Top findings**:
+1. BLOCKER: L2 template routing `selectTemplate()` returns `L2-explain-led-blink` for ALL 94 experiments — zero experiment-specific UNLIM content delivered (20/20 tests identical response body, Morfismo Sense 2 broken)
+2. 73/94 lesson-paths have singolare imperative violations ("Premi Play" ×~50, "fai/clicca/monta/collega" ×~23) — PRINCIPIO ZERO linguaggio broken for 78% of experiments
+3. 91/94 teacher_messages missing "Ragazzi," opener — docente read flow broken
+4. 94/94 unlimPrompts use "studente" framing instead of "docente" framing — PRINCIPIO ZERO structural violation
+5. UNLIM vol/pag citation: strict page-number format 0/20 (loose "Vol. pag." present but no actual page number in L2 template)
+6. Lighthouse perf=43 (react-pdf 407KB + mammoth 70KB eager-loaded, lazy-load fix needed)
+7. 833 palette hex violations (TeacherDashboard.jsx worst: 55 violations)
+
+**Live tests**: 18/18 smoke PASS (livetest1 10/10 vol1+vol2, livetest2 8/8 vol3). Full 94-experiment specs ready for Cycle 2 execution. v3-cap7-mini + v3-cap8-serial show 0 components on #tutor route — likely require #lavagna route.
+
+**Circuit quality**: 93/94 structural OK — v3-cap8-serial missing bb1. 4 vol3 title/ID mismatches. 1 vol3 content mismatch (v3-cap6-esp4 prompt describes semaforo, title is effetto polizia).
+
+**Cycle 2 scope** (4 fix agents): L2 routing fix (`clawbot-template-router.ts`) + vol/pag template citation fix (`clawbot-templates.ts`) + 73-file linguaggio codemod + docente-framing unlimPrompt batch fix (94 entries in 3 JS files) + v3-cap8-serial circuit fix + vol3 content mismatches
+
+**Baseline**: vitest 13473 PASS (Mac Mini env). NO regressions introduced Cycle 1 (read-only audit).
+
+**Files created Cycle 1 (read-only, no src/ changes)**:
+- `docs/audits/sprint-u-cycle1-iter1-phase0-state-map.md` (orchestrator Phase 0)
+- `docs/audits/sprint-u-cycle1-iter1-audit-vol1-vol2.md` (audit1)
+- `docs/audits/sprint-u-cycle1-iter1-audit-vol3.md` (audit2)
+- `docs/audits/sprint-u-cycle1-iter1-unlim-matrix.md` (unlimverify)
+- `docs/audits/sprint-u-cycle1-iter1-design-critique.md` (designcritique)
+- `docs/audits/sprint-u-cycle1-iter1-livetest-vol1-vol2.md` + `sprint-u-cycle1-iter1-livetest-vol1-vol2-smoke.json` (livetest1)
+- `docs/audits/sprint-u-cycle1-iter1-livetest-vol3.md` (livetest2)
+- `docs/audits/sprint-u-cycle1-iter1-CONSOLIDATED-audit.md` (scribe — this close)
+- `docs/handoff/sprint-u-cycle2-iter1-handoff.md` (scribe — Cycle 2 activation)
+- `tests/e2e/sprint-u.config.js` + `helpers/sprint-u-auth.js` (livetest1)
+- `tests/e2e/sprint-u-cycle1-iter1-vol1-vol2-smoke.spec.js` (executed) + `vol1-vol2-full.spec.js` (ready) (livetest1)
+- `tests/e2e/sprint-u-cycle1-iter1-vol3-smoke.spec.js` (executed) + `vol3-full.spec.js` (ready) (livetest2)
+- `docs/audits/sprint-u-cycle1-iter1-screenshots/` (10 PNG livetest1) + `sprint-u-screenshots/` (9 PNG livetest2)
+
+**Cycle 2 activation**: see `docs/handoff/sprint-u-cycle2-iter1-handoff.md` §1 summary + §4 exact L2 fix + §5 exact codemod commands + §6 cycle 3 verifier gates.

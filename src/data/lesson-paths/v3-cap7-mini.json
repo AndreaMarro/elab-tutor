@@ -79,7 +79,7 @@
       "observation_prompt": "Il LED verde si accende solo quando il trimmer e ruotato oltre meta corsa (tensione > 2,5V, valore numerico > 512).",
       "analogies": [
         "Il convertitore ADC e come un righello: invece di misurare in millimetri, misura la tensione a passi di 5 mV.",
-        "Il trimmer e come un dimmer della luce di casa: gira la manopola e cambi quanto passa."
+        "Il trimmer e come un dimmer della luce di casa: girate la manopola e cambi quanto passa."
       ]
     },
     {

@@ -110,8 +110,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito buzzer continuo sulla breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito buzzer continuo sulla breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -190,7 +190,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 8,
-      "teacher_message": "Premi Play: il cicalino suona! La corrente fa vibrare un cristallo dentro il buzzer e produce suono.",
+      "teacher_message": "Premete Play: il cicalino suona! La corrente fa vibrare un cristallo dentro il buzzer e produce suono.",
       "teacher_tip": "Evidenzia il cicalino. Spiega: 'La corrente attraversa il cristallo → il cristallo vibra → l'aria si muove → noi sentiamo il suono!'",
       "components_list": null,
       "class_hook": null,

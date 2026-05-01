@@ -140,6 +140,15 @@ export function selectTemplate(query: string, context: SelectContext = {}): Claw
     }
   }
 
+  // Sprint U fix: lesson-explain templates are experiment-specific.
+  // Only serve a lesson-explain template when the query's experimentId
+  // exactly matches the template's own inputs.experimentId. All other
+  // lesson-explain queries fall through to LLM+RAG (return null).
+  if (best.template.category === 'lesson-explain' && context.experimentId !== undefined) {
+    const tplExpId = (best.template.inputs as Record<string, unknown> | undefined)?.experimentId;
+    if (tplExpId !== context.experimentId) return null;
+  }
+
   return best.template;
 }
 

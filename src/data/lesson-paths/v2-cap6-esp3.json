@@ -36,8 +36,8 @@
       "components_list": null, "class_hook": null,
       "action_tags": ["[AZIONE:loadexp:v2-cap6-esp3]"], "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta tre LED rossi in serie con resistore 330Ω su breadboard",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate tre LED rossi in serie con resistore 330Ω su breadboard",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             { "type": "battery9v", "id": "bat1" },

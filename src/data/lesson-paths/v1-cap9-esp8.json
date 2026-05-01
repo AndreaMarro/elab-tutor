@@ -110,8 +110,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il circuito sfida 2 pot RGB",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il circuito sfida 2 pot RGB",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -211,7 +211,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Gira le due manopole: una controlla il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
+      "teacher_message": "Girate le due manopole: una controlla il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
       "teacher_tip": "Il canale verde resta spento: la sfida è progettare dove aggiungere il terzo potenziometro. Chiedi di disegnare prima su carta.",
       "provocative_question": "Come fareste ad aggiungere il canale verde a questo circuito? Di cosa avete bisogno?",
       "components_list": null,
@@ -235,7 +235,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premi Play e sperimenta: rosso e blu insieme fanno viola! Ma il verde è spento — la sfida è aggiungerlo!",
+      "teacher_message": "Premete Play e sperimenta: rosso e blu insieme fanno viola! Ma il verde è spento — la sfida è aggiungerlo!",
       "teacher_tip": "Evidenzia i due potenziometri. Spiega che combinare circuiti che funzionano è più facile che costruire tutto da zero.",
       "components_list": null,
       "class_hook": null,

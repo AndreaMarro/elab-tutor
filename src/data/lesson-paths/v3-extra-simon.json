@@ -123,8 +123,8 @@
       ],
       "auto_action": "load_experiment",
       "build_circuit": {
-        "description": "Monta il gioco Simon Says con 4 LED, 4 pulsanti e cicalino",
-        "button_label": "Monta il circuito per me",
+        "description": "Montate il gioco Simon Says con 4 LED, 4 pulsanti e cicalino",
+        "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
             {
@@ -329,7 +329,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 15,
-      "teacher_message": "Premi Play! Tutti e 4 i LED lampeggiano insieme con un suono acuto: è il lampeggio di avvio. Poi si accende un LED con la sua nota: è il primo elemento della sequenza. Premi il pulsante dello stesso colore! Se indovini, la sequenza si allunga di un elemento. Quanti livelli riuscite a fare?",
+      "teacher_message": "Premete Play! Tutti e 4 i LED lampeggiano insieme con un suono acuto: è il lampeggio di avvio. Poi si accende un LED con la sua nota: è il primo elemento della sequenza. Premete il pulsante dello stesso colore! Se indovini, la sequenza si allunga di un elemento. Quanti livelli riuscite a fare?",
       "teacher_tip": "Evidenzia i 4 LED, i 4 pulsanti e il cicalino. Fai giocare tutta la classe insieme: la lavagna mostra la sequenza, i ragazzi la ripetono. Fai notare che il cicalino aiuta la memoria: puoi ricordare la sequenza sia per colori che per melodia! Il game over suona un tono grave e basso — molto diverso dalle note del gioco.",
       "components_list": null,
       "class_hook": null,
