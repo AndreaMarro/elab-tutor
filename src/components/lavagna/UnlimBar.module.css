@@ -45,7 +45,7 @@
   background: transparent;
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 15px;
-  color: var(--color-text, #1A1A2E);
+  color: var(--color-text);
   padding: 8px 4px;
   outline: none;
   min-height: 44px;
@@ -75,12 +75,12 @@
 
 .iconBtn:hover {
   background: rgba(30, 77, 140, 0.08);
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .sendBtn {
   color: #fff;
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   border-radius: 10px;
 }
 

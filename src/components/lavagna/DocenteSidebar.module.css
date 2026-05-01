@@ -20,7 +20,7 @@
 }
 
 .header {
-  border-bottom: 2px solid var(--color-primary, #1E4D8C);
+  border-bottom: 2px solid var(--color-primary);
   padding-bottom: 8px;
   margin-bottom: 12px;
 }
@@ -29,7 +29,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -44,7 +44,7 @@
   display: inline-block;
   margin-top: 4px;
   padding: 2px 8px;
-  background-color: var(--color-primary, #1E4D8C);
+  background-color: var(--color-primary);
   color: white;
   /* iter 14 LIM legibility: 11px → 14px (var(--font-size-label)) per spec §6 #12 */
   font-size: 14px;

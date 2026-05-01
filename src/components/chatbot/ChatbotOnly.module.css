@@ -21,16 +21,16 @@
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) 64px;
   grid-template-rows: 100vh;
-  background: var(--elab-bg, #F0F4F8);
+  background: var(--elab-bg);
   font-family: 'Open Sans', system-ui, sans-serif;
-  color: var(--elab-text, #1A1A1A);
+  color: var(--elab-text);
   z-index: 5000;
 }
 
 /* ─────────────────────────── SIDEBAR CRONOLOGIA ─────────────────────────── */
 
 .sidebar {
-  background: var(--elab-card-bg, #FFFFFF);
+  background: var(--elab-card-bg);
   border-right: 1px solid rgba(30, 77, 140, 0.10);
   display: flex;
   flex-direction: column;
@@ -51,7 +51,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin: 0;
@@ -64,7 +64,7 @@
   font-size: 13px;
   background: transparent;
   border: 1px solid rgba(30, 77, 140, 0.18);
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy);
   border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
@@ -77,15 +77,15 @@
 .backHomeBtn:focus-visible {
   background: rgba(30, 77, 140, 0.08);
   outline: none;
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime);
 }
 
 .newChatBtn {
   margin: 12px 14px;
   padding: 12px 14px;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy);
   color: #FFFFFF;
-  border: 2px solid var(--elab-navy, #1E4D8C);
+  border: 2px solid var(--elab-navy);
   border-radius: 12px;
   font-family: inherit;
   font-weight: 700;
@@ -102,7 +102,7 @@
 
 .newChatBtn:hover,
 .newChatBtn:focus-visible {
-  background: var(--elab-navy-dark, #153D6F);
+  background: var(--elab-navy-dark);
   outline: none;
   transform: translateY(-1px);
 }
@@ -134,7 +134,7 @@
 .sidebarSectionLabel {
   font-size: 12px;
   font-weight: 700;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 6px 10px 4px;
@@ -154,7 +154,7 @@
   flex-direction: column;
   gap: 2px;
   font-family: inherit;
-  color: var(--elab-text, #1A1A1A);
+  color: var(--elab-text);
   min-height: 44px;
   transition: background 120ms ease, border-color 120ms ease;
 }
@@ -168,13 +168,13 @@
 
 .sidebarItemActive {
   background: rgba(74, 122, 37, 0.10);
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime);
 }
 
 .sidebarItemTitle {
   font-size: 13px;
   font-weight: 600;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -183,7 +183,7 @@
 
 .sidebarItemDescription {
   font-size: 13px;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -198,7 +198,7 @@
   /* iter 38 A6 fix: 9→10px to honor CLAUDE.md rule 8 label floor */
   font-size: 12px;
   font-weight: 700;
-  color: var(--elab-orange, #E8941C);
+  color: var(--elab-orange);
 /* © Andrea Marro — 30/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   background: rgba(232, 148, 28, 0.12);
   border-radius: 4px;
@@ -212,7 +212,7 @@
 .sidebarEmpty {
   padding: 20px 14px;
   text-align: center;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   /* iter 38 A6 fix: 12→13px text floor (CLAUDE.md rule 8) */
   font-size: 13px;
   border: 1px dashed rgba(30, 77, 140, 0.15);
@@ -228,12 +228,12 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  background: var(--elab-bg, #F0F4F8);
+  background: var(--elab-bg);
 }
 
 .chatHeader {
   padding: 14px 20px;
-  background: var(--elab-card-bg, #FFFFFF);
+  background: var(--elab-card-bg);
   border-bottom: 1px solid rgba(30, 77, 140, 0.08);
   display: flex;
   align-items: center;
@@ -255,7 +255,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy);
   margin: 0;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -264,7 +264,7 @@
 .chatHeaderSub {
   /* iter 38 A6 fix: 12→13px text floor (CLAUDE.md rule 8) */
   font-size: 13px;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   margin: 0;
   font-weight: 500;
 }
@@ -292,15 +292,15 @@
 
 .bubbleUser {
   align-self: flex-end;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy);
   color: #FFFFFF;
   border-bottom-right-radius: 6px;
 }
 
 .bubbleAssistant {
   align-self: flex-start;
-  background: var(--elab-card-bg, #FFFFFF);
-  color: var(--elab-text, #1A1A1A);
+  background: var(--elab-card-bg);
+  color: var(--elab-text);
   border: 1px solid rgba(30, 77, 140, 0.10);
   border-bottom-left-radius: 6px;
 }
@@ -315,7 +315,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy);
   opacity: 0.4;
   animation: dotPulse 1s ease-in-out infinite;
 }
@@ -330,7 +330,7 @@
 
 .composer {
   padding: 12px 16px 16px;
-  background: var(--elab-card-bg, #FFFFFF);
+  background: var(--elab-card-bg);
   border-top: 1px solid rgba(30, 77, 140, 0.08);
   display: flex;
   gap: 10px;
@@ -347,14 +347,14 @@
   font-family: inherit;
   font-size: 14px;
   background: #FFFFFF;
-  color: var(--elab-text, #1A1A1A);
+  color: var(--elab-text);
   resize: vertical;
   line-height: 1.4;
 }
 
 .input:focus-visible {
   outline: none;
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime);
   box-shadow: 0 0 0 3px rgba(74, 122, 37, 0.18);
 }
 
@@ -362,7 +362,7 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 16px;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy);
   color: #FFFFFF;
   border: none;
   border-radius: 12px;
@@ -379,7 +379,7 @@
 
 .sendBtn:hover:not(:disabled),
 .sendBtn:focus-visible {
-  background: var(--elab-navy-dark, #153D6F);
+  background: var(--elab-navy-dark);
   outline: none;
   transform: translateY(-1px);
 }
@@ -392,7 +392,7 @@
 /* ─────────────────────────── TOOLS PALETTE RIGHT ─────────────────────────── */
 
 .tools {
-  background: var(--elab-card-bg, #FFFFFF);
+  background: var(--elab-card-bg);
   border-left: 1px solid rgba(30, 77, 140, 0.10);
   display: flex;
   flex-direction: column;
@@ -411,7 +411,7 @@
   border: 1px solid rgba(30, 77, 140, 0.15);
   border-radius: 12px;
   background: #FFFFFF;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -423,7 +423,7 @@
 .toolBtn:hover:not(:disabled),
 .toolBtn:focus-visible {
   background: rgba(74, 122, 37, 0.10);
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime);
   outline: none;
   transform: translateY(-1px);
 }
@@ -437,7 +437,7 @@
   /* iter 38 A6 fix: 9→10px label floor (CLAUDE.md rule 8) */
   font-size: 12px;
   font-weight: 700;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-top: -4px;

@@ -33,7 +33,7 @@
   flex-direction: column;
   position: relative;
   padding-bottom: 16px;
-  border-bottom: 3px solid var(--color-primary, #1E4D8C);
+  border-bottom: 3px solid var(--color-primary);
   margin-bottom: 24px;
 }
 
@@ -46,7 +46,7 @@
 
 .volBadge {
   padding: 2px 10px;
-  background-color: var(--color-primary, #1E4D8C);
+  background-color: var(--color-primary);
   color: white;
   border-radius: 4px;
   font-size: 13px;
@@ -151,7 +151,7 @@
 }
 
 .activeExp {
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
   box-shadow: 0 2px 8px rgba(30, 77, 140, 0.15);
 }
 
@@ -192,7 +192,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -267,7 +267,7 @@
   top: 12px;
   width: 22px;
   height: 22px;
-  background-color: var(--color-primary, #1E4D8C);
+  background-color: var(--color-primary);
   color: white;
   font-size: 13px;
   font-weight: 600;
@@ -286,7 +286,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

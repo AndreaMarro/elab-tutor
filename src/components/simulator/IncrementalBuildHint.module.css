@@ -43,7 +43,7 @@
   border-radius: 3px;
   font-family: 'Fira Code', monospace;
   font-size: 13px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .count {
@@ -85,7 +85,7 @@
   border-radius: 3px;
   font-family: 'Fira Code', monospace;
   font-size: 13px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .opDetail {

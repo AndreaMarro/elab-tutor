@@ -21,7 +21,7 @@
   min-height: 48px;
   height: 48px;
   padding: 0 6px 0 16px;
-  background: linear-gradient(135deg, var(--color-primary, #1E4D8C) 0%, rgba(30, 77, 140, 0.85) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, rgba(30, 77, 140, 0.85) 100%);
   cursor: grab;
   user-select: none;
   touch-action: none;

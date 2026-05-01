@@ -35,7 +35,7 @@
 
 .volTabActive {
   background: #fff;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   box-shadow: 0 -1px 4px rgba(30, 77, 140, 0.08);
 }
 
@@ -72,7 +72,7 @@
   border: 1px solid rgba(30, 77, 140, 0.12);
   border-radius: 8px;
   background: #fff;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   cursor: pointer;
   transition: background 150ms, border-color 150ms;
   padding: 0;
@@ -95,7 +95,7 @@
 
 .navBtnActive {
   background: rgba(30, 77, 140, 0.1);
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
 }
 
 /* Page counter */
@@ -105,7 +105,7 @@
   gap: 2px;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .pageInput {
@@ -116,7 +116,7 @@
   padding: 4px;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   background: #fff;
   -moz-appearance: textfield;
 }
@@ -250,8 +250,8 @@
 }
 
 .thumbActive {
-  border-color: var(--color-primary, #1E4D8C);
-  box-shadow: 0 0 0 1px var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
 }
 
 .thumbNumber {
@@ -289,14 +289,14 @@
   z-index: 5;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .spinner {
   width: 32px;
   height: 32px;
   border: 3px solid rgba(30, 77, 140, 0.15);
-  border-top-color: var(--color-primary, #1E4D8C);
+  border-top-color: var(--color-primary);
   border-radius: 50%;
   animation: spin 800ms linear infinite;
 }
@@ -306,15 +306,15 @@
 }
 
 .errorOverlay {
-  color: var(--color-red, #E54B3D);
+  color: var(--color-red);
 }
 
 .retryBtn {
   padding: 8px 20px;
-  border: 1px solid var(--color-red, #E54B3D);
+  border: 1px solid var(--color-red);
   border-radius: 8px;
   background: #fff;
-  color: var(--color-red, #E54B3D);
+  color: var(--color-red);
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   cursor: pointer;

@@ -14,7 +14,7 @@
   width: clamp(240px, 30vw, 400px);
   min-width: 160px;
   max-width: 40%;
-  border-left: 1px solid var(--color-sim-border, #E8E4DB);
+  border-left: 1px solid var(--color-sim-border);
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
@@ -33,11 +33,11 @@
   gap: var(--space-2, 8px);
   padding: 6px 14px;
   background: var(--color-wire-mode-bg, rgba(255, 243, 224, 0.95));
-  border: 1px solid var(--color-vol2, #E8941C);
+  border: 1px solid var(--color-vol2);
   border-radius: var(--radius-md, 8px);
   font-size: var(--font-size-sm, 16px);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
-  color: var(--color-wire-mode-text, #E65100);
+  color: var(--color-wire-mode-text);
   font-weight: var(--font-weight-semibold, 600);
   z-index: 25;
   pointer-events: none;
@@ -61,8 +61,8 @@
 }
 
 .unlimPanel {
-  background: var(--color-sim-bg, #FAFAF7);
-  border: 2px solid var(--color-accent, #4A7A25);
+  background: var(--color-sim-bg);
+  border: 2px solid var(--color-accent);
   border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow-xl, 0 12px 48px rgba(0, 0, 0, 0.2));
   width: 100%;
@@ -81,7 +81,7 @@
   align-items: center;
   padding: var(--space-3, 12px) var(--space-4, 16px);
   background: linear-gradient(135deg, rgba(124, 179, 66, 0.08), rgba(30, 77, 140, 0.04));
-  border-bottom: 1px solid var(--color-sim-border, #E8E4DB);
+  border-bottom: 1px solid var(--color-sim-border);
 }
 
 .unlimHeaderLeft {
@@ -93,7 +93,7 @@
 .unlimHeaderTitle {
   font-size: var(--font-size-md, 16px);
   font-weight: var(--font-weight-bold, 700);
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   font-family: var(--font-display, 'Oswald', sans-serif);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -104,7 +104,7 @@
   background: none;
   cursor: pointer;
   font-size: var(--font-size-md, 16px);
-  color: var(--color-sim-text-muted, #737373);
+  color: var(--color-sim-text-muted);
   padding: var(--space-1, 4px) var(--space-2, 8px);
   border-radius: var(--radius-sm, 6px);
   min-width: var(--touch-min, 56px);
@@ -117,7 +117,7 @@
 .unlimBody {
   padding: var(--space-4, 16px) var(--space-5, 20px);
   font-size: var(--font-size-sm, 16px);
-  color: var(--color-text, #333);
+  color: var(--color-text);
   line-height: var(--line-height-relaxed, 1.6);
   overflow: auto;
   flex: 1;
@@ -129,15 +129,15 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-2, 8px) var(--space-4, 16px);
-  border-top: 1px solid var(--color-sim-border, #E8E4DB);
-  background: var(--color-overlay-cream, #F5F3EE);
+  border-top: 1px solid var(--color-sim-border);
+  background: var(--color-overlay-cream);
 }
 
 .unlimRetryBtn {
-  border: 1px solid var(--color-accent, #4A7A25);
+  border: 1px solid var(--color-accent);
   border-radius: var(--radius-md, 8px);
-  background: var(--color-bg, #fff);
-  color: var(--color-accent, #4A7A25);
+  background: var(--color-bg);
+  color: var(--color-accent);
   cursor: pointer;
   padding: var(--space-2, 8px) 14px;
   font-size: var(--font-size-sm, 16px);
@@ -173,7 +173,7 @@
   border-left: none !important;
   border-radius: 12px;
   overflow: hidden;
-  background: var(--color-editor-active-bg, #1E2530);
+  background: var(--color-editor-active-bg);
   box-shadow: 0 16px 64px rgba(0,0,0,0.4), 0 0 0 1px rgba(230,126,34,0.3);
 }
 
@@ -188,7 +188,7 @@
     min-width: 0;
     max-width: none;
     border-left: none;
-    border-top: 1px solid var(--color-sim-border, #E8E4DB);
+    border-top: 1px solid var(--color-sim-border);
     max-height: 40vh;
     max-height: 40dvh;
   }
@@ -268,7 +268,7 @@
     max-width: 50vw;
     height: calc(100dvh - 44px);
     max-height: none;
-    border-left: 2px solid var(--color-primary, #1E4D8C);
+    border-left: 2px solid var(--color-primary);
     border-top: none;
     z-index: 250;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);

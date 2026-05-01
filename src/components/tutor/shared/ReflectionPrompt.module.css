@@ -93,7 +93,7 @@
 .modeBtn:focus-visible,
 .saveBtn:focus-visible,
 .skipBtn:focus-visible {
-  outline: 2px solid var(--color-accent, #F9A825);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 

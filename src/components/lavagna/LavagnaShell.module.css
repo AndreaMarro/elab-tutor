@@ -6,7 +6,7 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: var(--color-bg-cool, #F0F4F8);
+  background: var(--color-bg-cool);
 }
 
 .body {
@@ -35,7 +35,7 @@
   justify-content: center;
   height: 100%;
   font-family: 'Oswald', sans-serif;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   font-size: 18px;
 }
 
@@ -59,7 +59,7 @@
   font-family: 'Oswald', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0 4px 8px;
@@ -91,7 +91,7 @@
               box-shadow var(--duration-fast, 150ms);
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-align: left;
 }
 
@@ -162,7 +162,7 @@
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: var(--color-bg, #F0F4F8);
+  background: var(--color-bg);
 }
 
 .lavagnaView {
@@ -177,7 +177,7 @@
   height: 100%;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: var(--color-muted, #737373);
+  color: var(--color-muted);
 }
 
 /* ── Responsive ── */

@@ -8,18 +8,18 @@
 .loginPrompt {
   padding: 40px;
   text-align: center;
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
 }
 
 .loginLogo {
   font-size: 48px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   font-weight: 800;
   font-family: Oswald, sans-serif;
 }
 
 .headingNavy {
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
 }
 
 .avatarImg {
@@ -50,7 +50,7 @@
 
 .badgeDesc {
   font-size: 14px;
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
   margin-top: 2px;
 }
 
@@ -93,7 +93,7 @@
 
 .nudgeSubtext {
   font-size: 14px;
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
   margin: 0 0 16px;
 }
 
@@ -113,23 +113,23 @@
 }
 
 .textMuted {
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
   font-size: 14px;
 }
 
 .textMutedSm {
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
   font-size: 14px;
 }
 
 .emptyState {
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
   text-align: center;
   padding: 20px;
 }
 
 .infoNote {
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted);
   font-size: 14px;
   margin-bottom: 12px;
 }

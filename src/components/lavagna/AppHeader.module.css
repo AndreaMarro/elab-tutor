@@ -132,7 +132,7 @@
 }
 
 .dotCompleted {
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   transform: scale(1.1);
 }
 
@@ -186,7 +186,7 @@
 }
 
 .btnPlay {
-  background: var(--color-accent, #4A7A25);
+  background: var(--color-accent);
   color: #fff;
   border-radius: 10px;
   width: auto;
@@ -199,7 +199,7 @@
 
 .btnPlay:hover {
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
-  background: var(--color-accent-hover, #3d6620);
+  background: var(--color-accent-hover);
 }
 
 .playLabel {

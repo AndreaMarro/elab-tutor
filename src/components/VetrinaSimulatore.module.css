@@ -5,7 +5,7 @@
 .container {
   height: 100%;
   overflow-y: auto;
-  background: var(--color-bg-secondary, #F5F7FA);
+  background: var(--color-bg-secondary);
   font-family: var(--font-sans, 'Open Sans', -apple-system, sans-serif);
 }
 
@@ -14,7 +14,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(155deg, #06111f 0%, #0d2240 35%, var(--color-primary, #1E4D8C) 70%, #2563A8 100%);
+  background: linear-gradient(155deg, #06111f 0%, #0d2240 35%, var(--color-primary) 70%, #2563A8 100%);
   padding: 52px 20px 48px;
   text-align: center;
 }
@@ -62,7 +62,7 @@
   display: inline-block;
   font-size: 14px;
   font-weight: 700;
-  color: var(--color-accent, #4A7A25);
+  color: var(--color-accent);
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -129,7 +129,7 @@
   padding: 14px 32px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--color-accent, #4A7A25), #6AA033);
+  background: linear-gradient(135deg, var(--color-accent), #6AA033);
   color: #1A1A2E;
   font-size: 16px;
   font-weight: 700;
@@ -147,7 +147,7 @@
 /* ─── SCHOOLS CTA ────────────────────────────── */
 
 .schoolsCard {
-  background: linear-gradient(155deg, #0D2240 0%, var(--color-primary, #1E4D8C) 50%, #2D6DB5 100%);
+  background: linear-gradient(155deg, #0D2240 0%, var(--color-primary) 50%, #2D6DB5 100%);
   border-radius: 20px;
   padding: 40px 32px;
   text-align: center;
@@ -169,7 +169,7 @@
 }
 
 .adminBtn {
-  background: linear-gradient(135deg, var(--color-primary, #1E4D8C), #2D6DB5);
+  background: linear-gradient(135deg, var(--color-primary), #2D6DB5);
   border: none;
   color: white;
   font-size: 15px;
@@ -278,7 +278,7 @@
   padding: 0; text-align: left;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06); min-height: 48px;
 }
-.thumbActive { border-color: var(--color-primary, #1E4D8C); box-shadow: 0 4px 16px rgba(30,77,140,0.2); }
+.thumbActive { border-color: var(--color-primary); box-shadow: 0 4px 16px rgba(30,77,140,0.2); }
 .thumbImg { width: 100%; height: 64px; object-fit: cover; display: block; }
 .thumbInfo { padding: 6px 8px 8px; display: flex; flex-direction: column; gap: 1px; }
 .thumbTag { font-size: 14px; font-weight: 700; color: #4A7A25; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -373,7 +373,7 @@
   font-family: var(--font-mono, 'Fira Code', monospace); letter-spacing: 2px;
   outline: none; transition: border-color 0.2s; background: #F8FAFB;
 }
-.input:focus { border-color: var(--color-primary, #1E4D8C); }
+.input:focus { border-color: var(--color-primary); }
 .errorText { color: #C62828; font-size: 14px; margin-top: 14px; font-weight: 500; }
 .successText { color: #4A7A25; font-size: 18px; font-weight: 700; animation: vetrina-pulse 1.5s infinite; }
 

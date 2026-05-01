@@ -38,13 +38,13 @@
   width: 500px;
   max-width: 90vw;
   max-height: 90vh;
-  background: var(--elab-card-bg, #FFFFFF);
+  background: var(--elab-card-bg);
   border-radius: 20px;
   box-shadow: 0 24px 80px rgba(15, 27, 46, 0.45);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 2px solid var(--elab-lime, #4A7A25);
+  border: 2px solid var(--elab-lime);
   animation: slideIn 240ms cubic-bezier(.2, .8, .2, 1);
 }
 
@@ -58,9 +58,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy);
   color: #FFFFFF;
-  border-bottom: 2px solid var(--elab-lime, #4A7A25);
+  border-bottom: 2px solid var(--elab-lime);
 }
 
 .title {
@@ -133,7 +133,7 @@
 }
 
 .scimpanzeFrame:focus-visible {
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime);
 }
 
 .scimpanzeImg {
@@ -148,7 +148,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   font-size: 14px;
   text-align: center;
   padding: 16px;
@@ -157,7 +157,7 @@
 
 .message {
   font-size: 15px;
-  color: var(--elab-text, #1A1A1A);
+  color: var(--elab-text);
   line-height: 1.5;
   margin: 0;
   max-width: 420px;
@@ -166,14 +166,14 @@
 
 .creditLine {
   font-size: 13px;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   margin: 0;
   font-style: italic;
 }
 
 .bananaCounter {
   font-size: 13px;
-  color: var(--elab-text-muted, #5A6B7E);
+  color: var(--elab-text-muted);
   margin-top: 4px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -201,7 +201,7 @@
 /* © Andrea Marro — 30/04/2026 — ELAB Tutor — Tutti i diritti riservati */
     border-radius: 0;
     border-width: 0;
-    border-top: 2px solid var(--elab-lime, #4A7A25);
+    border-top: 2px solid var(--elab-lime);
   }
   .scimpanzeFrame {
     width: 100%;

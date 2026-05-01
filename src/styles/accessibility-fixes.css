@@ -124,7 +124,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary);
   cursor: pointer;
 }
 input[type="range"]::-webkit-slider-runnable-track {
@@ -252,7 +252,7 @@ textarea:focus-visible,
 /* ═══════════════════════════════════════════════════════════════ */
 
 .chat-youtube-link:hover {
-  border-color: var(--color-youtube-red, #FF0000) !important;
+  border-color: var(--color-youtube-red) !important;
   box-shadow: 0 2px 8px rgba(255,0,0,0.1) !important;
 }
 

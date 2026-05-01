@@ -24,7 +24,7 @@
   border: 1px solid rgba(30, 77, 140, 0.25);
   border-radius: 6px;
   background-color: white;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -34,18 +34,18 @@
 
 .volumeTab:hover {
   background-color: rgba(30, 77, 140, 0.05);
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
 }
 
 .volumeTab:focus-visible {
-  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .volumeTabActive {
-  background-color: var(--color-primary, #1E4D8C);
+  background-color: var(--color-primary);
   color: white;
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
 }
 
 .capGrid {
@@ -79,13 +79,13 @@
 }
 
 .capCard:hover {
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary);
   box-shadow: 0 2px 8px rgba(30, 77, 140, 0.12);
   transform: translateY(-1px);
 }
 
 .capCard:focus-visible {
-  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -93,7 +93,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
