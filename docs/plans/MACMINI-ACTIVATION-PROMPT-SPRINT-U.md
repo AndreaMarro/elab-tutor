@@ -69,12 +69,22 @@ I libri presentano gli esperimenti come **VARIAZIONI DI UN TEMA** (continuo narr
 
 **Linguaggio MANDATORY**: plurale "Ragazzi," + docente-first ("Mostriamo ai ragazzi che...", "Ragazzi, osservate..."). Mai imperativo singolare ("fai", "clicca", "premi", "monta").
 
-## Tools obbligatori
+## Tools disponibili Mac Mini (NO marketplace MCP/skills)
 
-- **Playwright MCP** (`mcp__plugin_playwright_playwright__*`): browser_navigate + browser_evaluate + browser_take_screenshot + browser_wait_for + browser_click + browser_type + browser_press_key + browser_console_messages + browser_network_requests
-- **Control Chrome MCP** (`mcp__Control_Chrome__*`): get_current_tab + open_url + execute_javascript + get_page_content + reload_tab — usa per hand verification dove Playwright non basta
-- **claude-mem MCP** (`mcp__plugin_claude-mem_mcp-search__*`): smart_search + get_observations + timeline — usa per recall sprint history past iter
-- **Skills**: `superpowers:executing-plans` + `superpowers:systematic-debugging` + `elab-harness-real-runner` + `elab-quality-gate` + `elab-principio-zero-validator` + `volume-replication` + `impeccable:design-critique` + `impeccable:critique` + `impeccable:colorize` + `impeccable:typeset` + `impeccable:arrange` + `frontend-design` + `claude-code-design` (canvas-design + algorithmic-art + web-artifacts-builder)
+**IMPORTANTE**: Mac Mini Claude install è BARE — NO MCP servers MacBook (no `mcp__plugin_playwright_*`, no `mcp__Control_Chrome__*`, no `mcp__plugin_claude-mem_*`), NO marketplace skills (no `ralph-loop`, `superpowers`, `impeccable`). Usa SOLO built-in:
+
+- **Bash**: `npx playwright test path/to/spec.js` (browser test diretto via Playwright CLI v1.58.2 installed)
+- **Bash**: `npx lighthouse <url> --output=json --output-path=...` (Lighthouse via npx)
+- **Bash**: `pdftotext -layout dist-test/volumes/volume[123].pdf /tmp/vol[123].txt` (poppler installed)
+- **Bash**: `curl https://www.elabtutor.school/...` (smoke test)
+- **Bash**: `curl https://euqpdueopmlllqjmqnyb.supabase.co/functions/v1/unlim-chat -H "Authorization: Bearer ..."` (Edge Function smoke — Andrea env keys necessari)
+- **Read + Write + Edit**: file lavoro lesson-paths/* + components/* + ADRs + audits
+- **Agent tool** (built-in, `general-purpose` subagent_type): spawn parallel agents per Cycle 1 8-agent + Cycle 2 4-agent + Cycle 3 2-agent
+- **Grep + Glob**: pattern search codebase
+
+**Playwright spec pattern**: NON usare `mcp__plugin_playwright_*` (non disponibile). Crea `tests/e2e/sprint-u-cycle1-iter1-esp-{id}.spec.js` files + `npx playwright test tests/e2e/sprint-u-cycle1-iter1-*.spec.js --reporter=line --output=docs/audits/sprint-u-cycle1-iter1-screenshots/`.
+
+**Ricovery context**: senza claude-mem MCP, recovery via filesystem `automa/state/heartbeat` + completion msgs `automa/team-state/messages/*-sprint-u-*.md` + audit doc `docs/audits/sprint-u-*.md` filesystem.
 
 ## Pattern Ralph Loop
 
@@ -241,36 +251,63 @@ Every 30 min update:
 
 If SSH disconnect or Mac Mini reboot: resume da last heartbeat + completion msgs filesystem.
 
-## Ralph Loop skill (NO CRON — single persistent session)
+## Ralph Loop manuale built-in Claude Code (NO cron, NO ralph-loop skill)
 
-**Anti-pattern cron**: cron spawn nuova claude session ogni tick → perdi context tra iterations + drain context-window per re-load CLAUDE.md/PDR + risk overlap esecuzioni.
+**Mac Mini Claude install è BARE — skill marketplace NON disponibile** (no `ralph-loop:ralph-loop`, no `superpowers:*`, no `impeccable:*`, no MCP servers MacBook). Usa SOLO built-in Claude Code: Bash + Edit + Read + Write + Agent tool (general-purpose subagent spawning).
 
-**Pattern corretto Sprint U**: usa skill `ralph-loop:ralph-loop` in single long-running Claude session. Loop interno persistente, context preservato tra cycles, stops solo su segnale esplicito.
+**Pattern corretto Sprint U Mac Mini**: single long-running Claude session con manual loop self-recursion.
 
+### Avvio sessione Claude Mac Mini
+
+Andrea SSH terminale Mac Mini (NON background — interactive):
+```bash
+ssh -i ~/.ssh/id_ed25519_elab progettibelli@100.124.198.59
+# poi su Mac Mini:
+cd ~/Projects/elab-sprint-u-cycle1-iter1  # worktree creato Phase 0a
+claude
+# poi paste activation prompt complete (questo blocco) come PRIMO messaggio
 ```
-# Inside Claude session Mac Mini (post Phase 0a setup):
-/ralph-loop start --task "Sprint U cycle ralph 94 esperimenti UNO PER UNO" --plan docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md --stop-file /tmp/elab-sprint-u-stop --max-iter 5
+
+### Manual ralph loop pattern (Claude session-internal)
+
+Tu (Claude Mac Mini agent) esegui manual loop:
+
+1. **Inizio iteration**: leggi heartbeat last entry per recovery context (`tail -1 automa/state/heartbeat`)
+2. **Esegui Cycle 1** (8 agents Agent tool spawn parallel, single message multiple Agent calls)
+3. **Wait 8/8 completion msgs** filesystem barrier (poll loop with Bash `until ls automa/team-state/messages/{audit1,audit2,livetest1,livetest2,unlimverify,persona,designcritique,scribe}-sprint-u-cycle1-iter${R}-completed.md 2>/dev/null | wc -l | grep -q 8; do sleep 60; done`)
+4. **Esegui Cycle 2** (4 agents consolidation)
+5. **Wait 4/4** completion barrier
+6. **Esegui Cycle 3** (2 agents fix + verify)
+7. **Wait 2/2** completion barrier
+8. **Esegui Cycle 4** (1 agent close)
+9. **Stop condition check**:
+   - File `/tmp/elab-sprint-u-stop` esiste? → STOP
+   - Andrea ha touched `/tmp/elab-sprint-u-stop`? → STOP
+   - Sprint U success criteria 12/12 met (PDR §14)? → STOP CLOSE
+   - Iter count > 5 (safety cap)? → STOP
+   - Else → goto step 1 (next ralph iteration, R++)
+
+**No slash command needed** — pure Bash/Agent tool orchestration.
+
+### Stop signal
+
+Andrea SSH:
+```bash
+ssh -i ~/.ssh/id_ed25519_elab progettibelli@100.124.198.59 'touch /tmp/elab-sprint-u-stop'
 ```
 
-**Comportamento ralph-loop**:
-- Ogni iteration esegue Cycle 1→2→3→4 (8→4→2→1 agent funnel) re-sweep 94 esperimenti
-- Context preservato tra iterations (smart_search claude-mem per recall sprint history past iter)
-- Stop conditions:
-  - File `/tmp/elab-sprint-u-stop` esiste (Andrea SSH `touch /tmp/elab-sprint-u-stop`)
-  - Sprint U success criteria 12/12 met (PDR §14)
-  - `--max-iter 5` raggiunto (safety cap)
-  - `/cancel-ralph` slash command in session
-  - Anthropic org limit hit → ralph-loop pause + heartbeat segnala
+### Recovery post-disconnect (Anthropic org limit hit OR session crash)
 
-**Recovery post-disconnect**:
-- Heartbeat `automa/state/heartbeat` last entry indica ralph_iter + cycle attivo
-- Resume: relaunch Claude Mac Mini + ralph-loop con stesso task ID → recupera context da claude-mem timeline + filesystem completion msgs
-- Worktree isolato `~/Projects/elab-sprint-u-cycle1-iter1/` preserva working state
+1. Heartbeat `automa/state/heartbeat` last entry indica `ralph_iter + cycle + status`
+2. Andrea relaunch Claude Mac Mini + paste stessa activation prompt + aggiungere "RESUME ralph iter X cycle Y from heartbeat"
+3. Tu (Claude Mac Mini) read heartbeat + completion msgs filesystem → resume da last successful step
 
-**Plus integration cron iter36 LIVE coesistere**:
-- Cron user-sim curriculum iter36 GIRA SU branch `mac-mini/iter36-user-sim-*` worktree main `~/Projects/elab-tutor/`
+### Coesistenza cron iter36 user-sim curriculum LIVE
+
+- Cron iter36 (8 entries crontab `*/5 + */30 + 0 */2 + */15 + */6 ...`) GIRA SU worktree main `~/Projects/elab-tutor/` branch `mac-mini/iter36-user-sim-*`
 - Sprint U ralph loop GIRA SU worktree isolato `~/Projects/elab-sprint-u-cycle1-iter1/` branch `mac-mini/sprint-u-cycle1-iter1-*`
 - ZERO interference (rigid file ownership branch + worktree)
+- Plus: 10 scheduled-tasks Mac Mini (`elab-{auditor,auditor-v2,builder,coordinator,researcher,researcher-v2,scout,strategist,tester,worker}`) preservati intatti
 
 ## SUCCESS CRITERIA Sprint U close 9.5/10 ONESTO (G45 mandate)
 
