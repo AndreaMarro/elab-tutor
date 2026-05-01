@@ -219,4 +219,158 @@ export function mistralModelFromTier(_tier: GeminiModel, premium = false): Mistr
   return premium ? 'mistral-large-latest' : 'mistral-small-latest';
 }
 
-export const MISTRAL_CLIENT_VERSION = '1.0-iter24';
+/**
+ * iter 39 A1 SSE — Mistral chat streaming (TTFB perceived <500ms).
+ *
+ * Mistral La Plateforme `chat/completions` supports `stream: true` per
+ * https://docs.mistral.ai/api/#tag/chat. Server emits `data: {...}\n\n`
+ * SSE chunks with `choices[0].delta.content` token-by-token, ending with
+ * `data: [DONE]\n\n` sentinel.
+ *
+ * Returns a `ReadableStream<{token: string} | {done: true, model, latencyMs, tokensUsed}>`
+ * that the caller can forward to client OR collect as fullText.
+ *
+ * Wall-clock total IDENTICAL to non-stream (Mistral generation invariata).
+ * UX win: first token visible in browser ~200-500ms after pre-stream (RAG +
+ * Onniscenza) completes, vs full-response 2200ms p50 wait current.
+ *
+ * `chunkBuffer` accumulates partial multi-byte UTF-8 sequences across reads.
+ *
+ * Iter 39 wire-up: `unlim-chat/index.ts` reads `body.stream === true`,
+ * invokes `callMistralChatStream`, forwards chunks to client via
+ * `text/event-stream` Response, then emits final metadata chunk with
+ * PZ V3 score + parsed intents + clean_text post-stream.
+ */
+export interface MistralStreamChunk {
+  token?: string;
+  done?: boolean;
+  model?: string;
+  latencyMs?: number;
+  tokensUsed?: { input: number; output: number };
+  fullText?: string;
+}
+
+export async function callMistralChatStream(
+  opts: MistralChatOptions,
+): Promise<ReadableStream<MistralStreamChunk>> {
+  const apiKey = (Deno.env.get('MISTRAL_API_KEY') || '').trim();
+  if (!apiKey) {
+    throw new GeminiError(ErrorCode.SERVICE_UNAVAILABLE, 'MISTRAL_API_KEY not configured');
+  }
+  const model = pickDefaultModel(opts);
+  const hasImages = (opts.images?.length ?? 0) > 0;
+  const userContent = hasImages
+    ? buildVisionContent(opts.message, opts.images!)
+    : opts.message;
+
+  const body: Record<string, unknown> = {
+    model,
+    messages: [
+      { role: 'system', content: opts.systemPrompt },
+      { role: 'user', content: userContent },
+    ],
+    max_tokens: opts.maxOutputTokens ?? 120,
+    temperature: opts.temperature ?? 0.7,
+    stream: true,
+  };
+  if (opts.responseFormat) {
+    body.response_format = opts.responseFormat;
+  }
+
+  const start = Date.now();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS * 2); // longer for stream
+
+  let response: Response;
+  try {
+    response = await fetch(`${MISTRAL_BASE}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+        Accept: 'text/event-stream',
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } catch (e) {
+    clearTimeout(timeout);
+    if (e instanceof DOMException && e.name === 'AbortError') {
+      throw new GeminiError(ErrorCode.TIMEOUT, 'Mistral stream connect timed out');
+    }
+    throw new GeminiError(ErrorCode.API_ERROR, `Mistral stream connect failed: ${e}`);
+  }
+
+  if (!response.ok || !response.body) {
+    clearTimeout(timeout);
+    const text = await response.text().catch(() => '');
+    const code = response.status === 429
+      ? ErrorCode.SERVICE_RATE_LIMITED
+      : response.status >= 500
+        ? ErrorCode.SERVICE_UNAVAILABLE
+        : ErrorCode.API_ERROR;
+    throw new GeminiError(code, `Mistral stream ${response.status}: ${text.slice(0, 200)}`);
+  }
+
+  // Transform Mistral SSE bytes → MistralStreamChunk objects
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let fullText = '';
+  let promptTokens = 0;
+  let completionTokens = 0;
+
+  return new ReadableStream<MistralStreamChunk>({
+    async start(streamController) {
+      const reader = response.body!.getReader();
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || ''; // keep incomplete line for next read
+
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const data = line.slice(6).trim();
+            if (data === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(data);
+              const token = parsed?.choices?.[0]?.delta?.content;
+              if (typeof token === 'string' && token.length > 0) {
+                fullText += token;
+                streamController.enqueue({ token });
+              }
+              // Mistral emits usage in final chunk
+              if (parsed?.usage) {
+                promptTokens = parsed.usage.prompt_tokens ?? 0;
+                completionTokens = parsed.usage.completion_tokens ?? 0;
+              }
+            } catch (_e) {
+              // Skip malformed line — defensive
+            }
+          }
+        }
+        // Final chunk with metadata
+        clearTimeout(timeout);
+        streamController.enqueue({
+          done: true,
+          model,
+          latencyMs: Date.now() - start,
+          tokensUsed: { input: promptTokens, output: completionTokens },
+          fullText,
+        });
+        streamController.close();
+      } catch (e) {
+        clearTimeout(timeout);
+        streamController.error(e);
+      }
+    },
+    cancel() {
+      controller.abort();
+      clearTimeout(timeout);
+    },
+  });
+}
+
+export const MISTRAL_CLIENT_VERSION = '1.1-iter39-sse';

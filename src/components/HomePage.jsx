@@ -694,6 +694,47 @@ export default function HomePage({ onNavigate }) {
         <HomeCronologia onResume={handleResume} />
       </Suspense>
 
+      {/* Sprint U iter 7 — Diario del docente placeholder section.
+          Full impl deferred iter 8+: persistent journal + AI summaries via
+          unlim-session-description + Vol/pag suggerimenti contestuali. */}
+      <section
+        style={{
+          maxWidth: 1200,
+          margin: '32px auto 0',
+          padding: '24px 16px',
+          fontFamily: "'Open Sans', system-ui, sans-serif",
+        }}
+        aria-labelledby="diario-heading"
+        data-testid="home-diario-placeholder"
+      >
+        <h2
+          id="diario-heading"
+          style={{
+            fontFamily: "'Oswald', system-ui, sans-serif",
+            fontSize: 24,
+            fontWeight: 700,
+            color: PALETTE.navy,
+            margin: '0 0 12px',
+            letterSpacing: '0.02em',
+          }}
+        >
+          Diario del docente
+        </h2>
+        <div
+          style={{
+            background: PALETTE.cardBg,
+            border: '1px dashed rgba(30, 77, 140, 0.18)',
+            borderRadius: 16,
+            padding: '20px 24px',
+            color: PALETTE.textMuted,
+            fontSize: 15,
+            lineHeight: 1.55,
+          }}
+        >
+          <strong style={{ color: PALETTE.navy }}>In arrivo:</strong> spazio per i pensieri sulla classe, gli appunti delle lezioni, i piccoli successi dei ragazzi. UNLIM rielabora le sessioni passate e scrive brevi riassunti — voi li rileggete prima di entrare in classe.
+        </div>
+      </section>
+
       <footer style={styles.footer} id="elab-home-footer" data-testid="home-footer">
         <p style={styles.footerCredits}>
           <span style={styles.footerCreditsStrong}>Andrea Marro</span> coding
