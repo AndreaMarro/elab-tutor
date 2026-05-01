@@ -101,7 +101,7 @@
       "icon": "📋",
       "duration_minutes": 5,
       "teacher_message": "Ragazzi, oggi scopriamo un interruttore MAGICO! Il reed switch si attiva avvicinando un magnete — senza toccarlo!",
-      "teacher_tip": "Mostra un reed switch reale alla classe: è un tubicino di vetro con due lamelle metalliche dentro. Avvicina un magnete e fai sentire il 'click'. L'effetto WOW è garantito!",
+      "teacher_tip": "Mostra un reed switch reale alla classe: è un tubicino di vetro con due lamelle metalliche dentro. Avvicina un magnete e fate sentire il 'click'. L'effetto WOW è garantito!",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, 1 resistore 470Ω, 1 LED rosso, 5 fili.",
       "class_hook": "Finora abbiamo usato il pulsante per controllare il circuito. Ma esiste un interruttore che funziona SENZA toccarlo! Come fa? Con la MAGIA dei magneti!",
       "action_tags": [],
@@ -112,7 +112,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Mostra il circuito: batteria → reed switch → resistore → LED → batteria. Il reed switch è come un pulsante, ma si chiude con il magnete!",
-      "teacher_tip": "Fai notare che la struttura è identica al circuito LED + pulsante: cambia solo il tipo di interruttore. Il reed switch va nei fori C5 e C11.",
+      "teacher_tip": "Fate notare che la struttura è identica al circuito LED + pulsante: cambia solo il tipo di interruttore. Il reed switch va nei fori C5 e C11.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -182,7 +182,7 @@
       "icon": "❓",
       "duration_minutes": 8,
       "teacher_message": "Avvicinate il magnete al reed switch: LED acceso! Allontana: LED spento. Come funziona questo interruttore invisibile?",
-      "teacher_tip": "Fai provare: avvicina lentamente il magnete e fai trovare la distanza minima. 'A che distanza si accende? Provate a trovare il punto esatto!'",
+      "teacher_tip": "Fate provare: avvicina lentamente il magnete e fate trovare la distanza minima. 'A che distanza si accende? Provate a trovare il punto esatto!'",
       "provocative_question": "Il reed switch funziona senza toccarlo. Come fa a sapere che il magnete è vicino? Cosa c'è dentro?",
       "components_list": null,
       "class_hook": null,
@@ -191,7 +191,7 @@
       "common_mistakes": [
         {
           "mistake": "Il LED non si accende con il magnete",
-          "teacher_response": "Controlla che il magnete sia abbastanza vicino al reed switch. Prova a ruotarlo: un lato del magnete è più forte dell'altro!",
+          "teacher_response": "Regola che il magnete sia abbastanza vicino al reed switch. Prova a ruotarlo: un lato del magnete è più forte dell'altro!",
           "analogy": null
         },
         {

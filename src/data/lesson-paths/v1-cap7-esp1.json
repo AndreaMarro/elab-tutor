@@ -110,7 +110,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Mostra il circuito sulla LIM. Solo il canale rosso è collegato — gli altri 2 piedini (verde, blu) restano liberi.",
-      "teacher_tip": "Usa il Passo Passo. Quando appare il LED RGB, fai notare i 4 piedini. Spiega: 'Il piedino più lungo è il catodo — va al negativo. Il primo piedino corto è il rosso.' Disegna lo schema sulla lavagna se serve.",
+      "teacher_tip": "Usa il Passo Passo. Quando appare il LED RGB, fate notare i 4 piedini. Spiega: 'Il piedino più lungo è il catodo — va al negativo. Il primo piedino corto è il rosso.' Disegna lo schema sulla lavagna se serve.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [

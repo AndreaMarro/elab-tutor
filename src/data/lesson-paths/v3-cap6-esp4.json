@@ -76,7 +76,7 @@
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 5,
-      "teacher_message": "Ragazzi, con due pin OUTPUT e un delay() preciso abbiamo creato un effetto visivo complesso! Arduino controlla ogni LED separatamente: quando uno è HIGH l'altro è LOW, poi si scambiano in loop infinito.",
+      "teacher_message": "Ragazzi, con due pin OUTPUT e un delay() preciso abbiamo creato un effetto visivo complesso! Arduino regola ogni LED separatamente: quando uno è HIGH l'altro è LOW, poi si scambiano in loop infinito.",
       "teacher_tip": "Sottolineare il concetto chiave: più pin = più controllo. Lo stesso principio vale per semafori, segnali luminosi, robot.",
       "summary_for_class": "Arduino può controllare più LED contemporaneamente usando un pin OUTPUT per ciascuno. Il delay() determina la velocità del ciclo.",
       "concepts_learned": ["due pin OUTPUT in parallelo", "alternanza HIGH/LOW sincronizzata", "delay per controllo velocità", "effetto visivo con timing preciso"],

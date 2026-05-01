@@ -75,7 +75,7 @@
       "programma",
       "partitore"
     ],
-    "note": "Cap 9 Vol 1 — pot controlla 2 canali RGB = ciano."
+    "note": "Cap 9 Vol 1 — pot regola 2 canali RGB = ciano."
   },
   "prerequisites": [
     "v1-cap9-esp3"
@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Ragazzi, oggi un solo potenziometro controlla DUE colori insieme: verde e blu. Il risultato? Il CIANO, un azzurrino brillante!",
+      "teacher_message": "Ragazzi, oggi un solo potenziometro regola DUE colori insieme: verde e blu. Il risultato? Il CIANO, un azzurrino brillante!",
       "teacher_tip": "Il segnale del potenziometro si divide in due rami, ciascuno con il suo resistore. Un ramo va al canale verde, l'altro al canale blu.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 2 resistori 470Ω, 1 LED RGB, 9 fili.",
       "class_hook": "Il potenziometro controllava un solo LED. Ma può controllare DUE canali del LED RGB contemporaneamente?",
@@ -198,7 +198,7 @@
       "duration_minutes": 10,
       "teacher_message": "Girate la manopola: il colore ciano (azzurrino) cambia intensità! Cosa succede se giri al massimo? E al minimo?",
       "teacher_tip": "Se il colore sembra solo verde o solo blu, controllare i collegamenti dei due rami dal segnale del potenziometro.",
-      "provocative_question": "Se il potenziometro controlla due canali insieme, come fa il colore a essere sempre lo stesso (ciano)?",
+      "provocative_question": "Se il potenziometro regola due canali insieme, come fa il colore a essere sempre lo stesso (ciano)?",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
@@ -206,7 +206,7 @@
       "common_mistakes": [
         {
           "mistake": "Solo un colore si accende",
-          "teacher_response": "Controlla che il segnale del potenziometro sia collegato a ENTRAMBI i resistori: uno per il verde e uno per il blu.",
+          "teacher_response": "Regola che il segnale del potenziometro sia collegato a ENTRAMBI i resistori: uno per il verde e uno per il blu.",
           "analogy": null
         },
         {
@@ -248,7 +248,7 @@
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 5,
-      "teacher_message": "Oggi abbiamo creato il ciano con un solo potenziometro che controlla due canali. Verde + Blu = Ciano!",
+      "teacher_message": "Oggi abbiamo creato il ciano con un solo potenziometro che regola due canali. Verde + Blu = Ciano!",
       "teacher_tip": "Chiedi: 'E se il potenziometro potesse MISCELRE tra due colori? Da un lato rosso, dall'altro blu?' Anticipa l'esperimento 5.",
       "components_list": null,
       "class_hook": null,

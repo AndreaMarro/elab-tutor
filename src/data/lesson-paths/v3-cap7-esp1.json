@@ -112,8 +112,8 @@
       "icon": "❓",
       "duration_minutes": 8,
       "teacher_message": "Il codice dice: se il pulsante e premuto, accendi il LED. Altrimenti, spegnilo. Cosa succede se tolgo la parte 'altrimenti'? Il LED resta acceso per sempre dopo la prima pressione?",
-      "teacher_tip": "Lasciare provare. Senza l'else, il LED si accende quando premi ma si spegne al giro di loop successivo se non premi. Il loop e cosi veloce che sembra funzionare comunque.",
-      "provocative_question": "Se il loop gira migliaia di volte al secondo, Arduino controlla il pulsante migliaia di volte al secondo. Spreca energia o e utile?",
+      "teacher_tip": "Lasciare provare. Senza l'else, il LED si accende quando premete ma si spegne al giro di loop successivo se non si preme. Il loop e cosi veloce che sembra funzionare comunque.",
+      "provocative_question": "Se il loop gira migliaia di volte al secondo, Arduino regola il pulsante migliaia di volte al secondo. Spreca energia o e utile?",
       "action_tags": [],
       "auto_action": null
     },
@@ -135,7 +135,7 @@
       "duration_minutes": 7,
       "teacher_message": "Oggi Arduino ha imparato ad ascoltare. Con digitalRead legge HIGH o LOW dal pulsante. Con if decide cosa fare. Questa e la base di ogni programma interattivo: leggere, decidere, agire.",
       "teacher_tip": "Il pattern INPUT-DECISIONE-OUTPUT e il cuore di quasi tutti i programmi. Sottolinearlo: sensore legge, codice decide, attuatore agisce.",
-      "summary_for_class": "Con digitalRead Arduino legge lo stato del pulsante. Con if decide se accendere il LED. Il pattern e: leggi l'ingresso, prendi una decisione, controlla l'uscita.",
+      "summary_for_class": "Con digitalRead Arduino legge lo stato del pulsante. Con if decide se accendere il LED. Il pattern e: leggi l'ingresso, prendi una decisione, controllate l'uscita.",
       "concepts_learned": [
         "pin INPUT e digitalRead",
         "istruzione if-else",

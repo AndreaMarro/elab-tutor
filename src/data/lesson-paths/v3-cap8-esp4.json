@@ -68,7 +68,7 @@
   "next_experiment": {
     "id": "v3-cap8-esp5",
     "title": "Pot + 3 LED + Serial",
-    "preview": "Il progetto finale: un potenziometro controlla 3 LED E stampa sul Serial Monitor!"
+    "preview": "Il progetto finale: un potenziometro regola 3 LED E stampa sul Serial Monitor!"
   },
   "phases": [
     {
@@ -192,14 +192,14 @@
       "icon": "👀",
       "duration_minutes": 14,
       "teacher_message": "Premete Play e aprite il Serial Plotter! Vedete due linee colorate. Girate una manopola alla volta: vedrete una linea salire/scendere mentre l'altra resta ferma. Poi giratele entrambe!",
-      "teacher_tip": "Evidenzia entrambi i potenziometri. Fai notare: le due linee hanno colori diversi. Sfida: 'Riuscite a fare un disegno con le due manopole? Una montagna con una valle?' Rende il concetto divertente.",
+      "teacher_tip": "Evidenzia entrambi i potenziometri. Fate notare: le due linee hanno colori diversi. Sfida: 'Riuscite a fare un disegno con le due manopole? Una montagna con una valle?' Rende il concetto divertente.",
       "action_tags": [
         "[AZIONE:play]",
         "[AZIONE:highlight:pot1]",
         "[AZIONE:highlight:pot2]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Due grafici in tempo reale! Ogni potenziometro controlla una linea. Girando pot1 si muove la linea A3, girando pot2 la linea A4. I grafici sono indipendenti e sovrapposti.",
+      "observation_prompt": "Due grafici in tempo reale! Ogni potenziometro regola una linea. Girando pot1 si muove la linea A3, girando pot2 la linea A4. I grafici sono indipendenti e sovrapposti.",
       "analogies": [
         {
           "concept": "serial_plotter",
@@ -225,7 +225,7 @@
         "monitoraggio visuale in tempo reale",
         "due pin analogici contemporanei"
       ],
-      "next_preview": "Il progetto finale del Volume 3: un potenziometro che controlla 3 LED e stampa i valori sul Serial Monitor!"
+      "next_preview": "Il progetto finale del Volume 3: un potenziometro che regola 3 LED e stampa i valori sul Serial Monitor!"
     }
   ],
   "assessment_invisible": [

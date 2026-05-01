@@ -12,7 +12,7 @@
   "difficulty": 3,
   "duration_minutes": 50,
   "target_age": "10-14 anni",
-  "objective": "Il progetto finale del Volume 3! Un potenziometro controlla 3 LED (verde, giallo, rosso) in base al valore analogico, e i dati vengono stampati sul Serial Monitor. Combina analogRead, digitalWrite, if/else e Serial.",
+  "objective": "Il progetto finale del Volume 3! Un potenziometro regola 3 LED (verde, giallo, rosso) in base al valore analogico, e i dati vengono stampati sul Serial Monitor. Combina analogRead, digitalWrite, if/else e Serial.",
   "components_needed": [
     {
       "name": "Arduino Nano R4 (breakout wing)",
@@ -217,7 +217,7 @@
         },
         {
           "mistake": "LED che non si accende: resistore o LED collegato al contrario",
-          "teacher_response": "Controlla la polarita del LED (gamba lunga = anodo = +) e che il resistore sia nella riga corretta della breadboard.",
+          "teacher_response": "Regola la polarita del LED (gamba lunga = anodo = +) e che il resistore sia nella riga corretta della breadboard.",
           "analogy": null
         }
       ]
@@ -227,7 +227,7 @@
       "icon": "👀",
       "duration_minutes": 16,
       "teacher_message": "Premete Play! Girate il potenziometro lentamente: il LED verde si accende nella zona bassa, poi passa al giallo, poi al rosso. Il Serial Monitor mostra il valore e il colore attivo. E il vostro primo sistema di controllo!",
-      "teacher_tip": "Evidenzia tutti i componenti. Sfida: 'Trovate il punto esatto in cui il LED cambia colore!' I ragazzi scopriranno le soglie sperimentalmente. Fai collegare il concetto al mondo reale: termostati, indicatori di livello, semafori intelligenti.",
+      "teacher_tip": "Evidenzia tutti i componenti. Sfida: 'Trovate il punto esatto in cui il LED cambia colore!' I ragazzi scopriranno le soglie sperimentalmente. Fate collegare il concetto al mondo reale: termostati, indicatori di livello, semafori intelligenti.",
       "action_tags": [
         "[AZIONE:play]",
         "[AZIONE:highlight:pot1]",
@@ -236,7 +236,7 @@
         "[AZIONE:highlight:led3]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Il potenziometro controlla 3 LED! Zona bassa (0-340): LED verde. Zona media (341-680): LED giallo. Zona alta (681-1023): LED rosso. Il Serial Monitor mostra tutto in tempo reale.",
+      "observation_prompt": "Il potenziometro regola 3 LED! Zona bassa (0-340): LED verde. Zona media (341-680): LED giallo. Zona alta (681-1023): LED rosso. Il Serial Monitor mostra tutto in tempo reale.",
       "analogies": [
         {
           "concept": "sistema_controllo",
@@ -260,7 +260,7 @@
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Progetto finale completato! Un potenziometro controlla 3 LED usando analogRead, if/else e digitalWrite. Il Serial Monitor visualizza tutto. Avete costruito un vero sistema sensore → decisione → azione!",
+      "summary_for_class": "Progetto finale completato! Un potenziometro regola 3 LED usando analogRead, if/else e digitalWrite. Il Serial Monitor visualizza tutto. Avete costruito un vero sistema sensore → decisione → azione!",
       "concepts_learned": [
         "progetto integrato sensore-controllo-attuatore",
         "soglie (thresholds) per decisioni",

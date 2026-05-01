@@ -91,7 +91,7 @@
       "icon": "📋",
       "duration_minutes": 5,
       "teacher_message": "Ragazzi, oggi costruiamo la lampada RGB completa! Tre manopole controllano tre colori indipendentemente — come i pixel del telefono!",
-      "teacher_tip": "Il circuito è il più grande finora: 3 potenziometri, 3 resistori, 1 LED RGB. Ogni potenziometro controlla un canale indipendente.",
+      "teacher_tip": "Il circuito è il più grande finora: 3 potenziometri, 3 resistori, 1 LED RGB. Ogni potenziometro regola un canale indipendente.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 potenziometri 10K, 3 resistori 470Ω, 1 LED RGB, 15 fili.",
       "class_hook": "Con i pulsanti potevate fare solo 7 colori (acceso/spento). Con 3 manopole graduali potete creare QUALSIASI sfumatura!",
       "action_tags": [],
@@ -101,7 +101,7 @@
       "name": "MOSTRA",
       "icon": "🔧",
       "duration_minutes": 10,
-      "teacher_message": "Mostra i 3 potenziometri affiancati: pot1 controlla il rosso, pot2 il verde, pot3 il blu. Ogni canale è indipendente.",
+      "teacher_message": "Mostra i 3 potenziometri affiancati: pot1 regola il rosso, pot2 il verde, pot3 il blu. Ogni canale è indipendente.",
       "teacher_tip": "Il circuito è simmetrico: ogni blocco pot→resistore→canale RGB ha la stessa struttura. Mostra un blocco e spiega che gli altri sono identici.",
       "components_list": null,
       "class_hook": null,
@@ -256,7 +256,7 @@
       "common_mistakes": [
         {
           "mistake": "Un canale non risponde",
-          "teacher_response": "Controlla il collegamento: il segnale del potenziometro deve arrivare al resistore, e il resistore al canale corrispondente del LED RGB.",
+          "teacher_response": "Regola il collegamento: il segnale del potenziometro deve arrivare al resistore, e il resistore al canale corrispondente del LED RGB.",
           "analogy": null
         },
         {

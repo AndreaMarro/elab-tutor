@@ -106,7 +106,7 @@
       "name": "MOSTRA",
       "icon": "🔧",
       "duration_minutes": 10,
-      "teacher_message": "Il LED e il motore sono collegati in parallelo dopo il pulsante. Quando premi, entrambi ricevono tensione: il motore gira E il LED si accende contemporaneamente!",
+      "teacher_message": "Il LED e il motore sono collegati in parallelo dopo il pulsante. Quando premete, entrambi ricevono tensione: il motore gira E il LED si accende contemporaneamente!",
       "teacher_tip": "Spiega il parallelo con semplicità: 'In parallelo, ogni componente ha il suo percorso diretto verso la batteria. La tensione è la stessa per tutti, ma la corrente si divide.' Il resistore da 470Ω è necessario per proteggere il LED (il motore non ne ha bisogno perché ha la sua resistenza interna).",
       "components_list": null,
       "class_hook": null,
@@ -205,7 +205,7 @@
         },
         {
           "mistake": "Il LED non si accende affatto",
-          "teacher_response": "Controlla che il filo di collegamento dal punto comune del pulsante vada sia al motore che al resistore del LED. Se manca questo filo di raccordo, il ramo del LED è aperto!",
+          "teacher_response": "Regola che il filo di collegamento dal punto comune del pulsante vada sia al motore che al resistore del LED. Se manca questo filo di raccordo, il ramo del LED è aperto!",
           "analogy": null
         }
       ]
@@ -250,7 +250,7 @@
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "LED e motore in parallelo: quando premi il pulsante, entrambi funzionano insieme. Il LED verde è un indicatore visivo — una spia che dice 'il motore sta girando'. In parallelo ogni componente ha la sua strada verso la batteria.",
+      "summary_for_class": "LED e motore in parallelo: quando premete il pulsante, entrambi funzionano insieme. Il LED verde è un indicatore visivo — una spia che dice 'il motore sta girando'. In parallelo ogni componente ha la sua strada verso la batteria.",
       "concepts_learned": [
         "LED come indicatore visivo",
         "componenti in parallelo",

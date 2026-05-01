@@ -88,7 +88,7 @@
       "teacher_message": "Ragazzi, finora il motore girava sempre non appena collegavamo la batteria. E se volessimo controllare quando gira? Aggiungiamo un pulsante!",
       "teacher_tip": "Mostra fisicamente un pulsante (se disponibile). Spiega: 'Un pulsante è un interruttore momentaneo: finché lo tieni premuto il circuito è chiuso, quando lo rilasci il circuito si apre e la corrente si blocca.'",
       "components_list": "Ti servono: breadboard mezza, batteria 9V, motore DC, 1 pulsante, fili.",
-      "class_hook": "Come fate a controllare le luci di casa? Con un interruttore! Oggi aggiungiamo un interruttore al nostro motore: premi e gira, rilascia e si ferma!",
+      "class_hook": "Come fate a controllare le luci di casa? Con un interruttore! Oggi aggiungiamo un interruttore al nostro motore: premete e gira, rilascia e si ferma!",
       "action_tags": [],
       "auto_action": null
     },
@@ -175,12 +175,12 @@
       "common_mistakes": [
         {
           "mistake": "Il motore gira sempre, anche senza premere il pulsante",
-          "teacher_response": "Controlla che il pulsante sia davvero in serie con il motore, non in parallelo. Se lo hai collegato in parallelo, bypassa il circuito e il motore riceve sempre corrente!",
+          "teacher_response": "Regola che il pulsante sia davvero in serie con il motore, non in parallelo. Se lo hai collegato in parallelo, bypassa il circuito e il motore riceve sempre corrente!",
           "analogy": "È come una porta sul percorso: se la costruisci a fianco del percorso invece che sul percorso, tutti ci passano senza aprirla!"
         },
         {
           "mistake": "Il motore non gira neanche premendo il pulsante",
-          "teacher_response": "Controlla i fili: il filo dal bus + deve arrivare a un pin del pulsante, e l'altro pin del pulsante deve essere collegato al motore. Se c'è un filo mancante, il circuito non si chiude!",
+          "teacher_response": "Regola i fili: il filo dal bus + deve arrivare a un pin del pulsante, e l'altro pin del pulsante deve essere collegato al motore. Se c'è un filo mancante, il circuito non si chiude!",
           "analogy": null
         }
       ]
@@ -208,7 +208,7 @@
         },
         {
           "concept": "controllo_manuale",
-          "text": "È esattamente come il campanello della porta di casa: premi il pulsante e il campanello suona, rilasci e tace. Il tuo dito controlla il circuito! Oggi il tuo dito controlla il motore.",
+          "text": "È esattamente come il campanello della porta di casa: premete il pulsante e il campanello suona, rilasci e tace. Il tuo dito regola il circuito! Oggi il tuo dito regola il motore.",
           "evidence": "Curriculum ELAB Vol 2 Cap 10"
         }
       ]
@@ -223,7 +223,7 @@
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Un pulsante in serie al motore crea un controllo manuale: premi per avviare, rilascia per fermare. Quando il pulsante è premuto il circuito è chiuso e la corrente scorre. Quando è rilasciato il circuito si apre e il motore si ferma.",
+      "summary_for_class": "Un pulsante in serie al motore crea un controllo manuale: premete per avviare, rilascia per fermare. Quando il pulsante è premuto il circuito è chiuso e la corrente scorre. Quando è rilasciato il circuito si apre e il motore si ferma.",
       "concepts_learned": [
         "pulsante come interruttore in serie",
         "circuito aperto vs circuito chiuso",

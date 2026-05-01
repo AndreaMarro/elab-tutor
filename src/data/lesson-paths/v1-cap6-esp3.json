@@ -194,12 +194,12 @@
       "common_mistakes": [
         {
           "mistake": "Pensa che la resistenza consumi corrente",
-          "teacher_response": "La resistenza non consuma, LIMITA. Come un rubinetto non beve l'acqua, la controlla.",
+          "teacher_response": "La resistenza non consuma, LIMITA. Come un rubinetto non beve l'acqua, la regola.",
           "analogy": null
         },
         {
           "mistake": "Confonde resistenza grande con LED più luminoso",
-          "teacher_response": "Fai riprovare e osservare. 'Resistenza grande = tubo stretto = meno acqua = meno luce'",
+          "teacher_response": "Fate riprovare e osservare. 'Resistenza grande = tubo stretto = meno acqua = meno luce'",
           "analogy": "Come stringere un tubo dell'acqua"
         },
         {

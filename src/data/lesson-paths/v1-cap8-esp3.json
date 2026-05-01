@@ -214,7 +214,7 @@
       "common_mistakes": [
         {
           "mistake": "Vedono solo un colore (rosso o blu)",
-          "teacher_response": "Controlla che entrambi i resistori siano collegati: uno al canale rosso e uno al canale blu del LED RGB.",
+          "teacher_response": "Regola che entrambi i resistori siano collegati: uno al canale rosso e uno al canale blu del LED RGB.",
           "analogy": null
         },
         {
@@ -233,7 +233,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premete Play e poi premi il pulsante: il LED diventa VIOLA! Rosso + Blu = Viola nella luce!",
+      "teacher_message": "Premete Play e poi premete il pulsante: il LED diventa VIOLA! Rosso + Blu = Viola nella luce!",
       "teacher_tip": "Evidenzia il LED RGB e il pulsante. Spiega: 'I colori della luce si mescolano in modo diverso dai colori a tempera!'",
       "components_list": null,
       "class_hook": null,
@@ -252,7 +252,7 @@
         },
         {
           "concept": "pulsante_controlla_due_rami",
-          "text": "Il pulsante è come un cancello che controlla una strada che poi si divide in due: una verso il rosso e una verso il blu. Un solo cancello, due strade!",
+          "text": "Il pulsante è come un cancello che regola una strada che poi si divide in due: una verso il rosso e una verso il blu. Un solo cancello, due strade!",
           "evidence": "Curriculum ELAB Vol 1"
         }
       ]
@@ -270,7 +270,7 @@
       "summary_for_class": "Un pulsante può controllare più canali: premendo si accendono rosso e blu insieme. Rosso + Blu = Viola! I colori della luce si mescolano diversamente dai colori a tempera.",
       "concepts_learned": [
         "sintesi additiva della luce",
-        "pulsante controlla più canali"
+        "pulsante regola più canali"
       ],
       "next_preview": "La prossima volta avrete UN pulsante per OGNI colore — potrete creare 7 combinazioni diverse!"
     }
@@ -278,7 +278,7 @@
   "assessment_invisible": [
     "Se dice 'rosso e blu fanno viola' → ha capito la sintesi additiva",
     "Se chiede 'e se accendo tutti e tre?' → pronto per esp 4",
-    "Se nota che il pulsante controlla entrambi i canali → ha capito il circuito"
+    "Se nota che il pulsante regola entrambi i canali → ha capito il circuito"
   ],
   "session_save": {
     "concepts_covered": [

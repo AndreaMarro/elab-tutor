@@ -12,7 +12,7 @@
   "difficulty": 2,
   "duration_minutes": 40,
   "target_age": "10-14 anni",
-  "objective": "I ragazzi sperimentano diversi valori di resistore nel circuito con reed switch: scoprono che il resistore controlla la luminosità del LED anche quando l'interruttore è magnetico.",
+  "objective": "I ragazzi sperimentano diversi valori di resistore nel circuito con reed switch: scoprono che il resistore regola la luminosità del LED anche quando l'interruttore è magnetico.",
   "components_needed": [
     {
       "name": "Breadboard",
@@ -102,7 +102,7 @@
       "icon": "📋",
       "duration_minutes": 5,
       "teacher_message": "Ragazzi, oggi usiamo lo stesso circuito con il reed switch, ma proviamo a cambiare il resistore. Come cambia la luminosità del LED?",
-      "teacher_tip": "Prepara resistori di valore diverso. L'idea è che il reed switch è l'interruttore ON/OFF, ma il resistore controlla QUANTA corrente passa.",
+      "teacher_tip": "Prepara resistori di valore diverso. L'idea è che il reed switch è l'interruttore ON/OFF, ma il resistore regola QUANTA corrente passa.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 reed switch, resistori di valore diverso, 1 LED rosso, 5 fili.",
       "class_hook": "L'ultima volta il magnete accendeva il LED. Ma era sempre la stessa luminosità. E se volessimo un LED più forte o più debole?",
       "action_tags": [],
@@ -113,7 +113,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Il circuito è lo stesso dell'esperimento precedente. Questa volta sperimentiamo cambiando il valore del resistore.",
-      "teacher_tip": "Fai montare il circuito base, poi chiedi di provare resistori diversi. Ogni volta: avvicinate il magnete e osserva la luminosità.",
+      "teacher_tip": "Fate montare il circuito base, poi chiedi di provare resistori diversi. Ogni volta: avvicinate il magnete e osserva la luminosità.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -197,7 +197,7 @@
         },
         {
           "mistake": "Confondono il reed switch con il resistore",
-          "teacher_response": "Sono due cose diverse! Il reed switch è l'interruttore (ON/OFF con il magnete). Il resistore controlla QUANTA corrente passa quando è acceso.",
+          "teacher_response": "Sono due cose diverse! Il reed switch è l'interruttore (ON/OFF con il magnete). Il resistore regola QUANTA corrente passa quando è acceso.",
           "analogy": "Il reed switch è il rubinetto (aperto/chiuso), il resistore è quanto lo apri"
         }
       ]
@@ -206,7 +206,7 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premete Play e avvicinate il magnete. Osservate: il resistore controlla la luminosità anche con l'interruttore magnetico!",
+      "teacher_message": "Premete Play e avvicinate il magnete. Osservate: il resistore regola la luminosità anche con l'interruttore magnetico!",
       "teacher_tip": "Evidenzia reed switch, resistore e LED. Spiega i due ruoli: 'Il reed switch decide SE la corrente passa. Il resistore decide QUANTA corrente passa.'",
       "components_list": null,
       "class_hook": null,
@@ -235,13 +235,13 @@
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 5,
-      "teacher_message": "Oggi abbiamo imparato che il resistore controlla la luminosità in qualsiasi circuito — anche con il reed switch!",
+      "teacher_message": "Oggi abbiamo imparato che il resistore regola la luminosità in qualsiasi circuito — anche con il reed switch!",
       "teacher_tip": "Anticipa la sfida: 'E se collegassimo il reed switch a un LED RGB? Il magnete potrebbe accendere i COLORI!'",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Il reed switch è l'interruttore (ON/OFF con il magnete). Il resistore controlla quanta corrente passa (luminosità). Insieme funzionano come un interruttore con dimmer!",
+      "summary_for_class": "Il reed switch è l'interruttore (ON/OFF con il magnete). Il resistore regola quanta corrente passa (luminosità). Insieme funzionano come un interruttore con dimmer!",
       "concepts_learned": [
         "resistore e luminosità",
         "doppio controllo reed+resistore",

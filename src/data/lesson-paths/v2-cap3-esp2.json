@@ -80,7 +80,7 @@
       "icon": "🔧",
       "duration_minutes": 8,
       "teacher_message": "Colleghiamo il multimetro alla batteria come la volta scorsa. Leggiamo il valore e lo scriviamo nella prima riga del nostro diario con la data di oggi.",
-      "teacher_tip": "Fai misurare la stessa batteria a diversi studenti: i valori saranno leggermente diversi. Spiega che le piccole differenze sono normali (errore di misura).",
+      "teacher_tip": "Fate misurare la stessa batteria a diversi studenti: i valori saranno leggermente diversi. Spiega che le piccole differenze sono normali (errore di misura).",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -139,7 +139,7 @@
       "analogies": [
         {
           "concept": "scarica_batteria",
-          "text": "La batteria e come un secchio d'acqua con un piccolo buco: l'acqua esce lentamente. Se fai un buco piu grande (circuito che consuma di piu), l'acqua finisce prima!",
+          "text": "La batteria e come un secchio d'acqua con un piccolo buco: l'acqua esce lentamente. Se si fa un buco piu grande (circuito che consuma di piu), l'acqua finisce prima!",
           "evidence": "Curriculum ELAB Vol 2"
         }
       ]

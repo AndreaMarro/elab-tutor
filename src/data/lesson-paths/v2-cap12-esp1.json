@@ -12,7 +12,7 @@
   "difficulty": 3,
   "duration_minutes": 55,
   "target_age": "10-14 anni",
-  "objective": "PROGETTO FINALE del Volume 2! Costruire un robot puramente elettronico che segue la luce: due fototransistor funzionano come 'occhi', due MOSFET come 'muscoli', due motori come 'gambe'. Il segreto è la cross-connection: l'occhio destro controlla il motore sinistro e viceversa!",
+  "objective": "PROGETTO FINALE del Volume 2! Costruire un robot puramente elettronico che segue la luce: due fototransistor funzionano come 'occhi', due MOSFET come 'muscoli', due motori come 'gambe'. Il segreto è la cross-connection: l'occhio destro regola il motore sinistro e viceversa!",
   "components_needed": [
     {
       "name": "Batteria 9V con clip",
@@ -99,7 +99,7 @@
       "icon": "📋",
       "duration_minutes": 8,
       "teacher_message": "Ragazzi, è il PROGETTO FINALE del Volume 2! Costruiamo un robot che segue la luce da solo, senza alcuna istruzione scritta — solo con componenti elettronici collegati in modo intelligente!",
-      "teacher_tip": "Fai un recap di tutto quello che gli studenti hanno imparato: 'Fototransistor (cap 9): sente la luce. MOSFET (cap 9): interruttore comandato da tensione. Motore DC (cap 10): trasforma corrente in rotazione. Diodo (cap 11): lascia passare la corrente in una sola direzione. Oggi usiamo tutto insieme!'",
+      "teacher_tip": "Fate un recap di tutto quello che gli studenti hanno imparato: 'Fototransistor (cap 9): sente la luce. MOSFET (cap 9): interruttore comandato da tensione. Motore DC (cap 10): trasforma corrente in rotazione. Diodo (cap 11): lascia passare la corrente in una sola direzione. Oggi usiamo tutto insieme!'",
       "components_list": "Ti servono: 1 breadboard full-size, 1 batteria 9V, 2 fototransistor, 2 MOSFET-N, 2 resistori 10kΩ, 2 diodi, 2 motori DC, tanti fili!",
       "class_hook": "Avete mai visto una falena che vola sempre verso la luce? Lo fa automaticamente, senza pensarci! Oggi costruiamo un robot che fa la stessa cosa, usando solo i componenti che conoscete già.",
       "action_tags": [],
@@ -109,7 +109,7 @@
       "name": "MOSTRA",
       "icon": "🔧",
       "duration_minutes": 15,
-      "teacher_message": "Il robot ha 3 sezioni: OCCHI (2 fototransistor), MUSCOLI (2 MOSFET), GAMBE (2 motori). Il segreto è la cross-connection: l'occhio destro controlla la gamba sinistra e viceversa!",
+      "teacher_message": "Il robot ha 3 sezioni: OCCHI (2 fototransistor), MUSCOLI (2 MOSFET), GAMBE (2 motori). Il segreto è la cross-connection: l'occhio destro regola la gamba sinistra e viceversa!",
       "teacher_tip": "Spiega la cross-connection con una dimostrazione: 'Se la luce viene da destra, l'occhio destro (pt1) si attiva. Il suo segnale va, a X, al MOSFET sinistro (mos2), che fa girare il motore sinistro. Il robot gira verso destra, cioè verso la luce!' Disegna la X sulla lavagna. I diodi proteggono i MOSFET quando i motori si fermano (forza controelettromotrice).",
       "components_list": null,
       "class_hook": null,
@@ -283,7 +283,7 @@
       "icon": "❓",
       "duration_minutes": 10,
       "teacher_message": "Il robot usa 4 tipi diversi di componenti lavorando insieme. Riuscite a tracciare il percorso del segnale dalla luce fino al motore?",
-      "teacher_tip": "Chiedi agli studenti di spiegare il percorso del segnale: 'La luce entra nel fototransistor (collettore → emettitore). Il segnale dall'emettitore va, a X, al Gate del MOSFET opposto. Il Gate apre il MOSFET e la corrente scorre dal bus+ attraverso il motore verso il Source del MOSFET.' Fai disegnare la X sulla lavagna.",
+      "teacher_tip": "Chiedi agli studenti di spiegare il percorso del segnale: 'La luce entra nel fototransistor (collettore → emettitore). Il segnale dall'emettitore va, a X, al Gate del MOSFET opposto. Il Gate apre il MOSFET e la corrente scorre dal bus+ attraverso il motore verso il Source del MOSFET.' Fate disegnare la X sulla lavagna.",
       "provocative_question": "Perché il robot usa la cross-connection (a X) invece di collegare direttamente occhio destro al motore destro? Cosa succederebbe se collegassimo occhio destro al motore destro?",
       "components_list": null,
       "class_hook": null,
@@ -292,7 +292,7 @@
       "common_mistakes": [
         {
           "mistake": "Il robot gira nella direzione sbagliata rispetto alla luce",
-          "teacher_response": "Controlla la cross-connection! Se pt1 (sinistra) è collegato a mos1 (sinistra) invece che a mos2 (destra), il robot si allontana dalla luce invece di avvicinarsi. La X è fondamentale: ogni occhio controlla il motore OPPOSTO!",
+          "teacher_response": "Controllate la cross-connection! Se pt1 (sinistra) è collegato a mos1 (sinistra) invece che a mos2 (destra), il robot si allontana dalla luce invece di avvicinarsi. La X è fondamentale: ogni occhio regola il motore OPPOSTO!",
           "analogy": "È come guidare un'auto con il volante al contrario: se giri a destra il volante, l'auto va a sinistra. La cross-connection è il 'raddrizzatore' che fa funzionare tutto nel verso giusto!"
         },
         {
@@ -341,7 +341,7 @@
       "icon": "✅",
       "duration_minutes": 7,
       "teacher_message": "COMPLIMENTI! Avete costruito il Robot Segui Luce e completato il Volume 2! Un robot intelligente fatto solo con fototransistor, MOSFET, motori e diodi — zero istruzioni scritte!",
-      "teacher_tip": "Celebra il momento! Fai un recap del viaggio del Volume 2: 'Avete imparato i fototransistor (cap 9), il MOSFET (cap 9), i motori DC (cap 10), i diodi (cap 11), e ora avete messo tutto insieme in un robot che pensa con l'elettronica!' Anticipa il Volume 3: circuiti ancora più intelligenti!",
+      "teacher_tip": "Celebra il momento! Fate un recap del viaggio del Volume 2: 'Avete imparato i fototransistor (cap 9), il MOSFET (cap 9), i motori DC (cap 10), i diodi (cap 11), e ora avete messo tutto insieme in un robot che pensa con l'elettronica!' Anticipa il Volume 3: circuiti ancora più intelligenti!",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],

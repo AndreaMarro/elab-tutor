@@ -12,7 +12,7 @@
   "difficulty": 1,
   "duration_minutes": 40,
   "target_age": "10-14 anni",
-  "objective": "I ragazzi aggiungono un pulsante al cicalino: ora suona SOLO quando premi! Scoprono che è lo stesso principio del LED con pulsante — cambia solo il componente controllato.",
+  "objective": "I ragazzi aggiungono un pulsante al cicalino: ora suona SOLO quando premete! Scoprono che è lo stesso principio del LED con pulsante — cambia solo il componente controllato.",
   "components_needed": [
     {
       "name": "Breadboard",
@@ -99,7 +99,7 @@
       "teacher_message": "Ragazzi, oggi costruiamo un CAMPANELLO! Aggiungiamo un pulsante al cicalino: suonerà solo quando premiamo.",
       "teacher_tip": "Richiama l'esperimento LED + pulsante: 'Vi ricordate quando controllavamo il LED con il pulsante? Oggi facciamo la stessa cosa ma con il suono!'",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 cicalino, 7 fili.",
-      "class_hook": "L'ultima volta il cicalino suonava SEMPRE. Ma un campanello vero suona solo quando lo premi! Come facciamo?",
+      "class_hook": "L'ultima volta il cicalino suonava SEMPRE. Ma un campanello vero suona solo quando lo premete! Come facciamo?",
       "action_tags": [],
       "auto_action": null
     },
@@ -182,7 +182,7 @@
       "icon": "❓",
       "duration_minutes": 8,
       "teacher_message": "Premete il pulsante: suona! Rilascia: silenzio. È identico al LED con pulsante — cosa cambia?",
-      "teacher_tip": "Fai il confronto esplicito: 'Con il LED, premevi e vedevi la luce. Ora premi e senti il suono. La struttura del circuito è la stessa!'",
+      "teacher_tip": "Fate il confronto esplicito: 'Con il LED, premevi e vedevi la luce. Ora premete e senti il suono. La struttura del circuito è la stessa!'",
       "provocative_question": "Il circuito è quasi identico a quello del LED con pulsante. Cosa cambia? Solo il componente controllato!",
       "components_list": null,
       "class_hook": null,
@@ -191,13 +191,13 @@
       "common_mistakes": [
         {
           "mistake": "Il cicalino suona sempre, anche senza premere",
-          "teacher_response": "Il pulsante non è nel percorso della corrente. Controlla che il filo dal cicalino passi attraverso il pulsante prima di tornare al negativo.",
+          "teacher_response": "Il pulsante non è nel percorso della corrente. Controllate che il filo dal cicalino passi attraverso il pulsante prima di tornare al negativo.",
           "analogy": null
         },
         {
           "mistake": "Non vedono la somiglianza con il circuito LED + pulsante",
           "teacher_response": "Disegna i due circuiti affiancati: sono identici! Cambia solo il componente: LED → cicalino. Il pulsante fa sempre lo stesso lavoro: apre e chiude il circuito.",
-          "analogy": "Come un rubinetto: controlla il flusso, che sia acqua o gas"
+          "analogy": "Come un rubinetto: regola il flusso, che sia acqua o gas"
         }
       ]
     },
@@ -205,8 +205,8 @@
       "name": "OSSERVA",
       "icon": "👀",
       "duration_minutes": 10,
-      "teacher_message": "Premete Play, poi premi il pulsante: il cicalino suona! Rilascia e si ferma. È un vero campanello!",
-      "teacher_tip": "Evidenzia pulsante e cicalino. Fai notare: 'Il pulsante apre e chiude il circuito. È lo STESSO principio del LED — il pulsante è l'interruttore!'",
+      "teacher_message": "Premete Play, poi premete il pulsante: il cicalino suona! Rilascia e si ferma. È un vero campanello!",
+      "teacher_tip": "Evidenzia pulsante e cicalino. Fate notare: 'Il pulsante apre e chiude il circuito. È lo STESSO principio del LED — il pulsante è l'interruttore!'",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -215,11 +215,11 @@
         "[AZIONE:highlight:buz1]"
       ],
       "auto_action": "play_and_highlight",
-      "observation_prompt": "Premete il pulsante → suona! Rilascia → silenzio. Il pulsante controlla il cicalino come controllava il LED. Stesso principio, diverso risultato: luce vs suono!",
+      "observation_prompt": "Premete il pulsante → suona! Rilascia → silenzio. Il pulsante regola il cicalino come controllava il LED. Stesso principio, diverso risultato: luce vs suono!",
       "analogies": [
         {
           "concept": "campanello",
-          "text": "Il campanello di casa funziona ESATTAMENTE così: quando premi il bottone, il circuito si chiude e il suono parte. Quando rilasci, il circuito si apre e il suono si ferma!",
+          "text": "Il campanello di casa funziona ESATTAMENTE così: quando premete il bottone, il circuito si chiude e il suono parte. Quando rilasci, il circuito si apre e il suono si ferma!",
           "evidence": "Curriculum ELAB Vol 1"
         },
         {
@@ -233,13 +233,13 @@
       "name": "CONCLUDI",
       "icon": "✅",
       "duration_minutes": 5,
-      "teacher_message": "Oggi abbiamo costruito un campanello vero! Lo stesso pulsante che controllava il LED ora controlla il suono.",
+      "teacher_message": "Oggi abbiamo costruito un campanello vero! Lo stesso pulsante che controllava il LED ora regola il suono.",
       "teacher_tip": "Chiedi: 'Abbiamo usato il pulsante con le dita. Esiste un modo per controllare un circuito SENZA toccarlo?' Anticipa il reed switch del cap 12.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [],
       "auto_action": null,
-      "summary_for_class": "Il campanello è un circuito con pulsante + cicalino! Premi → suona, rilascia → silenzio. Lo STESSO principio del LED con pulsante — cambia solo il componente.",
+      "summary_for_class": "Il campanello è un circuito con pulsante + cicalino! Premete → suona, rilascia → silenzio. Lo STESSO principio del LED con pulsante — cambia solo il componente.",
       "concepts_learned": [
         "campanello elettrico",
         "riuso del principio pulsante",

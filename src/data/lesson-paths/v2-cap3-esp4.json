@@ -86,7 +86,7 @@
       "icon": "🔧",
       "duration_minutes": 10,
       "teacher_message": "Il circuito: batteria 9V → multimetro (in serie) → resistore 1kohm → ritorno a batteria. Il multimetro deve essere nel PERCORSO della corrente, come un casello autostradale.",
-      "teacher_tip": "Fai tracciare il percorso della corrente con il dito: batteria+ → filo → multimetro → filo → resistore → filo → batteria-. Il multimetro e un 'checkpoint' che conta gli elettroni che passano.",
+      "teacher_tip": "Fate tracciare il percorso della corrente con il dito: batteria+ → filo → multimetro → filo → resistore → filo → batteria-. Il multimetro e un 'checkpoint' che conta gli elettroni che passano.",
       "components_list": null,
       "class_hook": null,
       "action_tags": [
@@ -135,7 +135,7 @@
         {
           "mistake": "Multimetro collegato in parallelo invece che in serie",
           "teacher_response": "ATTENZIONE! L'amperometro in parallelo crea un cortocircuito perche ha resistenza quasi zero. Deve essere nel percorso della corrente, come un casello autostradale!",
-          "analogy": "Un casello funziona solo se l'auto ci passa attraverso. Se fai una strada alternativa che lo aggira, il casello non conta nessuna auto!"
+          "analogy": "Un casello funziona solo se l'auto ci passa attraverso. Se si fa una strada alternativa che lo aggira, il casello non conta nessuna auto!"
         }
       ]
     },

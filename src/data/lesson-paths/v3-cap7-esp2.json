@@ -87,7 +87,7 @@
       "icon": "📋",
       "duration_minutes": 5,
       "teacher_message": "Ragazzi, finora Arduino ha solo comandato i LED: acceso o spento. Oggi facciamo il contrario! Il LED parte acceso e si spegne quando premiamo un pulsante. Arduino impara ad ASCOLTARE il mondo esterno.",
-      "teacher_tip": "Inizia chiedendo alla classe: chi ha mai usato un pulsante per spegnere qualcosa? Il telecomando della TV, il campanello di casa. Ogni volta che premi, mandi un segnale. Oggi Arduino riceve quel segnale.",
+      "teacher_tip": "Inizia chiedendo alla classe: chi ha mai usato un pulsante per spegnere qualcosa? Il telecomando della TV, il campanello di casa. Ogni volta che premete, mandi un segnale. Oggi Arduino riceve quel segnale.",
       "class_hook": "Immaginate un campanello: quando lo premete, suona. Quando lo lasciate, smette. Oggi il nostro pulsante fa il contrario: quando lo premete, il LED si spegne!",
       "action_tags": [],
       "auto_action": null
@@ -118,7 +118,7 @@
       "icon": "👀",
       "duration_minutes": 10,
       "teacher_message": "Premete Play! Il LED rosso si accende. Ora cliccate sul pulsante nel simulatore e tenetelo premuto: il LED si spegne. Rilasciate: torna acceso. E un comportamento momentaneo, non un toggle.",
-      "teacher_tip": "Fai notare la differenza con un interruttore di casa: quello resta nella posizione in cui lo metti. Il pulsante invece torna su da solo quando lo lasci. Chiedi: servirebbe una variabile per farlo restare spento?",
+      "teacher_tip": "Fate notare la differenza con un interruttore di casa: quello resta nella posizione in cui lo metti. Il pulsante invece torna su da solo quando lo lasci. Chiedi: servirebbe una variabile per farlo restare spento?",
       "action_tags": [
         "[AZIONE:play]",
         "[AZIONE:highlight:led1]",

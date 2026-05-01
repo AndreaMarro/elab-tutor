@@ -211,7 +211,7 @@
       "name": "CHIEDI",
       "icon": "❓",
       "duration_minutes": 10,
-      "teacher_message": "Girate le due manopole: una controlla il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
+      "teacher_message": "Girate le due manopole: una regola il rosso, l'altra il blu. Riuscite a creare il viola perfetto?",
       "teacher_tip": "Il canale verde resta spento: la sfida è progettare dove aggiungere il terzo potenziometro. Chiedi di disegnare prima su carta.",
       "provocative_question": "Come fareste ad aggiungere il canale verde a questo circuito? Di cosa avete bisogno?",
       "components_list": null,
@@ -221,7 +221,7 @@
       "common_mistakes": [
         {
           "mistake": "Un canale non risponde",
-          "teacher_response": "Controlla il collegamento specifico: il segnale del potenziometro deve arrivare al resistore, e dal resistore al canale corrispondente.",
+          "teacher_response": "Regola il collegamento specifico: il segnale del potenziometro deve arrivare al resistore, e dal resistore al canale corrispondente.",
           "analogy": null
         },
         {

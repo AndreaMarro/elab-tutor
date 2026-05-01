@@ -88,7 +88,7 @@
       "icon": "📋",
       "duration_minutes": 5,
       "teacher_message": "Ragazzi, nell'esperimento precedente il pulsante aveva bisogno di un resistore esterno. Arduino ha un trucco: una resistenza nascosta dentro al chip chiamata pullup. Oggi la attiviamo con INPUT_PULLUP e risparmiamo un componente!",
-      "teacher_tip": "Usa l'analogia dell'elastico: immagina un muretto (il pin) tenuto su da un elastico (la resistenza interna). Di default il muretto sta su (HIGH). Quando premi il pulsante, lo abbatti (LOW). Senza elastico il muretto potrebbe cadere da solo (valore casuale).",
+      "teacher_tip": "Usa l'analogia dell'elastico: immagina un muretto (il pin) tenuto su da un elastico (la resistenza interna). Di default il muretto sta su (HIGH). Quando premete il pulsante, lo abbatti (LOW). Senza elastico il muretto potrebbe cadere da solo (valore casuale).",
       "class_hook": "Sapete che dentro Arduino ci sono delle resistenze nascoste? Come un paracadute di emergenza: se non c'e nient'altro collegato al pin, la resistenza interna lo tiene a un valore sicuro. Oggi la usiamo!",
       "action_tags": [],
       "auto_action": null
@@ -119,7 +119,7 @@
       "icon": "👀",
       "duration_minutes": 10,
       "teacher_message": "Premete Play! Il LED si comporta come prima, ma il circuito e piu semplice. Notate: non c'e piu il resistore esterno per il pulsante. Arduino fa tutto da solo con INPUT_PULLUP. Premete e rilasciate il pulsante.",
-      "teacher_tip": "Fai confrontare mentalmente i due circuiti: quello precedente (resistore esterno) e questo (INPUT_PULLUP). Il risultato e lo stesso, ma il circuito e piu pulito. Nella pratica, quasi tutti usano INPUT_PULLUP per i pulsanti perche e piu comodo e affidabile.",
+      "teacher_tip": "Fate confrontare mentalmente i due circuiti: quello precedente (resistore esterno) e questo (INPUT_PULLUP). Il risultato e lo stesso, ma il circuito e piu pulito. Nella pratica, quasi tutti usano INPUT_PULLUP per i pulsanti perche e piu comodo e affidabile.",
       "action_tags": [
         "[AZIONE:play]",
         "[AZIONE:highlight:btn1]"
