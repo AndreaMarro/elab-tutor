@@ -1,3 +1,41 @@
+## [Sprint U Cycle 1 — 94 esperimenti audit + 6 fix categories Mac Mini autonomous] — 2026-05-01
+
+Sprint U Cycle 1 ralph loop autonomous Mac Mini (5 iter + emergency fixers): 22 commits, 1465 file changed, 256K insertions, 5.4K deletions. Score onesto 6.5/10 (NOT 8.0 self-claim) post 6 quality gates indipendenti convergenti (PZ compliance + self-CoV v2 + inflation detector + engine protection + Opus indipendente review + bundle analysis).
+
+### Added
+- `docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md` — master plan ralph loop 8→4→2→1 funnel
+- `docs/plans/MACMINI-ACTIVATION-PROMPT-SPRINT-U.md` — paste-ready activation Mac Mini autonomous
+- 117 audit docs `docs/audits/sprint-u-*` — Cycle 1 evidence
+- 253 PNG screenshots Playwright vol1+vol2+vol3
+- `src/components/common/UpdatePrompt.jsx` (322 LOC, A12 PWA SW prompt-update)
+- 6 Mac Mini autonomous quality gates (cron self-CoV + PZ compliance + engine protection + inflation detector + quality metrics + bundle size)
+- Opus indipendente review G45 anti-inflation gate
+
+### Changed
+- `src/data/lesson-paths/v[123]-*.json` — 93 file linguaggio plurale 'Ragazzi,' opener (107 insertions) + singolare codemod 18 patterns
+- `src/components/**` + `src/styles/**` — palette hex 1568→37 residui (98% reduction) via `var(--elab-{navy,lime,orange,red})` (668 CSS var insertions)
+- `supabase/functions/_shared/clawbot-template-router.ts` — L2 routing UNLIM BLOCKER fix (was: tutti 94 query → LED template; now 93/94 fall through LLM+RAG)
+- `src/data/experiments-vol3.js` — 4 title/ID + v3-cap6-esp4 rewrite + scratchXml
+- 7 CSS files — typography ≥13px + touch ≥44px accessibility
+- `vite.config.js` (+23) — VitePWA registerType prompt
+- `src/components/dashboard/DashboardShell.module.css` line 2 — fix nested comment regression
+
+### Honest caveats deferred
+- Lighthouse perf 43 → 55-70 PROJECTED (NOT measured post-optim)
+- Persona 4.35/10 PRE-fix (NESSUN post-fix re-test)
+- UNLIM Vol/pag NON re-verify post-fix
+- 94/94 Playwright clearCircuit explicit NOT executed
+- App.jsx 10 hex residui NON migrati
+- PDR §14: 3.5/12 met (29%) Opus REQUIRES-CHANGES — merged per "ship value" decision
+
+### Anti-regression
+- vitest **13474 PASS** preservato
+- Engine files UNTOUCHED ✓
+- NO --no-verify
+- 22 atomic commits + 22 PR comments
+
+---
+
 ## [Sprint 6 Day 37 + Day 38 kickoff — OpenClaw 9 unlim handlers wired + shape snapshot guard] — 2026-04-23
 
 Sprint 6 Day 37 closes OpenClaw Sprint 5 infrastructure debt: 9 `unlim.*` handlers bridged in `window.__ELAB_API.unlim` (6 fully wired via voice/nudge/projectHistory services, 3 event-stub awaiting UI listeners Day 38+). Day 38 kickoff adds shape-snapshot regression guard. Baseline 12220 → 12290 (+70).
