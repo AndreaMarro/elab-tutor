@@ -23,26 +23,26 @@ function MascotSVG({ className }) {
       role="img" aria-label="UNLIM robot"
     >
       {/* Antenna */}
-      <line x1="27" y1="0" x2="27" y2="10" stroke="#1E4D8C" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="27" cy="3" r="3" fill="#4A7A25" />
+      <line x1="27" y1="0" x2="27" y2="10" stroke="var(--elab-navy)" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="27" cy="3" r="3" fill="var(--elab-lime)" />
       {/* Head */}
-      <rect x="6" y="10" width="42" height="34" rx="10" fill="#1E4D8C" />
+      <rect x="6" y="10" width="42" height="34" rx="10" fill="var(--elab-navy)" />
       {/* Face plate */}
       <rect x="10" y="14" width="34" height="26" rx="7" fill="#E8EEF6" />
       {/* Eyes */}
-      <circle cx="20" cy="27" r="5" fill="#4A7A25" />
-      <circle cx="34" cy="27" r="5" fill="#4A7A25" />
+      <circle cx="20" cy="27" r="5" fill="var(--elab-lime)" />
+      <circle cx="34" cy="27" r="5" fill="var(--elab-lime)" />
       <circle cx="21" cy="25.5" r="1.5" fill="#fff" />
       <circle cx="35" cy="25.5" r="1.5" fill="#fff" />
       {/* Mouth (smile) */}
-      <path d="M20 34 Q27 39 34 34" stroke="#1E4D8C" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <path d="M20 34 Q27 39 34 34" stroke="var(--elab-navy)" strokeWidth="2" strokeLinecap="round" fill="none" />
       {/* Ears */}
-      <rect x="1" y="20" width="5" height="12" rx="2.5" fill="#E8941C" />
-      <rect x="48" y="20" width="5" height="12" rx="2.5" fill="#E8941C" />
+      <rect x="1" y="20" width="5" height="12" rx="2.5" fill="var(--elab-orange)" />
+      <rect x="48" y="20" width="5" height="12" rx="2.5" fill="var(--elab-orange)" />
       {/* Body */}
-      <rect x="14" y="46" width="26" height="14" rx="5" fill="#1E4D8C" />
+      <rect x="14" y="46" width="26" height="14" rx="5" fill="var(--elab-navy)" />
       {/* Body detail */}
-      <circle cx="27" cy="53" r="3" fill="#4A7A25" />
+      <circle cx="27" cy="53" r="3" fill="var(--elab-lime)" />
     </svg>
   );
 }

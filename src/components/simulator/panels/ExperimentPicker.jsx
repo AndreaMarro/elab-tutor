@@ -10,9 +10,9 @@ import React, { useState, useMemo } from 'react';
 import { VOLUMES, getExperimentsByVolume, getChaptersForVolume } from '../../../data/experiments-index';
 
 const VOL_COLORS = {
-  1: 'var(--color-vol1, #4A7A25)',
-  2: 'var(--color-vol2, #E8941C)',
-  3: 'var(--color-vol3, #E54B3D)',
+  1: 'var(--color-vol1, var(--elab-lime))',
+  2: 'var(--color-vol2, var(--elab-orange))',
+  3: 'var(--color-vol3, var(--elab-red))',
 };
 
 const VOL_BG = {
@@ -292,7 +292,7 @@ const S = {
     background: 'none',
     cursor: 'pointer',
     fontSize: 14,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontFamily: 'var(--font-sans)',
     fontWeight: 600,
     padding: '8px 12px',

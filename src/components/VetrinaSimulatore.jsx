@@ -20,19 +20,19 @@ const STATS = [
 
 const VOLUMES = [
     {
-        num: 1, color: '#4A7A25', gradient: 'linear-gradient(135deg, #4A7A25 0%, #9CCC65 100%)',
+        num: 1, color: 'var(--elab-lime)', gradient: 'linear-gradient(135deg, var(--elab-lime) 0%, #9CCC65 100%)',
         title: 'Basi', experiments: 38,
         desc: 'LED, resistori, condensatori, pulsanti — dal primo circuito alle basi solide',
         chapters: '9 capitoli',
     },
     {
-        num: 2, color: '#E8941C', textColor: '#996600', gradient: 'linear-gradient(135deg, #E8941C 0%, #FFB74D 100%)',
+        num: 2, color: 'var(--elab-orange)', textColor: '#996600', gradient: 'linear-gradient(135deg, var(--elab-orange) 0%, #FFB74D 100%)',
         title: 'Intermedio', experiments: 18,
         desc: 'Sensori, motori, display LCD, servo — progetti via via pi\u00F9 complessi',
         chapters: '9 capitoli',
     },
     {
-        num: 3, color: '#E54B3D', textColor: '#C62828', gradient: 'linear-gradient(135deg, #E54B3D 0%, #EF5350 100%)',
+        num: 3, color: 'var(--elab-red)', textColor: '#C62828', gradient: 'linear-gradient(135deg, var(--elab-red) 0%, #EF5350 100%)',
         title: 'Avanzato', experiments: 14,
         desc: 'Arduino Nano, MOSFET, comunicazione seriale — programmazione e robotica',
         chapters: '6 capitoli',
@@ -40,12 +40,12 @@ const VOLUMES = [
 ];
 
 const FEATURES = [
-    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: '#4A7A25' },
-    { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: '#E8941C' },
-    { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: '#1E4D8C' },
-    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: '#4A7A25' },
-    { icon: '\uD83E\uDD16', title: 'UNLIM AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: '#E54B3D' },
-    { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: '#E8941C' },
+    { icon: '\uD83D\uDCBB', title: 'Circuiti Interattivi', desc: 'Costruisci circuiti reali su breadboard con 21 componenti elettronici', accent: 'var(--elab-lime)' },
+    { icon: '\u26A1', title: 'Simulazione Tempo-Reale', desc: 'Vedi correnti, tensioni e LED accendersi davvero', accent: 'var(--elab-orange)' },
+    { icon: '\uD83D\uDE80', title: 'Compilatore Arduino', desc: 'Scrivi codice C++ e flashalo sul simulatore ATmega328p', accent: 'var(--elab-navy)' },
+    { icon: '\uD83D\uDC63', title: '"Passo Passo" Guidato', desc: 'Assemblaggio step-by-step identico alle illustrazioni del libro', accent: 'var(--elab-lime)' },
+    { icon: '\uD83E\uDD16', title: 'UNLIM AI Tutor', desc: 'Assistente AI che spiega i concetti in modo semplice e chiaro', accent: 'var(--elab-red)' },
+    { icon: '\uD83C\uDFC6', title: '53 Sfide Interattive', desc: 'Trova il guasto, prevedi il risultato, decodifica circuiti', accent: 'var(--elab-orange)' },
 ];
 
 const SHOWCASE = [
@@ -220,7 +220,7 @@ export default function VetrinaSimulatore({ onNavigate }) {
                         style={{
                             marginTop: '28px',
                             padding: '18px 48px',
-                            background: 'linear-gradient(135deg, #4A7A25 0%, #6B9B3A 100%)',
+                            background: 'linear-gradient(135deg, var(--elab-lime) 0%, #6B9B3A 100%)',
                             color: 'white',
                             border: 'none',
                             borderRadius: '16px',

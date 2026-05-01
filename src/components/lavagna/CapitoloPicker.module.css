@@ -139,7 +139,7 @@
 }
 
 .type_experiment {
-  border-left: 4px solid #4A7A25;
+  border-left: 4px solid var(--elab-lime);
 }
 .type_experiment .typeBadge {
   background-color: rgba(74, 122, 37, 0.15);
@@ -147,7 +147,7 @@
 }
 
 .type_project {
-  border-left: 4px solid #E8941C;
+  border-left: 4px solid var(--elab-orange);
 }
 .type_project .typeBadge {
   background-color: rgba(232, 148, 28, 0.15);
@@ -155,7 +155,7 @@
 }
 
 .type_wip {
-  border-left: 4px solid #E54B3D;
+  border-left: 4px solid var(--elab-red);
 }
 .type_wip .typeBadge {
   background-color: rgba(229, 75, 61, 0.15);
@@ -163,9 +163,9 @@
 }
 
 .type_bonus {
-  border-left: 4px solid #1E4D8C;
+  border-left: 4px solid var(--elab-navy);
 }
 .type_bonus .typeBadge {
   background-color: rgba(30, 77, 140, 0.15);
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }

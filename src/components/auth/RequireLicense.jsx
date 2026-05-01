@@ -52,7 +52,7 @@ export default function RequireLicense({ children, onNavigate }) {
                     <button
                         onClick={() => onNavigate?.('vetrina')}
                         style={{
-                            background: '#1E4D8C',
+                            background: 'var(--elab-navy)',
                             color: '#fff',
                             border: 'none',
                             borderRadius: 8,

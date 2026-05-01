@@ -15,9 +15,9 @@ const STATS = [
 ];
 
 const VOLUMES = [
-  { num: 1, color: '#4A7A25', title: 'Le Basi', desc: 'LED, resistori, condensatori, pulsanti', exp: 38 },
-  { num: 2, color: '#E8941C', title: 'Approfondiamo', desc: 'Serie, parallelo, transistor, MOSFET', exp: 18 },
-  { num: 3, color: '#E54B3D', title: 'Arduino', desc: 'Pin digitali, analogici, programmazione', exp: 6 },
+  { num: 1, color: 'var(--elab-lime)', title: 'Le Basi', desc: 'LED, resistori, condensatori, pulsanti', exp: 38 },
+  { num: 2, color: 'var(--elab-orange)', title: 'Approfondiamo', desc: 'Serie, parallelo, transistor, MOSFET', exp: 18 },
+  { num: 3, color: 'var(--elab-red)', title: 'Arduino', desc: 'Pin digitali, analogici, programmazione', exp: 6 },
 ];
 
 export default function VetrinaV2({ onLogin, onRegister }) {

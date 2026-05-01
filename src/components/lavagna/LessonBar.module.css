@@ -103,7 +103,7 @@
 }
 
 .miniDotCurrent {
-  background: #1E4D8C;
+  background: var(--elab-navy);
   transform: scale(1.3);
 }
 

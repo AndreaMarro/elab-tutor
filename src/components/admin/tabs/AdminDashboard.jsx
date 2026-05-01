@@ -16,8 +16,8 @@ import {
 // COSTANTI COLORI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
-    success: '#4A7A25',
+    primary: 'var(--elab-navy)',
+    success: 'var(--elab-lime)',
     warning: '#F59E0B',
     danger: '#EF4444',
     info: '#06B6D4',

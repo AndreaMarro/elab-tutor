@@ -15,7 +15,7 @@
   justify-content: center;
   gap: 16px;
   padding: 16px 24px;
-  background-color: #1E4D8C;
+  background-color: var(--elab-navy);
   color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -85,7 +85,7 @@
   min-height: 44px;
   border: none;
   border-radius: 8px;
-  background-color: #4A7A25;
+  background-color: var(--elab-lime);
   color: #ffffff;
   font-weight: 600;
   font-size: 14px;
@@ -145,7 +145,7 @@
   border: none;
   border-radius: 8px;
   background-color: #ffffff;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
@@ -212,7 +212,7 @@
   border: none;
   border-radius: 8px;
   background-color: #F9A825;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;

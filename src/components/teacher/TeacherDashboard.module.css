@@ -355,7 +355,7 @@
 .progressBarLabel {
   font-size: 16px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-family: Oswald, sans-serif;
 }
 
@@ -369,7 +369,7 @@
 .progressBarFill {
   height: 100%;
   border-radius: 5px;
-  background: linear-gradient(90deg, #4A7A25, #7da93d);
+  background: linear-gradient(90deg, var(--elab-lime), #7da93d);
   transition: width 0.3s;
 }
 
@@ -438,7 +438,7 @@
   z-index: 1;
   cursor: pointer;
   white-space: nowrap;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   transition: background 0.15s;
 }
 .studentNameTd:hover {
@@ -513,7 +513,7 @@
   margin: 4px 0 0;
   font-size: 16px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }
 
 .exportBtnWrap {
@@ -554,7 +554,7 @@
 .miniBarFillGreen {
   height: 100%;
   border-radius: 5px;
-  background: linear-gradient(90deg, #4A7A25, #7da93d);
+  background: linear-gradient(90deg, var(--elab-lime), #7da93d);
 }
 
 .miniBarFillRed {
@@ -846,7 +846,7 @@
 .badgeOrange {
   composes: badge;
   background: rgba(232, 148, 28, 0.1);
-  color: #E8941C;
+  color: var(--elab-orange);
 }
 
 .badgeRed {
@@ -1142,10 +1142,10 @@
 
 .kpiCardOrange {
   composes: kpiCard;
-  border-left: 4px solid #E8941C;
+  border-left: 4px solid var(--elab-orange);
 }
 
 .kpiCardRed {
   composes: kpiCard;
-  border-left: 4px solid #E54B3D;
+  border-left: 4px solid var(--elab-red);
 }

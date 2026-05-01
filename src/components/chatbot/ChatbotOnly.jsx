@@ -119,7 +119,7 @@ function sanitizeChatbotText(raw) {
 function MascotteAvatar() {
   return (
     <span className={styles.mascotteSmall} aria-hidden="true">
-      <RobotIcon size={22} color="#1E4D8C" />
+      <RobotIcon size={22} color="var(--elab-navy)" />
     </span>
   );
 }

@@ -12,8 +12,8 @@
 import React, { useRef, useCallback } from 'react';
 import ovStyles from '../overlays.module.css';
 
-const NAVY = '#1E4D8C';
-const LIME = '#4A7A25';
+const NAVY = 'var(--elab-navy)';
+const LIME = 'var(--elab-lime)';
 
 const PotOverlay = React.memo(function PotOverlay({ value, onValueChange, onClose }) {
   const knobRef = useRef(null);

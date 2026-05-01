@@ -34,7 +34,7 @@ export const createPlaceholderPage = (fileName, format) => {
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#f5f5f5';
     ctx.fillRect(0, 0, 800, 600);
-    ctx.fillStyle = '#1E4D8C';
+    ctx.fillStyle = 'var(--elab-navy)';
     ctx.font = 'bold 24px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(fileName, 400, 280);
@@ -58,8 +58,8 @@ export const htmlToPages = async (html, fileName) => {
             <style>
                 body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; margin: 0;
                        line-height: 1.6; color: #333; max-width: 800px; font-size: 14px; }
-                h1 { color: #1E4D8C; border-bottom: 2px solid #4A7A25; padding-bottom: 8px; }
-                h2 { color: #1E4D8C; }
+                h1 { color: var(--elab-navy); border-bottom: 2px solid var(--elab-lime); padding-bottom: 8px; }
+                h2 { color: var(--elab-navy); }
                 h3 { color: #2d5aa0; }
                 table { border-collapse: collapse; width: 100%; margin: 12px 0; }
                 td, th { border: 1px solid #ddd; padding: 8px; }
@@ -67,7 +67,7 @@ export const htmlToPages = async (html, fileName) => {
                 img { max-width: 100%; height: auto; }
                 code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
                 pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
-                blockquote { border-left: 3px solid #4A7A25; margin: 12px 0; padding: 8px 16px; background: #f9fdf5; }
+                blockquote { border-left: 3px solid var(--elab-lime); margin: 12px 0; padding: 8px 16px; background: #f9fdf5; }
                 .page-header { font-size: 11px; color: #737373; margin-bottom: 16px; }
             </style>
         </head><body>
@@ -195,7 +195,7 @@ export const pptxToPages = async (arrayBuffer) => {
         ctx.fillRect(0, 0, 1280, 720);
 
         // Numero slide
-        ctx.fillStyle = '#4A7A25';
+        ctx.fillStyle = 'var(--elab-lime)';
         ctx.fillRect(0, 0, 1280, 4);
         ctx.fillStyle = '#737373';
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
@@ -231,7 +231,7 @@ export const pptxToPages = async (arrayBuffer) => {
 
                 if (ti === 0 && isTitle) {
                     ctx.font = 'bold 36px sans-serif';
-                    ctx.fillStyle = '#1E4D8C';
+                    ctx.fillStyle = 'var(--elab-navy)';
                     y = slideImage ? 560 : 180;
                 } else if (ti === 1) {
                     ctx.font = '24px sans-serif';

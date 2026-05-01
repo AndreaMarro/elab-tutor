@@ -61,9 +61,9 @@ export default function LessonBar({ steps = [], currentStep = 0, onAskUnlim }) {
             title="Chiedi a UNLIM"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <rect x="3" y="4" width="14" height="12" rx="3" fill="#1E4D8C" />
-              <circle cx="8" cy="10" r="1.3" fill="#4A7A25" />
-              <circle cx="12" cy="10" r="1.3" fill="#4A7A25" />
+              <rect x="3" y="4" width="14" height="12" rx="3" fill="var(--elab-navy)" />
+              <circle cx="8" cy="10" r="1.3" fill="var(--elab-lime)" />
+              <circle cx="12" cy="10" r="1.3" fill="var(--elab-lime)" />
             </svg>
           </button>
         )}

@@ -330,7 +330,7 @@
   cursor: pointer;
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 14px;
-  color: #4A7A25;
+  color: var(--elab-lime);
   text-align: left;
   transition: background 0.2s, border-color 0.2s;
 }
@@ -396,7 +396,7 @@
 }
 .viewBtn:hover { background: rgba(0, 0, 0, 0.04); }
 .viewBtnActive {
-  background: #1E4D8C !important;
+  background: var(--elab-navy) !important;
   color: #fff !important;
 }
 
@@ -457,7 +457,7 @@
   /* iter 15 LIM legibility batch 2: 11px → 14px per spec §6 (CRITICAL: label LIM ≥14px). */
   font-size: 14px;
   font-weight: 600;
-  color: #E8941C;
+  color: var(--elab-orange);
   background: rgba(232, 148, 28, 0.1);
   padding: 2px 8px;
   border-radius: 6px;

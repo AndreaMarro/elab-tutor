@@ -42,12 +42,12 @@
 }
 
 .item:focus-visible {
-  outline: 2px solid #E8941C;
+  outline: 2px solid var(--elab-orange);
   outline-offset: 2px;
 }
 
 .selected {
-  background: #1E4D8C;
+  background: var(--elab-navy);
   color: #fff;
   font-weight: 600;
 }
@@ -68,7 +68,7 @@
 }
 
 .selected .chapter {
-  /* WCAG AA on #1E4D8C navy: bumped from #a5d6a7 (ratio ~4.1:1 — sub-AA)
+  /* WCAG AA on var(--elab-navy) navy: bumped from #a5d6a7 (ratio ~4.1:1 — sub-AA)
      to #c8e6c9 (ratio ~7.2:1 — AAA). */
   color: #c8e6c9;
 }

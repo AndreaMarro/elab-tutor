@@ -205,7 +205,7 @@
 }
 
 .heroTitleAccent {
-  background: linear-gradient(135deg, #4A7A25, #AED581);
+  background: linear-gradient(135deg, var(--elab-lime), #AED581);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -251,7 +251,7 @@
   height: 3px; background: rgba(255,255,255,0.15); z-index: 3;
 }
 .showcaseProgressFill {
-  height: 100%; background: #4A7A25;
+  height: 100%; background: var(--elab-lime);
   transition: width 0.05s linear; border-radius: 0 2px 2px 0;
 }
 .showcaseOverlay {
@@ -281,7 +281,7 @@
 .thumbActive { border-color: var(--color-primary); box-shadow: 0 4px 16px rgba(30,77,140,0.2); }
 .thumbImg { width: 100%; height: 64px; object-fit: cover; display: block; }
 .thumbInfo { padding: 6px 8px 8px; display: flex; flex-direction: column; gap: 1px; }
-.thumbTag { font-size: 14px; font-weight: 700; color: #4A7A25; text-transform: uppercase; letter-spacing: 0.5px; }
+.thumbTag { font-size: 14px; font-weight: 700; color: var(--elab-lime); text-transform: uppercase; letter-spacing: 0.5px; }
 .thumbLabel { font-size: 14px; font-weight: 600; color: #1A2B4A; line-height: 1.2; }
 
 .featureIconWrap {
@@ -334,7 +334,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   transition: box-shadow 0.2s ease; min-height: 48px;
 }
-.expandIcon { font-size: 14px; color: #4A7A25; font-weight: 700; }
+.expandIcon { font-size: 14px; color: var(--elab-lime); font-weight: 700; }
 .expandText { flex: 1; text-align: left; }
 .expandHint { font-size: 14px; color: #556374; font-weight: 500; }
 
@@ -344,19 +344,19 @@
 }
 .chip {
   background: linear-gradient(135deg, #E8F0FE 0%, #F0F5FF 100%);
-  color: #1E4D8C; border-radius: 10px;
+  color: var(--elab-navy); border-radius: 10px;
   padding: 8px 14px; font-size: 14px; font-weight: 600;
   border: 1px solid #D0DBEF;
 }
 
 .activationGradientTop {
   height: 4px;
-  background: linear-gradient(90deg, #4A7A25, #1E4D8C, #E8941C, #E54B3D);
+  background: linear-gradient(90deg, var(--elab-lime), var(--elab-navy), var(--elab-orange), var(--elab-red));
 }
 .activationContent { padding: 36px 32px; text-align: center; }
 .activationIconWrap {
   width: 60px; height: 60px; border-radius: 50%;
-  background: linear-gradient(135deg, #1E4D8C, #2D6DB5);
+  background: linear-gradient(135deg, var(--elab-navy), #2D6DB5);
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 18px;
   box-shadow: 0 4px 16px rgba(30,77,140,0.3);
@@ -375,7 +375,7 @@
 }
 .input:focus { border-color: var(--color-primary); }
 .errorText { color: #C62828; font-size: 14px; margin-top: 14px; font-weight: 500; }
-.successText { color: #4A7A25; font-size: 18px; font-weight: 700; animation: vetrina-pulse 1.5s infinite; }
+.successText { color: var(--elab-lime); font-size: 18px; font-weight: 700; animation: vetrina-pulse 1.5s infinite; }
 
 .divider { display: flex; align-items: center; gap: 16px; margin: 28px 0; }
 .dividerLine { flex: 1; height: 1px; background: #E8ECF0; }
@@ -407,7 +407,7 @@
 }
 .schoolsBtn {
   display: inline-block; padding: 14px 36px;
-  background: white; color: #1E4D8C; border-radius: 12px;
+  background: white; color: var(--elab-navy); border-radius: 12px;
   font-size: 15px; font-weight: 700; text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15);

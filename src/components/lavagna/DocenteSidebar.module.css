@@ -81,7 +81,7 @@
 
 .spuntoSection {
   background-color: rgba(232, 148, 28, 0.08);
-  border-left: 3px solid #E8941C;
+  border-left: 3px solid var(--elab-orange);
   padding: 8px 12px;
   border-radius: 0 6px 6px 0;
   margin-left: -16px;
@@ -118,7 +118,7 @@
   margin-bottom: 8px;
   padding: 6px 8px;
   background-color: rgba(229, 75, 61, 0.06);
-  border-left: 2px solid #E54B3D;
+  border-left: 2px solid var(--elab-red);
   border-radius: 0 4px 4px 0;
 }
 

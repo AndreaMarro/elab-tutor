@@ -6,14 +6,14 @@
 
 .header {
   margin-bottom: 1rem;
-  border-bottom: 2px solid #1E4D8C;
+  border-bottom: 2px solid var(--elab-navy);
   padding-bottom: 0.5rem;
 }
 
 .title {
   font-family: 'Oswald', sans-serif;
   font-size: 1.25rem;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   margin: 0 0 0.25rem;
 }
 
@@ -58,17 +58,17 @@
 }
 
 .step:hover {
-  border-left-color: #4A7A25;
+  border-left-color: var(--elab-lime);
   background: #f0fdf4;
 }
 
 .step:focus-visible {
-  outline: 2px solid #E8941C;
+  outline: 2px solid var(--elab-orange);
   outline-offset: 2px;
 }
 
 .active {
-  border-left-color: #E8941C;
+  border-left-color: var(--elab-orange);
   background: #fff7ed;
   font-weight: 600;
 }
@@ -76,13 +76,13 @@
 .expId {
   font-family: 'Fira Code', monospace;
   font-size: 0.8125rem;
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }
 
 .page {
   /* iter 14 LIM legibility: 0.75rem (12px) → 0.875rem (14px / var(--font-size-xs)) per spec §6 #4 */
   font-size: 0.875rem;
-  color: #4A7A25;
+  color: var(--elab-lime);
   font-weight: 600;
 }
 

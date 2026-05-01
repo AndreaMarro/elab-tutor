@@ -21,19 +21,19 @@ const Servo = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }
       {/* Mounting tabs (ears) — flat, no highlights */}
       <rect x="-23" y="-4" width="6" height="8" rx="1"
         fill="#3570C0" stroke="#2A5FA0" strokeWidth="0.4" />
-      <circle cx="-20" cy="0" r="1.5" fill="#2A5FA0" stroke="#1E4D8C" strokeWidth="0.3" />
+      <circle cx="-20" cy="0" r="1.5" fill="#2A5FA0" stroke="var(--elab-navy)" strokeWidth="0.3" />
 
       <rect x="17" y="-4" width="6" height="8" rx="1"
         fill="#3570C0" stroke="#2A5FA0" strokeWidth="0.4" />
-      <circle cx="20" cy="0" r="1.5" fill="#2A5FA0" stroke="#1E4D8C" strokeWidth="0.3" />
+      <circle cx="20" cy="0" r="1.5" fill="#2A5FA0" stroke="var(--elab-navy)" strokeWidth="0.3" />
 
       {/* Main body — flat blue, no 3D rim lights, no specular */}
       <rect x="-18" y="-13" width="36" height="26" rx="3"
-        fill="#3B7DD8" stroke="#1E4D8C" strokeWidth="0.6" />
+        fill="#3B7DD8" stroke="var(--elab-navy)" strokeWidth="0.6" />
 
       {/* Shaft housing (top bump) — flat blue, no highlight */}
       <rect x="-6" y="-18" width="12" height="6" rx="2"
-        fill="#3570C0" stroke="#1E4D8C" strokeWidth="0.4" />
+        fill="#3570C0" stroke="var(--elab-navy)" strokeWidth="0.4" />
 
       {/* Rotating horn — flat white, no highlights */}
       <g transform={`translate(0, -18) rotate(${angle - 90})`}>
@@ -71,7 +71,7 @@ const Servo = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }
       {/* AI tutoring highlight */}
       {highlighted && (
         <rect x="-26" y="-32" width="52" height="66" rx="5"
-          fill="none" stroke="var(--color-accent, #4A7A25)" strokeWidth="2" strokeDasharray="5 3">
+          fill="none" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="2" strokeDasharray="5 3">
           <animate attributeName="stroke-opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
         </rect>
       )}

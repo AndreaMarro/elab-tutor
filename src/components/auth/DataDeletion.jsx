@@ -259,7 +259,7 @@ const styles = {
         height: '100%',
         overflowY: 'auto',
         padding: '20px',
-        background: 'linear-gradient(135deg, #1E4D8C 0%, #0d1b2a 100%)',
+        background: 'linear-gradient(135deg, var(--elab-navy) 0%, #0d1b2a 100%)',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     },
     card: {
@@ -383,7 +383,7 @@ const styles = {
         fontWeight: '600',
         borderRadius: '10px',
         border: 'none',
-        background: '#1E4D8C',
+        background: 'var(--elab-navy)',
         color: '#fff',
         cursor: 'pointer',
     },
@@ -433,7 +433,7 @@ const styles = {
         fontSize: '16px',
     },
     link: {
-        color: '#1E4D8C',
+        color: 'var(--elab-navy)',
         textDecoration: 'underline',
     },
     successIcon: {

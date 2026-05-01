@@ -13,7 +13,7 @@ const S = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'linear-gradient(135deg, #1E4D8C 0%, #2A5FA0 40%, #4A7A25 100%)',
+    background: 'linear-gradient(135deg, var(--elab-navy) 0%, #2A5FA0 40%, var(--elab-lime) 100%)',
     fontFamily: "'Open Sans', sans-serif",
     padding: 24,
   },
@@ -36,7 +36,7 @@ const S = {
     fontFamily: "'Oswald', sans-serif",
     fontSize: 28,
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: '0 0 8px',
     letterSpacing: 1,
   },
@@ -50,7 +50,7 @@ const S = {
     textAlign: 'left',
     fontSize: 14,
     fontWeight: 600,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     marginBottom: 8,
   },
   input: {
@@ -73,7 +73,7 @@ const S = {
     fontFamily: "'Oswald', sans-serif",
     letterSpacing: 1,
     color: '#fff',
-    background: '#4A7A25',
+    background: 'var(--elab-lime)',
     border: 'none',
     borderRadius: 12,
     cursor: 'pointer',
@@ -81,7 +81,7 @@ const S = {
     minHeight: 48,
   },
   error: {
-    color: '#E54B3D',
+    color: 'var(--elab-red)',
     fontSize: 14,
     marginTop: 8,
   },
@@ -155,7 +155,7 @@ export default function WelcomePage({ onNavigate }) {
             type="submit"
             style={S.btn}
             onMouseEnter={(e) => e.target.style.background = '#3d6620'}
-            onMouseLeave={(e) => e.target.style.background = '#4A7A25'}
+            onMouseLeave={(e) => e.target.style.background = 'var(--elab-lime)'}
           >
             ENTRA
           </button>

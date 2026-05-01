@@ -185,7 +185,7 @@ export default function UpdatePrompt({
       right: 16,
       bottom: 16,
       width: 'min(420px, calc(100vw - 32px))',
-      background: 'var(--elab-navy, #1E4D8C)',
+      background: 'var(--elab-navy, var(--elab-navy))',
       color: '#FFFFFF',
       borderRadius: 14,
       boxShadow: '0 12px 40px rgba(15, 27, 46, 0.45)',
@@ -195,7 +195,7 @@ export default function UpdatePrompt({
       gap: 12,
       zIndex: 12000,
       fontFamily: "'Open Sans', system-ui, sans-serif",
-      border: '2px solid var(--elab-orange, #E8941C)',
+      border: '2px solid var(--elab-orange, var(--elab-orange))',
       animation: 'elabUpdatePromptSlideIn 220ms cubic-bezier(.2,.8,.2,1)',
     },
     iconBox: {
@@ -239,8 +239,8 @@ export default function UpdatePrompt({
       padding: '8px 14px',
       fontSize: 14,
       fontWeight: 700,
-      color: 'var(--elab-navy, #1E4D8C)',
-      background: 'var(--elab-orange, #E8941C)',
+      color: 'var(--elab-navy, var(--elab-navy))',
+      background: 'var(--elab-orange, var(--elab-orange))',
       border: 'none',
       borderRadius: 8,
       cursor: 'pointer',
@@ -302,7 +302,7 @@ export default function UpdatePrompt({
               aria-label="Ricarica adesso ELAB Tutor con la nuova versione"
               data-testid="update-prompt-reload"
             >
-              <RefreshIcon size={16} color="var(--elab-navy, #1E4D8C)" />
+              <RefreshIcon size={16} color="var(--elab-navy, var(--elab-navy))" />
               Ricarica adesso
             </button>
             <button

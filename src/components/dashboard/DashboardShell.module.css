@@ -60,7 +60,7 @@
   padding: 6px 14px;
   min-height: 44px;
   min-width: 44px;
-  background: #1E4D8C;
+  background: var(--elab-navy);
   color: #ffffff;
   border: 0;
   border-radius: 4px;
@@ -74,7 +74,7 @@
 }
 
 .retryButton:focus-visible {
-  outline: 3px solid #E8941C;
+  outline: 3px solid var(--elab-orange);
   outline-offset: 2px;
 }
 

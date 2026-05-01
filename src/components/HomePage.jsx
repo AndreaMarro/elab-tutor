@@ -64,10 +64,10 @@ function readHash() {
 // Palette tokens — fallback ai valori se le CSS vars non esistono ancora.
 // CLAUDE.md §Design rule 16: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D
 const PALETTE = {
-  navy: 'var(--elab-navy, #1E4D8C)',
-  lime: 'var(--elab-lime, #4A7A25)',
-  orange: 'var(--elab-orange, #E8941C)',
-  red: 'var(--elab-red, #E54B3D)',
+  navy: 'var(--elab-navy, var(--elab-navy))',
+  lime: 'var(--elab-lime, var(--elab-lime))',
+  orange: 'var(--elab-orange, var(--elab-orange))',
+  red: 'var(--elab-red, var(--elab-red))',
   bg: 'var(--elab-bg, #F0F4F8)',
   cardBg: 'var(--elab-card-bg, #FFFFFF)',
   text: 'var(--elab-text, #1A1A1A)',
@@ -630,27 +630,27 @@ export default function HomePage({ onNavigate }) {
                 </linearGradient>
               </defs>
               {/* Antenna */}
-              <line x1="120" y1="40" x2="120" y2="68" stroke="#E8941C" strokeWidth="6" strokeLinecap="round" />
-              <circle cx="120" cy="36" r="10" fill="#E8941C" />
+              <line x1="120" y1="40" x2="120" y2="68" stroke="var(--elab-orange)" strokeWidth="6" strokeLinecap="round" />
+              <circle cx="120" cy="36" r="10" fill="var(--elab-orange)" />
               <circle cx="120" cy="36" r="4" fill="#fff" opacity="0.5" />
               {/* Headband / cuffie */}
-              <path d="M50 110 C 50 70 88 50 120 50 C 152 50 190 70 190 110" stroke="#1E4D8C" strokeWidth="10" fill="none" strokeLinecap="round" />
+              <path d="M50 110 C 50 70 88 50 120 50 C 152 50 190 70 190 110" stroke="var(--elab-navy)" strokeWidth="10" fill="none" strokeLinecap="round" />
               {/* Cuffie laterali */}
-              <rect x="30" y="100" width="32" height="50" rx="14" fill="#4A7A25" />
-              <rect x="178" y="100" width="32" height="50" rx="14" fill="#4A7A25" />
+              <rect x="30" y="100" width="32" height="50" rx="14" fill="var(--elab-lime)" />
+              <rect x="178" y="100" width="32" height="50" rx="14" fill="var(--elab-lime)" />
               {/* Body / face */}
               <rect x="56" y="84" width="128" height="106" rx="22" fill="url(#unlim-body-grad)" />
               {/* Screen / face plate */}
               <rect x="72" y="100" width="96" height="64" rx="12" fill="#0e2a4a" />
               {/* Eyes */}
-              <circle cx="100" cy="130" r="13" fill="#4A7A25" />
-              <circle cx="140" cy="130" r="13" fill="#4A7A25" />
+              <circle cx="100" cy="130" r="13" fill="var(--elab-lime)" />
+              <circle cx="140" cy="130" r="13" fill="var(--elab-lime)" />
               <circle cx="103" cy="126" r="4" fill="#fff" opacity="0.95" />
               <circle cx="143" cy="126" r="4" fill="#fff" opacity="0.95" />
               {/* Smile */}
-              <path d="M95 150 Q 120 168 145 150" stroke="#4A7A25" strokeWidth="5" fill="none" strokeLinecap="round" />
+              <path d="M95 150 Q 120 168 145 150" stroke="var(--elab-lime)" strokeWidth="5" fill="none" strokeLinecap="round" />
               {/* Chest decoration / badge */}
-              <rect x="100" y="172" width="40" height="10" rx="4" fill="#E54B3D" opacity="0.9" />
+              <rect x="100" y="172" width="40" height="10" rx="4" fill="var(--elab-red)" opacity="0.9" />
             </svg>
           </button>
         </div>

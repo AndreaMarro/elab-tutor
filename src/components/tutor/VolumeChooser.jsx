@@ -11,18 +11,18 @@ import { VOLUMES } from '../../data/experiments-index';
 import css from './VolumeChooser.module.css';
 
 const VOL_COLORS = {
-  1: '#4A7A25',
-  2: '#E8941C',
-  3: '#E54B3D',
-  inventor: '#1E4D8C',
+  1: 'var(--elab-lime)',
+  2: 'var(--elab-orange)',
+  3: 'var(--elab-red)',
+  inventor: 'var(--elab-navy)',
 };
 
 const iconSvg = { xmlns: 'http://www.w3.org/2000/svg', width: 32, height: 32, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' };
 const VOL_ICONS = {
-  1: <svg {...iconSvg} style={{ color: '#4A7A25' }}><circle cx="12" cy="12" r="3"/><line x1="12" y1="5" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="19"/><line x1="5" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="19" y2="12"/></svg>,
-  2: <svg {...iconSvg} style={{ color: '#E8941C' }}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
-  3: <svg {...iconSvg} style={{ color: '#E54B3D' }}><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>,
-  inventor: <svg {...iconSvg} style={{ color: '#1E4D8C' }}><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>,
+  1: <svg {...iconSvg} style={{ color: 'var(--elab-lime)' }}><circle cx="12" cy="12" r="3"/><line x1="12" y1="5" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="19"/><line x1="5" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="19" y2="12"/></svg>,
+  2: <svg {...iconSvg} style={{ color: 'var(--elab-orange)' }}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
+  3: <svg {...iconSvg} style={{ color: 'var(--elab-red)' }}><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>,
+  inventor: <svg {...iconSvg} style={{ color: 'var(--elab-navy)' }}><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>,
 };
 
 const VOL_BG = {

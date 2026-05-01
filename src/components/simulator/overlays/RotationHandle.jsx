@@ -89,7 +89,7 @@ const RotationHandle = ({
         height={150 + BUTTON_SIZE + 8}
         rx={BUTTON_RADIUS + 4}
         fill="rgba(255,255,255,0.92)"
-        stroke="var(--color-primary, #1E4D8C)"
+        stroke="var(--color-primary, var(--elab-navy))"
         strokeWidth="1.5"
         opacity="0.95"
       />
@@ -117,7 +117,7 @@ const RotationHandle = ({
             {/* Visible button */}
             <circle
               r={BUTTON_RADIUS}
-              fill={isActive ? 'var(--color-accent, #4A7A25)' : 'var(--color-primary, #1E4D8C)'}
+              fill={isActive ? 'var(--color-accent, var(--elab-lime))' : 'var(--color-primary, var(--elab-navy))'}
               stroke="#fff"
               strokeWidth="2"
               opacity={isActive ? 1 : 0.85}

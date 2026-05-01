@@ -42,7 +42,7 @@
 }
 
 .tab:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -2px;
 }
 
@@ -100,7 +100,7 @@
 
 .clearBtn:focus-visible,
 .searchBtn:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: 1px;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .suggestionChip:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: 1px;
 }
 
@@ -202,7 +202,7 @@
 }
 
 .backBtn:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -2px;
 }
 
@@ -242,7 +242,7 @@
 }
 
 .card:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -1px;
 }
 
@@ -360,7 +360,7 @@
 }
 
 .pipThumb:focus-visible {
-  outline: 2px solid #4A7A25;
+  outline: 2px solid var(--elab-lime);
   outline-offset: 2px;
 }
 
@@ -413,7 +413,7 @@
 }
 
 .youtubeSearchBtn:focus-visible {
-  outline: 2px solid #E54B3D;
+  outline: 2px solid var(--elab-red);
   outline-offset: 1px;
 }
 

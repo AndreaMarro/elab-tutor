@@ -126,13 +126,13 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
 
   const st = R.StyleSheet.create({
     page: { fontFamily: 'OpenSans', fontSize: 10, color: '#333333', paddingTop: 40, paddingBottom: 60, paddingHorizontal: 40 },
-    headerBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 8, backgroundColor: '#1E4D8C' },
+    headerBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 8, backgroundColor: 'var(--elab-navy)' },
     footer: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 40, borderTopWidth: 3, borderTopColor: vol },
     footerText: { fontSize: 8, color: '#737373', fontFamily: 'OpenSans' },
-    coverTitle: { fontFamily: 'Oswald', fontSize: 28, fontWeight: 700, color: '#1E4D8C', marginTop: 100, textAlign: 'center' },
+    coverTitle: { fontFamily: 'Oswald', fontSize: 28, fontWeight: 700, color: 'var(--elab-navy)', marginTop: 100, textAlign: 'center' },
     coverSubtitle: { fontFamily: 'Oswald', fontSize: 16, fontWeight: 400, color: vol, textAlign: 'center', marginTop: 8 },
     coverDate: { fontSize: 11, color: '#666666', textAlign: 'center', marginTop: 16 },
-    sectionTitle: { fontFamily: 'Oswald', fontSize: 20, fontWeight: 700, color: '#1E4D8C', marginBottom: 12 },
+    sectionTitle: { fontFamily: 'Oswald', fontSize: 20, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 12 },
     narrative: { fontSize: 10, lineHeight: 1.6, color: '#333333', marginBottom: 8 },
     narrativeItalic: { fontSize: 9, fontStyle: 'italic', color: '#666666', marginBottom: 8 },
     boxSuccess: { backgroundColor: '#E8F5E9', borderLeftWidth: 4, borderLeftColor: '#4CAF50', padding: 10, marginVertical: 8, borderRadius: 2 },
@@ -143,7 +143,7 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
     codeText: { fontFamily: 'FiraCode', fontSize: 8, color: '#333333', lineHeight: 1.5 },
     chatUnlim: { backgroundColor: '#E8EDF4', padding: 8, borderRadius: 6, marginBottom: 6, marginRight: 40 },
     chatStudent: { backgroundColor: '#F5F5F5', padding: 8, borderRadius: 6, marginBottom: 6, marginLeft: 40 },
-    chatRole: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: '#1E4D8C', marginBottom: 2 },
+    chatRole: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 2 },
     chatRoleStudent: { fontFamily: 'Oswald', fontSize: 8, fontWeight: 700, color: '#666666', marginBottom: 2, textAlign: 'right' },
     chatText: { fontSize: 9, lineHeight: 1.4, color: '#333333' },
     quizQuestion: { fontFamily: 'OpenSans', fontWeight: 700, fontSize: 10, marginBottom: 6, marginTop: 10 },
@@ -161,7 +161,7 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
     timelineIcon: { width: 18, fontSize: 10, textAlign: 'center' },
     timelineText: { flex: 1, fontSize: 9, color: '#333333' },
     measureTable: { marginVertical: 8 },
-    measureHeaderRow: { flexDirection: 'row', backgroundColor: '#1E4D8C', paddingVertical: 4, paddingHorizontal: 6, borderRadius: 2 },
+    measureHeaderRow: { flexDirection: 'row', backgroundColor: 'var(--elab-navy)', paddingVertical: 4, paddingHorizontal: 6, borderRadius: 2 },
     measureHeaderText: { color: '#FFFFFF', fontSize: 8, fontFamily: 'Oswald', fontWeight: 700 },
     measureRow: { flexDirection: 'row', paddingVertical: 3, paddingHorizontal: 6, borderBottomWidth: 0.5, borderBottomColor: '#EEEEEE' },
     measureCell: { fontSize: 8, fontFamily: 'FiraCode', color: '#333333' },
@@ -198,7 +198,7 @@ export async function generateSessionReportPDF(sessionData, circuitScreenshot, a
       {exp?.chapter && (
         <R.Text style={{ ...st.narrativeItalic, textAlign: 'center', marginTop: 20 }}>{exp.chapter}</R.Text>
       )}
-      <R.Text style={{ ...st.narrativeItalic, textAlign: 'center', marginTop: 60, fontSize: 10, color: '#1E4D8C' }}>
+      <R.Text style={{ ...st.narrativeItalic, textAlign: 'center', marginTop: 60, fontSize: 10, color: 'var(--elab-navy)' }}>
         ELAB — Elettronica Lab
       </R.Text>
     </PageWrap>

@@ -112,7 +112,7 @@
 .showAllBtn:hover {
   background: rgba(30, 77, 140, 0.04);
   border-color: rgba(30, 77, 140, 0.4);
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }
 
 .componentBtn:hover {
@@ -128,7 +128,7 @@
 }
 
 .componentBtn:focus-visible {
-  outline: 2px solid #1E4D8C;
+  outline: 2px solid var(--elab-navy);
   outline-offset: -1px;
 }
 
@@ -243,7 +243,7 @@
   width: 64px;
   height: 64px;
   border-radius: 20px;
-  background: linear-gradient(135deg, #1E4D8C 0%, #2a6bc4 100%);
+  background: linear-gradient(135deg, var(--elab-navy) 0%, #2a6bc4 100%);
   color: #fff;
   margin-bottom: 16px;
   box-shadow: 0 6px 20px rgba(30, 77, 140, 0.3);
@@ -253,7 +253,7 @@
   font-family: 'Oswald', sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   margin: 0 0 12px;
   letter-spacing: 0.5px;
 }
@@ -284,7 +284,7 @@
   padding: 14px 28px;
   border: none;
   border-radius: 16px;
-  background: linear-gradient(135deg, #4A7A25 0%, #5a9a30 100%);
+  background: linear-gradient(135deg, var(--elab-lime) 0%, #5a9a30 100%);
   color: #fff;
   font-family: 'Oswald', sans-serif;
   font-size: 20px;
@@ -312,7 +312,7 @@
   border: 2px solid rgba(30, 77, 140, 0.2);
   border-radius: 12px;
   background: transparent;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -410,7 +410,7 @@
   border-radius: 50%;
   border: 1px solid rgba(30, 77, 140, 0.2);
   background: #ffffff;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
@@ -420,11 +420,11 @@
 
 .capitoloPickerClose:hover {
   background: rgba(30, 77, 140, 0.08);
-  border-color: #1E4D8C;
+  border-color: var(--elab-navy);
 }
 
 .capitoloPickerClose:focus-visible {
-  outline: 3px solid #E8941C;
+  outline: 3px solid var(--elab-orange);
   outline-offset: 2px;
 }
 

@@ -43,7 +43,7 @@ export default function CanvasTab({
 
     // Canvas local state
     const [isDrawing, setIsDrawing] = useState(false);
-    const [brushColor, setBrushColor] = useState('#1E4D8C');
+    const [brushColor, setBrushColor] = useState('var(--elab-navy)');
     const [brushSize, setBrushSize] = useState(2);
     const [isEraser, setIsEraser] = useState(false);
     const [canvasTool, setCanvasTool] = useState('brush'); // 'brush', 'text'
@@ -355,7 +355,7 @@ export default function CanvasTab({
                 <div className="tool-group-separator" />
 
                 <div className="tool-group">
-                    {['#1E4D8C', '#4A7A25', '#EF4444', '#F59E0B', '#000000', '#FFFFFF'].map(c => (
+                    {['var(--elab-navy)', 'var(--elab-lime)', '#EF4444', '#F59E0B', '#000000', '#FFFFFF'].map(c => (
                         <button
                             key={c}
                             className={`v4-color ${brushColor === c ? 'active' : ''}`}

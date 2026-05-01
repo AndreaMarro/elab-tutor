@@ -13,8 +13,8 @@ import { showToast } from '../../common/Toast';
 // CONSTANTS
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
-    success: '#4A7A25',
+    primary: 'var(--elab-navy)',
+    success: 'var(--elab-lime)',
     warning: '#F59E0B',
     danger: '#EF4444',
     info: '#06B6D4',
@@ -1374,7 +1374,7 @@ export default function AdminEventi({ isMobile }) {
                         style={{
                             ...S.createBtn,
                             background: '#FFFFFF',
-                            color: '#1E4D8C',
+                            color: 'var(--elab-navy)',
                             border: '1px solid #E2E8F0',
                         }}
                         title="Esporta CSV"

@@ -263,7 +263,7 @@ const S = {
 
   progressFill: {
     height: '100%',
-    background: 'var(--color-accent, #4A7A25)',
+    background: 'var(--color-accent, var(--elab-lime))',
     transition: 'width 300ms ease',
     borderRadius: '0 2px 2px 0',
   },
@@ -305,14 +305,14 @@ const S = {
   },
 
   optionCorrect: {
-    borderColor: 'var(--color-accent, #4A7A25)',
+    borderColor: 'var(--color-accent, var(--elab-lime))',
     background: 'var(--color-accent-light, #E8F5E9)',
     color: 'var(--color-success, #16A34A)',
     cursor: 'default',
   },
 
   optionWrong: {
-    borderColor: 'var(--color-vol3, #E54B3D)',
+    borderColor: 'var(--color-vol3, var(--elab-red))',
     background: 'var(--color-danger-light, #FEE2E2)',
     color: 'var(--color-danger, #DC2626)',
     cursor: 'default',
@@ -326,7 +326,7 @@ const S = {
     height: 26,
     borderRadius: '50%',
     background: 'var(--color-primary-light, #E8EEF6)',
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontSize: 14,
     fontWeight: 700,
     flexShrink: 0,
@@ -374,7 +374,7 @@ const S = {
     padding: '10px 16px',
     border: 'none',
     borderRadius: 10,
-    background: 'var(--color-primary, #1E4D8C)',
+    background: 'var(--color-primary, var(--elab-navy))',
     color: 'var(--color-text-inverse, #FFF)',
     fontSize: 14,
     fontWeight: 600,
@@ -397,7 +397,7 @@ const S = {
     height: 80,
     borderRadius: '50%',
     background: 'linear-gradient(135deg, var(--color-accent-light), var(--color-success-light))',
-    border: '3px solid var(--color-accent, #4A7A25)',
+    border: '3px solid var(--color-accent, var(--elab-lime))',
     marginBottom: 14,
   },
 
@@ -423,10 +423,10 @@ const S = {
 
   retryBtn: {
     padding: '8px 20px',
-    border: '1.5px solid var(--color-primary, #1E4D8C)',
+    border: '1.5px solid var(--color-primary, var(--elab-navy))',
     borderRadius: 10,
     background: 'var(--color-bg, #FFF)',
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',
@@ -437,7 +437,7 @@ const S = {
     padding: '8px 20px',
     border: 'none',
     borderRadius: 10,
-    background: 'var(--color-primary, #1E4D8C)',
+    background: 'var(--color-primary, var(--elab-navy))',
     color: 'var(--color-text-inverse, #FFF)',
     fontSize: 14,
     fontWeight: 600,
@@ -449,10 +449,10 @@ const S = {
     marginTop: 8,
     width: '100%',
     padding: '8px 14px',
-    border: '1.5px solid var(--color-primary, #1E4D8C)',
+    border: '1.5px solid var(--color-primary, var(--elab-navy))',
     borderRadius: 10,
     background: 'var(--color-bg, #FFF)',
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',

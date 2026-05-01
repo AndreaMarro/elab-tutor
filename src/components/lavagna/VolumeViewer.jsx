@@ -18,7 +18,7 @@ const VOLUME_PATHS = { 1: '/volumes/volume1.pdf', 2: '/volumes/volume2.pdf', 3: 
 const VOLUME_LABELS = { 1: 'Volume 1 — Le Basi', 2: 'Volume 2 — Approfondiamo', 3: 'Volume 3 — Arduino' };
 const ZOOM_LEVELS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
 const ANNO_STORAGE = 'elab-annotations-';
-const PEN_COLORS = ['#E54B3D', '#1E4D8C', '#4A7A25', '#222', '#E8941C'];
+const PEN_COLORS = ['var(--elab-red)', 'var(--elab-navy)', 'var(--elab-lime)', '#222', 'var(--elab-orange)'];
 const PEN_SIZES = [2, 4, 7];
 
 // ── Annotation storage ──
@@ -192,7 +192,7 @@ export default function VolumeViewer({
             onClick={() => setDrawingEnabled(d => !d)}
             aria-label={drawingEnabled ? 'Disattiva penna' : 'Attiva penna'}
             title={drawingEnabled ? 'Disattiva penna' : 'Attiva penna'}
-            style={{ background: drawingEnabled ? '#4A7A25' : 'transparent', color: drawingEnabled ? '#fff' : 'inherit', borderRadius: 6 }}
+            style={{ background: drawingEnabled ? 'var(--elab-lime)' : 'transparent', color: drawingEnabled ? '#fff' : 'inherit', borderRadius: 6 }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -208,8 +208,8 @@ export default function VolumeViewer({
             ))}
             <span className={css.penSep} />
             {PEN_SIZES.map(s => (
-              <button key={s} onClick={() => setPenSize(s)} className={css.penSizeBtn} aria-label={`Spessore ${s}`} style={{ border: penSize === s ? '1px solid #1E4D8C' : '1px solid transparent' }}>
-                <span style={{ width: s + 4, height: s + 4, borderRadius: '50%', background: penSize === s ? '#1E4D8C' : '#5A6B7D', display: 'block' }} />
+              <button key={s} onClick={() => setPenSize(s)} className={css.penSizeBtn} aria-label={`Spessore ${s}`} style={{ border: penSize === s ? '1px solid var(--elab-navy)' : '1px solid transparent' }}>
+                <span style={{ width: s + 4, height: s + 4, borderRadius: '50%', background: penSize === s ? 'var(--elab-navy)' : '#5A6B7D', display: 'block' }} />
               </button>
             ))}
             <span className={css.penSep} />

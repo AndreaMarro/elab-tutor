@@ -24,10 +24,10 @@ const SESSIONS_KEY = 'elab_unlim_sessions';
 const MAX_ITEMS = 10;
 
 const PALETTE = {
-  navy: '#1E4D8C',
-  lime: '#4A7A25',
-  orange: '#E8941C',
-  red: '#E54B3D',
+  navy: 'var(--elab-navy)',
+  lime: 'var(--elab-lime)',
+  orange: 'var(--elab-orange)',
+  red: 'var(--elab-red)',
   textMuted: '#5A6B7E',
   border: 'rgba(30, 77, 140, 0.12)',
 };

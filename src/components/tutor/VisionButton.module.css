@@ -9,7 +9,7 @@
   min-height: 44px;
   border: 0;
   border-radius: 8px;
-  background: #1E4D8C;
+  background: var(--elab-navy);
   color: #fff;
   font-family: 'Open Sans', system-ui, sans-serif;
   font-size: 0.9375rem;
@@ -28,7 +28,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid #E8941C;
+  outline: 2px solid var(--elab-orange);
   outline-offset: 2px;
 }
 

@@ -8,7 +8,7 @@ export const COLORS = {
     primary: '#0F172A',
     primaryLight: '#1E293B',
     primaryHover: '#334155',
-    accent: '#1E4D8C',
+    accent: 'var(--elab-navy)',
     accentLight: '#2563EB',
     accentBg: '#EFF6FF',
     success: '#059669',

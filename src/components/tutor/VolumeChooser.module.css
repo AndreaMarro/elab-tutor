@@ -40,7 +40,7 @@
   font-family: var(--font-display, Oswald, sans-serif);
   font-size: 24px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;

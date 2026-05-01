@@ -69,10 +69,10 @@ export default function GiaMontato({
       style={{
         padding: '14px 18px',
         background: '#fff8e6',
-        borderLeft: '4px solid #E8941C',
+        borderLeft: '4px solid var(--elab-orange)',
         borderRadius: 8,
         fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
-        color: '#1E4D8C',
+        color: 'var(--elab-navy)',
         fontSize: 15,
         lineHeight: 1.45,
       }}
@@ -81,7 +81,7 @@ export default function GiaMontato({
       {citation && (
         <p
           data-testid="gia-montato-citation"
-          style={{ margin: '6px 0 0', fontSize: 13, fontStyle: 'italic', color: '#4A7A25' }}
+          style={{ margin: '6px 0 0', fontSize: 13, fontStyle: 'italic', color: 'var(--elab-lime)' }}
         >
           Riferimento volume: {citation}
         </p>

@@ -1,5 +1,5 @@
 /* ModalitaSwitch — 4 modes UI ADR-025 iter 26
-   Palette ELAB CLAUDE.md §Design rule 16: Navy #1E4D8C primary, Lime #4A7A25 accent
+   Palette ELAB CLAUDE.md §Design rule 16: Navy var(--elab-navy) primary, Lime var(--elab-lime) accent
    Touch target ≥44px (rule 9), font ≥13px (rule 8) */
 
 .modalitaSwitch {
@@ -22,7 +22,7 @@
   border: 2px solid transparent;
   border-radius: 10px;
   background: #ffffff;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 15px;
   font-weight: 600;
@@ -36,7 +36,7 @@
 }
 
 .modeBtn:focus-visible {
-  outline: 3px solid #E8941C;
+  outline: 3px solid var(--elab-orange);
   outline-offset: 2px;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .modeBtnActive {
-  background: #1E4D8C;
+  background: var(--elab-navy);
   color: #ffffff;
   border-color: #153d6e;
   box-shadow: 0 2px 8px rgba(30, 77, 140, 0.25);

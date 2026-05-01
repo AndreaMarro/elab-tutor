@@ -12,10 +12,10 @@ import { ordiniService } from '../../../services/notionService';
 // COSTANTI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
+    primary: 'var(--elab-navy)',
     primaryLight: '#2a4fa3',
     primaryBg: '#eef2fa',
-    success: '#4A7A25',
+    success: 'var(--elab-lime)',
     successBg: '#f0f7e4',
     warning: '#F59E0B',
     warningBg: '#fef9ee',

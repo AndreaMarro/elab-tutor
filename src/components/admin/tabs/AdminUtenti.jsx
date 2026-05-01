@@ -12,8 +12,8 @@ import { utentiService } from '../../../services/notionService';
 // COSTANTI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
-    success: '#4A7A25',
+    primary: 'var(--elab-navy)',
+    success: 'var(--elab-lime)',
     warning: '#F59E0B',
     danger: '#EF4444',
     bg: '#F0F4F8',

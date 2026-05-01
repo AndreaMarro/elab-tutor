@@ -155,9 +155,9 @@ const Annotation = ({
         height={noteHeight}
         rx="3"
         fill="#FFF9C4"
-        stroke={isSelected ? 'var(--color-accent, #4A7A25)' : '#E6DB74'}
+        stroke={isSelected ? 'var(--color-accent, var(--elab-lime))' : '#E6DB74'}
         strokeWidth={isSelected ? 1.5 : 0.8}
-        style={isSelected ? { filter: 'drop-shadow(0 0 3px var(--color-accent, #4A7A25))' } : undefined}
+        style={isSelected ? { filter: 'drop-shadow(0 0 3px var(--color-accent, var(--elab-lime)))' } : undefined}
       />
       {/* Top fold line */}
       <line
@@ -226,7 +226,7 @@ const Annotation = ({
                 onSendToUNLIM(`Ho scritto questa annotazione sul circuito: "${text}". Puoi aiutarmi a capire meglio?`);
               }}
             >
-              <circle cx={renderX + noteWidth - 14} cy={renderY + 1} r="5" fill="var(--color-primary, #1E4D8C)" stroke="#fff" strokeWidth="0.5" />
+              <circle cx={renderX + noteWidth - 14} cy={renderY + 1} r="5" fill="var(--color-primary, var(--elab-navy))" stroke="#fff" strokeWidth="0.5" />
               {/* Chat bubble icon */}
               <path
                 d={`M${renderX + noteWidth - 17} ${renderY - 1} h6 a1 1 0 0 1 1 1 v3 a1 1 0 0 1 -1 1 h-3 l-2 1.5 v-1.5 h-1 a1 1 0 0 1 -1 -1 v-3 a1 1 0 0 1 1 -1z`}
@@ -255,7 +255,7 @@ const Annotation = ({
                 onDelete(id);
               }}
             >
-              <circle cx={renderX + noteWidth - 1} cy={renderY + 1} r="5" fill="var(--color-vol3, #E54B3D)" stroke="#fff" strokeWidth="0.5" />
+              <circle cx={renderX + noteWidth - 1} cy={renderY + 1} r="5" fill="var(--color-vol3, var(--elab-red))" stroke="#fff" strokeWidth="0.5" />
               <line x1={renderX + noteWidth - 3.5} y1={renderY - 1.5} x2={renderX + noteWidth + 1.5} y2={renderY + 3.5} stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
               <line x1={renderX + noteWidth + 1.5} y1={renderY - 1.5} x2={renderX + noteWidth - 3.5} y2={renderY + 3.5} stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
             </g>

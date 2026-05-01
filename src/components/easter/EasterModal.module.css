@@ -188,7 +188,7 @@
 }
 
 :global(body.elab-banana-mode) .dialog {
-  border-color: #E8941C;
+  border-color: var(--elab-orange);
   box-shadow: 0 24px 80px rgba(232, 148, 28, 0.45);
 }
 

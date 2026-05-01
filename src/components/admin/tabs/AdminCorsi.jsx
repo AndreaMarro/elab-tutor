@@ -12,10 +12,10 @@ import { corsiService } from '../../../services/notionService';
 // COSTANTI
 // ============================================
 const COLORS = {
-    primary: '#1E4D8C',
+    primary: 'var(--elab-navy)',
     primaryLight: '#2A4FA0',
     primaryBg: '#EBF0FA',
-    success: '#4A7A25',
+    success: 'var(--elab-lime)',
     successBg: '#F0F7E4',
     warning: '#F59E0B',
     warningBg: '#FEF3C7',

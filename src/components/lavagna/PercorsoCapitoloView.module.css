@@ -125,7 +125,7 @@
   padding: 16px 24px;
   margin: 16px 0;
   background-color: rgba(232, 148, 28, 0.05);
-  border-left: 3px solid #E8941C;
+  border-left: 3px solid var(--elab-orange);
   border-radius: 0 6px 6px 0;
 }
 
@@ -159,7 +159,7 @@
   margin-bottom: 16px;
   padding: 12px 16px;
   background-color: rgba(232, 148, 28, 0.1);
-  border-left: 3px solid #E8941C;
+  border-left: 3px solid var(--elab-orange);
   border-radius: 0 6px 6px 0;
 }
 
@@ -236,7 +236,7 @@
   margin-top: 12px;
   padding: 8px 12px;
   background-color: rgba(74, 122, 37, 0.08);
-  border-left: 2px solid #4A7A25;
+  border-left: 2px solid var(--elab-lime);
   border-radius: 0 4px 4px 0;
   font-size: 13px;
   font-style: italic;

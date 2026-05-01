@@ -18,10 +18,10 @@
 import React from 'react';
 
 const BORDER_BY_PRIORITY = {
-  high: '#E54B3D',
-  med: '#E8941C',
-  medium: '#E8941C',
-  low: '#4A7A25',
+  high: 'var(--elab-red)',
+  med: 'var(--elab-orange)',
+  medium: 'var(--elab-orange)',
+  low: 'var(--elab-lime)',
 };
 
 const BG_BY_PRIORITY = {

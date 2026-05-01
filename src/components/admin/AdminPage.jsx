@@ -63,8 +63,8 @@ const IconGestionale = () => (
 );
 
 const TABS = [
-    { id: 'dashboard',   label: 'Dashboard',    icon: <IconDashboard />, color: '#1E4D8C' },
-    { id: 'utenti',      label: 'Utenti',       icon: <IconUsers />, color: '#4A7A25' },
+    { id: 'dashboard',   label: 'Dashboard',    icon: <IconDashboard />, color: 'var(--elab-navy)' },
+    { id: 'utenti',      label: 'Utenti',       icon: <IconUsers />, color: 'var(--elab-lime)' },
     { id: 'ordini',      label: 'Ordini',       icon: <IconOrders />, color: '#F59E0B' },
     { id: 'corsi',       label: 'Corsi',        icon: <IconCourses />, color: '#8B5CF6' },
     { id: 'eventi',      label: 'Eventi',       icon: <IconEvents />, color: '#EC4899' },
@@ -124,7 +124,7 @@ export default function AdminPage({ onNavigate }) {
     if (!effectiveAdmin) {
         return (
             <div style={S.denied}>
-                <h2 style={{ color: '#1E4D8C', margin: '0 0 16px' }}>Accesso Admin</h2>
+                <h2 style={{ color: 'var(--elab-navy)', margin: '0 0 16px' }}>Accesso Admin</h2>
                 <form onSubmit={handleAdminLogin} style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
                     <input
                         type="password"
@@ -331,7 +331,7 @@ export default function AdminPage({ onNavigate }) {
             <div style={{ background: '#F0F4F8', minHeight: 'calc(100vh - 56px)' }}>
                 {/* Header */}
                 <div style={{
-                    background: '#1E4D8C', padding: '14px 16px',
+                    background: 'var(--elab-navy)', padding: '14px 16px',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -343,7 +343,7 @@ export default function AdminPage({ onNavigate }) {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{
-                            background: connectionStatus?.connected ? '#4A7A25' : '#EF4444',
+                            background: connectionStatus?.connected ? 'var(--elab-lime)' : '#EF4444',
                             width: '8px', height: '8px', borderRadius: '50%', display: 'inline-block',
                         }} />
                         <span style={{
@@ -392,7 +392,7 @@ export default function AdminPage({ onNavigate }) {
         }}>
             {/* Sidebar */}
             <aside style={{
-                width: '220px', flexShrink: 0, background: '#1E4D8C',
+                width: '220px', flexShrink: 0, background: 'var(--elab-navy)',
                 display: 'flex', flexDirection: 'column',
             }}>
                 {/* Brand */}
@@ -414,7 +414,7 @@ export default function AdminPage({ onNavigate }) {
                     <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span style={{
                             width: '8px', height: '8px', borderRadius: '50%',
-                            background: connectionStatus?.connected ? '#4A7A25' : connectionStatus === null ? '#F59E0B' : '#EF4444',
+                            background: connectionStatus?.connected ? 'var(--elab-lime)' : connectionStatus === null ? '#F59E0B' : '#EF4444',
                             display: 'inline-block',
                         }} />
                         <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>
@@ -495,7 +495,7 @@ export default function AdminPage({ onNavigate }) {
                     marginBottom: '20px',
                 }}>
                     <div>
-                        <h1 style={{ margin: 0, fontSize: '22px', color: '#1E4D8C', fontWeight: '800' }}>
+                        <h1 style={{ margin: 0, fontSize: '22px', color: 'var(--elab-navy)', fontWeight: '800' }}>
                             {TABS.find(t => t.id === tab)?.icon} {TABS.find(t => t.id === tab)?.label}
                         </h1>
                         <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#737373' }}>
@@ -532,7 +532,7 @@ const S = {
         minHeight: 'calc(100vh - 56px)', background: '#F0F4F8',
     },
     primaryBtn: {
-        padding: '10px 20px', background: '#1E4D8C', color: 'white',
+        padding: '10px 20px', background: 'var(--elab-navy)', color: 'white',
         border: 'none', borderRadius: '8px', cursor: 'pointer',
         fontSize: '14px', fontWeight: '600',
     },

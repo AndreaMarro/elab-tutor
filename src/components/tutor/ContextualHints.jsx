@@ -106,7 +106,7 @@ export function TabHint({ tabId, onDismiss }) {
         <div style={{ flex: 1 }}>
           <h4 style={{
             margin: '0 0 4px',
-            color: 'var(--color-primary, #1E4D8C)',
+            color: 'var(--color-primary, var(--elab-navy))',
             fontFamily: 'var(--font-display, Oswald, sans-serif)',
             fontSize: 14
           }}>
