@@ -1,27 +1,28 @@
 /**
- * HomeCronologia — Cronologia sessioni Google-style (iter 35 P0)
- * Sezione sotto le 5 card homepage. Mostra fino a 10 sessioni passate
- * recuperate da localStorage (`elab_unlim_sessions`) + Supabase
- * `unlim_sessions` quando disponibile.
+ * HomeCronologia — Cronologia sessioni Google/ChatGPT-style (Sprint U iter 7 ralph iter 3)
  *
- * Per ogni sessione:
- *   - timestamp formattato ("2 giorni fa")
- *   - titolo esperimento (lessonPath.title)
- *   - modalità (Percorso/Passo Passo/Già Montato/Libero)
- *   - descrizione breve UNLIM-generated (cached server-side, ~80 char)
- *   - CTA "Riprendi sessione"
+ * Sezione sotto i 3 button homepage. Mostra fino a 30 sessioni passate
+ * recuperate da localStorage (`elab_unlim_sessions`) con:
+ *   - Search bar Google-style (filtra titolo + descrizione + experimentId)
+ *   - Date buckets fissi (Oggi / Ieri / Questa settimana / Più vecchie)
+ *   - AI brief riassunto (description_unlim cached server-side via Edge Function
+ *     `unlim-session-description`); fallback locale conta interazioni + durata
+ *   - On-demand fetch AI brief se `description_unlim` assente ma `messages.length>0`
+ *   - CTA "Riprendi" → deep-link `localStorage.elab_resume_experiment`
  *
  * NOTE iter 35: descrizione UNLIM generata da Edge Function
  * `unlim-session-description` (vedi supabase/functions/unlim-session-description/).
- * Cache lato server in colonna `description_unlim`. Se mancante, fallback
- * a riassunto locale dei messaggi della sessione.
+ * Cache lato server in colonna `description_unlim`. Se mancante e stack online,
+ * fetch on-demand al primo render della row.
  *
- * Andrea Marro — 30/04/2026
+ * Andrea Marro — iter 7 ralph iter 3 — 2026-05-01
  */
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 
 const SESSIONS_KEY = 'elab_unlim_sessions';
-const MAX_ITEMS = 10;
+const MAX_ITEMS = 30;
+const SUPABASE_URL = (import.meta?.env?.VITE_SUPABASE_URL || '').replace(/\/+$/, '');
+const SUPABASE_ANON = import.meta?.env?.VITE_SUPABASE_ANON_KEY || '';
 
 const PALETTE = {
   navy: '#1E4D8C',
@@ -30,36 +31,84 @@ const PALETTE = {
   red: '#E54B3D',
   textMuted: '#5A6B7E',
   border: 'rgba(30, 77, 140, 0.12)',
+  searchBg: '#F5F7FA',
 };
 
 const styles = {
   section: {
     maxWidth: 1200,
     margin: '48px auto 0',
-    padding: '32px 8px',
+    padding: '32px 16px',
     fontFamily: "'Open Sans', system-ui, sans-serif",
+  },
+  headerRow: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 16,
+    marginBottom: 16,
   },
   heading: {
     fontFamily: "'Oswald', system-ui, sans-serif",
     fontSize: 24,
     fontWeight: 700,
     color: PALETTE.navy,
-    margin: '0 0 16px',
+    margin: 0,
     letterSpacing: '0.02em',
+  },
+  searchWrap: {
+    flex: '1 1 240px',
+    maxWidth: 360,
+    position: 'relative',
+  },
+  searchInput: {
+    width: '100%',
+    minHeight: 44,
+    padding: '10px 14px 10px 38px',
+    borderRadius: 12,
+    border: `1px solid ${PALETTE.border}`,
+    background: PALETTE.searchBg,
+    fontSize: 14,
+    fontFamily: 'inherit',
+    color: PALETTE.navy,
+    outline: 'none',
+    transition: 'border-color 120ms ease, box-shadow 120ms ease',
+  },
+  searchIcon: {
+    position: 'absolute',
+    left: 12,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    pointerEvents: 'none',
   },
   empty: {
     background: '#FFFFFF',
     border: `1px dashed ${PALETTE.border}`,
     borderRadius: 16,
-    padding: '24px 20px',
+    padding: '32px 20px',
     color: PALETTE.textMuted,
     fontSize: 14,
     textAlign: 'center',
+    lineHeight: 1.5,
+  },
+  bucket: {
+    margin: '24px 0 0',
+    padding: 0,
+  },
+  bucketLabel: {
+    fontFamily: "'Oswald', system-ui, sans-serif",
+    fontSize: 13,
+    fontWeight: 700,
+    color: PALETTE.lime,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    margin: '0 0 8px 4px',
   },
   list: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 12,
+    gap: 10,
     margin: 0,
     padding: 0,
     listStyle: 'none',
@@ -114,6 +163,13 @@ const styles = {
     display: '-webkit-box',
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
+  },
+  descriptionLoading: {
+    fontSize: 13,
+    color: PALETTE.lime,
+    margin: 0,
+    fontStyle: 'italic',
+    opacity: 0.7,
   },
   modeBadge: {
     display: 'inline-flex',
@@ -176,9 +232,49 @@ function formatRelative(iso) {
 }
 
 /**
+ * Bucket sessions in 4 fixed groups (Google/ChatGPT pattern).
+ * Returns ordered array of {label, items[]}, empty buckets dropped.
+ */
+function bucketByDate(sessions) {
+  const now = Date.now();
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const todayStart = startOfDay.getTime();
+  const yesterdayStart = todayStart - 86400000;
+  const weekStart = todayStart - 7 * 86400000;
+
+  const buckets = {
+    oggi: [],
+    ieri: [],
+    settimana: [],
+    vecchie: [],
+  };
+
+  for (const s of sessions) {
+    const ts = new Date(s.endTime || s.startTime || s.startedAt || 0).getTime();
+    if (!Number.isFinite(ts) || ts <= 0) {
+      buckets.vecchie.push(s);
+    } else if (ts >= todayStart) {
+      buckets.oggi.push(s);
+    } else if (ts >= yesterdayStart) {
+      buckets.ieri.push(s);
+    } else if (ts >= weekStart) {
+      buckets.settimana.push(s);
+    } else {
+      buckets.vecchie.push(s);
+    }
+  }
+
+  return [
+    { label: 'Oggi', items: buckets.oggi },
+    { label: 'Ieri', items: buckets.ieri },
+    { label: 'Questa settimana', items: buckets.settimana },
+    { label: 'Più vecchie', items: buckets.vecchie },
+  ].filter((b) => b.items.length > 0);
+}
+
+/**
  * Local fallback summary when UNLIM-generated description is missing.
- * Plurale "Ragazzi" non si addice qui (è metadato lista, non istruzione
- * docente). Stringa fattuale ≤80 char.
  */
 function localFallbackSummary(session) {
   if (!session) return '';
@@ -213,17 +309,99 @@ function loadLocalSessions() {
   }
 }
 
+/**
+ * Persist `description_unlim` back to localStorage on a specific session,
+ * so subsequent renders skip the fetch (offline-tolerant cache).
+ */
+function persistDescription(sessionId, description) {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    const raw = localStorage.getItem(SESSIONS_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return;
+    const next = parsed.map((s) =>
+      s && (s.id === sessionId || s.experimentId === sessionId)
+        ? { ...s, description_unlim: description }
+        : s
+    );
+    localStorage.setItem(SESSIONS_KEY, JSON.stringify(next));
+  } catch { /* best effort */ }
+}
+
+/**
+ * Fetch AI brief description from Edge Function `unlim-session-description`.
+ * Edge Function contract (iter 35): POST { session_id } → { description }.
+ * Function looks up `unlim_sessions` row by id, returns cached `description_unlim`
+ * if present, else generates via Gemini Flash-Lite + caches.
+ *
+ * Returns null on any failure (offline / 401 / 404 / 5xx / missing session_id)
+ * — caller falls back to local summary.
+ */
+async function fetchDescriptionAI(session) {
+  if (!SUPABASE_URL || !SUPABASE_ANON || !session) return null;
+  // Edge Function requires server-side session_id (UUID stored in `unlim_sessions`).
+  // Local-only sessions (never synced) won't match — skip fetch.
+  const sessionId = typeof session.id === 'string' ? session.id.trim() : '';
+  if (!sessionId || !/^[0-9a-f-]{8,}$/i.test(sessionId)) return null;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/unlim-session-description`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SUPABASE_ANON}`,
+        'X-Elab-Client': 'home-cronologia',
+      },
+      body: JSON.stringify({ session_id: sessionId }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data?.success && typeof data?.description === 'string' && data.description.trim()) {
+      return data.description.trim().slice(0, 200);
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 function HomeRow({ session, onResume }) {
   const [hover, setHover] = useState(false);
+  const [aiDescription, setAiDescription] = useState(session?.description_unlim || null);
+  const [fetching, setFetching] = useState(false);
+  const fetchedRef = useRef(false);
+
   const handle = useCallback(() => {
     if (typeof onResume === 'function' && session?.experimentId) {
       onResume(session.experimentId);
     }
   }, [onResume, session]);
+
+  // On mount: if no cached description AND we have message history, fetch AI brief.
+  useEffect(() => {
+    if (fetchedRef.current) return;
+    if (aiDescription) return;
+    const hasMessages = Array.isArray(session?.messages) && session.messages.length > 0;
+    if (!hasMessages) return;
+    if (!SUPABASE_URL || !SUPABASE_ANON) return;
+    fetchedRef.current = true;
+    let cancelled = false;
+    setFetching(true);
+    fetchDescriptionAI(session).then((desc) => {
+      if (cancelled) return;
+      setFetching(false);
+      if (desc) {
+        setAiDescription(desc);
+        persistDescription(session.id || session.experimentId, desc);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [aiDescription, session]);
+
   const ts = session?.endTime || session?.startTime || session?.startedAt;
   const title = session?.title || session?.experimentId || 'Sessione';
   const modalita = session?.modalita || session?.mode || 'percorso';
-  const description = session?.description_unlim || localFallbackSummary(session);
+  const description = aiDescription || localFallbackSummary(session);
 
   return (
     <li
@@ -235,7 +413,13 @@ function HomeRow({ session, onResume }) {
       <span style={styles.timestamp}>{formatRelative(ts)}</span>
       <div style={styles.body}>
         <h3 style={styles.title}>{title}</h3>
-        <p style={styles.description}>{description}</p>
+        {fetching && !aiDescription ? (
+          <p style={styles.descriptionLoading} data-testid="cronologia-desc-loading">
+            UNLIM riepiloga la sessione…
+          </p>
+        ) : (
+          <p style={styles.description} data-testid="cronologia-desc">{description}</p>
+        )}
         <span style={styles.modeBadge}>{MODE_LABEL[modalita] || modalita}</span>
       </div>
       <button
@@ -253,9 +437,9 @@ function HomeRow({ session, onResume }) {
 
 export default function HomeCronologia({ onResume }) {
   const [sessions, setSessions] = useState(() => loadLocalSessions());
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
-    // Listen for storage updates (other tabs / live save)
     const handler = (ev) => {
       if (ev?.key && ev.key !== SESSIONS_KEY) return;
       setSessions(loadLocalSessions());
@@ -266,7 +450,6 @@ export default function HomeCronologia({ onResume }) {
 
   const handleResume = useCallback((experimentId) => {
     if (!experimentId) return;
-    // Stash deep-link target so Lavagna can mount the experiment on entry.
     try {
       localStorage.setItem('elab_resume_experiment', experimentId);
     } catch { /* best effort */ }
@@ -277,25 +460,84 @@ export default function HomeCronologia({ onResume }) {
     }
   }, [onResume]);
 
-  const items = useMemo(() => sessions.slice(0, MAX_ITEMS), [sessions]);
+  // Filter sessions by query (title + description + experimentId)
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return sessions.slice(0, MAX_ITEMS);
+    return sessions
+      .filter((s) => {
+        const haystack = [
+          s.title,
+          s.experimentId,
+          s.description_unlim,
+          s.modalita || s.mode,
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        return haystack.includes(q);
+      })
+      .slice(0, MAX_ITEMS);
+  }, [sessions, query]);
+
+  const buckets = useMemo(() => bucketByDate(filtered), [filtered]);
 
   return (
     <section style={styles.section} aria-labelledby="cronologia-heading" data-testid="home-cronologia">
-      <h2 id="cronologia-heading" style={styles.heading}>Cronologia recente</h2>
-      {items.length === 0 ? (
+      <div style={styles.headerRow}>
+        <h2 id="cronologia-heading" style={styles.heading}>Cronologia recente</h2>
+        <div style={styles.searchWrap}>
+          <svg
+            style={styles.searchIcon}
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={PALETTE.textMuted}
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Cerca tra le sessioni…"
+            aria-label="Cerca tra le sessioni passate"
+            style={styles.searchInput}
+            data-testid="cronologia-search"
+          />
+        </div>
+      </div>
+
+      {sessions.length === 0 ? (
         <div style={styles.empty}>
-          Nessuna sessione salvata ancora — le lezioni completate compariranno qui.
+          Nessuna sessione salvata ancora — le lezioni completate compariranno qui<br/>
+          con un breve riassunto di UNLIM così potete riprenderle facilmente.
+        </div>
+      ) : buckets.length === 0 ? (
+        <div style={styles.empty} data-testid="cronologia-no-match">
+          Nessun risultato per &ldquo;{query}&rdquo;. Provate con un&apos;altra parola chiave.
         </div>
       ) : (
-        <ul style={styles.list}>
-          {items.map((s) => (
-            <HomeRow
-              key={s.id || `${s.experimentId}-${s.startTime || s.startedAt || ''}`}
-              session={s}
-              onResume={handleResume}
-            />
-          ))}
-        </ul>
+        buckets.map((bucket) => (
+          <div key={bucket.label} style={styles.bucket} data-testid={`cronologia-bucket-${bucket.label}`}>
+            <h3 style={styles.bucketLabel}>{bucket.label}</h3>
+            <ul style={styles.list}>
+              {bucket.items.map((s) => (
+                <HomeRow
+                  key={s.id || `${s.experimentId}-${s.startTime || s.startedAt || ''}`}
+                  session={s}
+                  onResume={handleResume}
+                />
+              ))}
+            </ul>
+          </div>
+        ))
       )}
     </section>
   );
