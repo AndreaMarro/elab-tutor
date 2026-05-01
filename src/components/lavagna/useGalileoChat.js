@@ -6,7 +6,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { sendChat, analyzeImage, checkRateLimit } from '../../services/api';
+import { sendChat, analyzeImage, checkRateLimit, chatWithAIStream } from '../../services/api';
 import { validateMessage, sanitizeOutput } from '../../utils/contentFilter';
 import { isLessonPrepCommand, getLessonSummary, prepareLesson } from '../../services/lessonPrepService';
 import { collectFullContext } from '../../services/unlimContextCollector';
@@ -733,17 +733,87 @@ export default function useGalileoChat() {
     const simulatorContext = collectFullContext();
 
     const activeExp = api?.getActiveExperiment?.() || api?.getCurrentExperiment?.();
-    const result = await sendChat(userMessage, [], {
-      socraticMode: true,
-      experimentContext: experimentContext || null,
-      circuitState: circuitStateRef.current
-        ? (circuitStateRef.current.structured
-          ? { structured: circuitStateRef.current.structured, text: circuitStateRef.current.text }
-          : { raw: circuitStateRef.current })
-        : null,
-      experimentId: activeExp?.id || null,
-      simulatorContext,
-    });
+
+    // iter 39 A1 SSE — when VITE_ENABLE_SSE='true' AND server ENABLE_SSE='true',
+    // try streaming path first (perceived TTFB <500ms via typewriter animation).
+    // chatWithAIStream returns null OR success-shape; null signals fallback to
+    // legacy sendChat (server ENABLE_SSE off, browser SSE unsupported, OR error).
+    const useSSE = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_ENABLE_SSE === 'true');
+    let result = null;
+
+    if (useSSE && !api?._disableSSE) {
+      // Allocate streaming message id BEFORE first token arrives so onToken
+      // callback can target the correct message via React state update.
+      const streamMsgId = Date.now() + 100;
+      let streamFullText = '';
+      // Pre-create empty assistant message — typewriter will fill it.
+      setMessages(prev => [...prev, {
+        id: streamMsgId,
+        role: 'assistant',
+        content: '',
+        _streaming: true,
+      }]);
+      try {
+        result = await chatWithAIStream(
+          userMessage,
+          circuitStateRef.current
+            ? (circuitStateRef.current.structured
+              ? { structured: circuitStateRef.current.structured, text: circuitStateRef.current.text }
+              : { raw: circuitStateRef.current })
+            : null,
+          null, // externalSignal
+          activeExp?.id || null,
+          [], // images empty (vision goes through analyzeImage path)
+          simulatorContext,
+          {
+            onToken: (_token, fullText) => {
+              streamFullText = fullText;
+              setMessages(prev => prev.map(m =>
+                m.id === streamMsgId
+                  ? { ...m, content: capWords(stripTagsForDisplay(fullText)) }
+                  : m
+              ));
+            },
+            onDone: (_meta) => {
+              // Flag streaming complete; main result handling continues below.
+              setMessages(prev => prev.map(m =>
+                m.id === streamMsgId ? { ...m, _streaming: false } : m
+              ));
+            },
+            onError: (err, detail) => {
+              logger.warn('[useGalileoChat] SSE error:', err, detail);
+            },
+          },
+        );
+        // If SSE path succeeded, replace the streaming placeholder with the
+        // canonical assistant message in the same shape as sendChat returns.
+        // The post-stream block below handles intent dispatch + final state.
+        if (result?.success) {
+          // Remove streaming placeholder — main flow re-adds final message.
+          setMessages(prev => prev.filter(m => m.id !== streamMsgId));
+        }
+      } catch (sseErr) {
+        logger.warn('[useGalileoChat] SSE chatWithAIStream exception:', sseErr?.message || sseErr);
+        // Remove streaming placeholder on exception
+        setMessages(prev => prev.filter(m => m.id !== streamMsgId));
+        result = null;
+      }
+    }
+
+    // Fallback to legacy non-stream sendChat when SSE unavailable / disabled / failed.
+    if (!result || !result.success) {
+      result = await sendChat(userMessage, [], {
+        socraticMode: true,
+        experimentContext: experimentContext || null,
+        circuitState: circuitStateRef.current
+          ? (circuitStateRef.current.structured
+            ? { structured: circuitStateRef.current.structured, text: circuitStateRef.current.text }
+            : { raw: circuitStateRef.current })
+          : null,
+        experimentId: activeExp?.id || null,
+        simulatorContext,
+      });
+    }
 
     if (result.success) {
       const rawResponse = typeof result.response === 'string'
