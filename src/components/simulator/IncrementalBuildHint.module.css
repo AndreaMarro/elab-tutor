@@ -25,7 +25,7 @@
 
 .label {
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #3a6020;
   text-transform: uppercase;
@@ -42,13 +42,13 @@
   padding: 1px 6px;
   border-radius: 3px;
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-primary, #1E4D8C);
 }
 
 .count {
   margin-left: auto;
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
 }
 
@@ -72,7 +72,7 @@
 
 .opLabel {
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -84,7 +84,7 @@
   padding: 1px 6px;
   border-radius: 3px;
   font-family: 'Fira Code', monospace;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-primary, #1E4D8C);
 }
 

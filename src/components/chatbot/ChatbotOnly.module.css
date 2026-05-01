@@ -132,7 +132,7 @@
 }
 
 .sidebarSectionLabel {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--elab-text-muted, #5A6B7E);
   text-transform: uppercase;
@@ -182,7 +182,7 @@
 }
 
 .sidebarItemDescription {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--elab-text-muted, #5A6B7E);
   line-height: 1.35;
   display: -webkit-box;
@@ -196,7 +196,7 @@
   display: inline-flex;
   align-items: center;
   /* iter 38 A6 fix: 9→10px to honor CLAUDE.md rule 8 label floor */
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--elab-orange, #E8941C);
 /* © Andrea Marro — 30/04/2026 — ELAB Tutor — Tutti i diritti riservati */
@@ -242,7 +242,7 @@
 
 .mascotteSmall {
   width: 36px;
-  height: 36px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(30, 77, 140, 0.08);
   display: inline-flex;
@@ -435,7 +435,7 @@
 
 .toolLabel {
   /* iter 38 A6 fix: 9→10px label floor (CLAUDE.md rule 8) */
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--elab-text-muted, #5A6B7E);
   text-transform: uppercase;

@@ -49,7 +49,7 @@
   background-color: var(--color-primary, #1E4D8C);
   color: white;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   font-family: 'Oswald', system-ui, sans-serif;
 }
@@ -166,7 +166,7 @@
 .transitionLabel {
   display: block;
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: #c07010;
   text-transform: uppercase;
@@ -213,7 +213,7 @@
 
 .blockLabel {
   font-family: 'Oswald', system-ui, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
@@ -269,7 +269,7 @@
   height: 22px;
   background-color: var(--color-primary, #1E4D8C);
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 50%;
   display: flex;
