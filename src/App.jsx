@@ -15,10 +15,10 @@ import { warmupRender } from './services/api';
 import RequireAuth from './components/auth/RequireAuth';
 import RequireLicense from './components/auth/RequireLicense';
 import ConsentBanner from './components/common/ConsentBanner';
-import PrivacyPolicy from './components/common/PrivacyPolicy';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ToastContainer from './components/common/Toast';
 // Lazy-loaded pages — caricate solo quando servono
+const PrivacyPolicy = lazy(() => import('./components/common/PrivacyPolicy'));
 const ElabTutorV4 = lazy(() => import('./components/tutor/ElabTutorV4'));
 const AdminPage = lazy(() => import('./components/admin/AdminPage'));
 const StudentDashboard = lazy(() => import('./components/student/StudentDashboard'));
