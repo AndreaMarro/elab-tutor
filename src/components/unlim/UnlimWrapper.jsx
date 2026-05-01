@@ -785,17 +785,15 @@ export default function UnlimWrapper({ children }) {
             onReport={() => handleSend('crea il report')}
             isMuted={isMuted}
             onToggleMute={toggleMute}
-            onMicClick={() => {
-              if (!stt.isSupported) {
-                showMessage('La voce funziona solo su Chrome o Edge. Scrivi qui sotto!', {
-                  position: 'top-center', icon: <MicrophoneIcon size={18} />, type: 'info', duration: 5000,
-                });
-                return;
-              }
-              if (stt.isListening) { stt.stopListening(); return; }
-              tts.stop();
-              setTimeout(() => stt.startListening(), 150);
-            }}
+            // iter 39 ralph A2 — onMicClick disabled per Andrea mandate
+            // "non dovrebbe nemmeno esserci il pulsante del microfono".
+            // Wake word "Ehi UNLIM" continuous listener handles voice input
+            // on Chrome/Edge (HomePage.jsx:501 + MicPermissionNudge iter 38 A11).
+            // Safari/iOS users: NO voice input until Voxtral STT continuous
+            // server-side migration ACTIVATED (iter 39+ A5 STT_PROVIDER=voxtral
+            // env flag + frontend MediaRecorder + voxtral-stt-client).
+            // UnlimInputBar checks `onMicClick && showMicDirect` → undefined hides button.
+            onMicClick={undefined}
             isListening={stt.isListening}
             isLoading={isLoading}
             placeholder={stt.isListening
