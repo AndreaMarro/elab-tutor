@@ -287,49 +287,41 @@ const styles = {
   },
 };
 
-// CARD spec iter 36 A13 partial:
+// Sprint U iter 7 — 3 entry points (Andrea explicit simplification):
+//   1. Lavagna libera (#lavagna) — costruzione libera
+//   2. ELAB Tutor completo (#tutor) — full app Percorso + UNLIM + Simulator
+//   3. UNLIM (solo chat) (#chatbot-only) — chatgpt-style focus
 const CARDS = [
-  {
-    id: 'chatbot',
-    emoji: '🧠',
-    accent: PALETTE.red,
-    title: 'Chatbot UNLIM',
-    text: 'Parla con il tutor AI: prepara lezioni, cita il libro, segue la classe.',
-    cta: 'Apri il chatbot',
-    href: '#chatbot-only', // route iter 37 placeholder
-    target: 'internal',
-    credit: null,
-  },
-  {
-    id: 'glossario',
-    emoji: '📚',
-    accent: PALETTE.orange,
-    title: 'Glossario',
-    text: "Le parole chiave dell'elettronica spiegate semplici, con esempi dai volumi.",
-    cta: 'Apri il glossario',
-    href: 'https://elab-tutor-glossario.vercel.app',
-    target: 'external',
-    credit: 'Fatto da Tea',
-  },
   {
     id: 'lavagna',
     emoji: '⚡',
     accent: PALETTE.navy,
-    title: 'Lavagna ELAB Tutor',
-    text: 'Lo spazio della classe: simulatore, voce, fumetto e percorso del libro.',
+    title: 'Lavagna libera',
+    text: 'Spazio della classe: lavagna pulita, simulatore, costruite quello che volete con i ragazzi.',
     cta: 'Entra in Lavagna',
     href: '#lavagna',
     target: 'internal',
     credit: null,
   },
   {
-    id: 'about',
-    emoji: '🐒',
+    id: 'tutor',
+    emoji: '📚',
     accent: PALETTE.lime,
-    title: 'Chi siamo',
-    text: 'Il team ELAB: chi ha fatto i volumi, i kit, il software, i test.',
-    cta: 'Scopri il team',
-    href: '#about-easter', // modal iter 37
+    title: 'ELAB Tutor completo',
+    text: 'App piena: Percorso dei volumi, esperimenti, UNLIM, voce, simulatore. Lezione completa con la classe.',
+    cta: 'Apri ELAB Tutor',
+    href: '#tutor',
+    target: 'internal',
+    credit: null,
+  },
+  {
+    id: 'chatbot',
+    emoji: '🧠',
+    accent: PALETTE.red,
+    title: 'UNLIM (solo chat)',
+    text: 'Stile ChatGPT: parlate con UNLIM, citerà i volumi e suggerirà esperimenti pronti.',
+    cta: 'Apri UNLIM',
+    href: '#chatbot-only',
     target: 'internal',
     credit: null,
   },
@@ -397,11 +389,36 @@ function HomeCard({ card, onActivate }) {
   );
 }
 
+// Sprint U iter 7 — Rotating class greeting (cycles every 3.5s).
+// Pattern Andrea: docente entra classe diversa ogni ora, greeting riconosce.
+const ROTATING_GREETINGS = [
+  'Ciao Ragazzi!',
+  'Ciao 1 A!',
+  'Ciao 2 B!',
+  'Ciao 3 C!',
+  'Ciao 4ª!',
+  'Ciao 5ª!',
+  'Ciao 1ª media!',
+  'Ciao 2ª media!',
+  'Ciao 3ª media!',
+  'Pronti, classe?',
+  'Buongiorno, ragazzi!',
+];
+
 export default function HomePage({ onNavigate }) {
   const [showGreeting, setShowGreeting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   // Iter 37 Atom A6 — hash route awareness for #chatbot-only and #about-easter
   const [hash, setHash] = useState(() => readHash());
+
+  // Sprint U iter 7 — rotating greeting index, cycles 3.5s
+  const [greetingIdx, setGreetingIdx] = useState(() => Math.floor(Math.random() * ROTATING_GREETINGS.length));
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGreetingIdx((idx) => (idx + 1) % ROTATING_GREETINGS.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   // Track viewport for mascotte size (240 desktop / 160 mobile)
   useEffect(() => {
@@ -582,12 +599,17 @@ export default function HomePage({ onNavigate }) {
           }}
           data-testid="home-mascotte-container"
         >
-          {showGreeting && (
-            <div style={styles.speechBubble} role="status" aria-live="polite" data-testid="home-mascotte-greeting">
-              Ciao Ragazzi!
-              <span style={styles.speechBubbleArrow} aria-hidden="true" />
-            </div>
-          )}
+          {/* Sprint U iter 7 — Always-visible rotating greeting cycles ROTATING_GREETINGS every 3.5s.
+              Click mascotte mostra ALSO showGreeting per UX bonus (preserved). */}
+          <div
+            style={styles.speechBubble}
+            role="status"
+            aria-live="polite"
+            data-testid="home-mascotte-greeting"
+          >
+            {ROTATING_GREETINGS[greetingIdx]}
+            <span style={styles.speechBubbleArrow} aria-hidden="true" />
+          </div>
           {/* MascotPresence è "fixed position" by default — qui lo wrappiamo
               ma il componente esistente usa position:fixed con localStorage.
               Iter 36 partial: usiamo un placeholder visivo che invoca lo stesso
@@ -676,7 +698,7 @@ export default function HomePage({ onNavigate }) {
         <p style={styles.footerCredits}>
           <span style={styles.footerCreditsStrong}>Andrea Marro</span> coding
           {' · '}
-          <span style={styles.footerCreditsStrong}>Tea</span> co-dev / UX / QA
+          <span style={styles.footerCreditsStrong}>Teodora de Venere</span> co-dev / UX / QA
           {' · '}
           <span style={styles.footerCreditsStrong}>Davide Fagherazzi</span> volumi cartacei
           {' · '}

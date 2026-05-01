@@ -224,11 +224,7 @@ async function routeTTS(payload, context) {
 
   // iter 39 fix Andrea "non c'è la mia voce": pass explicit voice_id Voxtral
   // Andrea voice clone (env VOXTRAL_VOICE_ID server-side OR hardcoded fallback).
-  // Was: only `voice: 'it-IT-IsabellaNeural'` (Edge TTS legacy name) — server
-  // received no voice_id → fallback to env VOXTRAL_VOICE_ID = Andrea (CORRECT).
-  // NOW: explicit pass voice_id so frontend INTENT declares Andrea voice clone.
-  // Server priority: body.voice_id > env VOXTRAL_VOICE_ID > en_us default.
-  const env = (typeof import.meta !== 'undefined' && import.meta && import.meta.env) ? import.meta.env : {};
+  // `env` already declared above at line 210 (Supabase URL + auth resolution).
   const voiceIdAndrea = env.VITE_VOXTRAL_VOICE_ID || '9234f1b6-766a-485f-acc4-e2cf6dc42327';
   const body = {
     text: payload.text,
