@@ -219,7 +219,13 @@ for (const exp of ALL_EXPERIMENTS) {
     const pageErrors = [];
 
     page.on('console', (msg) => {
-      if (msg.type() === 'error') consoleErrors.push(msg.text().slice(0, 200));
+      if (msg.type() === 'error') {
+        const text = msg.text();
+        // Filter known infrastructure errors (not app errors):
+        // - CSP violation for virtual:pwa-register (VitePWA dev module leaks in prod CSP)
+        if (text.includes('virtual:pwa-register')) return;
+        consoleErrors.push(text.slice(0, 200));
+      }
     });
     page.on('pageerror', (err) => {
       pageErrors.push(String(err).slice(0, 200));

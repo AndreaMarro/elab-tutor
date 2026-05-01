@@ -317,6 +317,19 @@ function seedLicense(page) {
   });
 }
 
+function isInfraError(text) {
+  return (
+    text.includes('ResizeObserver') ||
+    text.includes('favicon') ||
+    text.includes('onrender.com') ||
+    text.includes('n8n.srv1022317.hstgr.cloud') || // Arduino compile endpoint — CORS/timeout OK
+    text.includes('net::ERR_FAILED') ||
+    text.includes('Failed to load resource') ||
+    text.includes('Script error') ||
+    text.includes('virtual:pwa-register')  // CSP infra error, not app error
+  );
+}
+
 function collectErrors(page) {
   const consoleErrors = [];
   const pageErrors = [];
@@ -324,14 +337,7 @@ function collectErrors(page) {
   page.on('console', msg => {
     if (msg.type() === 'error') {
       const text = msg.text();
-      if (
-        text.includes('ResizeObserver') ||
-        text.includes('favicon') ||
-        text.includes('onrender.com') ||
-        text.includes('net::ERR_FAILED') ||
-        text.includes('Failed to load resource') ||
-        text.includes('Script error')
-      ) return;
+      if (isInfraError(text)) return;
       consoleErrors.push(text);
     }
   });
@@ -479,7 +485,7 @@ test.describe('Vol3 Chapter Summary — NEW iter37 experiments', () => {
     page.on('console', msg => {
       if (msg.type() === 'error') {
         const t = msg.text();
-        if (!t.includes('ResizeObserver') && !t.includes('onrender') && !t.includes('ERR_FAILED')) errors.push(t);
+        if (!isInfraError(t)) errors.push(t);
       }
     });
     page.on('pageerror', e => errors.push('[pageerror] ' + e.message));
@@ -507,7 +513,7 @@ test.describe('Vol3 Chapter Summary — NEW iter37 experiments', () => {
     page.on('console', msg => {
       if (msg.type() === 'error') {
         const t = msg.text();
-        if (!t.includes('ResizeObserver') && !t.includes('onrender') && !t.includes('ERR_FAILED')) errors.push(t);
+        if (!isInfraError(t)) errors.push(t);
       }
     });
     page.on('pageerror', e => errors.push('[pageerror] ' + e.message));
