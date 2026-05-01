@@ -25,10 +25,10 @@ const BORDER_BY_PRIORITY = {
 };
 
 const BG_BY_PRIORITY = {
-  high: 'linear-gradient(135deg, #fff5f4 0%, #ffffff 100%)',
-  med: 'linear-gradient(135deg, #fff8ee 0%, #ffffff 100%)',
-  medium: 'linear-gradient(135deg, #fff8ee 0%, #ffffff 100%)',
-  low: 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)',
+  high: 'linear-gradient(135deg, #fff5f4 0%, #ffffff 100%)', // palette
+  med: 'linear-gradient(135deg, #fff8ee 0%, #ffffff 100%)', // palette
+  medium: 'linear-gradient(135deg, #fff8ee 0%, #ffffff 100%)', // palette
+  low: 'linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)', // palette
 };
 
 export default function UnlimNudgeOverlay({
@@ -85,7 +85,7 @@ export default function UnlimNudgeOverlay({
         style={{
           fontSize: 15,
           lineHeight: 1.55,
-          color: '#1a1a2e',
+          color: '#1a1a2e', // palette
           marginBottom: 12,
         }}
       >

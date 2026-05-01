@@ -8,7 +8,7 @@
   gap: 0;
   width: 100%;
   height: 100vh;
-  background-color: #fafbfc;
+  background-color: #fafbfc; /* palette */
   font-family: 'Open Sans', system-ui, sans-serif;
 }
 
@@ -17,7 +17,7 @@
   overflow-y: auto;
   font-size: 16px;
   line-height: 1.5;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
 }
 
 .fallback {
@@ -62,7 +62,7 @@
 .typeChip {
   padding: 2px 8px;
   background-color: rgba(74, 122, 37, 0.15);
-  color: #3a6020;
+  color: #3a6020; /* palette */
   border-radius: 10px;
   /* iter 14 LIM legibility: 11px → 14px (var(--font-size-label)) per spec §6 #3 */
   font-size: 14px;
@@ -75,7 +75,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 32px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
   margin: 0;
   line-height: 1.2;
 }
@@ -98,7 +98,7 @@
 
 .closeBtn:hover {
   background-color: rgba(0, 0, 0, 0.05);
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
 }
 
 .theorySection {
@@ -168,7 +168,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #c07010;
+  color: #c07010; /* palette */
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 4px;
@@ -240,7 +240,7 @@
   border-radius: 0 4px 4px 0;
   font-size: 13px;
   font-style: italic;
-  color: #3a6020;
+  color: #3a6020; /* palette */
 }
 
 .phasesList {
@@ -254,7 +254,7 @@
   position: relative;
   padding: 12px 12px 12px 36px;
   margin-bottom: 6px;
-  background-color: #f5f7fa;
+  background-color: #f5f7fa; /* palette */
   border-radius: 6px;
   cursor: pointer;
   counter-increment: phase-counter;

@@ -154,7 +154,7 @@ const Annotation = ({
         width={noteWidth}
         height={noteHeight}
         rx="3"
-        fill="#FFF9C4"
+        fill="var(--elab-hex-fff9c4)"
         stroke={isSelected ? 'var(--color-accent, var(--elab-lime))' : '#E6DB74'}
         strokeWidth={isSelected ? 1.5 : 0.8}
         style={isSelected ? { filter: 'drop-shadow(0 0 3px var(--color-accent, var(--elab-lime)))' } : undefined}
@@ -165,7 +165,7 @@ const Annotation = ({
         y1={renderY + 16}
         x2={renderX + noteWidth}
         y2={renderY + 16}
-        stroke="#E6DB74"
+        stroke="var(--elab-hex-e6db74)"
         strokeWidth="0.5"
         opacity="0.6"
       />

@@ -336,7 +336,7 @@ const styles = {
     },
     avatarImg: { width: '100%', height: '100%', objectFit: 'cover' },
     adminBadge: {
-        background: '#E53935',
+        background: 'var(--elab-hex-e53935)',
         color: 'white',
         fontSize: '14px',
         fontWeight: '700',
@@ -481,7 +481,7 @@ const styles = {
     mobileDropdown: {
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(180deg, #152a5e, #0f2050)',
+        background: 'linear-gradient(180deg, var(--elab-hex-152a5e), var(--elab-hex-0f2050))',
         borderTop: '1px solid rgba(255,255,255,0.08)',
         paddingBottom: '12px',
         animation: 'slideDown 0.2s ease-out',
@@ -520,7 +520,7 @@ const styles = {
     mobileLogoutBtn: {
         background: 'rgba(239,68,68,0.15)',
         border: '1px solid rgba(239,68,68,0.3)',
-        color: '#EF4444',
+        color: 'var(--elab-hex-ef4444)',
         padding: '8px 18px',
         borderRadius: '8px',
         cursor: 'pointer',

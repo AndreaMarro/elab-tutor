@@ -32,14 +32,14 @@ import {
 const REMOTE_SAVE_DEBOUNCE_MS = 2000;
 
 const COLORS = [
-  { name: 'Rosso', hex: '#EF4444', label: 'Rosso' },
-  { name: 'Blu', hex: '#2563EB', label: 'Blu' },
-  { name: 'Verde', hex: '#16A34A', label: 'Verde' },
-  { name: 'Nero', hex: '#1F2937', label: 'Nero' },
-  { name: 'Arancio', hex: '#F97316', label: 'Arancio' },
+  { name: 'Rosso', hex: 'var(--elab-hex-ef4444)', label: 'Rosso' },
+  { name: 'Blu', hex: 'var(--elab-hex-2563eb)', label: 'Blu' },
+  { name: 'Verde', hex: 'var(--elab-hex-16a34a)', label: 'Verde' },
+  { name: 'Nero', hex: 'var(--elab-hex-1f2937)', label: 'Nero' },
+  { name: 'Arancio', hex: 'var(--elab-hex-f97316)', label: 'Arancio' },
 ];
 
-const DEFAULT_COLOR = '#EF4444';
+const DEFAULT_COLOR = 'var(--elab-hex-ef4444)';
 
 const PEN_SIZES = [
   { label: 'S', value: 1.5, title: 'Sottile' },
@@ -476,7 +476,7 @@ export default function DrawingOverlay({
                 width: 28,
                 height: 28,
                 borderRadius: 6,
-                border: penSize === ps.value && !isEraser ? '1px solid #6366F1' : '1px solid transparent',
+                border: penSize === ps.value && !isEraser ? '1px solid var(--elab-hex-6366f1)' : '1px solid transparent',
                 background: 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
@@ -490,7 +490,7 @@ export default function DrawingOverlay({
                 width: ps.value * 2 + 4,
                 height: ps.value * 2 + 4,
                 borderRadius: '50%',
-                background: penSize === ps.value && !isEraser ? '#6366F1' : '#94A3B8',
+                background: penSize === ps.value && !isEraser ? 'var(--elab-hex-6366f1)' : 'var(--elab-hex-94a3b8)',
               }} />
             </button>
           ))}
@@ -498,22 +498,22 @@ export default function DrawingOverlay({
           <div style={{ width: 1, height: 20, background: 'rgba(71,85,105,0.5)', margin: '0 2px', flexShrink: 0 }} />
 
           {/* Eraser */}
-          <ToolBtn onClick={() => setIsEraser(prev => !prev)} active={isEraser} activeColor="#FCA5A5" title="Gomma" aria-label="Gomma">
+          <ToolBtn onClick={() => setIsEraser(prev => !prev)} active={isEraser} activeColor="var(--elab-hex-fca5a5)" title="Gomma" aria-label="Gomma">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 13h10M5 9l6-6 2 2-6 6H5V9z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </ToolBtn>
 
           {/* Undo */}
-          <ToolBtn onClick={handleUndo} active={false} activeColor="#94A3B8" title="Annulla (Ctrl+Z)" aria-label="Annulla">
+          <ToolBtn onClick={handleUndo} active={false} activeColor="var(--elab-hex-94a3b8)" title="Annulla (Ctrl+Z)" aria-label="Annulla">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 7l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 10h9a4 4 0 000-8H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </ToolBtn>
 
           {/* Redo */}
-          <ToolBtn onClick={handleRedo} active={false} activeColor="#94A3B8" title="Ripristina (Ctrl+Y)" aria-label="Ripristina">
+          <ToolBtn onClick={handleRedo} active={false} activeColor="var(--elab-hex-94a3b8)" title="Ripristina (Ctrl+Y)" aria-label="Ripristina">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M12 7l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M15 10H6a4 4 0 010-8h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
           </ToolBtn>
 
           {/* Clear */}
-          <ToolBtn onClick={handleClearAll} active={false} activeColor="#94A3B8" title="Cancella tutto" aria-label="Cancella">
+          <ToolBtn onClick={handleClearAll} active={false} activeColor="var(--elab-hex-94a3b8)" title="Cancella tutto" aria-label="Cancella">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 5h10M6 5V3h4v2M5 5l1 9h4l1-9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </ToolBtn>
 
@@ -529,7 +529,7 @@ export default function DrawingOverlay({
               borderRadius: 8,
               border: '1px solid rgba(239,68,68,0.5)',
               background: 'rgba(239,68,68,0.15)',
-              color: '#FCA5A5',
+              color: 'var(--elab-hex-fca5a5)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -563,7 +563,7 @@ export default function DrawingOverlay({
             borderRadius: 10,
             border: '1px solid rgba(71, 85, 105, 0.5)',
             background: 'rgba(15, 23, 42, 0.95)',
-            color: '#94A3B8',
+            color: 'var(--elab-hex-94a3b8)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -594,7 +594,7 @@ function ToolBtn({ children, onClick, active, activeColor, title, style = {}, ..
         borderRadius: 8,
         border: `1px solid ${active ? activeColor : 'rgba(100,116,139,0.4)'}`,
         background: active ? `${activeColor}25` : 'rgba(71,85,105,0.3)',
-        color: active ? activeColor : '#94A3B8',
+        color: active ? activeColor : 'var(--elab-hex-94a3b8)',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',

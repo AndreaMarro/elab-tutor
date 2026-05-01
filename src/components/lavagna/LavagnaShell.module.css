@@ -21,8 +21,8 @@
   position: relative;
   overflow: hidden;
   /* Dot pattern — visible workspace feel (like Excalidraw/Figma) */
-  background-color: #F8FAFB;
-  background-image: radial-gradient(circle, #d0d4d8 0.8px, transparent 0.8px);
+  background-color: #F8FAFB; /* palette */
+  background-image: radial-gradient(circle, #d0d4d8 0.8px, transparent 0.8px); /* palette */
   background-size: 20px 20px;
   /* Smooth push transition when panels open/close */
   transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -225,7 +225,7 @@
 }
 
 .bentornatiCard {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #f0fdf4 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #f0fdf4 100%); /* palette */
   border-radius: 28px;
   padding: 40px 36px 32px;
   max-width: 420px;
@@ -270,7 +270,7 @@
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   line-height: 1.5;
-  color: #1A1A2E;
+  color: #1A1A2E; /* palette */
   margin: 8px 0 20px;
 }
 
@@ -389,7 +389,7 @@
   max-height: calc(100dvh - 48px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: #ffffff;
+  background: #ffffff; /* palette */
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   padding: 24px 24px 32px;
@@ -409,7 +409,7 @@
   min-height: 44px;
   border-radius: 50%;
   border: 1px solid rgba(30, 77, 140, 0.2);
-  background: #ffffff;
+  background: #ffffff; /* palette */
   color: var(--elab-navy);
   font-size: 24px;
   line-height: 1;

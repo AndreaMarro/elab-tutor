@@ -11,8 +11,8 @@ import { showToast } from '../../../common/Toast';
 
 const PIPELINE = ['bozza', 'confermato', 'in_lavorazione', 'spedito', 'consegnato'];
 const PIPELINE_COLORS = {
-  bozza: '#95a5a6', confermato: '#3498db', in_lavorazione: '#f39c12',
-  spedito: '#9b59b6', consegnato: '#27ae60'
+  bozza: '#95a5a6', confermato: '#3498db', in_lavorazione: '#f39c12', // palette
+  spedito: '#9b59b6', consegnato: '#27ae60' // palette
 };
 const PIPELINE_LABELS = {
   bozza: 'Bozza', confermato: 'Confermato', in_lavorazione: 'In Lavorazione',
@@ -173,8 +173,8 @@ export default function OrdiniVenditeModule({ isMobile }) {
             {i > 0 && <span style={{ color: active ? PIPELINE_COLORS[step] : '#ccc', fontSize: 14 }}>&#9654;</span>}
             <span style={{
               padding: '2px 8px', borderRadius: 12, fontSize: 14, fontWeight: active ? 600 : 400,
-              background: active ? PIPELINE_COLORS[step] + '22' : '#f0f0f0',
-              color: active ? PIPELINE_COLORS[step] : '#737373',
+              background: active ? PIPELINE_COLORS[step] + '22' : '#f0f0f0', // palette
+              color: active ? PIPELINE_COLORS[step] : '#737373', // palette
               border: `1px solid ${active ? PIPELINE_COLORS[step] : '#ddd'}`
             }}>{PIPELINE_LABELS[step]}</span>
           </React.Fragment>
@@ -312,9 +312,9 @@ export default function OrdiniVenditeModule({ isMobile }) {
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
         {[
           { label: 'Ordini Totali', value: stats.totali, color: COLORS.primary },
-          { label: 'In Corso', value: stats.inCorso, color: '#f39c12' },
-          { label: 'Valore Totale', value: formatCurrency(stats.valoreTotale), color: '#27ae60' },
-          { label: 'Media Ordine', value: formatCurrency(stats.media), color: '#9b59b6' }
+          { label: 'In Corso', value: stats.inCorso, color: '#f39c12' }, // palette
+          { label: 'Valore Totale', value: formatCurrency(stats.valoreTotale), color: '#27ae60' }, // palette
+          { label: 'Media Ordine', value: formatCurrency(stats.media), color: '#9b59b6' } // palette
         ].map((s, i) => (
           <div key={i} style={{ ...S.card, padding: 16, textAlign: 'center', borderLeft: `4px solid ${s.color}` }}>
             <div style={{ fontSize: 14, color: COLORS.textLight, marginBottom: 4 }}>{s.label}</div>

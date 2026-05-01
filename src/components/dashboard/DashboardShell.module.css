@@ -1,5 +1,5 @@
 /* DashboardShell — states scaffold (Day 10) + hook-integrated states (Day 18).
- * Palette: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D (CLAUDE.md 16)
+ * Palette: Navy #1E4D8C / Lime #4A7A25 / Orange #E8941C / Red #E54B3D (CLAUDE.md 16) /* palette */
  * Typography: Oswald titoli, Open Sans body (CLAUDE.md 17)
  */
 
@@ -9,7 +9,7 @@
   max-width: 1200px;
   margin: 0 auto;
   font-family: var(--font-sans, 'Open Sans', -apple-system, sans-serif);
-  color: #475569;
+  color: #475569; /* palette */
 }
 
 .title {
@@ -30,15 +30,15 @@
 .schemaBadge {
   /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6 (Dashboard docente metadata visible LIM). */
   font-size: 14px;
-  color: #64748b;
+  color: #64748b; /* palette */
   margin: 0 0 1rem;
   font-family: var(--font-mono, 'Fira Code', monospace);
 }
 
 .error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background: #fef2f2; /* palette */
+  border: 1px solid #fecaca; /* palette */
+  color: #991b1b; /* palette */
   padding: 1rem;
   border-radius: 6px;
   margin: 0 0 1rem;
@@ -61,7 +61,7 @@
   min-height: 44px;
   min-width: 44px;
   background: var(--elab-navy);
-  color: #ffffff;
+  color: #ffffff; /* palette */
   border: 0;
   border-radius: 4px;
   font-size: 14px;
@@ -70,7 +70,7 @@
 }
 
 .retryButton:hover {
-  background: #163c6e;
+  background: #163c6e; /* palette */
 }
 
 .retryButton:focus-visible {
@@ -86,8 +86,8 @@
 }
 
 .card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: #ffffff; /* palette */
+  border: 1px solid #e2e8f0; /* palette */
   border-radius: 8px;
   padding: 1rem 1.25rem;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -96,7 +96,7 @@
 .metricLabel {
   /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (HIGH severity Dashboard label LIM). */
   font-size: 14px;
-  color: #64748b;
+  color: #64748b; /* palette */
   margin-bottom: 0.25rem;
 }
 

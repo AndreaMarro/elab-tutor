@@ -99,7 +99,7 @@ export default function ManualTab({
                             <h3>Caricamento Volume {loadingVolume}...</h3>
                             {/* S112: Download progress bar */}
                             {volumeProgress !== null && volumeProgress !== undefined && (
-                                <div style={{ width: '60%', maxWidth: 300, margin: '12px auto', background: '#e0e0e0', borderRadius: 6, height: 8, overflow: 'hidden' }}>
+                                <div style={{ width: '60%', maxWidth: 300, margin: '12px auto', background: 'var(--elab-hex-e0e0e0)', borderRadius: 6, height: 8, overflow: 'hidden' }}>
                                     <div style={{ width: `${volumeProgress}%`, height: '100%', background: volumeProgress < 90 ? 'var(--elab-navy)' : 'var(--elab-lime)', borderRadius: 6, transition: 'width 0.3s ease, background 0.3s ease' }} />
                                 </div>
                             )}
@@ -137,7 +137,7 @@ export default function ManualTab({
                                     /* S112: Lazy page placeholder — page renders on navigation */
                                     <div className="v4-loading" style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
                                         <div className="v4-spinner"></div>
-                                        <p style={{ marginTop: 12, color: '#737373' }}>Rendering pagina {currentDocPage + 1}...</p>
+                                        <p style={{ marginTop: 12, color: 'var(--elab-hex-737373)' }}>Rendering pagina {currentDocPage + 1}...</p>
                                     </div>
                                 )}
                             </div>

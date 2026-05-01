@@ -65,12 +65,12 @@ const IconGestionale = () => (
 const TABS = [
     { id: 'dashboard',   label: 'Dashboard',    icon: <IconDashboard />, color: 'var(--elab-navy)' },
     { id: 'utenti',      label: 'Utenti',       icon: <IconUsers />, color: 'var(--elab-lime)' },
-    { id: 'ordini',      label: 'Ordini',       icon: <IconOrders />, color: '#F59E0B' },
-    { id: 'corsi',       label: 'Corsi',        icon: <IconCourses />, color: '#8B5CF6' },
-    { id: 'eventi',      label: 'Eventi',       icon: <IconEvents />, color: '#EC4899' },
-    { id: 'waitlist',    label: 'Waitlist',     icon: <IconWaitlist />, color: '#14B8A6' },
-    { id: 'licenze',     label: 'Licenze',      icon: <IconLicenses />, color: '#6366F1' },
-    { id: 'gestionale',  label: 'Gestionale',   icon: <IconGestionale />, color: '#0F172A' },
+    { id: 'ordini',      label: 'Ordini',       icon: <IconOrders />, color: 'var(--elab-hex-f59e0b)' },
+    { id: 'corsi',       label: 'Corsi',        icon: <IconCourses />, color: 'var(--elab-hex-8b5cf6)' },
+    { id: 'eventi',      label: 'Eventi',       icon: <IconEvents />, color: 'var(--elab-hex-ec4899)' },
+    { id: 'waitlist',    label: 'Waitlist',     icon: <IconWaitlist />, color: 'var(--elab-hex-14b8a6)' },
+    { id: 'licenze',     label: 'Licenze',      icon: <IconLicenses />, color: 'var(--elab-hex-6366f1)' },
+    { id: 'gestionale',  label: 'Gestionale',   icon: <IconGestionale />, color: 'var(--elab-hex-0f172a)' },
 ];
 
 // Admin password hash (SHA-256 of the real password, computed at build time)
@@ -132,9 +132,9 @@ export default function AdminPage({ onNavigate }) {
                         onChange={e => { setPwdInput(e.target.value); setPwdError(false); }}
                         placeholder="Password admin"
                         autoFocus
-                        style={{ padding: '10px 16px', borderRadius: '8px', border: pwdError ? '2px solid #EF4444' : '1px solid #ccc', fontSize: '15px', width: '240px' }}
+                        style={{ padding: '10px 16px', borderRadius: '8px', border: pwdError ? '2px solid var(--elab-hex-ef4444)' : '1px solid #ccc', fontSize: '15px', width: '240px' }}
                     />
-                    {pwdError && <p style={{ color: '#EF4444', margin: 0, fontSize: '14px' }}>Password errata</p>}
+                    {pwdError && <p style={{ color: 'var(--elab-hex-ef4444)', margin: 0, fontSize: '14px' }}>Password errata</p>}
                     <button type="submit" style={S.primaryBtn}>Accedi</button>
                 </form>
                 <button onClick={() => onNavigate('tutor')} style={{ ...S.primaryBtn, background: 'transparent', color: '#666', marginTop: '12px' }}>
@@ -172,8 +172,8 @@ export default function AdminPage({ onNavigate }) {
     };
 
     const tabFallback = (
-        <div style={{ padding: '40px', textAlign: 'center', color: '#737373' }}>
-            <div style={{ fontSize: '24px', marginBottom: '8px', color: '#737373' }}>...</div>
+        <div style={{ padding: '40px', textAlign: 'center', color: 'var(--elab-hex-737373)' }}>
+            <div style={{ fontSize: '24px', marginBottom: '8px', color: 'var(--elab-hex-737373)' }}>...</div>
             <div style={{ fontSize: '14px' }}>Caricamento...</div>
         </div>
     );
@@ -214,7 +214,7 @@ export default function AdminPage({ onNavigate }) {
         <div>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
                 <div style={S.card}>
-                    <h3 style={{ margin: '0 0 12px', color: '#6366F1', fontSize: '16px', fontWeight: '700' }}>
+                    <h3 style={{ margin: '0 0 12px', color: 'var(--elab-hex-6366f1)', fontSize: '16px', fontWeight: '700' }}>
                         Verifica Licenza Notion
                     </h3>
                     <p style={{ fontSize: '14px', color: '#666', margin: '0 0 14px' }}>
@@ -235,12 +235,12 @@ export default function AdminPage({ onNavigate }) {
                     {licenseResult && (
                         <div style={{
                             marginTop: '16px', padding: '16px', borderRadius: '10px',
-                            background: licenseResult.valid ? '#f0fdf4' : '#fef2f2',
-                            border: `1px solid ${licenseResult.valid ? '#86efac' : '#fca5a5'}`,
+                            background: licenseResult.valid ? 'var(--elab-hex-f0fdf4)' : 'var(--elab-hex-fef2f2)',
+                            border: `1px solid ${licenseResult.valid ? 'var(--elab-hex-86efac)' : 'var(--elab-hex-fca5a5)'}`,
                         }}>
                             <div style={{
                                 fontWeight: '700', fontSize: '15px', marginBottom: '8px',
-                                color: licenseResult.valid ? '#16a34a' : '#dc2626',
+                                color: licenseResult.valid ? 'var(--elab-hex-16a34a)' : 'var(--elab-hex-dc2626)',
                             }}>
                                 {licenseResult.valid ? 'Licenza VALIDA' : 'Licenza NON VALIDA'}
                             </div>
@@ -261,7 +261,7 @@ export default function AdminPage({ onNavigate }) {
                     )}
                 </div>
                 <div style={S.card}>
-                    <h3 style={{ margin: '0 0 12px', color: '#6366F1', fontSize: '16px', fontWeight: '700' }}>
+                    <h3 style={{ margin: '0 0 12px', color: 'var(--elab-hex-6366f1)', fontSize: '16px', fontWeight: '700' }}>
                         Info Collegamento
                     </h3>
                     <div style={{ fontSize: '14px', color: '#666', lineHeight: '1.8' }}>
@@ -272,11 +272,11 @@ export default function AdminPage({ onNavigate }) {
                         <div style={{ marginTop: '12px' }}>
                             <b>Stato Backend Admin:</b>{' '}
                             {connectionStatus === null ? (
-                                <span style={{ color: '#737373' }}>Verificando...</span>
+                                <span style={{ color: 'var(--elab-hex-737373)' }}>Verificando...</span>
                             ) : connectionStatus.connected ? (
-                                <span style={{ color: '#16a34a', fontWeight: '600' }}>Connesso</span>
+                                <span style={{ color: 'var(--elab-hex-16a34a)', fontWeight: '600' }}>Connesso</span>
                             ) : (
-                                <span style={{ color: '#EF4444', fontWeight: '600' }}>Non raggiungibile</span>
+                                <span style={{ color: 'var(--elab-hex-ef4444)', fontWeight: '600' }}>Non raggiungibile</span>
                             )}
                         </div>
                     </div>
@@ -291,7 +291,7 @@ export default function AdminPage({ onNavigate }) {
                         </h3>
                         <button
                             onClick={() => { setLicenseHistory([]); localStorage.removeItem('elab_license_history'); }}
-                            style={{ ...S.tinyBtn, color: '#EF4444' }}
+                            style={{ ...S.tinyBtn, color: 'var(--elab-hex-ef4444)' }}
                         >
                             Pulisci
                         </button>
@@ -309,14 +309,14 @@ export default function AdminPage({ onNavigate }) {
                                 <span style={{ flex: 1 }}>
                                     <span style={{
                                         fontSize: '14px', padding: '2px 8px', borderRadius: '4px',
-                                        background: h.result?.valid ? '#dcfce7' : '#fee2e2',
-                                        color: h.result?.valid ? '#16a34a' : '#dc2626',
+                                        background: h.result?.valid ? 'var(--elab-hex-dcfce7)' : 'var(--elab-hex-fee2e2)',
+                                        color: h.result?.valid ? 'var(--elab-hex-16a34a)' : 'var(--elab-hex-dc2626)',
                                     }}>
                                         {h.result?.valid ? 'Valida' : 'Non valida'}
                                     </span>
                                 </span>
                                 <span style={{ flex: 1, fontSize: '14px', color: '#666' }}>{h.result?.school || '—'}</span>
-                                <span style={{ flex: 1, fontSize: '14px', color: '#737373' }}>{new Date(h.timestamp).toLocaleString('it-IT')}</span>
+                                <span style={{ flex: 1, fontSize: '14px', color: 'var(--elab-hex-737373)' }}>{new Date(h.timestamp).toLocaleString('it-IT')}</span>
                             </div>
                         ))}
                     </div>
@@ -328,7 +328,7 @@ export default function AdminPage({ onNavigate }) {
     // === MOBILE LAYOUT ===
     if (isMobile) {
         return (
-            <div style={{ background: '#F0F4F8', minHeight: 'calc(100vh - 56px)' }}>
+            <div style={{ background: 'var(--elab-hex-f0f4f8)', minHeight: 'calc(100vh - 56px)' }}>
                 {/* Header */}
                 <div style={{
                     background: 'var(--elab-navy)', padding: '14px 16px',
@@ -347,7 +347,7 @@ export default function AdminPage({ onNavigate }) {
                             width: '8px', height: '8px', borderRadius: '50%', display: 'inline-block',
                         }} />
                         <span style={{
-                            background: '#EF4444', color: 'white', fontSize: '14px',
+                            background: 'var(--elab-hex-ef4444)', color: 'white', fontSize: '14px',
                             fontWeight: '700', padding: '2px 8px', borderRadius: '4px',
                         }}>ADMIN</span>
                     </div>
@@ -356,7 +356,7 @@ export default function AdminPage({ onNavigate }) {
                 {/* Tab bar scrollabile */}
                 <div style={{
                     display: 'flex', overflowX: 'auto', gap: '6px',
-                    padding: '10px 12px', background: '#1a3470',
+                    padding: '10px 12px', background: 'var(--elab-hex-1a3470)',
                     WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
                 }}>
                     {TABS.map(t => (
@@ -388,7 +388,7 @@ export default function AdminPage({ onNavigate }) {
     // === DESKTOP LAYOUT ===
     return (
         <div style={{
-            display: 'flex', background: '#F0F4F8', minHeight: 'calc(100vh - 56px)',
+            display: 'flex', background: 'var(--elab-hex-f0f4f8)', minHeight: 'calc(100vh - 56px)',
         }}>
             {/* Sidebar */}
             <aside style={{
@@ -498,7 +498,7 @@ export default function AdminPage({ onNavigate }) {
                         <h1 style={{ margin: 0, fontSize: '22px', color: 'var(--elab-navy)', fontWeight: '800' }}>
                             {TABS.find(t => t.id === tab)?.icon} {TABS.find(t => t.id === tab)?.label}
                         </h1>
-                        <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#737373' }}>
+                        <p style={{ margin: '2px 0 0', fontSize: '14px', color: 'var(--elab-hex-737373)' }}>
                             {tab === 'dashboard' && 'Panoramica KPI e statistiche real-time'}
                             {tab === 'utenti' && 'Gestione utenti registrati — Notion Database'}
                             {tab === 'ordini' && 'Ordini e transazioni — Notion'}
@@ -510,7 +510,7 @@ export default function AdminPage({ onNavigate }) {
                         </p>
                     </div>
                     <span style={{
-                        background: '#EF4444', color: 'white', fontSize: '14px',
+                        background: 'var(--elab-hex-ef4444)', color: 'white', fontSize: '14px',
                         fontWeight: '700', padding: '3px 10px', borderRadius: '4px', letterSpacing: '0.5px',
                     }}>
                         ADMIN
@@ -529,7 +529,7 @@ export default function AdminPage({ onNavigate }) {
 const S = {
     denied: {
         textAlign: 'center', padding: '80px 20px',
-        minHeight: 'calc(100vh - 56px)', background: '#F0F4F8',
+        minHeight: 'calc(100vh - 56px)', background: 'var(--elab-hex-f0f4f8)',
     },
     primaryBtn: {
         padding: '10px 20px', background: 'var(--elab-navy)', color: 'white',
@@ -545,20 +545,20 @@ const S = {
         fontSize: '14px', outline: 'none', fontFamily: 'inherit',
     },
     code: {
-        background: '#f0f0f0', padding: '2px 6px', borderRadius: '4px',
+        background: 'var(--elab-hex-f0f0f0)', padding: '2px 6px', borderRadius: '4px',
         fontSize: '14px', fontFamily: 'monospace', wordBreak: 'break-all',
     },
     tinyBtn: {
-        padding: '4px 12px', background: '#f0f0f0', border: 'none',
+        padding: '4px 12px', background: 'var(--elab-hex-f0f0f0)', border: 'none',
         borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: '500',
     },
     tableHeader: {
-        display: 'flex', padding: '10px 16px', background: '#f8f9fa',
-        borderBottom: '2px solid #e8e8e8', fontSize: '14px',
-        fontWeight: '700', color: '#737373', textTransform: 'uppercase', letterSpacing: '0.5px',
+        display: 'flex', padding: '10px 16px', background: 'var(--elab-hex-f8f9fa)',
+        borderBottom: '2px solid var(--elab-hex-e8e8e8)', fontSize: '14px',
+        fontWeight: '700', color: 'var(--elab-hex-737373)', textTransform: 'uppercase', letterSpacing: '0.5px',
     },
     tableRow: {
         display: 'flex', padding: '10px 16px',
-        borderBottom: '1px solid #f0f0f0', alignItems: 'center', fontSize: '14px',
+        borderBottom: '1px solid var(--elab-hex-f0f0f0)', alignItems: 'center', fontSize: '14px',
     },
 };

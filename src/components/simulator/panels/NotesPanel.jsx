@@ -11,7 +11,7 @@ const COLORS = [
   { id: 'navy', color: 'var(--elab-navy)', label: 'Blu' },
   { id: 'lime', color: 'var(--elab-lime)', label: 'Verde' },
   { id: 'red', color: 'var(--elab-red)', label: 'Rosso' },
-  { id: 'black', color: '#1A1A2E', label: 'Nero' },
+  { id: 'black', color: 'var(--elab-hex-1a1a2e)', label: 'Nero' },
 ];
 
 const WEIGHTS = [

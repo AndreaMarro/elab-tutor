@@ -11,11 +11,11 @@
   height: 100vh;
   overflow-y: auto;
   padding: 16px;
-  background-color: #f8f9fb;
+  background-color: #f8f9fb; /* palette */
   border-left: 1px solid rgba(30, 77, 140, 0.15);
   font-family: 'Open Sans', system-ui, sans-serif;
   font-size: 14px;
-  color: #2a2a2a;
+  color: #2a2a2a; /* palette */
   box-sizing: border-box;
 }
 
@@ -76,7 +76,7 @@
   font-size: 15px;
   font-weight: 500;
   line-height: 1.4;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
 }
 
 .spuntoSection {
@@ -92,7 +92,7 @@
   font-size: 14px;
   font-style: italic;
   line-height: 1.4;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
 }
 
 .noteList,
@@ -125,7 +125,7 @@
 .problema {
   font-size: 13px;
   font-weight: 600;
-  color: #c93f30;
+  color: #c93f30; /* palette */
   margin-bottom: 2px;
 }
 

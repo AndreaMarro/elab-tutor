@@ -13,41 +13,41 @@ import { showToast } from '../../common/Toast';
 // ── Costanti ──────────────────────────────────────
 const COLORS = {
     primary: 'var(--elab-navy)',
-    primaryLight: '#2A4FA3',
-    primaryBg: '#EBF0FA',
+    primaryLight: 'var(--elab-hex-2a4fa3)',
+    primaryBg: 'var(--elab-hex-ebf0fa)',
     success: 'var(--elab-lime)',
-    successBg: '#F0F7E4',
-    warning: '#F59E0B',
-    warningBg: '#FEF3C7',
-    danger: '#EF4444',
-    dangerBg: '#FEF2F2',
-    info: '#06B6D4',
-    infoBg: '#ECFEFF',
-    teal: '#14B8A6',
-    tealBg: '#F0FDFA',
-    textPrimary: '#1E293B',
-    textSecondary: '#64748B',
-    textMuted: '#64748B',
-    border: '#E2E8F0',
-    borderLight: '#F1F5F9',
-    card: '#FFFFFF',
-    bg: '#F8FAFC',
+    successBg: 'var(--elab-hex-f0f7e4)',
+    warning: 'var(--elab-hex-f59e0b)',
+    warningBg: 'var(--elab-hex-fef3c7)',
+    danger: 'var(--elab-hex-ef4444)',
+    dangerBg: 'var(--elab-hex-fef2f2)',
+    info: 'var(--elab-hex-06b6d4)',
+    infoBg: 'var(--elab-hex-ecfeff)',
+    teal: 'var(--elab-hex-14b8a6)',
+    tealBg: 'var(--elab-hex-f0fdfa)',
+    textPrimary: 'var(--elab-hex-1e293b)',
+    textSecondary: 'var(--elab-hex-64748b)',
+    textMuted: 'var(--elab-hex-64748b)',
+    border: 'var(--elab-hex-e2e8f0)',
+    borderLight: 'var(--elab-hex-f1f5f9)',
+    card: 'var(--elab-hex-ffffff)',
+    bg: 'var(--elab-hex-f8fafc)',
 };
 
 const TIPI = ['Premium', 'Eventi', 'Newsletter', 'Scuole'];
 const STATI = ['In attesa', 'Contattato', 'Convertito', 'Rimosso'];
 
 const TIPO_COLORS = {
-    Premium:    { bg: '#EDE9FE', color: '#7C3AED' },
+    Premium:    { bg: 'var(--elab-hex-ede9fe)', color: 'var(--elab-hex-7c3aed)' },
     Eventi:     { bg: COLORS.warningBg, color: COLORS.warning },
     Newsletter: { bg: COLORS.infoBg, color: COLORS.info },
     Scuole:     { bg: COLORS.tealBg, color: COLORS.teal },
 };
 
 const STATO_COLORS = {
-    'In attesa':   { bg: COLORS.warningBg, color: '#B45309' },
-    'Contattato':  { bg: COLORS.infoBg, color: '#0E7490' },
-    'Convertito':  { bg: COLORS.successBg, color: '#4D7C0F' },
+    'In attesa':   { bg: COLORS.warningBg, color: 'var(--elab-hex-b45309)' },
+    'Contattato':  { bg: COLORS.infoBg, color: 'var(--elab-hex-0e7490)' },
+    'Convertito':  { bg: COLORS.successBg, color: 'var(--elab-hex-4d7c0f)' },
     'Rimosso':     { bg: COLORS.dangerBg, color: COLORS.danger },
 };
 
@@ -679,9 +679,9 @@ export default function AdminWaitlist({ isMobile }) {
                     <div style={S.cardValue(COLORS.primary)}>{stats.totale}</div>
                 </div>
                 {/* Premium */}
-                <div style={S.card('#7C3AED')}>
+                <div style={S.card('var(--elab-hex-7c3aed)')}>
                     <div style={S.cardLabel}>Premium</div>
-                    <div style={S.cardValue('#7C3AED')}>{stats.byTipo.Premium || 0}</div>
+                    <div style={S.cardValue('var(--elab-hex-7c3aed)')}>{stats.byTipo.Premium || 0}</div>
                 </div>
                 {/* Eventi */}
                 <div style={S.card(COLORS.warning)}>
@@ -694,9 +694,9 @@ export default function AdminWaitlist({ isMobile }) {
                     <div style={S.cardValue(COLORS.info)}>{stats.byTipo.Newsletter || 0}</div>
                 </div>
                 {/* In attesa */}
-                <div style={S.card('#B45309')}>
+                <div style={S.card('var(--elab-hex-b45309)')}>
                     <div style={S.cardLabel}>In Attesa</div>
-                    <div style={S.cardValue('#B45309')}>{stats.inAttesa}</div>
+                    <div style={S.cardValue('var(--elab-hex-b45309)')}>{stats.inAttesa}</div>
                 </div>
                 {/* Convertiti */}
                 <div style={S.card(COLORS.success)}>

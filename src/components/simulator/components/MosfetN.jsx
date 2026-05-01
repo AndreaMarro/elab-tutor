@@ -22,56 +22,56 @@ const MosfetN = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
 
       {/* Heatsink tab (metal tab at top) */}
       <rect x="-10" y="-18" width="20" height="6" rx="1"
-        fill="#C4CCD3" stroke="#7C8893" strokeWidth="0.5" />
+        fill="var(--elab-hex-c4ccd3)" stroke="var(--elab-hex-7c8893)" strokeWidth="0.5" />
       {/* Tab highlight */}
       <rect x="-9" y="-17.5" width="18" height="2.2" rx="0.8"
-        fill="#FFFFFF" opacity="0.20" />
+        fill="var(--elab-hex-ffffff)" opacity="0.20" />
       {/* Mounting hole */}
-      <circle cx="0" cy="-15" r="1.8" fill="#7C8893" stroke="#5A636B" strokeWidth="0.4" />
-      <circle cx="0" cy="-15" r="0.9" fill="#3A3E42" />
+      <circle cx="0" cy="-15" r="1.8" fill="var(--elab-hex-7c8893)" stroke="var(--elab-hex-5a636b)" strokeWidth="0.4" />
+      <circle cx="0" cy="-15" r="0.9" fill="var(--elab-hex-3a3e42)" />
 
       {/* Main body — dark epoxy */}
       <rect x="-10" y="-12" width="20" height="22" rx="1.5"
-        fill="#1A1A1E" stroke="#0A0A0E" strokeWidth="0.6" />
+        fill="var(--elab-hex-1a1a1e)" stroke="var(--elab-hex-0a0a0e)" strokeWidth="0.6" />
 
       {/* Body top highlight */}
       <rect x="-9" y="-11" width="18" height="8" rx="1.2"
-        fill="#FFFFFF" opacity="0.06" />
+        fill="var(--elab-hex-ffffff)" opacity="0.06" />
 
       {/* Body bottom shadow */}
       <rect x="-9" y="2" width="18" height="7.2" rx="1.2"
-        fill="#000000" opacity="0.08" />
+        fill="var(--elab-hex-000000)" opacity="0.08" />
 
       {/* Marking text */}
-      <text x="0" y="-2" textAnchor="middle" fontSize="4" fill="#D0D4DA"
+      <text x="0" y="-2" textAnchor="middle" fontSize="4" fill="var(--elab-hex-d0d4da)"
         fontFamily="Fira Code, monospace" fontWeight="600" letterSpacing="0.3">
         NMOS
       </text>
 
       {/* Pin labels (tiny, like real component) */}
-      <text x="-6" y="7" textAnchor="middle" fontSize="2.2" fill="#737373"
+      <text x="-6" y="7" textAnchor="middle" fontSize="2.2" fill="var(--elab-hex-737373)"
         fontFamily="Fira Code, monospace">G</text>
-      <text x="0" y="7" textAnchor="middle" fontSize="2.2" fill="#737373"
+      <text x="0" y="7" textAnchor="middle" fontSize="2.2" fill="var(--elab-hex-737373)"
         fontFamily="Fira Code, monospace">D</text>
-      <text x="6" y="7" textAnchor="middle" fontSize="2.2" fill="#737373"
+      <text x="6" y="7" textAnchor="middle" fontSize="2.2" fill="var(--elab-hex-737373)"
         fontFamily="Fira Code, monospace">S</text>
 
       {/* Marking dot (orientation indicator) */}
-      <circle cx="-6" cy="-7" r="1" fill="#AAAAAA" opacity="0.4" />
+      <circle cx="-6" cy="-7" r="1" fill="var(--elab-hex-aaaaaa)" opacity="0.4" />
 
       {/* Three leads extending from bottom */}
       {/* Three leads extending from bottom (Gate, Drain, Source) */}
       {/* Gate (left) */}
       <line x1="-7.5" y1="10" x2="-7.5" y2="15"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* Drain (center) */}
       <line x1="0" y1="10" x2="0" y2="15"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* Source (right) */}
       <line x1="7.5" y1="10" x2="7.5" y2="15"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* Active state glow — vivid green ON indicator */}
       {isOn && (

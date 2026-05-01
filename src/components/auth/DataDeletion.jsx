@@ -87,7 +87,7 @@ export default function DataDeletion({ user, onDataDeleted, onCancel }) {
         return (
             <div style={styles.container}>
                 <div style={styles.successCard}>
-                    <div style={{ ...styles.successIcon, color: '#28a745' }}>&#10003;</div>
+                    <div style={{ ...styles.successIcon, color: 'var(--elab-hex-28a745)' }}>&#10003;</div>
                     <h2 style={styles.successTitle}>Dati Eliminati</h2>
                     <p style={styles.successMessage}>
                         Tutti i tuoi dati personali sono stati eliminati con successo.
@@ -288,18 +288,18 @@ const styles = {
         marginBottom: '12px',
     },
     title: {
-        color: '#dc3545',
+        color: 'var(--elab-hex-dc3545)',
         fontSize: '24px',
         fontWeight: '700',
         margin: 0,
     },
     warningBanner: {
-        background: '#fff3cd',
-        border: '1px solid #ffc107',
+        background: 'var(--elab-hex-fff3cd)',
+        border: '1px solid var(--elab-hex-ffc107)',
         borderRadius: '10px',
         padding: '16px',
         marginBottom: '24px',
-        color: '#856404',
+        color: 'var(--elab-hex-856404)',
         fontSize: '14px',
     },
     form: {
@@ -323,7 +323,7 @@ const styles = {
         alignItems: 'center',
         gap: '10px',
         padding: '12px',
-        background: '#f8f9fa',
+        background: 'var(--elab-hex-f8f9fa)',
         borderRadius: '8px',
         cursor: 'pointer',
         fontSize: '14px',
@@ -347,7 +347,7 @@ const styles = {
         outline: 'none',
     },
     dataList: {
-        background: '#f8f9fa',
+        background: 'var(--elab-hex-f8f9fa)',
         borderRadius: '10px',
         padding: '16px',
     },
@@ -364,12 +364,12 @@ const styles = {
         lineHeight: '1.8',
     },
     error: {
-        color: '#dc3545',
+        color: 'var(--elab-hex-dc3545)',
         fontSize: '14px',
         padding: '12px',
-        background: '#f8d7da',
+        background: 'var(--elab-hex-f8d7da)',
         borderRadius: '8px',
-        border: '1px solid #f5c6cb',
+        border: '1px solid var(--elab-hex-f5c6cb)',
     },
     buttons: {
         display: 'flex',
@@ -403,7 +403,7 @@ const styles = {
         fontWeight: '600',
         borderRadius: '10px',
         border: '1px solid #ddd',
-        background: '#f8f9fa',
+        background: 'var(--elab-hex-f8f9fa)',
         color: '#666',
         cursor: 'pointer',
     },
@@ -414,7 +414,7 @@ const styles = {
         fontWeight: '600',
         borderRadius: '10px',
         border: 'none',
-        background: '#dc3545',
+        background: 'var(--elab-hex-dc3545)',
         color: '#fff',
         cursor: 'pointer',
     },
@@ -441,7 +441,7 @@ const styles = {
         marginBottom: '16px',
     },
     successTitle: {
-        color: '#28a745',
+        color: 'var(--elab-hex-28a745)',
         fontSize: '24px',
         fontWeight: '700',
         margin: '0 0 12px 0',
@@ -457,11 +457,11 @@ const styles = {
         margin: '0 0 16px 0',
     },
     successNotice: {
-        background: '#e8f4fd',
-        border: '1px solid #bee5eb',
+        background: 'var(--elab-hex-e8f4fd)',
+        border: '1px solid var(--elab-hex-bee5eb)',
         borderRadius: '10px',
         padding: '16px',
         fontSize: '14px',
-        color: '#0c5460',
+        color: 'var(--elab-hex-0c5460)',
     },
 };

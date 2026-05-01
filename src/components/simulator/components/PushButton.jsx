@@ -25,48 +25,48 @@ const PushButton = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract,
       {/* Pin legs — metallic silver, extending from body to pin positions */}
       {/* Top-left */}
       <line x1="-7.5" y1="-7.5" x2="-7" y2="-7.5"
-        stroke="#9E9E9E" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="-7.5" cy="-7.5" r="1.15" fill="#7A7A7A" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="-7.5" cy="-7.5" r="1.15" fill="var(--elab-hex-7a7a7a)" />
       {/* Top-right */}
       <line x1="7.5" y1="-7.5" x2="7" y2="-7.5"
-        stroke="#9E9E9E" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="7.5" cy="-7.5" r="1.15" fill="#7A7A7A" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="7.5" cy="-7.5" r="1.15" fill="var(--elab-hex-7a7a7a)" />
       {/* Bottom-left */}
       <line x1="-7.5" y1="7.5" x2="-7" y2="7.5"
-        stroke="#9E9E9E" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="-7.5" cy="7.5" r="1.15" fill="#7A7A7A" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="-7.5" cy="7.5" r="1.15" fill="var(--elab-hex-7a7a7a)" />
       {/* Bottom-right */}
       <line x1="7.5" y1="7.5" x2="7" y2="7.5"
-        stroke="#9E9E9E" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="7.5" cy="7.5" r="1.15" fill="#7A7A7A" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="7.5" cy="7.5" r="1.15" fill="var(--elab-hex-7a7a7a)" />
 
       {/* Housing shadow for depth */}
       <rect x="-6.2" y="-6" width="13" height="13" rx="1.8"
-        fill="#000000" opacity="0.1" />
+        fill="var(--elab-hex-000000)" opacity="0.1" />
 
       {/* Base housing — compact 6mm tactile switch */}
       <rect x="-6.5" y="-6.5" width="13" height="13" rx="1.8"
-        fill="#2B2B2B" stroke="#0E0E0E" strokeWidth="0.7" />
+        fill="var(--elab-hex-2b2b2b)" stroke="var(--elab-hex-0e0e0e)" strokeWidth="0.7" />
       {/* Top edge highlight */}
       <rect x="-5.8" y="-6.3" width="11.6" height="1.5" rx="0.8"
-        fill="#FFFFFF" opacity="0.06" />
+        fill="var(--elab-hex-ffffff)" opacity="0.06" />
       {/* Inner edge */}
       <rect x="-6" y="-6" width="12" height="12" rx="1.4"
-        fill="none" stroke="#FFFFFF" strokeWidth="0.5" opacity="0.06" />
+        fill="none" stroke="var(--elab-hex-ffffff)" strokeWidth="0.5" opacity="0.06" />
 
       {/* Cap — round button with gradient, depresses 1.2px when pressed */}
       <g transform={isPressed ? 'translate(0, 1.2)' : ''}>
         {/* Cap shadow */}
         {!isPressed && (
-          <circle cx="0.3" cy="0.4" r="4" fill="#000000" opacity="0.12" />
+          <circle cx="0.3" cy="0.4" r="4" fill="var(--elab-hex-000000)" opacity="0.12" />
         )}
         {/* Cap face — metallic gradient circle */}
         <circle cx="0" cy="0" r="4"
-          fill={isPressed ? '#9A9A9A' : '#CFCFCF'}
+          fill={isPressed ? 'var(--elab-hex-9a9a9a)' : 'var(--elab-hex-cfcfcf)'}
           stroke="#666" strokeWidth="0.5" />
         {/* Cap gradient overlay for 3D dome */}
         <circle cx="0" cy="0" r="3.8"
-          fill="none" stroke={isPressed ? '#888' : '#E8E8E8'} strokeWidth="0.8" opacity="0.3" />
+          fill="none" stroke={isPressed ? '#888' : 'var(--elab-hex-e8e8e8)'} strokeWidth="0.8" opacity="0.3" />
         {/* Specular highlight — moves when pressed */}
         <ellipse cx={isPressed ? -0.5 : -1} cy={isPressed ? -0.8 : -1.4} rx="1.8" ry="1.3"
           fill="white" opacity={isPressed ? 0.08 : 0.22} />

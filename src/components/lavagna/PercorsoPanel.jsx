@@ -83,9 +83,9 @@ export default function PercorsoPanel({ visible = false, onClose, experiment: pr
           </Suspense>
         ) : (
           <div style={{ padding: 32, textAlign: 'center', color: 'var(--elab-navy)', fontFamily: 'Open Sans, sans-serif' }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>&#128218;</div>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>&var(--elab-hex-128218);</div>
             <p style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Nessun esperimento caricato</p>
-            <p style={{ fontSize: 14, color: '#737373' }}>Scegli un esperimento dall'header per vedere il percorso della lezione.</p>
+            <p style={{ fontSize: 14, color: 'var(--elab-hex-737373)' }}>Scegli un esperimento dall'header per vedere il percorso della lezione.</p>
           </div>
         )}
       </div>

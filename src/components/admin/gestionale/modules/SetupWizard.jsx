@@ -260,7 +260,7 @@ export default function SetupWizard({ onComplete, isMobile }) {
         <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             minHeight: '70vh', padding: isMobile ? '16px' : '40px',
-            background: `linear-gradient(135deg, ${COLORS.bg} 0%, #E2E8F0 100%)`,
+            background: `linear-gradient(135deg, ${COLORS.bg} 0%, var(--elab-hex-e2e8f0) 100%)`,
         }}>
             <div style={{
                 background: COLORS.card, borderRadius: '16px',

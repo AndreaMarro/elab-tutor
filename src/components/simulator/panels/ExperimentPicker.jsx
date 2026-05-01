@@ -514,8 +514,8 @@ const S = {
     fontSize: 14,
     padding: '3px 10px',
     borderRadius: 12,
-    background: '#FFF3E0',
-    color: '#E65100',
+    background: '#fff3e0', // palette
+    color: '#e65100', // palette
     fontFamily: 'var(--font-sans)',
     fontWeight: 600,
   },

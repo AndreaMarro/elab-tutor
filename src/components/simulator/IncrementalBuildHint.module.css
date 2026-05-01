@@ -10,7 +10,7 @@
   padding: 12px 16px;
   font-family: 'Open Sans', system-ui, sans-serif;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
 }
 
 .header {
@@ -27,7 +27,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #3a6020;
+  color: #3a6020; /* palette */
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -94,13 +94,13 @@
 }
 
 .op_add .opLabel {
-  color: #3a6020;
+  color: #3a6020; /* palette */
 }
 
 .op_remove .opLabel {
-  color: #c93f30;
+  color: #c93f30; /* palette */
 }
 
 .op_modify .opLabel {
-  color: #c07010;
+  color: #c07010; /* palette */
 }

@@ -24,7 +24,7 @@
   display: inline-block;
   background: rgba(74, 122, 37, 0.25);
   border: 1px solid rgba(74, 122, 37, 0.5);
-  color: #9CCC65;
+  color: #9CCC65; /* palette */
   font-size: 14px;
   font-weight: 600;
   padding: 4px 16px;
@@ -128,7 +128,7 @@
 
 .statLabel {
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   font-weight: 500;
 }
 
@@ -151,7 +151,7 @@
 }
 
 .sectionSub {
-  color: #595959;
+  color: #595959; /* palette */
   font-size: 15px;
   margin: 0 0 32px;
 }
@@ -193,14 +193,14 @@
   font-size: 18px;
   font-weight: 700;
   font-family: var(--font-display, Oswald, sans-serif);
-  color: #1A2B4A;
+  color: #1A2B4A; /* palette */
   margin: 4px 0 8px;
 }
 
 .volDesc {
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   line-height: 1.5;
   margin: 0 0 12px;
 }

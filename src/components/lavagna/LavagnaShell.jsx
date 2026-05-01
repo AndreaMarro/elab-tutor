@@ -68,7 +68,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <defs><radialGradient id={`${prefix}ledDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#a4e65e" /><stop offset="60%" stopColor="var(--elab-lime)" /><stop offset="100%" stopColor="#2d5a10" /></radialGradient></defs>
         <ellipse cx="14" cy="10" rx="6" ry="8" fill={`url(#${prefix}ledDome)`} />
-        <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="#3a6a1a" strokeWidth="0.5" />
+        <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="var(--elab-hex-3a6a1a)" strokeWidth="0.5" />
         <ellipse cx="11.5" cy="7" rx="2" ry="3" fill="rgba(255,255,255,0.4)" />
         <rect x="8" y="17" width="12" height="2" rx="0.5" fill="#bbb" stroke="#999" strokeWidth="0.5" />
         <path d="M10 19v5" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
@@ -79,12 +79,12 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     { type: 'resistor', label: 'Resistore', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M2 14h6M20 14h6" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <defs><linearGradient id={`${prefix}resBody`} x1="8" y1="9" x2="8" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#e8d5b0" /><stop offset="50%" stopColor="#d4b896" /><stop offset="100%" stopColor="#c4a87a" /></linearGradient></defs>
-        <rect x="8" y="9" width="12" height="10" rx="2" fill={`url(#${prefix}resBody)`} stroke="#a08a60" strokeWidth="0.5" />
-        <rect x="10" y="9" width="1.5" height="10" rx="0.3" fill="#8B4513" />
+        <defs><linearGradient id={`${prefix}resBody`} x1="8" y1="9" x2="8" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-e8d5b0)" /><stop offset="50%" stopColor="var(--elab-hex-d4b896)" /><stop offset="100%" stopColor="var(--elab-hex-c4a87a)" /></linearGradient></defs>
+        <rect x="8" y="9" width="12" height="10" rx="2" fill={`url(#${prefix}resBody)`} stroke="var(--elab-hex-a08a60)" strokeWidth="0.5" />
+        <rect x="10" y="9" width="1.5" height="10" rx="0.3" fill="var(--elab-hex-8b4513)" />
         <rect x="13" y="9" width="1.5" height="10" rx="0.3" fill="#222" />
         <rect x="16" y="9" width="1.5" height="10" rx="0.3" fill="var(--elab-red)" />
-        <rect x="18.5" y="9" width="1" height="10" rx="0.3" fill="#C5A33E" />
+        <rect x="18.5" y="9" width="1" height="10" rx="0.3" fill="var(--elab-hex-c5a33e)" />
       </svg>
     )},
     { type: 'push-button', label: 'Pulsante', vol: 1, icon: (
@@ -108,8 +108,8 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'potentiometer', label: 'Potenziometro', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="4" y="7" width="20" height="14" rx="2" fill="#2980b9" stroke="#1a6fa0" strokeWidth="0.5" />
-        <defs><radialGradient id={`${prefix}potKnob`} cx="45%" cy="38%"><stop offset="0%" stopColor="#f0f0f0" /><stop offset="60%" stopColor="#ccc" /><stop offset="100%" stopColor="#888" /></radialGradient></defs>
+        <rect x="4" y="7" width="20" height="14" rx="2" fill="var(--elab-hex-2980b9)" stroke="var(--elab-hex-1a6fa0)" strokeWidth="0.5" />
+        <defs><radialGradient id={`${prefix}potKnob`} cx="45%" cy="38%"><stop offset="0%" stopColor="var(--elab-hex-f0f0f0)" /><stop offset="60%" stopColor="#ccc" /><stop offset="100%" stopColor="#888" /></radialGradient></defs>
         <circle cx="14" cy="14" r="6" fill={`url(#${prefix}potKnob)`} stroke="#777" strokeWidth="0.5" />
         <circle cx="13" cy="12" r="1.5" fill="rgba(255,255,255,0.5)" />
         <path d="M14 8v4" stroke="#444" strokeWidth="2" strokeLinecap="round" />
@@ -127,9 +127,9 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'photo-resistor', label: 'LDR', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><radialGradient id={`${prefix}ldrBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="#d4a574" /><stop offset="100%" stopColor="#8B6914" /></radialGradient></defs>
-        <circle cx="14" cy="12" r="7" fill={`url(#${prefix}ldrBody)`} stroke="#7a5a10" strokeWidth="0.5" />
-        <path d="M14 5.5c1.5 0 2.5 1.2 2.5 2.8s-1 2.8-2.5 2.8-2.5-1.2-2.5-2.8S12.5 5.5 14 5.5z" fill="#a07830" stroke="#7a5a10" strokeWidth="0.3" />
+        <defs><radialGradient id={`${prefix}ldrBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="var(--elab-hex-d4a574)" /><stop offset="100%" stopColor="var(--elab-hex-8b6914)" /></radialGradient></defs>
+        <circle cx="14" cy="12" r="7" fill={`url(#${prefix}ldrBody)`} stroke="var(--elab-hex-7a5a10)" strokeWidth="0.5" />
+        <path d="M14 5.5c1.5 0 2.5 1.2 2.5 2.8s-1 2.8-2.5 2.8-2.5-1.2-2.5-2.8S12.5 5.5 14 5.5z" fill="var(--elab-hex-a07830)" stroke="var(--elab-hex-7a5a10)" strokeWidth="0.3" />
         <path d="M10 19v5M18 19v5" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
         <path d="M3 6l3 3M3 3l2 2" stroke="var(--elab-orange)" strokeWidth="1" strokeLinecap="round" />
       </svg>
@@ -147,9 +147,9 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     { type: 'capacitor', label: 'Condensatore', vol: 2, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <path d="M14 2v7M14 19v7" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <defs><linearGradient id={`${prefix}capBody`} x1="7" y1="9" x2="21" y2="9" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#2a6496" /><stop offset="40%" stopColor="#3498db" /><stop offset="100%" stopColor="#2472a4" /></linearGradient></defs>
-        <rect x="7" y="9" width="14" height="10" rx="2" fill={`url(#${prefix}capBody)`} stroke="#1a5276" strokeWidth="0.5" />
-        <rect x="7" y="9" width="3" height="10" rx="1" fill="#1a3a5c" opacity="0.5" />
+        <defs><linearGradient id={`${prefix}capBody`} x1="7" y1="9" x2="21" y2="9" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-2a6496)" /><stop offset="40%" stopColor="var(--elab-hex-3498db)" /><stop offset="100%" stopColor="var(--elab-hex-2472a4)" /></linearGradient></defs>
+        <rect x="7" y="9" width="14" height="10" rx="2" fill={`url(#${prefix}capBody)`} stroke="var(--elab-hex-1a5276)" strokeWidth="0.5" />
+        <rect x="7" y="9" width="3" height="10" rx="1" fill="var(--elab-hex-1a3a5c)" opacity="0.5" />
         <text x="18" y="8" fontSize="6" fill="var(--elab-red)" fontFamily="sans-serif">+</text>
       </svg>
     )},
@@ -181,9 +181,9 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'phototransistor', label: 'Fototransistore', vol: 2, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><radialGradient id={`${prefix}ptBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="#e0e8ef" /><stop offset="100%" stopColor="#8899aa" /></radialGradient></defs>
-        <circle cx="14" cy="13" r="7" fill={`url(#${prefix}ptBody)`} stroke="#667788" strokeWidth="0.5" />
-        <circle cx="14" cy="13" r="3" fill="#334455" />
+        <defs><radialGradient id={`${prefix}ptBody`} cx="50%" cy="40%"><stop offset="0%" stopColor="var(--elab-hex-e0e8ef)" /><stop offset="100%" stopColor="var(--elab-hex-8899aa)" /></radialGradient></defs>
+        <circle cx="14" cy="13" r="7" fill={`url(#${prefix}ptBody)`} stroke="var(--elab-hex-667788)" strokeWidth="0.5" />
+        <circle cx="14" cy="13" r="3" fill="var(--elab-hex-334455)" />
         <path d="M10 20v4M18 20v4" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
         <path d="M3 6l3 3M3 3l2 2" stroke="var(--elab-orange)" strokeWidth="1" strokeLinecap="round" />
       </svg>
@@ -191,19 +191,19 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     // ── Volume 3: Arduino ──
     { type: 'nano-r4', label: 'Arduino Nano', vol: 3, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><linearGradient id={`${prefix}nanoBoard`} x1="4" y1="4" x2="4" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#008080" /><stop offset="100%" stopColor="#005555" /></linearGradient></defs>
-        <rect x="4" y="4" width="20" height="20" rx="2" fill={`url(#${prefix}nanoBoard)`} stroke="#004040" strokeWidth="0.5" />
+        <defs><linearGradient id={`${prefix}nanoBoard`} x1="4" y1="4" x2="4" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-008080)" /><stop offset="100%" stopColor="var(--elab-hex-005555)" /></linearGradient></defs>
+        <rect x="4" y="4" width="20" height="20" rx="2" fill={`url(#${prefix}nanoBoard)`} stroke="var(--elab-hex-004040)" strokeWidth="0.5" />
         <rect x="10" y="2" width="8" height="4" rx="1" fill="#888" stroke="#666" strokeWidth="0.5" />
         <rect x="8" y="10" width="12" height="6" rx="1" fill="#222" />
         <text x="14" y="15" textAnchor="middle" fontSize="5" fill="#0f0" fontFamily="monospace">NANO</text>
-        {Array.from({length: 7}, (_, i) => <circle key={`l${i}`} cx={6} cy={6 + i * 2.5} r="0.8" fill="#C5A33E" />)}
-        {Array.from({length: 7}, (_, i) => <circle key={`r${i}`} cx={22} cy={6 + i * 2.5} r="0.8" fill="#C5A33E" />)}
+        {Array.from({length: 7}, (_, i) => <circle key={`l${i}`} cx={6} cy={6 + i * 2.5} r="0.8" fill="var(--elab-hex-c5a33e)" />)}
+        {Array.from({length: 7}, (_, i) => <circle key={`r${i}`} cx={22} cy={6 + i * 2.5} r="0.8" fill="var(--elab-hex-c5a33e)" />)}
       </svg>
     )},
     { type: 'servo', label: 'Servo', vol: 3, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><linearGradient id={`${prefix}servoBody`} x1="3" y1="8" x2="3" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#4488cc" /><stop offset="100%" stopColor="#2266aa" /></linearGradient></defs>
-        <rect x="3" y="8" width="22" height="14" rx="2" fill={`url(#${prefix}servoBody)`} stroke="#1a5276" strokeWidth="0.5" />
+        <defs><linearGradient id={`${prefix}servoBody`} x1="3" y1="8" x2="3" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="var(--elab-hex-4488cc)" /><stop offset="100%" stopColor="var(--elab-hex-2266aa)" /></linearGradient></defs>
+        <rect x="3" y="8" width="22" height="14" rx="2" fill={`url(#${prefix}servoBody)`} stroke="var(--elab-hex-1a5276)" strokeWidth="0.5" />
         <circle cx="20" cy="15" r="3.5" fill="#ddd" stroke="#999" strokeWidth="0.5" />
         <path d="M20 15l-2 -5h4z" fill="#fff" stroke="#999" strokeWidth="0.5" />
         <path d="M6 8v-3M10 8v-3M14 8v-3" stroke="var(--elab-red)" strokeWidth="1" strokeLinecap="round" />
@@ -211,8 +211,8 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'lcd16x2', label: 'LCD 16x2', vol: 3, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="2" y="6" width="24" height="16" rx="2" fill="#2d8b2d" stroke="#1a6b1a" strokeWidth="0.5" />
-        <rect x="4" y="8" width="20" height="12" rx="1" fill="#90EE90" stroke="#60c060" strokeWidth="0.5" />
+        <rect x="2" y="6" width="24" height="16" rx="2" fill="var(--elab-hex-2d8b2d)" stroke="var(--elab-hex-1a6b1a)" strokeWidth="0.5" />
+        <rect x="4" y="8" width="20" height="12" rx="1" fill="var(--elab-hex-90ee90)" stroke="var(--elab-hex-60c060)" strokeWidth="0.5" />
         <text x="14" y="14" textAnchor="middle" fontSize="4" fill="#333" fontFamily="monospace">Hello!</text>
         <text x="14" y="18" textAnchor="middle" fontSize="4" fill="#333" fontFamily="monospace">ELAB</text>
       </svg>
@@ -223,8 +223,8 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <ellipse cx="14" cy="10" rx="6" ry="8" fill={`url(#${prefix}rgbDome)`} />
         <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="#889" strokeWidth="0.5" />
         <circle cx="11" cy="9" r="2" fill="var(--elab-red)" opacity="0.5" />
-        <circle cx="17" cy="9" r="2" fill="#2563EB" opacity="0.5" />
-        <circle cx="14" cy="12" r="2" fill="#16A34A" opacity="0.5" />
+        <circle cx="17" cy="9" r="2" fill="var(--elab-hex-2563eb)" opacity="0.5" />
+        <circle cx="14" cy="12" r="2" fill="var(--elab-hex-16a34a)" opacity="0.5" />
         <rect x="8" y="17" width="12" height="2" rx="0.5" fill="#bbb" stroke="#999" strokeWidth="0.5" />
         <path d="M9 19v5M12 19v5M16 19v5M19 19v5" stroke="#999" strokeWidth="0.8" strokeLinecap="round" />
       </svg>
@@ -1332,7 +1332,7 @@ export default function LavagnaShell() {
           >
             {!activeLessonId ? (
               <div style={{
-                padding: 32, textAlign: 'center', color: '#737373',
+                padding: 32, textAlign: 'center', color: 'var(--elab-hex-737373)',
                 fontFamily: "'Open Sans', sans-serif", fontSize: 16, lineHeight: 1.6,
               }}>
                 <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 12 }}>

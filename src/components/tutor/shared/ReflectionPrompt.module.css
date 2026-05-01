@@ -16,7 +16,7 @@
 }
 
 .savedMessage {
-  color: #16a34a;
+  color: #16a34a; /* palette */
   font-weight: 600;
   font-size: 0.92rem;
   margin: 0;

@@ -20,7 +20,7 @@
 }
 
 .button:hover:not(:disabled) {
-  background: #163d6e;
+  background: #163d6e; /* palette */
 }
 
 .button:active:not(:disabled) {

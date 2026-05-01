@@ -451,10 +451,10 @@
 
 .recordBtnRecording {
   composes: actionBtn;
-  background: #EF4444;
+  background: #EF4444; /* palette */
   color: white;
   border-radius: 50%;
-  border: 2px solid #FCA5A5;
+  border: 2px solid #FCA5A5; /* palette */
   animation: pulse 1.5s infinite;
 }
 
@@ -601,7 +601,7 @@
   composes: bubble;
   background: rgba(245, 166, 35, 0.1);
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
-  color: #92600a;
+  color: #92600a; /* palette */
   border: 1px solid rgba(245, 166, 35, 0.3);
   border-radius: 16px 16px 16px 4px;
   font-style: italic;
@@ -703,8 +703,8 @@
 .voiceBtnActive {
   composes: actionBtn;
   background: rgba(52, 211, 153, 0.2);
-  color: #34D399;
-  border: 1px solid #34D399;
+  color: #34D399; /* palette */
+  border: 1px solid #34D399; /* palette */
   box-shadow: 0 0 12px rgba(52, 211, 153, 0.4);
 }
 

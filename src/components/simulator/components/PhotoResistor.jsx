@@ -22,7 +22,7 @@ const PhotoResistor = ({ x = 0, y = 0, state = {}, highlighted = false, onIntera
 
       {/* Light level glow — yellow halo proportional to lightLevel */}
       {isLit && (
-        <circle cx="0" cy="0" r="12" fill="#FFD54F" opacity={0.06 + lightLevel * 0.14}>
+        <circle cx="0" cy="0" r="12" fill="var(--elab-hex-ffd54f)" opacity={0.06 + lightLevel * 0.14}>
           <animate attributeName="opacity"
             values={`${0.04 + lightLevel * 0.04};${0.08 + lightLevel * 0.16};${0.04 + lightLevel * 0.04}`}
             dur="2.5s" repeatCount="indefinite" />
@@ -30,14 +30,14 @@ const PhotoResistor = ({ x = 0, y = 0, state = {}, highlighted = false, onIntera
       )}
 
       {/* Ceramic body disc */}
-      <circle cx="0" cy="0" r="9.5" fill="#D6C08B"
-        stroke="#9B8247" strokeWidth="0.8" />
-      <circle cx="-2" cy="-2" r="6" fill="#FFFFFF" opacity="0.10" />
+      <circle cx="0" cy="0" r="9.5" fill="var(--elab-hex-d6c08b)"
+        stroke="var(--elab-hex-9b8247)" strokeWidth="0.8" />
+      <circle cx="-2" cy="-2" r="6" fill="var(--elab-hex-ffffff)" opacity="0.10" />
 
       {/* CdS serpentine pattern (light-sensitive trace) */}
       <path
         d="M -5 -4.5 L 5 -4.5 L 5 -2.5 L -5 -2.5 L -5 -0.5 L 5 -0.5 L 5 1.5 L -5 1.5 L -5 3.5 L 5 3.5"
-        stroke="#8A6A2B"
+        stroke="var(--elab-hex-8a6a2b)"
         strokeWidth="1.15"
         fill="none"
         strokeLinecap="round"
@@ -47,24 +47,24 @@ const PhotoResistor = ({ x = 0, y = 0, state = {}, highlighted = false, onIntera
 
       {/* Light arrows — incoming light indicators (same style as Phototransistor) */}
       <line x1="-13" y1="-11" x2="-7" y2="-5"
-        stroke="#FFD54F" strokeWidth="0.7" opacity={isLit ? 0.6 : 0.15}
+        stroke="var(--elab-hex-ffd54f)" strokeWidth="0.7" opacity={isLit ? 0.6 : 0.15}
         strokeDasharray="1.5 1.5" />
       <line x1="-10" y1="-13" x2="-5" y2="-7"
-        stroke="#FFD54F" strokeWidth="0.7" opacity={isLit ? 0.4 : 0.1}
+        stroke="var(--elab-hex-ffd54f)" strokeWidth="0.7" opacity={isLit ? 0.4 : 0.1}
         strokeDasharray="1.5 1.5" />
       {/* Arrow tip */}
       <path d="M -7 -5 L -8.5 -6.5 M -7 -5 L -8 -3.5"
-        stroke="#FFD54F" strokeWidth="0.6" opacity={isLit ? 0.5 : 0.1} fill="none" />
+        stroke="var(--elab-hex-ffd54f)" strokeWidth="0.6" opacity={isLit ? 0.5 : 0.1} fill="none" />
 
       {/* Connection pads */}
-      <circle cx="-4" cy="5.5" r="1.5" fill="#8A6A2B" opacity="0.35" />
-      <circle cx="4" cy="5.5" r="1.5" fill="#8A6A2B" opacity="0.35" />
+      <circle cx="-4" cy="5.5" r="1.5" fill="var(--elab-hex-8a6a2b)" opacity="0.35" />
+      <circle cx="4" cy="5.5" r="1.5" fill="var(--elab-hex-8a6a2b)" opacity="0.35" />
 
       {/* Leads */}
       <line x1="-3.75" y1="9.4" x2="-3.75" y2="22.5"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
       <line x1="3.75" y1="9.4" x2="3.75" y2="22.5"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* AI tutoring highlight */}
       {highlighted && (

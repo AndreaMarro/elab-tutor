@@ -24,7 +24,7 @@
   font-family: 'Oswald', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #595959;
+  color: #595959; /* palette */
   cursor: pointer;
   transition: color 150ms ease, border-color 150ms ease;
   border-bottom: 2px solid transparent;
@@ -58,7 +58,7 @@
 
 .searchIcon {
   flex-shrink: 0;
-  color: #595959;
+  color: #595959; /* palette */
 }
 
 .searchInput {
@@ -73,7 +73,7 @@
 }
 
 .searchInput::placeholder {
-  color: #666666;
+  color: #666666; /* palette */
 }
 
 .clearBtn,
@@ -86,7 +86,7 @@
   border: none;
   border-radius: 50%;
   background: rgba(30, 77, 140, 0.08);
-  color: #595959;
+  color: #595959; /* palette */
   cursor: pointer;
   flex-shrink: 0;
   transition: background 150ms ease, color 150ms ease;
@@ -258,7 +258,7 @@
   flex-shrink: 0;
   border-radius: 6px;
   overflow: hidden;
-  background: #e8ecf0;
+  background: #e8ecf0; /* palette */
 }
 
 .cardInfo {
@@ -285,7 +285,7 @@
 .cardTopic {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -429,7 +429,7 @@
   padding: 24px 16px;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   text-align: center;
 }
 

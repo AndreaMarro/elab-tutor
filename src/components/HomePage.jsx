@@ -77,7 +77,7 @@ const PALETTE = {
 const styles = {
   page: {
     minHeight: '100vh',
-    background: `linear-gradient(180deg, ${PALETTE.bg} 0%, #E6ECF2 100%)`,
+    background: `linear-gradient(180deg, ${PALETTE.bg} 0%, var(--elab-hex-e6ecf2) 100%)`,
     fontFamily: "'Open Sans', system-ui, sans-serif",
     color: PALETTE.text,
     padding: '32px 24px 32px',
@@ -625,8 +625,8 @@ export default function HomePage({ onNavigate }) {
                   Iter 36 inlined per evitare position:fixed conflict in homepage layout. */}
               <defs>
                 <linearGradient id="unlim-body-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2557A5" />
-                  <stop offset="100%" stopColor="#153d6f" />
+                  <stop offset="0%" stopColor="var(--elab-hex-2557a5)" />
+                  <stop offset="100%" stopColor="var(--elab-hex-153d6f)" />
                 </linearGradient>
               </defs>
               {/* Antenna */}
@@ -641,7 +641,7 @@ export default function HomePage({ onNavigate }) {
               {/* Body / face */}
               <rect x="56" y="84" width="128" height="106" rx="22" fill="url(#unlim-body-grad)" />
               {/* Screen / face plate */}
-              <rect x="72" y="100" width="96" height="64" rx="12" fill="#0e2a4a" />
+              <rect x="72" y="100" width="96" height="64" rx="12" fill="var(--elab-hex-0e2a4a)" />
               {/* Eyes */}
               <circle cx="100" cy="130" r="13" fill="var(--elab-lime)" />
               <circle cx="140" cy="130" r="13" fill="var(--elab-lime)" />

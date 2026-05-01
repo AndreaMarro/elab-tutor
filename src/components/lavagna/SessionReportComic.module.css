@@ -9,7 +9,7 @@
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
-  color: #1e293b;
+  color: #1e293b; /* palette */
   background: #fff;
 }
 
@@ -53,7 +53,7 @@
 
 .subtitle {
   font-size: 1rem;
-  color: #475569;
+  color: #475569; /* palette */
   margin: 0;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .exportBtn:hover {
-  background: #3a5f1d;
+  background: #3a5f1d; /* palette */
 }
 
 .exportBtn:active {
@@ -131,7 +131,7 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
   display: block;
-  background: #f1f5f9;
+  background: #f1f5f9; /* palette */
 }
 
 .photoPlaceholder {
@@ -196,7 +196,7 @@
 
 .narration {
   margin: 0;
-  color: #334155;
+  color: #334155; /* palette */
   line-height: 1.5;
   font-size: 0.9375rem;
 /* © Andrea Marro — 28/04/2026 — ELAB Tutor — Tutti i diritti riservati */
@@ -207,8 +207,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
-  color: #94a3b8;
+  background: #f1f5f9; /* palette */
+  color: #94a3b8; /* palette */
   font-style: italic;
   flex: 1;
   font-size: 0.9375rem;

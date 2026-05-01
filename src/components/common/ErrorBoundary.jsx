@@ -52,7 +52,7 @@ class ErrorBoundary extends React.Component {
       return (
         <div style={{
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          minHeight: '100vh', background: '#FFF8E7', fontFamily: 'Open Sans, sans-serif',
+          minHeight: '100vh', background: 'var(--elab-hex-fff8e7)', fontFamily: 'Open Sans, sans-serif',
           padding: '40px', textAlign: 'center'
         }}>
           <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--elab-navy)', marginBottom: '24px' }}>ELAB</div>
@@ -99,7 +99,7 @@ class ErrorBoundary extends React.Component {
                   }
                 }}
                 style={{
-                  background: '#ffffff',
+                  background: 'var(--elab-hex-ffffff)',
                   color: '#111',
                   border: '1px solid rgba(0,0,0,0.12)',
                   padding: '10px 16px',

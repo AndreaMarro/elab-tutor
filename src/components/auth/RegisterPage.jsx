@@ -245,7 +245,7 @@ export default function RegisterPage({ onNavigate }) {
                                 style={{
                                     ...styles.roleBtn,
                                     background: form.ruolo === 'user' ? 'var(--elab-lime)' : 'rgba(255,255,255,0.1)',
-                                    color: form.ruolo === 'user' ? '#1A1A2E' : 'rgba(255,255,255,0.6)',
+                                    color: form.ruolo === 'user' ? 'var(--elab-hex-1a1a2e)' : 'rgba(255,255,255,0.6)',
                                 }}>
                                 Studente
                             </button>
@@ -403,13 +403,13 @@ const styles = {
         borderRadius: '10px',
         border: 'none',
         background: 'linear-gradient(135deg, var(--elab-lime), #6fa030)',
-        color: '#1A1A2E',
+        color: 'var(--elab-hex-1a1a2e)',
         cursor: 'pointer',
         marginTop: '8px',
         transition: 'opacity 200ms ease, transform 100ms ease',
     },
     error: {
-        color: '#ff6b6b',
+        color: 'var(--elab-hex-ff6b6b)',
         fontSize: '14px',
         margin: '0',
         padding: '10px',

@@ -197,7 +197,7 @@ export default function MicPermissionNudge({
       transform: 'translateX(-50%)',
       width: 'min(480px, calc(100vw - 32px))',
       background: 'var(--elab-navy, var(--elab-navy))',
-      color: '#FFFFFF',
+      color: 'var(--elab-hex-ffffff)',
       borderRadius: 14,
       boxShadow: '0 12px 40px rgba(15, 27, 46, 0.40)',
       padding: '14px 16px',
@@ -230,7 +230,7 @@ export default function MicPermissionNudge({
       margin: 0,
       fontSize: 13,
       lineHeight: 1.4,
-      color: '#FFFFFF',
+      color: 'var(--elab-hex-ffffff)',
     },
     ctaRow: {
       display: 'flex',
@@ -257,7 +257,7 @@ export default function MicPermissionNudge({
       minHeight: 44,
       padding: '8px 12px',
       fontSize: 13,
-      color: '#FFFFFF',
+      color: 'var(--elab-hex-ffffff)',
       background: 'transparent',
       border: '1.5px solid rgba(255, 255, 255, 0.45)',
       borderRadius: 8,
@@ -283,7 +283,7 @@ export default function MicPermissionNudge({
         data-testid="mic-permission-nudge"
       >
         <div style={styles.iconBox} aria-hidden="true">
-          <MicrophoneIcon size={22} color="#FFFFFF" />
+          <MicrophoneIcon size={22} color="var(--elab-hex-ffffff)" />
         </div>
         <div style={styles.body}>
           <p style={styles.text} data-testid="mic-permission-nudge-text">

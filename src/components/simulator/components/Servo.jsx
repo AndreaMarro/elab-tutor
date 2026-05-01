@@ -20,11 +20,11 @@ const Servo = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }
 
       {/* Mounting tabs (ears) — flat, no highlights */}
       <rect x="-23" y="-4" width="6" height="8" rx="1"
-        fill="#3570C0" stroke="#2A5FA0" strokeWidth="0.4" />
+        fill="var(--elab-hex-3570c0)" stroke="var(--elab-hex-2a5fa0)" strokeWidth="0.4" />
       <circle cx="-20" cy="0" r="1.5" fill="#2A5FA0" stroke="var(--elab-navy)" strokeWidth="0.3" />
 
       <rect x="17" y="-4" width="6" height="8" rx="1"
-        fill="#3570C0" stroke="#2A5FA0" strokeWidth="0.4" />
+        fill="var(--elab-hex-3570c0)" stroke="var(--elab-hex-2a5fa0)" strokeWidth="0.4" />
       <circle cx="20" cy="0" r="1.5" fill="#2A5FA0" stroke="var(--elab-navy)" strokeWidth="0.3" />
 
       {/* Main body — flat blue, no 3D rim lights, no specular */}
@@ -39,34 +39,34 @@ const Servo = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }
       <g transform={`translate(0, -18) rotate(${angle - 90})`}>
         {/* Horn arm */}
         <rect x="-2" y="-16" width="4" height="16" rx="1.5"
-          fill="#F0F0F0" stroke="#B0B0B0" strokeWidth="0.5" />
+          fill="var(--elab-hex-f0f0f0)" stroke="var(--elab-hex-b0b0b0)" strokeWidth="0.5" />
 
         {/* Horn holes */}
-        <circle cx="0" cy="-5"  r="1"   fill="#D0D0D0" stroke="#A0A0A0" strokeWidth="0.3" />
-        <circle cx="0" cy="-9"  r="1"   fill="#D0D0D0" stroke="#A0A0A0" strokeWidth="0.3" />
-        <circle cx="0" cy="-13" r="0.8" fill="#D0D0D0" stroke="#A0A0A0" strokeWidth="0.3" />
+        <circle cx="0" cy="-5"  r="1"   fill="var(--elab-hex-d0d0d0)" stroke="var(--elab-hex-a0a0a0)" strokeWidth="0.3" />
+        <circle cx="0" cy="-9"  r="1"   fill="var(--elab-hex-d0d0d0)" stroke="var(--elab-hex-a0a0a0)" strokeWidth="0.3" />
+        <circle cx="0" cy="-13" r="0.8" fill="var(--elab-hex-d0d0d0)" stroke="var(--elab-hex-a0a0a0)" strokeWidth="0.3" />
 
         {/* Horn tip */}
-        <circle cx="0" cy="-15" r="1.5" fill="#E0E0E0" stroke="#B0B0B0" strokeWidth="0.3" />
+        <circle cx="0" cy="-15" r="1.5" fill="var(--elab-hex-e0e0e0)" stroke="var(--elab-hex-b0b0b0)" strokeWidth="0.3" />
       </g>
 
       {/* Shaft center circle — flat metallic, no specular */}
-      <circle cx="0" cy="-18" r="3.5" fill="#A0A0A0"
+      <circle cx="0" cy="-18" r="3.5" fill="var(--elab-hex-a0a0a0)"
         stroke="#666" strokeWidth="0.5" />
-      <circle cx="0" cy="-18" r="1.5" fill="#707070" stroke="#555" strokeWidth="0.3" />
+      <circle cx="0" cy="-18" r="1.5" fill="var(--elab-hex-707070)" stroke="#555" strokeWidth="0.3" />
 
       {/* Wires (bottom) */}
       {/* Orange (signal) */}
-      <line x1="-6" y1="13" x2="-6" y2="24" stroke="#FF8C00" strokeWidth="2.2" strokeLinecap="round" />
-      <circle cx="-7.5" cy="24" r="1.8" fill="#FF8C00" stroke="#CC7000" strokeWidth="0.3" />
+      <line x1="-6" y1="13" x2="-6" y2="24" stroke="var(--elab-hex-ff8c00)" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="-7.5" cy="24" r="1.8" fill="var(--elab-hex-ff8c00)" stroke="var(--elab-hex-cc7000)" strokeWidth="0.3" />
 
       {/* Red (VCC) */}
-      <line x1="0" y1="13" x2="0" y2="24" stroke="#EF4444" strokeWidth="2.2" strokeLinecap="round" />
-      <circle cx="0" cy="24" r="1.8" fill="#EF4444" stroke="#C62828" strokeWidth="0.3" />
+      <line x1="0" y1="13" x2="0" y2="24" stroke="var(--elab-hex-ef4444)" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="0" cy="24" r="1.8" fill="var(--elab-hex-ef4444)" stroke="var(--elab-hex-c62828)" strokeWidth="0.3" />
 
       {/* Brown/Black (GND) */}
-      <line x1="6" y1="13" x2="6" y2="24" stroke="#5C3317" strokeWidth="2.2" strokeLinecap="round" />
-      <circle cx="7.5" cy="24" r="1.8" fill="#5C3317" stroke="#3E2210" strokeWidth="0.3" />
+      <line x1="6" y1="13" x2="6" y2="24" stroke="var(--elab-hex-5c3317)" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="7.5" cy="24" r="1.8" fill="var(--elab-hex-5c3317)" stroke="var(--elab-hex-3e2210)" strokeWidth="0.3" />
 
       {/* AI tutoring highlight */}
       {highlighted && (

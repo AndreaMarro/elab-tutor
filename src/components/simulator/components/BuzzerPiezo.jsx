@@ -68,8 +68,8 @@ const BuzzerPiezo = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract
       <rect x="-25" y="-25" width="50" height="50" fill="transparent" pointerEvents="all" onClick={onInteract} />
 
       {/* Main body circle — flat black, no 3D arc highlights */}
-      <circle cx="0" cy="0" r="11.5" fill="#1A1A1A"
-        stroke="#0A0A0A" strokeWidth="0.8" />
+      <circle cx="0" cy="0" r="11.5" fill="var(--elab-hex-1a1a1a)"
+        stroke="var(--elab-hex-0a0a0a)" strokeWidth="0.8" />
 
       {/* Outer metallic rim */}
       <circle cx="0" cy="0" r="11" fill="none"
@@ -79,32 +79,32 @@ const BuzzerPiezo = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract
         stroke="#666" strokeWidth="0.6" />
 
       {/* Sound grille — concentric rings, flat */}
-      <circle cx="0" cy="0" r="7"   fill="none" stroke="#2D2D2D" strokeWidth="0.6" />
-      <circle cx="0" cy="0" r="5.5" fill="none" stroke="#282828" strokeWidth="0.5" />
-      <circle cx="0" cy="0" r="4.2" fill="none" stroke="#232323" strokeWidth="0.4" />
+      <circle cx="0" cy="0" r="7"   fill="none" stroke="var(--elab-hex-2d2d2d)" strokeWidth="0.6" />
+      <circle cx="0" cy="0" r="5.5" fill="none" stroke="var(--elab-hex-282828)" strokeWidth="0.5" />
+      <circle cx="0" cy="0" r="4.2" fill="none" stroke="var(--elab-hex-232323)" strokeWidth="0.4" />
 
       {/* Central sound hole */}
-      <circle cx="0" cy="0" r="3" fill="#050505" stroke="#0A0A0A" strokeWidth="0.5" />
+      <circle cx="0" cy="0" r="3" fill="var(--elab-hex-050505)" stroke="var(--elab-hex-0a0a0a)" strokeWidth="0.5" />
 
        {/* Leads */}
        <line x1="-3.75" y1="11.5" x2="-3.75" y2="22.5"
-         stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+         stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
        <line x1="3.75" y1="11.5" x2="3.75" y2="22.5"
-         stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+         stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* Visual ON indicator — sound wave rings */}
       {isOn && (
         <>
-          <circle cx="0" cy="0" r="14" fill="none" stroke="#FF9800" strokeWidth="1.2" opacity="0.5">
+          <circle cx="0" cy="0" r="14" fill="none" stroke="var(--elab-hex-ff9800)" strokeWidth="1.2" opacity="0.5">
             <animate attributeName="r" values="14;18;14" dur="0.6s" repeatCount="indefinite" />
             <animate attributeName="opacity" values="0.5;0.15;0.5" dur="0.6s" repeatCount="indefinite" />
           </circle>
-          <circle cx="0" cy="0" r="18" fill="none" stroke="#FF9800" strokeWidth="0.8" opacity="0.3">
+          <circle cx="0" cy="0" r="18" fill="none" stroke="var(--elab-hex-ff9800)" strokeWidth="0.8" opacity="0.3">
             <animate attributeName="r" values="18;22;18" dur="0.6s" repeatCount="indefinite" />
             <animate attributeName="opacity" values="0.3;0.05;0.3" dur="0.6s" repeatCount="indefinite" />
           </circle>
-          <circle cx="0" cy="0" r="3" fill="#FF9800" opacity="0.45">
+          <circle cx="0" cy="0" r="3" fill="var(--elab-hex-ff9800)" opacity="0.45">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="0.4s" repeatCount="indefinite" />
           </circle>
         </>

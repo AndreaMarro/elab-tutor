@@ -204,8 +204,8 @@ export default function ReportModule({ isMobile }) {
             {/* Info note */}
             <div style={{
                 marginTop: '20px', padding: '12px 16px', borderRadius: '8px',
-                background: '#F0F9FF', border: '1px solid #BAE6FD',
-                fontSize: '14px', color: '#0369A1',
+                background: 'var(--elab-hex-f0f9ff)', border: '1px solid var(--elab-hex-bae6fd)',
+                fontSize: '14px', color: 'var(--elab-hex-0369a1)',
             }}>
                 I report vengono generati in formato PDF con intestazione azienda, watermark e numerazione pagine. I dati provengono dal database Notion in tempo reale.
             </div>

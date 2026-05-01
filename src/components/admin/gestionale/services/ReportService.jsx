@@ -22,21 +22,21 @@ function getStyles() {
     if (s) return s;
     const { StyleSheet } = _pdfModule;
     s = StyleSheet.create({
-        page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#1E293B' },
+        page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: 'var(--elab-hex-1e293b)' },
         header: { marginBottom: 20 },
         title: { fontSize: 18, fontWeight: 'bold', color: 'var(--elab-navy)', marginBottom: 4 },
-        subtitle: { fontSize: 10, color: '#64748B', marginBottom: 2 },
+        subtitle: { fontSize: 10, color: 'var(--elab-hex-64748b)', marginBottom: 2 },
         divider: { height: 2, backgroundColor: 'var(--elab-navy)', marginVertical: 10 },
-        tableHeader: { flexDirection: 'row', backgroundColor: '#F1F5F9', borderBottomWidth: 1, borderColor: '#CBD5E1', paddingVertical: 6, paddingHorizontal: 4 },
-        tableRow: { flexDirection: 'row', borderBottomWidth: 0.5, borderColor: '#E2E8F0', paddingVertical: 5, paddingHorizontal: 4 },
-        cellHeader: { fontSize: 9, fontWeight: 'bold', color: '#475569', textTransform: 'uppercase' },
-        cell: { fontSize: 10, color: '#1E293B' },
-        cellRight: { fontSize: 10, color: '#1E293B', textAlign: 'right' },
+        tableHeader: { flexDirection: 'row', backgroundColor: 'var(--elab-hex-f1f5f9)', borderBottomWidth: 1, borderColor: 'var(--elab-hex-cbd5e1)', paddingVertical: 6, paddingHorizontal: 4 },
+        tableRow: { flexDirection: 'row', borderBottomWidth: 0.5, borderColor: 'var(--elab-hex-e2e8f0)', paddingVertical: 5, paddingHorizontal: 4 },
+        cellHeader: { fontSize: 9, fontWeight: 'bold', color: 'var(--elab-hex-475569)', textTransform: 'uppercase' },
+        cell: { fontSize: 10, color: 'var(--elab-hex-1e293b)' },
+        cellRight: { fontSize: 10, color: 'var(--elab-hex-1e293b)', textAlign: 'right' },
         summaryRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 4, paddingHorizontal: 4 },
         summaryLabel: { fontSize: 11, fontWeight: 'bold', color: 'var(--elab-navy)' },
         summaryValue: { fontSize: 11, fontWeight: 'bold', color: 'var(--elab-navy)' },
-        footer: { position: 'absolute', bottom: 20, left: 40, right: 40, flexDirection: 'row', justifyContent: 'space-between', fontSize: 8, color: '#94A3B8' },
-        watermark: { position: 'absolute', bottom: 20, right: 40, fontSize: 8, color: '#CBD5E1' },
+        footer: { position: 'absolute', bottom: 20, left: 40, right: 40, flexDirection: 'row', justifyContent: 'space-between', fontSize: 8, color: 'var(--elab-hex-94a3b8)' },
+        watermark: { position: 'absolute', bottom: 20, right: 40, fontSize: 8, color: 'var(--elab-hex-cbd5e1)' },
     });
     return s;
 }
@@ -153,7 +153,7 @@ function MagazzinoDocument({ P, data, azienda }) {
                     <P.Text style={[st.cellHeader, { width: '20%', textAlign: 'right' }]}>Valore</P.Text>
                 </P.View>
                 {data.map((row, i) => (
-                    <P.View key={i} style={[st.tableRow, (row.giacenza || 0) < 5 ? { backgroundColor: '#FEF2F2' } : {}]}>
+                    <P.View key={i} style={[st.tableRow, (row.giacenza || 0) < 5 ? { backgroundColor: 'var(--elab-hex-fef2f2)' } : {}]}>
                         <P.Text style={[st.cell, { width: '35%' }]}>{row.nome}</P.Text>
                         <P.Text style={[st.cell, { width: '15%' }]}>{row.codice || '—'}</P.Text>
                         <P.Text style={[st.cellRight, { width: '15%' }]}>{row.giacenza ?? 0}</P.Text>
@@ -189,12 +189,12 @@ function AgingDocument({ P, data, azienda }) {
                     <P.Text style={[st.cellHeader, { width: '15%' }]}>Stato</P.Text>
                 </P.View>
                 {data.map((row, i) => (
-                    <P.View key={i} style={[st.tableRow, row.giorniRitardo > 30 ? { backgroundColor: '#FEF2F2' } : {}]}>
+                    <P.View key={i} style={[st.tableRow, row.giorniRitardo > 30 ? { backgroundColor: 'var(--elab-hex-fef2f2)' } : {}]}>
                         <P.Text style={[st.cell, { width: '15%' }]}>{row.numero}</P.Text>
                         <P.Text style={[st.cell, { width: '25%' }]}>{row.cliente}</P.Text>
                         <P.Text style={[st.cell, { width: '15%' }]}>{formatDate(row.scadenza)}</P.Text>
                         <P.Text style={[st.cellRight, { width: '15%' }]}>{formatEUR(row.importo)}</P.Text>
-                        <P.Text style={[st.cellRight, { width: '15%', color: row.giorniRitardo > 0 ? '#DC2626' : '#059669' }]}>{row.giorniRitardo}</P.Text>
+                        <P.Text style={[st.cellRight, { width: '15%', color: row.giorniRitardo > 0 ? 'var(--elab-hex-dc2626)' : 'var(--elab-hex-059669)' }]}>{row.giorniRitardo}</P.Text>
                         <P.Text style={[st.cell, { width: '15%' }]}>{row.stato}</P.Text>
                     </P.View>
                 ))}

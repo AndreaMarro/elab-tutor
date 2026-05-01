@@ -49,18 +49,18 @@ function ScimpanzeFallback() {
         style={{ marginBottom: 8 }}
       >
         {/* Faccia scimpanze stilizzata — soluzione provvisoria fino a GIF Andrea */}
-        <circle cx="60" cy="60" r="44" fill="#8B5A2B" />
-        <ellipse cx="60" cy="68" rx="32" ry="28" fill="#D9A87C" />
-        <circle cx="46" cy="52" r="6" fill="#1A1A1A" />
-        <circle cx="74" cy="52" r="6" fill="#1A1A1A" />
+        <circle cx="60" cy="60" r="44" fill="var(--elab-hex-8b5a2b)" />
+        <ellipse cx="60" cy="68" rx="32" ry="28" fill="var(--elab-hex-d9a87c)" />
+        <circle cx="46" cy="52" r="6" fill="var(--elab-hex-1a1a1a)" />
+        <circle cx="74" cy="52" r="6" fill="var(--elab-hex-1a1a1a)" />
         <circle cx="47" cy="50" r="2" fill="#fff" />
         <circle cx="75" cy="50" r="2" fill="#fff" />
-        <ellipse cx="60" cy="78" rx="10" ry="6" fill="#8B5A2B" />
-        <path d="M52 84 Q 60 90 68 84" stroke="#1A1A1A" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-        <ellipse cx="22" cy="42" rx="10" ry="14" fill="#8B5A2B" />
-        <ellipse cx="98" cy="42" rx="10" ry="14" fill="#8B5A2B" />
-        <ellipse cx="22" cy="42" rx="5" ry="8" fill="#D9A87C" />
-        <ellipse cx="98" cy="42" rx="5" ry="8" fill="#D9A87C" />
+        <ellipse cx="60" cy="78" rx="10" ry="6" fill="var(--elab-hex-8b5a2b)" />
+        <path d="M52 84 Q 60 90 68 84" stroke="var(--elab-hex-1a1a1a)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <ellipse cx="22" cy="42" rx="10" ry="14" fill="var(--elab-hex-8b5a2b)" />
+        <ellipse cx="98" cy="42" rx="10" ry="14" fill="var(--elab-hex-8b5a2b)" />
+        <ellipse cx="22" cy="42" rx="5" ry="8" fill="var(--elab-hex-d9a87c)" />
+        <ellipse cx="98" cy="42" rx="5" ry="8" fill="var(--elab-hex-d9a87c)" />
       </svg>
       <span>Ragazzi, ancora niente scimpanze qui — torneranno presto!</span>
     </div>

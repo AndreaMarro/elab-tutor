@@ -28,7 +28,7 @@ function MascotSVG({ className }) {
       {/* Head */}
       <rect x="6" y="10" width="42" height="34" rx="10" fill="var(--elab-navy)" />
       {/* Face plate */}
-      <rect x="10" y="14" width="34" height="26" rx="7" fill="#E8EEF6" />
+      <rect x="10" y="14" width="34" height="26" rx="7" fill="var(--elab-hex-e8eef6)" />
       {/* Eyes */}
       <circle cx="20" cy="27" r="5" fill="var(--elab-lime)" />
       <circle cx="34" cy="27" r="5" fill="var(--elab-lime)" />

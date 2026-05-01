@@ -186,7 +186,7 @@ export default function UpdatePrompt({
       bottom: 16,
       width: 'min(420px, calc(100vw - 32px))',
       background: 'var(--elab-navy, var(--elab-navy))',
-      color: '#FFFFFF',
+      color: 'var(--elab-hex-ffffff)',
       borderRadius: 14,
       boxShadow: '0 12px 40px rgba(15, 27, 46, 0.45)',
       padding: '14px 16px',
@@ -219,7 +219,7 @@ export default function UpdatePrompt({
       margin: 0,
       fontSize: 13,
       lineHeight: 1.4,
-      color: '#FFFFFF',
+      color: 'var(--elab-hex-ffffff)',
       fontWeight: 500,
     },
     countdown: {
@@ -256,7 +256,7 @@ export default function UpdatePrompt({
       minHeight: 44,
       padding: '8px 12px',
       fontSize: 13,
-      color: '#FFFFFF',
+      color: 'var(--elab-hex-ffffff)',
       background: 'transparent',
       border: '1.5px solid rgba(255, 255, 255, 0.45)',
       borderRadius: 8,
@@ -283,7 +283,7 @@ export default function UpdatePrompt({
         data-testid="update-prompt"
       >
         <div style={styles.iconBox} aria-hidden="true">
-          <RefreshIcon size={22} color="#FFFFFF" />
+          <RefreshIcon size={22} color="var(--elab-hex-ffffff)" />
         </div>
         <div style={styles.body}>
           <p style={styles.text} data-testid="update-prompt-text">

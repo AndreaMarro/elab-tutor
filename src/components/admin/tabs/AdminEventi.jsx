@@ -15,16 +15,16 @@ import { showToast } from '../../common/Toast';
 const COLORS = {
     primary: 'var(--elab-navy)',
     success: 'var(--elab-lime)',
-    warning: '#F59E0B',
-    danger: '#EF4444',
-    info: '#06B6D4',
-    purple: '#8B5CF6',
-    bg: '#F8FAFC',
-    card: '#FFFFFF',
-    border: '#E2E8F0',
-    textPrimary: '#1E293B',
-    textSecondary: '#64748B',
-    textMuted: '#64748B',
+    warning: 'var(--elab-hex-f59e0b)',
+    danger: 'var(--elab-hex-ef4444)',
+    info: 'var(--elab-hex-06b6d4)',
+    purple: 'var(--elab-hex-8b5cf6)',
+    bg: 'var(--elab-hex-f8fafc)',
+    card: 'var(--elab-hex-ffffff)',
+    border: 'var(--elab-hex-e2e8f0)',
+    textPrimary: 'var(--elab-hex-1e293b)',
+    textSecondary: 'var(--elab-hex-64748b)',
+    textMuted: 'var(--elab-hex-64748b)',
 };
 
 const STATI = ['Programmato', 'In corso', 'Completato', 'Annullato'];
@@ -591,7 +591,7 @@ export default function AdminEventi({ isMobile }) {
         progressBar: {
             width: '100%',
             height: '6px',
-            background: '#E2E8F0',
+            background: 'var(--elab-hex-e2e8f0)',
             borderRadius: '3px',
             overflow: 'hidden',
             marginTop: '4px',
@@ -711,7 +711,7 @@ export default function AdminEventi({ isMobile }) {
         },
         formError: {
             padding: '10px 14px',
-            background: '#FEF2F2',
+            background: 'var(--elab-hex-fef2f2)',
             border: `1px solid ${COLORS.danger}`,
             borderRadius: '8px',
             color: COLORS.danger,
@@ -762,7 +762,7 @@ export default function AdminEventi({ isMobile }) {
         },
         errorBox: {
             padding: '20px',
-            background: '#FEF2F2',
+            background: 'var(--elab-hex-fef2f2)',
             border: `1px solid ${COLORS.danger}`,
             borderRadius: '12px',
             textAlign: 'center',
@@ -926,13 +926,13 @@ export default function AdminEventi({ isMobile }) {
                     </div>
                     <div style={S.eventActions} onClick={e => e.stopPropagation()}>
                         <button
-                            style={{ ...S.actionBtn, background: '#EFF6FF', color: COLORS.primary }}
+                            style={{ ...S.actionBtn, background: 'var(--elab-hex-eff6ff)', color: COLORS.primary }}
                             onClick={() => handleOpenEdit(ev)}
                         >
                             Modifica
                         </button>
                         <button
-                            style={{ ...S.actionBtn, background: '#FEF2F2', color: COLORS.danger }}
+                            style={{ ...S.actionBtn, background: 'var(--elab-hex-fef2f2)', color: COLORS.danger }}
                             onClick={() => setDeleteConfirm(ev)}
                         >
                             Elimina
@@ -1373,9 +1373,9 @@ export default function AdminEventi({ isMobile }) {
                         onClick={() => exportEventiCSV(filtered)}
                         style={{
                             ...S.createBtn,
-                            background: '#FFFFFF',
+                            background: 'var(--elab-hex-ffffff)',
                             color: 'var(--elab-navy)',
-                            border: '1px solid #E2E8F0',
+                            border: '1px solid var(--elab-hex-e2e8f0)',
                         }}
                         title="Esporta CSV"
                     >

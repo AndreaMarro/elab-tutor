@@ -84,7 +84,7 @@
 }
 
 .shortWarning {
-  color: #ea580c;
+  color: #ea580c; /* palette */
   font-size: 0.875rem;
   margin-top: 4px;
 }

@@ -35,16 +35,16 @@ const C = {
     navy: 'var(--color-primary, var(--elab-navy))',
     navyDark: 'var(--color-primary-dark, #152a5c)',
     lime: 'var(--color-accent, var(--elab-lime))',
-    limeDark: '#7da93d',
-    limeLight: '#BBD789',
-    limeSoft: '#E8F4D9',
+    limeDark: '#7da93d', // palette
+    limeLight: '#bbd789', // palette
+    limeSoft: '#e8f4d9', // palette
     bg: 'var(--color-bg, #F0F4F8)',
-    red: '#E53935',
+    red: '#e53935', // palette
     orange: 'var(--elab-orange)',
-    cyan: '#00B4D8',
+    cyan: '#00b4d8', // palette
     text: 'var(--color-text-body, #1a1a2e)',
     textMuted: 'var(--color-text-muted, #64748B)',
-    white: '#FFFFFF',
+    white: '#ffffff', // palette
     border: 'var(--color-border, #E2E8F0)',
 };
 
@@ -53,25 +53,25 @@ const MoodSvg = ({ children, color, size = 20 }) => (
     <svg {...svgMoodProps} width={size} height={size} viewBox="0 0 20 20" stroke={color} className={sd.iconSvg}>{children}</svg>
 );
 const MOOD_EMOJI = {
-    energico: <MoodSvg color="#F5A623"><polygon points="10,1 12,8 19,8 13.5,12 15.5,19 10,14.5 4.5,19 6.5,12 1,8 8,8" fill="#F5A623" stroke="none" /></MoodSvg>,
+    energico: <MoodSvg color="#f5a623"><polygon points="10,1 12,8 19,8 13.5,12 15.5,19 10,14.5 4.5,19 6.5,12 1,8 8,8" fill="#f5a623" stroke="none" /></MoodSvg>,
     concentrato: <MoodSvg color="var(--elab-navy)"><circle cx="10" cy="10" r="8"/><circle cx="10" cy="10" r="4"/><circle cx="10" cy="10" r="1" fill="var(--elab-navy)" stroke="none"/></MoodSvg>,
-    confuso: <MoodSvg color="#9333EA"><circle cx="10" cy="10" r="8"/><path d="M7 7.5 Q7 5 10 5 Q13 5 13 7.5 Q13 9 10 10 L10 12" fill="none"/><circle cx="10" cy="15" r="0.8" fill="#9333EA" stroke="none"/></MoodSvg>,
-    bloccato: <MoodSvg color="#E53935"><rect x="4" y="9" width="12" height="8" rx="2"/><path d="M7 9 V6 Q7 3 10 3 Q13 3 13 6 V9" fill="none"/></MoodSvg>,
+    confuso: <MoodSvg color="#9333ea"><circle cx="10" cy="10" r="8"/><path d="M7 7.5 Q7 5 10 5 Q13 5 13 7.5 Q13 9 10 10 L10 12" fill="none"/><circle cx="10" cy="15" r="0.8" fill="#9333ea" stroke="none"/></MoodSvg>,
+    bloccato: <MoodSvg color="#e53935"><rect x="4" y="9" width="12" height="8" rx="2"/><path d="M7 9 V6 Q7 3 10 3 Q13 3 13 6 V9" fill="none"/></MoodSvg>,
     felice: <MoodSvg color="var(--elab-lime)"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="var(--elab-lime)" stroke="none"/><circle cx="13" cy="8" r="1" fill="var(--elab-lime)" stroke="none"/><path d="M6 12 Q10 16 14 12" fill="none"/></MoodSvg>,
-    frustrato: <MoodSvg color="#EF4444"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#EF4444" stroke="none"/><circle cx="13" cy="8" r="1" fill="#EF4444" stroke="none"/><path d="M6 15 Q10 11 14 15" fill="none"/></MoodSvg>,
-    curioso: <MoodSvg color="#00B4D8"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#00B4D8" stroke="none"/><circle cx="13" cy="8" r="1" fill="#00B4D8" stroke="none"/><circle cx="10" cy="14" r="2" fill="none"/></MoodSvg>,
-    creativo: <MoodSvg color="#EC4899"><path d="M10 3 Q6 3 6 7 Q6 10 10 12 Q14 10 14 7 Q14 3 10 3z" fill="none"/><line x1="10" y1="12" x2="10" y2="16"/><line x1="8" y1="16" x2="12" y2="16"/></MoodSvg>,
+    frustrato: <MoodSvg color="#ef4444"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#ef4444" stroke="none"/><circle cx="13" cy="8" r="1" fill="#ef4444" stroke="none"/><path d="M6 15 Q10 11 14 15" fill="none"/></MoodSvg>,
+    curioso: <MoodSvg color="#00b4d8"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#00b4d8" stroke="none"/><circle cx="13" cy="8" r="1" fill="#00b4d8" stroke="none"/><circle cx="10" cy="14" r="2" fill="none"/></MoodSvg>,
+    creativo: <MoodSvg color="#ec4899"><path d="M10 3 Q6 3 6 7 Q6 10 10 12 Q14 10 14 7 Q14 3 10 3z" fill="none"/><line x1="10" y1="12" x2="10" y2="16"/><line x1="8" y1="16" x2="12" y2="16"/></MoodSvg>,
 };
 
 const MOOD_COLORS = {
-    energico: '#F5A623',
+    energico: '#f5a623', // palette
     concentrato: 'var(--elab-navy)',
-    confuso: '#9333EA',
-    bloccato: '#E53935',
+    confuso: '#9333ea', // palette
+    bloccato: '#e53935', // palette
     felice: 'var(--elab-lime)',
-    frustrato: '#EF4444',
-    curioso: '#00B4D8',
-    creativo: '#EC4899',
+    frustrato: '#ef4444', // palette
+    curioso: '#00b4d8', // palette
+    creativo: '#ec4899', // palette
 };
 
 export default function StudentDashboard({ onNavigate }) {
@@ -246,7 +246,7 @@ export default function StudentDashboard({ onNavigate }) {
                     style={{
                         position: 'fixed', top: '50%', left: '50%',
                         transform: 'translate(-50%, -50%)', zIndex: 1200,
-                        background: '#FFFFFF', border: `3px solid ${C.navy}`,
+                        background: '#ffffff', border: `3px solid ${C.navy}`, // palette
                         borderRadius: 16, padding: '24px 32px', maxWidth: 360,
                         boxShadow: '0 8px 32px rgba(30,77,140,0.25)', textAlign: 'center',
                     }}
@@ -264,7 +264,7 @@ export default function StudentDashboard({ onNavigate }) {
                         onClick={() => setPendingNudge(null)}
                         aria-label="Chiudi messaggio insegnante"
                         style={{
-                            background: C.navy, color: '#FFFFFF', border: 'none',
+                            background: C.navy, color: '#ffffff', border: 'none', // palette
                             borderRadius: 8, padding: '10px 24px', fontSize: 14,
                             fontWeight: 600, cursor: 'pointer',
                         }}
@@ -297,7 +297,7 @@ function BadgeGrid() {
             <div className={sd.badgeGrid}>
                 {badges.map(b => (
                     <div key={b.id} className={sd.badgeCard} style={{
-                        background: b.unlocked ? '#F0F9E8' : '#F5F5F5',
+                        background: b.unlocked ? '#f0f9e8' : '#f5f5f5', // palette
                         opacity: b.unlocked ? 1 : 0.4,
                         border: b.unlocked ? '2px solid var(--elab-lime)' : '2px solid #E2E8F0',
                     }}>
@@ -1035,12 +1035,12 @@ const styles = {
         padding: '8px 0', fontSize: 14,
     },
     constellationMap: {
-        background: `linear-gradient(180deg, ${C.navyDark}, #0d1b2a)`,
+        background: `linear-gradient(180deg, ${C.navyDark}, #0d1b2a)`, // palette
         borderRadius: 12, padding: 16, overflow: 'hidden',
     },
     emptyConstellation: {
         textAlign: 'center', padding: '40px 20px',
-        background: `linear-gradient(180deg, ${C.navyDark}, #0d1b2a)`,
+        background: `linear-gradient(180deg, ${C.navyDark}, #0d1b2a)`, // palette
         borderRadius: 12,
     },
     concettoRow: {

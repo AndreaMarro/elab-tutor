@@ -37,15 +37,15 @@ const GAP_X = SECTION_LEFT_X + MAIN_SECTION_W;
 const SECTION_RIGHT_X = GAP_X + GAP;
 
 // Tinkercad-matched colors — light board, light rim + dark core holes, red + black rails
-const BOARD_BG = '#F2F2F2';
-const BOARD_EDGE = '#D2D2D2';
-const HOLE_RIM = '#BDBDBD';
-const HOLE_CORE = '#2F2F2F';
-const BUS_RED = '#D32F2F';
-const BUS_NEG = '#424242';
-const LABEL_COLOR = '#4A4A4A';
-const CHANNEL_BG = '#DADADA';
-const CHANNEL_NOTCH = '#CFCFCF';
+const BOARD_BG = 'var(--elab-hex-f2f2f2)';
+const BOARD_EDGE = 'var(--elab-hex-d2d2d2)';
+const HOLE_RIM = 'var(--elab-hex-bdbdbd)';
+const HOLE_CORE = 'var(--elab-hex-2f2f2f)';
+const BUS_RED = 'var(--elab-hex-d32f2f)';
+const BUS_NEG = 'var(--elab-hex-424242)';
+const LABEL_COLOR = 'var(--elab-hex-4a4a4a)';
+const CHANNEL_BG = 'var(--elab-hex-dadada)';
+const CHANNEL_NOTCH = 'var(--elab-hex-cfcfcf)';
 
 // Column labels
 const LEFT_LABELS = ['a', 'b', 'c', 'd', 'e'];
@@ -62,7 +62,7 @@ function darkenColor(hex, factor) {
 
 const Hole = React.memo(({ cx, cy, active, onClick }) => {
   const isActive = !!active;
-  const activeColor = typeof active === 'string' ? active : '#6AAF35';
+  const activeColor = typeof active === 'string' ? active : 'var(--elab-hex-6aaf35)';
   const innerColor = isActive ? darkenColor(activeColor, 0.45) : HOLE_CORE;
   const outerColor = isActive ? activeColor : HOLE_RIM;
 
@@ -77,12 +77,12 @@ const Hole = React.memo(({ cx, cy, active, onClick }) => {
       {/* Outer rim with subtle depth (recessed contact) */}
       <circle cx={cx} cy={cy} r={HOLE_R} fill={outerColor} />
       {/* Inner shadow ring for depth illusion */}
-      <circle cx={cx + 0.15} cy={cy + 0.2} r={HOLE_INNER_R + 0.15} fill="#1A1A1A" opacity={isActive ? 0 : 0.15} />
+      <circle cx={cx + 0.15} cy={cy + 0.2} r={HOLE_INNER_R + 0.15} fill="var(--elab-hex-1a1a1a)" opacity={isActive ? 0 : 0.15} />
       {/* Dark contact center */}
       <circle cx={cx} cy={cy} r={HOLE_INNER_R} fill={innerColor} />
       {/* Top-left specular highlight (light catches the rim) */}
       {!isActive && (
-        <circle cx={cx - 0.35} cy={cy - 0.35} r={HOLE_INNER_R * 0.55} fill="#FFFFFF" opacity={0.2} />
+        <circle cx={cx - 0.35} cy={cy - 0.35} r={HOLE_INNER_R * 0.55} fill="var(--elab-hex-ffffff)" opacity={0.2} />
       )}
       {/* Clickable hit area for iPad (slightly overlapping to remove deadzones) */}
       {onClick && (
@@ -199,21 +199,21 @@ const BreadboardFull = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
       <defs>
         {/* Board surface gradient (subtle top-lit) */}
         <linearGradient id={`${uid}-surface`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FAFAFA" />
+          <stop offset="0%" stopColor="var(--elab-hex-fafafa)" />
           <stop offset="30%" stopColor={BOARD_BG} />
-          <stop offset="100%" stopColor="#E8E8E8" />
+          <stop offset="100%" stopColor="var(--elab-hex-e8e8e8)" />
         </linearGradient>
         {/* Plastic texture pattern */}
         <pattern id={`${uid}-texture`} width="3" height="3" patternUnits="userSpaceOnUse">
           <rect width="3" height="3" fill={BOARD_BG} />
-          <circle cx="1.5" cy="1.5" r="0.15" fill="#DDDDDD" opacity="0.4" />
-          <circle cx="0" cy="0" r="0.1" fill="#E8E8E8" opacity="0.3" />
+          <circle cx="1.5" cy="1.5" r="0.15" fill="var(--elab-hex-dddddd)" opacity="0.4" />
+          <circle cx="0" cy="0" r="0.1" fill="var(--elab-hex-e8e8e8)" opacity="0.3" />
         </pattern>
         {/* Edge shadow filter */}
         <filter id={`${uid}-shadow`} x="-3%" y="-3%" width="108%" height="112%">
           <feGaussianBlur in="SourceAlpha" stdDeviation="1.8" result="blur" />
           <feOffset dx="1.2" dy="2" result="offsetBlur" />
-          <feFlood floodColor="#000000" floodOpacity="0.12" result="color" />
+          <feFlood floodColor="var(--elab-hex-000000)" floodOpacity="0.12" result="color" />
           <feComposite in="color" in2="offsetBlur" operator="in" result="shadow" />
           <feMerge>
             <feMergeNode in="shadow" />
@@ -234,13 +234,13 @@ const BreadboardFull = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
 
       {/* Top edge bevel highlight */}
       <rect x="1" y="0.5" width={BOARD_WIDTH - 2} height="1.5" rx="1"
-        fill="#FFFFFF" opacity="0.35" />
+        fill="var(--elab-hex-ffffff)" opacity="0.35" />
       {/* Bottom edge shadow */}
       <rect x="1" y={BOARD_HEIGHT - 1.8} width={BOARD_WIDTH - 2} height="1.5" rx="1"
-        fill="#000000" opacity="0.06" />
+        fill="var(--elab-hex-000000)" opacity="0.06" />
       {/* Inner border */}
       <rect x="0.7" y="0.7" width={BOARD_WIDTH - 1.4} height={BOARD_HEIGHT - 1.4} rx="2.4"
-        fill="none" stroke="#FFFFFF" strokeWidth="0.4" opacity="0.45" />
+        fill="none" stroke="var(--elab-hex-ffffff)" strokeWidth="0.4" opacity="0.45" />
 
       {/* === LEFT BUS COLUMNS (+/-) === */}
       <text x={BUS_PLUS_X} y={BOARD_PADDING + BUS_OFFSET - 6}
@@ -267,7 +267,7 @@ const BreadboardFull = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
       <rect x={GAP_X + 1} y={BOARD_PADDING + BUS_OFFSET - 2}
         width={GAP - 2}
         height="1.5"
-        rx="0.5" fill="#000000" opacity="0.06" />
+        rx="0.5" fill="var(--elab-hex-000000)" opacity="0.06" />
       {/* Channel body */}
       <rect x={GAP_X + 1} y={BOARD_PADDING + BUS_OFFSET - 2}
         width={GAP - 2}
@@ -277,18 +277,18 @@ const BreadboardFull = ({ x = 0, y = 0, state = {}, highlighted = false, onInter
       <rect x={GAP_X + 1.5} y={BOARD_PADDING + BUS_OFFSET + (ROWS - 1) * HOLE_SPACING + 0.5}
         width={GAP - 3}
         height="1"
-        rx="0.3" fill="#FFFFFF" opacity="0.15" />
+        rx="0.3" fill="var(--elab-hex-ffffff)" opacity="0.15" />
       {/* IC alignment notches with depth */}
       {[0, 15, 30, 45, 60].filter(r => r < ROWS).map(row => {
         const notchCy = BOARD_PADDING + BUS_OFFSET + row * HOLE_SPACING;
         return (
           <g key={`notch-${row}`}>
             <circle cx={GAP_X + GAP / 2} cy={notchCy} r="2.2"
-              fill="#C0C0C0" opacity="0.3" />
+              fill="var(--elab-hex-c0c0c0)" opacity="0.3" />
             <circle cx={GAP_X + GAP / 2} cy={notchCy} r="2"
               fill={CHANNEL_NOTCH} />
             <circle cx={GAP_X + GAP / 2 - 0.3} cy={notchCy - 0.3} r="0.8"
-              fill="#FFFFFF" opacity="0.1" />
+              fill="var(--elab-hex-ffffff)" opacity="0.1" />
           </g>
         );
       })}

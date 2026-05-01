@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #f5f5f0;
+  background: #f5f5f0; /* palette */
 }
 
 /* ── Volume tabs ── */
@@ -19,7 +19,7 @@
   padding: 6px 14px;
   border: none;
   background: transparent;
-  color: #595959;
+  color: #595959; /* palette */
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -129,7 +129,7 @@
 
 .pageSep {
   margin: 0 2px;
-  color: #666666;
+  color: #666666; /* palette */
 }
 
 /* ── Pen toolbar ── */
@@ -138,7 +138,7 @@
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: #f0f4f8;
+  background: #f0f4f8; /* palette */
   border-bottom: 1px solid rgba(30, 77, 140, 0.1);
   flex-shrink: 0;
   min-height: 44px;
@@ -197,7 +197,7 @@
 .penCount {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #666666;
+  color: #666666; /* palette */
 /* © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   margin-left: 4px;
 }
@@ -205,7 +205,7 @@
 .zoomLabel {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #555555;
+  color: #555555; /* palette */
   min-width: 36px;
   text-align: center;
 }
@@ -223,7 +223,7 @@
   width: 100px;
   overflow-y: auto;
   border-right: 1px solid rgba(30, 77, 140, 0.1);
-  background: #f0f0ec;
+  background: #f0f0ec; /* palette */
   padding: 6px;
   display: flex;
   flex-direction: column;
@@ -257,7 +257,7 @@
 .thumbNumber {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
-  color: #555555;
+  color: #555555; /* palette */
 }
 
 /* ── PDF page container ── */

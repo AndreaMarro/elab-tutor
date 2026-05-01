@@ -24,16 +24,16 @@ const C = {
     navy: 'var(--color-primary, var(--elab-navy))',
     navyDark: 'var(--color-primary-dark, #152a5c)',
     lime: 'var(--color-accent, var(--elab-lime))',
-    limeDark: '#7da93d',
-    limeLight: '#BBD789',
-    limeSoft: '#E8F4D9',
+    limeDark: 'var(--elab-hex-7da93d)',
+    limeLight: 'var(--elab-hex-bbd789)',
+    limeSoft: 'var(--elab-hex-e8f4d9)',
     bg: 'var(--color-bg, #F0F4F8)',
-    red: '#E53935',
+    red: 'var(--elab-hex-e53935)',
     orange: 'var(--elab-orange)',
-    cyan: '#00B4D8',
+    cyan: 'var(--elab-hex-00b4d8)',
     text: 'var(--color-text-body, #1a1a2e)',
     textMuted: 'var(--color-text-muted, #475569)',
-    white: '#FFFFFF',
+    white: 'var(--elab-hex-ffffff)',
     border: 'var(--color-border, #E2E8F0)',
 };
 
@@ -78,17 +78,17 @@ const IconPartlyCloudy = ({ size = 18, color }) => (
 
 // Plant/growth stage icons
 const IconSeedDormant = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#8D6E63' }}>
-        <ellipse cx="10" cy="13" rx="4" ry="3" fill="#D7CCC8" stroke="#8D6E63" />
-        <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-8d6e63)' }}>
+        <ellipse cx="10" cy="13" rx="4" ry="3" fill="var(--elab-hex-d7ccc8)" stroke="var(--elab-hex-8d6e63)" />
+        <line x1="4" y1="17" x2="16" y2="17" stroke="var(--elab-hex-8d6e63)" />
     </svg>
 );
 const IconSeed = ({ size = 18 }) => (
     <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
-        <ellipse cx="10" cy="14" rx="4" ry="3" fill="#D7CCC8" stroke="#8D6E63" />
+        <ellipse cx="10" cy="14" rx="4" ry="3" fill="var(--elab-hex-d7ccc8)" stroke="var(--elab-hex-8d6e63)" />
         <path d="M10 14 Q10 11 10 9" stroke="var(--elab-lime)" />
         <path d="M10 10 Q12 8 13 9" stroke="var(--elab-lime)" />
-        <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
+        <line x1="4" y1="17" x2="16" y2="17" stroke="var(--elab-hex-8d6e63)" />
     </svg>
 );
 const IconSprout = ({ size = 18 }) => (
@@ -96,40 +96,40 @@ const IconSprout = ({ size = 18 }) => (
         <line x1="10" y1="17" x2="10" y2="8" stroke="var(--elab-lime)" />
         <path d="M10 10 Q7 7 5 8" stroke="var(--elab-lime)" fill="none" />
         <path d="M10 8 Q13 5 15 6" stroke="var(--elab-lime)" fill="none" />
-        <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
+        <line x1="4" y1="17" x2="16" y2="17" stroke="var(--elab-hex-8d6e63)" />
     </svg>
 );
 const IconBush = ({ size = 18 }) => (
     <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
-        <line x1="10" y1="17" x2="10" y2="10" stroke="#6D4C41" />
+        <line x1="10" y1="17" x2="10" y2="10" stroke="var(--elab-hex-6d4c41)" />
         <circle cx="10" cy="7" r="5" fill="#A5D6A7" stroke="var(--elab-lime)" />
         <circle cx="7" cy="9" r="3" fill="#81C784" stroke="var(--elab-lime)" />
         <circle cx="13" cy="9" r="3" fill="#81C784" stroke="var(--elab-lime)" />
-        <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
+        <line x1="4" y1="17" x2="16" y2="17" stroke="var(--elab-hex-8d6e63)" />
     </svg>
 );
 const IconPine = ({ size = 18 }) => (
     <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
-        <rect x="9" y="15" width="2" height="3" fill="#6D4C41" stroke="#6D4C41" />
-        <polygon points="10,2 4,10 7,10 3,15 17,15 13,10 16,10" fill="#66BB6A" stroke="#43A047" />
-        <line x1="4" y1="18" x2="16" y2="18" stroke="#8D6E63" />
+        <rect x="9" y="15" width="2" height="3" fill="var(--elab-hex-6d4c41)" stroke="var(--elab-hex-6d4c41)" />
+        <polygon points="10,2 4,10 7,10 3,15 17,15 13,10 16,10" fill="var(--elab-hex-66bb6a)" stroke="var(--elab-hex-43a047)" />
+        <line x1="4" y1="18" x2="16" y2="18" stroke="var(--elab-hex-8d6e63)" />
     </svg>
 );
 const IconOak = ({ size = 18 }) => (
     <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
-        <rect x="9" y="14" width="2" height="4" fill="#5D4037" stroke="#5D4037" />
-        <circle cx="10" cy="8" r="6" fill="#66BB6A" stroke="#43A047" />
-        <circle cx="6" cy="10" r="3.5" fill="#81C784" stroke="#43A047" />
-        <circle cx="14" cy="10" r="3.5" fill="#81C784" stroke="#43A047" />
-        <circle cx="10" cy="5" r="3" fill="#A5D6A7" stroke="#43A047" />
-        <line x1="4" y1="18" x2="16" y2="18" stroke="#8D6E63" />
+        <rect x="9" y="14" width="2" height="4" fill="var(--elab-hex-5d4037)" stroke="var(--elab-hex-5d4037)" />
+        <circle cx="10" cy="8" r="6" fill="var(--elab-hex-66bb6a)" stroke="var(--elab-hex-43a047)" />
+        <circle cx="6" cy="10" r="3.5" fill="var(--elab-hex-81c784)" stroke="var(--elab-hex-43a047)" />
+        <circle cx="14" cy="10" r="3.5" fill="var(--elab-hex-81c784)" stroke="var(--elab-hex-43a047)" />
+        <circle cx="10" cy="5" r="3" fill="var(--elab-hex-a5d6a7)" stroke="var(--elab-hex-43a047)" />
+        <line x1="4" y1="18" x2="16" y2="18" stroke="var(--elab-hex-8d6e63)" />
     </svg>
 );
 
 // Mood icons
 const IconEnergico = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#F5A623' }}>
-        <polygon points="10,1 12,8 19,8 13.5,12 15.5,19 10,14.5 4.5,19 6.5,12 1,8 8,8" fill="#F5A623" stroke="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-f5a623)' }}>
+        <polygon points="10,1 12,8 19,8 13.5,12 15.5,19 10,14.5 4.5,19 6.5,12 1,8 8,8" fill="var(--elab-hex-f5a623)" stroke="none" />
     </svg>
 );
 const IconConcentrato = ({ size = 16 }) => (
@@ -140,16 +140,16 @@ const IconConcentrato = ({ size = 16 }) => (
     </svg>
 );
 const IconConfuso = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#9333EA' }}>
-        <circle cx="10" cy="10" r="8" stroke="#9333EA" />
-        <path d="M7 7.5 Q7 5 10 5 Q13 5 13 7.5 Q13 9 10 10 L10 12" stroke="#9333EA" fill="none" />
-        <circle cx="10" cy="15" r="0.8" fill="#9333EA" stroke="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-9333ea)' }}>
+        <circle cx="10" cy="10" r="8" stroke="var(--elab-hex-9333ea)" />
+        <path d="M7 7.5 Q7 5 10 5 Q13 5 13 7.5 Q13 9 10 10 L10 12" stroke="var(--elab-hex-9333ea)" fill="none" />
+        <circle cx="10" cy="15" r="0.8" fill="var(--elab-hex-9333ea)" stroke="none" />
     </svg>
 );
 const IconBloccato = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#E53935' }}>
-        <rect x="4" y="9" width="12" height="8" rx="2" stroke="#E53935" />
-        <path d="M7 9 V6 Q7 3 10 3 Q13 3 13 6 V9" stroke="#E53935" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-e53935)' }}>
+        <rect x="4" y="9" width="12" height="8" rx="2" stroke="var(--elab-hex-e53935)" />
+        <path d="M7 9 V6 Q7 3 10 3 Q13 3 13 6 V9" stroke="var(--elab-hex-e53935)" fill="none" />
     </svg>
 );
 const IconFelice = ({ size = 16 }) => (
@@ -161,28 +161,28 @@ const IconFelice = ({ size = 16 }) => (
     </svg>
 );
 const IconFrustrato = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#EF4444' }}>
-        <circle cx="10" cy="10" r="8" stroke="#EF4444" />
-        <circle cx="7" cy="8" r="1" fill="#EF4444" stroke="none" />
-        <circle cx="13" cy="8" r="1" fill="#EF4444" stroke="none" />
-        <path d="M6 15 Q10 11 14 15" stroke="#EF4444" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-ef4444)' }}>
+        <circle cx="10" cy="10" r="8" stroke="var(--elab-hex-ef4444)" />
+        <circle cx="7" cy="8" r="1" fill="var(--elab-hex-ef4444)" stroke="none" />
+        <circle cx="13" cy="8" r="1" fill="var(--elab-hex-ef4444)" stroke="none" />
+        <path d="M6 15 Q10 11 14 15" stroke="var(--elab-hex-ef4444)" fill="none" />
     </svg>
 );
 const IconCurioso = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#00B4D8' }}>
-        <circle cx="10" cy="10" r="8" stroke="#00B4D8" />
-        <circle cx="7" cy="8" r="1" fill="#00B4D8" stroke="none" />
-        <circle cx="13" cy="8" r="1" fill="#00B4D8" stroke="none" />
-        <circle cx="10" cy="14" r="2" stroke="#00B4D8" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-00b4d8)' }}>
+        <circle cx="10" cy="10" r="8" stroke="var(--elab-hex-00b4d8)" />
+        <circle cx="7" cy="8" r="1" fill="var(--elab-hex-00b4d8)" stroke="none" />
+        <circle cx="13" cy="8" r="1" fill="var(--elab-hex-00b4d8)" stroke="none" />
+        <circle cx="10" cy="14" r="2" stroke="var(--elab-hex-00b4d8)" fill="none" />
     </svg>
 );
 const IconCreativo = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#EC4899' }}>
-        <path d="M10 3 Q6 3 6 7 Q6 10 10 12 Q14 10 14 7 Q14 3 10 3z" stroke="#EC4899" fill="none" />
-        <line x1="10" y1="12" x2="10" y2="16" stroke="#EC4899" />
-        <line x1="8" y1="16" x2="12" y2="16" stroke="#EC4899" />
-        <line x1="8" y1="7" x2="12" y2="7" stroke="#EC4899" />
-        <line x1="8" y1="9" x2="12" y2="9" stroke="#EC4899" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-hex-ec4899)' }}>
+        <path d="M10 3 Q6 3 6 7 Q6 10 10 12 Q14 10 14 7 Q14 3 10 3z" stroke="var(--elab-hex-ec4899)" fill="none" />
+        <line x1="10" y1="12" x2="10" y2="16" stroke="var(--elab-hex-ec4899)" />
+        <line x1="8" y1="16" x2="12" y2="16" stroke="var(--elab-hex-ec4899)" />
+        <line x1="8" y1="7" x2="12" y2="7" stroke="var(--elab-hex-ec4899)" />
+        <line x1="8" y1="9" x2="12" y2="9" stroke="var(--elab-hex-ec4899)" />
     </svg>
 );
 
@@ -221,14 +221,14 @@ const IconCheck = ({ size = 14, color }) => (
     </svg>
 );
 const IconQuestion = ({ size = 14, color }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: color || '#F5A623' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: color || 'var(--elab-hex-f5a623)' }}>
         <circle cx="10" cy="10" r="8" stroke="currentColor" />
         <path d="M7 7.5 Q7 5 10 5 Q13 5 13 7.5 Q13 9 10 10 L10 12" stroke="currentColor" fill="none" />
         <circle cx="10" cy="15" r="0.8" fill="currentColor" stroke="none" />
     </svg>
 );
 const IconAlert = ({ size = 14, color }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: color || '#E53935' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: color || 'var(--elab-hex-e53935)' }}>
         <polygon points="10,2 19,18 1,18" stroke="currentColor" fill="none" />
         <line x1="10" y1="8" x2="10" y2="13" stroke="currentColor" />
         <circle cx="10" cy="15.5" r="0.8" fill="currentColor" stroke="none" />
@@ -625,7 +625,7 @@ export default function TeacherDashboard({ onNavigate }) {
                         <h1 className={css.headerTitle}>La Serra del Prof. {user.nome?.split(' ')[0]}</h1>
                         <p className={css.headerSubtitle}>
                             {allUsers.length} studenti nel giardino
-                            {isEmptyState && <span style={{ color: '#94A3B8', fontWeight: 600 }}> (in attesa di dati)</span>}
+                            {isEmptyState && <span style={{ color: 'var(--elab-hex-94a3b8)', fontWeight: 600 }}> (in attesa di dati)</span>}
                         </p>
                     </div>
                 </div>
@@ -646,7 +646,7 @@ export default function TeacherDashboard({ onNavigate }) {
                     <span style={{ fontSize: 24 }}>Info</span>
                     <div>
                         <strong>Nessun dato studente disponibile</strong>
-                        <p style={{ margin: '4px 0 0', color: '#475569', fontSize: 14 }}>
+                        <p style={{ margin: '4px 0 0', color: 'var(--elab-hex-475569)', fontSize: 14 }}>
                             I dati appariranno automaticamente quando gli studenti useranno il simulatore su questo dispositivo.
                             Ogni esperimento aperto, compilazione e interazione viene tracciata in tempo reale.
                         </p>
@@ -681,7 +681,7 @@ export default function TeacherDashboard({ onNavigate }) {
                     alignItems: 'center',
                     gap: 8,
                     fontSize: 14,
-                    color: '#2E7D32',
+                    color: 'var(--elab-hex-2e7d32)',
                 }}>
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--elab-lime)', display: 'inline-block', flexShrink: 0 }} />
                     <span><strong>Dati dal server</strong> — Sincronizzazione attiva con il backend EU.{studentService.isEncryptionActive() ? ' Dati locali cifrati.' : ''}</span>
@@ -698,9 +698,9 @@ export default function TeacherDashboard({ onNavigate }) {
                     alignItems: 'center',
                     gap: 8,
                     fontSize: 14,
-                    color: '#E65100',
+                    color: 'var(--elab-hex-e65100)',
                 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#F5A623', display: 'inline-block', flexShrink: 0 }} />
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--elab-hex-f5a623)', display: 'inline-block', flexShrink: 0 }} />
                     <span>
                         <strong>Dati locali</strong> — I progressi sono salvati su questo dispositivo.
                         {!isSupabaseConfigured() && ' Attiva il cloud per sincronizzare i dati tra dispositivi e non perdere i progressi.'}
@@ -783,7 +783,7 @@ export default function TeacherDashboard({ onNavigate }) {
                             formatTempo={formatTempo}
                         />
                         {selectedStudent && (
-                            <div className={css.section} style={{ marginTop: 20, background: '#F8FAFC' }}>
+                            <div className={css.section} style={{ marginTop: 20, background: 'var(--elab-hex-f8fafc)' }}>
                                 <h2 className={css.sectionTitle}>Invia messaggio</h2>
                                 <NudgeTab
                                     users={allUsers}
@@ -1082,7 +1082,7 @@ function MeteoTab({ allData, classReport }) {
                                 width: `${Math.min(c.media * 10, 100)}%`,
                                 background: c.media > 7 ? C.red :
                                             c.media > 5 ? C.orange :
-                                            c.media > 3 ? '#F5D623' : C.lime,
+                                            c.media > 3 ? 'var(--elab-hex-f5d623)' : C.lime,
                             }} />
                         </div>
                     ))
@@ -1712,7 +1712,7 @@ function ClassiTab() {
                 ) : classes.length === 0 ? (
                     <div style={{
                         padding: '24px 20px',
-                        background: 'linear-gradient(135deg, #F0F7FF 0%, #E8F4D9 100%)',
+                        background: 'linear-gradient(135deg, var(--elab-hex-f0f7ff) 0%, var(--elab-hex-e8f4d9) 100%)',
                         borderRadius: 16,
                         border: `2px dashed ${C.lime}`,
                     }}>
@@ -1848,7 +1848,7 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
             </div>
 
             {/* Sprint 3: Game toggles */}
-            <div style={{ marginTop: 12, padding: '10px 12px', background: '#F8FAFC', borderRadius: 8 }}>
+            <div style={{ marginTop: 12, padding: '10px 12px', background: 'var(--elab-hex-f8fafc)', borderRadius: 8 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}
                     title="Attiva o disattiva i giochi che i tuoi studenti possono vedere nella sidebar"
                 >
@@ -1868,7 +1868,7 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
                                     onClick={() => handleToggleGame(game.key)}
                                     style={{
                                         width: 36, height: 20, borderRadius: 10,
-                                        background: isActive ? C.lime : '#CBD5E1',
+                                        background: isActive ? C.lime : 'var(--elab-hex-cbd5e1)',
                                         position: 'relative',
                                         transition: 'background 0.2s',
                                         flexShrink: 0,
@@ -1956,8 +1956,8 @@ function getProgressStats(studentData, completedSet) {
 function getPaceLabel(pct) {
     if (pct >= 60) return { label: 'Avanti', color: 'var(--elab-lime)', bg: 'rgba(85,139,47,0.1)' };
     if (pct >= 25) return { label: 'In pari', color: 'var(--elab-navy)', bg: 'rgba(30,77,140,0.1)' };
-    if (pct > 0) return { label: 'Indietro', color: '#996600', bg: 'rgba(232,148,28,0.1)' };
-    return { label: 'Non iniziato', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' };
+    if (pct > 0) return { label: 'Indietro', color: 'var(--elab-hex-996600)', bg: 'rgba(232,148,28,0.1)' };
+    return { label: 'Non iniziato', color: 'var(--elab-hex-94a3b8)', bg: 'rgba(148,163,184,0.1)' };
 }
 
 function ProgressoPNRRTab({ users, allData, formatTempo }) {
@@ -2117,7 +2117,7 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                     <div style={styles.statLabel}>In pari (25-59%)</div>
                 </div>
                 <div style={styles.statCard}>
-                    <div style={{ ...styles.statValue, color: '#996600' }}>{paceGroups.indietro}</div>
+                    <div style={{ ...styles.statValue, color: 'var(--elab-hex-996600)' }}>{paceGroups.indietro}</div>
                     <div style={styles.statLabel}>Indietro (&lt;25%)</div>
                 </div>
             </div>
@@ -2155,7 +2155,7 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                                             <td key={vol} style={styles.td}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                                     <div style={{
-                                                        flex: 1, height: 8, background: '#E2E8F0',
+                                                        flex: 1, height: 8, background: 'var(--elab-hex-e2e8f0)',
                                                         borderRadius: 4, overflow: 'hidden', minWidth: 60,
                                                     }}>
                                                         <div style={{
@@ -2247,7 +2247,7 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                                         <td style={{
                                             ...styles.td, fontWeight: 600, fontSize: 14,
                                             position: 'sticky', left: 0,
-                                            background: i % 2 === 0 ? '#F8FAFC' : C.white, zIndex: 1,
+                                            background: i % 2 === 0 ? 'var(--elab-hex-f8fafc)' : C.white, zIndex: 1,
                                         }}>
                                             {sp.user.nome?.split(' ')[0] || 'Studente'}
                                         </td>
@@ -2263,7 +2263,7 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                                                     {done ? (
                                                         <span style={{ color: VOL_COLORS[exp.volume], fontWeight: 700 }}>✓</span>
                                                     ) : (
-                                                        <span style={{ color: '#CBD5E1' }}>·</span>
+                                                        <span style={{ color: 'var(--elab-hex-cbd5e1)' }}>·</span>
                                                     )}
                                                 </td>
                                             );
@@ -2283,18 +2283,18 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
             </div>
 
             {/* Legenda */}
-            <div style={{ ...styles.section, background: '#FAFBFC' }}>
+            <div style={{ ...styles.section, background: 'var(--elab-hex-fafbfc)' }}>
                 <h4 style={{ margin: '0 0 8px', fontSize: 14, color: C.navy, fontFamily: 'Oswald, sans-serif' }}>Legenda</h4>
                 <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', fontSize: 14 }}>
                     <span><strong style={{ color: 'var(--elab-lime)' }}>■</strong> Volume 1 — Cominciamo ({CURRICULUM_BY_VOL[1].length} esp.)</span>
-                    <span><strong style={{ color: '#996600' }}>■</strong> Volume 2 — Approfondiamo ({CURRICULUM_BY_VOL[2].length} esp.)</span>
-                    <span><strong style={{ color: '#C62828' }}>■</strong> Volume 3 — Arduino ({CURRICULUM_BY_VOL[3].length} esp.)</span>
+                    <span><strong style={{ color: 'var(--elab-hex-996600)' }}>■</strong> Volume 2 — Approfondiamo ({CURRICULUM_BY_VOL[2].length} esp.)</span>
+                    <span><strong style={{ color: 'var(--elab-hex-c62828)' }}>■</strong> Volume 3 — Arduino ({CURRICULUM_BY_VOL[3].length} esp.)</span>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 14, marginTop: 8 }}>
                     <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(85,139,47,0.1)', color: 'var(--elab-lime)', fontWeight: 600 }}>Avanti: ≥60%</span>
                     <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(30,77,140,0.1)', color: 'var(--elab-navy)', fontWeight: 600 }}>In pari: 25-59%</span>
-                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(232,148,28,0.1)', color: '#996600', fontWeight: 600 }}>Indietro: &lt;25%</span>
-                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(148,163,184,0.1)', color: '#94A3B8', fontWeight: 600 }}>Non iniziato</span>
+                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(232,148,28,0.1)', color: 'var(--elab-hex-996600)', fontWeight: 600 }}>Indietro: &lt;25%</span>
+                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(148,163,184,0.1)', color: 'var(--elab-hex-94a3b8)', fontWeight: 600 }}>Non iniziato</span>
                 </div>
             </div>
 
@@ -2325,7 +2325,7 @@ function getExperimentStatus(studentData, experimentId) {
 const STATUS_COLORS = {
     completed: 'var(--elab-lime)',
     partial: 'var(--elab-orange)',
-    none: '#E2E8F0',
+    none: 'var(--elab-hex-e2e8f0)',
 };
 const STATUS_BG = {
     completed: 'rgba(74,122,37,0.15)',
@@ -2467,7 +2467,7 @@ function ProgressiTab({ users, allData, onSelectStudent, formatTempo }) {
                                                 className={css.studentNameTd}
                                                 style={{
                                                     ...styles.td,
-                                                    background: i % 2 === 0 ? '#F8FAFC' : C.white,
+                                                    background: i % 2 === 0 ? 'var(--elab-hex-f8fafc)' : C.white,
                                                 }}
                                                 onClick={() => onSelectStudent(u.id)}
                                                 title={`Clicca per i dettagli di ${u.nome}`}
@@ -2663,11 +2663,11 @@ function ConfusioneHeatmap({ users, allData, visibleExps }) {
             ))}
             {/* Legend */}
             <div style={{ display: 'flex', gap: 12, marginTop: 8, fontSize: 14, color: C.textMuted }}>
-                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: '#C8E6C9', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Pochi</span>
-                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: '#FDD835', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Medio</span>
-                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: '#F5A623', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Alto</span>
-                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: '#E53935', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Critico</span>
-                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: '#F0F4F8', borderRadius: 2, border: '1px solid #E2E8F0', verticalAlign: 'middle', marginRight: 4 }} />Nessun dato</span>
+                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: 'var(--elab-hex-c8e6c9)', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Pochi</span>
+                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: 'var(--elab-hex-fdd835)', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Medio</span>
+                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: 'var(--elab-hex-f5a623)', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Alto</span>
+                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: 'var(--elab-hex-e53935)', borderRadius: 2, verticalAlign: 'middle', marginRight: 4 }} />Critico</span>
+                <span><span style={{ display: 'inline-block', width: 12, height: 12, background: 'var(--elab-hex-f0f4f8)', borderRadius: 2, border: '1px solid var(--elab-hex-e2e8f0)', verticalAlign: 'middle', marginRight: 4 }} />Nessun dato</span>
             </div>
         </div>
     );
@@ -3265,8 +3265,8 @@ function AuditTab() {
                                         <td className={css.auditTd} style={{ whiteSpace: 'nowrap' }}>{log.timestamp ? new Date(log.timestamp + 'Z').toLocaleString('it-IT') : '-'}</td>
                                         <td className={css.auditTd}>
                                             <span className={css.actionBadge} style={{
-                                                background: log.action?.includes('delete') ? '#FFEBEE' : log.action?.includes('gdpr') ? '#FFF3E0' : '#E8F5E9',
-                                                color: log.action?.includes('delete') ? '#C62828' : log.action?.includes('gdpr') ? '#E65100' : '#2E7D32',
+                                                background: log.action?.includes('delete') ? 'var(--elab-hex-ffebee)' : log.action?.includes('gdpr') ? 'var(--elab-hex-fff3e0)' : 'var(--elab-hex-e8f5e9)',
+                                                color: log.action?.includes('delete') ? 'var(--elab-hex-c62828)' : log.action?.includes('gdpr') ? 'var(--elab-hex-e65100)' : 'var(--elab-hex-2e7d32)',
                                             }}>
                                                 {log.action}
                                             </span>
@@ -3276,7 +3276,7 @@ function AuditTab() {
                                         <td style={{ padding: '6px 10px', textAlign: 'center' }}>
                                             <span style={{
                                                 display: 'inline-block', width: 8, height: 8, borderRadius: '50%',
-                                                background: log.status_code < 400 ? '#4CAF50' : log.status_code < 500 ? '#F5A623' : '#E53935',
+                                                background: log.status_code < 400 ? 'var(--elab-hex-4caf50)' : log.status_code < 500 ? 'var(--elab-hex-f5a623)' : 'var(--elab-hex-e53935)',
                                             }} title={`HTTP ${log.status_code}`} />
                                         </td>
                                     </tr>
@@ -3300,26 +3300,26 @@ function AuditTab() {
                 </h2>
                 <div className={css.securityGrid}>
                     <div className={css.securityItemGreen}>
-                        <strong className={css.securityItemLabel} style={{ color: '#2E7D32' }}>Cifratura localStorage</strong>
-                        <p className={css.securityItemDesc} style={{ color: '#1B5E20' }}>
+                        <strong className={css.securityItemLabel} style={{ color: 'var(--elab-hex-2e7d32)' }}>Cifratura localStorage</strong>
+                        <p className={css.securityItemDesc} style={{ color: 'var(--elab-hex-1b5e20)' }}>
                             {studentService.isEncryptionActive() ? 'Attiva (AES-256-GCM)' : 'Non attiva'}
                         </p>
                     </div>
                     <div className={DATA_SERVER ? css.securityItemGreen : css.securityItemWarn}>
-                        <strong className={css.securityItemLabel} style={{ color: DATA_SERVER ? '#2E7D32' : '#E65100' }}>Server Dati EU</strong>
-                        <p className={css.securityItemDesc} style={{ color: DATA_SERVER ? '#1B5E20' : '#BF360C' }}>
+                        <strong className={css.securityItemLabel} style={{ color: DATA_SERVER ? 'var(--elab-hex-2e7d32)' : 'var(--elab-hex-e65100)' }}>Server Dati EU</strong>
+                        <p className={css.securityItemDesc} style={{ color: DATA_SERVER ? 'var(--elab-hex-1b5e20)' : 'var(--elab-hex-bf360c)' }}>
                             {DATA_SERVER ? 'Configurato' : 'Non configurato'}
                         </p>
                     </div>
                     <div className={DATA_SERVER ? css.securityItemGreen : css.securityItemWarn}>
-                        <strong className={css.securityItemLabel} style={{ color: DATA_SERVER ? '#2E7D32' : '#E65100' }}>Audit Logging</strong>
-                        <p className={css.securityItemDesc} style={{ color: DATA_SERVER ? '#1B5E20' : '#BF360C' }}>
+                        <strong className={css.securityItemLabel} style={{ color: DATA_SERVER ? 'var(--elab-hex-2e7d32)' : 'var(--elab-hex-e65100)' }}>Audit Logging</strong>
+                        <p className={css.securityItemDesc} style={{ color: DATA_SERVER ? 'var(--elab-hex-1b5e20)' : 'var(--elab-hex-bf360c)' }}>
                             {DATA_SERVER ? 'Attivo (ogni richiesta API)' : 'Solo locale — server non configurato'}
                         </p>
                     </div>
                     <div className={DATA_SERVER ? css.securityItemGreen : css.securityItemWarn}>
-                        <strong className={css.securityItemLabel} style={{ color: DATA_SERVER ? '#2E7D32' : '#E65100' }}>Data Retention</strong>
-                        <p className={css.securityItemDesc} style={{ color: DATA_SERVER ? '#1B5E20' : '#BF360C' }}>
+                        <strong className={css.securityItemLabel} style={{ color: DATA_SERVER ? 'var(--elab-hex-2e7d32)' : 'var(--elab-hex-e65100)' }}>Data Retention</strong>
+                        <p className={css.securityItemDesc} style={{ color: DATA_SERVER ? 'var(--elab-hex-1b5e20)' : 'var(--elab-hex-bf360c)' }}>
                             {DATA_SERVER ? '730 giorni (server + locale)' : '730 giorni (solo questo browser)'}
                         </p>
                     </div>

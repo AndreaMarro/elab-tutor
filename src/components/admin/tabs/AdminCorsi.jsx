@@ -13,19 +13,19 @@ import { corsiService } from '../../../services/notionService';
 // ============================================
 const COLORS = {
     primary: 'var(--elab-navy)',
-    primaryLight: '#2A4FA0',
-    primaryBg: '#EBF0FA',
+    primaryLight: 'var(--elab-hex-2a4fa0)',
+    primaryBg: 'var(--elab-hex-ebf0fa)',
     success: 'var(--elab-lime)',
-    successBg: '#F0F7E4',
-    warning: '#F59E0B',
-    warningBg: '#FEF3C7',
-    danger: '#EF4444',
-    dangerBg: '#FEE2E2',
-    text: '#1E293B',
-    textMuted: '#64748B',
-    border: '#E2E8F0',
-    bg: '#F8FAFC',
-    white: '#FFFFFF',
+    successBg: 'var(--elab-hex-f0f7e4)',
+    warning: 'var(--elab-hex-f59e0b)',
+    warningBg: 'var(--elab-hex-fef3c7)',
+    danger: 'var(--elab-hex-ef4444)',
+    dangerBg: 'var(--elab-hex-fee2e2)',
+    text: 'var(--elab-hex-1e293b)',
+    textMuted: 'var(--elab-hex-64748b)',
+    border: 'var(--elab-hex-e2e8f0)',
+    bg: 'var(--elab-hex-f8fafc)',
+    white: 'var(--elab-hex-ffffff)',
     cardShadow: '0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06)',
     cardShadowHover: '0 4px 12px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08)',
 };
@@ -35,15 +35,15 @@ const CATEGORIE = ['Elettronica', 'Arduino', 'Programmazione', 'Fisica', 'IoT'];
 const STATI = ['Attivo', 'Bozza', 'Archiviato'];
 
 const LIVELLO_COLORS = {
-    Principiante: { bg: '#DBEAFE', color: '#1E40AF' },
-    Intermedio: { bg: '#FEF3C7', color: '#92400E' },
-    Avanzato: { bg: '#FCE7F3', color: '#9D174D' },
+    Principiante: { bg: 'var(--elab-hex-dbeafe)', color: 'var(--elab-hex-1e40af)' },
+    Intermedio: { bg: 'var(--elab-hex-fef3c7)', color: 'var(--elab-hex-92400e)' },
+    Avanzato: { bg: 'var(--elab-hex-fce7f3)', color: 'var(--elab-hex-9d174d)' },
 };
 
 const STATO_COLORS = {
-    Attivo: { bg: COLORS.successBg, color: '#3F6212' },
-    Bozza: { bg: COLORS.warningBg, color: '#92400E' },
-    Archiviato: { bg: '#F1F5F9', color: '#475569' },
+    Attivo: { bg: COLORS.successBg, color: 'var(--elab-hex-3f6212)' },
+    Bozza: { bg: COLORS.warningBg, color: 'var(--elab-hex-92400e)' },
+    Archiviato: { bg: 'var(--elab-hex-f1f5f9)', color: 'var(--elab-hex-475569)' },
 };
 
 const EMPTY_COURSE = {
@@ -408,7 +408,7 @@ export default function AdminCorsi({ isMobile }) {
                     label="Corsi Attivi"
                     value={stats.attivi}
                     icon="A"
-                    color="#3F6212"
+                    color="var(--elab-hex-3f6212)"
                     bg={COLORS.successBg}
                     isMobile={isMobile}
                 />
@@ -416,7 +416,7 @@ export default function AdminCorsi({ isMobile }) {
                     label="Studenti Totali"
                     value={stats.studenti.toLocaleString('it-IT')}
                     icon="S"
-                    color="#92400E"
+                    color="var(--elab-hex-92400e)"
                     bg={COLORS.warningBg}
                     isMobile={isMobile}
                 />
@@ -474,7 +474,7 @@ export default function AdminCorsi({ isMobile }) {
                     {STATI.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
                 {(search || filterLivello || filterCategoria || filterStato) && (
-                    <button onClick={resetFilters} style={{ ...S.btn, background: '#F1F5F9', color: COLORS.textMuted, fontSize: 14 }}>
+                    <button onClick={resetFilters} style={{ ...S.btn, background: 'var(--elab-hex-f1f5f9)', color: COLORS.textMuted, fontSize: 14 }}>
                         Azzera Filtri
                     </button>
                 )}
@@ -529,7 +529,7 @@ export default function AdminCorsi({ isMobile }) {
                             <h3 style={{ margin: 0, fontSize: 18, color: COLORS.text }}>Nuovo Corso</h3>
                             <button
                                 onClick={() => setShowCreate(false)}
-                                style={{ ...S.btn, background: '#F1F5F9', color: COLORS.textMuted, padding: '4px 10px', fontSize: 18, lineHeight: 1 }}
+                                style={{ ...S.btn, background: 'var(--elab-hex-f1f5f9)', color: COLORS.textMuted, padding: '4px 10px', fontSize: 18, lineHeight: 1 }}
                             >
                                 &times;
                             </button>
@@ -544,7 +544,7 @@ export default function AdminCorsi({ isMobile }) {
                         <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
                             <button
                                 onClick={() => setShowCreate(false)}
-                                style={{ ...S.btn, background: '#F1F5F9', color: COLORS.textMuted }}
+                                style={{ ...S.btn, background: 'var(--elab-hex-f1f5f9)', color: COLORS.textMuted }}
                             >
                                 Annulla
                             </button>
@@ -589,7 +589,7 @@ export default function AdminCorsi({ isMobile }) {
                         <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
                             <button
                                 onClick={() => setDeleteConfirm(null)}
-                                style={{ ...S.btn, background: '#F1F5F9', color: COLORS.textMuted }}
+                                style={{ ...S.btn, background: 'var(--elab-hex-f1f5f9)', color: COLORS.textMuted }}
                             >
                                 Annulla
                             </button>
@@ -732,8 +732,8 @@ export default function AdminCorsi({ isMobile }) {
                                                 borderRadius: 4,
                                                 fontSize: 14,
                                                 fontWeight: 600,
-                                                background: '#FEF3C7',
-                                                color: '#92400E',
+                                                background: 'var(--elab-hex-fef3c7)',
+                                                color: 'var(--elab-hex-92400e)',
                                             }}>
                                                 PREMIUM
                                             </span>
@@ -769,7 +769,7 @@ export default function AdminCorsi({ isMobile }) {
                                         <span style={{ fontWeight: 700, color: COLORS.primary, fontSize: 16 }}>
                                             {prezzo > 0 ? `€${prezzo}` : 'Gratuito'}
                                         </span>
-                                        <span style={{ color: '#F59E0B', letterSpacing: 1 }} title={`Rating: ${rating}/5`}>
+                                        <span style={{ color: 'var(--elab-hex-f59e0b)', letterSpacing: 1 }} title={`Rating: ${rating}/5`}>
                                             {renderStars(rating)}
                                             <span style={{ color: COLORS.textMuted, fontSize: 14, marginLeft: 3 }}>
                                                 {rating > 0 ? rating.toFixed(1) : ''}
@@ -812,8 +812,8 @@ export default function AdminCorsi({ isMobile }) {
                                                     disabled={saving}
                                                     style={{
                                                         ...S.btn,
-                                                        background: premium ? COLORS.warningBg : '#F1F5F9',
-                                                        color: premium ? '#92400E' : COLORS.textMuted,
+                                                        background: premium ? COLORS.warningBg : 'var(--elab-hex-f1f5f9)',
+                                                        color: premium ? 'var(--elab-hex-92400e)' : COLORS.textMuted,
                                                         fontSize: 14,
                                                     }}
                                                 >
@@ -830,7 +830,7 @@ export default function AdminCorsi({ isMobile }) {
                                             <div style={{ display: 'flex', gap: 8 }}>
                                                 <button
                                                     onClick={() => { setExpandedId(null); setEditData(null); }}
-                                                    style={{ ...S.btn, background: '#F1F5F9', color: COLORS.textMuted, fontSize: 14 }}
+                                                    style={{ ...S.btn, background: 'var(--elab-hex-f1f5f9)', color: COLORS.textMuted, fontSize: 14 }}
                                                 >
                                                     Chiudi
                                                 </button>
@@ -1049,7 +1049,7 @@ function CourseForm({ data, onChange, isMobile }) {
                         width: 42,
                         height: 24,
                         borderRadius: 12,
-                        background: data['Premium Only'] ? COLORS.warning : '#CBD5E1',
+                        background: data['Premium Only'] ? COLORS.warning : 'var(--elab-hex-cbd5e1)',
                         cursor: 'pointer',
                         position: 'relative',
                         transition: 'background 0.2s ease',

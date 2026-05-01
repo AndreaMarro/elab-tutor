@@ -28,7 +28,7 @@ const PALETTE = {
   lime: 'var(--elab-lime)',
   orange: 'var(--elab-orange)',
   red: 'var(--elab-red)',
-  textMuted: '#5A6B7E',
+  textMuted: 'var(--elab-hex-5a6b7e)',
   border: 'rgba(30, 77, 140, 0.12)',
 };
 
@@ -48,7 +48,7 @@ const styles = {
     letterSpacing: '0.02em',
   },
   empty: {
-    background: '#FFFFFF',
+    background: 'var(--elab-hex-ffffff)',
     border: `1px dashed ${PALETTE.border}`,
     borderRadius: 16,
     padding: '24px 20px',
@@ -65,7 +65,7 @@ const styles = {
     listStyle: 'none',
   },
   row: {
-    background: '#FFFFFF',
+    background: 'var(--elab-hex-ffffff)',
     border: `1px solid ${PALETTE.border}`,
     borderRadius: 14,
     padding: '14px 18px',
@@ -136,7 +136,7 @@ const styles = {
     padding: '8px 16px',
     fontSize: 14,
     fontWeight: 600,
-    color: '#FFFFFF',
+    color: 'var(--elab-hex-ffffff)',
     background: PALETTE.navy,
     border: 'none',
     borderRadius: 10,

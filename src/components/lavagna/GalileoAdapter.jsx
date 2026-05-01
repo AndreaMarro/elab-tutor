@@ -70,7 +70,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
     MOSTRA: { bg: 'linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%)', border: '#fcd34d', accent: 'var(--elab-orange)' },
     CHIEDI: { bg: 'linear-gradient(135deg, #fce7f3 0%, #fef2f2 100%)', border: '#f9a8d4', accent: 'var(--elab-red)' },
     OSSERVA: { bg: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', border: '#86efac', accent: 'var(--elab-lime)' },
-    CONCLUDI: { bg: 'linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%)', border: '#c4b5fd', accent: '#6d28d9' },
+    CONCLUDI: { bg: 'linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%)', border: '#c4b5fd', accent: '#6d28d9' }, // palette
   };
   const colors = PHASE_COLORS[phase.name] || PHASE_COLORS.PREPARA;
 
@@ -92,7 +92,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
       color: colors.accent, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10,
     },
     phaseIcon: { fontSize: 28 },
-    message: { fontSize: 17, lineHeight: 1.7, color: '#1A1A2E', fontFamily: "'Open Sans', sans-serif", marginBottom: 14 },
+    message: { fontSize: 17, lineHeight: 1.7, color: '#1a1a2e', fontFamily: "'Open Sans', sans-serif", marginBottom: 14 }, // palette
     tip: {
       background: 'rgba(255,255,255,0.7)', borderRadius: 12, padding: '12px 14px', marginBottom: 12,
       border: '1px dashed ' + colors.accent + '30', fontSize: 15, lineHeight: 1.6, color: '#555',
@@ -111,7 +111,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
     progress: { display: 'flex', justifyContent: 'center', gap: 8, padding: '8px 0' },
     dot: (active) => ({
       width: active ? 28 : 10, height: 10, borderRadius: 5,
-      background: active ? `linear-gradient(90deg, ${colors.accent}, ${colors.accent}99)` : '#d1d5db',
+      background: active ? `linear-gradient(90deg, ${colors.accent}, ${colors.accent}99)` : '#d1d5db', // palette
       transition: 'all 250ms cubic-bezier(0.4, 0, 0.2, 1)',
     }),
   };
@@ -237,7 +237,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
       fontFamily: "'Open Sans', sans-serif", maxWidth: 320, margin: '0 auto',
     },
     stepCard: {
-      background: 'linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #f0fdf4 100%)',
+      background: 'linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #f0fdf4 100%)', // palette
       borderRadius: 18, padding: '24px 20px',
       border: '1px solid rgba(30, 77, 140, 0.12)',
       boxShadow: '0 4px 20px rgba(30, 77, 140, 0.08), 0 1px 3px rgba(0,0,0,0.04)',
@@ -257,11 +257,11 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
       boxShadow: '0 3px 12px rgba(30, 77, 140, 0.25)',
     },
     stepText: {
-      fontSize: 18, lineHeight: 1.65, color: '#1A1A2E', fontWeight: 500,
+      fontSize: 18, lineHeight: 1.65, color: '#1a1a2e', fontWeight: 500, // palette
       fontFamily: "'Open Sans', sans-serif",
     },
     sectionCard: {
-      background: 'linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%)',
+      background: 'linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%)', // palette
       borderRadius: 18, padding: '24px 20px',
       border: '1px solid rgba(74, 122, 37, 0.15)',
       boxShadow: '0 4px 20px rgba(74, 122, 37, 0.08)',
@@ -631,8 +631,8 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
   if (!visible) return null;
 
   const tabBarStyle = {
-    display: 'flex', gap: 0, borderBottom: '2px solid #e5e7eb',
-    background: '#f8fafc', flexShrink: 0,
+    display: 'flex', gap: 0, borderBottom: '2px solid #e5e7eb', // palette
+    background: '#f8fafc', flexShrink: 0, // palette
   };
   const tabStyle = (active) => ({
     flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer',

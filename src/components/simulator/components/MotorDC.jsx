@@ -22,41 +22,41 @@ const MotorDC = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id
       <rect x="-25" y="-25" width="50" height="50" fill="transparent" pointerEvents="all" onClick={onInteract} />
 
        {/* Terminal wires (behind body) */}
-       <line x1="-6" y1="-8" x2="-6" y2="-16" stroke="#8B1B1B" strokeWidth="2.8" strokeLinecap="round" opacity="0.22" />
-       <line x1="-6" y1="-8" x2="-6" y2="-16" stroke="#D32F2F" strokeWidth="2.0" strokeLinecap="round" />
+       <line x1="-6" y1="-8" x2="-6" y2="-16" stroke="var(--elab-hex-8b1b1b)" strokeWidth="2.8" strokeLinecap="round" opacity="0.22" />
+       <line x1="-6" y1="-8" x2="-6" y2="-16" stroke="var(--elab-hex-d32f2f)" strokeWidth="2.0" strokeLinecap="round" />
 
-       <line x1="6" y1="-8" x2="6" y2="-16" stroke="#000000" strokeWidth="2.8" strokeLinecap="round" opacity="0.22" />
-       <line x1="6" y1="-8" x2="6" y2="-16" stroke="#1A1A1A" strokeWidth="2.0" strokeLinecap="round" />
+       <line x1="6" y1="-8" x2="6" y2="-16" stroke="var(--elab-hex-000000)" strokeWidth="2.8" strokeLinecap="round" opacity="0.22" />
+       <line x1="6" y1="-8" x2="6" y2="-16" stroke="var(--elab-hex-1a1a1a)" strokeWidth="2.0" strokeLinecap="round" />
 
        {/* Main cylindrical body */}
        <rect x="-13" y="-8" width="26" height="16" rx="2.6"
-         fill="#9A9A9A" stroke="#747474" strokeWidth="0.55" />
+         fill="var(--elab-hex-9a9a9a)" stroke="var(--elab-hex-747474)" strokeWidth="0.55" />
        <rect x="-12.2" y="-7.2" width="24.4" height="6.2" rx="2.2"
-         fill="#FFFFFF" opacity="0.10" />
+         fill="var(--elab-hex-ffffff)" opacity="0.10" />
 
       {/* Front end cap — flat metallic rect, no highlight line */}
       <rect x="13" y="-7" width="5" height="14" rx="1.5"
-        fill="#888888" stroke="#707070" strokeWidth="0.4" />
+        fill="var(--elab-hex-888888)" stroke="var(--elab-hex-707070)" strokeWidth="0.4" />
 
       {/* Bearing hole — flat concentric circles */}
-      <circle cx="15.5" cy="0" r="3" fill="#707070" stroke="#606060" strokeWidth="0.3" />
-      <circle cx="15.5" cy="0" r="2.2" fill="#606060" stroke="#505050" strokeWidth="0.3" />
-      <circle cx="15.5" cy="0" r="1.3" fill="#404040" />
+      <circle cx="15.5" cy="0" r="3" fill="var(--elab-hex-707070)" stroke="var(--elab-hex-606060)" strokeWidth="0.3" />
+      <circle cx="15.5" cy="0" r="2.2" fill="var(--elab-hex-606060)" stroke="var(--elab-hex-505050)" strokeWidth="0.3" />
+      <circle cx="15.5" cy="0" r="1.3" fill="var(--elab-hex-404040)" />
 
       {/* Back end cap */}
       <rect x="-15" y="-6" width="3" height="12" rx="1"
-        fill="#888888" stroke="#666" strokeWidth="0.3" />
+        fill="var(--elab-hex-888888)" stroke="#666" strokeWidth="0.3" />
 
       {/* Shaft — flat metallic, no highlight line */}
       <rect x="18" y="-1.2" width="8" height="2.4" rx="0.5"
-        fill="#C0C0C0" stroke="#999" strokeWidth="0.3" />
+        fill="var(--elab-hex-c0c0c0)" stroke="#999" strokeWidth="0.3" />
 
       {/* Shaft rotation indicator (animated cross when ON) */}
       {isOn && speed > 0 && (
         <g transform="translate(26, 0)">
           <g>
-            <line x1="-3" y1="0" x2="3" y2="0" stroke="#D97706" strokeWidth="1.8" strokeLinecap="round" />
-            <line x1="0" y1="-3" x2="0" y2="3" stroke="#D97706" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="-3" y1="0" x2="3" y2="0" stroke="var(--elab-hex-d97706)" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="0" y1="-3" x2="0" y2="3" stroke="var(--elab-hex-d97706)" strokeWidth="1.8" strokeLinecap="round" />
             <animateTransform
               attributeName="transform"
               type="rotate"

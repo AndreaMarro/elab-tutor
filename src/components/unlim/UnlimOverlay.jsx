@@ -294,7 +294,7 @@ function OverlayMessage({ message, onDismiss, containerRef }) {
         padding: '16px 22px',
         borderRadius: '14px',
         background: colors.bg,
-        color: '#FFFFFF',
+        color: 'var(--elab-hex-ffffff)',
         fontSize: '20px',
         fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',
         lineHeight: 1.5,

@@ -68,7 +68,7 @@ export default function GiaMontato({
       data-has-error={hasError ? 'true' : 'false'}
       style={{
         padding: '14px 18px',
-        background: '#fff8e6',
+        background: 'var(--elab-hex-fff8e6)',
         borderLeft: '4px solid var(--elab-orange)',
         borderRadius: 8,
         fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',

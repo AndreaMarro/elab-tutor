@@ -758,7 +758,7 @@ export default function WhiteboardOverlay({
       {showGrid && (
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle, #c0c0c0 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, var(--elab-hex-c0c0c0) 1px, transparent 1px)',
           backgroundSize: `${20 * zoom}px ${20 * zoom}px`,
           pointerEvents: 'none', zIndex: 19, opacity: 0.5,
         }} />

@@ -477,7 +477,7 @@ export default function ChatbotOnly({ onBackHome, onOpenLavagna }) {
             aria-label="Invia messaggio a UNLIM"
             data-testid="chatbot-send-btn"
           >
-            <SendIcon size={18} color="#FFFFFF" />
+            <SendIcon size={18} color="var(--elab-hex-ffffff)" />
             Invia
           </button>
         </div>

@@ -251,8 +251,8 @@ export default function ReverseEngineeringLab({ onOpenSimulator, logSession, onS
         {/* Mini SVG circuit board */}
         <svg viewBox="0 0 100 100" className={`elab-tool__circuit-svg ${css.circuitSvg}`}>
           {/* Board trace lines */}
-          <line x1="10" y1="50" x2="90" y2="50" stroke="#334155" strokeWidth="1" />
-          <line x1="50" y1="10" x2="50" y2="90" stroke="#334155" strokeWidth="1" />
+          <line x1="10" y1="50" x2="90" y2="50" stroke="var(--elab-hex-334155)" strokeWidth="1" />
+          <line x1="50" y1="10" x2="50" y2="90" stroke="var(--elab-hex-334155)" strokeWidth="1" />
           {/* Test points */}
           {selected.testPoints.map((point) => {
             const isRevealed = revealedPoints.includes(point.id);

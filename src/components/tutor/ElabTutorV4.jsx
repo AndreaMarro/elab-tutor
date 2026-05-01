@@ -1189,7 +1189,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
     const clearCanvas = () => {
         const ctx = ctxRef.current;
         if (!ctx || !canvasRef.current) return;
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = 'var(--elab-hex-ffffff)';
         ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     };
 
@@ -1204,7 +1204,7 @@ export default function ElabTutorV4({ provaMode = false, onNavigate, initialExpe
                 const canvas = canvasRef.current;
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#FFFFFF';
+                ctx.fillStyle = 'var(--elab-hex-ffffff)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0);
             }, 50);

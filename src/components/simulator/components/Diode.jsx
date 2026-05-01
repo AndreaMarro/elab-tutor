@@ -23,38 +23,38 @@ const Diode = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, id }
 
       {/* Wire leads — thin neutral gray (Tinkercad style) */}
       <line x1="-20" y1="0" x2="-12.5" y2="0"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
       <line x1="12.5" y1="0" x2="20" y2="0"
-        stroke="#9E9E9E" strokeWidth="1.25" strokeLinecap="round" />
+        stroke="var(--elab-hex-9e9e9e)" strokeWidth="1.25" strokeLinecap="round" />
 
       {/* End caps — small metallic rings at body-wire junction */}
-      <ellipse cx="-11.5" cy="0" rx="1.3" ry="4.8" fill="#B7B7B7" stroke="#8A8A8A" strokeWidth="0.35" />
-      <ellipse cx="11.5" cy="0" rx="1.3" ry="4.8" fill="#B7B7B7" stroke="#8A8A8A" strokeWidth="0.35" />
+      <ellipse cx="-11.5" cy="0" rx="1.3" ry="4.8" fill="var(--elab-hex-b7b7b7)" stroke="var(--elab-hex-8a8a8a)" strokeWidth="0.35" />
+      <ellipse cx="11.5" cy="0" rx="1.3" ry="4.8" fill="var(--elab-hex-b7b7b7)" stroke="var(--elab-hex-8a8a8a)" strokeWidth="0.35" />
 
       {/* Body — dark epoxy glass, slightly rounded */}
       <rect x="-11.5" y="-4.8" width="23" height="9.6" rx="4.8"
-        fill="#2F2F2F" stroke="#111111" strokeWidth="0.55" />
+        fill="var(--elab-hex-2f2f2f)" stroke="var(--elab-hex-111111)" strokeWidth="0.55" />
 
       {/* Top highlight (subtle reflection) */}
       <rect x="-10.5" y="-4.2" width="10" height="3.2" rx="1.6"
-        fill="#FFFFFF" opacity="0.10" />
+        fill="var(--elab-hex-ffffff)" opacity="0.10" />
 
       {/* Bottom shadow */}
       <rect x="-10.5" y="0.8" width="21" height="3.6" rx="1.8"
-        fill="#000000" opacity="0.06" />
+        fill="var(--elab-hex-000000)" opacity="0.06" />
 
       {/* Cathode band — silver/white stripe near cathode end */}
       <rect x="5.8" y="-4.8" width="3.6" height="9.6" rx="0"
-        fill="#D6D6D6" opacity="0.88" />
+        fill="var(--elab-hex-d6d6d6)" opacity="0.88" />
       {/* Band edge highlight */}
       <rect x="5.8" y="-4.8" width="0.8" height="9.6"
-        fill="#FFFFFF" opacity="0.15" />
+        fill="var(--elab-hex-ffffff)" opacity="0.15" />
 
       {/* Polarity arrow symbol (subtle, inside body) */}
       <path d="M -3 -2.5 L 1 0 L -3 2.5 Z"
-        fill="none" stroke="#555555" strokeWidth="0.5" opacity="0.3" />
+        fill="none" stroke="var(--elab-hex-555555)" strokeWidth="0.5" opacity="0.3" />
       <line x1="1" y1="-2.5" x2="1" y2="2.5"
-        stroke="#555555" strokeWidth="0.5" opacity="0.3" />
+        stroke="var(--elab-hex-555555)" strokeWidth="0.5" opacity="0.3" />
 
       {/* Current flow indicator */}
       {hasFlow && (

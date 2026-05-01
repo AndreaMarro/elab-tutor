@@ -6,7 +6,7 @@
   display: flex;
   gap: 8px;
   padding: 6px 8px;
-  background: #f5f7fa;
+  background: #f5f7fa; /* palette */
   border-radius: 12px;
   flex-wrap: wrap;
   align-items: center;
@@ -21,7 +21,7 @@
   padding: 10px 16px;
   border: 2px solid transparent;
   border-radius: 10px;
-  background: #ffffff;
+  background: #ffffff; /* palette */
   color: var(--elab-navy);
   font-family: var(--font-sans, 'Open Sans', sans-serif);
   font-size: 15px;
@@ -31,7 +31,7 @@
 }
 
 .modeBtn:hover {
-  background: #e8f0fa;
+  background: #e8f0fa; /* palette */
   border-color: rgba(30, 77, 140, 0.3);
 }
 
@@ -46,14 +46,14 @@
 
 .modeBtnActive {
   background: var(--elab-navy);
-  color: #ffffff;
-  border-color: #153d6e;
+  color: #ffffff; /* palette */
+  border-color: #153d6e; /* palette */
   box-shadow: 0 2px 8px rgba(30, 77, 140, 0.25);
 }
 
 .modeBtnActive:hover {
-  background: #19467f;
-  border-color: #102e54;
+  background: #19467f; /* palette */
+  border-color: #102e54; /* palette */
 }
 
 .modeIcon {
@@ -98,7 +98,7 @@
 
 .modeBtnDefault:not(.modeBtnActive):hover {
   border-color: rgba(74, 122, 37, 0.7);
-  background: #f0f7e8;
+  background: #f0f7e8; /* palette */
 }
 
 /* Mobile / portrait LIM: stack buttons vertical compact */

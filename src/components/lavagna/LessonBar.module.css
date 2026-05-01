@@ -130,7 +130,7 @@
 
 .chevron {
   flex-shrink: 0;
-  color: #595959;
+  color: #595959; /* palette */
   transition: transform 0.2s;
 }
 

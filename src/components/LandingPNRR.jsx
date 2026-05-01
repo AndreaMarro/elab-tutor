@@ -6,10 +6,10 @@ import React, { useState } from 'react';
 
 const NAVY = 'var(--elab-navy)';
 const LIME = 'var(--elab-lime)';
-const BG_LIGHT = '#F7F7F8';
-const TEXT = '#1A1A2E';
-const TEXT_SECONDARY = '#6B6B80';
-const BORDER = '#E5E5EA';
+const BG_LIGHT = '#f7f7f8'; // palette
+const TEXT = '#1a1a2e'; // palette
+const TEXT_SECONDARY = '#6b6b80'; // palette
+const BORDER = '#e5e5ea'; // palette
 
 const sectionStyle = {
   padding: '56px 24px',
@@ -83,7 +83,7 @@ export default function LandingPNRR({ onNavigate }) {
     }}>
       {/* Hero */}
       <header style={{
-        background: `linear-gradient(135deg, ${NAVY} 0%, #2E6DB4 100%)`,
+        background: `linear-gradient(135deg, ${NAVY} 0%, #2e6db4 100%)`, // palette
         color: '#fff',
         padding: '60px 24px 48px',
         textAlign: 'center',
@@ -162,7 +162,7 @@ export default function LandingPNRR({ onNavigate }) {
               icon: null,
               title: 'Allineato PNRR Scuola 4.0',
               desc: 'Software STEM + kit fisici + curriculum strutturato. Rientra nelle voci D.M. 218/2022. Acquistabile su MePA.',
-              color: '#C47A0A',
+              color: '#c47a0a', // palette
             },
           ].map((item, i) => (
             <div key={i} style={{
@@ -301,8 +301,8 @@ export default function LandingPNRR({ onNavigate }) {
           ELAB Tutor rientra pienamente in queste categorie.
         </p>
         <div style={{
-          background: '#FFF8E1',
-          border: '1px solid #FFE082',
+          background: '#fff8e1', // palette
+          border: '1px solid #ffe082', // palette
           borderRadius: '8px',
           padding: '16px 20px',
           marginTop: '20px',
@@ -644,7 +644,7 @@ function ContactForm({ onNavigate }) {
 
   return (
     <section style={{
-      background: `linear-gradient(135deg, ${NAVY} 0%, #2E6DB4 100%)`,
+      background: `linear-gradient(135deg, ${NAVY} 0%, #2e6db4 100%)`, // palette
       color: '#fff',
       padding: '56px 24px',
     }}>
@@ -717,7 +717,7 @@ function ContactForm({ onNavigate }) {
               {status === 'sending' ? 'Invio in corso...' : 'Invia Richiesta'}
             </button>
             {status === 'error' && (
-              <p style={{ color: '#FFCDD2', fontSize: '14px', textAlign: 'center', margin: 0 }}>
+              <p style={{ color: '#ffcdd2', fontSize: '14px', textAlign: 'center', margin: 0 }}>
                 Errore nell'invio. Scrivi direttamente a{' '}
                 <a href="mailto:info@elabtutor.school" style={{ color: '#fff' }}>info@elabtutor.school</a>
               </p>

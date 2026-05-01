@@ -154,7 +154,7 @@ export default function WelcomePage({ onNavigate }) {
           <button
             type="submit"
             style={S.btn}
-            onMouseEnter={(e) => e.target.style.background = '#3d6620'}
+            onMouseEnter={(e) => e.target.style.background = 'var(--elab-hex-3d6620)'}
             onMouseLeave={(e) => e.target.style.background = 'var(--elab-lime)'}
           >
             ENTRA

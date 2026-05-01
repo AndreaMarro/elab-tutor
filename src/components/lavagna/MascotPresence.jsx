@@ -22,7 +22,7 @@ function MascotSvg({ size = 44, micActive = false }) {
     <svg width={size} height={size} viewBox="0 0 44 44" fill="none" aria-hidden="true">
       <path d="M8 20C8 12.3 14.3 6 22 6s14 6.3 14 14" stroke="var(--elab-navy)" strokeWidth="2.5" fill="none" />
       <rect x="10" y="14" width="24" height="20" rx="5" fill="var(--elab-navy)" />
-      <rect x="13" y="17" width="18" height="12" rx="3" fill="#153d6f" />
+      <rect x="13" y="17" width="18" height="12" rx="3" fill="var(--elab-hex-153d6f)" />
       <circle cx="18" cy="23" r="2.5" fill="var(--elab-lime)" />
       <circle cx="26" cy="23" r="2.5" fill="var(--elab-lime)" />
       <circle cx="18.8" cy="22.2" r="0.8" fill="#fff" opacity="0.9" />

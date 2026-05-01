@@ -49,7 +49,7 @@
 .ttsBtn {
   composes: circleBtn;
   background: var(--color-bg-tertiary);
-  color: #595959;
+  color: #595959; /* palette */
 }
 
 .ttsBtnActive {

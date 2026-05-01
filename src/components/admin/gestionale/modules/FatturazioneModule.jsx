@@ -126,14 +126,14 @@ function FatturazioneSDITab({ fatture, isMobile }) {
                 <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                     <button
                         onClick={(e) => { e.stopPropagation(); handleGenerateXML(row); }}
-                        style={{ ...S.btnSmall, background: '#DBEAFE', color: '#1D4ED8' }}
+                        style={{ ...S.btnSmall, background: 'var(--elab-hex-dbeafe)', color: 'var(--elab-hex-1d4ed8)' }}
                     >
                         Genera XML
                     </button>
                     {row.statoSDI !== 'bozza_locale' && (
                         <button
                             onClick={(e) => { e.stopPropagation(); handleDownloadXML(row); }}
-                            style={{ ...S.btnSmall, background: '#E0E7FF', color: '#4338CA' }}
+                            style={{ ...S.btnSmall, background: 'var(--elab-hex-e0e7ff)', color: 'var(--elab-hex-4338ca)' }}
                         >
                             Scarica
                         </button>
@@ -163,8 +163,8 @@ function FatturazioneSDITab({ fatture, isMobile }) {
         <div>
             {/* Info banner */}
             <div style={{
-                background: '#FEF3C7', borderRadius: '8px', padding: '12px 16px',
-                marginBottom: '16px', border: '1px solid #FCD34D', fontSize: '14px', color: '#92400E',
+                background: 'var(--elab-hex-fef3c7)', borderRadius: '8px', padding: '12px 16px',
+                marginBottom: '16px', border: '1px solid var(--elab-hex-fcd34d)', fontSize: '14px', color: 'var(--elab-hex-92400e)',
             }}>
                 La generazione XML FatturaPA avviene in locale. L'invio reale al SDI richiede un provider certificato (Aruba PEC, TeamSystem, Zucchetti) configurabile in Impostazioni.
             </div>
@@ -200,8 +200,8 @@ function FatturazioneSDITab({ fatture, isMobile }) {
                         {xmlPreview.validation && (
                             <div style={{
                                 marginBottom: '10px', padding: '8px 12px', borderRadius: '6px', fontSize: '14px',
-                                background: xmlPreview.validation.valid ? '#D1FAE5' : '#FEE2E2',
-                                color: xmlPreview.validation.valid ? '#065F46' : '#991B1B',
+                                background: xmlPreview.validation.valid ? 'var(--elab-hex-d1fae5)' : 'var(--elab-hex-fee2e2)',
+                                color: xmlPreview.validation.valid ? 'var(--elab-hex-065f46)' : 'var(--elab-hex-991b1b)',
                             }}>
                                 {xmlPreview.validation.valid
                                     ? 'Validazione OK — XML conforme alla struttura FatturaPA'
@@ -212,7 +212,7 @@ function FatturazioneSDITab({ fatture, isMobile }) {
 
                         {/* XML content */}
                         <pre style={{
-                            background: '#1E293B', color: '#E2E8F0', padding: '16px',
+                            background: 'var(--elab-hex-1e293b)', color: 'var(--elab-hex-e2e8f0)', padding: '16px',
                             borderRadius: '8px', overflow: 'auto', maxHeight: '400px',
                             fontSize: '14px', fontFamily: 'Fira Code, monospace', lineHeight: '1.5',
                             whiteSpace: 'pre-wrap', wordBreak: 'break-word',
@@ -487,7 +487,7 @@ export default function FatturazioneModule({ isMobile }) {
                     {row.stato !== 'pagata' && row.stato !== 'annullata' && row.stato !== 'bozza' && (
                         <button
                             onClick={(e) => { e.stopPropagation(); setShowPayment(row.id); setPaymentDate(new Date().toISOString().split('T')[0]); }}
-                            style={{ ...S.btnSmall, background: '#D1FAE5', color: COLORS.success }}
+                            style={{ ...S.btnSmall, background: 'var(--elab-hex-d1fae5)', color: COLORS.success }}
                         >
                             Paga
                         </button>

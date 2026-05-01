@@ -4,7 +4,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { COLORS } from '../../GestionaleStyles';
 
-const PIE_COLORS = [COLORS.accent, COLORS.success, COLORS.warning, '#8B5CF6', '#EC4899'];
+const PIE_COLORS = [COLORS.accent, COLORS.success, COLORS.warning, 'var(--elab-hex-8b5cf6)', 'var(--elab-hex-ec4899)'];
 
 export default function ClientiPieChart({ data = [], isMobile }) {
     if (!data.length) {

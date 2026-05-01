@@ -9,7 +9,7 @@
   height: 72px;
   border-radius: var(--radius-lg, 14px);
   border: 2px solid rgba(30, 77, 140, 0.15);
-  background: #FFFFFF;
+  background: #FFFFFF; /* palette */
   cursor: pointer;
   display: flex;
   align-items: center;

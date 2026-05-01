@@ -5,11 +5,11 @@
  */
 import React from 'react';
 
-const STAR_COLORS = { filled: '#F59E0B', empty: '#D1D5DB' };
+const STAR_COLORS = { filled: '#f59e0b', empty: '#d1d5db' }; // palette
 const BADGE_META = {
-  bronzo: { emoji: '', label: 'Bronzo', color: '#CD7F32' },
-  argento: { emoji: '', label: 'Argento', color: '#A0AEC0' },
-  oro: { emoji: '', label: 'Oro', color: '#F59E0B' },
+  bronzo: { emoji: '', label: 'Bronzo', color: '#cd7f32' }, // palette
+  argento: { emoji: '', label: 'Argento', color: '#a0aec0' }, // palette
+  oro: { emoji: '', label: 'Oro', color: '#f59e0b' }, // palette
 };
 
 export function StarDisplay({ stars, size = 20 }) {
@@ -35,7 +35,7 @@ export function StarResult({ stars, message }) {
       border: `1px solid ${stars === 3 ? 'rgba(245,158,11,0.3)' : 'rgba(0,0,0,0.06)'}`,
     }}>
       <StarDisplay stars={stars} size={22} />
-      {message && <span style={{ fontSize: '14px', color: '#4A5568' }}>{message}</span>}
+      {message && <span style={{ fontSize: '14px', color: '#4a5568' }}>{message}</span>}
     </div>
   );
 }

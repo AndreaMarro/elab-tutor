@@ -134,7 +134,7 @@
   justify-content: center;
   border: none;
   background: transparent;
-  color: #595959;
+  color: #595959; /* palette */
   border-radius: 8px;
   cursor: pointer;
 }
@@ -150,7 +150,7 @@
 
 .empty {
   text-align: center;
-  color: #595959;
+  color: #595959; /* palette */
   padding: 40px 0;
   font-size: 14px;
 }
@@ -230,7 +230,7 @@
 .cardDesc {
   margin: 0;
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -265,8 +265,8 @@
   /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6. */
   font-size: 14px;
   font-weight: 700;
-  color: #E65100;
-  background: #FFF3E0;
+  color: #E65100; /* palette */
+  background: #FFF3E0; /* palette */
   padding: 2px 8px;
   border-radius: 4px;
   text-transform: uppercase;
@@ -277,7 +277,7 @@
 .metaItem {
   /* iter 15 LIM legibility batch 2: 13px → 14px per spec §6 (borderline body ≥14px). */
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -349,7 +349,7 @@
 
 .footerStat {
   font-size: 14px;
-  color: #595959;
+  color: #595959; /* palette */
   font-weight: 600;
 }
 
@@ -434,7 +434,7 @@
 .lessonTitle {
   font-size: 15px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #1a1a2e; /* palette */
 }
 .lessonConcept {
   /* iter 15 LIM legibility batch 2: 12px → 14px per spec §6. */

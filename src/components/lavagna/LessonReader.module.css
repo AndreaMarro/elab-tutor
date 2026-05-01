@@ -1,7 +1,7 @@
 .container {
   padding: 1rem;
   font-family: 'Open Sans', sans-serif;
-  color: #1e293b;
+  color: #1e293b; /* palette */
 }
 
 .header {
@@ -19,7 +19,7 @@
 
 .meta {
   font-size: 0.875rem;
-  color: #64748b;
+  color: #64748b; /* palette */
   margin: 0;
 }
 
@@ -42,9 +42,9 @@
   width: 100%;
   padding: 0.75rem 1rem;
   border: 0;
-  border-left: 3px solid #e2e8f0;
+  border-left: 3px solid #e2e8f0; /* palette */
   border-radius: 0 6px 6px 0;
-  background: #f8fafc;
+  background: #f8fafc; /* palette */
   cursor: pointer;
   min-height: 44px;
   display: flex;
@@ -59,7 +59,7 @@
 
 .step:hover {
   border-left-color: var(--elab-lime);
-  background: #f0fdf4;
+  background: #f0fdf4; /* palette */
 }
 
 .step:focus-visible {
@@ -69,7 +69,7 @@
 
 .active {
   border-left-color: var(--elab-orange);
-  background: #fff7ed;
+  background: #fff7ed; /* palette */
   font-weight: 600;
 }
 
@@ -88,7 +88,7 @@
 
 .preview {
   font-size: 0.8125rem;
-  color: #475569;
+  color: #475569; /* palette */
   margin: 0.25rem 0 0;
   line-height: 1.4;
 }

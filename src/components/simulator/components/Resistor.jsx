@@ -10,27 +10,27 @@ import React from 'react';
 import { registerComponent } from './registry';
 
 const BAND_COLORS = {
-  0: '#1A1A1A', 1: '#8B4513', 2: '#DD0000', 3: '#FF8C00', 4: '#FFD700',
-  5: '#00AA00', 6: '#0044DD', 7: '#8B00FF', 8: '#808080', 9: '#F0F0F0',
+  0: 'var(--elab-hex-1a1a1a)', 1: 'var(--elab-hex-8b4513)', 2: 'var(--elab-hex-dd0000)', 3: 'var(--elab-hex-ff8c00)', 4: 'var(--elab-hex-ffd700)',
+  5: 'var(--elab-hex-00aa00)', 6: 'var(--elab-hex-0044dd)', 7: 'var(--elab-hex-8b00ff)', 8: 'var(--elab-hex-808080)', 9: 'var(--elab-hex-f0f0f0)',
 };
 
 const MULTIPLIER_COLORS = {
-  1: '#1A1A1A', 10: '#8B4513', 100: '#DD0000', 1000: '#FF8C00',
-  10000: '#FFD700', 100000: '#00AA00', 1000000: '#0044DD',
+  1: 'var(--elab-hex-1a1a1a)', 10: 'var(--elab-hex-8b4513)', 100: 'var(--elab-hex-dd0000)', 1000: 'var(--elab-hex-ff8c00)',
+  10000: 'var(--elab-hex-ffd700)', 100000: 'var(--elab-hex-00aa00)', 1000000: 'var(--elab-hex-0044dd)',
 };
 
-const TOLERANCE_COLORS = { 5: '#DAA520', 10: '#C0C0C0' };
+const TOLERANCE_COLORS = { 5: 'var(--elab-hex-daa520)', 10: 'var(--elab-hex-c0c0c0)' };
 
 function calculateBands(value) {
-  if (value <= 0) return ['#1A1A1A', '#1A1A1A', '#1A1A1A', '#DAA520'];
+  if (value <= 0) return ['var(--elab-hex-1a1a1a)', 'var(--elab-hex-1a1a1a)', 'var(--elab-hex-1a1a1a)', 'var(--elab-hex-daa520)'];
   const str = String(Math.round(value));
   const d1 = parseInt(str[0]) || 0;
   const d2 = parseInt(str[1]) || 0;
   const multiplier = Math.pow(10, Math.max(0, str.length - 2));
   return [
-    BAND_COLORS[d1] || '#1A1A1A',
-    BAND_COLORS[d2] || '#1A1A1A',
-    MULTIPLIER_COLORS[multiplier] || '#1A1A1A',
+    BAND_COLORS[d1] || 'var(--elab-hex-1a1a1a)',
+    BAND_COLORS[d2] || 'var(--elab-hex-1a1a1a)',
+    MULTIPLIER_COLORS[multiplier] || 'var(--elab-hex-1a1a1a)',
     TOLERANCE_COLORS[5],
   ];
 }
@@ -56,23 +56,23 @@ const Resistor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, v
       <defs>
         {/* Cylindrical body gradient (top-lit) */}
         <linearGradient id={`${uid}-body`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#F0E0A8" />
-          <stop offset="25%" stopColor="#E8D49A" />
-          <stop offset="50%" stopColor="#D9C58A" />
-          <stop offset="75%" stopColor="#C8B47A" />
-          <stop offset="100%" stopColor="#B8A06A" />
+          <stop offset="0%" stopColor="var(--elab-hex-f0e0a8)" />
+          <stop offset="25%" stopColor="var(--elab-hex-e8d49a)" />
+          <stop offset="50%" stopColor="var(--elab-hex-d9c58a)" />
+          <stop offset="75%" stopColor="var(--elab-hex-c8b47a)" />
+          <stop offset="100%" stopColor="var(--elab-hex-b8a06a)" />
         </linearGradient>
         {/* Metallic end cap gradient */}
         <linearGradient id={`${uid}-cap`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#D8D8D8" />
-          <stop offset="40%" stopColor="#B7B7B7" />
-          <stop offset="100%" stopColor="#8A8A8A" />
+          <stop offset="0%" stopColor="var(--elab-hex-d8d8d8)" />
+          <stop offset="40%" stopColor="var(--elab-hex-b7b7b7)" />
+          <stop offset="100%" stopColor="var(--elab-hex-8a8a8a)" />
         </linearGradient>
         {/* Wire lead gradient */}
         <linearGradient id={`${uid}-wire`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#B0B0B0" />
-          <stop offset="50%" stopColor="#9E9E9E" />
-          <stop offset="100%" stopColor="#888888" />
+          <stop offset="0%" stopColor="var(--elab-hex-b0b0b0)" />
+          <stop offset="50%" stopColor="var(--elab-hex-9e9e9e)" />
+          <stop offset="100%" stopColor="var(--elab-hex-888888)" />
         </linearGradient>
       </defs>
 
@@ -84,21 +84,21 @@ const Resistor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, v
 
       {/* Body shadow for depth */}
       <rect x="-12.5" y="-4.8" width="26" height="11.2" rx="5.2"
-        fill="#000000" opacity="0.06" transform="translate(0.4, 0.6)" />
+        fill="var(--elab-hex-000000)" opacity="0.06" transform="translate(0.4, 0.6)" />
 
       {/* End caps — metallic rings with gradient */}
-      <ellipse cx="-13" cy="0" rx="1.55" ry="5.6" fill={`url(#${uid}-cap)`} stroke="#8A8A8A" strokeWidth="0.35" />
-      <ellipse cx="13"  cy="0" rx="1.55" ry="5.6" fill={`url(#${uid}-cap)`} stroke="#8A8A8A" strokeWidth="0.35" />
+      <ellipse cx="-13" cy="0" rx="1.55" ry="5.6" fill={`url(#${uid}-cap)`} stroke="var(--elab-hex-8a8a8a)" strokeWidth="0.35" />
+      <ellipse cx="13"  cy="0" rx="1.55" ry="5.6" fill={`url(#${uid}-cap)`} stroke="var(--elab-hex-8a8a8a)" strokeWidth="0.35" />
       {/* Cap highlights */}
-      <ellipse cx="-13.2" cy="-2" rx="0.8" ry="2.5" fill="#FFFFFF" opacity="0.12" />
-      <ellipse cx="12.8" cy="-2" rx="0.8" ry="2.5" fill="#FFFFFF" opacity="0.12" />
+      <ellipse cx="-13.2" cy="-2" rx="0.8" ry="2.5" fill="var(--elab-hex-ffffff)" opacity="0.12" />
+      <ellipse cx="12.8" cy="-2" rx="0.8" ry="2.5" fill="var(--elab-hex-ffffff)" opacity="0.12" />
 
       {/* Body — cylindrical gradient for 3D effect */}
       <rect x="-13" y="-5.6" width="26" height="11.2" rx="5.2"
-        fill={`url(#${uid}-body)`} stroke="#9C874E" strokeWidth="0.4" />
+        fill={`url(#${uid}-body)`} stroke="var(--elab-hex-9c874e)" strokeWidth="0.4" />
       {/* Top specular highlight */}
       <rect x="-11" y="-5.2" width="22" height="3.8" rx="2.5"
-        fill="#FFFFFF" opacity="0.14" />
+        fill="var(--elab-hex-ffffff)" opacity="0.14" />
 
       {/* Color bands — with subtle curvature shadow */}
       {[
@@ -112,7 +112,7 @@ const Resistor = ({ x = 0, y = 0, state = {}, highlighted = false, onInteract, v
             fill={fill} opacity={0.92} />
           {/* Band highlight (top) */}
           <rect x={bx + 0.3} y="-5.2" width={w - 0.6} height="2.5" rx="0.4"
-            fill="#FFFFFF" opacity="0.08" />
+            fill="var(--elab-hex-ffffff)" opacity="0.08" />
         </g>
       ))}
 

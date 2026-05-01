@@ -52,7 +52,7 @@
 }
 
 .input::placeholder {
-  color: #9CA3AF;
+  color: #9CA3AF; /* palette */
 }
 
 /* Icon buttons — 44px (padded to 48px touch target via padding) */
@@ -62,7 +62,7 @@
   min-width: 44px;
   border: none;
   background: transparent;
-  color: #595959;
+  color: #595959; /* palette */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -85,12 +85,12 @@
 }
 
 .sendBtn:hover {
-  background: #3d6620;
+  background: #3d6620; /* palette */
 }
 
 .sendBtn:disabled {
-  background: #E2E8F0;
-  color: #9CA3AF;
+  background: #E2E8F0; /* palette */
+  color: #9CA3AF; /* palette */
   cursor: default;
 }
 

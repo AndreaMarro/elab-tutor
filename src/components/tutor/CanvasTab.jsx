@@ -80,10 +80,10 @@ export default function CanvasTab({
                 canvas.style.height = cssH + 'px';
                 const ctx = canvas.getContext('2d');
                 ctx.scale(dpr, dpr);
-                ctx.fillStyle = '#FFFFFF';
+                ctx.fillStyle = '#ffffff'; // palette
                 ctx.fillRect(0, 0, cssW, cssH);
                 ctx.lineCap = 'round';
-                ctx.strokeStyle = isEraser ? '#FFFFFF' : brushColor;
+                ctx.strokeStyle = isEraser ? '#ffffff' : brushColor; // palette
                 ctx.lineWidth = brushSize;
                 ctxRef.current = ctx;
 
@@ -161,7 +161,7 @@ export default function CanvasTab({
         const size = brushSize * (0.3 + 1.4 * pressure);
         ctx.beginPath();
         ctx.arc(x, y, size / 2, 0, Math.PI * 2);
-        ctx.fillStyle = isEraser ? '#FFFFFF' : brushColor;
+        ctx.fillStyle = isEraser ? '#ffffff' : brushColor; // palette
         ctx.fill();
     }, [canvasTool, brushSize, brushColor, isEraser, getPressure]);
 
@@ -189,7 +189,7 @@ export default function CanvasTab({
         ctx.lineWidth = size;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        ctx.strokeStyle = isEraser ? '#FFFFFF' : brushColor;
+        ctx.strokeStyle = isEraser ? '#ffffff' : brushColor; // palette
         ctx.stroke();
 
         lastPosRef.current = { x, y };
@@ -265,7 +265,7 @@ export default function CanvasTab({
         const ctx = ctxRef.current;
         if (!ctx) return;
         pushHistory();
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#ffffff'; // palette
         const dpr = window.devicePixelRatio || 1;
         ctx.fillRect(0, 0, canvasRef.current.width / dpr, canvasRef.current.height / dpr);
     };
@@ -341,7 +341,7 @@ export default function CanvasTab({
                     <button className={`tool-btn ${canvasTool === 'text' ? 'active' : ''}`} onClick={() => setCanvasTool('text')} title="Testo">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9.5" y1="20" x2="14.5" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
                     </button>
-                    <button className={`tool-btn ${isEraser ? 'active' : ''}`} onClick={() => { const w = !isEraser; setIsEraser(w); setCanvasTool('brush'); if (ctxRef.current) ctxRef.current.strokeStyle = w ? '#FFFFFF' : brushColor; }} title="Gomma">
+                    <button className={`tool-btn ${isEraser ? 'active' : ''}`} onClick={() => { const w = !isEraser; setIsEraser(w); setCanvasTool('brush'); if (ctxRef.current) ctxRef.current.strokeStyle = w ? '#ffffff' : brushColor; }} title="Gomma">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
                     </button>
                     <button className={`tool-btn${!canUndo ? ' disabled' : ''}`} onClick={undo} disabled={!canUndo} title="Annulla (Ctrl+Z)">

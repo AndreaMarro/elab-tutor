@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background-color: #fafbfc;
+  background-color: #fafbfc; /* palette */
   font-family: 'Open Sans', system-ui, sans-serif;
 }
 
@@ -102,7 +102,7 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 1.3;
-  color: #1a1a1a;
+  color: #1a1a1a; /* palette */
   flex-grow: 1;
 }
 
@@ -143,7 +143,7 @@
 }
 .type_experiment .typeBadge {
   background-color: rgba(74, 122, 37, 0.15);
-  color: #3a6020;
+  color: #3a6020; /* palette */
 }
 
 .type_project {
@@ -151,7 +151,7 @@
 }
 .type_project .typeBadge {
   background-color: rgba(232, 148, 28, 0.15);
-  color: #c07010;
+  color: #c07010; /* palette */
 }
 
 .type_wip {
@@ -159,7 +159,7 @@
 }
 .type_wip .typeBadge {
   background-color: rgba(229, 75, 61, 0.15);
-  color: #c93f30;
+  color: #c93f30; /* palette */
 }
 
 .type_bonus {

@@ -57,7 +57,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1200;
-  background: #FFFFFF;
+  background: #FFFFFF; /* palette */
   border: 3px solid var(--color-primary);
   border-radius: 16px;
   padding: 24px 32px;
@@ -78,14 +78,14 @@
 
 .nudgeTitle {
   font-size: 15px;
-  color: #1a1a2e;
+  color: #1a1a2e; /* palette */
   line-height: 1.5;
   margin: 0 0 16px;
 }
 
 .nudgeFrom {
   font-size: 14px;
-  color: #64748B;
+  color: #64748B; /* palette */
   margin: 0 0 16px;
 }
 
