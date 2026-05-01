@@ -15,6 +15,9 @@
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { getCorsHeaders, getSecurityHeaders, checkBodySize, BODY_SIZE_MULTIMODAL } from '../_shared/guards.ts';
 import { cfWhisperSTT } from '../_shared/cloudflare-client.ts';
+// iter 39 ralph A5 — Voxtral Transcribe 2 STT migration per ADR-031.
+// Voxtral primary (4% WER FLEURS Italian + EU FR GDPR + $0.003/min) + CF Whisper fallback.
+import { transcribeVoxtral, isVoxtralSTTEnabled, getVoxtralSTTModel } from '../_shared/voxtral-stt-client.ts';
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -88,15 +91,50 @@ serve(async (req: Request) => {
       });
     }
 
-    const result = await cfWhisperSTT({ audio: audioBytes, language });
+    // iter 39 ralph A5 — Voxtral primary + CF Whisper fallback per ADR-031.
+    // STT_PROVIDER='voxtral' env activates Mistral path. Default 'cf-whisper'
+    // preserves incumbent CF Whisper Turbo for safe canary rollout.
+    const useVoxtral = isVoxtralSTTEnabled();
+    let result: { text: string; language?: string; latencyMs: number };
+    let provider = 'cloudflare-workers-ai';
+    let model = '@cf/openai/whisper-large-v3-turbo';
+    let voxtralFailed: string | null = null;
+
+    if (useVoxtral) {
+      try {
+        const v = await transcribeVoxtral({
+          audioBytes,
+          mimeType: contentType || 'audio/mp3',
+          language,
+        });
+        result = { text: v.text, language: v.language, latencyMs: v.latencyMs };
+        provider = 'voxtral-transcribe-2';
+        model = getVoxtralSTTModel();
+      } catch (voxErr) {
+        voxtralFailed = voxErr instanceof Error ? voxErr.message : String(voxErr);
+        console.warn(JSON.stringify({
+          level: 'warn', event: 'voxtral_stt_fallback_to_cf',
+          error: voxtralFailed,
+          timestamp: new Date().toISOString(),
+        }));
+        // Fall through to CF Whisper fallback
+        const cfRes = await cfWhisperSTT({ audio: audioBytes, language });
+        result = cfRes;
+        provider = 'cloudflare-workers-ai-fallback';
+      }
+    } else {
+      // CF Whisper primary path (legacy, default)
+      result = await cfWhisperSTT({ audio: audioBytes, language });
+    }
 
     return new Response(JSON.stringify({
       success: true,
       text: result.text,
       language: result.language || language,
-      model: '@cf/openai/whisper-large-v3-turbo',
-      provider: 'cloudflare-workers-ai',
+      model,
+      provider,
       latencyMs: result.latencyMs,
+      voxtral_fallback_reason: voxtralFailed || undefined,
     }), {
       status: 200, headers: getSecurityHeaders(req),
     });
