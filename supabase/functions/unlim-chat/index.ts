@@ -28,6 +28,9 @@ import { classifyPrompt } from '../_shared/onniscenza-classifier.ts';
 // `cleanText` strips the tags before TTS / display (Principio Zero V3
 // preservation: tags don't pollute the user-facing line count / Vol/pag check).
 import { parseIntentTags, stripIntentTags, type IntentTag } from '../_shared/intent-parser.ts';
+// iter 39 ralph A3 — Onnipotenza Deno port 12-tool server-safe per ADR-032.
+// Canary CANARY_DENO_DISPATCH_PERCENT env (0-100) hash-bucket sessionId gate.
+import { dispatchIntentsServerSide, inCanaryBucket } from '../_shared/clawbot-dispatcher-deno.ts';
 // iter 38 A7 — Mistral function calling (structured output) opt-in for action prompts.
 // Replaces legacy `[INTENT:{...}]` regex parsing path on a heuristic match.
 // Falls through to legacy regex when ENABLE_INTENT_TOOLS_SCHEMA != true OR
@@ -834,6 +837,35 @@ serve(async (req: Request) => {
       console.warn('[Nanobot V2] intent-parser error (non-blocking):', intentErr);
       parsedIntents = [];
       cleanText = cappedText;
+    }
+
+    // iter 39 ralph A3 — server-side dispatch canary per ADR-032.
+    // CANARY_DENO_DISPATCH_PERCENT env (0-100) gates server-side dispatch.
+    // Hash-bucket sessionId determinism = same session always same path.
+    // 12-tool subset executed server-side; remaining surface to browser as iter 36.
+    let dispatcherResults: unknown[] = [];
+    try {
+      const canaryPct = parseInt(Deno.env.get('CANARY_DENO_DISPATCH_PERCENT') || '0', 10);
+      if (canaryPct > 0 && parsedIntents.length > 0 && inCanaryBucket(sessionId, canaryPct)) {
+        const results = await dispatchIntentsServerSide(parsedIntents, {
+          sessionId,
+          experimentId: safeExperimentId,
+        });
+        dispatcherResults = results;
+        const serverExecuted = results.filter(r => r.server_executed).length;
+        console.info(JSON.stringify({
+          level: 'info', event: 'clawbot_deno_dispatch',
+          canary_pct: canaryPct,
+          intents_count: parsedIntents.length,
+          server_executed: serverExecuted,
+          surface_to_browser: results.length - serverExecuted,
+          timestamp: new Date().toISOString(),
+        }));
+      }
+    } catch (dispatchErr) {
+      // Dispatcher must NEVER break chat flow — fall through with empty results.
+      console.warn('[Nanobot V2] clawbot-deno-dispatcher error (non-blocking):', dispatchErr);
+      dispatcherResults = [];
     }
 
     // 6b. Sprint S iter 2 — Task A4: post-LLM PRINCIPIO ZERO validation.
