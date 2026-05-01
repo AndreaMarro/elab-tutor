@@ -8,12 +8,54 @@
 
 Sei il **Mac Mini autonomous orchestrator** di ELAB Tutor (Italian K-12 educational Arduino/electronics tutor for children 8-14). Esegui ralph loop H24 multi-cycle 8 agents → 4 → 2 → 1 (consolidation funnel) per auditare + fixare TUTTI 94 esperimenti UNO PER UNO. Ogni cycle re-sweeps tutti 94 esperimenti.
 
+## Phase 0a — SETUP MAC MINI ENVIRONMENT (MANDATORY pre-Cycle 1)
+
+**Tutti i comandi shell DEVONO essere wrappati `bash -lc "..."` OPPURE prefissati `PATH=/opt/homebrew/bin:/usr/local/bin:$PATH` — SSH non-login shell NON sourcia `~/.zshrc` per node/npm/claude.**
+
+```bash
+# 1. Verify tools presenti
+bash -lc "node -v && npm -v && claude --version"
+# Expected: v25.9.0 + 11.12.1 + 2.1.119
+
+# 2. Vai al repo
+cd ~/Projects/elab-tutor
+
+# 3. Stash any pending Mac Mini cron iter36 changes (NON rimuove autonomous loop)
+git stash push -m "sprint-u-pre-setup-stash"
+
+# 4. Fetch latest origin
+git fetch origin
+
+# 5. Create isolated worktree per Sprint U (NON disturba cron iter36 corrente)
+git worktree add ../elab-sprint-u-cycle1-iter1 -b mac-mini/sprint-u-cycle1-iter1-$(date +%Y%m%dT%H%M%S) origin/e2e-bypass-preview
+cd ../elab-sprint-u-cycle1-iter1
+
+# 6. Verify Sprint U files presenti post-pull
+ls docs/plans/PDR-SPRINT-U-*.md docs/plans/MACMINI-ACTIVATION-PROMPT-*.md
+
+# 7. node_modules condiviso? Se mancano, installa (richiede ~14min):
+ls node_modules 2>/dev/null && echo "node_modules OK" || bash -lc "npm install"
+
+# 8. Verify vitest baseline GREEN entry gate
+bash -lc "npx vitest run --reporter=basic 2>&1 | tail -5"
+# Expected: Tests 13474 passed | 15 skipped | 8 todo
+
+# 9. Update heartbeat
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) sprint-u cycle1 iter1 phase0a-setup-complete" >> automa/state/heartbeat
+```
+
 ## Contesto critico (leggi PRIMA)
 
-1. **PDR master**: `/Users/progettibelli/elab-builder/docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md` — leggi tutto §1-§14
-2. **CLAUDE.md project**: `/Users/progettibelli/elab-builder/CLAUDE.md` — leggi sezioni "DUE PAROLE D'ORDINE" §1+§2 + "Sprint T iter 38 close" (più recente)
+1. **PDR master**: `/Users/progettibelli/Projects/elab-tutor/docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md` — leggi tutto §1-§14
+2. **CLAUDE.md project**: `/Users/progettibelli/Projects/elab-tutor/CLAUDE.md` — leggi sezioni "DUE PAROLE D'ORDINE" §1+§2 + "Sprint T iter 38 close" (più recente)
 3. **Tester-6 evidenza iter 37**: `automa/team-state/messages/tester6-iter37-phase3-completed.md` (4-way schema drift INTENT)
-4. **Volumi PDF source narrativa**: `/Users/andreamarro/VOLUME 3/CONTENUTI/volumi-pdf/Volume[123].pdf` (NB: estrai testo via `pdftotext` se path differisce su Mac Mini, sostituisci con copia locale)
+4. **Volumi PDF source narrativa LOCALI Mac Mini** (USA QUESTI):
+   - `/Users/progettibelli/Projects/elab-tutor/dist-test/volumes/volume1.pdf` (27 MB Vol 1)
+   - `/Users/progettibelli/Projects/elab-tutor/dist-test/volumes/volume2.pdf` (17 MB Vol 2)
+   - `/Users/progettibelli/Projects/elab-tutor/dist-test/volumes/volume3.pdf` (18 MB Vol 3)
+   - **Plus materiali Davide Tres Jolie originals**: `/Users/progettibelli/Desktop/ELABTUTOR/ELAB - TRES JOLIE/[1|2|3] ELAB VOLUME [UNO|DUE|TRE]/2 MANUALE VOLUME [1|2|3]/` (sorgente autorevole se PDF estratto è ambiguo)
+   - **Estrazione testo**: `pdftotext -layout dist-test/volumes/volume1.pdf /tmp/vol1.txt` (poi vol2 + vol3)
+   - **Alternative SE PDF non estraibili**: usa `src/data/volume-references.js` `bookText` field (94/94 entries VERBATIM enriched iter 37) — autosufficiente in-repo
 
 ## Goal critico — pilastro centrale
 
@@ -80,7 +122,7 @@ RALPH ITERATION (1, 2, 3, ... ripeti finché Sprint U success criteria met):
 
 Prima di spawnare 8 agents Cycle 1 ogni ralph iteration:
 
-1. `cd /Users/progettibelli/elab-builder` (o equivalent)
+1. `cd /Users/progettibelli/Projects/elab-tutor` (o equivalent)
 2. `git status --short` — verify branch clean
 3. `git checkout -b mac-mini/sprint-u-cycle1-iter${RALPH_ITER}-${ISO}-94-esperimenti`
 4. `cat automa/baseline-tests.txt` — record vitest baseline (pre-cycle)
@@ -203,7 +245,7 @@ If SSH disconnect or Mac Mini reboot: resume da last heartbeat + completion msgs
 
 ```
 # Sprint U ralph loop trigger every 6h (after current ralph iter completes)
-0 */6 * * * cd /Users/progettibelli/elab-builder && /usr/local/bin/claude --print "Continua Sprint U ralph loop iter $(date +%s)" 2>&1 | tee -a logs/sprint-u-ralph-$(date +%Y%m%d).log
+0 */6 * * * cd /Users/progettibelli/Projects/elab-tutor && /usr/local/bin/claude --print "Continua Sprint U ralph loop iter $(date +%s)" 2>&1 | tee -a logs/sprint-u-ralph-$(date +%Y%m%d).log
 ```
 
 NB: cron runs only se previous ralph iter terminated. Use lock file `/tmp/elab-sprint-u.lock` per prevent overlap.
@@ -245,11 +287,11 @@ Mac Mini agent DEVE attendere Andrea ratify per:
 
 ## Cross-link
 
-- **PDR master**: `/Users/progettibelli/elab-builder/docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md`
-- **Iter 38 audit**: `/Users/progettibelli/elab-builder/docs/audits/2026-05-01-iter-38-PHASE3-CLOSE-audit.md`
-- **Iter 39 handoff**: `/Users/progettibelli/elab-builder/docs/handoff/2026-05-01-iter-38-to-iter-39-handoff.md`
-- **CLAUDE.md context**: `/Users/progettibelli/elab-builder/CLAUDE.md`
-- **Tester-6 4-way schema drift evidence**: `/Users/progettibelli/elab-builder/automa/team-state/messages/tester6-iter37-phase3-completed.md`
+- **PDR master**: `/Users/progettibelli/Projects/elab-tutor/docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md`
+- **Iter 38 audit**: `/Users/progettibelli/Projects/elab-tutor/docs/audits/2026-05-01-iter-38-PHASE3-CLOSE-audit.md`
+- **Iter 39 handoff**: `/Users/progettibelli/Projects/elab-tutor/docs/handoff/2026-05-01-iter-38-to-iter-39-handoff.md`
+- **CLAUDE.md context**: `/Users/progettibelli/Projects/elab-tutor/CLAUDE.md`
+- **Tester-6 4-way schema drift evidence**: `/Users/progettibelli/Projects/elab-tutor/automa/team-state/messages/tester6-iter37-phase3-completed.md`
 - **3 NEW ADR iter 38**: `docs/adrs/ADR-030-mistral-function-calling-intent-canonical.md` + `ADR-031-stt-migration-voxtral-transcribe-2.md` + `ADR-028-onnipotenza-intent-dispatcher-server-side.md` (§14.b amend)
 
 ## VAI
