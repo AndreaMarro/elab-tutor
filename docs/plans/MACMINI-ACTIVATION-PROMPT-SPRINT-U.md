@@ -241,14 +241,36 @@ Every 30 min update:
 
 If SSH disconnect or Mac Mini reboot: resume da last heartbeat + completion msgs filesystem.
 
-## Cron entries Sprint U add (Mac Mini ~/.crontab append)
+## Ralph Loop skill (NO CRON — single persistent session)
+
+**Anti-pattern cron**: cron spawn nuova claude session ogni tick → perdi context tra iterations + drain context-window per re-load CLAUDE.md/PDR + risk overlap esecuzioni.
+
+**Pattern corretto Sprint U**: usa skill `ralph-loop:ralph-loop` in single long-running Claude session. Loop interno persistente, context preservato tra cycles, stops solo su segnale esplicito.
 
 ```
-# Sprint U ralph loop trigger every 6h (after current ralph iter completes)
-0 */6 * * * cd /Users/progettibelli/Projects/elab-tutor && /usr/local/bin/claude --print "Continua Sprint U ralph loop iter $(date +%s)" 2>&1 | tee -a logs/sprint-u-ralph-$(date +%Y%m%d).log
+# Inside Claude session Mac Mini (post Phase 0a setup):
+/ralph-loop start --task "Sprint U cycle ralph 94 esperimenti UNO PER UNO" --plan docs/plans/PDR-SPRINT-U-PARITA-NARRATIVA-94-ESPERIMENTI-RALPH-LOOP.md --stop-file /tmp/elab-sprint-u-stop --max-iter 5
 ```
 
-NB: cron runs only se previous ralph iter terminated. Use lock file `/tmp/elab-sprint-u.lock` per prevent overlap.
+**Comportamento ralph-loop**:
+- Ogni iteration esegue Cycle 1→2→3→4 (8→4→2→1 agent funnel) re-sweep 94 esperimenti
+- Context preservato tra iterations (smart_search claude-mem per recall sprint history past iter)
+- Stop conditions:
+  - File `/tmp/elab-sprint-u-stop` esiste (Andrea SSH `touch /tmp/elab-sprint-u-stop`)
+  - Sprint U success criteria 12/12 met (PDR §14)
+  - `--max-iter 5` raggiunto (safety cap)
+  - `/cancel-ralph` slash command in session
+  - Anthropic org limit hit → ralph-loop pause + heartbeat segnala
+
+**Recovery post-disconnect**:
+- Heartbeat `automa/state/heartbeat` last entry indica ralph_iter + cycle attivo
+- Resume: relaunch Claude Mac Mini + ralph-loop con stesso task ID → recupera context da claude-mem timeline + filesystem completion msgs
+- Worktree isolato `~/Projects/elab-sprint-u-cycle1-iter1/` preserva working state
+
+**Plus integration cron iter36 LIVE coesistere**:
+- Cron user-sim curriculum iter36 GIRA SU branch `mac-mini/iter36-user-sim-*` worktree main `~/Projects/elab-tutor/`
+- Sprint U ralph loop GIRA SU worktree isolato `~/Projects/elab-sprint-u-cycle1-iter1/` branch `mac-mini/sprint-u-cycle1-iter1-*`
+- ZERO interference (rigid file ownership branch + worktree)
 
 ## SUCCESS CRITERIA Sprint U close 9.5/10 ONESTO (G45 mandate)
 
