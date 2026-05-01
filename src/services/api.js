@@ -347,6 +347,133 @@ async function tryNanobot(message, circuitState, externalSignal, experimentId, i
 }
 
 /**
+ * iter 39 A1 SSE — Mistral streaming chat client (TTFB perceived <500ms).
+ *
+ * POST { ...chatPayload, stream: true } → text/event-stream
+ *   data: {"token":"..."}\n\n  (per LLM token, ~50-200ms each)
+ *   data: {"done":true,"clean_text":"...","intents_parsed":[...],"latency_ms":...}\n\n
+ *   data: [DONE]\n\n
+ *
+ * Server-side branch: `supabase/functions/unlim-chat/index.ts` requires
+ * `ENABLE_SSE=true` env (canary 5%→25%→100% rollout per ADR-029 §7).
+ * Safe fallback: if 4xx/5xx response (e.g. ENABLE_SSE=false → falls through
+ * to non-stream callLLM path), this function returns null and caller MUST
+ * fall back to non-streaming `tryNanobot` flow.
+ *
+ * Callbacks:
+ *   onToken(text)  — fired per token chunk (typewriter accumulation in UI)
+ *   onDone(meta)   — fired with {clean_text, intents_parsed, latency_ms,
+ *                    model, source} — caller commits final state + dispatches
+ *                    intents via `__ELAB_API` + sends clean_text to TTS.
+ *
+ * Returns final {success, response, intentsParsed, source} object on success
+ * (compatible with tryNanobot return shape) or null on init failure.
+ *
+ * Iter 39 mandate: NO compiacenza — defensive try/catch + abort signal +
+ * error toast surface to caller.
+ */
+export async function chatWithAIStream(message, circuitState, externalSignal,
+    experimentId, images = [], simulatorContext = null,
+    { onToken, onDone, onError } = {}) {
+    if (!NANOBOT_URL || !_isSupabaseEdge) return null;
+    const controller = new AbortController();
+    const timeout = images.length > 0 ? API_TIMEOUT * 2 : API_TIMEOUT;
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    let abortHandler = null;
+    if (externalSignal) {
+        if (externalSignal.aborted) { clearTimeout(timeoutId); return null; }
+        abortHandler = () => controller.abort();
+        externalSignal.addEventListener('abort', abortHandler, { once: true });
+    }
+    try {
+        const payload = {
+            message,
+            sessionId: getTutorSessionId(),
+            circuitState: circuitState || null,
+            experimentId: experimentId || null,
+            simulatorContext: simulatorContext || null,
+            stream: true,
+        };
+        if (images.length > 0) {
+            payload.images = images.map(img => ({
+                base64: img.base64,
+                mimeType: img.mimeType || 'image/png',
+            }));
+        }
+        const res = await fetch(nanobotEndpoint('/tutor-chat'), {
+            method: 'POST',
+            headers: { ...nanobotHeaders(), Accept: 'text/event-stream' },
+            signal: controller.signal,
+            body: JSON.stringify(payload),
+        });
+        // ENABLE_SSE=false on server → returns JSON 200 (non-stream path) instead of SSE.
+        // Detect via Content-Type and fall back to caller.
+        const ct = res.headers.get('content-type') || '';
+        if (!res.ok || !ct.includes('text/event-stream')) {
+            return null;
+        }
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let fullText = '';
+        let cleanText = '';
+        let intentsParsed = [];
+        let meta = { latency_ms: 0, model: '', source: 'mistral-stream' };
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+            for (const line of lines) {
+                if (!line.startsWith('data: ')) continue;
+                const data = line.slice(6).trim();
+                if (!data || data === '[DONE]') continue;
+                try {
+                    const parsed = JSON.parse(data);
+                    if (typeof parsed.token === 'string') {
+                        fullText += parsed.token;
+                        if (typeof onToken === 'function') onToken(parsed.token, fullText);
+                    }
+                    if (parsed.done === true) {
+                        cleanText = typeof parsed.clean_text === 'string' ? parsed.clean_text : fullText;
+                        intentsParsed = Array.isArray(parsed.intents_parsed) ? parsed.intents_parsed : [];
+                        meta = {
+                            latency_ms: parsed.latency_ms ?? 0,
+                            model: parsed.model || '',
+                            source: parsed.source || 'mistral-stream',
+                        };
+                        if (typeof onDone === 'function') onDone({ ...meta, clean_text: cleanText, intents_parsed: intentsParsed });
+                    }
+                    if (parsed.error) {
+                        if (typeof onError === 'function') onError(parsed.error, parsed.detail);
+                        return null;
+                    }
+                } catch { /* skip malformed line */ }
+            }
+        }
+        const safeContent = cleanText || fullText;
+        return {
+            success: true,
+            response: ensureBookCitation(safeContent, experimentId),
+            source: meta.source,
+            actions: extractActions(safeContent),
+            intentsParsed,
+            stream: true,
+            latencyMs: meta.latency_ms,
+        };
+    } catch (e) {
+        if (typeof onError === 'function') onError('stream_failed', e?.message);
+        return null;
+    } finally {
+        clearTimeout(timeoutId);
+        if (externalSignal && abortHandler) {
+            externalSignal.removeEventListener('abort', abortHandler);
+        }
+    }
+}
+
+/**
  * MCP Tool: diagnoseCircuit — proactive circuit analysis via nanobot.
  * Returns null if nanobot unavailable.
  */

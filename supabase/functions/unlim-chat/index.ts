@@ -579,6 +579,116 @@ serve(async (req: Request) => {
     // 4. Determine thinking level for Pro model
     const thinkingLevel = model === 'gemini-2.5-pro' ? 'medium' : undefined;
 
+    // iter 39 A1 SSE — Mistral streaming branch (TTFB perceived <500ms).
+    // Gates:
+    //   - body.stream === true (client opt-in per-request)
+    //   - ENABLE_SSE env true (canary 5%→25%→100% rollout per ADR-029 §7)
+    //   - !useIntentSchema (Mistral function calling JSON-mode incompatible w/ stream)
+    //   - !hasImages (Pixtral vision SSE not benchmarked yet — defer iter 40+)
+    // Defensive: any sseStream error falls through to existing callLLM flow.
+    const sseEnabled = (Deno.env.get('ENABLE_SSE') || 'false').toLowerCase() === 'true';
+    const wantStream = (body as { stream?: boolean }).stream === true
+      && sseEnabled
+      && !useIntentSchema
+      && !hasImages;
+    if (wantStream) {
+      try {
+        const mistralStream = await callMistralChatStream({
+          systemPrompt,
+          message: safeMessage,
+          maxOutputTokens: 120,
+          temperature: 0.7,
+        });
+        const cacheDigest = cachedSystemPromptDigest;
+        const sseStream = new ReadableStream<Uint8Array>({
+          async start(controller) {
+            const encoder = new TextEncoder();
+            const reader = mistralStream.getReader();
+            let fullText = '';
+            let latencyMs = 0;
+            let modelUsed = '';
+            try {
+              while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                if (value && typeof value.token === 'string') {
+                  fullText += value.token;
+                  controller.enqueue(encoder.encode(
+                    `data: ${JSON.stringify({ token: value.token })}\n\n`,
+                  ));
+                }
+                if (value && value.done) {
+                  latencyMs = value.latencyMs ?? 0;
+                  modelUsed = value.model ?? 'mistral-stream';
+                }
+              }
+              // Post-stream: cap + parse intents + clean text on accumulated fullText
+              const cappedText = capWords(fullText);
+              const parsedTags = parseIntentTags(cappedText);
+              const cleanText = stripIntentTags(cappedText);
+              // Final metadata SSE chunk — client commits these to UI on done:true
+              controller.enqueue(encoder.encode(
+                `data: ${JSON.stringify({
+                  done: true,
+                  clean_text: cleanText,
+                  intents_parsed: parsedTags,
+                  latency_ms: latencyMs,
+                  model: modelUsed,
+                  source: 'mistral-stream',
+                  full_text: cappedText,
+                })}\n\n`,
+              ));
+              controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+              // Cache write-through (best effort, non-blocking)
+              if (cacheDigest && cleanText) {
+                try {
+                  await storeCache({
+                    experimentId: safeExperimentId,
+                    safeMessage,
+                    systemPromptDigest: cacheDigest,
+                    topK: onniTopK,
+                    classId: (req.headers.get('x-elab-class-id') || null),
+                    text: cleanText,
+                    intentsParsed: parsedTags,
+                  });
+                } catch { /* defensive */ }
+              }
+              // Save short audit row to student memory (non-blocking)
+              saveInteraction(sessionId, safeExperimentId || null,
+                safeExperimentId || 'sse-stream', 'sse-mistral', 'clawbot-l2-sse')
+                .catch(err => console.warn('[Nanobot V2 SSE] Memory save error:', err));
+              controller.close();
+            } catch (e) {
+              try {
+                controller.enqueue(encoder.encode(
+                  `data: ${JSON.stringify({ error: 'stream_failed', detail: e instanceof Error ? e.message : 'unknown' })}\n\n`,
+                ));
+              } catch { /* no-op */ }
+              controller.error(e);
+            }
+          },
+        });
+        return new Response(sseStream, {
+          status: 200,
+          headers: {
+            ...getSecurityHeaders(req),
+            'Content-Type': 'text/event-stream; charset=utf-8',
+            'Cache-Control': 'no-cache, no-transform',
+            'X-Accel-Buffering': 'no',
+            Connection: 'keep-alive',
+          },
+        });
+      } catch (sseErr) {
+        // Stream init failed (Mistral down, env missing, etc) — fall through to existing flow
+        console.warn(JSON.stringify({
+          level: 'warn',
+          event: 'sse_stream_init_failed_fallback',
+          error: sseErr instanceof Error ? sseErr.message : 'unknown',
+          timestamp: new Date().toISOString(),
+        }));
+      }
+    }
+
     // 5. Call LLM (Together default, Gemini fallback, Brain last resort)
     // Sprint S iter 5: Andrea decision — Together AI primary, Gemini fallback
     // (R5 49/50 PASS Llama 3.3 70B, audit docs/audits/2026-04-26-sprint-s-iter4-r5-together-direct-RESULT.md)
