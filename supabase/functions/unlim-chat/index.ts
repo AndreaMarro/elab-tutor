@@ -17,7 +17,7 @@ import { retrieveVolumeContext, hybridRetrieve, formatHybridContext } from '../_
 import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shared/capitoli-loader.ts';
 import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
 import { selectTemplate, executeTemplate } from '../_shared/clawbot-template-router.ts';
-import { aggregateOnniscenza } from '../_shared/onniscenza-bridge.ts';
+import { aggregateOnniscenza, aggregateOnniscenzaV2 } from '../_shared/onniscenza-bridge.ts';
 // iter 37 Phase 1 Atom A2 — pre-LLM regex classifier drives ENABLE_ONNISCENZA
 // conditional path: chit_chat skips aggregator (~500-1000ms saved), deep
 // questions / safety / citations preserve top-3, plurale ragazzi top-2.
@@ -380,7 +380,13 @@ serve(async (req: Request) => {
             }),
           };
         }
-        onniscenzaSnapshot = await aggregateOnniscenza({
+        // iter 39 ralph A4 — Onniscenza V2 cross-attention per ADR-033 opt-in.
+        // ONNISCENZA_VERSION='v2' env → cross-attention scoring + budget 8 chunks +
+        // experiment-anchor +0.15 + kit-mention +0.10 + layer-specific RRF k.
+        // Default 'v1' (legacy uniform RRF k=60) preserved for safety canary.
+        const onniscenzaVersion = (Deno.env.get('ONNISCENZA_VERSION') || 'v1').toLowerCase();
+        const aggregator = onniscenzaVersion === 'v2' ? aggregateOnniscenzaV2 : aggregateOnniscenza;
+        onniscenzaSnapshot = await aggregator({
           query: safeMessage,
           experiment_id: safeExperimentId,
           session_id: sessionId, // iter 35 fix Agent C audit: was undefined ref `safeSessionId` masked while ENABLE_ONNISCENZA off

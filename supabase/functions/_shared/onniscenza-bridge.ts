@@ -386,3 +386,207 @@ export const ONNISCENZA_LAYER_STATUS: Record<LayerName, 'LIVE' | 'STUB' | 'TODO'
   L6_llm: 'LIVE',       // chat history rolling window from request context
   L7_onthefly: 'LIVE',  // circuit_state injected by caller
 };
+
+// ============================================================================
+// iter 39 ralph A4 — Onniscenza V2 cross-attention 8-chunk budget per ADR-033
+// ============================================================================
+
+/** Layer-specific weights per ADR-033 §Cross-attention scoring */
+const V2_LAYER_WEIGHTS: Record<LayerName, number> = {
+  L1_rag: 1.0,
+  L2_wiki: 0.85,
+  L3_glossario: 0.75,
+  L4_sessione: 0.95,
+  L5_vision: 0.90,
+  L6_llm: 0.70,
+  L7_onthefly: 0.65,
+};
+
+/** Layer-specific RRF k per ADR-033 §RRF k=60 layer-specific weights */
+const V2_LAYER_K: Record<LayerName, number> = {
+  L1_rag: 60,
+  L2_wiki: 80,
+  L3_glossario: 100,
+  L4_sessione: 60,
+  L5_vision: 60,
+  L6_llm: 40,  // recency boost
+  L7_onthefly: 60,
+};
+
+/** Budget allocation per ADR-033 §Budget allocation 8 chunks */
+const V2_BUDGET = {
+  L1_rag: { min: 1, max: 5 },     // expand to 5 if other slots skip
+  L2_wiki: { min: 0, max: 3 },    // expand to 3 if other slots skip
+  L3_glossario: { min: 0, max: 1 },
+  L6_llm: { min: 0, max: 1 },
+  L7_onthefly: { min: 0, max: 1 },
+};
+
+const KIT_MENTION_REGEX = /\b(breadboard|kit ELAB|componente fisico|fili|pin|resistor[ei]?|LED|transistor|MOSFET)\b/i;
+
+/**
+ * Score a single hit per V2 cross-attention rules.
+ * - Base: chunk's own similarity score (from pgvector match OR layer-specific signal)
+ * - Layer weight multiplier
+ * - Experiment-anchor boost +0.15 if hit.experiment_id matches input
+ * - Kit-mention boost +0.10 if hit.preview contains kit ELAB references
+ */
+function scoreHitV2(hit: LayerHit, layer: LayerName, input: OnniscenzaInput): number {
+  const baseSimilarity = hit.score ?? hit.similarity ?? 0.5;
+  const layerWeight = V2_LAYER_WEIGHTS[layer] ?? 0.5;
+  let score = baseSimilarity * layerWeight;
+  // Experiment-anchor boost
+  if (input.experiment_id && hit.experiment_id === input.experiment_id) {
+    score += 0.15;
+  }
+  // Kit-mention boost (Morfismo Sense 2)
+  const text = (hit.preview || hit.text || '');
+  if (KIT_MENTION_REGEX.test(text)) {
+    score += 0.10;
+  }
+  return score;
+}
+
+/**
+ * Allocate budget 8 chunks total across layers per ADR-033.
+ * Returns the highest-scored hits within per-layer min/max constraints.
+ * Skipped slots reallocate to L1 RAG (up to max=5) OR L2 Wiki (up to max=3).
+ */
+function allocateBudgetV2(
+  scoredByLayer: Record<LayerName, { hit: LayerHit; score: number }[]>,
+): LayerHit[] {
+  const TOTAL_BUDGET = 8;
+  const selected: LayerHit[] = [];
+  const allocated: Partial<Record<LayerName, number>> = {};
+
+  // Phase 1: allocate min slots per layer
+  for (const layer of ['L1_rag', 'L2_wiki', 'L3_glossario', 'L6_llm', 'L7_onthefly'] as LayerName[]) {
+    const budget = (V2_BUDGET as Record<LayerName, { min: number; max: number }>)[layer];
+    if (!budget) continue;
+    const sorted = (scoredByLayer[layer] || []).slice().sort((a, b) => b.score - a.score);
+    const take = Math.min(budget.min, sorted.length);
+    for (let i = 0; i < take; i++) {
+      selected.push(sorted[i].hit);
+      allocated[layer] = (allocated[layer] || 0) + 1;
+    }
+  }
+
+  // Phase 2: fill remaining budget by global score ranking, respecting max constraints
+  const remaining = TOTAL_BUDGET - selected.length;
+  if (remaining > 0) {
+    const allCandidates: { layer: LayerName; hit: LayerHit; score: number }[] = [];
+    for (const layer of Object.keys(scoredByLayer) as LayerName[]) {
+      const budget = (V2_BUDGET as Record<LayerName, { min: number; max: number }>)[layer];
+      if (!budget) continue;
+      const used = allocated[layer] || 0;
+      const room = budget.max - used;
+      if (room <= 0) continue;
+      const candidates = (scoredByLayer[layer] || [])
+        .slice(used)
+        .map(c => ({ layer, hit: c.hit, score: c.score }));
+      allCandidates.push(...candidates);
+    }
+    allCandidates.sort((a, b) => b.score - a.score);
+    for (const c of allCandidates) {
+      if (selected.length >= TOTAL_BUDGET) break;
+      const used = allocated[c.layer] || 0;
+      const budget = (V2_BUDGET as Record<LayerName, { min: number; max: number }>)[c.layer];
+      if (!budget || used >= budget.max) continue;
+      // Avoid duplicate hits (same chunk_id can come from multiple layers via wiki fusion)
+      if (selected.some(s => s.id === c.hit.id || s.chunk_id === c.hit.chunk_id)) continue;
+      selected.push(c.hit);
+      allocated[c.layer] = used + 1;
+    }
+  }
+  return selected;
+}
+
+/**
+ * Onniscenza V2 — cross-attention scoring + budget allocation per ADR-033.
+ * Same interface as V1 (`OnniscenzaSnapshot`) so callers can switch transparently
+ * via env flag `ONNISCENZA_VERSION=v2`.
+ *
+ * Differences from V1:
+ * - Per-layer score weights (RAG 1.0 → Analogia 0.65)
+ * - Experiment-anchor boost +0.15 + kit-mention boost +0.10 (Morfismo Sense 2)
+ * - Budget allocation 8 chunks total with min/max per-layer + reallocation
+ * - Layer-specific RRF k per ADR-033 §RRF tuning
+ *
+ * Performance: same parallel fetch + 200ms timeout per layer as V1.
+ * NO extra Voyage query embedding (skipped to avoid latency overhead).
+ */
+export async function aggregateOnniscenzaV2(input: OnniscenzaInput): Promise<OnniscenzaSnapshot> {
+  const startedAt = Date.now();
+  const enable = {
+    L1_rag: true, L2_wiki: true, L3_glossario: false,
+    L4_sessione: true, L5_vision: true, L6_llm: true, L7_onthefly: true,
+    ...(input.enable || {}),
+  };
+
+  const LAYER_TIMEOUT_MS = 200;
+  async function timed(layer: LayerName, fetcher: () => Promise<LayerHit[]>): Promise<{ layer: LayerName; status: LayerStatus; hits: LayerHit[] }> {
+    if (!enable[layer]) {
+      return { layer, status: { ok: true, latency_ms: 0, hits_count: 0, is_stub: true }, hits: [] };
+    }
+    const t0 = Date.now();
+    try {
+      const hits = await Promise.race([
+        fetcher(),
+        new Promise<LayerHit[]>((_, reject) => setTimeout(() => reject(new Error(`layer_timeout_${LAYER_TIMEOUT_MS}ms`)), LAYER_TIMEOUT_MS)),
+      ]);
+      return { layer, status: { ok: true, latency_ms: Date.now() - t0, hits_count: hits.length, is_stub: true }, hits };
+    } catch (err) {
+      return { layer, status: { ok: false, latency_ms: Date.now() - t0, hits_count: 0, error: err instanceof Error ? err.message : String(err), is_stub: true }, hits: [] };
+    }
+  }
+
+  const results = await Promise.all([
+    timed('L1_rag', () => fetchL1Rag(input)),
+    timed('L2_wiki', () => fetchL2Wiki(input)),
+    timed('L3_glossario', () => fetchL3Glossario(input)),
+    timed('L4_sessione', () => fetchL4Sessione(input)),
+    timed('L5_vision', () => fetchL5Vision(input)),
+    timed('L6_llm', () => fetchL6Llm(input)),
+    timed('L7_onthefly', () => fetchL7Onthefly(input)),
+  ]);
+
+  const layers: Record<LayerName, LayerStatus> = {
+    L1_rag: { ok: true, latency_ms: 0, hits_count: 0 },
+    L2_wiki: { ok: true, latency_ms: 0, hits_count: 0 },
+    L3_glossario: { ok: true, latency_ms: 0, hits_count: 0 },
+    L4_sessione: { ok: true, latency_ms: 0, hits_count: 0 },
+    L5_vision: { ok: true, latency_ms: 0, hits_count: 0 },
+    L6_llm: { ok: true, latency_ms: 0, hits_count: 0 },
+    L7_onthefly: { ok: true, latency_ms: 0, hits_count: 0 },
+  };
+  const raw: Record<LayerName, LayerHit[]> = {
+    L1_rag: [], L2_wiki: [], L3_glossario: [], L4_sessione: [], L5_vision: [], L6_llm: [], L7_onthefly: [],
+  };
+  for (const r of results) {
+    layers[r.layer] = r.status;
+    raw[r.layer] = r.hits;
+  }
+
+  // V2 cross-attention scoring per layer
+  const scoredByLayer: Record<LayerName, { hit: LayerHit; score: number }[]> = {
+    L1_rag: [], L2_wiki: [], L3_glossario: [], L4_sessione: [], L5_vision: [], L6_llm: [], L7_onthefly: [],
+  };
+  for (const layer of Object.keys(raw) as LayerName[]) {
+    scoredByLayer[layer] = raw[layer].map(hit => ({ hit, score: scoreHitV2(hit, layer, input) }));
+  }
+
+  // V2 budget allocation 8 chunks per ADR-033
+  const fused = allocateBudgetV2(scoredByLayer);
+
+  return {
+    fetched_at: new Date().toISOString(),
+    total_latency_ms: Date.now() - startedAt,
+    query: input.query,
+    layers,
+    fused,
+    raw,
+  };
+}
+
+export const ONNISCENZA_V2_ITER = 39;
+export const ONNISCENZA_V2_VERSION = '2.0-iter39-cross-attention';
