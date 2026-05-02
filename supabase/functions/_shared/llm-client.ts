@@ -387,7 +387,24 @@ async function callMistral(options: LLMOptions, forceModel?: MistralChatModel): 
     }
   }
 
-  const r = await callMistralChat({
+  // Iter 41 Phase A Task A4 — hedged Mistral 100ms stagger.
+  // Gate: ENABLE_HEDGED_LLM=true env (default false safe). Cost +30% per chat call.
+  // Andrea ratify ADR-038. Lift target: -600-1100ms p95.
+  const hedgedEnabled = (Deno.env.get('ENABLE_HEDGED_LLM') || 'false').toLowerCase() === 'true';
+
+  const callOnce = () => callMistralChat({
+    model,
+    systemPrompt: options.systemPrompt,
+    message: options.message,
+    images: options.images,
+    maxOutputTokens: options.maxOutputTokens,
+    temperature: options.temperature,
+    responseFormat: options.responseFormat,
+  });
+
+  const r = hedgedEnabled
+    ? await callMistralChatHedged({ primary: callOnce, hedged: callOnce, staggerMs: 100 })
+    : await callMistralChat({
     model,
     systemPrompt: options.systemPrompt,
     message: options.message,

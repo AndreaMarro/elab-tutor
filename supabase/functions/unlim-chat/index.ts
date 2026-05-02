@@ -746,25 +746,56 @@ serve(async (req: Request) => {
       // didn't honor schema, or Gemini fallback ran), we leave the original
       // text intact and rely on the legacy `parseIntentTags` regex below.
       if (useIntentSchema && result && typeof result.text === 'string' && result.provider === 'mistral') {
-        try {
-          const parsed = JSON.parse(result.text) as { text?: string; intents?: unknown[] };
-          if (parsed && typeof parsed.text === 'string' && parsed.text.trim()) {
-            // Cleanly substitute prose; cap + intent dispatch downstream still runs.
+        // Iter 41 Phase C Task C1 — robust 6-stage JSON-mode parser (ADR-036).
+        // Gate: INTENT_SCHEMA_PARSER_V2=true env (default false safe).
+        // Replaces single JSON.parse with multi-shape waterfall (pure / whitespace_strip /
+        // code_fence_strip / unescape / regex_extract / legacy_regex_fallback / failed).
+        const useParserV2 = (Deno.env.get('INTENT_SCHEMA_PARSER_V2') || 'false').toLowerCase() === 'true';
+        if (useParserV2) {
+          const { parseJsonMode } = await import('../_shared/json-mode-parser.ts');
+          const parsed = parseJsonMode(result.text);
+          if (parsed.source !== 'failed' && parsed.text.trim()) {
             result = { ...result, text: parsed.text };
-            if (Array.isArray(parsed.intents) && parsed.intents.length > 0) {
-              // Filter to canonical tool whitelist defensively (iter 38 4-way drift fix).
+            if (parsed.intents.length > 0) {
               preparsedIntents = parsed.intents.filter((i) => {
-                const t = (i as { tool?: string })?.tool;
+                const t = i?.tool;
                 return typeof t === 'string' && (CANONICAL_INTENT_TOOLS as readonly string[]).includes(t);
               });
             }
+            console.info(JSON.stringify({
+              level: 'info', event: 'json_mode_parsed',
+              source: parsed.source,
+              intent_count: parsed.intents.length,
+              filtered_count: preparsedIntents?.length ?? 0,
+              timestamp: new Date().toISOString(),
+            }));
+          } else {
+            console.info(JSON.stringify({
+              level: 'info', event: 'intent_schema_parse_fallback',
+              parser_version: 'v2', source: parsed.source,
+              timestamp: new Date().toISOString(),
+            }));
           }
-        } catch (_parseErr) {
-          // Defensive: legacy [INTENT:...] regex below will pick up any tags.
-          console.info(JSON.stringify({
-            level: 'info', event: 'intent_schema_parse_fallback',
-            timestamp: new Date().toISOString(),
-          }));
+        } else {
+          // Legacy single-stage parser (iter 38 baseline).
+          try {
+            const parsed = JSON.parse(result.text) as { text?: string; intents?: unknown[] };
+            if (parsed && typeof parsed.text === 'string' && parsed.text.trim()) {
+              result = { ...result, text: parsed.text };
+              if (Array.isArray(parsed.intents) && parsed.intents.length > 0) {
+                preparsedIntents = parsed.intents.filter((i) => {
+                  const t = (i as { tool?: string })?.tool;
+                  return typeof t === 'string' && (CANONICAL_INTENT_TOOLS as readonly string[]).includes(t);
+                });
+              }
+            }
+          } catch (_parseErr) {
+            console.info(JSON.stringify({
+              level: 'info', event: 'intent_schema_parse_fallback',
+              parser_version: 'v1',
+              timestamp: new Date().toISOString(),
+            }));
+          }
         }
       }
     } catch (llmError) {
