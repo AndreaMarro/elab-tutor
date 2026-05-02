@@ -187,6 +187,12 @@ async function main() {
                 break;
             }
         }
+        // Iter 43 fix — inter-prompt sleep avoids Edge Function rate-limit on
+        // sequential fast bench. Iter 42 v77 evidence: 4/50 last prompts hit
+        // HTTP 429 'Stai andando troppo veloce!' Edge rate limiter.
+        // 800ms = ~1.25 QPS, well under typical session-scoped rate limit.
+        const PACING_DELAY_MS = parseInt(process.env.R5_PACING_DELAY_MS || '800', 10);
+        if (PACING_DELAY_MS > 0) await new Promise(r => setTimeout(r, PACING_DELAY_MS));
     }
     responsesStream.end();
     await new Promise(r => responsesStream.on('finish', r));
