@@ -35,9 +35,11 @@ import { dispatchIntentsServerSide, inCanaryBucket } from '../_shared/clawbot-di
 // Replaces legacy `[INTENT:{...}]` regex parsing path on a heuristic match.
 // Falls through to legacy regex when ENABLE_INTENT_TOOLS_SCHEMA != true OR
 // when the model didn't return parseable JSON (defensive).
-import { INTENT_TOOLS_SCHEMA, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
-// iter 40 Phase 2 Maker-1 wire-up: widened shouldUseIntentSchema (5 categories vs narrow action verbs)
-import { shouldUseIntentSchema } from '../_shared/clawbot-template-router.ts';
+import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
+// iter 40 Phase 2 Maker-1 wire-up REVERTED post v73 smoke regression — widened heuristic
+// caused Mistral JSON-mode misparse (response wrapped JSON visible to user). Restore narrow
+// shouldUseIntentSchema from intent-tools-schema.ts. Widened version remains in
+// clawbot-template-router.ts for future iter when post-LLM JSON parser hardened.
 // iter 39 Tier 1 T1.1 — semantic prompt cache (in-isolate LRU, ~5ms p95 hit)
 import { lookupCache, storeCache, digestSystemPrompt, getCacheStats } from '../_shared/semantic-cache.ts';
 // iter 39 A1 SSE — Mistral chat streaming (TTFB perceived <500ms).
