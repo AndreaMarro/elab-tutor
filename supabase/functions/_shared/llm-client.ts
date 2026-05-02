@@ -442,6 +442,40 @@ function pickWeightedProvider(): 'gemini-flash-lite' | 'mistral-small' | 'mistra
  * skipped and the original Gemini error is rethrown so the caller can
  * surface the offline message to the LIM.
  */
+/**
+ * Iter 41 Phase A Task A1 — narrow Large triggers heuristic.
+ *
+ * Goal: Mistral Large fires only on multi-step + complex diagnostic prompts.
+ * Short simple prompts (<50 words) route to Small. Saves 2-3s avg latency on
+ * non-complex prompts (Large 5.4s observed v74 → Small 2-3s).
+ *
+ * Auto-detection from message content:
+ *   - hasMultiStep: /passo per passo|step by step|prima.*poi.*infine|\d+\s*step/i
+ *   - hasComplexDiagnostic: /diagnostica.*errori|verifica.*passo|controlla.*sequenza/i
+ *
+ * Override hooks for explicit caller control (e.g. SystemSmokeTest).
+ *
+ * Returns { model, routing_reason } where routing_reason is telemetry-friendly string.
+ */
+export function selectMistralModel(input: {
+  message: string;
+  hasMultiStep?: boolean;
+  hasComplexDiagnostic?: boolean;
+}): { model: 'mistral-small-latest' | 'mistral-large-latest'; routing_reason: string } {
+  const msg = input.message ?? '';
+  const wordCount = msg.split(/\s+/).filter(Boolean).length;
+  const multiStep = input.hasMultiStep ?? /passo per passo|step by step|prima.*poi.*infine|\d+\s*step/i.test(msg);
+  const complexDiag = input.hasComplexDiagnostic ?? /diagnostica.*errori|verifica.*passo|controlla.*sequenza/i.test(msg);
+
+  if (multiStep && complexDiag) {
+    return { model: 'mistral-large-latest', routing_reason: 'multi-step+diagnostic' };
+  }
+  if (wordCount > 50) {
+    return { model: 'mistral-large-latest', routing_reason: 'long-prompt-50w+' };
+  }
+  return { model: 'mistral-small-latest', routing_reason: 'short-simple-default' };
+}
+
 export async function callLLMWithFallback(
   options: LLMOptions,
   context: TogetherContext,
