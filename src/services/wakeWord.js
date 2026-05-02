@@ -15,10 +15,16 @@
 
 import logger from '../utils/logger';
 
+// Iter 41 Phase D Task D1 — "Ragazzi" plurale prepend wake word.
+// PRINCIPIO ZERO §1 plurale "Ragazzi" mandate. Compound "ragazzi unlim" avoids
+// false-trigger on natural docente speech mentioning "Ragazzi, vediamo..." alone.
 const WAKE_PHRASES = [
+  // Legacy "Ehi UNLIM" family (iter 36+)
   'ehi unlim', 'hey unlim', 'ei unlim', 'ehi un lim',
   'hey un lim', 'ei un lim', 'e unlim', 'ehi anelim',
   'hey anelim', 'ehi online', 'hey online',
+  // Iter 41 D1 — "Ragazzi UNLIM" plurale compound
+  'ragazzi unlim', 'ragazzi un lim', 'ragazzi anelim',
 ];
 
 const COMMAND_WINDOW_MS = 5000;
