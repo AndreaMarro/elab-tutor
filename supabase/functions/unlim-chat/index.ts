@@ -857,8 +857,13 @@ serve(async (req: Request) => {
     if ((Deno.env.get('ANTI_ABSURD_TELEMETRY') || 'false').toLowerCase() === 'true') {
       try {
         const { validateAbsurd } = await import('../_shared/anti-absurd-validator.ts');
-        const ragChunksForValidation = (typeof ragHits !== 'undefined' && Array.isArray(ragHits))
-          ? ragHits.map((h: { content?: string }) => ({ content: h.content || '' }))
+        // Iter 41 fix iter 11 cycle ralph: use retrievedChunksDebug (in-scope, declared L322)
+        // instead of undeclared ragHits. Pass content_preview (60 char) — sufficient for NER
+        // root-component cross-ref (iter 42+ extend full content if needed).
+        const ragChunksForValidation = Array.isArray(retrievedChunksDebug)
+          ? retrievedChunksDebug.map((h: Record<string, unknown>) => ({
+              content: typeof h.content_preview === 'string' ? h.content_preview as string : '',
+            }))
           : [];
         const absurd = validateAbsurd({
           response: cappedText,

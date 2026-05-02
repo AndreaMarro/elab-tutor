@@ -390,9 +390,15 @@ async function callMistral(options: LLMOptions, forceModel?: MistralChatModel): 
   // Iter 41 Phase A Task A4 — hedged Mistral 100ms stagger.
   // Gate: ENABLE_HEDGED_LLM=true env (default false safe). Cost +30% per chat call.
   // Andrea ratify ADR-038. Lift target: -600-1100ms p95.
+  //
+  // Iter 42+ enhancement (this commit): provider-mix hedged via ENABLE_HEDGED_PROVIDER_MIX=true.
+  // Decorrelates tail: primary Mistral, hedged Gemini Flash-Lite (different upstream queue).
+  // Phase A iter 41 R5 v76 evidence: p95 4879ms hedged-both-Mistral. Provider-mix expected
+  // to drop p95 ≤2500ms target by killing Mistral upstream variance correlation.
   const hedgedEnabled = (Deno.env.get('ENABLE_HEDGED_LLM') || 'false').toLowerCase() === 'true';
+  const hedgedProviderMix = (Deno.env.get('ENABLE_HEDGED_PROVIDER_MIX') || 'false').toLowerCase() === 'true';
 
-  const callOnce = () => callMistralChat({
+  const callMistralOnce = () => callMistralChat({
     model,
     systemPrompt: options.systemPrompt,
     message: options.message,
@@ -402,8 +408,16 @@ async function callMistral(options: LLMOptions, forceModel?: MistralChatModel): 
     responseFormat: options.responseFormat,
   });
 
+  // Hedged callable: Gemini Flash-Lite when provider-mix env true, else duplicate Mistral.
+  const callHedged = hedgedProviderMix
+    ? async () => {
+        const g = await callGemini({ ...options, model: 'gemini-2.5-flash-lite' });
+        return { text: g.text, latencyMs: g.latencyMs ?? 0, tokensUsed: g.tokensUsed };
+      }
+    : callMistralOnce;
+
   const r = hedgedEnabled
-    ? await callMistralChatHedged({ primary: callOnce, hedged: callOnce, staggerMs: 100 })
+    ? await callMistralChatHedged({ primary: callMistralOnce, hedged: callHedged, staggerMs: 100 })
     : await callMistralChat({
     model,
     systemPrompt: options.systemPrompt,
@@ -592,6 +606,14 @@ export function selectMistralModel(input: {
 
   if (multiStep && complexDiag) {
     return { model: 'mistral-large-latest', routing_reason: 'multi-step+diagnostic' };
+  }
+  // Iter 42 prep: aggressive narrow — <30 words ALWAYS Small (force-override Large)
+  // Gate via env MISTRAL_AGGRESSIVE_NARROW=true (default false). Defensive
+  // globalThis.Deno?.env access (works Deno + Node + vitest jsdom).
+  const denoEnv = (globalThis as { Deno?: { env: { get: (k: string) => string | undefined } } }).Deno?.env;
+  const aggressiveNarrow = (denoEnv?.get('MISTRAL_AGGRESSIVE_NARROW') || 'false').toLowerCase() === 'true';
+  if (wordCount < 30 && aggressiveNarrow) {
+    return { model: 'mistral-small-latest', routing_reason: 'aggressive-narrow-<30w' };
   }
   if (wordCount > 50) {
     return { model: 'mistral-large-latest', routing_reason: 'long-prompt-50w+' };

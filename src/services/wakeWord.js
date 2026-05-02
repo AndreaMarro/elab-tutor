@@ -27,7 +27,9 @@ const WAKE_PHRASES = [
   'ragazzi unlim', 'ragazzi un lim', 'ragazzi anelim',
 ];
 
-const COMMAND_WINDOW_MS = 5000;
+// Iter 41 Phase D Task D3 — reduced post-wake command window 5000→3000ms.
+// Faster fallback when docente doesn't follow up wake phrase (better LIM UX).
+const COMMAND_WINDOW_MS = 3000;
 
 let recognition = null;
 let isListening = false;
