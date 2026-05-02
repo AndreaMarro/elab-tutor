@@ -86,7 +86,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi servono TRE resistori — uno per ogni canale. Il circuito è più complesso ma il principio è lo stesso.",
+      "teacher_message": "Ragazzi, oggi servono TRE resistori — uno per ogni canale. Il circuito è più complesso ma il principio è lo stesso.",
       "teacher_tip": "Chiedi: 'Rosso+blu fa viola. Cosa farà rosso+verde+blu?' Raccogli le ipotesi PRIMA di costruire.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 resistori 470Ω, 1 LED RGB, 8 fili.",
       "class_hook": "Rosso e blu insieme fanno viola. Ma cosa succede se accendiamo TUTTI E TRE i colori? Bianco? Nero? Arcobaleno?",

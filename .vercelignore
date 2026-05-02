@@ -9,3 +9,19 @@ docs/plans/
 *.bin
 *.pt
 *.pth
+# iter 39 carryover — exclude bloat 1.7GB→<200MB
+node_modules/
+.git/
+automa/
+scripts/bench/output/
+docs/audits/
+docs/handoff/
+docs/research/
+tests/
+playwright-report/
+test-results/
+*.log
+.cache/
+.next/
+coverage/
+elab-builder-*/

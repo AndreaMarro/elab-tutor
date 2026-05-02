@@ -105,7 +105,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono che cambiando i resistori cambiano le sfumature! Ogni canale avrà un resistore di valore diverso.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono che cambiando i resistori cambiano le sfumature! Ogni canale avrà un resistore di valore diverso.",
       "teacher_tip": "Resistore piccolo = più corrente = colore più luminoso. Resistore grande = meno corrente = colore più fioco. Tre valori diversi creano sfumature uniche.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 3 pulsanti, 1 resistore 220Ω + 1 da 470Ω + 1 da 1kΩ, 1 LED RGB, 9 fili.",
       "class_hook": "La scorsa volta tutti i resistori erano uguali. Cosa succede se ogni colore ha un resistore diverso? Il rosso sarà più luminoso del blu?",

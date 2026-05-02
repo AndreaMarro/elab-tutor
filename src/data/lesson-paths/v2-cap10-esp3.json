@@ -85,7 +85,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Finora il motore girava sempre non appena collegavamo la batteria. E se volessimo controllare quando gira? Aggiungiamo un pulsante!",
+      "teacher_message": "Ragazzi, finora il motore girava sempre non appena collegavamo la batteria. E se volessimo controllare quando gira? Aggiungiamo un pulsante!",
       "teacher_tip": "Mostra fisicamente un pulsante (se disponibile). Spiega: 'Un pulsante è un interruttore momentaneo: finché lo tieni premuto il circuito è chiuso, quando lo rilasci il circuito si apre e la corrente si blocca.'",
       "components_list": "Ti servono: breadboard mezza, batteria 9V, motore DC, 1 pulsante, fili.",
       "class_hook": "Come fate a controllare le luci di casa? Con un interruttore! Oggi aggiungiamo un interruttore al nostro motore: premete e gira, rilascia e si ferma!",

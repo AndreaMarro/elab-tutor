@@ -104,7 +104,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 6,
-      "teacher_message": "Oggi useremo il potenziometro come 'manopola del volume' per la tensione al Gate. Faremo salire la tensione da 0V a 9V lentamente e osserveremo esattamente a quale tensione il LED si accende!",
+      "teacher_message": "Ragazzi, oggi useremo il potenziometro come 'manopola del volume' per la tensione al Gate. Faremo salire la tensione da 0V a 9V lentamente e osserveremo esattamente a quale tensione il LED si accende!",
       "teacher_tip": "Introduce il concetto di Vth: 'Ogni MOSFET ha una tensione di soglia Vth. Sotto Vth è spento, sopra Vth si accende. Oggi la misuriamo con i nostri occhi usando il multimetro!'",
       "components_list": "Ti servono: 1 breadboard mezza, 1 batteria 9V, 1 MOSFET N-channel, 1 potenziometro 10kΩ, 1 resistore 470Ω, 1 LED rosso, 1 multimetro, fili.",
       "class_hook": "Il potenziometro che conoscete (dal Capitolo 2!) diventa qui un potente strumento di controllo: giriamo la manopola e osserviamo dove il MOSFET 'scatta'. È come trovare il punto critico!",

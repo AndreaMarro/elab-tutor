@@ -96,7 +96,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida finale del capitolo! Pulsante → Manopola → Resistore → LED. Una catena di controllo completa!",
+      "teacher_message": "Ragazzi, sfida finale del capitolo! Pulsante → Manopola → Resistore → LED. Una catena di controllo completa!",
       "teacher_tip": "Il pulsante è il primo stadio (ON/OFF), il potenziometro è il secondo (regolazione), il resistore è la protezione. Tre ruoli diversi in catena.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED rosso, 9 fili.",
       "class_hook": "Abbiamo scoperto il pulsante (ON/OFF) e la manopola (regolazione). Cosa succede se li mettiamo INSIEME in catena?",

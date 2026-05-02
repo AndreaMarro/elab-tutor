@@ -14,21 +14,44 @@
   "target_age": "10-14 anni",
   "objective": "Collegare due batterie con polarita opposta (antiserie) e scoprire che le tensioni si sottraggono. Se uguali: 9V - 9V = 0V!",
   "components_needed": [
-    { "name": "Batteria 9V con clip", "quantity": 2, "icon": "🔋" },
-    { "name": "Multimetro", "quantity": 1, "icon": "📏" }
+    {
+      "name": "Batteria 9V con clip",
+      "quantity": 2,
+      "icon": "🔋"
+    },
+    {
+      "name": "Multimetro",
+      "quantity": 1,
+      "icon": "📏"
+    }
   ],
   "vocabulary": {
     "allowed": [
-      "batteria", "antiserie", "tensione", "volt", "sottrazione",
-      "polo positivo", "polo negativo", "multimetro", "voltmetro",
-      "opposto", "annullare", "zero"
+      "batteria",
+      "antiserie",
+      "tensione",
+      "volt",
+      "sottrazione",
+      "polo positivo",
+      "polo negativo",
+      "multimetro",
+      "voltmetro",
+      "opposto",
+      "annullare",
+      "zero"
     ],
     "forbidden": [
-      "Arduino", "codice", "programma", "condensatore", "transistor"
+      "Arduino",
+      "codice",
+      "programma",
+      "condensatore",
+      "transistor"
     ],
     "note": "Vol 2 Cap 5 — antiserie, sottrazione tensioni, forze opposte."
   },
-  "prerequisites": ["v2-cap5-esp1"],
+  "prerequisites": [
+    "v2-cap5-esp1"
+  ],
   "next_experiment": {
     "id": "v2-cap6-esp1",
     "title": "LED in serie con 1 resistore",
@@ -39,7 +62,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "La volta scorsa le batterie in serie sommavano le tensioni. Oggi le colleghiamo AL CONTRARIO: polo + con polo +. Cosa succedera? Le tensioni si annullano!",
+      "teacher_message": "Ragazzi, la volta scorsa le batterie in serie sommavano le tensioni. Oggi le colleghiamo AL CONTRARIO: polo + con polo +. Cosa succedera? Le tensioni si annullano!",
       "teacher_tip": "Antiserie e quando le due batterie 'spingono' in direzioni opposte. Con due batterie uguali da 9V, le forze si annullano: 9V - 9V = 0V.",
       "components_list": "Ti servono: 2 batterie 9V con clip, 1 multimetro.",
       "class_hook": "Se due persone spingono la stessa porta da parti opposte con la stessa forza, la porta si muove? No! Le forze si annullano. Le batterie in antiserie fanno lo stesso!",
@@ -54,16 +77,27 @@
       "teacher_tip": "ATTENZIONE: non lasciare le batterie in antiserie per molto tempo! Le batterie si 'combattono' e potrebbero scaldarsi. Misura velocemente e poi scollega.",
       "components_list": null,
       "class_hook": null,
-      "action_tags": ["[AZIONE:loadexp:v2-cap5-esp2]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v2-cap5-esp2]"
+      ],
       "auto_action": "load_experiment",
       "build_circuit": {
         "description": "Collegate due batterie 9V in antiserie (polo + con polo +)",
         "button_label": "Montate il circuito per me",
         "intent": {
           "components": [
-            { "type": "battery9v", "id": "bat1" },
-            { "type": "battery9v", "id": "bat2" },
-            { "type": "multimeter", "id": "mm1" }
+            {
+              "type": "battery9v",
+              "id": "bat1"
+            },
+            {
+              "type": "battery9v",
+              "id": "bat2"
+            },
+            {
+              "type": "multimeter",
+              "id": "mm1"
+            }
           ],
           "wires": []
         }
@@ -94,7 +128,11 @@
       "duration_minutes": 8,
       "teacher_message": "Il multimetro mostra circa 0V! Le due batterie da 9V si annullano completamente. E come un tiro alla fune dove nessuno vince.",
       "teacher_tip": "Se il valore non e esattamente 0V (es. 0.2V), e perche le due batterie non hanno esattamente la stessa carica. Una batteria piu nuova 'vince' leggermente.",
-      "action_tags": ["[AZIONE:play]", "[AZIONE:highlight:bat1]", "[AZIONE:highlight:bat2]"],
+      "action_tags": [
+        "[AZIONE:play]",
+        "[AZIONE:highlight:bat1]",
+        "[AZIONE:highlight:bat2]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "Il multimetro mostra circa 0V! Due batterie uguali in antiserie si annullano. Le forze opposte si cancellano come in un tiro alla fune alla pari.",
       "analogies": [
@@ -131,7 +169,11 @@
     "Se spiega il concetto con parole sue (es. forze opposte) → comprensione concettuale"
   ],
   "session_save": {
-    "concepts_covered": ["antiserie", "sottrazione_tensioni", "forze_opposte"],
+    "concepts_covered": [
+      "antiserie",
+      "sottrazione_tensioni",
+      "forze_opposte"
+    ],
     "next_suggested": "v2-cap6-esp1",
     "resume_message": "Avete scoperto l'antiserie! Prossimo capitolo: LED avanzati."
   }

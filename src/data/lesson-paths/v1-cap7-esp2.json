@@ -85,7 +85,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Stessa configurazione dell'esperimento precedente. L'unica differenza: questa volta colleghiamo il pin VERDE del LED RGB.",
+      "teacher_message": "Ragazzi, stessa configurazione dell'esperimento precedente. L'unica differenza: questa volta colleghiamo il pin VERDE del LED RGB.",
       "teacher_tip": "Chiedi: 'L'ultima volta abbiamo acceso il rosso. Secondo voi, come accendiamo il verde?'",
       "components_list": "Stessi componenti: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED RGB, 4 fili.",
       "class_hook": "L'ultima volta abbiamo acceso il rosso del LED RGB. Ma dentro ci sono 3 colori... riuscite ad accendere il verde?",

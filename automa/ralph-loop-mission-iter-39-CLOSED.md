@@ -1,7 +1,33 @@
 # Ralph Loop Mission — iter 39 5 NOT shipped + max quality
 
 **Activated**: 2026-05-01 evening
-**Stop condition**: 5/5 atoms shipped LIVE prod + smoke verified + audit doc + Andrea Opus indipendente review G45
+**STATUS**: ✅ **CLOSED 2026-05-02 ~08:55 CEST** — substantive completion 4/5 atoms LIVE + 1/5 atom V2 design REJECTED post-bench (V2.1 redesign carryover iter 41+). Andrea pacing override "andiamo piano + in ordine" iter 40 entrance ratify queue lista 20-voci iniziata #1 Vercel VITE_ENABLE_SSE=true LIVE. Items #2 STT voxtral + #3 OpenClaw canary + #6 V2.1 redesign DEFERRED Andrea ratify (NON-COMPIACENZA + 9-cell matrix prerequisite + V2 bench regression evidence).
+
+**Final status atom-by-atom**:
+- A1 SSE LIVE Edge v50+ + Vercel `dpl_eIEbBSgWigU82FmVw1npEsQqRfzG` (deploy `elab-tutor-irejasy6n`) ✓ — VITE_ENABLE_SSE=true baked
+- A2 voice clone fix + mic-hide LIVE Edge v54+ + Vercel ✓ (commits 8ffb728 + f50248e + 7a7ea60)
+- A3 OpenClaw 12-tool dispatcher Edge code shipped ✓ canary 0 default (Andrea ratify pending)
+- A4 Onniscenza V2 cross-attention REVERTED post-bench (-1.0pp PZ V3 + 36% slower) → V2.1 redesign iter 41+
+- A5 Voxtral STT migration Edge code shipped ✓ env-gated cf-whisper default (9-cell matrix Tester-4 prerequisite Andrea ratify pending)
+
+**Audit chain shipped**:
+- `docs/audits/iter-39-A1-SSE-LIVE-PROD-verified.md`
+- `docs/audits/iter-39-A2-voice-clone-frontend-audit.md`
+- `docs/audits/iter-39-A4-Onniscenza-V2-REGRESSION-revert.md`
+- `docs/audits/iter-39-A5-voxtral-stt-migration-audit.md`
+- `docs/audits/iter-39-ralph-loop-FINAL-CLOSE-non-compiacente.md`
+- `docs/audits/iter-39-ralph-CARRYOVER-2026-05-02-VERCEL-DEPLOY-LIVE.md`
+- `docs/handoff/2026-05-02-iter-40-andrea-ratify-queue-paste-ready.md`
+
+**Score iter 39 close ONESTO ricalibrato**: **8.2/10** (G45 cap, +0.2 vs ralph close 8.0 baseline post Vercel A2 LIVE).
+
+**Iter 41+ V2.1 redesign** preserved code `_shared/onniscenza-bridge.ts:aggregateOnniscenzaV2` for future tuning. Default prod V1 RRF k=60 canonical fusion (94.2% PZ V3 + 1607ms avg + 3380ms p95 verified iter 38 carryover R5 v56).
+
+**Stop condition §5 Andrea Opus indipendente review G45 mandate**: separate session non-blocking ralph mission completion (out of scope autonomous execution).
+
+**Original stop conditions referenced below for historical context — DO NOT re-execute**:
+
+**Stop condition (historical)**: 5/5 atoms shipped LIVE prod + smoke verified + audit doc + Andrea Opus indipendente review G45
 
 ## Atoms
 

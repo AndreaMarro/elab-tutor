@@ -93,7 +93,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi sperimentano in libertà. Partono dal circuito RGB e cambiano i valori dei resistori.",
+      "teacher_message": "Ragazzi, oggi i ragazzi sperimentano in libertà. Partono dal circuito RGB e cambiano i valori dei resistori.",
       "teacher_tip": "L'obiettivo è esplorare. Nessuna risposta giusta. Chiedi: 'Che colore volete creare? Come potreste farlo?'",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, resistori misti (220Ω, 470Ω), 1 LED RGB, 8 fili.",
       "class_hook": "Avete scoperto come funziona la mescolanza dei colori con la luce. Ora siete VOI gli artisti! Create il vostro colore preferito!",

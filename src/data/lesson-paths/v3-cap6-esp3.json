@@ -14,19 +14,65 @@
   "target_age": "10-14 anni",
   "objective": "Controllare due LED su pin diversi in modo alternato: quando uno e acceso l'altro e spento. Capire come Arduino esegue le istruzioni in sequenza, una dopo l'altra.",
   "components_needed": [
-    { "name": "Arduino Nano R4 (breakout wing)", "quantity": 1, "icon": "🤖" },
-    { "name": "Breadboard half-size", "quantity": 1, "icon": "🔲" },
-    { "name": "LED rosso", "quantity": 1, "icon": "❤️" },
-    { "name": "LED verde", "quantity": 1, "icon": "💚" },
-    { "name": "Resistore 470ohm", "quantity": 2, "icon": "⚡" },
-    { "name": "Fili di collegamento", "quantity": 6, "icon": "🔌" }
+    {
+      "name": "Arduino Nano R4 (breakout wing)",
+      "quantity": 1,
+      "icon": "🤖"
+    },
+    {
+      "name": "Breadboard half-size",
+      "quantity": 1,
+      "icon": "🔲"
+    },
+    {
+      "name": "LED rosso",
+      "quantity": 1,
+      "icon": "❤️"
+    },
+    {
+      "name": "LED verde",
+      "quantity": 1,
+      "icon": "💚"
+    },
+    {
+      "name": "Resistore 470ohm",
+      "quantity": 2,
+      "icon": "⚡"
+    },
+    {
+      "name": "Fili di collegamento",
+      "quantity": 6,
+      "icon": "🔌"
+    }
   ],
   "vocabulary": {
-    "allowed": ["Arduino", "pin", "digitale", "OUTPUT", "HIGH", "LOW", "LED", "alternato", "sequenza", "delay", "pinMode", "digitalWrite"],
-    "forbidden": ["array", "for", "while", "variabile", "funzione", "millis"],
+    "allowed": [
+      "Arduino",
+      "pin",
+      "digitale",
+      "OUTPUT",
+      "HIGH",
+      "LOW",
+      "LED",
+      "alternato",
+      "sequenza",
+      "delay",
+      "pinMode",
+      "digitalWrite"
+    ],
+    "forbidden": [
+      "array",
+      "for",
+      "while",
+      "variabile",
+      "funzione",
+      "millis"
+    ],
     "note": "Due pin OUTPUT gestiti in sequenza. Non introdurre cicli o variabili: solo istruzioni in fila"
   },
-  "prerequisites": ["v3-cap6-esp2"],
+  "prerequisites": [
+    "v3-cap6-esp2"
+  ],
   "next_experiment": {
     "id": "v3-cap6-esp4",
     "title": "LED + Buzzer",
@@ -37,7 +83,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Un passaggio a livello ha due luci che si alternano: rossa accesa e bianca spenta, poi il contrario. Oggi costruiamo lo stesso effetto con due LED e Arduino.",
+      "teacher_message": "Ragazzi, un passaggio a livello ha due luci che si alternano: rossa accesa e bianca spenta, poi il contrario. Oggi costruiamo lo stesso effetto con due LED e Arduino.",
       "teacher_tip": "Il riferimento al passaggio a livello e molto efficace per questa eta. Se possibile, mostrare un video di 5 secondi.",
       "class_hook": "Le luci del passaggio a livello sono mai accese tutte e due insieme? O sono sempre una accesa e una spenta?",
       "action_tags": [],
@@ -49,7 +95,9 @@
       "duration_minutes": 10,
       "teacher_message": "Carichiamo il circuito: LED rosso sul pin 7, LED verde sul pin 8. Nel codice, accendiamo il rosso e spegniamo il verde, aspettiamo, poi il contrario.",
       "teacher_tip": "Scrivere lo schema alla lavagna: HIGH-LOW-delay-LOW-HIGH-delay. Far notare che le istruzioni sono in coppia: quando uno sale, l'altro scende.",
-      "action_tags": ["[AZIONE:loadexp:v3-cap6-esp3]"],
+      "action_tags": [
+        "[AZIONE:loadexp:v3-cap6-esp3]"
+      ],
       "auto_action": "load_experiment"
     },
     {
@@ -68,7 +116,9 @@
       "duration_minutes": 10,
       "teacher_message": "Premiamo Play. Rosso acceso, verde spento. Pausa. Verde acceso, rosso spento. Pausa. Si ripete all'infinito. Provate a cambiare i delay.",
       "teacher_tip": "Sfidare i piu veloci: 'Riuscite a fare 3 LED alternati?' (serve un terzo LED e pin). Non e richiesto ma stimola i migliori.",
-      "action_tags": ["[AZIONE:play]"],
+      "action_tags": [
+        "[AZIONE:play]"
+      ],
       "auto_action": "play_and_highlight",
       "observation_prompt": "I due LED si accendono mai insieme? Cambiate i delay e osservate cosa succede con tempi diversi."
     },
@@ -79,12 +129,22 @@
       "teacher_message": "Arduino esegue le istruzioni una dopo l'altra, nell'ordine esatto in cui le scriviamo. Controllando piu pin in sequenza creiamo effetti luminosi coordinati.",
       "teacher_tip": "Collegare al concetto di esecuzione sequenziale: il computer non 'pensa', esegue riga per riga. L'ordine conta.",
       "summary_for_class": "Con due pin OUTPUT e istruzioni in sequenza, creiamo LED alternati. Arduino esegue le righe una alla volta, nell'ordine in cui le scriviamo.",
-      "concepts_learned": ["due pin OUTPUT contemporanei", "alternanza HIGH/LOW coordinata", "esecuzione sequenziale del codice", "effetti luminosi con timing"],
+      "concepts_learned": [
+        "due pin OUTPUT contemporanei",
+        "alternanza HIGH/LOW coordinata",
+        "esecuzione sequenziale del codice",
+        "effetti luminosi con timing"
+      ],
       "next_preview": "Nella prossima lezione aggiungiamo un buzzer: il LED lampeggia e il buzzer suona. Luce e suono insieme."
     }
   ],
   "session_save": {
-    "concepts_covered": ["due LED alternati", "pin multipli", "esecuzione sequenziale", "timing coordinato"],
+    "concepts_covered": [
+      "due LED alternati",
+      "pin multipli",
+      "esecuzione sequenziale",
+      "timing coordinato"
+    ],
     "next_suggested": "v3-cap6-esp4",
     "resume_message": "L'ultima volta avete alternato due LED come un passaggio a livello. Oggi aggiungiamo il suono con un buzzer."
   }

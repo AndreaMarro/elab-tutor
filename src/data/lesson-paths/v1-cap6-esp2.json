@@ -85,7 +85,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono cosa succede se il LED non è protetto. IMPORTANTE: nel simulatore il LED non si brucia davvero, ma nel mondo reale SÌ.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono cosa succede se il LED non è protetto. IMPORTANTE: nel simulatore il LED non si brucia davvero, ma nel mondo reale SÌ.",
       "teacher_tip": "Prepara un LED bruciato vero da mostrare alla classe — l'impatto visivo vale più di mille spiegazioni. Non dare il resistore: l'obiettivo è che capiscano DA SOLI che serve.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 LED blu, 4 fili. NIENTE resistore!",
       "class_hook": "L'ultima volta abbiamo acceso il LED con il resistore. Ma cosa succede se lo togliamo? Proviamo!",

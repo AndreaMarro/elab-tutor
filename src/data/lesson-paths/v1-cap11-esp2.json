@@ -96,7 +96,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi costruiamo un CAMPANELLO! Aggiungiamo un pulsante al cicalino: suonerà solo quando premiamo.",
+      "teacher_message": "Ragazzi, oggi costruiamo un CAMPANELLO! Aggiungiamo un pulsante al cicalino: suonerà solo quando premiamo.",
       "teacher_tip": "Richiama l'esperimento LED + pulsante: 'Vi ricordate quando controllavamo il LED con il pulsante? Oggi facciamo la stessa cosa ma con il suono!'",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 cicalino, 7 fili.",
       "class_hook": "L'ultima volta il cicalino suonava SEMPRE. Ma un campanello vero suona solo quando lo premete! Come facciamo?",

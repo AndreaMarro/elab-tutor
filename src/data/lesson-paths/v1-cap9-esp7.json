@@ -98,7 +98,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Sfida! Aggiungete un pulsante prima del potenziometro: il pulsante fa da ON/OFF, il potenziometro regola la luminosità.",
+      "teacher_message": "Ragazzi, sfida! Aggiungete un pulsante prima del potenziometro: il pulsante fa da ON/OFF, il potenziometro regola la luminosità.",
       "teacher_tip": "Il circuito mostra un esempio per il canale rosso. La sfida è pensare come estenderlo a tutti e 3 i canali.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 pulsante, 1 potenziometro 10K, 1 resistore 470Ω, 1 LED RGB, 9 fili.",
       "class_hook": "La lampada RGB è sempre accesa. Ma se voleste un bottone per accendere e spegnere ogni colore senza perdere la regolazione?",

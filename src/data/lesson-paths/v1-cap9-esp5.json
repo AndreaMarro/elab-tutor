@@ -90,7 +90,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi il potenziometro diventa un MISCELATORE! Collegando la corrente al pin centrale, i due pin laterali alimentano i due colori.",
+      "teacher_message": "Ragazzi, oggi il potenziometro diventa un MISCELATORE! Collegando la corrente al pin centrale, i due pin laterali alimentano i due colori.",
       "teacher_tip": "Collegamento speciale: la corrente entra dal pin centrale (signal) del potenziometro. I due pin laterali vanno ciascuno a un resistore e poi a un canale del LED RGB.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 potenziometro 10K, 2 resistori 470Ω, 1 LED RGB, 8 fili.",
       "class_hook": "Finora il potenziometro controllava la luminosità. Ma può MESCOLARE due colori? Da un lato blu, dall'altro rosso, nel mezzo il viola?",

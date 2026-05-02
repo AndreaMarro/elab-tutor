@@ -10,7 +10,12 @@
   "volume": 1,
   "chapter": 6,
   "title": "Accendi il tuo primo LED",
-  "modes_supported": ["percorso", "passo-passo", "gia-montato", "libero"],
+  "modes_supported": [
+    "percorso",
+    "passo-passo",
+    "gia-montato",
+    "libero"
+  ],
   "modes_entry_state": {
     "percorso": "passive_view",
     "passo-passo": "build_step_1",
@@ -96,7 +101,7 @@
       "name": "PREPARA",
       "icon": "📋",
       "duration_minutes": 5,
-      "teacher_message": "Oggi i ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
+      "teacher_message": "Ragazzi, oggi i ragazzi scoprono che un circuito deve essere CHIUSO per funzionare e che il LED si accende solo in un verso.",
       "teacher_tip": "Non dare il resistore subito — lascia che provino con batteria + LED + fili. L'emozione del 'si accende!' viene PRIMA di qualsiasi teoria.",
       "components_list": "Ti servono: 1 breadboard, 1 batteria 9V, 1 resistore 470Ω, 1 LED rosso, 4 fili.",
       "class_hook": "Avete mai provato ad accendere una lampadina con una pila? Oggi facciamo qualcosa di simile... ma più figo!",
