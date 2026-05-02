@@ -97,6 +97,10 @@ console-errors*.png
 homepage_*.png
 2026-*.png
 
+# Bench output (regenerable, large, not source — iter 39 carryover housekeeping)
+scripts/bench/output/
+.vercel/env.prod
+
 # External agents repo (cloned locally, non committare il mass)
 .claude/external-agents/wshobson-agents/
 
