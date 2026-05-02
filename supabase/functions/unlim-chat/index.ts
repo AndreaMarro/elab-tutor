@@ -35,7 +35,21 @@ import { dispatchIntentsServerSide, inCanaryBucket } from '../_shared/clawbot-di
 // Replaces legacy `[INTENT:{...}]` regex parsing path on a heuristic match.
 // Falls through to legacy regex when ENABLE_INTENT_TOOLS_SCHEMA != true OR
 // when the model didn't return parseable JSON (defensive).
-import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
+import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema as narrowShouldUseIntent, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
+// iter 41 Phase C C3 — widened heuristic re-wire canary (gated post C1 robust parser).
+// CANARY_INTENT_SCHEMA_WIDEN_PERCENT env (default 0) → percentuale prompt che usano
+// widened heuristic (5 categories: explanation + diagnostic + verification + step-by-step +
+// interactive). Per-request roll: rampa 5%→25%→100% Andrea ratify post C2 rate <5%.
+import { shouldUseIntentSchema as widenedShouldUseIntent } from '../_shared/clawbot-template-router.ts';
+
+function shouldUseIntentSchema(message: string): boolean {
+  const denoEnv = (globalThis as { Deno?: { env: { get: (k: string) => string | undefined } } }).Deno?.env;
+  const widenPct = parseInt(denoEnv?.get('CANARY_INTENT_SCHEMA_WIDEN_PERCENT') || '0', 10);
+  if (widenPct > 0 && Math.random() * 100 < widenPct) {
+    return widenedShouldUseIntent(message);
+  }
+  return narrowShouldUseIntent(message);
+}
 // iter 40 Phase 2 Maker-1 wire-up REVERTED post v73 smoke regression — widened heuristic
 // caused Mistral JSON-mode misparse (response wrapped JSON visible to user). Restore narrow
 // shouldUseIntentSchema from intent-tools-schema.ts. Widened version remains in

@@ -312,5 +312,32 @@ export default defineConfig(({ mode }) => ({
         chunkSizeWarningLimit: 1000,
         sourcemap: false,
         // minify: default (esbuild) — TDZ crash is obfuscator/minifier identifier collision (S57: confirmed NOT Rollup chunking)
+        //
+        // Iter 42 Atom 42-A — Lighthouse perf 26→55+ — suppress eager modulepreload of
+        // heavy lazy chunks (mammoth 500KB / react-pdf 1911KB / supabase 191KB).
+        // Vite default auto-walks transitive deps of dynamic imports → preloads them
+        // even on routes that don't need them (`/`, `/#chatbot-only`, `/#about-easter`).
+        // Filter dependencies to skip these heavy lazy chunks. They still load when
+        // VolumeViewer/documentConverters/etc. dispatch dynamic import — just not eager.
+        // Expected: -750KB gz off first paint + Lighthouse perf +25-30 pt.
+        modulePreload: {
+            resolveDependencies: (filename, deps) => {
+                // Filter out heavy lazy chunks from preload list
+                const HEAVY_LAZY_PATTERNS = [
+                    /mammoth-/,           // 500KB / 130KB gz — used only documentConverters
+                    /react-pdf-/,         // 1911KB / 622KB gz — used only VolumeViewer
+                    /supabase-/,          // 191KB — used only post-auth gated routes
+                    /codemirror-/,        // 474KB / 156KB gz — used only ScratchEditor/code editing
+                    /recharts-/,          // 460KB / 125KB gz — used only TeacherDashboard
+                    /d3-vendor/,          // recharts dep
+                    /ScratchEditor-/,     // 731KB / 191KB gz — used only Scratch route
+                    /NewElabSimulator-/,  // 1328KB / 596KB gz — used only #lavagna route
+                    /LavagnaShell-/,      // 2387KB / 1112KB gz — used only #lavagna route
+                    /TeacherDashboard-/,  // 284KB / 130KB gz — used only #admin route
+                    /experiments-vol[123]/, // ~225KB each — used only when volume opened
+                ];
+                return deps.filter((dep) => !HEAVY_LAZY_PATTERNS.some((re) => re.test(dep)));
+            },
+        },
     },
 }))
