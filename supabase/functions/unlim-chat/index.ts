@@ -767,7 +767,10 @@ serve(async (req: Request) => {
       // the legacy flow shape. If parse fails for any reason (provider
       // didn't honor schema, or Gemini fallback ran), we leave the original
       // text intact and rely on the legacy `parseIntentTags` regex below.
-      if (useIntentSchema && result && typeof result.text === 'string' && result.provider === 'mistral') {
+      // Iter 41 fix post v75 smoke: removed provider==='mistral' gate. Gemini Flash-Lite
+      // when schema enabled may ALSO return JSON-mode output. Parser handles non-Mistral
+      // providers gracefully (Stage 6 legacy fallback when input not JSON).
+      if (useIntentSchema && result && typeof result.text === 'string') {
         // Iter 41 Phase C Task C1 — robust 6-stage JSON-mode parser (ADR-036).
         // Gate: INTENT_SCHEMA_PARSER_V2=true env (default false safe).
         // Replaces single JSON.parse with multi-shape waterfall (pure / whitespace_strip /
