@@ -462,6 +462,73 @@ function pickWeightedProvider(): 'gemini-flash-lite' | 'mistral-small' | 'mistra
  * surface the offline message to the LIM.
  */
 /**
+ * Iter 41 Phase A Task A4 — Hedged Mistral 100ms stagger.
+ *
+ * Goal: -600-1100ms p95 latency lift (Tier 1 research iter 38). Two parallel
+ * Mistral calls, hedged starts after staggerMs delay; first-respondent wins.
+ * Cost +30% (~+$0.0003/request) — Andrea ratify gate ADR-038 + env
+ * `ENABLE_HEDGED_LLM=true` default false safe.
+ *
+ * Returns: same shape as underlying primary/hedged callable. Throws if both fail.
+ *
+ * Race semantics:
+ *   - Primary fires immediately
+ *   - Hedged scheduled via setTimeout(staggerMs)
+ *   - Promise.allSettled gathers both → first fulfilled wins
+ *   - If primary settles before stagger fires, hedged Promise still pending
+ *     (lazy: hedged callable invoked only after stagger timeout)
+ */
+export async function callMistralChatHedged<T>(opts: {
+  primary: () => Promise<T>;
+  hedged: () => Promise<T>;
+  staggerMs?: number;
+}): Promise<T> {
+  const stagger = opts.staggerMs ?? 100;
+  const primaryPromise = opts.primary();
+
+  // Hedged starts after staggerMs delay
+  const hedgedPromise = new Promise<T>((resolve, reject) => {
+    setTimeout(() => {
+      opts.hedged().then(resolve, reject);
+    }, stagger);
+  });
+
+  // First-success-wins semantics:
+  // - Wrap each promise to track its outcome individually.
+  // - If either fulfills → return immediately (don't wait for the other).
+  // - If both reject → throw aggregated error.
+  return new Promise<T>((resolve, reject) => {
+    let pending = 2;
+    const errors: unknown[] = [];
+    let resolved = false;
+
+    const handle = (p: Promise<T>) => {
+      p.then(
+        (value) => {
+          if (!resolved) {
+            resolved = true;
+            resolve(value);
+          }
+        },
+        (err) => {
+          errors.push(err);
+          pending--;
+          if (pending === 0 && !resolved) {
+            const msg = errors
+              .map((e) => (e instanceof Error ? e.message : String(e)))
+              .join(' | ');
+            reject(new Error(`Both primary + hedged failed: ${msg}`));
+          }
+        },
+      );
+    };
+
+    handle(primaryPromise);
+    handle(hedgedPromise);
+  });
+}
+
+/**
  * Iter 41 Phase A Task A1 — narrow Large triggers heuristic.
  *
  * Goal: Mistral Large fires only on multi-step + complex diagnostic prompts.
