@@ -115,6 +115,28 @@ function capWords(text: string, maxWords = 150): string {
 const START_TIME = Date.now();
 const VERSION = '2.1.0';
 
+// Iter 41 Phase C Task C2 — Telemetry rate counter for parse_fallback events.
+// Tracks parse_fallback / total ratio per 100-prompt rolling window.
+// Pre-req for C3 widened heuristic re-wire canary (gate threshold <5%).
+let parseFallbackCounter = { hits: 0, total: 0 };
+function trackParseRate(isFallback: boolean): void {
+  parseFallbackCounter.total++;
+  if (isFallback) parseFallbackCounter.hits++;
+  if (parseFallbackCounter.total >= 100) {
+    const ratePct = (parseFallbackCounter.hits / parseFallbackCounter.total) * 100;
+    try {
+      console.info(JSON.stringify({
+        level: 'info', event: 'parse_fallback_rate_window',
+        rate_pct: Number(ratePct.toFixed(2)),
+        window_size: parseFallbackCounter.total,
+        fallback_count: parseFallbackCounter.hits,
+        timestamp: new Date().toISOString(),
+      }));
+    } catch (_) { /* ignore log errors */ }
+    parseFallbackCounter = { hits: 0, total: 0 };
+  }
+}
+
 serve(async (req: Request) => {
   // CORS preflight
   if (req.method === 'OPTIONS') {
@@ -769,12 +791,14 @@ serve(async (req: Request) => {
               filtered_count: preparsedIntents?.length ?? 0,
               timestamp: new Date().toISOString(),
             }));
+            trackParseRate(false); // C2 — parse success
           } else {
             console.info(JSON.stringify({
               level: 'info', event: 'intent_schema_parse_fallback',
               parser_version: 'v2', source: parsed.source,
               timestamp: new Date().toISOString(),
             }));
+            trackParseRate(true); // C2 — parse fallback
           }
         } else {
           // Legacy single-stage parser (iter 38 baseline).
@@ -788,6 +812,9 @@ serve(async (req: Request) => {
                   return typeof t === 'string' && (CANONICAL_INTENT_TOOLS as readonly string[]).includes(t);
                 });
               }
+              trackParseRate(false); // C2 — legacy parse success
+            } else {
+              trackParseRate(true); // C2 — legacy parse no text field
             }
           } catch (_parseErr) {
             console.info(JSON.stringify({
@@ -795,6 +822,7 @@ serve(async (req: Request) => {
               parser_version: 'v1',
               timestamp: new Date().toISOString(),
             }));
+            trackParseRate(true); // C2 — legacy parse failed
           }
         }
       }
@@ -819,6 +847,32 @@ serve(async (req: Request) => {
 
     // 6. Cap response length
     const cappedText = capWords(result.text);
+
+    // Iter 41 Phase B Task B4 wire-up — anti-absurd validator (telemetry only iter 41).
+    // Gate ANTI_ABSURD_TELEMETRY=true env (default false safe). NER component cross-ref
+    // RAG chunks + Arduino Nano pin validity check. NEVER blocks response iter 41.
+    if ((Deno.env.get('ANTI_ABSURD_TELEMETRY') || 'false').toLowerCase() === 'true') {
+      try {
+        const { validateAbsurd } = await import('../_shared/anti-absurd-validator.ts');
+        const ragChunksForValidation = (typeof ragHits !== 'undefined' && Array.isArray(ragHits))
+          ? ragHits.map((h: { content?: string }) => ({ content: h.content || '' }))
+          : [];
+        const absurd = validateAbsurd({
+          response: cappedText,
+          ragChunks: ragChunksForValidation,
+          experimentId: safeExperimentId || undefined,
+        });
+        if (absurd.suspicious) {
+          console.warn(JSON.stringify({
+            level: 'warn', event: 'anti_absurd_flag',
+            reasons: absurd.reasons,
+            score: absurd.score,
+            experimentId: safeExperimentId || null,
+            timestamp: new Date().toISOString(),
+          }));
+        }
+      } catch (_err) { /* defensive: never break response on validator error */ }
+    }
 
     // 6a. Sprint T iter 36 Phase 1 — Atom A1 — Onnipotenza dispatcher wire-up.
     // Parse `[INTENT:{tool:"...",args:{...}}]` tags from the LLM response and
