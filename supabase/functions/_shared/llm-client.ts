@@ -501,6 +501,7 @@ export async function callMistralChatHedged<T>(opts: {
   staggerMs?: number;
 }): Promise<T> {
   const stagger = opts.staggerMs ?? 100;
+  const t0 = Date.now();
   const primaryPromise = opts.primary();
 
   // Hedged starts after staggerMs delay
@@ -514,16 +515,27 @@ export async function callMistralChatHedged<T>(opts: {
   // - Wrap each promise to track its outcome individually.
   // - If either fulfills → return immediately (don't wait for the other).
   // - If both reject → throw aggregated error.
+  // - Iter 41 A4b: telemetry log winner_provider for cost observability.
   return new Promise<T>((resolve, reject) => {
     let pending = 2;
     const errors: unknown[] = [];
     let resolved = false;
 
-    const handle = (p: Promise<T>) => {
+    const handle = (p: Promise<T>, label: 'primary' | 'hedged') => {
       p.then(
         (value) => {
           if (!resolved) {
             resolved = true;
+            // Iter 41 A4b telemetry — observability for cost tracking + p95 lift verification.
+            try {
+              console.info(JSON.stringify({
+                level: 'info', event: 'mistral_hedged_winner',
+                winner: label,
+                latency_ms: Date.now() - t0,
+                stagger_ms: stagger,
+                timestamp: new Date().toISOString(),
+              }));
+            } catch (_) { /* ignore log errors */ }
             resolve(value);
           }
         },
@@ -534,14 +546,22 @@ export async function callMistralChatHedged<T>(opts: {
             const msg = errors
               .map((e) => (e instanceof Error ? e.message : String(e)))
               .join(' | ');
+            try {
+              console.warn(JSON.stringify({
+                level: 'warn', event: 'mistral_hedged_both_failed',
+                latency_ms: Date.now() - t0,
+                error_count: errors.length,
+                timestamp: new Date().toISOString(),
+              }));
+            } catch (_) { /* ignore log errors */ }
             reject(new Error(`Both primary + hedged failed: ${msg}`));
           }
         },
       );
     };
 
-    handle(primaryPromise);
-    handle(hedgedPromise);
+    handle(primaryPromise, 'primary');
+    handle(hedgedPromise, 'hedged');
   });
 }
 
