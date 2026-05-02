@@ -1799,3 +1799,61 @@ Box subtotal **12.05/14** → normalizzato **8.61/10** + bonus iter 38 carryover
 - `docs/audits/sprint-u-cycle1-iter1-screenshots/` (10 PNG livetest1) + `sprint-u-screenshots/` (9 PNG livetest2)
 
 **Cycle 2 activation**: see `docs/handoff/sprint-u-cycle2-iter1-handoff.md` §1 summary + §4 exact L2 fix + §5 exact codemod commands + §6 cycle 3 verifier gates.
+
+## Sprint T iter 39 close + Phase 0+1 Andrea ratify (2026-05-02 PM)
+
+**Plan**: `docs/superpowers/plans/PIANO-ANDREA-SOLO-SPRINT-T-CLOSE-2026-05-02.md` 11-fasi Andrea solo dev ~82h ~4-5 settimane wall-clock.
+
+**Phase 0 documentation discovery + measured baseline** (commit `d152aa2`, 2026-05-02 ~12:00 CEST):
+- Discovery `docs/audits/PHASE-0-discovery-2026-05-02.md` (343 LOC) — top-5 findings: L2 catch-all blocker `selectTemplate:121-153` 93/94 esperimenti + 73-file linguaggio violations + Lighthouse perf 26+23 + R6 page=0% Voyage gap + R7 canonical 3.6%
+- Baseline `docs/audits/PHASE-0-baseline-2026-05-02.md` (370 LOC) — vitest 13474 PASS verified + R5 latest 0/8 BROKEN flag + R6 0.067 + R7 3.6% canonical / 46.2% combined + Lighthouse perf 26+23 + RAG 2061 chunks page=0% chapter=8.7% + 94 spec EXISTS 396 LOC NOT executed + Edge Function v50→v54→v55→v56→v72 chain + Git HEAD `3ac4aec` working tree DIRTY 3 mod state files
+
+**Phase 1 Andrea Opus G45 indipendente review baseline** (2026-05-02 ~14:27 CEST):
+- Doc `docs/audits/G45-OPUS-INDIPENDENTE-2026-05-02.md` (531 LOC, 12 sezioni) — context-zero subagent Opus
+- **Score Opus indipendente ONESTO 8.0/10 G45 cap** — delta vs prior claim 8.45 = **−0.45**
+- **3 inflation flags** (G45 mandate met):
+  1. **Onniscenza V2 LIVE → REVERTED** (commit `eb4a11b` claimed canary, bench `iter-39-A4-Onniscenza-V2-REGRESSION-revert.md` shows V2 -1.0pp PZ V3 + 36% slower → `ONNISCENZA_VERSION=v1` env, Box 11 net contribution = 0)
+  2. **12-tool Deno dispatcher LIVE → fire-rate 0%** (`CANARY_DENO_DISPATCH_PERCENT=0` default safe commit `1feda3c`, L2 template router dominance, R7 canonical 3.6% UNCHANGED, Box 10 + Box 14 cannot lift 1.0)
+  3. **R5 latency cap "REMOVED" claim NOT survives iter 39 churn** (last PASS 2026-05-01 1607ms / 94.2%, latest 2026-05-02T07:28 0/8 BROKEN, iter 39 commits cap_words 150 + dispatcher + SSE wire + V2 attempt + Edge v72 NOT re-benched — cap 8.5 ceiling iter 38 carryover does NOT carry forward)
+- **Verified facts** (file:line): ADR-032 + ADR-033 BOTH PROPOSED status / ToolSpec count 57 (`grep -cE "name: ['\"]" scripts/openclaw/tools-registry.ts`) / SSE wire `unlim-chat/index.ts:43, 591-684` ENABLE_SSE gate line 598 / L2 catch-all CONFIRMED `clawbot-template-router.ts:121-153` Sprint U fix `144-150` triggers solo `context.experimentId !== undefined` / lesson-paths 89/94 singolare imperative + 94/94 missing "Ragazzi," literal opener / vitest 13474 PRESERVED ZERO new tests iter 39
+- **Cap mechanics**: Box subtotal 11.25/14 → 8.04 raw + bonus +0.25 iter 39 = 8.29 −0.10 Lighthouse −0.10 A14 −0.10 A15 = 7.99 → **8.0/10 G45 cap ONESTO**
+
+**Sprint T close path realistic**: iter 41-43 (NOT iter 40 single-shot) post Phase 2-7 execution — R5 v72 re-bench + L2 scope reduce + R7 ≥80% post BASE_PROMPT v3.2 + Voyage re-ingest page metadata (R6 unblock) + Lighthouse perf optim + 94 esperimenti audit + Sprint U Cycle 2 codemod + canary 100% rollout 24-48h soak + Andrea Opus G45 final ratify Phase 7. Cumulative iter 43 projection 9.85 raw → cap 9.5 ONESTO.
+
+**Phase 0+1 acceptance gates**:
+- ✅ Phase 0 docs shipped (commit `d152aa2`)
+- ✅ Phase 0 baselines measured no skips (build defer documented + R5 BROKEN flag explicit)
+- ✅ Phase 0 anti-pattern list explicit §11 baseline + §7 discovery
+- ✅ Phase 1 Opus session distinct context-zero subagent
+- ✅ Phase 1 score Opus ≤ 8.45 (justified −0.45 con 3 concrete inflation flags file:line + bench evidence)
+- ✅ Phase 1 CLAUDE.md sprint history footer recalibrate (this section)
+
+**Phase 2 entrance** PRINCIPIO ZERO Vol/pag verbatim 95% — Andrea actions sequential queue ~90min:
+1. Ratify ADR-033 page metadata extraction strategy (15min) — Architect agent output BG spawn
+2. Env provision VOYAGE_API_KEY + SUPABASE_SERVICE_ROLE_KEY (5min)
+3. `node scripts/rag-ingest-voyage-batch-v2.mjs` (50min, ~$1) — Maker-1 ingest impl gated ADR-033 ratify
+4. Verify page coverage ≥80% (5min)
+5. Deploy Edge Function v73+ (5min) — BASE_PROMPT v3.2 + post-LLM regex validator + 5→8 few-shot + L2 router widen `shouldUseIntentSchema`
+6. Smoke 5 prompts (10min)
+7. Trigger Tester-2 R7 200-prompt re-bench (30min, target ≥80% canonical)
+
+**Phase 2 spawn agents BG** 2026-05-02 PM (parallel A + C, B + D gated Andrea):
+- A Architect ADR-033 (~2h): extraction strategy pdfjs/pdftotext/pypdf
+- C Maker-1 BASE_PROMPT v3.2 (~1h): independent A
+- B Maker-1 ingest impl (~3h): gated Andrea ratify ADR-033 + Voyage env
+- D Tester-2 R7 re-bench (~30min): gated Edge v73+ deploy
+
+**Anti-pattern Phase 2 onward NON COMPIACENZA**:
+- NO claim "Onniscenza V2 LIVE" (reverted V1 active)
+- NO claim "Deno dispatcher fire-rate non-zero" (canary 0% default safe)
+- NO claim "R5 latency cap removed" (latest 0/8 BROKEN, re-bench mandatory post v73 deploy)
+- NO claim "Sprint T close 9.5 achievable iter 40 single-shot" (realistic iter 41-43 cumulative)
+- NO claim "page coverage ≥80%" senza bench output ID + Voyage ingest evidence
+- NO claim "R7 ≥80% canonical lift via canary" (L2 template dominance + shouldUseIntentSchema scope reduce required)
+- NO claim "Andrea Opus G45 final ratify pre Phase 7" (mandate ratify Phase 7 only post all gates met)
+
+**Cross-link docs Phase 0+1**:
+- Plan: `docs/superpowers/plans/PIANO-ANDREA-SOLO-SPRINT-T-CLOSE-2026-05-02.md`
+- Phase 0 discovery: `docs/audits/PHASE-0-discovery-2026-05-02.md`
+- Phase 0 baseline: `docs/audits/PHASE-0-baseline-2026-05-02.md`
+- Phase 1 Opus G45: `docs/audits/G45-OPUS-INDIPENDENTE-2026-05-02.md`
