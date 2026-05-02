@@ -366,6 +366,25 @@ async function callMistral(options: LLMOptions, forceModel?: MistralChatModel): 
     const premiumTiers = (Deno.env.get('MISTRAL_PREMIUM_TIERS') || '').split(',').map((s) => s.trim()).filter(Boolean);
     const wantsPremium = premiumTiers.includes(String(options.model));
     model = wantsPremium ? 'mistral-large-latest' : 'mistral-small-latest';
+
+    // Iter 41 Phase A Task A1 — narrow Large triggers: downgrade Large→Small for
+    // short simple non-multi-step prompts. Saves 2-3s avg latency on non-complex.
+    // Gate: MISTRAL_NARROW_LARGE_ENABLED=true (canary off by default for safety).
+    if (model === 'mistral-large-latest' &&
+        (Deno.env.get('MISTRAL_NARROW_LARGE_ENABLED') || 'false').toLowerCase() === 'true') {
+      const narrowed = selectMistralModel({ message: options.message });
+      if (narrowed.model === 'mistral-small-latest') {
+        console.info(JSON.stringify({
+          level: 'info', event: 'mistral_routing_downgrade_large_to_small',
+          original_model: 'mistral-large-latest',
+          narrowed_model: 'mistral-small-latest',
+          routing_reason: narrowed.routing_reason,
+          word_count: options.message.split(/\s+/).filter(Boolean).length,
+          timestamp: new Date().toISOString(),
+        }));
+        model = 'mistral-small-latest';
+      }
+    }
   }
 
   const r = await callMistralChat({
