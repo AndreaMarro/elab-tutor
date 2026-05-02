@@ -298,6 +298,31 @@ export function rrfFuse(layered: Record<LayerName, LayerHit[]>, k = 60): LayerHi
 
 export async function aggregateOnniscenza(input: OnniscenzaInput): Promise<OnniscenzaSnapshot> {
   const startedAt = Date.now();
+
+  // Iter 41 Phase A Task A5 — cache lookup before parallel layer fetch.
+  // Gate via ONNISCENZA_CACHE_ENABLED env (default false safe canary opt-in).
+  const cacheEnabled = (Deno.env.get('ONNISCENZA_CACHE_ENABLED') || 'false').toLowerCase() === 'true';
+  let cacheKey = '';
+  if (cacheEnabled) {
+    const { computeKey, lookupOnniscenzaCache } = await import('./onniscenza-cache.ts');
+    cacheKey = await computeKey({
+      query: input.query,
+      topK: input.top_k,
+      experimentId: (input as { experiment_id?: string | null }).experiment_id,
+      classKey: (input as { class_key?: string | null }).class_key,
+    });
+    const cached = lookupOnniscenzaCache(cacheKey) as OnniscenzaSnapshot | null;
+    if (cached) {
+      console.info(JSON.stringify({
+        level: 'info', event: 'onniscenza_cache_hit',
+        key_prefix: cacheKey.slice(0, 8),
+        latency_ms: Date.now() - startedAt,
+        timestamp: new Date().toISOString(),
+      }));
+      return cached;
+    }
+  }
+
   const enable = {
     // iter 24: enable L5 (lesson context) + L6 (chat history) by default since
     // they're cheap and rely only on caller-injected payload.
@@ -363,7 +388,7 @@ export async function aggregateOnniscenza(input: OnniscenzaInput): Promise<Onnis
 
   const fused = rrfFuse(raw, 60);
 
-  return {
+  const snapshot: OnniscenzaSnapshot = {
     fetched_at: new Date().toISOString(),
     total_latency_ms: Date.now() - startedAt,
     query: input.query,
@@ -371,6 +396,14 @@ export async function aggregateOnniscenza(input: OnniscenzaInput): Promise<Onnis
     fused,
     raw,
   };
+
+  // Iter 41 Phase A Task A5 — store snapshot post fetch for next-call cache hit.
+  if (cacheEnabled && cacheKey) {
+    const { storeOnniscenzaCache } = await import('./onniscenza-cache.ts');
+    storeOnniscenzaCache(cacheKey, snapshot);
+  }
+
+  return snapshot;
 }
 
 /** Iter 22+ marker: live wire-up flag. Updated iter 24: L1+L2+L4+L5+L6 LIVE. */
