@@ -386,7 +386,64 @@ export async function aggregateOnniscenza(input: OnniscenzaInput): Promise<Onnis
     raw[r.layer] = r.hits;
   }
 
-  const fused = rrfFuse(raw, 60);
+  let fused = rrfFuse(raw, 60);
+
+  // Iter 41 Phase B Task B5 — V2.1 conversational fusion canary (ADR-035).
+  // Gate ENABLE_ONNISCENZA_V21=true env + CANARY_ONNISCENZA_V21_PERCENT (default 0).
+  // V2.1 preserves RRF k=60 base + adds 4 weighted boost factors capped +0.50:
+  //   - experiment-anchor +0.15
+  //   - kit-mention +0.10 (Omaric component regex)
+  //   - recent-history +0.20 × cosineSim (Voyage embed last 10 messages)
+  //   - docente-stylistic +0.05 (Morfismo Sense 1.5)
+  const v21Enabled = (Deno.env.get('ENABLE_ONNISCENZA_V21') || 'false').toLowerCase() === 'true';
+  const v21CanaryPct = parseInt(Deno.env.get('CANARY_ONNISCENZA_V21_PERCENT') || '0', 10);
+  const useV21 = v21Enabled && Math.random() * 100 < v21CanaryPct;
+
+  if (useV21 && fused.length > 0) {
+    try {
+      const { aggregateOnniscenzaV21 } = await import('./onniscenza-conversational-fusion.ts');
+      // Adapter: LayerHit → ragChunks shape required by V2.1
+      const ragChunks = fused.map((h) => ({
+        id: h.id,
+        score: h.score,
+        content: h.text,
+        experimentId: (h.meta as { experiment_id?: string; experimentId?: string } | undefined)?.experiment_id
+          ?? (h.meta as { experimentId?: string } | undefined)?.experimentId,
+        metadata: {
+          embedding: (h.meta as { embedding?: number[] } | undefined)?.embedding,
+        },
+      }));
+      const v21Out = await aggregateOnniscenzaV21({
+        ragChunks,
+        query: input.query,
+        experimentId: (input as { experiment_id?: string }).experiment_id,
+        conversationMessages: (input as { history?: Array<{ role: string; content: string }> }).history,
+        classKey: (input as { class_key?: string }).class_key,
+      });
+      // Map back into LayerHit-shaped array (preserve text + meta from original fused)
+      const fusedById = new Map(fused.map((h) => [h.id, h]));
+      fused = v21Out
+        .map((r) => {
+          const orig = fusedById.get(r.id);
+          if (!orig) return null;
+          return { ...orig, score: r.finalScore, meta: { ...orig.meta, v21_boost: r.boostBreakdown } };
+        })
+        .filter((x): x is LayerHit => x !== null);
+      console.info(JSON.stringify({
+        level: 'info', event: 'onniscenza_v21_applied',
+        canary_pct: v21CanaryPct,
+        chunks_processed: ragChunks.length,
+        timestamp: new Date().toISOString(),
+      }));
+    } catch (err) {
+      // Defensive: V2.1 fail → fall back to V1 RRF (already computed). Never break.
+      console.warn(JSON.stringify({
+        level: 'warn', event: 'onniscenza_v21_fallback_v1',
+        error: err instanceof Error ? err.message : 'unknown',
+        timestamp: new Date().toISOString(),
+      }));
+    }
+  }
 
   const snapshot: OnniscenzaSnapshot = {
     fetched_at: new Date().toISOString(),
