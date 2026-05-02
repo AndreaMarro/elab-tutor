@@ -179,3 +179,141 @@ export function validatePrincipioZero(
     passes: violations.length === 0,
   };
 }
+
+/**
+ * Vol/pag citation validator — Sprint T close iter 40 BASE_PROMPT v3.2.
+ *
+ * Validates that a response contains a Vol/pag citation in canonical or
+ * loose format. Designed to drive `pz_v3_vol_pag_match` telemetry log
+ * (canary observability, NOT response-blocking iter 40 — gate later iter 41+).
+ *
+ * Strict canonical match (preferred):
+ *   /\bVol\.[123]\s*pag\.\d{1,3}\b/g
+ *   Examples: "Vol.1 pag.156", "Vol.2 pag.89", "Vol.3 pag.134", "Vol.1 pag. 12"
+ *
+ * Loose accepted (with warning flag):
+ *   - "Vol.[123]\s*p\.?\s*\d"      → "Vol.1 p.156" or "Vol.1 p 156"
+ *   - "Volume [123],?\s*pagina \d" → "Volume 1, pagina 156"
+ *
+ * Failure cases:
+ *   - No Vol/pag at all → passes=false
+ *   - Only "Vol.X" without page → passes=false
+ *   - Only "pagina X" without Vol prefix → passes=false (anti-pattern)
+ *   - "cap.X" alone without Vol+pag → passes=false (insufficient citation)
+ *
+ * Latency: <1ms typical (regex-only).
+ */
+export interface VolPagValidationResult {
+  passes: boolean;
+  violations: string[];
+  regex_match_count: number;
+  /** True when canonical strict format matched. */
+  canonical_match: boolean;
+  /** True when only loose format matched (canary warning flag). */
+  loose_match: boolean;
+  /** First match string (debugging / telemetry). */
+  matched_text?: string;
+}
+
+export interface VolPagValidationOptions {
+  /**
+   * When true, response is REQUIRED to have a citation. When false (default),
+   * absence is reported but not flagged as critical (e.g. RAG context empty
+   * cases — model may correctly refuse). Iter 40 default false (canary obs).
+   */
+  required?: boolean;
+  /**
+   * When true, accept loose format (Vol.[123] p.X, Volume [123], pagina X).
+   * Default true. When false, only canonical strict format passes.
+   */
+  acceptLoose?: boolean;
+}
+
+/**
+ * Validate Vol/pag citation per BASE_PROMPT v3.2 strict rule.
+ *
+ * Returns structured result for telemetry. NEVER throws.
+ *
+ * @param text Response text to validate (caller should pass post-strip text
+ *             with [AZIONE:...] / [INTENT:...] tags removed; this function
+ *             ALSO strips them defensively).
+ * @param options Validation options.
+ */
+export function validateVolPagCitation(
+  text: string | null | undefined,
+  options: VolPagValidationOptions = {},
+): VolPagValidationResult {
+  const violations: string[] = [];
+
+  if (!text || typeof text !== 'string') {
+    return {
+      passes: false,
+      violations: ['empty_text'],
+      regex_match_count: 0,
+      canonical_match: false,
+      loose_match: false,
+    };
+  }
+
+  const required = options.required ?? false;
+  const acceptLoose = options.acceptLoose ?? true;
+
+  // Strip action tags defensively (so "Vol.1 pag.42 [AZIONE:...]" still matches)
+  const stripped = stripTags(text);
+
+  // Strict canonical regex: Vol.[123] pag.\d{1,3}
+  // Allows optional "cap.N esp.M " or " cap.N " between Vol and pag (book spine pattern).
+  const STRICT_RE = /\bVol\.[123](?:\s+cap\.\d{1,2}(?:\s+esp\.\d{1,2})?)?\s*pag\.\s*\d{1,3}\b/g;
+  // Loose 1: Vol.[123] p.\d (allows "p." or "p ")
+  const LOOSE_P_RE = /\bVol\.[123](?:\s+cap\.\d{1,2}(?:\s+esp\.\d{1,2})?)?\s*p\.?\s*\d{1,3}\b/g;
+  // Loose 2: Volume [123], pagina \d (extended verbose form)
+  const LOOSE_VERBOSE_RE = /\bVolume\s+[123],?\s*pagina\s*\d{1,3}\b/gi;
+
+  const strictMatches = stripped.match(STRICT_RE) || [];
+  const looseMatches = stripped.match(LOOSE_P_RE) || [];
+  const verboseMatches = stripped.match(LOOSE_VERBOSE_RE) || [];
+
+  // Filter loose matches: drop any that already counted as strict
+  const looseUnique = looseMatches.filter(m => !strictMatches.includes(m));
+
+  const totalMatches = strictMatches.length + looseUnique.length + verboseMatches.length;
+  const canonical_match = strictMatches.length > 0;
+  const loose_match = !canonical_match && (looseUnique.length > 0 || verboseMatches.length > 0);
+
+  // Anti-pattern: "Vol.X" alone without pag (e.g. "come dice Vol. 1")
+  // Matches Vol.[123] not followed by pag/p/cap+digits
+  const VOL_ALONE_RE = /\bVol\.\s*[123]\b(?!\s*(?:pag|p\.?|cap))/gi;
+  const volAloneMatches = stripped.match(VOL_ALONE_RE) || [];
+
+  // Anti-pattern: "pagina X" without Vol prefix (loose check — must NOT
+  // be preceded by Vol.[123] or Volume [123] within ~30 chars)
+  const PAGINA_ALONE_RE = /(?<!Vol\.[123]\s|Volume\s[123],?\s)\bpagina\s+\d{1,3}\b/gi;
+  const paginaAloneMatches = stripped.match(PAGINA_ALONE_RE) || [];
+
+  if (totalMatches === 0) {
+    if (required) {
+      violations.push('missing_vol_pag_citation');
+    }
+    if (volAloneMatches.length > 0) {
+      violations.push(`vol_without_pag:${volAloneMatches[0]}`);
+    }
+    if (paginaAloneMatches.length > 0) {
+      violations.push(`pagina_without_vol:${paginaAloneMatches[0]}`);
+    }
+  }
+
+  if (loose_match && !canonical_match) {
+    violations.push('loose_format_only_prefer_canonical');
+  }
+
+  const passes = canonical_match || (acceptLoose && loose_match) || (!required && totalMatches === 0 && volAloneMatches.length === 0 && paginaAloneMatches.length === 0);
+
+  return {
+    passes,
+    violations,
+    regex_match_count: totalMatches,
+    canonical_match,
+    loose_match,
+    matched_text: strictMatches[0] || looseUnique[0] || verboseMatches[0],
+  };
+}

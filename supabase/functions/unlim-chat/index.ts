@@ -15,7 +15,7 @@ import { checkRateLimitPersistent, validateChatInput, sanitizeMessage, sanitizeC
 import type { ChatRequest, ChatResponse, CircuitState } from '../_shared/types.ts';
 import { retrieveVolumeContext, hybridRetrieve, formatHybridContext } from '../_shared/rag.ts';
 import { getCapitoloByExperimentId, buildCapitoloPromptFragment } from '../_shared/capitoli-loader.ts';
-import { validatePrincipioZero } from '../_shared/principio-zero-validator.ts';
+import { validatePrincipioZero, validateVolPagCitation } from '../_shared/principio-zero-validator.ts';
 import { selectTemplate, executeTemplate } from '../_shared/clawbot-template-router.ts';
 import { aggregateOnniscenza, aggregateOnniscenzaV2 } from '../_shared/onniscenza-bridge.ts';
 // iter 37 Phase 1 Atom A2 — pre-LLM regex classifier drives ENABLE_ONNISCENZA
@@ -35,7 +35,9 @@ import { dispatchIntentsServerSide, inCanaryBucket } from '../_shared/clawbot-di
 // Replaces legacy `[INTENT:{...}]` regex parsing path on a heuristic match.
 // Falls through to legacy regex when ENABLE_INTENT_TOOLS_SCHEMA != true OR
 // when the model didn't return parseable JSON (defensive).
-import { INTENT_TOOLS_SCHEMA, shouldUseIntentSchema, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
+import { INTENT_TOOLS_SCHEMA, CANONICAL_INTENT_TOOLS } from '../_shared/intent-tools-schema.ts';
+// iter 40 Phase 2 Maker-1 wire-up: widened shouldUseIntentSchema (5 categories vs narrow action verbs)
+import { shouldUseIntentSchema } from '../_shared/clawbot-template-router.ts';
 // iter 39 Tier 1 T1.1 — semantic prompt cache (in-isolate LRU, ~5ms p95 hit)
 import { lookupCache, storeCache, digestSystemPrompt, getCacheStats } from '../_shared/semantic-cache.ts';
 // iter 39 A1 SSE — Mistral chat streaming (TTFB perceived <500ms).
@@ -892,6 +894,23 @@ serve(async (req: Request) => {
           experimentId: safeExperimentId || null,
         }));
       }
+
+      // BASE_PROMPT v3.2 — Sprint T close iter 40 — Vol/pag citation validator.
+      // Telemetry-only iter 40 (NOT response-blocking, gate later iter 41+).
+      // Logs `pz_v3_vol_pag_match` boolean per response for canary observability.
+      const volPagResult = validateVolPagCitation(cleanText, { required: false, acceptLoose: true });
+      console.info(JSON.stringify({
+        level: 'info',
+        event: 'pz_v3_vol_pag_match',
+        passes: volPagResult.passes,
+        canonical_match: volPagResult.canonical_match,
+        loose_match: volPagResult.loose_match,
+        regex_match_count: volPagResult.regex_match_count,
+        violations: volPagResult.violations,
+        matched_text: volPagResult.matched_text || null,
+        experimentId: safeExperimentId || null,
+        model: result.model,
+      }));
     } catch (pzErr) {
       // Validator must NEVER break chat flow.
       console.warn('[Nanobot V2] PZ validator error (non-blocking):', pzErr);

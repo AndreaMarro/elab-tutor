@@ -307,3 +307,123 @@ function safeJson(o: unknown): string {
     return '{}';
   }
 }
+
+// ─── shouldUseIntentSchema widening — iter 40 Phase 2 Maker-1 ─────────────
+//
+// Sprint U Cycle 1 evidence (`docs/audits/PHASE-0-discovery-2026-05-02.md` §5
+// + R7 fixture v53 Tester-6 iter 37): the canonical narrow heuristic in
+// `_shared/intent-tools-schema.ts:133` (ACTION_TRIGGER_RE) only fires on
+// 12 specific action verbs (mostra/evidenzia/carica/monta/screenshot/cattura/
+// foto/scatta/pulisci/cancella/connect/collega/cambia/imposta), causing
+// `shouldUseIntentSchema=true` on <5% of typical UNLIM prompts.
+//
+// Result: 95%+ R7 fixture passes WITHOUT the schema mode being engaged —
+// Mistral function calling (json_schema response_format) provides far higher
+// canonical INTENT capture, but only when triggered. Phase 2 widening adds
+// 5+ NEW heuristic categories per Sprint U Cycle 1 finding:
+//
+//   1. EXPLANATION requests: spiega, spiegami, descrivi, descrivimi, illustra
+//   2. DIAGNOSTIC requests: diagnos[ti], controlla, controlliamo, verifica,
+//      verifichiamo, cosa-non-funziona, perche-non, errore
+//   3. CIRCUIT VERIFICATION: guarda, osserva, esamina, ispeziona
+//   4. STEP-BY-STEP requests: passo passo, step by step, mostrami come,
+//      come si fa, come faccio
+//   5. INTERACTIVE: prova, proviamo, testa, testiamo, simula, simuliamo
+//
+// All 5 categories overlap with browser-dispatchable INTENT outcomes
+// (highlight + getCircuitState + captureScreenshot + getCircuitDescription).
+//
+// Backward compat: original ACTION_TRIGGER_RE narrow patterns from
+// `intent-tools-schema.ts` PRESERVED (caller still imports the canonical
+// narrow check; this widened export is the NEW recommended path post-iter-40).
+//
+// Iter 40 widen Phase 2 BASE_PROMPT v3.2 lift R7 ≥80% target (NOT yet verified
+// post-deploy; gate Tester-2 R7 re-bench Phase 2 step 7).
+
+/**
+ * Widened heuristic patterns (iter 40 Phase 2). Each pattern listed below
+ * adds a NEW category vs the canonical narrow ACTION_TRIGGER_RE.
+ *
+ * Maintains backward compat: superset of `_shared/intent-tools-schema.ts`
+ * ACTION_TRIGGER_RE — i.e. anything that triggered narrow ALSO triggers
+ * widened (no false negatives introduced).
+ */
+const WIDENED_INTENT_TRIGGERS: RegExp[] = [
+  // CATEGORY 0 — Original narrow (backward compat, copied from intent-tools-schema.ts)
+  /\b(mostra|mostrami|evidenzi[ai]|highlight|carica|monta|montami|montiamo|screenshot|cattura|foto|scatta|pulisci|cancella|connect[ai]?|collega|cambia|imposta)\b/i,
+  // CATEGORY 1 — Explanation requests (likely highlight+description)
+  // Match base + common suffixes (spiega/spiegami/spiegare/spieghi/spieghiamo etc).
+  /\bspieg(?:a|ami|are|hi|hiamo|ate|ano)?\b/i,
+  /\bdescriv(?:i|imi|ere|ono|iamo|ete)?\b/i,
+  /\billustr(?:a|ami|are|i|iamo|ate)?\b/i,
+  // CATEGORY 2 — Diagnostic requests (likely getCircuitState + highlight)
+  /\bdiagnos[ti]/i,
+  /\bcontrolla\b/i,
+  /\bverific[ai]?\b/i,
+  /\bcontrolliamo\b/i,
+  /\bverifichiamo\b/i,
+  /\b(cosa\s+non\s+funziona|perch[eé]\s+non)\b/i,
+  /\berror[ei]?\b/i,
+  // CATEGORY 3 — Circuit verification (visual inspection)
+  /\bguard[ai]?\b/i,
+  /\bosserv[ai]?\b/i,
+  /\besamin[ai]?\b/i,
+  /\bispezion[ai]?\b/i,
+  // CATEGORY 4 — Step-by-step requests
+  /\bpasso\s+passo\b/i,
+  /\bstep\s+by\s+step\b/i,
+  /\bcome\s+(si\s+fa|faccio|posso)\b/i,
+  // CATEGORY 5 — Interactive verbs (simulation / try)
+  /\bprov[ai]?\b/i,
+  /\bproviamo\b/i,
+  /\btest[ai]?\b/i,
+  /\btestiamo\b/i,
+  /\bsimul[ai]?\b/i,
+  /\bsimuliamo\b/i,
+];
+
+/**
+ * Detector heuristic — should the caller request structured Mistral output?
+ *
+ * WIDENED version per Sprint U Cycle 1 evidence (Phase 2 BASE_PROMPT v3.2).
+ * Returns `true` when the message is a plausible candidate for browser-
+ * dispatchable INTENT generation (action / explanation / diagnostic /
+ * verification / step-by-step / interactive request).
+ *
+ * Use this in preference to the narrow `intent-tools-schema.ts:shouldUseIntentSchema`
+ * for higher canonical INTENT capture on R7 fixture (target ≥80% post-deploy).
+ *
+ * @param message User message text (can be null/undefined).
+ * @returns true if any widened heuristic pattern matches.
+ */
+export function shouldUseIntentSchema(message: string | null | undefined): boolean {
+  if (!message || typeof message !== 'string') return false;
+  for (const re of WIDENED_INTENT_TRIGGERS) {
+    if (re.test(message)) return true;
+  }
+  return false;
+}
+
+/**
+ * Widened heuristic categorization — exposes which category a message
+ * matches (for telemetry / debugging). Returns array of category names that
+ * matched, OR empty array if no match.
+ */
+export function categorizeIntentTriggers(message: string | null | undefined): string[] {
+  if (!message || typeof message !== 'string') return [];
+  const categories: string[] = [];
+  const labels = ['narrow_action', 'explanation', 'explanation', 'explanation',
+    'diagnostic', 'diagnostic', 'diagnostic', 'diagnostic', 'diagnostic',
+    'diagnostic', 'diagnostic',
+    'verification', 'verification', 'verification', 'verification',
+    'step_by_step', 'step_by_step', 'step_by_step',
+    'interactive', 'interactive', 'interactive', 'interactive', 'interactive', 'interactive'];
+  WIDENED_INTENT_TRIGGERS.forEach((re, idx) => {
+    if (re.test(message) && labels[idx] && !categories.includes(labels[idx])) {
+      categories.push(labels[idx]);
+    }
+  });
+  return categories;
+}
+
+export const SHOULD_USE_INTENT_SCHEMA_VERSION = '2.0-iter40-widened';
