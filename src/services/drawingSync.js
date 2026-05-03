@@ -269,6 +269,37 @@ export function cancelDebouncedSave(experimentId) {
 }
 
 /**
+ * Iter 34 Atom F1 — Flush any pending debounced save IMMEDIATELY (fire savePaths
+ * synchronously, clear pending timer). Used on Esci button / unmount to ensure
+ * drawing strokes persisted to remote BEFORE navigation away.
+ *
+ * Andrea iter 19 PM bug feedback: "scritti spariscono su Esci (persistenza
+ * violata). Principio: contenuto sparisce SOLO con cancellazione esplicita."
+ *
+ * Root cause iter 34: cancelDebouncedSave on DrawingOverlay unmount discarded
+ * pending up-to-2s-old debounced save. Fix: flush instead of cancel — fire-and-
+ * forget savePaths(latest paths), clear timer.
+ *
+ * @param {string|null} experimentId
+ * @param {Array} paths — latest paths state to flush (NOT taken from closure)
+ * @returns {void} fire-and-forget; caller doesn't await
+ */
+export function flushDebouncedSave(experimentId, paths) {
+  const expId = _normalizeExpId(experimentId);
+  const prev = debounceTimers.get(expId);
+  if (prev) {
+    clearTimeout(prev);
+    debounceTimers.delete(expId);
+  }
+  // Fire savePaths immediately with latest paths (caller-provided, not closure
+  // captured by stale debounce timer). Empty paths skipped to avoid orphaning
+  // remote row when user just clicked Esci on a clean canvas.
+  if (Array.isArray(paths) && paths.length > 0) {
+    savePaths(experimentId, paths).catch(() => { /* swallow — best effort */ });
+  }
+}
+
+/**
  * Test-only helper: clear all pending debounce timers.
  * @internal
  */

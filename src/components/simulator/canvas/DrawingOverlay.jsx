@@ -13,6 +13,7 @@ import {
   loadPaths as loadPathsRemote,
   debouncedSave as debouncedSaveRemote,
   cancelDebouncedSave as cancelDebouncedSaveRemote,
+  flushDebouncedSave as flushDebouncedSaveRemote,
   subscribePaths as subscribePathsRemote,
 } from '../../../services/drawingSync';
 
@@ -217,10 +218,24 @@ export default function DrawingOverlay({
     };
   }, [syncEnabled, experimentId]);
 
-  // iter 28 Bug 3 — flush any pending debounced remote save on unmount.
+  // iter 34 Atom F1 — flush pending debounced save on unmount with LATEST
+  // paths (NOT discard via cancel). Andrea iter 19 PM bug "scritti spariscono
+  // su Esci" root cause: cancelDebouncedSave dropped pending up-to-2s-old
+  // save when LavagnaShell unmounted via Esci button → DrawingOverlay unmount
+  // → no remote write fired. Fix: flush instead — fire savePaths immediately
+  // with current paths (captured via ref to avoid stale closure).
+  // ref pattern guarantees latest paths value on cleanup invocation.
+  const pathsRef = useRef(paths);
+  useEffect(() => {
+    pathsRef.current = paths;
+  }, [paths]);
+
   useEffect(() => {
     return () => {
-      try { cancelDebouncedSaveRemote(experimentId); } catch { /* ignore */ }
+      try {
+        // F1 fix: flush (NOT cancel) — preserves up-to-2s pending stroke
+        flushDebouncedSaveRemote(experimentId, pathsRef.current);
+      } catch { /* ignore — best effort save on unmount */ }
     };
   }, [experimentId]);
 

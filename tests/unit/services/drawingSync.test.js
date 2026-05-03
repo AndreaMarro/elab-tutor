@@ -127,6 +127,7 @@ import {
   subscribePaths,
   debouncedSave,
   cancelDebouncedSave,
+  flushDebouncedSave,
   _clearAllDebounceTimers,
 } from '../../../src/services/drawingSync';
 import { isSupabaseConfigured } from '../../../src/services/supabaseClient';
@@ -355,5 +356,73 @@ describe('drawingSync — debouncedSave', () => {
     const pths = _supabaseMockState.upsertCalledWith.paths;
     expect(pths === undefined ? false : (Array.isArray(pths))).toBe(true);
     _clearAllDebounceTimers();
+  });
+});
+
+// ============================================================================
+// Iter 34 Atom F1 — flushDebouncedSave (esci persistence drawing bucket force save)
+// ============================================================================
+
+describe('drawingSync — flushDebouncedSave (Atom F1)', () => {
+  it('fires savePaths IMMEDIATELY with caller-provided paths (NOT cancel)', async () => {
+    vi.useFakeTimers();
+    isSupabaseConfigured.mockReturnValue(true);
+    _supabaseMockState.configured = true;
+    _supabaseMockState.upsertCalledWith = null;
+
+    const fakePaths = [{ points: '0,0 1,1', color: '#000', width: 2 }];
+    debouncedSave('v1-cap6-esp1', fakePaths, 1000); // schedule for 1s
+    vi.advanceTimersByTime(500); // 500ms in, debounce NOT fired yet
+    expect(_supabaseMockState.upsertCalledWith).toBeNull();
+
+    // Flush IMMEDIATELY with latest paths (simulates Esci button on unmount)
+    flushDebouncedSave('v1-cap6-esp1', fakePaths);
+    await vi.runAllTimersAsync(); // flush microtask queue
+    expect(_supabaseMockState.upsertCalledWith).not.toBeNull();
+    expect(_supabaseMockState.upsertCalledWith.paths).toEqual(fakePaths);
+  });
+
+  it('clears pending debounce timer (no double-fire)', async () => {
+    vi.useFakeTimers();
+    isSupabaseConfigured.mockReturnValue(true);
+    _supabaseMockState.configured = true;
+    _supabaseMockState.upsertCalledWith = null;
+
+    const fakePaths = [{ a: 1 }];
+    debouncedSave('v1-cap6-esp1', fakePaths, 1000);
+    flushDebouncedSave('v1-cap6-esp1', fakePaths);
+    // upsertCalledWith fires once via flush
+    await vi.runAllTimersAsync();
+    const firstUpsert = _supabaseMockState.upsertCalledWith;
+    expect(firstUpsert).not.toBeNull();
+
+    // Reset capture, advance time to debounce expiry — should NOT fire again
+    _supabaseMockState.upsertCalledWith = null;
+    vi.advanceTimersByTime(2000);
+    await vi.runAllTimersAsync();
+    expect(_supabaseMockState.upsertCalledWith).toBeNull(); // no double-fire
+  });
+
+  it('skips flush when paths is empty (avoid orphaning remote row on clean canvas)', async () => {
+    vi.useFakeTimers();
+    isSupabaseConfigured.mockReturnValue(true);
+    _supabaseMockState.configured = true;
+    _supabaseMockState.upsertCalledWith = null;
+
+    flushDebouncedSave('v1-cap6-esp1', []);
+    await vi.runAllTimersAsync();
+    expect(_supabaseMockState.upsertCalledWith).toBeNull();
+  });
+
+  it('skips flush when paths is null/undefined (defensive)', async () => {
+    vi.useFakeTimers();
+    isSupabaseConfigured.mockReturnValue(true);
+    _supabaseMockState.configured = true;
+    _supabaseMockState.upsertCalledWith = null;
+
+    flushDebouncedSave('v1-cap6-esp1', null);
+    flushDebouncedSave('v1-cap6-esp1', undefined);
+    await vi.runAllTimersAsync();
+    expect(_supabaseMockState.upsertCalledWith).toBeNull();
   });
 });
