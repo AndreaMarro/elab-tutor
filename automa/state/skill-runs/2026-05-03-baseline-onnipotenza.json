@@ -1,0 +1,41 @@
+{
+  "skill": "elab-onnipotenza-coverage",
+  "iter": 34,
+  "date": "2026-05-03",
+  "git_head": "1b2e57d",
+  "branch": "e2e-bypass-preview",
+  "gates": {
+    "G1_l0_direct_api": {"value": 0.94, "raw": "unlim=15 top=55 total=70", "score": 0.94, "evidence": "src/services/simulator-api.js, unlim 15 vs target 16 (1 missing or naming drift), total 70 ≥40"},
+    "G2_l1_composite_tests": {"value": 1.0, "raw": "10/10", "score": 1.0, "evidence": "scripts/openclaw/composite-handler.test.ts 10 it() blocks"},
+    "G3_l2_template_router": {"value": 1.0, "raw": "inlined=20 catalog=20 total=40", "score": 1.0, "evidence": "supabase/functions/_shared/clawbot-templates.ts 20 + scripts/openclaw/templates/L2-*.json 20"},
+    "G4_l3_dispatcher": {"value": 0.0, "raw": "dispatcher=0 post=0", "score": 0.0, "evidence": "scripts/openclaw/dispatcher.ts + postToVisionEndpoint.ts: skill regex match=0, file/regex DRIFT", "drift": true},
+    "G5_intent_fire_rate": {"value": null, "raw": "SKIP", "score": null, "evidence": "Telemetry query needs SUPABASE_ACCESS_TOKEN"},
+    "G6_mistral_canonical": {"value": null, "raw": "SKIP", "score": null, "evidence": "R7 bench needs MISTRAL_API_KEY + R7 fixture (existing scripts/bench/run-sprint-r7-stress.mjs verified by mem-search)"},
+    "G7_canary_dispatch_pct": {"value": null, "raw": "SKIP", "score": null, "evidence": "Supabase secrets list needs SUPABASE_ACCESS_TOKEN"},
+    "G8_enable_intent_tools_schema": {"value": null, "raw": "SKIP", "score": null, "evidence": "Supabase secrets list needs SUPABASE_ACCESS_TOKEN"},
+    "G9_whitelist_actions": {"value": 0.5, "raw": "actions=64 destructive=4", "score": 0.5, "evidence": "src/components/lavagna/intentsDispatcher.js (skill V1 wrong path corrected). 64 actions vs target 12 (V1 baseline) — espansione 12→50 ADR-041 + ulteriori +14 = 64. destructive=4 likely include clearCircuit + clearHighlights + clearAll + similar (NON true destructive). Skill scoring formula treats >12 as drift, returns 0.5 conservative", "skill_path_drift_corrected": true, "skill_scoring_drift_target": "12 baseline obsoleto vs ADR-041 50+ entries expansion"}
+  },
+  "overall_score": 0.688,
+  "score_capped": 0.688,
+  "gates_measured": "5/9 (G1+G2+G3+G4+G9 deterministic, G5+G6+G7+G8 env-gated SKIP)",
+  "skip_reasons": [
+    "G5+G7+G8: SUPABASE_ACCESS_TOKEN missing",
+    "G6: MISTRAL_API_KEY missing for R7 bench"
+  ],
+  "drift_flags": [
+    "G4 dispatcher: skill regex case ['\"][a-z_]+['\"] returns 0 match. Investigation needed: dispatcher.ts uses different switch/case format OR file structure changed",
+    "G9 actions: skill V1 target 12 baseline obsoleto. Real ALLOWED_INTENT_ACTIONS = 64 entries (ADR-041 §3 expansion 12→50 PLUS ulteriori +14). Skill scoring formula needs update to reflect ADR-041 expanded baseline",
+    "G9 destructive: regex catches 4 entries (clearCircuit, clearHighlights, similar) — likely false positive, not true destructive. Skill needs camelCase-aware destructive heuristic"
+  ],
+  "caveats": [
+    "G1 unlim=15 (target 16): 1 method missing OR naming drift — INVESTIGATE",
+    "G4 zero match = severe DRIFT, real L3 dispatcher functionality NOT measured",
+    "G9 expansion 12→64 = positive (more onnipotenza coverage) but skill formula penalizes",
+    "Real onnipotenza score with env unlocked likely 0.45-0.65 (G6 canonical 3.6% drag)"
+  ],
+  "next_actions": [
+    "Iter 34 atom A4: hedged Mistral env activation unlocks G5+G6 measurement",
+    "Iter 35+: skill update G4 regex + G9 scoring formula per ADR-041",
+    "Phase 0.0 follow-up: env setup SUPABASE_ACCESS_TOKEN + MISTRAL_API_KEY"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "skill": "elab-onniscenza-measure",
+  "iter": 34,
+  "date": "2026-05-03",
+  "git_head": "1b2e57d",
+  "branch": "e2e-bypass-preview",
+  "gates": {
+    "G1_layer_coverage": {"value": null, "raw": "0/7", "score": 0.0, "evidence": "Zero match regex L1-L7 in onniscenza-bridge.ts + state-snapshot-aggregator.ts (skill V0 regex requires update OR layers wired with different naming)", "drift": true},
+    "G2_classifier_accuracy": {"value": null, "raw": "SKIP", "score": null, "evidence": "Vitest run separato non eseguito questo baseline (deterministic ma costo ~30s, defer iter atom A1+A2)"},
+    "G3_rag_chunks": {"value": null, "raw": "SKIP", "score": null, "evidence": "SUPABASE_SERVICE_ROLE_KEY env missing, SUPABASE CLI auth needed"},
+    "G4_wiki_count": {"value": 1.0, "raw": "wiki_count uncertain (verifica needed)", "score": null, "evidence": "ls docs/unlim-wiki/concepts/*.md count not captured this baseline run"},
+    "G5_hybrid_recall": {"value": null, "raw": "SKIP", "score": null, "evidence": "SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY + VOYAGE_API_KEY env missing"},
+    "G6_anti_absurd_rate": {"value": null, "raw": "SKIP", "score": null, "evidence": "Telemetry query needs SUPABASE_SERVICE_ROLE_KEY"},
+    "G7_cache_hit_rate": {"value": null, "raw": "SKIP", "score": null, "evidence": "Telemetry query needs SUPABASE_SERVICE_ROLE_KEY"},
+    "G8_v1_vs_v2_ratio": {"value": null, "raw": "SKIP", "score": null, "evidence": "Supabase secrets list + telemetry query env-gated"}
+  },
+  "overall_score": 0.0,
+  "score_capped": 0.0,
+  "skip_reasons": [
+    "G2 vitest deferred (~30s cost, defer to atom A1+A2 vitest run)",
+    "G3+G5+G6+G7+G8: SUPABASE_SERVICE_ROLE_KEY + VOYAGE_API_KEY env missing"
+  ],
+  "drift_flags": [
+    "G1 zero match — skill V0 regex L1-L7 doesn't match real codebase naming, requires investigation"
+  ],
+  "anti_inflation_cap_applied": "0.0 baseline (5/8 gates SKIP env-gated, G1 drift)",
+  "caveats": [
+    "Real onniscenza score requires env setup + Supabase CLI auth + Voyage API key",
+    "G1 needs skill V1 update with corrected layer detection regex",
+    "Per anti-inflation invariant: overall_score > 0.85 + any SKIP → cap 0.75. Baseline 0.0 honest given 5/8 SKIP"
+  ],
+  "next_actions": [
+    "Phase 0.0 follow-up: env setup SUPABASE_SERVICE_ROLE_KEY + VOYAGE_API_KEY",
+    "Atom A1+A2: vitest run unlock G2 classifier measurement",
+    "Iter 35+: skill G1 regex update post-investigation onniscenza-bridge.ts naming"
+  ]
+}

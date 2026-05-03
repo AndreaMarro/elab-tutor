@@ -1,0 +1,40 @@
+{
+  "skill": "elab-velocita-latenze-tracker",
+  "iter": 34,
+  "date": "2026-05-03",
+  "git_head": "1b2e57d",
+  "branch": "e2e-bypass-preview",
+  "gates": {
+    "G1_r5_p95": {"value": null, "raw": "SKIP", "score": null, "evidence": "node scripts/bench/run-sprint-r5-stress.mjs needs SUPABASE_URL + SUPABASE_ANON_KEY env. Last measured iter 31 close = 3380ms p95 (PDR cap)"},
+    "G2_cold_start": {"value": null, "raw": "SKIP", "score": null, "evidence": "5min idle wait + curl Edge Function. Costo 305s + env. Last measured ~unknown"},
+    "G3_warmup_cron": {"value": null, "raw": "SKIP", "score": null, "evidence": "pg_cron query needs SUPABASE_ACCESS_TOKEN + linked project. Iter 38 noted warmup_cron_applied=true"},
+    "G4_stt_round_trip": {"value": null, "raw": "SKIP", "score": null, "evidence": "CF Whisper API needs CF_ACCOUNT + CF_API_TOKEN env"},
+    "G5_tts_voxtral": {"value": null, "raw": "SKIP", "score": null, "evidence": "Edge Function unlim-tts needs SUPABASE_ANON_KEY env"},
+    "G6_vision_pixtral": {"value": null, "raw": "SKIP", "score": null, "evidence": "Edge Function unlim-vision needs SUPABASE_ANON_KEY env. Note: unlim-vision Edge Function NON LISTATA in pre-condition scan supabase/functions/, possibile drift"},
+    "G7_flux_imagegen": {"value": null, "raw": "SKIP", "score": null, "evidence": "Together.ai FLUX needs TOGETHER_API_KEY env"},
+    "G8_lighthouse_perf": {"value": null, "raw": "SKIP", "score": null, "evidence": "PSI API needs PSI_API_KEY env. Last measured iter 38 = chatbot 26 + easter 23 (PDR cap < 90)"},
+    "G9_4g_lim_loadtime": {"value": null, "raw": "SKIP", "score": null, "evidence": "Lighthouse local install + throttle + Vercel deployment fetch"}
+  },
+  "overall_score": 0.0,
+  "score_capped": 0.0,
+  "gates_measured": "0/9 (all env-gated)",
+  "skip_reasons": [
+    "G1+G3+G5+G8+G9: SUPABASE_* + PSI_API_KEY env missing",
+    "G4: CF_ACCOUNT + CF_API_TOKEN missing",
+    "G7: TOGETHER_API_KEY missing"
+  ],
+  "drift_flags": [
+    "G6 unlim-vision Edge Function NON LISTATA in pre-condition scan supabase/functions/ — possible removal or rename"
+  ],
+  "anti_inflation_cap_applied": "0.0 baseline (9/9 SKIP env-gated)",
+  "caveats": [
+    "Velocita baseline unmeasurable WITHOUT env setup",
+    "Last known evidence (iter 31+38): R5 p95=3380ms (above 2500 target), Lighthouse perf=26+23 (above 70 target NOT met). Real velocita score likely 0.20-0.40 range",
+    "Atom A4 hedged Mistral activation in iter 34 expected to lift R5 p95 -25-40%"
+  ],
+  "next_actions": [
+    "Phase 0.0 follow-up: env setup .env.local OR vercel env pull",
+    "Atom A4: post hedged Mistral activation, re-measure G1 R5 p95",
+    "Iter 35+: G6 unlim-vision Edge Function status check + skill path correction if renamed"
+  ]
+}
