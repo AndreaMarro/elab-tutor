@@ -1093,3 +1093,27 @@
 **Pattern hint**: Check Edge Function logs in Supabase dashboard
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-05-03T18:36:47Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-05-03T18:36:47Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Assicurati che tutti i componenti siano collegati correttamente seguendo lo schema fornito. Controlla la polarità di tutti i collegamenti, specialmente per condensatori e dio
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-05-03T18:36:47Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Il circuito presenta un errore fondamentale.\n\n1.  **Cosa c'è di sbagliato:** [AZIONE:highlight:led1] Il LED non è collegato a nulla.\n2.  **Perché è un problema:** I
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
