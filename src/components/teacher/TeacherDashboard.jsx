@@ -21,15 +21,15 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 import css from './TeacherDashboard.module.css';
 // Colori ELAB ufficiali
 const C = {
-    navy: 'var(--color-primary, #1E4D8C)',
+    navy: 'var(--color-primary, var(--elab-navy))',
     navyDark: 'var(--color-primary-dark, #152a5c)',
-    lime: 'var(--color-accent, #4A7A25)',
+    lime: 'var(--color-accent, var(--elab-lime))',
     limeDark: '#7da93d',
     limeLight: '#BBD789',
     limeSoft: '#E8F4D9',
     bg: 'var(--color-bg, #F0F4F8)',
     red: '#E53935',
-    orange: '#E8941C',
+    orange: 'var(--elab-orange)',
     cyan: '#00B4D8',
     text: 'var(--color-text-body, #1a1a2e)',
     textMuted: 'var(--color-text-muted, #475569)',
@@ -84,39 +84,39 @@ const IconSeedDormant = ({ size = 18 }) => (
     </svg>
 );
 const IconSeed = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#4A7A25' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
         <ellipse cx="10" cy="14" rx="4" ry="3" fill="#D7CCC8" stroke="#8D6E63" />
-        <path d="M10 14 Q10 11 10 9" stroke="#4A7A25" />
-        <path d="M10 10 Q12 8 13 9" stroke="#4A7A25" />
+        <path d="M10 14 Q10 11 10 9" stroke="var(--elab-lime)" />
+        <path d="M10 10 Q12 8 13 9" stroke="var(--elab-lime)" />
         <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
     </svg>
 );
 const IconSprout = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#4A7A25' }}>
-        <line x1="10" y1="17" x2="10" y2="8" stroke="#4A7A25" />
-        <path d="M10 10 Q7 7 5 8" stroke="#4A7A25" fill="none" />
-        <path d="M10 8 Q13 5 15 6" stroke="#4A7A25" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
+        <line x1="10" y1="17" x2="10" y2="8" stroke="var(--elab-lime)" />
+        <path d="M10 10 Q7 7 5 8" stroke="var(--elab-lime)" fill="none" />
+        <path d="M10 8 Q13 5 15 6" stroke="var(--elab-lime)" fill="none" />
         <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
     </svg>
 );
 const IconBush = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#4A7A25' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
         <line x1="10" y1="17" x2="10" y2="10" stroke="#6D4C41" />
-        <circle cx="10" cy="7" r="5" fill="#A5D6A7" stroke="#4A7A25" />
-        <circle cx="7" cy="9" r="3" fill="#81C784" stroke="#4A7A25" />
-        <circle cx="13" cy="9" r="3" fill="#81C784" stroke="#4A7A25" />
+        <circle cx="10" cy="7" r="5" fill="#A5D6A7" stroke="var(--elab-lime)" />
+        <circle cx="7" cy="9" r="3" fill="#81C784" stroke="var(--elab-lime)" />
+        <circle cx="13" cy="9" r="3" fill="#81C784" stroke="var(--elab-lime)" />
         <line x1="4" y1="17" x2="16" y2="17" stroke="#8D6E63" />
     </svg>
 );
 const IconPine = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#4A7A25' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
         <rect x="9" y="15" width="2" height="3" fill="#6D4C41" stroke="#6D4C41" />
         <polygon points="10,2 4,10 7,10 3,15 17,15 13,10 16,10" fill="#66BB6A" stroke="#43A047" />
         <line x1="4" y1="18" x2="16" y2="18" stroke="#8D6E63" />
     </svg>
 );
 const IconOak = ({ size = 18 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#4A7A25' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
         <rect x="9" y="14" width="2" height="4" fill="#5D4037" stroke="#5D4037" />
         <circle cx="10" cy="8" r="6" fill="#66BB6A" stroke="#43A047" />
         <circle cx="6" cy="10" r="3.5" fill="#81C784" stroke="#43A047" />
@@ -133,10 +133,10 @@ const IconEnergico = ({ size = 16 }) => (
     </svg>
 );
 const IconConcentrato = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#1E4D8C' }}>
-        <circle cx="10" cy="10" r="8" stroke="#1E4D8C" />
-        <circle cx="10" cy="10" r="4" stroke="#1E4D8C" />
-        <circle cx="10" cy="10" r="1" fill="#1E4D8C" stroke="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-navy)' }}>
+        <circle cx="10" cy="10" r="8" stroke="var(--elab-navy)" />
+        <circle cx="10" cy="10" r="4" stroke="var(--elab-navy)" />
+        <circle cx="10" cy="10" r="1" fill="var(--elab-navy)" stroke="none" />
     </svg>
 );
 const IconConfuso = ({ size = 16 }) => (
@@ -153,11 +153,11 @@ const IconBloccato = ({ size = 16 }) => (
     </svg>
 );
 const IconFelice = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#4A7A25' }}>
-        <circle cx="10" cy="10" r="8" stroke="#4A7A25" />
-        <circle cx="7" cy="8" r="1" fill="#4A7A25" stroke="none" />
-        <circle cx="13" cy="8" r="1" fill="#4A7A25" stroke="none" />
-        <path d="M6 12 Q10 16 14 12" stroke="#4A7A25" fill="none" />
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-lime)' }}>
+        <circle cx="10" cy="10" r="8" stroke="var(--elab-lime)" />
+        <circle cx="7" cy="8" r="1" fill="var(--elab-lime)" stroke="none" />
+        <circle cx="13" cy="8" r="1" fill="var(--elab-lime)" stroke="none" />
+        <path d="M6 12 Q10 16 14 12" stroke="var(--elab-lime)" fill="none" />
     </svg>
 );
 const IconFrustrato = ({ size = 16 }) => (
@@ -215,7 +215,7 @@ const IconReview = ({ size = 16 }) => (
 
 // Status icons
 const IconCheck = ({ size = 14, color }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: color || '#4A7A25' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: color || 'var(--elab-lime)' }}>
         <circle cx="10" cy="10" r="8" stroke="currentColor" />
         <polyline points="6 10 9 13 14 7" stroke="currentColor" />
     </svg>
@@ -237,7 +237,7 @@ const IconAlert = ({ size = 14, color }) => (
 
 // Nudge envelope icon
 const IconNudge = ({ size = 16 }) => (
-    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: '#1E4D8C' }}>
+    <svg {...svgProps} width={size} height={size} viewBox="0 0 20 20" className={css.iconSvg} style={{ color: 'var(--elab-navy)' }}>
         <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" />
         <polyline points="2 4 10 11 18 4" stroke="currentColor" />
     </svg>
@@ -270,12 +270,12 @@ const MOOD_EMOJI = {
 };
 
 const MOOD_COLORS = {
-    energico: '#F5A623', concentrato: '#1E4D8C', confuso: '#9333EA', bloccato: '#E53935',
-    felice: '#4A7A25', frustrato: '#EF4444', curioso: '#00B4D8', creativo: '#EC4899',
+    energico: '#F5A623', concentrato: 'var(--elab-navy)', confuso: '#9333EA', bloccato: '#E53935',
+    felice: 'var(--elab-lime)', frustrato: '#EF4444', curioso: '#00B4D8', creativo: '#EC4899',
 };
 
 // Avatar color from name hash (deterministic)
-const AVATAR_COLORS = ['#1E4D8C', '#4A7A25', '#E8941C', '#E54B3D', '#9333EA', '#00B4D8', '#EC4899', '#6D4C41'];
+const AVATAR_COLORS = ['var(--elab-navy)', 'var(--elab-lime)', 'var(--elab-orange)', 'var(--elab-red)', '#9333EA', '#00B4D8', '#EC4899', '#6D4C41'];
 function getAvatarColor(name) {
     let hash = 0;
     for (let i = 0; i < (name || '').length; i++) hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
@@ -632,8 +632,8 @@ export default function TeacherDashboard({ onNavigate }) {
             </div>
             {isEmptyState && (
                 <div style={{
-                    background: 'linear-gradient(90deg, #1E4D8C11 0%, #4A7A2511 100%)',
-                    border: '1px solid #1E4D8C33',
+                    background: 'linear-gradient(90deg, var(--elab-navy)11 0%, var(--elab-lime)11 100%)',
+                    border: '1px solid var(--elab-navy)33',
                     borderRadius: 8,
                     padding: '16px 20px',
                     margin: '0 20px 12px',
@@ -641,7 +641,7 @@ export default function TeacherDashboard({ onNavigate }) {
                     alignItems: 'center',
                     gap: 12,
                     fontSize: 14,
-                    color: '#1E4D8C',
+                    color: 'var(--elab-navy)',
                 }}>
                     <span style={{ fontSize: 24 }}>Info</span>
                     <div>
@@ -655,8 +655,8 @@ export default function TeacherDashboard({ onNavigate }) {
             )}
             {dataSource === 'cloud' && (
                 <div style={{
-                    background: 'linear-gradient(90deg, #1E4D8C22 0%, #4A7A2511 100%)',
-                    border: '1px solid #1E4D8C44',
+                    background: 'linear-gradient(90deg, var(--elab-navy)22 0%, var(--elab-lime)11 100%)',
+                    border: '1px solid var(--elab-navy)44',
                     borderRadius: 8,
                     padding: '8px 16px',
                     margin: '0 20px 12px',
@@ -664,16 +664,16 @@ export default function TeacherDashboard({ onNavigate }) {
                     alignItems: 'center',
                     gap: 8,
                     fontSize: 14,
-                    color: '#1E4D8C',
+                    color: 'var(--elab-navy)',
                 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#1E4D8C', display: 'inline-block', flexShrink: 0 }} />
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--elab-navy)', display: 'inline-block', flexShrink: 0 }} />
                     <span><strong>Dati dal cloud</strong> — Sincronizzazione attiva. I dati sono salvati e accessibili da qualsiasi dispositivo.</span>
                 </div>
             )}
             {dataSource === 'server' && (
                 <div style={{
-                    background: 'linear-gradient(90deg, #4A7A2522 0%, #4A7A2511 100%)',
-                    border: '1px solid #4A7A2544',
+                    background: 'linear-gradient(90deg, var(--elab-lime)22 0%, var(--elab-lime)11 100%)',
+                    border: '1px solid var(--elab-lime)44',
                     borderRadius: 8,
                     padding: '8px 16px',
                     margin: '0 20px 12px',
@@ -683,7 +683,7 @@ export default function TeacherDashboard({ onNavigate }) {
                     fontSize: 14,
                     color: '#2E7D32',
                 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4A7A25', display: 'inline-block', flexShrink: 0 }} />
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--elab-lime)', display: 'inline-block', flexShrink: 0 }} />
                     <span><strong>Dati dal server</strong> — Sincronizzazione attiva con il backend EU.{studentService.isEncryptionActive() ? ' Dati locali cifrati.' : ''}</span>
                 </div>
             )}
@@ -1829,8 +1829,8 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
                     {cls.volumes?.map(v => (
                         <span key={v} style={{
                             fontSize: 14, padding: '2px 8px', borderRadius: 6,
-                            background: v === 'Volume 1' ? '#4A7A2522' : v === 'Volume 2' ? '#E8941C22' : '#E54B3D22',
-                            color: v === 'Volume 1' ? '#4A7A25' : v === 'Volume 2' ? '#996600' : '#C62828',
+                            background: v === 'Volume 1' ? 'var(--elab-lime)22' : v === 'Volume 2' ? 'var(--elab-orange)22' : 'var(--elab-red)22',
+                            color: v === 'Volume 1' ? 'var(--elab-lime)' : v === 'Volume 2' ? '#996600' : '#C62828',
                             fontWeight: 600,
                         }}>
                             {v}
@@ -1838,8 +1838,8 @@ function ClassCard({ cls, onRemoveStudent, onUpdateGames }) {
                     ))}
                     <span style={{
                         fontSize: 14, padding: '2px 8px', borderRadius: 6,
-                        background: cls.active ? '#4A7A2522' : '#E5393522',
-                        color: cls.active ? '#4A7A25' : '#E53935',
+                        background: cls.active ? 'var(--elab-lime)22' : '#E5393522',
+                        color: cls.active ? 'var(--elab-lime)' : '#E53935',
                         fontWeight: 600,
                     }}>
                         {cls.active ? 'Attiva' : 'Disattivata'}
@@ -1933,7 +1933,7 @@ const CURRICULUM_BY_VOL = {
     3: CURRICULUM.filter(e => e.volume === 3),
 };
 const VOL_LABELS = { 1: 'Volume 1 — Cominciamo', 2: 'Volume 2 — Approfondiamo', 3: 'Volume 3 — Arduino' };
-const VOL_COLORS = { 1: '#4A7A25', 2: '#E8941C', 3: '#E54B3D' };
+const VOL_COLORS = { 1: 'var(--elab-lime)', 2: 'var(--elab-orange)', 3: 'var(--elab-red)' };
 
 function getStudentCompletedSet(studentData) {
     if (!studentData?.esperimenti) return new Set();
@@ -1954,8 +1954,8 @@ function getProgressStats(studentData, completedSet) {
 }
 
 function getPaceLabel(pct) {
-    if (pct >= 60) return { label: 'Avanti', color: '#4A7A25', bg: 'rgba(85,139,47,0.1)' };
-    if (pct >= 25) return { label: 'In pari', color: '#1E4D8C', bg: 'rgba(30,77,140,0.1)' };
+    if (pct >= 60) return { label: 'Avanti', color: 'var(--elab-lime)', bg: 'rgba(85,139,47,0.1)' };
+    if (pct >= 25) return { label: 'In pari', color: 'var(--elab-navy)', bg: 'rgba(30,77,140,0.1)' };
     if (pct > 0) return { label: 'Indietro', color: '#996600', bg: 'rgba(232,148,28,0.1)' };
     return { label: 'Non iniziato', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' };
 }
@@ -2109,7 +2109,7 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
                     <div style={styles.statLabel}>Studenti</div>
                 </div>
                 <div style={styles.statCard}>
-                    <div style={{ ...styles.statValue, color: '#4A7A25' }}>{paceGroups.avanti}</div>
+                    <div style={{ ...styles.statValue, color: 'var(--elab-lime)' }}>{paceGroups.avanti}</div>
                     <div style={styles.statLabel}>Avanti (&ge;60%)</div>
                 </div>
                 <div style={styles.statCard}>
@@ -2286,13 +2286,13 @@ function ProgressoPNRRTab({ users, allData, formatTempo }) {
             <div style={{ ...styles.section, background: '#FAFBFC' }}>
                 <h4 style={{ margin: '0 0 8px', fontSize: 14, color: C.navy, fontFamily: 'Oswald, sans-serif' }}>Legenda</h4>
                 <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', fontSize: 14 }}>
-                    <span><strong style={{ color: '#4A7A25' }}>■</strong> Volume 1 — Cominciamo ({CURRICULUM_BY_VOL[1].length} esp.)</span>
+                    <span><strong style={{ color: 'var(--elab-lime)' }}>■</strong> Volume 1 — Cominciamo ({CURRICULUM_BY_VOL[1].length} esp.)</span>
                     <span><strong style={{ color: '#996600' }}>■</strong> Volume 2 — Approfondiamo ({CURRICULUM_BY_VOL[2].length} esp.)</span>
                     <span><strong style={{ color: '#C62828' }}>■</strong> Volume 3 — Arduino ({CURRICULUM_BY_VOL[3].length} esp.)</span>
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 14, marginTop: 8 }}>
-                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(85,139,47,0.1)', color: '#4A7A25', fontWeight: 600 }}>Avanti: ≥60%</span>
-                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(30,77,140,0.1)', color: '#1E4D8C', fontWeight: 600 }}>In pari: 25-59%</span>
+                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(85,139,47,0.1)', color: 'var(--elab-lime)', fontWeight: 600 }}>Avanti: ≥60%</span>
+                    <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(30,77,140,0.1)', color: 'var(--elab-navy)', fontWeight: 600 }}>In pari: 25-59%</span>
                     <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(232,148,28,0.1)', color: '#996600', fontWeight: 600 }}>Indietro: &lt;25%</span>
                     <span style={{ padding: '2px 8px', borderRadius: 4, background: 'rgba(148,163,184,0.1)', color: '#94A3B8', fontWeight: 600 }}>Non iniziato</span>
                 </div>
@@ -2323,8 +2323,8 @@ function getExperimentStatus(studentData, experimentId) {
 }
 
 const STATUS_COLORS = {
-    completed: '#4A7A25',
-    partial: '#E8941C',
+    completed: 'var(--elab-lime)',
+    partial: 'var(--elab-orange)',
     none: '#E2E8F0',
 };
 const STATUS_BG = {
@@ -2564,7 +2564,7 @@ function StudentProgressChart({ users, allData, visibleExps }) {
                     contentStyle={{ fontSize: 14, borderRadius: 6, border: `1px solid ${C.border}` }}
                 />
                 <Bar dataKey="completati" fill={C.lime} stackId="a" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="parziali" fill="#E8941C" stackId="a" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="parziali" fill="var(--elab-orange)" stackId="a" radius={[0, 4, 4, 0]} />
             </BarChart>
         </ResponsiveContainer>
     );
@@ -2907,7 +2907,7 @@ function ReportTab({ users, allData, classReport, formatTempo }) {
         import('recharts').then(mod => setCharts(mod));
     }, []);
 
-    const CHART_COLORS = [C.navy, C.lime, '#E8941C', '#E54B3D', C.cyan, '#9333EA', '#EC4899', '#6D4C41'];
+    const CHART_COLORS = [C.navy, C.lime, 'var(--elab-orange)', 'var(--elab-red)', C.cyan, '#9333EA', '#EC4899', '#6D4C41'];
 
     return (
         <div ref={reportRef} data-print-report>

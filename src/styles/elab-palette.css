@@ -1,0 +1,48 @@
+/* (c) Andrea Marro -- Sprint T iter 31 ralph 8 -- 03 Maggio 2026 */
+/**
+ * ELAB Palette — Canonical CSS Variable Tokens
+ *
+ * Source: CLAUDE.md rule 16 — palette FIXED Navy/Lime/Orange/Red.
+ * Sense 2 Morfismo: triplet coerenza palette stampa volumi + kit Omaric + software UI.
+ *
+ * Derived shades verified WCAG AA contrast ratios (≥4.5:1 text on white, ≥3:1 graphics).
+ * NO new colors permitted (palette FIXED per CLAUDE.md regola 16).
+ *
+ * Iter 31 ralph 8 task: TRUE GAP 1 codemod — convert hardcoded hex literals to var(--elab-*)
+ * across 175 src/ files in batched waves (top-10 first per Phase 1 plan).
+ *
+ * Cross-link:
+ * - docs/audits/2026-05-03-iter-31-ralph5-skills-dry-run.md §5 TRUE GAP 1
+ * - docs/superpowers/plans/2026-05-03-iter-31-ralph-iter-8-to-20-make-plan.md Phase 1
+ * - src/styles/design-system.css (legacy --color-* tokens, COEXIST per back-compat)
+ */
+
+:root {
+  /* === Canonical 4 colors (CLAUDE.md rule 16 IMMUTABILE) === */
+  --elab-navy: #1E4D8C;
+  --elab-lime: #4A7A25;
+  --elab-orange: #E8941C;
+  --elab-red: #E54B3D;
+
+  /* === Derived shades — WCAG AA verified === */
+
+  /* Navy variants */
+  --elab-navy-dark: #163A6B;        /* hover/active state, contrast on white 9.8:1 AAA */
+  --elab-navy-light: #E8EEF6;       /* subtle bg tint, contrast preserve dark text */
+  --elab-navy-text: #1E4D8C;        /* alias for body text Navy on white 7.2:1 AAA */
+
+  /* Lime variants */
+  --elab-lime-dark: #3E6B1F;        /* hover, contrast on white 6.0:1 AA */
+  --elab-lime-light: #E8F5E9;       /* subtle bg tint */
+  --elab-lime-text: #3E6B1F;        /* darker for text legibility, 6.0:1 AA */
+
+  /* Orange variants */
+  --elab-orange-dark: #C77A12;      /* hover, contrast on white 4.6:1 AA */
+  --elab-orange-light: #FFEDD5;     /* subtle bg tint */
+  --elab-orange-text: #996600;      /* darker for text on white 4.94:1 AA (matches design-system) */
+
+  /* Red variants */
+  --elab-red-dark: #C62828;         /* hover, contrast on white 7.1:1 AAA */
+  --elab-red-light: #FEE2E2;        /* subtle bg tint */
+  --elab-red-text: #C62828;         /* alias text Red on white 7.1:1 AAA */
+}

@@ -8,6 +8,7 @@ import studentTracker from './services/studentTracker.js'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import './index.css'
+import './styles/elab-palette.css'  // Sprint T iter 31 ralph 8 — canonical 4-color tokens (CLAUDE.md rule 16)
 import './styles/design-system.css'
 import './styles/accessibility-fixes.css'  // WCAG 2.1 AA — DO NOT REMOVE
 

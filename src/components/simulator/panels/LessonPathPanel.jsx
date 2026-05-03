@@ -160,12 +160,12 @@ function PrerequisiteCards({ experimentId }) {
     <div style={{ margin: '8px 0 12px', padding: '10px 12px', background: '#F0F7FF', borderRadius: 8, border: '1px solid #D0E0F0' }}>
       {prereqs.length > 0 && (
         <>
-          <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 16, color: '#1E4D8C' }}>
+          <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 16, color: 'var(--elab-navy)' }}>
             Vi ricordate cosa abbiamo scoperto?
           </p>
           {prereqs.map(p => (
             <div key={p.id} style={{ margin: '4px 0', padding: '6px 8px', background: '#fff', borderRadius: 6, fontSize: 16, lineHeight: 1.5 }}>
-              <strong style={{ color: '#1E4D8C' }}>{p.name}</strong>
+              <strong style={{ color: 'var(--elab-navy)' }}>{p.name}</strong>
               <span style={{ color: '#555', marginLeft: 4 }}>— {p.analogy}</span>
             </div>
           ))}
@@ -173,14 +173,14 @@ function PrerequisiteCards({ experimentId }) {
       )}
       {newConcepts.length > 0 && (
         <>
-          <p style={{ margin: '10px 0 6px 0', fontWeight: 700, fontSize: 16, color: '#4A7A25' }}>
+          <p style={{ margin: '10px 0 6px 0', fontWeight: 700, fontSize: 16, color: 'var(--elab-lime)' }}>
             Oggi scopriamo qualcosa di nuovo:
           </p>
           {newConcepts.map(c => (
             <div key={c.id} style={{ margin: '4px 0', padding: '6px 8px', background: '#F0FFF0', borderRadius: 6, fontSize: 16, lineHeight: 1.5, border: '1px solid #C8E6C9' }}>
-              <strong style={{ color: '#4A7A25' }}>{c.name}</strong>
+              <strong style={{ color: 'var(--elab-lime)' }}>{c.name}</strong>
               <span style={{ color: '#555', marginLeft: 4 }}>— {c.description}</span>
-              <div style={{ marginTop: 4, fontStyle: 'italic', color: '#4A7A25', fontSize: 14 }}>
+              <div style={{ marginTop: 4, fontStyle: 'italic', color: 'var(--elab-lime)', fontSize: 14 }}>
                 Pensatela cosi: &laquo;{c.analogy}&raquo;
               </div>
               {c.metaphor && (
@@ -331,7 +331,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
           }}
           style={{
             ...RS.buildBtn,
-            ...(alreadyLoaded ? { background: '#4A7A25', color: '#fff' } : {}),
+            ...(alreadyLoaded ? { background: 'var(--elab-lime)', color: '#fff' } : {}),
           }}
         >
           {alreadyLoaded ? 'Gia caricato!' : `${phase.build_circuit.button_label || 'Monta il circuito per me'}`}
@@ -356,7 +356,7 @@ function RichLessonPath({ path, experiment, expandedPhase, onExpandPhase, onClos
           <p style={S.phaseLabel}>Analogie per spiegare:</p>
           <ul style={S.errorList}>
             {phase.analogies.map((a, i) => (
-              <li key={i} style={{ ...S.errorItem, borderLeftColor: '#4A7A25' }}>
+              <li key={i} style={{ ...S.errorItem, borderLeftColor: 'var(--elab-lime)' }}>
                 <strong>{a.concept.replace(/_/g, ' ')}</strong>
                 <p style={{ margin: '2px 0 0', fontSize: 14 }}>{a.text}</p>
                 {a.evidence && <em style={{ fontSize: 16, color: '#737373' }}>({a.evidence})</em>}
@@ -523,7 +523,7 @@ const RS = {
     fontSize: 16,
     fontWeight: 700,
     color: '#fff',
-    background: '#4A7A25',
+    background: 'var(--elab-lime)',
     padding: '2px 6px',
     borderRadius: 6,
     textTransform: 'uppercase',
@@ -575,7 +575,7 @@ const RS = {
     margin: '10px 0',
     border: 'none',
     borderRadius: 10,
-    background: 'linear-gradient(135deg, #1E4D8C, #2A5FA0)',
+    background: 'linear-gradient(135deg, var(--elab-navy), #2A5FA0)',
     color: '#fff',
     fontSize: 16,
     fontWeight: 700,
@@ -611,10 +611,10 @@ const RS = {
     width: '100%',
     padding: '10px 16px',
     margin: '8px 0 0',
-    border: '2px solid #1E4D8C',
+    border: '2px solid var(--elab-navy)',
     borderRadius: 10,
     background: 'transparent',
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontSize: 16,
     fontWeight: 700,
     cursor: 'pointer',
@@ -913,7 +913,7 @@ const S = {
     alignItems: 'center',
     gap: 8,
     padding: '12px 14px',
-    background: 'linear-gradient(135deg, var(--color-primary, #1E4D8C) 0%, #2A5FA0 100%)',
+    background: 'linear-gradient(135deg, var(--color-primary, var(--elab-navy)) 0%, #2A5FA0 100%)',
     borderRadius: '14px 14px 0 0',
     color: '#fff',
   },
@@ -998,7 +998,7 @@ const S = {
     width: 22,
     height: 22,
     borderRadius: '50%',
-    background: 'var(--color-primary, #1E4D8C)',
+    background: 'var(--color-primary, var(--elab-navy))',
     color: '#fff',
     fontSize: 16,
     fontWeight: 700,
@@ -1044,7 +1044,7 @@ const S = {
     margin: '8px 0 4px',
     fontSize: 16,
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     textTransform: 'uppercase',
     letterSpacing: '0.3px',
   },
@@ -1093,7 +1093,7 @@ const S = {
 
   materialQty: {
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     minWidth: 22,
   },
 
@@ -1111,7 +1111,7 @@ const S = {
   questionMark: {
     fontSize: 18,
     fontWeight: 700,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     lineHeight: 1,
     flexShrink: 0,
   },
@@ -1119,7 +1119,7 @@ const S = {
   questionText: {
     fontSize: 16,
     fontWeight: 600,
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     lineHeight: 1.4,
     fontStyle: 'italic',
   },
@@ -1138,7 +1138,7 @@ const S = {
     color: 'var(--color-text-gray-600, #444)',
     lineHeight: 1.5,
     paddingLeft: 8,
-    borderLeft: '2px solid var(--color-vol2, #E8941C)',
+    borderLeft: '2px solid var(--color-vol2, var(--elab-orange))',
   },
 
   tipBox: {
@@ -1275,10 +1275,10 @@ const S = {
     gap: 6,
     margin: '8px 14px 12px',
     padding: '10px 14px',
-    border: '1px solid var(--color-primary, #1E4D8C)',
+    border: '1px solid var(--color-primary, var(--elab-navy))',
     borderRadius: 8,
     background: 'transparent',
-    color: 'var(--color-primary, #1E4D8C)',
+    color: 'var(--color-primary, var(--elab-navy))',
     fontSize: 16,
     fontWeight: 600,
     fontFamily: 'var(--font-sans, "Open Sans", sans-serif)',

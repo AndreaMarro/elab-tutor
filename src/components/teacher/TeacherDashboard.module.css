@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 28px;
-  background: linear-gradient(135deg, var(--color-primary, #1E4D8C), #152a5c);
+  background: linear-gradient(135deg, var(--color-primary, var(--elab-navy)), #152a5c);
   border-radius: 16px;
   margin-bottom: 20px;
   flex-wrap: wrap;
@@ -63,13 +63,13 @@
   flex-shrink: 0;
   min-height: 44px;
   background: transparent;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   font-family: var(--font-sans, 'Open Sans', sans-serif);
 }
 
 .tabActive {
   composes: tab;
-  background: var(--color-primary, #1E4D8C);
+  background: var(--color-primary, var(--elab-navy));
   color: #fff;
 }
 
@@ -89,7 +89,7 @@
   margin: 0 0 16px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   font-family: var(--font-display, Oswald, sans-serif);
 }
 
@@ -106,7 +106,7 @@
   border-radius: 6px;
   border: 1px solid var(--color-border, #E2E8F0);
   background: transparent;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -115,8 +115,8 @@
 
 .subTabActive {
   composes: subTab;
-  border-color: var(--color-primary, #1E4D8C);
-  background: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary, var(--elab-navy));
+  background: var(--color-primary, var(--elab-navy));
   color: #fff;
 }
 
@@ -188,7 +188,7 @@
 }
 
 .primaryBtn {
-  background: linear-gradient(135deg, var(--color-accent, #4A7A25), #7da93d);
+  background: linear-gradient(135deg, var(--color-accent, var(--elab-lime)), #7da93d);
   border: none;
   color: #fff;
   padding: 10px 20px;
@@ -213,8 +213,8 @@
   padding: 10px 12px;
   text-align: left;
   font-weight: 700;
-  color: var(--color-primary, #1E4D8C);
-  border-bottom: 2px solid var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
+  border-bottom: 2px solid var(--color-primary, var(--elab-navy));
   font-size: 14px;
 }
 
@@ -230,7 +230,7 @@
   align-items: center;
   gap: 16px;
   padding: 20px 24px;
-  background: linear-gradient(135deg, var(--color-primary, #1E4D8C), #152a5c);
+  background: linear-gradient(135deg, var(--color-primary, var(--elab-navy)), #152a5c);
   border-radius: 12px;
   margin-bottom: 16px;
 }
@@ -239,7 +239,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-accent, #4A7A25), #7da93d);
+  background: linear-gradient(135deg, var(--color-accent, var(--elab-lime)), #7da93d);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -274,7 +274,7 @@
 .plantName {
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   margin-top: 6px;
 }
 
@@ -355,7 +355,7 @@
 .progressBarLabel {
   font-size: 16px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   font-family: Oswald, sans-serif;
 }
 
@@ -369,7 +369,7 @@
 .progressBarFill {
   height: 100%;
   border-radius: 5px;
-  background: linear-gradient(90deg, #4A7A25, #7da93d);
+  background: linear-gradient(90deg, var(--elab-lime), #7da93d);
   transition: width 0.3s;
 }
 
@@ -438,7 +438,7 @@
   z-index: 1;
   cursor: pointer;
   white-space: nowrap;
-  color: #1E4D8C;
+  color: var(--elab-navy);
   transition: background 0.15s;
 }
 .studentNameTd:hover {
@@ -513,7 +513,7 @@
   margin: 4px 0 0;
   font-size: 16px;
   font-weight: 700;
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }
 
 .exportBtnWrap {
@@ -554,7 +554,7 @@
 .miniBarFillGreen {
   height: 100%;
   border-radius: 5px;
-  background: linear-gradient(90deg, #4A7A25, #7da93d);
+  background: linear-gradient(90deg, var(--elab-lime), #7da93d);
 }
 
 .miniBarFillRed {
@@ -834,19 +834,19 @@
 .badgeNavy {
   composes: badge;
   background: rgba(30, 77, 140, 0.1);
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
 }
 
 .badgeLime {
   composes: badge;
   background: rgba(74, 122, 37, 0.1);
-  color: var(--color-accent, #4A7A25);
+  color: var(--color-accent, var(--elab-lime));
 }
 
 .badgeOrange {
   composes: badge;
   background: rgba(232, 148, 28, 0.1);
-  color: #E8941C;
+  color: var(--elab-orange);
 }
 
 .badgeRed {
@@ -858,7 +858,7 @@
 .secondaryBtn {
   border: 1px solid var(--color-border, #E2E8F0);
   background: #fff;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -890,7 +890,7 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
 }
 
 .card {
@@ -934,7 +934,7 @@
 }
 
 .headingNavy {
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
 }
 
 .pagination {
@@ -1132,20 +1132,20 @@
 
 .kpiCardNavy {
   composes: kpiCard;
-  border-left: 4px solid var(--color-primary, #1E4D8C);
+  border-left: 4px solid var(--color-primary, var(--elab-navy));
 }
 
 .kpiCardLime {
   composes: kpiCard;
-  border-left: 4px solid var(--color-accent, #4A7A25);
+  border-left: 4px solid var(--color-accent, var(--elab-lime));
 }
 
 .kpiCardOrange {
   composes: kpiCard;
-  border-left: 4px solid #E8941C;
+  border-left: 4px solid var(--elab-orange);
 }
 
 .kpiCardRed {
   composes: kpiCard;
-  border-left: 4px solid #E54B3D;
+  border-left: 4px solid var(--elab-red);
 }

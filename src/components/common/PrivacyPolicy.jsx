@@ -601,7 +601,7 @@ export default function PrivacyPolicy({ onClose }) {
               <p style={styles.rightText}>
                 "Diritto all'oblio": richiedere la cancellazione dei dati quando
                 non sono più necessari o revochi il consenso.
-                {' '}<a href="/data-deletion" style={{ color: '#1E4D8C' }}>Richiedi eliminazione dati</a>
+                {' '}<a href="/data-deletion" style={{ color: 'var(--elab-navy)' }}>Richiedi eliminazione dati</a>
               </p>
             </div>
 
@@ -1134,7 +1134,7 @@ const styles = {
     margin: 0,
     fontSize: '28px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontFamily: "'Open Sans', sans-serif",
   },
   subtitle: {
@@ -1172,7 +1172,7 @@ const styles = {
     border: '1px solid #e0e0e0',
     borderRadius: '20px',
     textDecoration: 'none',
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontSize: '14px',
     fontWeight: 500,
   },
@@ -1186,7 +1186,7 @@ const styles = {
     padding: '24px',
     borderRadius: '12px',
     marginBottom: '32px',
-    borderLeft: '4px solid #1E4D8C',
+    borderLeft: '4px solid var(--elab-navy)',
   },
   introText: {
     fontSize: '16px',
@@ -1213,13 +1213,13 @@ const styles = {
   sectionTitle: {
     fontSize: '18px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: 0,
     fontFamily: "'Open Sans', sans-serif",
   },
   toggleIcon: {
     fontSize: '24px',
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     fontWeight: 300,
   },
   sectionContent: {
@@ -1260,7 +1260,7 @@ const styles = {
     fontFamily: "'Open Sans', sans-serif",
   },
   link: {
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     textDecoration: 'underline',
   },
   list: {
@@ -1321,7 +1321,7 @@ const styles = {
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
-    borderLeft: '4px solid #1E4D8C',
+    borderLeft: '4px solid var(--elab-navy)',
   },
   warningBox: {
     background: '#fff3cd',
@@ -1352,7 +1352,7 @@ const styles = {
   rightTitle: {
     fontSize: '15px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: '0 0 8px 0',
   },
   rightText: {
@@ -1383,7 +1383,7 @@ const styles = {
   childTitle: {
     fontSize: '20px',
     fontWeight: 700,
-    color: '#1E4D8C',
+    color: 'var(--elab-navy)',
     margin: '0 0 16px 0',
   },
   kidsBox: {
@@ -1395,18 +1395,18 @@ const styles = {
   kidsContact: {
     marginTop: '16px',
     paddingTop: '16px',
-    borderTop: '1px dashed #1E4D8C',
+    borderTop: '1px dashed var(--elab-navy)',
   },
   parentDashboard: {
     background: '#ffffff',
     padding: '20px',
     borderRadius: '8px',
     margin: '16px 0',
-    border: '2px solid #1E4D8C',
+    border: '2px solid var(--elab-navy)',
   },
   button: {
     display: 'inline-block',
-    background: '#1E4D8C',
+    background: 'var(--elab-navy)',
     color: '#ffffff',
     padding: '12px 24px',
     borderRadius: '8px',
@@ -1419,7 +1419,7 @@ const styles = {
     padding: '20px',
     borderRadius: '8px',
     margin: '20px 0',
-    border: '1px solid #1E4D8C',
+    border: '1px solid var(--elab-navy)',
   },
   securityGrid: {
     display: 'grid',
@@ -1497,7 +1497,7 @@ const styles = {
     padding: '12px 32px',
     border: 'none',
     borderRadius: '8px',
-    background: '#1E4D8C',
+    background: 'var(--elab-navy)',
     color: '#ffffff',
     fontSize: '15px',
     fontWeight: 600,
