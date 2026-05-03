@@ -119,3 +119,6 @@ automa/state/heartbeat
 automa/state/iter-19-harness-2.0-results.json
 # sprint-r0-score-results.json — bench score cron output (re-run by sprint-r0 workload)
 scripts/bench/workloads/sprint-r0-score-results.json
+
+# Playwright report output ephemeral (added 2026-05-03 iter 34 step 3)
+automa/state/iter-31-l0b-namespace-50-cells/

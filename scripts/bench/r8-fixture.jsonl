@@ -1,0 +1,100 @@
+{"id":"r8-state_query-001","category":"state_query","prompt":"Cosa vedo sulla schermata adesso?","expected_action":"none","expected_target":"route+mode+modalita+opened_panels","ui_state_required":true}
+{"id":"r8-state_query-002","category":"state_query","prompt":"Che modalita ho aperta in questo momento?","expected_action":"none","expected_target":"modalita","ui_state_required":true}
+{"id":"r8-state_query-003","category":"state_query","prompt":"Quale capitolo sto visualizzando ora?","expected_action":"none","expected_target":"lesson_path_step","ui_state_required":true}
+{"id":"r8-state_query-004","category":"state_query","prompt":"Quali finestre sono aperte sulla lavagna?","expected_action":"none","expected_target":"modals","ui_state_required":true}
+{"id":"r8-state_query-005","category":"state_query","prompt":"Sono nella lavagna o nel tutor?","expected_action":"none","expected_target":"route+mode","ui_state_required":true}
+{"id":"r8-state_query-006","category":"state_query","prompt":"Quanti pannelli ho aperti?","expected_action":"none","expected_target":"opened_panels","ui_state_required":true}
+{"id":"r8-state_query-007","category":"state_query","prompt":"Dove mi trovo nella piattaforma?","expected_action":"none","expected_target":"route+mode","ui_state_required":true}
+{"id":"r8-state_query-008","category":"state_query","prompt":"Che pagina sto vedendo?","expected_action":"none","expected_target":"route","ui_state_required":true}
+{"id":"r8-state_query-009","category":"state_query","prompt":"Ho la chat UNLIM aperta?","expected_action":"none","expected_target":"opened_panels.chat-overlay","ui_state_required":true}
+{"id":"r8-state_query-010","category":"state_query","prompt":"Sono in modalita Percorso?","expected_action":"none","expected_target":"modalita","ui_state_required":true}
+{"id":"r8-state_query-011","category":"state_query","prompt":"E aperto il pannello sinistro?","expected_action":"none","expected_target":"opened_panels.panel-left","ui_state_required":true}
+{"id":"r8-state_query-012","category":"state_query","prompt":"Cosa sto modificando in questo momento?","expected_action":"none","expected_target":"focused","ui_state_required":true}
+{"id":"r8-state_query-013","category":"state_query","prompt":"Quale elemento e attivo ora?","expected_action":"none","expected_target":"focused","ui_state_required":true}
+{"id":"r8-state_query-014","category":"state_query","prompt":"Sto scrivendo nella chat?","expected_action":"none","expected_target":"focused","ui_state_required":true}
+{"id":"r8-state_query-015","category":"state_query","prompt":"A che passo del percorso sono arrivato?","expected_action":"none","expected_target":"lesson_path_step","ui_state_required":true}
+{"id":"r8-state_query-016","category":"state_query","prompt":"Mostrami lo stato attuale della schermata.","expected_action":"none","expected_target":"route+mode+modalita+opened_panels+modals","ui_state_required":true}
+{"id":"r8-state_query-017","category":"state_query","prompt":"Sono nella dashboard del docente?","expected_action":"none","expected_target":"route+mode","ui_state_required":true}
+{"id":"r8-state_query-018","category":"state_query","prompt":"Quante modali ho aperte?","expected_action":"none","expected_target":"modals","ui_state_required":true}
+{"id":"r8-state_query-019","category":"state_query","prompt":"Quale finestra Passo Passo e visibile?","expected_action":"none","expected_target":"modals","ui_state_required":true}
+{"id":"r8-state_query-020","category":"state_query","prompt":"Riassumi cosa ho aperto al momento.","expected_action":"none","expected_target":"route+mode+modalita+modals+opened_panels","ui_state_required":true}
+{"id":"r8-ui_action_propose-001","category":"ui_action_propose","prompt":"Voglio chiudere la lavagna.","expected_action":"navigate","expected_target":"home","ui_state_required":true}
+{"id":"r8-ui_action_propose-002","category":"ui_action_propose","prompt":"Apri il prossimo esperimento.","expected_action":"nextExperiment","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-ui_action_propose-003","category":"ui_action_propose","prompt":"Mostrami il fumetto del report finale.","expected_action":"openModal","expected_target":"fumetto-report","ui_state_required":false}
+{"id":"r8-ui_action_propose-004","category":"ui_action_propose","prompt":"Chiudi la finestra Passo Passo.","expected_action":"closeModal","expected_target":"passo-passo","ui_state_required":true}
+{"id":"r8-ui_action_propose-005","category":"ui_action_propose","prompt":"Apri il pannello sinistro per la palette.","expected_action":"togglePanel","expected_target":"panel-left","ui_state_required":true}
+{"id":"r8-ui_action_propose-006","category":"ui_action_propose","prompt":"Riduci la chat UNLIM al minimo.","expected_action":"minimize","expected_target":"chat-overlay","ui_state_required":true}
+{"id":"r8-ui_action_propose-007","category":"ui_action_propose","prompt":"Apri la cronologia delle sessioni.","expected_action":"openModal","expected_target":"cronologia","ui_state_required":false}
+{"id":"r8-ui_action_propose-008","category":"ui_action_propose","prompt":"Nascondi tutti i pannelli laterali.","expected_action":"closeAllPanels","expected_target":"opened_panels","ui_state_required":true}
+{"id":"r8-ui_action_propose-009","category":"ui_action_propose","prompt":"Vai alla dashboard del docente.","expected_action":"navigate","expected_target":"dashboard","ui_state_required":false}
+{"id":"r8-ui_action_propose-010","category":"ui_action_propose","prompt":"Apri il pannello a destra con i dettagli.","expected_action":"togglePanel","expected_target":"panel-right","ui_state_required":true}
+{"id":"r8-ui_action_propose-011","category":"ui_action_propose","prompt":"Massimizza la finestra UNLIM.","expected_action":"maximize","expected_target":"chat-overlay","ui_state_required":true}
+{"id":"r8-ui_action_propose-012","category":"ui_action_propose","prompt":"Voglio vedere la sidebar del docente.","expected_action":"togglePanel","expected_target":"docente-sidebar","ui_state_required":true}
+{"id":"r8-ui_action_propose-013","category":"ui_action_propose","prompt":"Chiudi tutte le finestre flottanti.","expected_action":"closeAllModals","expected_target":"modals","ui_state_required":true}
+{"id":"r8-ui_action_propose-014","category":"ui_action_propose","prompt":"Apri il selettore di capitoli.","expected_action":"openModal","expected_target":"capitolo-picker","ui_state_required":false}
+{"id":"r8-ui_action_propose-015","category":"ui_action_propose","prompt":"Nascondi la finestra UpdatePrompt.","expected_action":"closeModal","expected_target":"update-prompt","ui_state_required":true}
+{"id":"r8-ui_action_propose-016","category":"ui_action_propose","prompt":"Apri il pannello in basso con la console.","expected_action":"togglePanel","expected_target":"panel-bottom","ui_state_required":true}
+{"id":"r8-ui_action_propose-017","category":"ui_action_propose","prompt":"Chiudi la mascotte UNLIM per avere piu spazio.","expected_action":"hide","expected_target":"chat-overlay","ui_state_required":true}
+{"id":"r8-ui_action_propose-018","category":"ui_action_propose","prompt":"Mostra il MicPermissionNudge.","expected_action":"openModal","expected_target":"mic-permission","ui_state_required":false}
+{"id":"r8-ui_action_propose-019","category":"ui_action_propose","prompt":"Voglio aprire la mini Lavagna.","expected_action":"openModal","expected_target":"lavagna-mini","ui_state_required":false}
+{"id":"r8-ui_action_propose-020","category":"ui_action_propose","prompt":"Chiudi qualunque finestra sia aperta adesso.","expected_action":"closeAllModals","expected_target":"modals","ui_state_required":true}
+{"id":"r8-voice_control-001","category":"voice_control","prompt":"Pausa la spiegazione.","expected_action":"voicePlayback","expected_target":"pause","ui_state_required":false}
+{"id":"r8-voice_control-002","category":"voice_control","prompt":"Spiega di nuovo.","expected_action":"voicePlayback","expected_target":"replay","ui_state_required":false}
+{"id":"r8-voice_control-003","category":"voice_control","prompt":"Alza il volume.","expected_action":"voiceSetVolume","expected_target":"increase","ui_state_required":false}
+{"id":"r8-voice_control-004","category":"voice_control","prompt":"Abbassa il volume della voce.","expected_action":"voiceSetVolume","expected_target":"decrease","ui_state_required":false}
+{"id":"r8-voice_control-005","category":"voice_control","prompt":"Ferma la riproduzione audio.","expected_action":"voicePlayback","expected_target":"stop","ui_state_required":false}
+{"id":"r8-voice_control-006","category":"voice_control","prompt":"Riprendi la spiegazione.","expected_action":"voicePlayback","expected_target":"resume","ui_state_required":false}
+{"id":"r8-voice_control-007","category":"voice_control","prompt":"Disattiva la voce di UNLIM.","expected_action":"voiceMute","expected_target":"mute","ui_state_required":false}
+{"id":"r8-voice_control-008","category":"voice_control","prompt":"Riattiva la voce.","expected_action":"voiceMute","expected_target":"unmute","ui_state_required":false}
+{"id":"r8-voice_control-009","category":"voice_control","prompt":"Parla piu lentamente.","expected_action":"voiceSetRate","expected_target":"slower","ui_state_required":false}
+{"id":"r8-voice_control-010","category":"voice_control","prompt":"Parla piu velocemente.","expected_action":"voiceSetRate","expected_target":"faster","ui_state_required":false}
+{"id":"r8-voice_control-011","category":"voice_control","prompt":"Cambia voce, scegli quella di Davide.","expected_action":"voiceSetVoice","expected_target":"davide","ui_state_required":false}
+{"id":"r8-voice_control-012","category":"voice_control","prompt":"Usa la voce di Andrea.","expected_action":"voiceSetVoice","expected_target":"andrea","ui_state_required":false}
+{"id":"r8-voice_control-013","category":"voice_control","prompt":"Volume al massimo.","expected_action":"voiceSetVolume","expected_target":"max","ui_state_required":false}
+{"id":"r8-voice_control-014","category":"voice_control","prompt":"Volume al minimo.","expected_action":"voiceSetVolume","expected_target":"min","ui_state_required":false}
+{"id":"r8-voice_control-015","category":"voice_control","prompt":"Riascolta l'ultima frase.","expected_action":"voicePlayback","expected_target":"replay_last","ui_state_required":false}
+{"id":"r8-voice_control-016","category":"voice_control","prompt":"Salta avanti la spiegazione.","expected_action":"voicePlayback","expected_target":"skip_forward","ui_state_required":false}
+{"id":"r8-voice_control-017","category":"voice_control","prompt":"Torna indietro nella spiegazione vocale.","expected_action":"voicePlayback","expected_target":"skip_backward","ui_state_required":false}
+{"id":"r8-voice_control-018","category":"voice_control","prompt":"Attiva il wake word Ehi UNLIM.","expected_action":"voiceWakeWord","expected_target":"enable","ui_state_required":false}
+{"id":"r8-voice_control-019","category":"voice_control","prompt":"Disattiva il riconoscimento vocale.","expected_action":"voiceWakeWord","expected_target":"disable","ui_state_required":false}
+{"id":"r8-voice_control-020","category":"voice_control","prompt":"Leggi questa pagina ad alta voce.","expected_action":"voiceTTS","expected_target":"read_current_page","ui_state_required":true}
+{"id":"r8-navigation-001","category":"navigation","prompt":"Vai al chatbot.","expected_action":"navigate","expected_target":"chatbot-only","ui_state_required":false}
+{"id":"r8-navigation-002","category":"navigation","prompt":"Torna alla home.","expected_action":"navigate","expected_target":"home","ui_state_required":false}
+{"id":"r8-navigation-003","category":"navigation","prompt":"Modalita Percorso.","expected_action":"toggleModalita","expected_target":"percorso","ui_state_required":true}
+{"id":"r8-navigation-004","category":"navigation","prompt":"Passa alla modalita Libero.","expected_action":"toggleModalita","expected_target":"libero","ui_state_required":true}
+{"id":"r8-navigation-005","category":"navigation","prompt":"Modalita Gia Montato.","expected_action":"toggleModalita","expected_target":"gia-montato","ui_state_required":true}
+{"id":"r8-navigation-006","category":"navigation","prompt":"Modalita Guida da Errore.","expected_action":"toggleModalita","expected_target":"guida-errore","ui_state_required":true}
+{"id":"r8-navigation-007","category":"navigation","prompt":"Apri la lavagna.","expected_action":"navigate","expected_target":"lavagna","ui_state_required":false}
+{"id":"r8-navigation-008","category":"navigation","prompt":"Vai al simulatore.","expected_action":"navigate","expected_target":"simulator","ui_state_required":false}
+{"id":"r8-navigation-009","category":"navigation","prompt":"Apri la dashboard del docente.","expected_action":"navigate","expected_target":"dashboard","ui_state_required":false}
+{"id":"r8-navigation-010","category":"navigation","prompt":"Vai alla pagina del tutor.","expected_action":"navigate","expected_target":"tutor","ui_state_required":false}
+{"id":"r8-navigation-011","category":"navigation","prompt":"Apri la pagina easter egg.","expected_action":"navigate","expected_target":"about-easter","ui_state_required":false}
+{"id":"r8-navigation-012","category":"navigation","prompt":"Apri il capitolo 6 del Volume 1.","expected_action":"navigate","expected_target":"v1-cap6","ui_state_required":false}
+{"id":"r8-navigation-013","category":"navigation","prompt":"Vai al Volume 2 capitolo 11.","expected_action":"navigate","expected_target":"v2-cap11","ui_state_required":false}
+{"id":"r8-navigation-014","category":"navigation","prompt":"Apri l'esperimento del LED.","expected_action":"mountExperiment","expected_target":"v1-cap6-esp1","ui_state_required":false}
+{"id":"r8-navigation-015","category":"navigation","prompt":"Vai al fumetto del report.","expected_action":"navigate","expected_target":"fumetto-report","ui_state_required":false}
+{"id":"r8-navigation-016","category":"navigation","prompt":"Torna al menu principale.","expected_action":"navigate","expected_target":"home","ui_state_required":false}
+{"id":"r8-navigation-017","category":"navigation","prompt":"Esci dalla lavagna.","expected_action":"navigate","expected_target":"home","ui_state_required":true}
+{"id":"r8-navigation-018","category":"navigation","prompt":"Apri il glossario.","expected_action":"navigate","expected_target":"glossario","ui_state_required":false}
+{"id":"r8-navigation-019","category":"navigation","prompt":"Vai alla pagina dei volumi.","expected_action":"navigate","expected_target":"volumi","ui_state_required":false}
+{"id":"r8-navigation-020","category":"navigation","prompt":"Apri il quaderno di classe.","expected_action":"navigate","expected_target":"quaderno","ui_state_required":false}
+{"id":"r8-lesson_path_step-001","category":"lesson_path_step","prompt":"Prossimo passo.","expected_action":"nextStep","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-002","category":"lesson_path_step","prompt":"Ricomincia da capo il percorso.","expected_action":"restartLessonPath","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-003","category":"lesson_path_step","prompt":"Vai al passo 5.","expected_action":"highlightStep","expected_target":"5","ui_state_required":true}
+{"id":"r8-lesson_path_step-004","category":"lesson_path_step","prompt":"Torna al passo precedente.","expected_action":"prevStep","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-005","category":"lesson_path_step","prompt":"Salta al passo successivo.","expected_action":"nextStep","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-006","category":"lesson_path_step","prompt":"Vai al passo finale.","expected_action":"highlightStep","expected_target":"last","ui_state_required":true}
+{"id":"r8-lesson_path_step-007","category":"lesson_path_step","prompt":"Vai al primo passo.","expected_action":"highlightStep","expected_target":"0","ui_state_required":true}
+{"id":"r8-lesson_path_step-008","category":"lesson_path_step","prompt":"Salta al passo numero 3.","expected_action":"highlightStep","expected_target":"3","ui_state_required":true}
+{"id":"r8-lesson_path_step-009","category":"lesson_path_step","prompt":"Mostrami il passo 7.","expected_action":"highlightStep","expected_target":"7","ui_state_required":true}
+{"id":"r8-lesson_path_step-010","category":"lesson_path_step","prompt":"Concludi questo esperimento.","expected_action":"completeLessonPath","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-011","category":"lesson_path_step","prompt":"Avanti.","expected_action":"nextStep","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-012","category":"lesson_path_step","prompt":"Indietro.","expected_action":"prevStep","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-013","category":"lesson_path_step","prompt":"Riprendi il percorso da dove ho lasciato.","expected_action":"resumeLessonPath","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-014","category":"lesson_path_step","prompt":"Vai al passo 10.","expected_action":"highlightStep","expected_target":"10","ui_state_required":true}
+{"id":"r8-lesson_path_step-015","category":"lesson_path_step","prompt":"Salta i prossimi due passi.","expected_action":"skipSteps","expected_target":"2","ui_state_required":true}
+{"id":"r8-lesson_path_step-016","category":"lesson_path_step","prompt":"Marca questo passo come completato.","expected_action":"completeStep","expected_target":"current_step","ui_state_required":true}
+{"id":"r8-lesson_path_step-017","category":"lesson_path_step","prompt":"Resetta il progresso del percorso.","expected_action":"restartLessonPath","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-018","category":"lesson_path_step","prompt":"Mostrami quanti passi mancano.","expected_action":"queryProgress","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-019","category":"lesson_path_step","prompt":"Vai al passo precedente per ripetere.","expected_action":"prevStep","expected_target":"current_lesson_path","ui_state_required":true}
+{"id":"r8-lesson_path_step-020","category":"lesson_path_step","prompt":"Concludi il percorso e mostra il report.","expected_action":"completeLessonPath","expected_target":"current_lesson_path+show_report","ui_state_required":true}
