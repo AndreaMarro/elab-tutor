@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "created": "2026-05-03",
+  "updated": "2026-05-03",
+  "purpose": "Per-vendor bias correction matrix for G45 multi-vote aggregator. Applied delta_correction to raw vote score prior consensus computation. Source: plan doc §6.3 Atom 3.3 + frammenti chat M-AI-NEW-12.",
+  "biases": {
+    "anthropic_claude": {
+      "delta_correction": -0.3,
+      "tendency": "positive_self_review",
+      "rationale": "Same model paradigm reviewing own output = systematic inflate"
+    },
+    "openai_codex": {
+      "delta_correction": 0.2,
+      "tendency": "adversarial_extreme",
+      "rationale": "Codex --adversarial mode tends pessimistic"
+    },
+    "google_gemini": {
+      "delta_correction": 0.0,
+      "tendency": "neutral",
+      "rationale": "Balanced corpus baseline"
+    },
+    "moonshot_kimi": {
+      "delta_correction": 0.0,
+      "tendency": "open_weights_critical",
+      "rationale": "Open weights training distinct - reliable independent"
+    },
+    "mistral_large": {
+      "delta_correction": -0.1,
+      "tendency": "italian_optimistic",
+      "rationale": "Italian corpus dominant slight positivity"
+    },
+    "deepseek_r1": {
+      "delta_correction": 0.1,
+      "tendency": "reasoning_strict",
+      "rationale": "R1 reasoning depth catches subtle gaps"
+    }
+  },
+  "calibration_history": [
+    {
+      "date": "2026-05-03",
+      "trigger": "iter 32 close test 4-vote synthetic",
+      "vendors_present": ["claude", "codex", "gemini", "kimi"],
+      "raw_consensus": 8.30,
+      "corrected_consensus": 8.27,
+      "spread_raw": 0.5,
+      "spread_corrected": 0.2,
+      "evidence": "scripts/g45/multi-vote-aggregator-manual.mjs first run docs/audits/g45-multi-vote-iter-32-test/",
+      "note": "Bias correction reduced spread 0.5→0.2 (60% reduction), neutralized claude+0.5 vs codex-0.5 vendor systematic. Consensus 8.27 vs Claude self-cap 8.40-8.50 = self-cap inflato +0.13-0.23. ONESTO."
+    }
+  ]
+}
