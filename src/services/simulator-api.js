@@ -25,6 +25,9 @@ import { captureWhiteboardScreenshot } from '../utils/whiteboardScreenshot';
 import * as voiceService from './voiceService';
 import { sendNudge } from './nudgeService';
 import projectHistoryService from './projectHistoryService';
+// iter 31 ralph 22 Phase 3 Atom 22.1 — L0b namespace `__ELAB_API.ui.*` (Maker-1)
+// ADR-041 §3 + §12 Implementation block. NEW namespace SEPARATO from `unlim.*`.
+import { createUiApi } from './elab-ui-api';
 
 /**
  * Internal reference to the simulator instance (set by NewElabSimulator)
@@ -40,6 +43,16 @@ export function registerSimulatorInstance(instance) {
   // FIX P0-8: Guard against duplicate registration (React StrictMode double-mount)
   if (typeof window !== 'undefined' && !window.__ELAB_API) {
     window.__ELAB_API = createPublicAPI();
+    // iter 31 ralph 22 Phase 3 Atom 22.1 — Mount L0b namespace `__ELAB_API.ui.*`
+    // per ADR-041 §3 + §12. Defensive: only init if browser env (typeof window
+    // guard above) AND ui not already mounted (idempotent re-register safe).
+    if (!window.__ELAB_API.ui) {
+      try {
+        window.__ELAB_API.ui = createUiApi();
+      } catch (err) {
+        // Silent — L0b namespace init MUST NOT break existing __ELAB_API surface
+      }
+    }
   } else if (typeof window !== 'undefined') {
     // Update internal ref without re-creating the API object
   }
