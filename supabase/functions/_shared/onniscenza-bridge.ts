@@ -45,6 +45,44 @@ export interface OnniscenzaInput {
   supabase?: any;
   /** Layer enables (default all true except L5 vision + L6 llm). */
   enable?: Partial<Record<LayerName, boolean>>;
+  /**
+   * Iter 25 ralph 25 Atom 26.1 — UIStateSnapshot per ADR-042 §3.
+   * Frontend passes via chat request body (`__ELAB_API.ui.getState()`).
+   * Edge Function reads when env `INCLUDE_UI_STATE_IN_ONNISCENZA=true`.
+   * 7 fields: route, mode, focused, modals[], modalita, lesson_path_step, opened_panels[].
+   * NEVER includes input value text (PII protection per ADR-042 §8.2).
+   */
+  ui?: UIStateSnapshot | null;
+}
+
+/**
+ * UIStateSnapshot — Sense 1.5 morfismo runtime per ADR-042 §3.
+ * Captured frontend via `__ELAB_API.ui.getState()`. Passed in chat request
+ * body. Surfaced in `OnniscenzaSnapshot.ui` when env flag enabled.
+ *
+ * PII safety: focused element is a structural summary (tag/id/aria-label/
+ * data-elab-action) — NEVER the input `.value` content text.
+ */
+export interface UIStateSnapshot {
+  /** Active hash route (e.g. 'lavagna', 'tutor', 'chatbot-only', 'home'). */
+  route: string | null;
+  /** Derived mode enum (lavagna | tutor | dashboard | chatbot-only | easter | admin | home | etc.). */
+  mode: string | null;
+  /** Currently focused element structural summary (NO input value PII). */
+  focused: {
+    tag?: string | null;
+    id?: string | null;
+    ariaLabel?: string | null;
+    dataElabAction?: string | null;
+  } | null;
+  /** Open dialogs/modals discovered via [role="dialog"]. */
+  modals: Array<{ title: string | null; modal: boolean }>;
+  /** Lavagna modalita (percorso | libero | gia-montato | guida-errore | null when not in lavagna). */
+  modalita: string | null;
+  /** Current lesson-path step index (best-effort from data-elab-current-step). */
+  lesson_path_step: number | null;
+  /** Visible RetractablePanel / FloatingWindow titles. */
+  opened_panels: string[];
 }
 
 export type LayerName = 'L1_rag' | 'L2_wiki' | 'L3_glossario' | 'L4_sessione' | 'L5_vision' | 'L6_llm' | 'L7_onthefly';
@@ -75,6 +113,13 @@ export interface OnniscenzaSnapshot {
   fused: LayerHit[];
   /** Raw per-layer hits before fusion. */
   raw: Record<LayerName, LayerHit[]>;
+  /**
+   * Iter 25 ralph 25 Atom 26.1 — UIStateSnapshot Sense 1.5 morfismo runtime
+   * per ADR-042 §3. Present when env `INCLUDE_UI_STATE_IN_ONNISCENZA=true`
+   * AND request body includes `ui`. Absent (undefined) otherwise — preserves
+   * V1 baseline shape for existing tests + 95% non-canary requests.
+   */
+  ui?: UIStateSnapshot;
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -453,6 +498,47 @@ export async function aggregateOnniscenza(input: OnniscenzaInput): Promise<Onnis
     fused,
     raw,
   };
+
+  // Iter 25 ralph 25 Atom 26.1 — Attach UIStateSnapshot per ADR-042 §3 + §4.
+  // Backward compat env flag `INCLUDE_UI_STATE_IN_ONNISCENZA` (default false
+  // until canary OK Phase 5 iter 28-29 per ADR-042 §2 + §7 decision matrix).
+  // When false: skip ui key entirely (no perf overhead, V1 baseline shape).
+  // When true: include ui key in output. Frontend passes via request body.
+  // PII guard: defensive shape validation (focused.value MUST NOT exist per
+  // ADR-042 §8.2 — frontend `__ELAB_API.ui.getState()` is contracted to omit
+  // input value text; we additionally strip if any caller violates contract).
+  const includeUiState = (Deno.env.get('INCLUDE_UI_STATE_IN_ONNISCENZA') || 'false').toLowerCase() === 'true';
+  if (includeUiState && input.ui && typeof input.ui === 'object') {
+    try {
+      const uiIn = input.ui as Record<string, unknown>;
+      const focusedRaw = uiIn.focused as Record<string, unknown> | null | undefined;
+      // Defensive PII strip: only allowlist known structural fields. Drop
+      // anything that looks like input value text (e.g., `value`, `text`).
+      const focused = focusedRaw && typeof focusedRaw === 'object'
+        ? {
+            tag: typeof focusedRaw.tag === 'string' ? focusedRaw.tag : null,
+            id: typeof focusedRaw.id === 'string' ? focusedRaw.id : null,
+            ariaLabel: typeof focusedRaw.ariaLabel === 'string' ? focusedRaw.ariaLabel : null,
+            dataElabAction: typeof focusedRaw.dataElabAction === 'string' ? focusedRaw.dataElabAction : null,
+          }
+        : null;
+      snapshot.ui = {
+        route: typeof uiIn.route === 'string' ? uiIn.route : null,
+        mode: typeof uiIn.mode === 'string' ? uiIn.mode : null,
+        focused,
+        modals: Array.isArray(uiIn.modals) ? uiIn.modals as Array<{ title: string | null; modal: boolean }> : [],
+        modalita: typeof uiIn.modalita === 'string' ? uiIn.modalita : null,
+        lesson_path_step: typeof uiIn.lesson_path_step === 'number' ? uiIn.lesson_path_step : null,
+        opened_panels: Array.isArray(uiIn.opened_panels) ? uiIn.opened_panels.filter((p): p is string => typeof p === 'string') : [],
+      };
+    } catch (err) {
+      // Defensive: never break aggregator on malformed UI state input.
+      console.warn(JSON.stringify({
+        level: 'warn', event: 'ui_state_attach_fail',
+        error: err instanceof Error ? err.message : String(err),
+      }));
+    }
+  }
 
   // Iter 41 Phase A Task A5 — store snapshot post fetch for next-call cache hit.
   if (cacheEnabled && cacheKey) {

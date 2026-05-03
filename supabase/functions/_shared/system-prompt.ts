@@ -12,6 +12,71 @@
  */
 
 import type { StudentContext, CircuitState } from './types.ts';
+import type { UIStateSnapshot } from './onniscenza-bridge.ts';
+
+/**
+ * Iter 25 ralph 25 Atom 26.1 — BASE_PROMPT v3.3 extension per ADR-042 §5.
+ *
+ * Build the UI state context block in Italian for injection into the system
+ * prompt when a UIStateSnapshot is available. The block:
+ *   - Cites route/mode/modalita/opened_panels/modals/focused fields verbatim
+ *   - Instructs the LLM to use the snapshot for grounded "Cosa vedo adesso?"
+ *     answers + ambiguous reference resolution + no-op detection
+ *   - PRINCIPIO ZERO compliance: plurale "Ragazzi", null fields admitted ("non
+ *     ho il contesto") — NEVER hallucinated.
+ *
+ * When `ui` is null/undefined: returns empty string (no degradation, BASE_PROMPT
+ * v3.2 unchanged for non-canary requests).
+ *
+ * Output target: ~250-350 tokens per turn (per ADR-042 §5 cap, well below
+ * 8K input prompt budget). Never breaks pipeline on malformed input.
+ */
+export function buildUIContextBlock(ui?: UIStateSnapshot | null): string {
+  if (!ui || typeof ui !== 'object') return '';
+
+  const route = ui.route || 'sconosciuta';
+  const mode = ui.mode || 'sconosciuta';
+  const modalita = ui.modalita ? `Modalità lavagna attiva: ${ui.modalita}` : '';
+  const stepStr = (typeof ui.lesson_path_step === 'number')
+    ? `Passo corrente lesson-path: ${ui.lesson_path_step + 1} (0-indexed: ${ui.lesson_path_step})`
+    : '';
+  const panels = Array.isArray(ui.opened_panels) && ui.opened_panels.length > 0
+    ? ui.opened_panels.join(', ')
+    : 'nessuno';
+  const modals = Array.isArray(ui.modals) && ui.modals.length > 0
+    ? ui.modals.map(m => `"${m.title || 'senza titolo'}"${m.modal ? ' (modal)' : ''}`).join(', ')
+    : 'nessuna';
+  let focusedStr = 'nessuno';
+  if (ui.focused && typeof ui.focused === 'object') {
+    const parts: string[] = [];
+    if (ui.focused.tag) parts.push(ui.focused.tag);
+    if (ui.focused.id) parts.push(`#${ui.focused.id}`);
+    if (ui.focused.ariaLabel) parts.push(`aria-label="${ui.focused.ariaLabel}"`);
+    if (ui.focused.dataElabAction) parts.push(`data-elab-action="${ui.focused.dataElabAction}"`);
+    if (parts.length > 0) focusedStr = parts.join(' ');
+  }
+
+  // Italian per ADR-042 §5 BASE_PROMPT v3.3 extension. PRINCIPIO ZERO compliant.
+  return `
+---
+
+## STATO UI ATTUALE (Sense 1.5 morfismo runtime)
+
+Il docente sta visualizzando:
+- Pagina/Route: ${route} (modalità app: ${mode})
+${modalita ? `- ${modalita}` : ''}${stepStr ? `\n- ${stepStr}` : ''}
+- Pannelli aperti: ${panels}
+- Finestre/modali aperte: ${modals}
+- Elemento focalizzato: ${focusedStr}
+
+USA QUESTO CONTESTO PER:
+1. Rispondere a domande tipo "Cosa vedo sulla schermata adesso?" (basa la risposta su route/mode/modalità/pannelli/modali).
+2. Risolvere riferimenti ambigui ("chiudi la finestra" → identifica quale via modali aperte; "apri il pannello" → quale è già aperto via pannelli).
+3. Evitare azioni no-op (se modalità === percorso non chiamare di nuovo Modalità Percorso).
+4. Proporre l'azione coerente al contesto (in modalità Percorso step N → suggerisci nextStep, non mountExperiment random).
+
+NOTA: NON inventare lo stato UI. Se un campo è null o "nessuno", ammettilo onestamente ("Non ho il contesto per quella finestra"). Per modalità lavagna se modalità=null (route diverso da lavagna), NON chiamare API Modalità.`;
+}
 
 /**
  * Base system prompt — defines UNLIM's identity and behavior rules.
@@ -274,6 +339,12 @@ export function buildSystemPrompt(
    * Default false preserves the iter 37 contract for callers that don't
    * opt into structured output. */
   useIntentSchema?: boolean,
+  /** Iter 25 ralph 25 Atom 26.1 — UIStateSnapshot per ADR-042 §3 + §5
+   * BASE_PROMPT v3.3 extension. When present (env flag
+   * `INCLUDE_UI_STATE_IN_ONNISCENZA=true` AND request body includes `ui`)
+   * appends Italian UI context block. When null/undefined: skip (no
+   * degradation, V1 baseline behavior preserved). */
+  uiState?: UIStateSnapshot | null,
 ): string {
   const parts = [BASE_PROMPT];
 
@@ -332,6 +403,14 @@ Regole rigide:
 
 Esempio risposta valida (singolo JSON, niente altro):
 {"text":"Ragazzi, evidenzio il LED rosso sulla breadboard del vostro kit ELAB.","intents":[{"tool":"highlightComponent","args":{"ids":["led1"]}}]}`);
+  }
+
+  // Iter 25 ralph 25 Atom 26.1 — UI state context block per ADR-042 §5.
+  // Appended LAST so route/mode/modalita are the freshest signal seen by
+  // the LLM. Skipped silently when ui absent (V1 baseline preserved).
+  if (uiState) {
+    const uiBlock = buildUIContextBlock(uiState);
+    if (uiBlock) parts.push(uiBlock);
   }
 
   return parts.join('\n');

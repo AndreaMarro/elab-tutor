@@ -303,6 +303,22 @@ async function tryNanobot(message, circuitState, externalSignal, experimentId, i
             experimentId: experimentId || null,
             simulatorContext: simulatorContext || null,
         };
+        // Iter 25 ralph 25 Atom 26.1 — Pass UIStateSnapshot per ADR-042 §4
+        // wire-up flow. Frontend reads `__ELAB_API.ui.getState()` (L0b namespace
+        // post iter 22). Edge Function consumes when env
+        // INCLUDE_UI_STATE_IN_ONNISCENZA=true (default false until canary).
+        // Defensive: try/catch + fallback to no ui field if api missing.
+        try {
+            if (typeof window !== 'undefined'
+                && window.__ELAB_API
+                && window.__ELAB_API.ui
+                && typeof window.__ELAB_API.ui.getState === 'function') {
+                const uiState = window.__ELAB_API.ui.getState();
+                if (uiState && typeof uiState === 'object') {
+                    payload.ui = uiState;
+                }
+            }
+        } catch { /* defensive: never break chat on UI snapshot failure */ }
         if (images.length > 0) {
             payload.images = images.map(img => ({
                 base64: img.base64,
@@ -394,6 +410,19 @@ export async function chatWithAIStream(message, circuitState, externalSignal,
             simulatorContext: simulatorContext || null,
             stream: true,
         };
+        // Iter 25 ralph 25 Atom 26.1 — Pass UIStateSnapshot per ADR-042 §4
+        // (SSE streaming path mirror of tryNanobot).
+        try {
+            if (typeof window !== 'undefined'
+                && window.__ELAB_API
+                && window.__ELAB_API.ui
+                && typeof window.__ELAB_API.ui.getState === 'function') {
+                const uiState = window.__ELAB_API.ui.getState();
+                if (uiState && typeof uiState === 'object') {
+                    payload.ui = uiState;
+                }
+            }
+        } catch { /* defensive: never break SSE chat on UI snapshot failure */ }
         if (images.length > 0) {
             payload.images = images.map(img => ({
                 base64: img.base64,
