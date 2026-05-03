@@ -1,0 +1,715 @@
+{
+  "generated_at": "2026-05-03T02:34:16.818Z",
+  "repo_root": "/Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder",
+  "sources_scanned": 140,
+  "claims_total": 54,
+  "claims_with_gap": 17,
+  "claims_skipped": 21,
+  "claims": [
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-27-sprint-s-iter8-PHASE1-FINAL-audit.md",
+      "parsed": {
+        "count": 12599
+      },
+      "raw": "vitest 12599 PASS",
+      "actual": 13474,
+      "claimed": 12599,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-28-iter-15-lim-legibility-batch2-audit.md",
+      "parsed": {
+        "count": 12718
+      },
+      "raw": "vitest 12718 PASS",
+      "actual": 13474,
+      "claimed": 12718,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-28-iter-21-LINGUAGGIO-AUDIT.md",
+      "parsed": {
+        "count": 12290
+      },
+      "raw": "vitest 12290 PASS",
+      "actual": 13474,
+      "claimed": 12290,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-28-iter-21-LINGUAGGIO-AUDIT.md",
+      "parsed": {
+        "count": 12290
+      },
+      "raw": "vitest 12290 PASS",
+      "actual": 13474,
+      "claimed": 12290,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-30-iter-30-MASSIVE-PROD-TEST-CLOSE.md",
+      "parsed": {
+        "count": 13233
+      },
+      "raw": "vitest 13233 PASS",
+      "actual": 13474,
+      "claimed": 13233,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-30-iter-33-CLOSE-audit.md",
+      "parsed": {
+        "count": 13233
+      },
+      "raw": "vitest 13233 PASS",
+      "actual": 13474,
+      "claimed": 13233,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-30-iter-33-PEER-REVIEW-INDEPENDENT.md",
+      "parsed": {
+        "count": 13233
+      },
+      "raw": "vitest 13233 PASS",
+      "actual": 13474,
+      "claimed": 13233,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "toolspec_count",
+      "source": "audits/2026-04-30-iter-36-PHASE3-CLOSE-audit.md",
+      "parsed": {
+        "count": 57
+      },
+      "raw": "ToolSpec count 57",
+      "actual": 57,
+      "claimed": 57,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "edge_function_version",
+      "source": "audits/2026-04-30-iter-37-PHASE3-CLOSE-audit.md",
+      "parsed": {
+        "name": "unlim-chat",
+        "version": 50
+      },
+      "raw": "unlim-chat v50 LIVE",
+      "actual": null,
+      "claimed": 50,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-30-iter-37-PHASE3-COMPREHENSIVE-STATUS.md",
+      "parsed": {
+        "count": 13260
+      },
+      "raw": "vitest 13260 PASS",
+      "actual": 13474,
+      "claimed": 13260,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-04-30-iter-37-PHASE3-COMPREHENSIVE-STATUS.md",
+      "parsed": {
+        "count": 13338
+      },
+      "raw": "Vitest 13338 PASS",
+      "actual": 13474,
+      "claimed": 13338,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-05-01-SESSION-AUDIT-COMPLETO.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-05-01-SESSION-AUDIT-COMPLETO.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/2026-05-01-SESSION-AUDIT-COMPLETO.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-05-01-iter-38-deploy-chain-and-tier1-final-audit.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 baseline",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-05-01-iter-39-progress-and-iter-40-plan.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 baseline",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-05-01-iter-39-progress-and-iter-40-plan.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 baseline",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/2026-05-02-iter30-ANTI-REGRESSION-ANTI-INFLATION-MECHANISMS.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/2026-05-02-iter30-andrea-13-decisioni-priority-matrix.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/2026-05-02-iter41-FINAL-cumulative-state.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "edge_function_version",
+      "source": "audits/2026-05-02-iter41-phase-A-close.md",
+      "parsed": {
+        "name": "unlim-chat",
+        "version": 76
+      },
+      "raw": "unlim-chat v76 LIVE",
+      "actual": null,
+      "claimed": 76,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "edge_function_version",
+      "source": "audits/2026-05-02-iter41-phase-A-close.md",
+      "parsed": {
+        "name": "unlim-chat",
+        "version": 76
+      },
+      "raw": "unlim-chat v76 LIVE",
+      "actual": null,
+      "claimed": 76,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/2026-05-02-iter41-phase-A-close.md",
+      "parsed": {
+        "count": 13653
+      },
+      "raw": "Vitest 13653 PASS",
+      "actual": 13474,
+      "claimed": 13653,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "parsed": {
+        "percent": 100
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=100",
+      "actual": null,
+      "claimed": 100,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-19-PHASE-1-audit-2026-04-29.md",
+      "parsed": {
+        "count": 12290
+      },
+      "raw": "Vitest 12290 baseline",
+      "actual": 13474,
+      "claimed": 12290,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-37-stt-live-smoke.md",
+      "parsed": {
+        "count": 13338
+      },
+      "raw": "vitest 13338 baseline",
+      "actual": 13474,
+      "claimed": 13338,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-38-linguaggio-codemod.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-38-linguaggio-codemod.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-38-linguaggio-codemod.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "Vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-39-A1-SSE-LIVE-PROD-verified.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "Vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-39-A1-sse-streaming-audit.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-39-A4-Onniscenza-V2-canary-LIVE.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/iter-39-ralph-CARRYOVER-2026-05-02-VERCEL-DEPLOY-LIVE.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/iter-39-ralph-CARRYOVER-2026-05-02-VERCEL-DEPLOY-LIVE.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-39-ralph-loop-CLOSE.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/iter-39-ralph-loop-CLOSE.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/iter-39-ralph-loop-CLOSE.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "audits/iter-39-ralph-loop-FINAL-CLOSE-non-compiacente.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 baseline",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/iter-39-ralph-loop-FINAL-CLOSE-non-compiacente.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/iter-39-ralph-loop-FINAL-CLOSE-non-compiacente.md",
+      "parsed": {
+        "percent": 100
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=100",
+      "actual": null,
+      "claimed": 100,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "canary_percent",
+      "source": "audits/sprint-u-cycle2-iter1-PROGRESS-2026-05-02.md",
+      "parsed": {
+        "percent": 5
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=5",
+      "actual": null,
+      "claimed": 5,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 12574
+      },
+      "raw": "Vitest 12574 PASS",
+      "actual": 13474,
+      "claimed": 12574,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 12599
+      },
+      "raw": "vitest 12599 PASS",
+      "actual": 13474,
+      "claimed": 12599,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 12599
+      },
+      "raw": "vitest 12599 PASS",
+      "actual": 13474,
+      "claimed": 12599,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 13473
+      },
+      "raw": "vitest 13473 PASS",
+      "actual": 13474,
+      "claimed": 13473,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "vitest_pass",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 13474
+      },
+      "raw": "vitest 13474 PASS",
+      "actual": 13474,
+      "claimed": 13474,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "toolspec_count",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 52
+      },
+      "raw": "ToolSpec count 52",
+      "actual": 57,
+      "claimed": 52,
+      "gap": true,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "toolspec_count",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "count": 57
+      },
+      "raw": "ToolSpec count 57",
+      "actual": 57,
+      "claimed": 57,
+      "gap": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "kind": "canary_percent",
+      "source": "CLAUDE.md",
+      "parsed": {
+        "percent": 0
+      },
+      "raw": "CANARY_DENO_DISPATCH_PERCENT=0",
+      "actual": null,
+      "claimed": 0,
+      "gap": false,
+      "skipped": true,
+      "reason": "SUPABASE_ACCESS_TOKEN missing"
+    }
+  ]
+}

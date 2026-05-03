@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "last_updated": "2026-05-02",
+  "source": "M-AI-02 mechanical cap enforcer per docs/audits/2026-05-02-iter30-ANTI-REGRESSION-ANTI-INFLATION-MECHANISMS.md",
+  "anti_pattern": "NO override cap manually senza Andrea Opus G45 review + ADR ratify",
+  "caps": [
+    {
+      "name": "R5_LATENCY",
+      "trigger_condition": "evidence.r5_p95_ms > 2500",
+      "cap_score": 8.0,
+      "rationale": "PDR target p95 <2500ms. Latency mechanical anti-inflation Sprint T close gate.",
+      "evidence_field_required": ["r5_p95_ms"]
+    },
+    {
+      "name": "R7_CANONICAL",
+      "trigger_condition": "evidence.r7_canonical_pct < 80",
+      "cap_score": 8.5,
+      "rationale": "INTENT canonical schema rate <80% indicates Onnipotenza Sprint T close blocker per ADR-030 §6.",
+      "evidence_field_required": ["r7_canonical_pct"]
+    },
+    {
+      "name": "LIGHTHOUSE_PERF",
+      "trigger_condition": "min(evidence.lighthouse_perf_chatbot, evidence.lighthouse_perf_easter) < 70",
+      "cap_score": 8.0,
+      "rationale": "Lighthouse perf <70 across any route iter 31 intermediate target. Final ≥90 iter 42+ raise threshold.",
+      "evidence_field_required": ["lighthouse_perf_chatbot", "lighthouse_perf_easter"]
+    },
+    {
+      "name": "ESPERIMENTI_BROKEN",
+      "trigger_condition": "evidence.esperimenti_broken_count > 10",
+      "cap_score": 8.5,
+      "rationale": "Sprint T close gate Andrea iter 21 mandate 94 esperimenti audit. Broken >10 = morfismo Sense 2 violation.",
+      "evidence_field_required": ["esperimenti_broken_count"]
+    },
+    {
+      "name": "VITEST_REGRESSION",
+      "trigger_condition": "evidence.vitest_count < baseline (automa/baseline-tests.txt)",
+      "cap_score": 7.0,
+      "rationale": "Test regression hard cap — anti-regressione mandate FERREA iter 21+.",
+      "evidence_field_required": ["vitest_count"]
+    },
+    {
+      "name": "PZ_V3_VOL_PAG",
+      "trigger_condition": "evidence.r5_pz_v3_pct < 90",
+      "cap_score": 8.5,
+      "rationale": "PRINCIPIO ZERO V3 Vol/pag verbatim <90% = base contract violation Andrea iter 21+ mandate.",
+      "evidence_field_required": ["r5_pz_v3_pct"]
+    },
+    {
+      "name": "RAG_PAGE_COVERAGE",
+      "trigger_condition": "evidence.rag_page_coverage_pct < 80",
+      "cap_score": 8.5,
+      "rationale": "RAG chunks page metadata coverage <80% = Onniscenza L2 incomplete + Vol/pag verbatim cite blocked.",
+      "evidence_field_required": ["rag_page_coverage_pct"]
+    },
+    {
+      "name": "BUNDLE_SIZE",
+      "trigger_condition": "evidence.bundle_size_kb > 4900",
+      "cap_score": 8.5,
+      "rationale": "Bundle size budget 4900KB for PWA precache. Excess indicates lazy-load regression Atom 42-A.",
+      "evidence_field_required": ["bundle_size_kb"]
+    }
+  ],
+  "evaluation_order": "lower cap wins (most restrictive). Multiple triggers OK, all logged as triggered_caps array.",
+  "deployment_status": "PROPOSED iter 31 Phase 1 Atom 7 (Architect agent). Andrea ratify Phase 0 entrance."
+}
