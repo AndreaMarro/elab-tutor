@@ -184,6 +184,7 @@ export default function FloatingWindow({
       role="dialog"
       aria-modal="true"
       aria-label={title}
+      data-morfismo-window={(title || 'untitled').replace(/\s+/g, '-').toLowerCase()}
     >
       {/* Title bar — drag handle (touch target ≥44px height) */}
       <div

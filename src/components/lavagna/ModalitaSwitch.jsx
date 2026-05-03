@@ -71,6 +71,7 @@ export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange, 
       role="tablist"
       aria-label="Modalità lavagna"
       data-testid="modalita-switch"
+      data-elab-modalita={activeMode}
     >
       {visibleModes.map((mode) => {
         const meta = MODE_META[mode];

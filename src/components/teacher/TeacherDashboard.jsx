@@ -617,7 +617,7 @@ export default function TeacherDashboard({ onNavigate }) {
     };
 
     return (
-        <div className={css.container}>
+        <div className={css.container} data-elab-mode="teacher-dashboard">
             {/* Header */}
             <div className={css.header}>
                 <div className={css.headerLeft}>

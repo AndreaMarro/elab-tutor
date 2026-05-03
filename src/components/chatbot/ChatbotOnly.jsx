@@ -313,6 +313,9 @@ function LoadingBubble() {
   );
 }
 
+// iter 31 ralph 16 — Sense 1.5 morfismo marker (mode chatbot-only)
+const CHATBOT_MODE_MARKER = 'chatbot-only';
+
 export default function ChatbotOnly({ onBackHome, onOpenLavagna }) {
   const [sessions, setSessions] = useState(() => loadSessions());
   const [activeSessionId, setActiveSessionId] = useState(null);
@@ -430,7 +433,7 @@ export default function ChatbotOnly({ onBackHome, onOpenLavagna }) {
   const visibleMessages = useMemo(() => Array.isArray(messages) ? messages : [], [messages]);
 
   return (
-    <div className={styles.shell} data-testid="chatbot-only-shell">
+    <div className={styles.shell} data-testid="chatbot-only-shell" data-elab-mode={CHATBOT_MODE_MARKER}>
       <SidebarCronologia
         sessions={sessions}
         activeId={activeSessionId}

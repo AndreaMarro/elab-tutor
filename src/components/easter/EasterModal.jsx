@@ -187,6 +187,7 @@ export default function EasterModal({ isOpen = true, onClose }) {
       className={styles.overlay}
       onClick={handleOverlayClick}
       data-testid="easter-modal-overlay"
+      data-elab-easter={bananaClicks >= BANANA_THRESHOLD ? 'banana-active' : 'idle'}
     >
       <div
         ref={dialogRef}

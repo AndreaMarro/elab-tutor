@@ -558,7 +558,7 @@ export default function HomePage({ onNavigate }) {
   }
 
   return (
-    <div style={styles.page} data-testid="elab-home-page">
+    <div style={styles.page} data-testid="elab-home-page" data-elab-mode="home" data-elab-routing={hash || 'root'}>
       {/* Iter 37 Atom A6 — Easter modal overlay quando hash = #about-easter */}
       {hash === HASH_ROUTES.ABOUT && (
         <Suspense fallback={null}>

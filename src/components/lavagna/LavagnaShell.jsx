@@ -1079,7 +1079,7 @@ export default function LavagnaShell() {
   }, [handleFumettoOpen]);
 
   return (
-    <div className={css.shell}>
+    <div className={css.shell} data-elab-mode="lavagna" data-elab-modalita={modalita}>
       {/*
         Screen-reader heading — lavagna route previously had zero <h1> elements
         (stress-test P2-007). Keep it visually hidden to preserve existing
