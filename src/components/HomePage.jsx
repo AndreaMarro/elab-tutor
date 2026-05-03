@@ -619,6 +619,7 @@ export default function HomePage({ onNavigate }) {
             type="button"
             onClick={handleMascotteClick}
             data-testid="home-mascotte-button"
+            data-elab-action="click-mascotte"
             aria-label="Saluta la mascotte UNLIM"
             style={{
               width: '100%',
@@ -757,6 +758,7 @@ export default function HomePage({ onNavigate }) {
             bottom: 12,
           }}
           data-testid="home-footer-easter-link"
+          data-elab-action="open-about-easter"
           aria-label="Chi siamo (modal iter 37)"
           title="Chi siamo"
           onMouseEnter={(e) => {

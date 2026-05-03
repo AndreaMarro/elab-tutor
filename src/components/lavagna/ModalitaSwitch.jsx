@@ -88,6 +88,7 @@ export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange, 
             data-testid={`modalita-btn-${mode}`}
             data-active={active ? 'true' : 'false'}
             data-default={meta.isDefault ? 'true' : 'false'}
+            data-elab-action={`toggleModalita-${mode}`}
             className={`${css.modeBtn} ${active ? css.modeBtnActive : ''} ${meta.isDefault ? css.modeBtnDefault : ''}`}
             onClick={() => handleClick(mode)}
           >

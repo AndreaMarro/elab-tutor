@@ -174,6 +174,7 @@ function SidebarCronologia({ sessions, activeId, onSelect, onNewChat, onBackHome
           onClick={onBackHome}
           aria-label="Torna alla home ELAB"
           data-testid="chatbot-back-home"
+          data-elab-action="navigate-home"
         >
           ← Home
         </button>
@@ -185,6 +186,7 @@ function SidebarCronologia({ sessions, activeId, onSelect, onNewChat, onBackHome
         onClick={onNewChat}
         aria-label="Iniziate una nuova chat con UNLIM"
         data-testid="chatbot-new-chat-btn"
+        data-elab-action="newChat"
         title="Ragazzi, iniziate una nuova chat con UNLIM"
       >
         Nuova chat
@@ -274,6 +276,7 @@ function ToolsPalette({ onVision, onCompile, onFumetto, onLavagna, onReset, busy
             title={tip}
             aria-label={tip}
             data-testid={`chatbot-tool-${id}`}
+            data-elab-action={`click-tool-${id}`}
           >
             <Icon size={22} />
           </button>

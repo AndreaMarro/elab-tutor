@@ -325,7 +325,7 @@ function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
           <p className={css.bentornatiNext}>
             <strong>{suggestion?.title || 'Accendi il tuo primo LED'}</strong>
           </p>
-          <button className={css.bentornatiBtn} onClick={() => onStart(suggestion)}>
+          <button className={css.bentornatiBtn} onClick={() => onStart(suggestion)} data-elab-action="bentornati-start">
             <FlaskIcon size={22} /> Inizia
           </button>
         </div>
@@ -1281,6 +1281,7 @@ export default function LavagnaShell() {
                 className={css.capitoloPickerClose}
                 onClick={handleCapitoliClose}
                 aria-label="Chiudi selezione capitolo"
+                data-elab-action="close-capitolo-picker"
               >
                 ×
               </button>
