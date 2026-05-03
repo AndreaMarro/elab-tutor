@@ -111,3 +111,11 @@ scripts/bench/output/
 
 # agency-agents (226 md files, local only)
 .claude/external-agents/agency-agents/
+
+# === Ephemeral state files (added 2026-05-03 iter34 step 2 cleanup) ===
+# heartbeat — written by launchctl com.elab.automa.watchdog (local) every ~minute
+automa/state/heartbeat
+# iter-19-harness-2.0-results.json — bench harness cron rewrites timestamp + minor description_len shifts
+automa/state/iter-19-harness-2.0-results.json
+# sprint-r0-score-results.json — bench score cron output (re-run by sprint-r0 workload)
+scripts/bench/workloads/sprint-r0-score-results.json
