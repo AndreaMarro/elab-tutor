@@ -213,3 +213,113 @@ describe('onniscenza-classifier — defensive', () => {
     expect(ONNISCENZA_CLASSIFIER_VERSION).toMatch(/iter37/);
   });
 });
+
+// ============================================================================
+// Iter 34 Atom A1 — Cap conditional 6→8 categories tests
+// ============================================================================
+
+describe('onniscenza-classifier — meta_question (NEW iter 34)', () => {
+  it('classifies "Chi sei?" as meta_question with skipOnniscenza=true topK=0', () => {
+    const r = classifyPrompt('Chi sei?');
+    expect(r.category).toBe('meta_question');
+    expect(r.skipOnniscenza).toBe(true);
+    expect(r.topK).toBe(0);
+    expect(r.capWords).toBe(50);
+  });
+
+  it('classifies "Come ti chiami?" as meta_question', () => {
+    expect(classifyPrompt('Come ti chiami?').category).toBe('meta_question');
+  });
+
+  it('classifies "Come funzioni?" as meta_question', () => {
+    expect(classifyPrompt('Come funzioni esattamente?').category).toBe('meta_question');
+  });
+
+  it('classifies "Cosa sai fare" as meta_question', () => {
+    expect(classifyPrompt('Cosa sai fare?').category).toBe('meta_question');
+  });
+
+  it('classifies "sei un robot" as meta_question', () => {
+    expect(classifyPrompt('Sei un robot vero?').category).toBe('meta_question');
+  });
+
+  it('meta_question beats plurale_ragazzi (priority 2 > 6)', () => {
+    // "Ragazzi chi siete" — meta-self addressed plurale. Meta wins (intent is meta).
+    const r = classifyPrompt('Ragazzi chi siete?');
+    expect(r.category).toBe('meta_question');
+    expect(r.skipOnniscenza).toBe(true);
+  });
+});
+
+describe('onniscenza-classifier — off_topic (NEW iter 34)', () => {
+  it('classifies "parliamo di calcio" as off_topic with skipOnniscenza=true capWords=40', () => {
+    const r = classifyPrompt('Parliamo di calcio invece');
+    expect(r.category).toBe('off_topic');
+    expect(r.skipOnniscenza).toBe(true);
+    expect(r.topK).toBe(0);
+    expect(r.capWords).toBe(40);
+  });
+
+  it('classifies "Juventus" / "Inter" / "Milan" as off_topic', () => {
+    expect(classifyPrompt('La Juventus ieri ha vinto').category).toBe('off_topic');
+    expect(classifyPrompt('Tifo Inter da sempre').category).toBe('off_topic');
+    expect(classifyPrompt('Il Milan questa stagione').category).toBe('off_topic');
+  });
+
+  it('classifies "Fortnite" / "Minecraft" / "PS5" as off_topic', () => {
+    expect(classifyPrompt('Giochiamo a Fortnite stasera').category).toBe('off_topic');
+    expect(classifyPrompt('Minecraft è il mio preferito').category).toBe('off_topic');
+    expect(classifyPrompt('Vorrei una PS5').category).toBe('off_topic');
+  });
+
+  it('classifies social media / streaming as off_topic', () => {
+    expect(classifyPrompt('Visto su TikTok un trend').category).toBe('off_topic');
+    expect(classifyPrompt('Ascolto Spotify mentre studio').category).toBe('off_topic');
+  });
+
+  it('does NOT trigger off_topic on educational mentions', () => {
+    // "sensore temperatura" is educational, must NOT trigger OFFTOPIC.
+    // OFFTOPIC_RE has explicit non-educational lemmi only (no "temperatura").
+    const r = classifyPrompt('Spiega sensore temperatura DHT11');
+    expect(r.category).not.toBe('off_topic');
+  });
+
+  it('off_topic beats plurale_ragazzi (priority 3 > 6)', () => {
+    // "ragazzi parliamo di calcio" — off-topic with plurale addressing.
+    // Off-topic wins, then UNLIM soft-deflects to kit ELAB.
+    const r = classifyPrompt('Ragazzi parliamo di calcio Serie A');
+    expect(r.category).toBe('off_topic');
+    expect(r.skipOnniscenza).toBe(true);
+  });
+});
+
+describe('onniscenza-classifier — capWords field (NEW iter 34)', () => {
+  it('returns capWords=80 for safety_warning', () => {
+    expect(classifyPrompt('pericolo brucia').capWords).toBe(80);
+  });
+
+  it('returns capWords=30 for chit_chat (shortest)', () => {
+    expect(classifyPrompt('Ciao').capWords).toBe(30);
+    expect(classifyPrompt('').capWords).toBe(30);
+  });
+
+  it('returns capWords=60 for citation_vol_pag (cap default preserve)', () => {
+    expect(classifyPrompt('Vol.1 pag.27 dimmi').capWords).toBe(60);
+  });
+
+  it('returns capWords=60 for plurale_ragazzi (cap default preserve)', () => {
+    expect(classifyPrompt('Ragazzi montiamo il LED').capWords).toBe(60);
+  });
+
+  it('returns capWords=120 for deep_question (deep needs words)', () => {
+    const text =
+      'Mi puoi spiegare in dettaglio come funziona la legge di Ohm e perché ' +
+      'è importante usare il resistore prima del LED quando colleghiamo ' +
+      'la batteria nove volt al circuito sulla breadboard?';
+    expect(classifyPrompt(text).capWords).toBe(120);
+  });
+
+  it('returns capWords=60 for default (cap default preserve)', () => {
+    expect(classifyPrompt('Spiega la breadboard nei nostri esperimenti').capWords).toBe(60);
+  });
+});

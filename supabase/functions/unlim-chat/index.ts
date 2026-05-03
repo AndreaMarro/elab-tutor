@@ -9,7 +9,7 @@
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { callLLM, callBrainFallback, getMetrics } from '../_shared/llm-client.ts';
 import { routeModel, modelDisplayName } from '../_shared/router.ts';
-import { buildSystemPrompt } from '../_shared/system-prompt.ts';
+import { buildSystemPrompt, getCategoryCapWordsBlock } from '../_shared/system-prompt.ts';
 import { loadStudentContext, saveInteraction, checkConsent } from '../_shared/memory.ts';
 import { checkRateLimitPersistent, validateChatInput, sanitizeMessage, sanitizeCircuitState, validateExperimentId, validateMimeType, getCorsHeaders, getSecurityHeaders, checkBodySize, validateSessionId, verifyElabApiKey } from '../_shared/guards.ts';
 import type { ChatRequest, ChatResponse, CircuitState } from '../_shared/types.ts';
@@ -526,6 +526,18 @@ serve(async (req: Request) => {
       (Deno.env.get('ENABLE_INTENT_TOOLS_SCHEMA') || 'false').toLowerCase() === 'true';
     const useIntentSchema = intentSchemaEnabled && shouldUseIntentSchema(safeMessage);
 
+    // iter 34 Atom A1 — Cap conditional per category injection.
+    // ENABLE_CAP_CONDITIONAL=true env flag → append getCategoryCapWordsBlock
+    // text to system prompt overriding BASE_PROMPT v3.2 line 96 universal
+    // 60-word cap with category-specific cap (chit_chat 30, meta 50,
+    // off_topic 40, safety 80, deep 120, default 60). Default OFF preserves
+    // existing behavior (zero regression — BASE_PROMPT cap stays in effect).
+    const capConditionalEnabled =
+      (Deno.env.get('ENABLE_CAP_CONDITIONAL') || 'false').toLowerCase() === 'true';
+    const capConditionalBlock = capConditionalEnabled
+      ? getCategoryCapWordsBlock(promptClass.category, promptClass.capWords)
+      : '';
+
     const systemPrompt = buildSystemPrompt(
       studentContext,
       safeCircuitState as CircuitState | null,
@@ -540,7 +552,8 @@ serve(async (req: Request) => {
     )
       + (ragContext ? `\n\n${ragContext}` : '')
       + onniscenzaContext
-      + imagePiiGuard;
+      + imagePiiGuard
+      + capConditionalBlock;
 
     // 3.5 ClawBot L2 template short-circuit (Sprint T iter 26).
     // Try keyword/category match BEFORE invoking the LLM. If a template fits,
@@ -1100,7 +1113,10 @@ serve(async (req: Request) => {
       retrieval_mode?: string;
       intents_parsed?: Array<{ tool: string; args: Record<string, unknown> }>;
       // iter 37 A2: telemetry for benchmark/debug. Omitted unless debug_retrieval=true to keep payload minimal.
-      prompt_class?: { category: string; skipOnniscenza: boolean; topK: number; wordCount: number };
+      // iter 34 A1: capWords field added to surface cap conditional value (50/40/30/60/80/120 per category).
+      prompt_class?: { category: string; skipOnniscenza: boolean; topK: number; wordCount: number; capWords: number };
+      // iter 34 A1: env flag state surfaced for bench gate verification.
+      cap_conditional_active?: boolean;
     } = {
       success: true,
       response: cleanText,
@@ -1120,12 +1136,16 @@ serve(async (req: Request) => {
       response.debug_retrieval = retrievedChunksDebug;
       response.retrieval_mode = retrievalModeUsed;
       // iter 37 A2: surface classifier verdict for bench R5 latency measurement.
+      // iter 34 A1: capWords field added (50/40/30/60/80/120 per category).
       response.prompt_class = {
         category: promptClass.category,
         skipOnniscenza: promptClass.skipOnniscenza,
         topK: promptClass.topK,
         wordCount: promptClass.wordCount,
+        capWords: promptClass.capWords,
       };
+      // iter 34 A1: surface ENABLE_CAP_CONDITIONAL env flag state for bench verification.
+      response.cap_conditional_active = capConditionalEnabled;
     }
 
     // iter 36 Phase 1 Atom A1: surface parsed intents for client-side dispatch

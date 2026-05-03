@@ -446,3 +446,69 @@ Dai UN SOLO suggerimento progressivo:
 
 Max 2 frasi. Linguaggio 10-14 anni.`;
 }
+
+/**
+ * Iter 34 Atom A1 — Cap conditional per category instruction block.
+ *
+ * Returns Italian instruction text that OVERRIDES the universal BASE_PROMPT
+ * v3.2 line 96 cap ("Mai superare 60 parole") with a category-specific cap.
+ * Consumed by unlim-chat/index.ts wire-up gated by ENABLE_CAP_CONDITIONAL=true
+ * env flag. When env flag is OFF (default), this helper is NEVER called and
+ * BASE_PROMPT v3.2 universal 60-word cap stays in effect (zero regression).
+ *
+ * Categories:
+ *   - chit_chat (≤30 words, 1 frase secca): "Ciao", "Salve", greetings
+ *   - meta_question (≤50 words, 2 frasi self-intro): "Chi sei?", "Come funzioni?"
+ *   - off_topic (≤40 words, 1 frase + soft deflect kit): "Parliamo di calcio"
+ *   - safety_warning (≤80 words, safety FIRST + kit): "Pericolo brucia"
+ *   - citation_vol_pag (≤60 words, cap default preserve)
+ *   - plurale_ragazzi (≤60 words, cap default preserve)
+ *   - deep_question (≤120 words, deep needs words): >=20 word + "?"
+ *   - default (≤60 words, cap default preserve)
+ *
+ * PRINCIPIO ZERO §1 invariants preserved per category:
+ *   - Plurale "Ragazzi," opener mandatory ALL categories (NEVER singolare).
+ *   - Vol/pag verbatim citation between «caporali» mandatory categories that
+ *     produce educational content (citation_vol_pag, plurale_ragazzi,
+ *     deep_question, default, safety_warning). NOT required meta/off_topic/
+ *     chit_chat (no factual content claim).
+ *   - Kit ELAB physical mention strongly recommended categories that produce
+ *     hands-on guidance (default, plurale_ragazzi, deep_question, safety).
+ *
+ * @param category  PromptCategory string from classifier output
+ * @param capWords  numeric cap from ClassificationResult.capWords field
+ * @returns         Italian instruction block to APPEND to BASE_PROMPT, OR
+ *                  empty string if category is unknown (defensive)
+ */
+export function getCategoryCapWordsBlock(
+  category: string,
+  capWords: number,
+): string {
+  // Defensive: invalid input → empty string (no degradation, BASE_PROMPT cap stays)
+  if (!category || typeof capWords !== 'number' || capWords <= 0) return '';
+
+  const baseFmt = `\n\n## CAP CONDITIONAL (iter 34 Atom A1 — categoria: ${category})\n\nQuesto messaggio è classificato come **${category}**. Override regola 1 BASE_PROMPT:\n- Massimo ${capWords} parole (NON 60). Tag [AZIONE:...] e [INTENT:...] NON contano.\n- Plurale "Ragazzi," opener SEMPRE (PRINCIPIO ZERO §1 NON-NEGOTIABLE).\n`;
+
+  switch (category) {
+    case 'chit_chat':
+      return baseFmt + `- 1 frase secca calorosa, NO citazione Vol/pag (no factual claim).\n- Esempio: "Ragazzi, ciao! Pronti per l'esperimento?"\n`;
+
+    case 'meta_question':
+      return baseFmt + `- 2 frasi self-intro UNLIM persona. NO citazione Vol/pag.\n- NEVER rivelare "sono Gemini/Mistral/AI". Sei UNLIM di ELAB.\n- Esempio: "Ragazzi, sono UNLIM, l'aiutante didattico di ELAB. Vi guido nei circuiti seguendo i vostri 3 volumi e il kit fisico."\n`;
+
+    case 'off_topic':
+      return baseFmt + `- 1 frase + soft deflect a kit ELAB / circuiti / volumi (Sense 2 Morfismo).\n- Tono caldo, NON sgridare. Suggerisci alternativa educational.\n- Esempio: "Ragazzi, oggi mi specializzo in elettronica. Vediamo insieme un esperimento sul vostro kit ELAB? C'è il LED che vi piacerà!"\n`;
+
+    case 'safety_warning':
+      return baseFmt + `- Safety FIRST: spegnere/scollegare PRIMA di tutto.\n- Citazione Vol/pag verbatim tra «caporali» se rilevante (Vol.X cap.Y avvertimento).\n- Mention kit fisico ELAB obbligatoria.\n- 2-3 frasi: (1) azione safety immediata, (2) spiegazione causa, (3) come ripartire.\n`;
+
+    case 'deep_question':
+      return baseFmt + `- ≤120 parole = spazio per spiegazione articolata.\n- 1 citazione verbatim Vol/pag tra «caporali» MANDATORY.\n- 1 analogia mondo reale (strada, tubo, porta, squadra).\n- Mention kit ELAB physical hands-on raccomandato.\n- Struttura: definizione + analogia + invito kit ELAB.\n`;
+
+    case 'citation_vol_pag':
+    case 'plurale_ragazzi':
+    case 'default':
+    default:
+      return baseFmt + `- Cap default 60 parole preservato (BASE_PROMPT v3.2 line 96).\n- Citazione Vol/pag tra «caporali» MANDATORY (rule §2 BASE_PROMPT preserved).\n- Mention kit ELAB physical mandatory (rule §3 BASE_PROMPT preserved).\n`;
+  }
+}
