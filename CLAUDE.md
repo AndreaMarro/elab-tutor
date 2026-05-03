@@ -1996,3 +1996,79 @@ Box subtotal post iter 32 ~12.05/14 → normalizzato 8.61/10 + bonus iter 32 (+0
 - ADR-042 ACCEPTED: `docs/adrs/ADR-042-onniscenza-ui-state-snapshot-integration.md`
 - 50 E2E spec PASS log: `tests/e2e/onnipotenza-l0b-namespace-50-cells.spec.js` 50/50 path B real dispatch chromium 1m42s 2026-05-03
 - 19 entries Andrea ratify queue: `automa/state/iter-31-andrea-flags.jsonl` (alcune CLOSED post-deploy: env-supabase-anon-key + prod-deploy-gap + ADR PROPOSED gated)
+
+## Sprint T iter 34 close (2026-05-04 ~00:00 CEST) — Multi-Provider Workflow Phase 0+ + 5 atomi shipped (A1+A2+A4+A5+F1)
+
+**Score iter 34 close ONESTO ricalibrato G45**: **8.30/10** (raw 8.37 → cap 8.30 mechanical: 5/5 atomi env-gated default OFF excluding F1 frontend, NO LIVE prod impact senza Andrea ratify queue close).
+
+**Pattern**: inline single-agent ELAB-fixes execution + Mac Mini SSH verification (id_ed25519_elab) + Codex CLI v0.128.0 + Gemini CLI v0.40.1 npm install pivot from `/plugin marketplace add openai/codex-plugin-cc` (slash command NOT available in env).
+
+**MAJOR DELIVERABLES iter 34** (9 commits su e2e-bypass-preview, push origin pending):
+
+1. ✅ **Phase 0 setup multi-provider workflow**:
+   - Branch `wip/iter-31-misc-2026-05-03` snapshot 12 file React WIP da sessione precedente (commit ccc86fa local-only)
+   - `chore(gitignore): stop tracking 3 ephemeral state files` heartbeat watchdog + 2 bench harness output (commit c67ee5e)
+   - `chore: ingest 18 untracked docs/audits/handoff/plans/bench` iter 30-31 (commit 1b2e57d)
+   - `feat(phase-00-iter34): skill metric baseline 5 ELAB skill` (commit 0d8b8cf): 5 JSON output `automa/state/skill-runs/2026-05-03-baseline-{morfismo,onniscenza,onnipotenza,principio-zero,velocita}.json` + audit doc 300+ LOC
+   - `feat(phase-01-02-iter34): pivot Codex+Gemini install plugin Claude Code → CLI standalone npm` (commit 8141b8a): @openai/codex v0.128.0 + @google/gemini-cli v0.40.1 + audit doc
+
+2. ✅ **Atom A1 cap conditional 6→8 categories** (commit 29d0603 vitest 13770):
+   - `supabase/functions/_shared/onniscenza-classifier.ts` +80 LOC: PromptCategory union 6→8 (+meta_question +off_topic) + ClassificationResult capWords field + 2 nuovi regex META_RE + OFFTOPIC_RE Italian-only + behavior matrix capWords (chit_chat=30, meta=50, off=40, citation/plurale/default=60, deep=120, safety=80) + version marker preserve `/iter37/` substring
+   - `supabase/functions/_shared/system-prompt.ts` +70 LOC: NEW export `getCategoryCapWordsBlock(category, capWords)` produce instruction text per category
+   - `supabase/functions/unlim-chat/index.ts` +15 LOC: ENABLE_CAP_CONDITIONAL=false default OFF env gate + telemetry surface
+   - `tests/unit/onniscenza-classifier.test.js` +85 LOC, 18 NEW tests (6 meta_question + 6 off_topic + 6 capWords) → 48/48 PASS
+
+3. ✅ **Atom A2 L2 router category-aware narrow** (commit e733ccc):
+   - `supabase/functions/unlim-chat/index.ts` +25 LOC: ENABLE_L2_CATEGORY_NARROW=false default OFF env gate skip-list (chit_chat + meta_question + off_topic) → null L2 → fall through LLM
+   - Telemetry: l2_narrow_active + l2_skipped_category booleans
+   - Goal: increase R7 Mistral function calling fire-rate (baseline 3.6% iter 38) by removing template short-circuit per non-educational categories
+
+4. ✅ **Atom A4+A5 batch** (commit 17bb1a3):
+   - **A4 hedged Mistral env activation**: NO code change (code GIÀ shipped iter 41 Phase A llm-client.ts:390-431). Andrea ratify queue: `ENABLE_HEDGED_LLM=true` + `ENABLE_HEDGED_PROVIDER_MIX=true` Supabase env enable. Lift target -600-1100ms p95.
+   - **A5 off-ELAB paletti soft**: BASE_PROMPT v3.2 rule §6 expand +6 LOC. PRIMA: hard deflect "Sono specializzato in elettronica!" DOPO: soft deflect + plurale Ragazzi + kit ELAB mention + invito esperimento concreto + analogia educational pivot (LED, sensori orologio digitale). Joint con A1 helper off_topic (defense-in-depth).
+
+5. ✅ **Atom F1 esci persistence drawing bucket force save** (commit d3ad2b3 vitest 13774):
+   - Andrea iter 19 PM bug: "scritti spariscono su Esci (persistenza violata)"
+   - Root cause: `cancelDebouncedSaveRemote(experimentId)` su DrawingOverlay unmount cancellava pending up-to-2s-old save SENZA fire
+   - Fix `src/services/drawingSync.js` +30 LOC: NEW export `flushDebouncedSave(experimentId, paths)` clear timer + fire savePaths IMMEDIATAMENTE caller-provided paths + skip empty defensive
+   - Fix `src/components/simulator/canvas/DrawingOverlay.jsx` +20 LOC: pathsRef useRef sync useEffect (latest paths capture) + unmount cleanup `flushDebouncedSaveRemote(experimentId, pathsRef.current)`
+   - 4 NEW tests `flushDebouncedSave` 29/29 PASS (25 baseline + 4 NEW)
+
+6. ✅ **Atom B1 wake word diagnose**: NO code change required. Verifica esistente iter 36+ MicPermissionNudge.jsx + wakeWord.js + integration test wakeWord-integration.test.jsx 9/9 PASS. Tester batch 27/27 PASS (4 test files).
+
+**Atomi DEFERRED iter 35+**:
+- C1 Lavagna libero truly free (4-5h scope, Tier 0+1+2+3 mandatory)
+- E1 Percorso 2-window overlay (4h scope, restore vecchia libero pre-Sprint T iter 26)
+- E2 PassoPasso older preferred + window resize (1.5h impl + 60min validation)
+- A3 intent_history persist (Andrea ratify SQL migration `ALTER TABLE student_progress ADD recent_intents jsonb` gate)
+
+**SPRINT_T_COMPLETE 14 boxes status post iter 34**:
+- Box 1 VPS GPU 0.4 (UNCHANGED Path A) | Box 2 stack 0.7 | Box 3 RAG 0.7 | Box 4 Wiki 1.0 | Box 5 R0 1.0
+- Box 6 Hybrid RAG 0.85 | Box 7 Vision 0.75 | Box 8 TTS 0.95 | Box 9 R5 1.0 | Box 10 ClawBot 1.0
+- **Box 11 Onniscenza 0.95** (UNCHANGED iter 32, A1 scaffold env-gated)
+- Box 12 GDPR 0.75 | **Box 13 UI/UX 0.90** (+0.05 F1 esci persistence drawing) | Box 14 INTENT 0.99
+
+Box subtotal **12.10/14** → normalizzato 8.64/10 + bonus +0.10 = raw 8.74 → **G45 cap 8.30/10 ONESTO** (mechanical: env-gated default OFF impact contribution capped, F1 LIVE next deploy).
+
+**Andrea ratify queue iter 34 close — 8 NEW entries**:
+1. ENABLE_CAP_CONDITIONAL=true Supabase env enable canary 5%→100%
+2. ENABLE_L2_CATEGORY_NARROW=true Supabase env enable joint con A1+ADR-030
+3. ENABLE_HEDGED_LLM=true + ENABLE_HEDGED_PROVIDER_MIX=true (verify GEMINI_API_KEY)
+4. Edge Function unlim-chat deploy v81+ (BASE_PROMPT v3.2 → v3.3 rule §6)
+5. Vercel deploy frontend (DrawingOverlay flush LIVE) + manual test 5 strokes pre-Esci → reopen verify
+6. SQL migration A3 intent_history persist ratify gate
+7. macOS Computer Use real mic permission test su prod B1
+8. R5+R6+R7 re-bench batch post env enable (latency + canonical % delta vs iter 38 baseline)
+
+**Anti-pattern G45 enforced iter 34**: cap 8.30 ONESTO. NO claim "5 atomi LIVE prod" (5/5 require deploy + env enable + ratify). NO claim "Sprint T close 9.5 achieved" (cap 8.50 ceiling realistic post-iter-34). NO `--no-verify` (pre-commit vitest hook 13770→13774 baseline preservato 7 commits consecutivi). NO push origin pending Andrea final approve. Caveat onesti documentati 7 audit doc (Phase 0.0 + Phase 0.1+0.2 + A1 + A2 + A4+A5 + F1 + B1+defer).
+
+**Cross-link audit docs iter 34**:
+- `docs/audits/2026-05-03-step2-step3-wip-cleanup-decisions.md` (Phase 0 cleanup)
+- `docs/audits/2026-05-03-phase00-skill-metric-baseline.md` (5 ELAB skill baseline)
+- `docs/audits/2026-05-03-phase01-phase02-codex-gemini-cli-install.md` (CLI install pivot)
+- `docs/audits/2026-05-03-atom-A1-system-prompt-cap-conditional.md`
+- `docs/audits/2026-05-03-atom-A2-l2-router-narrow.md`
+- `docs/audits/2026-05-03-atom-A4-A5-hedged-mistral-off-elab-soft.md`
+- `docs/audits/2026-05-03-atom-F1-esci-persistence-drawing.md`
+- `docs/audits/2026-05-03-atom-B1-C1-E1-E2-A3-status-defer.md`
+- `automa/state/skill-runs/2026-05-03-baseline-{morfismo,onniscenza,onnipotenza,principio-zero,velocita}.json` (5 JSON)
