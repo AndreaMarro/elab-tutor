@@ -949,3 +949,27 @@
 **Pattern hint**: Check Edge Function logs in Supabase dashboard
 
 **Run**: regular | **Source**: watchdog-elab
+
+### 2026-05-03T11:54:58Z — edge_unlim-chat_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":false,"error":"unauthorized","reason":"missing X-Elab-Api-Key header"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-05-03T11:54:58Z — edge_unlim-hints_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"hints":"Osserva attentamente le immagini e identifica le differenze principali tra loro. Concentrati sui dettagli che cambiano da un'immagine all'altra per cogliere le variazioni.","s
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
+
+### 2026-05-03T11:54:58Z — edge_unlim-diagnose_content_failed
+
+**Detail**: Response success=false or empty. Raw: {"success":true,"diagnosis":"Tutto a posto! Il circuito sembra corretto.","source":"flash"}
+
+**Pattern hint**: Check Edge Function logs in Supabase dashboard
+
+**Run**: regular | **Source**: watchdog-elab
