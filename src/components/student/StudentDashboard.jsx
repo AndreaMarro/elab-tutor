@@ -27,20 +27,20 @@ const IcoClock = () => <StudentIcon><circle cx="12" cy="12" r="10" /><polyline p
 const IcoLightbulb = () => <StudentIcon><path d="M9 18h6" /><path d="M10 22h4" /><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z" /></StudentIcon>;
 const IcoWave = () => <StudentIcon><path d="M2 12c1.5-3 3.5-3 5 0s3.5 3 5 0 3.5-3 5 0 3.5 3 5 0" /></StudentIcon>;
 const IcoBook = () => <StudentIcon><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></StudentIcon>;
-const IcoStar = () => <StudentIcon><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9" fill="#FFD700" stroke="#E8941C" /></StudentIcon>;
-const IcoFire = () => <StudentIcon><path d="M12 2C12 2 7 8 7 13a5 5 0 0 0 10 0c0-5-5-11-5-11z" fill="#E8941C" stroke="#E54B3D" /><path d="M12 22a3 3 0 0 1-3-3c0-2 3-5 3-5s3 3 3 5a3 3 0 0 1-3 3z" fill="#FFD700" stroke="#E8941C" /></StudentIcon>;
+const IcoStar = () => <StudentIcon><polygon points="12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9" fill="#FFD700" stroke="var(--elab-orange)" /></StudentIcon>;
+const IcoFire = () => <StudentIcon><path d="M12 2C12 2 7 8 7 13a5 5 0 0 0 10 0c0-5-5-11-5-11z" fill="var(--elab-orange)" stroke="var(--elab-red)" /><path d="M12 22a3 3 0 0 1-3-3c0-2 3-5 3-5s3 3 3 5a3 3 0 0 1-3 3z" fill="#FFD700" stroke="var(--elab-orange)" /></StudentIcon>;
 
 // Colori ELAB ufficiali
 const C = {
-    navy: 'var(--color-primary, #1E4D8C)',
+    navy: 'var(--color-primary, var(--elab-navy))',
     navyDark: 'var(--color-primary-dark, #152a5c)',
-    lime: 'var(--color-accent, #4A7A25)',
+    lime: 'var(--color-accent, var(--elab-lime))',
     limeDark: '#7da93d',
     limeLight: '#BBD789',
     limeSoft: '#E8F4D9',
     bg: 'var(--color-bg, #F0F4F8)',
     red: '#E53935',
-    orange: '#E8941C',
+    orange: 'var(--elab-orange)',
     cyan: '#00B4D8',
     text: 'var(--color-text-body, #1a1a2e)',
     textMuted: 'var(--color-text-muted, #64748B)',
@@ -54,10 +54,10 @@ const MoodSvg = ({ children, color, size = 20 }) => (
 );
 const MOOD_EMOJI = {
     energico: <MoodSvg color="#F5A623"><polygon points="10,1 12,8 19,8 13.5,12 15.5,19 10,14.5 4.5,19 6.5,12 1,8 8,8" fill="#F5A623" stroke="none" /></MoodSvg>,
-    concentrato: <MoodSvg color="#1E4D8C"><circle cx="10" cy="10" r="8"/><circle cx="10" cy="10" r="4"/><circle cx="10" cy="10" r="1" fill="#1E4D8C" stroke="none"/></MoodSvg>,
+    concentrato: <MoodSvg color="var(--elab-navy)"><circle cx="10" cy="10" r="8"/><circle cx="10" cy="10" r="4"/><circle cx="10" cy="10" r="1" fill="var(--elab-navy)" stroke="none"/></MoodSvg>,
     confuso: <MoodSvg color="#9333EA"><circle cx="10" cy="10" r="8"/><path d="M7 7.5 Q7 5 10 5 Q13 5 13 7.5 Q13 9 10 10 L10 12" fill="none"/><circle cx="10" cy="15" r="0.8" fill="#9333EA" stroke="none"/></MoodSvg>,
     bloccato: <MoodSvg color="#E53935"><rect x="4" y="9" width="12" height="8" rx="2"/><path d="M7 9 V6 Q7 3 10 3 Q13 3 13 6 V9" fill="none"/></MoodSvg>,
-    felice: <MoodSvg color="#4A7A25"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#4A7A25" stroke="none"/><circle cx="13" cy="8" r="1" fill="#4A7A25" stroke="none"/><path d="M6 12 Q10 16 14 12" fill="none"/></MoodSvg>,
+    felice: <MoodSvg color="var(--elab-lime)"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="var(--elab-lime)" stroke="none"/><circle cx="13" cy="8" r="1" fill="var(--elab-lime)" stroke="none"/><path d="M6 12 Q10 16 14 12" fill="none"/></MoodSvg>,
     frustrato: <MoodSvg color="#EF4444"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#EF4444" stroke="none"/><circle cx="13" cy="8" r="1" fill="#EF4444" stroke="none"/><path d="M6 15 Q10 11 14 15" fill="none"/></MoodSvg>,
     curioso: <MoodSvg color="#00B4D8"><circle cx="10" cy="10" r="8"/><circle cx="7" cy="8" r="1" fill="#00B4D8" stroke="none"/><circle cx="13" cy="8" r="1" fill="#00B4D8" stroke="none"/><circle cx="10" cy="14" r="2" fill="none"/></MoodSvg>,
     creativo: <MoodSvg color="#EC4899"><path d="M10 3 Q6 3 6 7 Q6 10 10 12 Q14 10 14 7 Q14 3 10 3z" fill="none"/><line x1="10" y1="12" x2="10" y2="16"/><line x1="8" y1="16" x2="12" y2="16"/></MoodSvg>,
@@ -65,10 +65,10 @@ const MOOD_EMOJI = {
 
 const MOOD_COLORS = {
     energico: '#F5A623',
-    concentrato: '#1E4D8C',
+    concentrato: 'var(--elab-navy)',
     confuso: '#9333EA',
     bloccato: '#E53935',
-    felice: '#4A7A25',
+    felice: 'var(--elab-lime)',
     frustrato: '#EF4444',
     curioso: '#00B4D8',
     creativo: '#EC4899',
@@ -299,7 +299,7 @@ function BadgeGrid() {
                     <div key={b.id} className={sd.badgeCard} style={{
                         background: b.unlocked ? '#F0F9E8' : '#F5F5F5',
                         opacity: b.unlocked ? 1 : 0.4,
-                        border: b.unlocked ? '2px solid #4A7A25' : '2px solid #E2E8F0',
+                        border: b.unlocked ? '2px solid var(--elab-lime)' : '2px solid #E2E8F0',
                     }}>
                         <div className={sd.flexCenter} style={{ color: b.unlocked ? C.navy : C.textMuted }}>
                             {BADGE_ICONS[b.icon] || BADGE_ICONS.star}
@@ -329,7 +329,7 @@ function PanoramicaTab({ data, formatTempo }) {
             icon: <IcoStar />,
             label: 'Punti',
             value: totalPts,
-            color: '#E8941C',
+            color: 'var(--elab-orange)',
         },
         {
             icon: <IcoFire />,
@@ -831,7 +831,7 @@ function ClasseTab({ user }) {
                 <div style={styles.section}>
                     <h3 style={styles.sectionTitle}>La tua classe</h3>
                     <div style={{
-                        background: 'linear-gradient(135deg, #1E4D8C08, #4A7A2508)',
+                        background: 'linear-gradient(135deg, var(--elab-navy)08, var(--elab-lime)08)',
                         borderRadius: 12, padding: 20,
                         border: `1px solid ${C.border}`,
                     }}>

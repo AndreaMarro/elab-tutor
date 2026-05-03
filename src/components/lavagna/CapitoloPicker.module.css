@@ -24,7 +24,7 @@
   border: 1px solid rgba(30, 77, 140, 0.25);
   border-radius: 6px;
   background-color: white;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -34,18 +34,18 @@
 
 .volumeTab:hover {
   background-color: rgba(30, 77, 140, 0.05);
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary, var(--elab-navy));
 }
 
 .volumeTab:focus-visible {
-  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline: 2px solid var(--color-primary, var(--elab-navy));
   outline-offset: 2px;
 }
 
 .volumeTabActive {
-  background-color: var(--color-primary, #1E4D8C);
+  background-color: var(--color-primary, var(--elab-navy));
   color: white;
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary, var(--elab-navy));
 }
 
 .capGrid {
@@ -79,13 +79,13 @@
 }
 
 .capCard:hover {
-  border-color: var(--color-primary, #1E4D8C);
+  border-color: var(--color-primary, var(--elab-navy));
   box-shadow: 0 2px 8px rgba(30, 77, 140, 0.12);
   transform: translateY(-1px);
 }
 
 .capCard:focus-visible {
-  outline: 2px solid var(--color-primary, #1E4D8C);
+  outline: 2px solid var(--color-primary, var(--elab-navy));
   outline-offset: 2px;
 }
 
@@ -93,7 +93,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1E4D8C);
+  color: var(--color-primary, var(--elab-navy));
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -139,7 +139,7 @@
 }
 
 .type_experiment {
-  border-left: 4px solid #4A7A25;
+  border-left: 4px solid var(--elab-lime);
 }
 .type_experiment .typeBadge {
   background-color: rgba(74, 122, 37, 0.15);
@@ -147,7 +147,7 @@
 }
 
 .type_project {
-  border-left: 4px solid #E8941C;
+  border-left: 4px solid var(--elab-orange);
 }
 .type_project .typeBadge {
   background-color: rgba(232, 148, 28, 0.15);
@@ -155,7 +155,7 @@
 }
 
 .type_wip {
-  border-left: 4px solid #E54B3D;
+  border-left: 4px solid var(--elab-red);
 }
 .type_wip .typeBadge {
   background-color: rgba(229, 75, 61, 0.15);
@@ -163,9 +163,9 @@
 }
 
 .type_bonus {
-  border-left: 4px solid #1E4D8C;
+  border-left: 4px solid var(--elab-navy);
 }
 .type_bonus .typeBadge {
   background-color: rgba(30, 77, 140, 0.15);
-  color: #1E4D8C;
+  color: var(--elab-navy);
 }

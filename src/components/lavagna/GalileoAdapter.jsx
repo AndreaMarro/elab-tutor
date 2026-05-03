@@ -50,9 +50,9 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
   if (!path?.phases?.length) {
     return (
       <div style={{ padding: 24, textAlign: 'center', color: '#737373', fontFamily: "'Open Sans', sans-serif" }}>
-        <p style={{ fontSize: 16, fontWeight: 600, color: '#1E4D8C', marginBottom: 8 }}>Percorso non disponibile</p>
+        <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--elab-navy)', marginBottom: 8 }}>Percorso non disponibile</p>
         <p style={{ fontSize: 15 }}>Questo esperimento non ha un percorso lezione dettagliato.</p>
-        <button onClick={() => onAskUNLIM?.('Prepara una lezione per questo esperimento')} style={{ marginTop: 16, padding: '12px 20px', border: '2px solid #4A7A25', borderRadius: 12, background: 'rgba(74,122,37,0.08)', color: '#4A7A25', fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+        <button onClick={() => onAskUNLIM?.('Prepara una lezione per questo esperimento')} style={{ marginTop: 16, padding: '12px 20px', border: '2px solid var(--elab-lime)', borderRadius: 12, background: 'rgba(74,122,37,0.08)', color: 'var(--elab-lime)', fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
           Chiedi a UNLIM di preparare la lezione
         </button>
       </div>
@@ -66,10 +66,10 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
   const isLast = currentPhase === totalPages - 1;
 
   const PHASE_COLORS = {
-    PREPARA: { bg: 'linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)', border: '#93c5fd', accent: '#1E4D8C' },
-    MOSTRA: { bg: 'linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%)', border: '#fcd34d', accent: '#E8941C' },
-    CHIEDI: { bg: 'linear-gradient(135deg, #fce7f3 0%, #fef2f2 100%)', border: '#f9a8d4', accent: '#E54B3D' },
-    OSSERVA: { bg: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', border: '#86efac', accent: '#4A7A25' },
+    PREPARA: { bg: 'linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)', border: '#93c5fd', accent: 'var(--elab-navy)' },
+    MOSTRA: { bg: 'linear-gradient(135deg, #fef3c7 0%, #fff7ed 100%)', border: '#fcd34d', accent: 'var(--elab-orange)' },
+    CHIEDI: { bg: 'linear-gradient(135deg, #fce7f3 0%, #fef2f2 100%)', border: '#f9a8d4', accent: 'var(--elab-red)' },
+    OSSERVA: { bg: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', border: '#86efac', accent: 'var(--elab-lime)' },
     CONCLUDI: { bg: 'linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%)', border: '#c4b5fd', accent: '#6d28d9' },
   };
   const colors = PHASE_COLORS[phase.name] || PHASE_COLORS.PREPARA;
@@ -143,15 +143,15 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
           {currentPhase === 0 && volRef && (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 10, padding: '4px 10px', background: 'rgba(30,77,140,0.06)', borderRadius: 8, border: '1px solid rgba(30,77,140,0.15)' }}>
               <span style={{ fontSize: 13 }}>📖</span>
-              <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: 11, fontWeight: 600, color: '#1E4D8C', letterSpacing: '0.5px' }}>
+              <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: 11, fontWeight: 600, color: 'var(--elab-navy)', letterSpacing: '0.5px' }}>
                 Vol. {volRef.volume}, pag. {volRef.bookPage}
               </span>
             </div>
           )}
           {/* Adaptive context banner — only on first phase */}
           {currentPhase === 0 && sessionContext && (
-            <div style={{ ...PS.tip, background: sessionContext.alreadyDone ? 'rgba(74,122,37,0.08)' : 'rgba(30,77,140,0.05)', borderColor: sessionContext.alreadyDone ? '#4A7A2530' : '#1E4D8C20', marginBottom: 14 }}>
-              <div style={{ ...PS.tipLabel, color: sessionContext.alreadyDone ? '#4A7A25' : '#1E4D8C' }}>
+            <div style={{ ...PS.tip, background: sessionContext.alreadyDone ? 'rgba(74,122,37,0.08)' : 'rgba(30,77,140,0.05)', borderColor: sessionContext.alreadyDone ? 'var(--elab-lime)30' : 'var(--elab-navy)20', marginBottom: 14 }}>
+              <div style={{ ...PS.tipLabel, color: sessionContext.alreadyDone ? 'var(--elab-lime)' : 'var(--elab-navy)' }}>
                 {sessionContext.alreadyDone ? 'Ripasso' : 'Contesto classe'}
               </div>
               {sessionContext.alreadyDone
@@ -229,7 +229,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     container: { display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' },
     content: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '8px 4px' },
     title: {
-      fontFamily: "'Oswald', sans-serif", fontSize: 20, fontWeight: 700, color: '#1E4D8C',
+      fontFamily: "'Oswald', sans-serif", fontSize: 20, fontWeight: 700, color: 'var(--elab-navy)',
       marginBottom: 14, textAlign: 'center', lineHeight: 1.3,
     },
     desc: {
@@ -244,13 +244,13 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     },
     stepLabel: {
       fontFamily: "'Oswald', sans-serif", fontSize: 12, fontWeight: 600,
-      color: '#4A7A25', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 14,
+      color: 'var(--elab-lime)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 14,
       display: 'flex', alignItems: 'center', gap: 8,
     },
-    stepLabelBar: { flex: 1, height: 2, background: 'linear-gradient(90deg, #4A7A25 0%, transparent 100%)', borderRadius: 1, opacity: 0.3 },
+    stepLabelBar: { flex: 1, height: 2, background: 'linear-gradient(90deg, var(--elab-lime) 0%, transparent 100%)', borderRadius: 1, opacity: 0.3 },
     stepNum: {
       display: 'inline-flex', width: 48, height: 48, borderRadius: 14,
-      background: 'linear-gradient(135deg, #1E4D8C 0%, #2a6bc4 100%)',
+      background: 'linear-gradient(135deg, var(--elab-navy) 0%, #2a6bc4 100%)',
       color: '#fff', alignItems: 'center', justifyContent: 'center',
       fontFamily: "'Oswald', sans-serif", fontSize: 22, fontWeight: 700,
       marginRight: 16, flexShrink: 0,
@@ -268,15 +268,15 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     },
     sectionTitle: {
       fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600,
-      color: '#4A7A25', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 12,
+      color: 'var(--elab-lime)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 12,
       display: 'flex', alignItems: 'center', gap: 8,
     },
     sectionText: { fontSize: 17, lineHeight: 1.7, color: '#333', fontFamily: "'Open Sans', sans-serif" },
     nav: { display: 'flex', gap: 10, padding: '10px 0 4px', flexShrink: 0 },
     navBtn: (primary) => ({
       flex: 1, padding: '14px 16px', border: primary ? 'none' : '2px solid rgba(30, 77, 140, 0.3)', borderRadius: 14,
-      background: primary ? 'linear-gradient(135deg, #1E4D8C 0%, #2a6bc4 100%)' : 'rgba(30, 77, 140, 0.04)',
-      color: primary ? '#fff' : '#1E4D8C',
+      background: primary ? 'linear-gradient(135deg, var(--elab-navy) 0%, #2a6bc4 100%)' : 'rgba(30, 77, 140, 0.04)',
+      color: primary ? '#fff' : 'var(--elab-navy)',
       fontFamily: "'Oswald', sans-serif", fontSize: 16, fontWeight: 700, cursor: 'pointer',
       letterSpacing: '1px', textTransform: 'uppercase', transition: 'all 150ms',
       boxShadow: primary ? '0 4px 16px rgba(30, 77, 140, 0.25)' : 'none',
@@ -284,10 +284,10 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     progress: { display: 'flex', justifyContent: 'center', gap: 6, padding: '8px 0' },
     dot: (active) => ({
       width: active ? 24 : 8, height: 8, borderRadius: 4,
-      background: active ? 'linear-gradient(90deg, #1E4D8C, #4A7A25)' : '#d1d5db',
+      background: active ? 'linear-gradient(90deg, var(--elab-navy), var(--elab-lime))' : '#d1d5db',
       transition: 'all 250ms cubic-bezier(0.4, 0, 0.2, 1)',
     }),
-    askBtn: { width: '100%', padding: '10px 16px', border: '2px solid #4A7A25', borderRadius: 10, background: 'rgba(74,122,37,0.08)', color: '#4A7A25', fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer', letterSpacing: '0.5px', marginTop: 8 },
+    askBtn: { width: '100%', padding: '10px 16px', border: '2px solid var(--elab-lime)', borderRadius: 10, background: 'rgba(74,122,37,0.08)', color: 'var(--elab-lime)', fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer', letterSpacing: '0.5px', marginTop: 8 },
   };
 
   if (!steps.length && !desc && !observe) {
@@ -302,13 +302,13 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
       <div style={GS.content}>
         <div style={GS.title}>{experiment.icon ? `${experiment.icon} ` : ''}{experiment.title}</div>
         {groupCtx && (
-          <div style={{ textAlign: 'center', fontSize: 12, color: '#4A7A25', fontWeight: 600, fontFamily: "'Oswald', sans-serif", letterSpacing: '1px', marginBottom: 6 }}>
+          <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--elab-lime)', fontWeight: 600, fontFamily: "'Oswald', sans-serif", letterSpacing: '1px', marginBottom: 6 }}>
             {groupCtx.narrative}
           </div>
         )}
         {volRef && (
           <div style={{ margin: '0 auto 12px', padding: '10px 14px', background: 'linear-gradient(135deg, #eff6ff, #f8fafc)', borderRadius: 12, border: '1px solid #93c5fd40', maxWidth: 340 }}>
-            <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 11, fontWeight: 600, color: '#1E4D8C', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 4 }}>
+            <div style={{ fontFamily: "'Oswald', sans-serif", fontSize: 11, fontWeight: 600, color: 'var(--elab-navy)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 4 }}>
               Vol. {volRef.volume}, pag. {volRef.bookPage}
             </div>
             <div style={{ fontFamily: "'Open Sans', sans-serif", fontSize: 13, color: '#555', lineHeight: 1.5 }}>
@@ -316,10 +316,10 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
             </div>
             {volRef.bookText && (
               <details style={{ marginTop: 8 }}>
-                <summary style={{ cursor: 'pointer', fontSize: 12, fontWeight: 600, color: '#1E4D8C', fontFamily: "'Oswald', sans-serif", letterSpacing: '0.5px', padding: '4px 0' }}>
+                <summary style={{ cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--elab-navy)', fontFamily: "'Oswald', sans-serif", letterSpacing: '0.5px', padding: '4px 0' }}>
                   📖 Cosa dice il libro
                 </summary>
-                <div style={{ marginTop: 6, fontSize: 13, color: '#333', lineHeight: 1.6, fontStyle: 'italic', borderLeft: '3px solid #1E4D8C', paddingLeft: 12, background: 'rgba(30, 77, 140, 0.03)', padding: '10px 12px', borderRadius: '0 6px 6px 0' }}>
+                <div style={{ marginTop: 6, fontSize: 13, color: '#333', lineHeight: 1.6, fontStyle: 'italic', borderLeft: '3px solid var(--elab-navy)', paddingLeft: 12, background: 'rgba(30, 77, 140, 0.03)', padding: '10px 12px', borderRadius: '0 6px 6px 0' }}>
                   {volRef.bookText}
                 </div>
                 {volRef.bookQuote && (
@@ -334,7 +334,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
         {desc && <div style={GS.desc}>{desc}</div>}
         {!desc && <div style={GS.desc}>Pronto a iniziare? Premi Avanti per il primo passo.</div>}
         {splitSuggestion && (
-          <div style={{ marginTop: 8, padding: 10, background: '#FFF8E7', borderRadius: 8, border: '1px solid #E8941C33', fontSize: 12, color: '#8B6914', lineHeight: 1.5 }}>
+          <div style={{ marginTop: 8, padding: 10, background: '#FFF8E7', borderRadius: 8, border: '1px solid var(--elab-orange)33', fontSize: 12, color: '#8B6914', lineHeight: 1.5 }}>
             <strong>Suggerimento docente:</strong> {splitSuggestion}
           </div>
         )}
@@ -348,15 +348,15 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
           <div style={GS.stepLabel}>
             <span>Passo {currentStep + 1} di {steps.length}</span>
             <span style={GS.stepLabelBar} />
-            {groupCtx && <span style={{ fontSize: 10, color: '#4A7A25', opacity: 0.8 }}>Esp. {groupCtx.position}/{groupCtx.total}</span>}
-            {volRef && <span style={{ fontSize: 11, color: '#1E4D8C', opacity: 0.7 }}>Vol. {volRef.volume}, p. {volRef.bookPage}</span>}
+            {groupCtx && <span style={{ fontSize: 10, color: 'var(--elab-lime)', opacity: 0.8 }}>Esp. {groupCtx.position}/{groupCtx.total}</span>}
+            {volRef && <span style={{ fontSize: 11, color: 'var(--elab-navy)', opacity: 0.7 }}>Vol. {volRef.volume}, p. {volRef.bookPage}</span>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={GS.stepNum}>{currentStep + 1}</span>
             <span style={GS.stepText}>{steps[currentStep]}</span>
           </div>
           {volRef?.bookInstructions?.[currentStep] && (
-            <div style={{ marginTop: 12, fontSize: 13, color: '#555', lineHeight: 1.5, fontStyle: 'italic', borderLeft: '3px solid #1E4D8C20', paddingLeft: 10 }}>
+            <div style={{ marginTop: 12, fontSize: 13, color: '#555', lineHeight: 1.5, fontStyle: 'italic', borderLeft: '3px solid var(--elab-navy)20', paddingLeft: 10 }}>
               Il libro dice: "{volRef.bookInstructions[currentStep]}"
             </div>
           )}
@@ -412,7 +412,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
         {isLast && <button style={GS.navBtn(false)} onClick={() => setCurrentStep(-1)}>Ricomincia</button>}
         {isLast && (
           <button
-            style={{ ...GS.navBtn(true), background: 'linear-gradient(135deg, #4A7A25, #3A6A1A)', animation: 'pulse 2s infinite' }}
+            style={{ ...GS.navBtn(true), background: 'linear-gradient(135deg, var(--elab-lime), #3A6A1A)', animation: 'pulse 2s infinite' }}
             onClick={() => {
               const api = typeof window !== 'undefined' && window.__ELAB_API;
               if (api?.loadNextExperiment) api.loadNextExperiment();
@@ -639,8 +639,8 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
     fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600,
     letterSpacing: '0.5px', textTransform: 'uppercase',
     background: active ? '#fff' : 'transparent',
-    color: active ? '#1E4D8C' : '#737373',
-    borderBottom: active ? '2px solid #1E4D8C' : '2px solid transparent',
+    color: active ? 'var(--elab-navy)' : '#737373',
+    borderBottom: active ? '2px solid var(--elab-navy)' : '2px solid transparent',
     transition: 'all 150ms',
   });
 

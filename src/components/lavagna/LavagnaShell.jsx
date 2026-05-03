@@ -66,7 +66,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     // ── Volume 1: Le Basi ──
     { type: 'led', label: 'LED', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <defs><radialGradient id={`${prefix}ledDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#a4e65e" /><stop offset="60%" stopColor="#4A7A25" /><stop offset="100%" stopColor="#2d5a10" /></radialGradient></defs>
+        <defs><radialGradient id={`${prefix}ledDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#a4e65e" /><stop offset="60%" stopColor="var(--elab-lime)" /><stop offset="100%" stopColor="#2d5a10" /></radialGradient></defs>
         <ellipse cx="14" cy="10" rx="6" ry="8" fill={`url(#${prefix}ledDome)`} />
         <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="#3a6a1a" strokeWidth="0.5" />
         <ellipse cx="11.5" cy="7" rx="2" ry="3" fill="rgba(255,255,255,0.4)" />
@@ -83,14 +83,14 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <rect x="8" y="9" width="12" height="10" rx="2" fill={`url(#${prefix}resBody)`} stroke="#a08a60" strokeWidth="0.5" />
         <rect x="10" y="9" width="1.5" height="10" rx="0.3" fill="#8B4513" />
         <rect x="13" y="9" width="1.5" height="10" rx="0.3" fill="#222" />
-        <rect x="16" y="9" width="1.5" height="10" rx="0.3" fill="#E54B3D" />
+        <rect x="16" y="9" width="1.5" height="10" rx="0.3" fill="var(--elab-red)" />
         <rect x="18.5" y="9" width="1" height="10" rx="0.3" fill="#C5A33E" />
       </svg>
     )},
     { type: 'push-button', label: 'Pulsante', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <rect x="6" y="10" width="16" height="10" rx="2" fill="#333" stroke="#222" strokeWidth="0.5" />
-        <defs><radialGradient id={`${prefix}btnCap`} cx="45%" cy="40%"><stop offset="0%" stopColor="#E8941C" /><stop offset="100%" stopColor="#c07010" /></radialGradient></defs>
+        <defs><radialGradient id={`${prefix}btnCap`} cx="45%" cy="40%"><stop offset="0%" stopColor="var(--elab-orange)" /><stop offset="100%" stopColor="#c07010" /></radialGradient></defs>
         <circle cx="14" cy="12" r="4" fill={`url(#${prefix}btnCap)`} />
         <circle cx="13" cy="11" r="1.2" fill="rgba(255,255,255,0.3)" />
         <path d="M8 20v4M12 20v4M16 20v4M20 20v4" stroke="#999" strokeWidth="1" strokeLinecap="round" />
@@ -98,11 +98,11 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
     )},
     { type: 'battery9v', label: 'Batteria 9V', vol: 1, icon: (
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="6" y="6" width="16" height="18" rx="2" fill="#1E4D8C" stroke="#153d6e" strokeWidth="0.5" />
+        <rect x="6" y="6" width="16" height="18" rx="2" fill="var(--elab-navy)" stroke="#153d6e" strokeWidth="0.5" />
         <text x="14" y="17" textAnchor="middle" fontSize="7" fill="#fff" fontWeight="bold" fontFamily="sans-serif">9V</text>
         <rect x="9" y="3" width="3" height="4" rx="1" fill="#666" />
         <rect x="16" y="4" width="3" height="3" rx="1" fill="#666" />
-        <text x="10.5" y="3" textAnchor="middle" fontSize="5" fill="#E54B3D" fontFamily="sans-serif">+</text>
+        <text x="10.5" y="3" textAnchor="middle" fontSize="5" fill="var(--elab-red)" fontFamily="sans-serif">+</text>
         <text x="17.5" y="3.5" textAnchor="middle" fontSize="6" fill="#333" fontFamily="sans-serif">-</text>
       </svg>
     )},
@@ -121,7 +121,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <circle cx="14" cy="13" r="8" fill="#222" stroke="#111" strokeWidth="0.5" />
         <circle cx="14" cy="13" r="6" fill="#333" />
         <circle cx="14" cy="13" r="1.5" fill="#111" />
-        <text x="14" y="6" textAnchor="middle" fontSize="5" fill="#E54B3D" fontWeight="bold" fontFamily="sans-serif">+</text>
+        <text x="14" y="6" textAnchor="middle" fontSize="5" fill="var(--elab-red)" fontWeight="bold" fontFamily="sans-serif">+</text>
         <path d="M10 21v3M18 21v3" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     )},
@@ -131,7 +131,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <circle cx="14" cy="12" r="7" fill={`url(#${prefix}ldrBody)`} stroke="#7a5a10" strokeWidth="0.5" />
         <path d="M14 5.5c1.5 0 2.5 1.2 2.5 2.8s-1 2.8-2.5 2.8-2.5-1.2-2.5-2.8S12.5 5.5 14 5.5z" fill="#a07830" stroke="#7a5a10" strokeWidth="0.3" />
         <path d="M10 19v5M18 19v5" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M3 6l3 3M3 3l2 2" stroke="#E8941C" strokeWidth="1" strokeLinecap="round" />
+        <path d="M3 6l3 3M3 3l2 2" stroke="var(--elab-orange)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
     { type: 'reed-switch', label: 'Interruttore Reed', vol: 1, icon: (
@@ -150,7 +150,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <defs><linearGradient id={`${prefix}capBody`} x1="7" y1="9" x2="21" y2="9" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#2a6496" /><stop offset="40%" stopColor="#3498db" /><stop offset="100%" stopColor="#2472a4" /></linearGradient></defs>
         <rect x="7" y="9" width="14" height="10" rx="2" fill={`url(#${prefix}capBody)`} stroke="#1a5276" strokeWidth="0.5" />
         <rect x="7" y="9" width="3" height="10" rx="1" fill="#1a3a5c" opacity="0.5" />
-        <text x="18" y="8" fontSize="6" fill="#E54B3D" fontFamily="sans-serif">+</text>
+        <text x="18" y="8" fontSize="6" fill="var(--elab-red)" fontFamily="sans-serif">+</text>
       </svg>
     )},
     { type: 'motor-dc', label: 'Motore DC', vol: 2, icon: (
@@ -159,7 +159,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <rect x="5" y="7" width="18" height="14" rx="3" fill={`url(#${prefix}motorBody)`} stroke="#888" strokeWidth="0.5" />
         <rect x="23" y="12" width="4" height="4" rx="1" fill="#888" />
         <text x="14" y="17" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#555" fontFamily="sans-serif">M</text>
-        <path d="M8 21v3M18 21v3" stroke="#E54B3D" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M8 21v3M18 21v3" stroke="var(--elab-red)" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     )},
     { type: 'diode', label: 'Diodo', vol: 2, icon: (
@@ -185,7 +185,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <circle cx="14" cy="13" r="7" fill={`url(#${prefix}ptBody)`} stroke="#667788" strokeWidth="0.5" />
         <circle cx="14" cy="13" r="3" fill="#334455" />
         <path d="M10 20v4M18 20v4" stroke="#999" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M3 6l3 3M3 3l2 2" stroke="#E8941C" strokeWidth="1" strokeLinecap="round" />
+        <path d="M3 6l3 3M3 3l2 2" stroke="var(--elab-orange)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
     // ── Volume 3: Arduino ──
@@ -206,7 +206,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <rect x="3" y="8" width="22" height="14" rx="2" fill={`url(#${prefix}servoBody)`} stroke="#1a5276" strokeWidth="0.5" />
         <circle cx="20" cy="15" r="3.5" fill="#ddd" stroke="#999" strokeWidth="0.5" />
         <path d="M20 15l-2 -5h4z" fill="#fff" stroke="#999" strokeWidth="0.5" />
-        <path d="M6 8v-3M10 8v-3M14 8v-3" stroke="#E54B3D" strokeWidth="1" strokeLinecap="round" />
+        <path d="M6 8v-3M10 8v-3M14 8v-3" stroke="var(--elab-red)" strokeWidth="1" strokeLinecap="round" />
       </svg>
     )},
     { type: 'lcd16x2', label: 'LCD 16x2', vol: 3, icon: (
@@ -222,7 +222,7 @@ function buildQuickComponents(prefix, volumeNumber = 3) {
         <defs><radialGradient id={`${prefix}rgbDome`} cx="40%" cy="35%"><stop offset="0%" stopColor="#fff" /><stop offset="30%" stopColor="#eef" /><stop offset="100%" stopColor="#aab" /></radialGradient></defs>
         <ellipse cx="14" cy="10" rx="6" ry="8" fill={`url(#${prefix}rgbDome)`} />
         <ellipse cx="14" cy="10" rx="6" ry="8" fill="none" stroke="#889" strokeWidth="0.5" />
-        <circle cx="11" cy="9" r="2" fill="#E54B3D" opacity="0.5" />
+        <circle cx="11" cy="9" r="2" fill="var(--elab-red)" opacity="0.5" />
         <circle cx="17" cy="9" r="2" fill="#2563EB" opacity="0.5" />
         <circle cx="14" cy="12" r="2" fill="#16A34A" opacity="0.5" />
         <rect x="8" y="17" width="12" height="2" rx="0.5" fill="#bbb" stroke="#999" strokeWidth="0.5" />
@@ -1335,7 +1335,7 @@ export default function LavagnaShell() {
                 padding: 32, textAlign: 'center', color: '#737373',
                 fontFamily: "'Open Sans', sans-serif", fontSize: 16, lineHeight: 1.6,
               }}>
-                <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: '#1E4D8C', marginBottom: 12 }}>
+                <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 12 }}>
                   Ragazzi, scegliete un esperimento dalla lista
                 </p>
                 <p style={{ fontSize: 15 }}>
@@ -1373,7 +1373,7 @@ export default function LavagnaShell() {
 
       {/* Tool feedback toast */}
       {toolToast && (
-        <div role="status" aria-live="polite" style={{ position: 'fixed', bottom: 120, left: '50%', transform: 'translateX(-50%)', background: '#E8941C', color: '#fff', padding: '10px 20px', borderRadius: 10, fontSize: 15, fontWeight: 600, fontFamily: 'var(--font-sans)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)', zIndex: 9999, pointerEvents: 'none' }}>
+        <div role="status" aria-live="polite" style={{ position: 'fixed', bottom: 120, left: '50%', transform: 'translateX(-50%)', background: 'var(--elab-orange)', color: '#fff', padding: '10px 20px', borderRadius: 10, fontSize: 15, fontWeight: 600, fontFamily: 'var(--font-sans)', boxShadow: '0 4px 16px rgba(0,0,0,0.15)', zIndex: 9999, pointerEvents: 'none' }}>
           {toolToast}
         </div>
       )}

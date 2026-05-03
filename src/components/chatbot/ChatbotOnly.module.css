@@ -51,7 +51,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy, var(--elab-navy));
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin: 0;
@@ -64,7 +64,7 @@
   font-size: 13px;
   background: transparent;
   border: 1px solid rgba(30, 77, 140, 0.18);
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy, var(--elab-navy));
   border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
@@ -77,15 +77,15 @@
 .backHomeBtn:focus-visible {
   background: rgba(30, 77, 140, 0.08);
   outline: none;
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime, var(--elab-lime));
 }
 
 .newChatBtn {
   margin: 12px 14px;
   padding: 12px 14px;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy, var(--elab-navy));
   color: #FFFFFF;
-  border: 2px solid var(--elab-navy, #1E4D8C);
+  border: 2px solid var(--elab-navy, var(--elab-navy));
   border-radius: 12px;
   font-family: inherit;
   font-weight: 700;
@@ -168,13 +168,13 @@
 
 .sidebarItemActive {
   background: rgba(74, 122, 37, 0.10);
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime, var(--elab-lime));
 }
 
 .sidebarItemTitle {
   font-size: 13px;
   font-weight: 600;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy, var(--elab-navy));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -198,7 +198,7 @@
   /* iter 38 A6 fix: 9→10px to honor CLAUDE.md rule 8 label floor */
   font-size: 10px;
   font-weight: 700;
-  color: var(--elab-orange, #E8941C);
+  color: var(--elab-orange, var(--elab-orange));
 /* © Andrea Marro — 30/04/2026 — ELAB Tutor — Tutti i diritti riservati */
   background: rgba(232, 148, 28, 0.12);
   border-radius: 4px;
@@ -255,7 +255,7 @@
   font-family: 'Oswald', system-ui, sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy, var(--elab-navy));
   margin: 0;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -292,7 +292,7 @@
 
 .bubbleUser {
   align-self: flex-end;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy, var(--elab-navy));
   color: #FFFFFF;
   border-bottom-right-radius: 6px;
 }
@@ -315,7 +315,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy, var(--elab-navy));
   opacity: 0.4;
   animation: dotPulse 1s ease-in-out infinite;
 }
@@ -354,7 +354,7 @@
 
 .input:focus-visible {
   outline: none;
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime, var(--elab-lime));
   box-shadow: 0 0 0 3px rgba(74, 122, 37, 0.18);
 }
 
@@ -362,7 +362,7 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 16px;
-  background: var(--elab-navy, #1E4D8C);
+  background: var(--elab-navy, var(--elab-navy));
   color: #FFFFFF;
   border: none;
   border-radius: 12px;
@@ -411,7 +411,7 @@
   border: 1px solid rgba(30, 77, 140, 0.15);
   border-radius: 12px;
   background: #FFFFFF;
-  color: var(--elab-navy, #1E4D8C);
+  color: var(--elab-navy, var(--elab-navy));
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -423,7 +423,7 @@
 .toolBtn:hover:not(:disabled),
 .toolBtn:focus-visible {
   background: rgba(74, 122, 37, 0.10);
-  border-color: var(--elab-lime, #4A7A25);
+  border-color: var(--elab-lime, var(--elab-lime));
   outline: none;
   transform: translateY(-1px);
 }

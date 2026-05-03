@@ -2268,7 +2268,7 @@ const SimulatorCanvas = ({
               <rect
                 x={rectX} y={rectY}
                 width={size.w + pad * 2} height={size.h + pad * 2} rx="4"
-                fill="none" stroke="var(--color-primary, #1E4D8C)" strokeWidth="2"
+                fill="none" stroke="var(--color-primary, var(--elab-navy))" strokeWidth="2"
                 strokeDasharray="5 3" opacity="0.8"
                 pointerEvents="none"
               />
@@ -2298,11 +2298,11 @@ const SimulatorCanvas = ({
                 <rect
                   x={rectX} y={rectY} width={rectW} height={rectH} rx="5"
                   fill="none"
-                  stroke="var(--color-accent, #4A7A25)"
+                  stroke="var(--color-accent, var(--elab-lime))"
                   strokeWidth="2"
                   strokeDasharray="5 3"
                   opacity="0.9"
-                  style={{ filter: 'drop-shadow(0 0 4px #4A7A25)' }}
+                  style={{ filter: 'drop-shadow(0 0 4px var(--elab-lime))' }}
                 >
                   <animate
                     attributeName="stroke-opacity"
@@ -2325,7 +2325,7 @@ const SimulatorCanvas = ({
                   >
                     {/* Invisible hit area for 44px touch target (r=22 in SVG units) */}
                     <circle r="16" fill="transparent" stroke="none" />
-                    <circle r="8" fill="var(--color-vol3, #E54B3D)" stroke="#fff" strokeWidth="1.2" opacity="0.9" />
+                    <circle r="8" fill="var(--color-vol3, var(--elab-red))" stroke="#fff" strokeWidth="1.2" opacity="0.9" />
                     <line x1="-3.5" y1="-3.5" x2="3.5" y2="3.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
                     <line x1="3.5" y1="-3.5" x2="-3.5" y2="3.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
                   </g>
@@ -2345,7 +2345,7 @@ const SimulatorCanvas = ({
                   >
                     {/* Invisible hit area for 44px touch target */}
                     <circle r="16" fill="transparent" stroke="none" />
-                    <circle r="8" fill="var(--color-primary, #1E4D8C)" stroke="#fff" strokeWidth="1.2" opacity="0.9" />
+                    <circle r="8" fill="var(--color-primary, var(--elab-navy))" stroke="#fff" strokeWidth="1.2" opacity="0.9" />
                     <text x="0" y="5" textAnchor="middle" fontSize="14" fill="#fff" fontFamily="sans-serif">↻</text>
                   </g>
                 )}
@@ -2430,7 +2430,7 @@ const SimulatorCanvas = ({
                   key={`disc-${pinRef}`}
                   cx={pinPos.x} cy={pinPos.y} r={5}
                   fill="none"
-                  stroke="var(--color-vol2, #E8941C)"
+                  stroke="var(--color-vol2, var(--elab-orange))"
                   strokeWidth={2}
                   opacity={0.9}
                   pointerEvents="none"
@@ -2578,7 +2578,7 @@ const SimulatorCanvas = ({
             cy={hoveredPin.svgPos.y}
             r="6"
             fill="none"
-            stroke="var(--color-primary, #1E4D8C)"
+            stroke="var(--color-primary, var(--elab-navy))"
             strokeWidth="1.5"
             opacity="0.8"
             pointerEvents="none"
@@ -2644,9 +2644,9 @@ const SimulatorCanvas = ({
           return (
             <g transform={`translate(${dragPreview.x}, ${dragPreview.y})`} opacity="0.45" pointerEvents="none">
               <rect x="-40" y="-14" width="80" height="42" rx="6"
-                fill="var(--color-accent, #4A7A25)" stroke="var(--color-accent, #4A7A25)" strokeWidth="1.5" strokeDasharray="4 2" fillOpacity="0.15" />
-              <text x="0" y="1" textAnchor="middle" fontSize="16" fill="var(--color-accent, #4A7A25)" fontWeight="bold">+</text>
-              <text x="0" y="22" textAnchor="middle" fontSize="14" fill="var(--color-accent, #4A7A25)"
+                fill="var(--color-accent, var(--elab-lime))" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="1.5" strokeDasharray="4 2" fillOpacity="0.15" />
+              <text x="0" y="1" textAnchor="middle" fontSize="16" fill="var(--color-accent, var(--elab-lime))" fontWeight="bold">+</text>
+              <text x="0" y="22" textAnchor="middle" fontSize="14" fill="var(--color-accent, var(--elab-lime))"
                 fontFamily="Open Sans, sans-serif">rilascia qui</text>
             </g>
           );
@@ -2661,8 +2661,8 @@ const SimulatorCanvas = ({
           return (
             <rect
               x={x} y={y} width={w} height={h}
-              fill="var(--color-primary, #1E4D8C)" fillOpacity="0.08"
-              stroke="var(--color-primary, #1E4D8C)" strokeWidth="1"
+              fill="var(--color-primary, var(--elab-navy))" fillOpacity="0.08"
+              stroke="var(--color-primary, var(--elab-navy))" strokeWidth="1"
               strokeDasharray="4 2" pointerEvents="none"
             />
           );
@@ -2700,7 +2700,7 @@ const SimulatorCanvas = ({
         {/* Build validation: red flash on wrong component drop */}
         {dropError && (
           <rect x={viewBox.x} y={viewBox.y} width={viewBox.width} height={viewBox.height}
-            fill="var(--color-vol3, #E54B3D)" opacity="0.12" style={{ pointerEvents: 'none' }}>
+            fill="var(--color-vol3, var(--elab-red))" opacity="0.12" style={{ pointerEvents: 'none' }}>
             <animate attributeName="opacity" from="0.15" to="0" dur="0.8s" fill="freeze" />
           </rect>
         )}
@@ -2708,7 +2708,7 @@ const SimulatorCanvas = ({
         {/* Sprint 2 Task 2.3: Green flash on correct placement */}
         {dropSuccess && (
           <rect x={viewBox.x} y={viewBox.y} width={viewBox.width} height={viewBox.height}
-            fill="var(--color-accent, #4A7A25)" opacity="0.1" style={{ pointerEvents: 'none' }}>
+            fill="var(--color-accent, var(--elab-lime))" opacity="0.1" style={{ pointerEvents: 'none' }}>
             <animate attributeName="opacity" from="0.15" to="0" dur="0.6s" fill="freeze" />
           </rect>
         )}
@@ -2719,7 +2719,7 @@ const SimulatorCanvas = ({
           const isSliding = phase === 'slide' || phase === 'green';
           const cx = isSliding ? toX : fromX;
           const cy = isSliding ? toY : fromY;
-          const color = phase === 'red' ? '#E54B3D' : phase === 'green' ? '#4A7A25' : '#E8941C';
+          const color = phase === 'red' ? 'var(--elab-red)' : phase === 'green' ? 'var(--elab-lime)' : 'var(--elab-orange)';
           const fillOpacity = phase === 'slide' ? 0.35 : 0.5;
           return (
             <g pointerEvents="none" style={{
@@ -2745,7 +2745,7 @@ const SimulatorCanvas = ({
               {/* Dashed path from drop point to target */}
               {phase === 'red' && (
                 <line x1={fromX} y1={fromY} x2={toX} y2={toY}
-                  stroke="#E8941C" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+                  stroke="var(--elab-orange)" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
               )}
             </g>
           );
@@ -2769,9 +2769,9 @@ const SimulatorCanvas = ({
                   width={isHalf ? 253 : 110}
                   height={isHalf ? 145 : 469}
                   rx={4}
-                  fill="var(--color-accent, #4A7A25)"
+                  fill="var(--color-accent, var(--elab-lime))"
                   opacity={0.07}
-                  stroke="var(--color-accent, #4A7A25)"
+                  stroke="var(--color-accent, var(--elab-lime))"
                   strokeWidth={1}
                   strokeDasharray="6,3"
                   strokeOpacity={0.3}
@@ -2790,7 +2790,7 @@ const SimulatorCanvas = ({
             height={snapGhost.h}
             rx={3}
             fill="none"
-            stroke="var(--color-accent, #4A7A25)"
+            stroke="var(--color-accent, var(--elab-lime))"
             strokeWidth={1.5}
             strokeDasharray="4,3"
             opacity={0.6}
@@ -2807,9 +2807,9 @@ const SimulatorCanvas = ({
                 cx={hole.x}
                 cy={hole.y}
                 r={3.5}
-                fill={hole.occupied ? '#E54B3D' : '#4A7A25'}
+                fill={hole.occupied ? 'var(--elab-red)' : 'var(--elab-lime)'}
                 fillOpacity={hole.occupied ? 0.5 : 0.6}
-                stroke={hole.occupied ? '#E54B3D' : '#4A7A25'}
+                stroke={hole.occupied ? 'var(--elab-red)' : 'var(--elab-lime)'}
                 strokeWidth={1.2}
                 strokeOpacity={0.8}
               />
@@ -2823,12 +2823,12 @@ const SimulatorCanvas = ({
             {highlightedHoles.map((hole, i) => (
               <g key={i}>
                 <circle cx={hole.x} cy={hole.y} r="4.5"
-                  fill="var(--color-accent, #4A7A25)" fillOpacity="0.25" stroke="var(--color-accent, #4A7A25)" strokeWidth="1">
+                  fill="var(--color-accent, var(--elab-lime))" fillOpacity="0.25" stroke="var(--color-accent, var(--elab-lime))" strokeWidth="1">
                   <animate attributeName="r" values="3.5;5;3.5" dur="1.2s" repeatCount="indefinite" />
                   <animate attributeName="fillOpacity" values="0.15;0.35;0.15" dur="1.2s" repeatCount="indefinite" />
                 </circle>
                 <circle cx={hole.x} cy={hole.y} r="1.5"
-                  fill="var(--color-accent, #4A7A25)" fillOpacity="0.7" />
+                  fill="var(--color-accent, var(--elab-lime))" fillOpacity="0.7" />
               </g>
             ))}
           </g>
@@ -2863,7 +2863,7 @@ const SimulatorCanvas = ({
         const top = contextMenu.clientY - rect.top;
         const items = [
           {
-            label: 'Ruota', icon: '\u21BB', color: 'var(--color-primary, #1E4D8C)', action: () => {
+            label: 'Ruota', icon: '\u21BB', color: 'var(--color-primary, var(--elab-navy))', action: () => {
               if (experiment && onLayoutChange) {
                 const pos = experiment.layout?.[contextMenu.componentId] || { x: 0, y: 0, rotation: 0 };
                 const newRot = ((pos.rotation || 0) + 90) % 360;
@@ -2873,20 +2873,20 @@ const SimulatorCanvas = ({
             }
           },
           {
-            label: 'Elimina', icon: 'X', color: 'var(--color-vol3, #E54B3D)', action: () => {
+            label: 'Elimina', icon: 'X', color: 'var(--color-vol3, var(--elab-red))', action: () => {
               if (onComponentDelete) onComponentDelete(contextMenu.componentId);
               setSelectedComponent(null);
               setContextMenu(null);
             }
           },
           {
-            label: 'Proprieta', icon: '\u2699', color: 'var(--color-primary, #1E4D8C)', action: () => {
+            label: 'Proprieta', icon: '\u2699', color: 'var(--color-primary, var(--elab-navy))', action: () => {
               if (onComponentClick) onComponentClick(contextMenu.componentId);
               setContextMenu(null);
             }
           },
           {
-            label: 'Collega Filo', icon: '\u26A1', color: 'var(--color-accent, #4A7A25)', action: () => {
+            label: 'Collega Filo', icon: '\u26A1', color: 'var(--color-accent, var(--elab-lime))', action: () => {
               // S101: Enter wire mode from context menu
               if (onWireModeChange) onWireModeChange(true);
               setWireModeInternal(true);
@@ -2958,7 +2958,7 @@ const SimulatorCanvas = ({
       {pendingPlacement && (
         <div role="alert" style={{
           position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)',
-          background: 'var(--color-primary, #1E4D8C)', color: 'var(--color-text-inverse, #fff)', padding: '8px 20px',
+          background: 'var(--color-primary, var(--elab-navy))', color: 'var(--color-text-inverse, #fff)', padding: '8px 20px',
           borderRadius: 20, fontSize: 14, fontFamily: "var(--font-sans, 'Open Sans', sans-serif)",
           fontWeight: 600, display: 'flex', alignItems: 'center', gap: 10,
           boxShadow: '0 2px 12px rgba(30,77,140,0.25)', zIndex: 40,
@@ -3000,7 +3000,7 @@ const SimulatorCanvas = ({
           }}
           style={{
             ...zoomBtnStyle,
-            background: wireMode ? 'var(--color-accent, #4A7A25)' : 'var(--color-bg-secondary, #FAFAF7)',
+            background: wireMode ? 'var(--color-accent, var(--elab-lime))' : 'var(--color-bg-secondary, #FAFAF7)',
             color: wireMode ? '#fff' : 'var(--color-text-gray-500, #555)',
             width: 'auto',
             paddingLeft: 10,
@@ -3060,7 +3060,7 @@ const SimulatorCanvas = ({
       {wireMode && (
         <div style={{
           position: 'absolute', top: 8, left: 8,
-          background: wireStart ? 'var(--color-vol2, #E8941C)' : 'var(--color-accent, #4A7A25)',
+          background: wireStart ? 'var(--color-vol2, var(--elab-orange))' : 'var(--color-accent, var(--elab-lime))',
           color: 'var(--color-text, #1A1A2E)',
           padding: '6px 12px',
           borderRadius: 8,
@@ -3097,8 +3097,8 @@ const SimulatorCanvas = ({
         <div style={{
           position: 'absolute', bottom: 8, left: 8,
           background: 'var(--color-bg-secondary, #FAFAF7)',
-          border: '1px solid var(--color-primary, #1E4D8C)',
-          color: 'var(--color-primary, #1E4D8C)',
+          border: '1px solid var(--color-primary, var(--elab-navy))',
+          color: 'var(--color-primary, var(--elab-navy))',
           padding: '5px 10px',
           borderRadius: 8,
           fontSize: 14,
@@ -3122,7 +3122,7 @@ const SimulatorCanvas = ({
             style={{
               position: 'absolute', left: left - 24, top: top - 24,
               width: 48, height: 48, borderRadius: '50%',
-              border: '2px solid var(--color-primary, #1E4D8C)',
+              border: '2px solid var(--color-primary, var(--elab-navy))',
               pointerEvents: 'none', zIndex: 55,
               animation: 'elabLongPressRipple 500ms ease-out forwards',
             }}
