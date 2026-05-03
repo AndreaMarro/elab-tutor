@@ -201,8 +201,26 @@ serve(async (req: Request) => {
       debug_retrieval?: boolean;
       retrieval_mode?: 'hybrid' | 'dense' | 'auto';
       top_k?: number;
+      // iter 26 Atom 26.2 — UIStateSnapshot per ADR-042 §3 + §4 wire-up site.
+      // Frontend `__ELAB_API.ui.getState()` 7-field snapshot (route, mode, focused,
+      // modals[], modalita, lesson_path_step, opened_panels[]). Optional defensive:
+      // body.ui null/undefined when frontend doesn't ship snapshot OR env flag
+      // INCLUDE_UI_STATE_IN_ONNISCENZA=false (default safe canary opt-in Phase 5).
+      ui?: unknown;
     };
     const { message, sessionId, circuitState, experimentId, simulatorContext, images } = body;
+    // iter 26 Atom 26.2 — telemetry per request for canary monitoring (ADR-042 §6.1).
+    // Logs whether UI state was received (boolean), NOT the snapshot itself (PII safety
+    // per ADR-042 §8.2). Andrea Phase 5 canary 5%→100% rollout uses this signal to
+    // measure frontend opt-in % + correlate w/ R8 100-prompt UI awareness bench.
+    try {
+      console.info(JSON.stringify({
+        level: 'info', event: 'ui_state_received',
+        ui_state_received: !!body.ui,
+        sessionPrefix: typeof sessionId === 'string' ? sessionId.slice(0, 8) : null,
+        timestamp: new Date().toISOString(),
+      }));
+    } catch (_) { /* ignore log errors */ }
     // Iter 10 P0 debug: surface retrieved chunks when bench/dev requests debug_retrieval=true
     const debugRetrieval = body.debug_retrieval === true;
     const retrievalModeReq = body.retrieval_mode;
@@ -436,6 +454,10 @@ serve(async (req: Request) => {
           history: [], // caller history injection iter 31+
           supabase: supaClient,
           enable: { L1_rag: false /* already done above */, L3_glossario: false },
+          // iter 26 Atom 26.2 — UIStateSnapshot per ADR-042 §3 + §4 wire-up.
+          // aggregateOnniscenza handles null/undefined defensively (Atom 26.1 design):
+          // env flag INCLUDE_UI_STATE_IN_ONNISCENZA default false → skip ui key entirely.
+          ui: (body.ui ?? null) as Parameters<typeof aggregator>[0]['ui'],
         });
       } catch (onniErr) {
         console.warn(JSON.stringify({
@@ -510,6 +532,11 @@ serve(async (req: Request) => {
       experimentContext,
       capitoloFragment,
       useIntentSchema,
+      // iter 26 Atom 26.2 — UIStateSnapshot 6th param per ADR-042 §5 BASE_PROMPT v3.3.
+      // buildSystemPrompt handles null/undefined defensively (Atom 26.1 design):
+      // when ui present, appends Italian UI context block LAST (route/mode freshest
+      // signal); when ui null/undefined, skips silently (V1 baseline preserved).
+      (body.ui ?? null) as Parameters<typeof buildSystemPrompt>[5],
     )
       + (ragContext ? `\n\n${ragContext}` : '')
       + onniscenzaContext

@@ -480,15 +480,13 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
     return () => onSpeakingChange?.(false);
   }, [voicePlaying, chat.isLoading, onSpeakingChange]);
 
-  // ── Auto-expand ChatOverlay (it defaults to minimized internally) ──
-  useEffect(() => {
-    if (!visible) return;
-    const timer = setTimeout(() => {
-      const btn = document.querySelector('[aria-label="Espandi chat UNLIM"]');
-      if (btn) btn.click();
-    }, 150);
-    return () => clearTimeout(timer);
-  }, [visible]);
+  // ── Auto-expand ChatOverlay ──
+  // Iter 30 ralph 31 tech debt removal: replaced DOM querySelector hack
+  // (`document.querySelector('[aria-label="Espandi chat UNLIM"]')?.click()`)
+  // with proper React prop. ChatOverlay now accepts `initialMinimized` to
+  // start expanded directly when mounted inside the Lavagna FloatingWindow.
+  // See ChatOverlay.jsx prop `initialMinimized = true` (default preserves
+  // standalone behavior in TutorLayout).
 
   // ── Voice: detect capabilities on mount (lazy load) ──
   useEffect(() => {
@@ -696,6 +694,8 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
               voiceRecording={false}
               onVoiceRecord={undefined}
               voicePlaying={voicePlaying}
+              /* Iter 30 ralph 31: start expanded — replaces querySelector DOM hack. */
+              initialMinimized={false}
             />
           )}
           {/* Iter 34 P0 fix crash: removed PERCORSO + GUIDA render blocks

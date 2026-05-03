@@ -198,6 +198,7 @@ let _stateCacheAt = 0;
  *   - lesson_path_step  — current step index (best-effort from data-elab markers)
  *   - opened_panels[]   — visible RetractablePanel / FloatingWindow titles
  *
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
  * Caveats:
  *   - Snapshot best-effort: missing markers return null (not failure)
  *   - Cache TTL 30s — invalidated lazily on next `getState()` call after expiry
@@ -398,6 +399,7 @@ export function createUiApi() {
       });
     },
 
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
     /** Synthesize a hover (mouseenter + mouseover). */
     async hover(target) {
       return runUi('hover', target, async () => {
@@ -598,6 +600,7 @@ export function createUiApi() {
           : target;
         const { element, status, strategy, matchCount } = resolveOne(intent);
         if (!element) throw new Error(`resolve_failed:${status}:${strategy}:${matchCount}`);
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
         dispatchMouseEvent(element, 'click');
         return { dispatched: true, strategy, matchCount };
       });
@@ -798,6 +801,7 @@ export function createUiApi() {
     },
 
     /**
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
      * Set voice mode ('always' = always-on STT | 'ptt' = push-to-talk).
      * Caveat: mode change requires wakeWord service re-init.
      */
@@ -998,6 +1002,7 @@ export function createUiApi() {
     _invalidateStateCache,
   };
 }
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
 
 // Export resolveOne + helpers for tests / external integration if needed
 export { resolveOne as _resolveOne, parseKeyCombo as _parseKeyCombo, buildStateSnapshot as _buildStateSnapshot };

@@ -37,11 +37,19 @@ import type { MistralResponseFormat } from './mistral-client.ts';
  *
  * Iter 38 baseline: 12 browser-side tools (Maker-1 surface-to-browser pivot iter 36).
  * Iter 31 ralph 20 expansion: +38 NEW UI action tools per ADR-041 §3 L0b API surface
- * (50 methods enumerated; this Atom 20.1 lifts schema +38 most-used primitives spread
+ * (50 methods enumerated; Atom 20.1 lifted schema +38 most-used primitives spread
  * across §3.1 mouse/keyboard, §3.2 window+nav, §3.3 modalita+lesson, §3.4 voice,
  * §3.5 simulator-specific, §3.6 lavagna+chat, §3.7 volumi+cronologia).
  *
- * Total post iter 31 ralph 20: 12 + 38 = 50 canonical actions whitelisted.
+ * Iter 31 ralph 31 sync drift refactor (Architect): +12 NEW completing the FULL
+ * ADR-041 §3.5/§3.6/§3.7 enumeration that Maker-1 deferred at iter 20.1 close.
+ *   - §3.5 +4: deselectAll, setSlider, penTool, setCode
+ *   - §3.6 +3: minimizeChat, closeChat, toggleSidebar
+ *   - §3.7 +5: pageNav, volumeSelect, videoTabSelect, cronologiaSelectSession,
+ *             cronologiaNewChat
+ *
+ * Total post iter 31 ralph 31: 12 + 38 + 12 = 62 canonical actions whitelisted
+ * (matches dispatcher ALLOWED_INTENT_ACTIONS Maker-2 iter 20.2 ground truth).
  *
  * MUST mirror intent-parser.ts ALLOWED_UI_ACTIONS (Maker-1 iter 31 ralph 20.1) +
  * intentsDispatcher.js whitelist (Maker-2 iter 31 ralph 20.2 parallel).
@@ -110,16 +118,30 @@ export const CANONICAL_INTENT_TOOLS = [
   'stopWakeWord',
   'speak',
 
-  // §3.5 Simulator-specific (4 most-used; rest deferred Atom 20.2 dispatcher scope)
+  // §3.5 Simulator-specific (8 — full ADR-041 §3.5 enumeration; iter 31 ralph 31 sync drift refactor)
   'zoom',
   'pan',
   'centerOn',
   'selectComponent',
+  'deselectAll',
+  'setSlider',
+  'penTool',
+  'setCode',
 
-  // §3.6 Lavagna + chatbot + chat (3 most-used)
+  // §3.6 Lavagna + chatbot + chat (6 — full ADR-041 §3.6 enumeration; iter 31 ralph 31 sync drift refactor)
   'expandChatUnlim',
+  'minimizeChat',
+  'closeChat',
   'switchTab',
+  'toggleSidebar',
   'togglePanel',
+
+  // §3.7 Volumi + manuale + video + cronologia (5 — full ADR-041 §3.7 enumeration; iter 31 ralph 31 sync drift refactor)
+  'pageNav',
+  'volumeSelect',
+  'videoTabSelect',
+  'cronologiaSelectSession',
+  'cronologiaNewChat',
 ] as const;
 
 export type CanonicalIntentTool = typeof CANONICAL_INTENT_TOOLS[number];
@@ -436,7 +458,7 @@ export const INTENT_TOOL_ARGS_SCHEMAS: Record<string, Record<string, unknown>> =
     additionalProperties: false,
   },
 
-  // ─── §3.5 Simulator-specific (4 most-used) — iter 31 ralph 20.1 NEW ───
+  // ─── §3.5 Simulator-specific (8 — full ADR-041 §3.5; iter 31 ralph 31 sync drift) ───
 
   zoom: {
     type: 'object',
@@ -473,10 +495,42 @@ export const INTENT_TOOL_ARGS_SCHEMAS: Record<string, Record<string, unknown>> =
     required: ['id'],
     additionalProperties: false,
   },
+  deselectAll: { type: 'object', properties: {}, additionalProperties: false },
+  setSlider: {
+    type: 'object',
+    properties: {
+      target: { type: 'string', description: 'CSS selector OR aria-label OR data-elab-action of the slider control.' },
+      value: { type: 'number', description: 'Numeric value to set on the slider (range validation server-side per slider type).' },
+    },
+    required: ['target', 'value'],
+    additionalProperties: false,
+  },
+  penTool: {
+    type: 'object',
+    properties: {
+      action: {
+        type: 'string',
+        enum: ['color', 'size', 'eraser', 'undo', 'redo', 'clear-all', 'exit'],
+        description: 'Pen tool sub-action per ADR-041 §3.5.',
+      },
+    },
+    required: ['action'],
+    additionalProperties: false,
+  },
+  setCode: {
+    type: 'object',
+    properties: {
+      text: { type: 'string', description: 'Sketch text to dispatch into CodeMirror 6 viewRef.' },
+    },
+    required: ['text'],
+    additionalProperties: false,
+  },
 
-  // ─── §3.6 Lavagna + chatbot + chat (3 most-used) — iter 31 ralph 20.1 NEW ───
+  // ─── §3.6 Lavagna + chatbot + chat (6 — full ADR-041 §3.6; iter 31 ralph 31 sync drift) ───
 
   expandChatUnlim: { type: 'object', properties: {}, additionalProperties: false },
+  minimizeChat: { type: 'object', properties: {}, additionalProperties: false },
+  closeChat: { type: 'object', properties: {}, additionalProperties: false },
   switchTab: {
     type: 'object',
     properties: {
@@ -485,6 +539,7 @@ export const INTENT_TOOL_ARGS_SCHEMAS: Record<string, Record<string, unknown>> =
     required: ['tabId'],
     additionalProperties: false,
   },
+  toggleSidebar: { type: 'object', properties: {}, additionalProperties: false },
   togglePanel: {
     type: 'object',
     properties: {
@@ -493,6 +548,44 @@ export const INTENT_TOOL_ARGS_SCHEMAS: Record<string, Record<string, unknown>> =
     required: ['direction'],
     additionalProperties: false,
   },
+
+  // ─── §3.7 Volumi + manuale + video + cronologia (5 — full ADR-041 §3.7; iter 31 ralph 31 sync drift) ───
+
+  pageNav: {
+    type: 'object',
+    properties: {
+      direction: {
+        description: 'Either "prev"|"next" OR an explicit page number (integer ≥1). VolumeViewer / ManualTab / Notebook share this contract.',
+      },
+    },
+    required: ['direction'],
+    additionalProperties: false,
+  },
+  volumeSelect: {
+    type: 'object',
+    properties: {
+      v: { type: 'integer', enum: [1, 2, 3], description: 'Volume number 1|2|3.' },
+    },
+    required: ['v'],
+    additionalProperties: false,
+  },
+  videoTabSelect: {
+    type: 'object',
+    properties: {
+      key: { type: 'string', enum: ['youtube', 'corsi'], description: 'Video tab key.' },
+    },
+    required: ['key'],
+    additionalProperties: false,
+  },
+  cronologiaSelectSession: {
+    type: 'object',
+    properties: {
+      sessionId: { type: 'string', description: 'Session id to switch context (REQUIRES voice "sì conferma" gate per ADR-041 §5.3).' },
+    },
+    required: ['sessionId'],
+    additionalProperties: false,
+  },
+  cronologiaNewChat: { type: 'object', properties: {}, additionalProperties: false },
 };
 
 /**
@@ -536,7 +629,7 @@ export const INTENT_TOOLS_SCHEMA: MistralResponseFormat = {
               tool: {
                 type: 'string',
                 enum: [...CANONICAL_INTENT_TOOLS],
-                description: 'Canonical tool name from the 12-tool browser whitelist.',
+                description: 'Canonical tool name from the 62-tool browser whitelist (ADR-041 §3 L0b namespace + iter 38 baseline 12).',
               },
               args: {
                 type: 'object',
@@ -580,4 +673,4 @@ export function shouldUseIntentSchema(message: string | null | undefined): boole
   return ACTION_TRIGGER_RE.test(message);
 }
 
-export const INTENT_TOOLS_SCHEMA_VERSION = '2.0-iter31-ralph20.1';
+export const INTENT_TOOLS_SCHEMA_VERSION = '2.1-iter31-ralph31-sync-drift-refactor';

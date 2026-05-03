@@ -198,6 +198,7 @@ const MAX_CONSECUTIVE_UI_ACTIONS = 5;
 
 /**
  * Truncate intents array to MAX_CONSECUTIVE_UI_ACTIONS per LLM response (ADR-041 §6.1).
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
  * Returns `{ kept, truncated, originalCount }` for telemetry.
  *
  * NOTE: counter resets on response boundary — dispatcher caller invokes
@@ -398,6 +399,7 @@ function _resolveByText(doc, text) {
     const result = doc.evaluate(
       xpath,
       doc,
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
       null,
       // XPathResult.ORDERED_NODE_SNAPSHOT_TYPE = 7 — hardcode for env safety
       typeof XPathResult !== 'undefined' ? XPathResult.ORDERED_NODE_SNAPSHOT_TYPE : 7,
@@ -598,6 +600,7 @@ export async function executeServerIntents(intents, opts = {}) {
       const row = { ok: false, action, error: 'rate_limit_exceeded', detail: rate.reason };
       results.push(row);
       logUiAction(action, intent, { ok: false, status: 'rate_limit_exceeded' });
+// © Andrea Marro — 03/05/2026 — ELAB Tutor — Tutti i diritti riservati
       continue;
     }
 

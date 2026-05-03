@@ -69,11 +69,14 @@ export default React.memo(function ChatOverlay({
     voiceRecording = false,
     onVoiceRecord,
     voicePlaying = false,
+    // Initial minimized state (consumers like GalileoAdapter pass false to start expanded
+    // — replaces iter 17 DOM querySelector hack flagged as anti-pattern).
+    initialMinimized = true,
 }) {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const messagesContainerRef = useRef(null);
-    const [minimized, setMinimized] = useState(true);
+    const [minimized, setMinimized] = useState(initialMinimized);
     const [actionsExpanded, setActionsExpanded] = useState(false);
     const [userScrolledUp, setUserScrolledUp] = useState(false);
     const [hasNewMessage, setHasNewMessage] = useState(false);
