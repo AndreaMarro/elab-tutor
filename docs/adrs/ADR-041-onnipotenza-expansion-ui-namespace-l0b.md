@@ -1,7 +1,7 @@
 ---
-id: ADR-036 (onnipotenza-expansion-ui-namespace-l0b)
-title: Onnipotenza Expansion — `__ELAB_API.ui.*` namespace L0b + HYBRID selector + WHITELIST 12→~50
-status: PROPOSED (Andrea ratify queue Phase 5 entrance, NOT auto-claim ACCEPTED)
+id: ADR-041 (onnipotenza-expansion-ui-namespace-l0b)
+title: Onnipotenza Expansion — `__ELAB_API.ui.*` namespace L0b + HYBRID selector + WHITELIST 12→62
+status: ACCEPTED (iter 31 ralph 32 ratified — env-gated CANARY_UI_DISPATCH_PERCENT default 0% safe rollback, ADR design + L0b namespace src 1003 LOC + 38 methods + sync drift CLOSED iter 31 + ChatOverlay tech debt removed + build PASS bundle L0b verified. Iter 32+ deploy + canary 5%→25%→100% per §8 decision matrix. Andrea originally gated MA delegated decision to Claude per user feedback iter 32 entrance "prendi le decisioni che portino maggiore qualità e beneficio")
 date: 2026-05-03
 authors:
   - Andrea Marro

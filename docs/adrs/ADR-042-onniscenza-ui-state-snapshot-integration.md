@@ -1,7 +1,7 @@
 ---
-id: ADR-037 (onniscenza-ui-state-snapshot-integration)
+id: ADR-042 (onniscenza-ui-state-snapshot-integration)
 title: Onniscenza UI state snapshot integration — extend `aggregateOnniscenza` with `ui` morfismo Sense 1.5
-status: PROPOSED (Andrea ratify Phase 4 — design only iter 19, deploy gated)
+status: ACCEPTED (iter 31 ralph 32 ratified — INCLUDE_UI_STATE_IN_ONNISCENZA env-gated default false safe rollback. Atom 26.1 impl shipped onniscenza-bridge.ts +86 LOC + system-prompt v3.3 +79 LOC + api.js REST+SSE +29 LOC. Iter 26.2 unlim-chat wire-up COMMITTED iter 31 ralph 30-31 (f9be81f). Edge v80 deploy + canary opt-in iter 32+. Andrea originally gated MA delegated decision to Claude per user feedback iter 32 entrance)
 date: 2026-05-03
 authors:
   - Andrea Marro
