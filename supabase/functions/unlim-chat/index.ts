@@ -561,8 +561,28 @@ serve(async (req: Request) => {
     // gives a deterministic morphic path for the 20 documented patterns
     // (introduce/explain/diagnose/guide/celebrate/recap/critique/debug/
     // reroute) and falls back to the LLM otherwise.
+    //
+    // iter 34 Atom A2 — L2 router category-aware narrow.
+    // ENABLE_L2_CATEGORY_NARROW=true env flag → skip L2 selectTemplate for
+    // 3 categories that already skipOnniscenza=true (chit_chat, meta_question,
+    // off_topic). These categories don't need L2 educational templates:
+    // - chit_chat: greeting, no template overhead needed (response < 30 words)
+    // - meta_question: self-intro UNLIM persona, no Vol/pag template needed
+    // - off_topic: soft deflect to kit ELAB, NOT educational template
+    // Goal: increase Mistral function calling fire-rate for educational
+    // categories (default, plurale, deep, citation) by removing template
+    // short-circuit interference for non-educational prompts.
+    // Default OFF preserves existing behavior (zero regression — L2 fires for
+    // all categories as iter 26 baseline). Iter 38 R7 baseline canonical 3.6%
+    // (L2 dominance evidence). Atom A2 lift target +5-15pp canonical conditional
+    // env true + iter 35+ R7 re-bench post-deploy verification.
+    const l2NarrowEnabled =
+      (Deno.env.get('ENABLE_L2_CATEGORY_NARROW') || 'false').toLowerCase() === 'true';
+    const l2SkipCategories = new Set(['chit_chat', 'meta_question', 'off_topic']);
+    const skipL2ForCategory = l2NarrowEnabled && l2SkipCategories.has(promptClass.category);
+
     try {
-      const tpl = selectTemplate(safeMessage, {
+      const tpl = skipL2ForCategory ? null : selectTemplate(safeMessage, {
         experimentId: safeExperimentId ?? undefined,
       });
       if (tpl) {
@@ -1117,6 +1137,10 @@ serve(async (req: Request) => {
       prompt_class?: { category: string; skipOnniscenza: boolean; topK: number; wordCount: number; capWords: number };
       // iter 34 A1: env flag state surfaced for bench gate verification.
       cap_conditional_active?: boolean;
+      // iter 34 A2: L2 router narrow telemetry — surfaces whether L2 was
+      // skipped for this category (Mistral function calling fire-rate measurement).
+      l2_narrow_active?: boolean;
+      l2_skipped_category?: boolean;
     } = {
       success: true,
       response: cleanText,
@@ -1146,6 +1170,9 @@ serve(async (req: Request) => {
       };
       // iter 34 A1: surface ENABLE_CAP_CONDITIONAL env flag state for bench verification.
       response.cap_conditional_active = capConditionalEnabled;
+      // iter 34 A2: surface L2 narrow state + per-request skip decision.
+      response.l2_narrow_active = l2NarrowEnabled;
+      response.l2_skipped_category = skipL2ForCategory;
     }
 
     // iter 36 Phase 1 Atom A1: surface parsed intents for client-side dispatch
