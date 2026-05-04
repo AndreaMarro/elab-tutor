@@ -357,15 +357,27 @@ export default function DrawingOverlay({
   // press ESC or click ESCI, the in-progress path would be lost. This
   // handler commits it to paths + localStorage before unmounting.
   const handleClose = useCallback(() => {
+    let finalPaths = paths;
     if (isDrawing && currentPath) {
       const newPath = { ...currentPath };
-      const updatedPaths = [...paths, newPath];
-      setPaths(updatedPaths);
-      saveDrawingPaths(updatedPaths, experimentId);
+      finalPaths = [...paths, newPath];
+      setPaths(finalPaths);
+      saveDrawingPaths(finalPaths, experimentId);
       lastLocalSaveAtRef.current = Date.now(); // iter 35 fix Bug 2 persistence: handleClose flush mid-stroke
       setIsDrawing(false);
       setCurrentPath(null);
-      onPathsChange?.(updatedPaths);
+      onPathsChange?.(finalPaths);
+    }
+    // iter 36 Andrea bug "le scritte spariscono se scrivo + clicco esci":
+    // handleClose called when user clicks ESCI button in DrawingOverlay.
+    // Component does NOT unmount (parent sets drawingEnabled=false → svg
+    // display:none) so unmount cleanup effect (line ~234) does NOT fire.
+    // Pending debounced remote save would be cancelled if user navigates away
+    // before debounce timer (2s default). Force IMMEDIATE remote flush here.
+    if (experimentId) {
+      try {
+        flushDebouncedSaveRemote(experimentId, finalPaths);
+      } catch { /* network failure → unmount sync flush via sendBeacon */ }
     }
     onClose?.();
   }, [isDrawing, currentPath, paths, experimentId, onPathsChange, onClose]);
