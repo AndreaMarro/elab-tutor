@@ -559,6 +559,37 @@ export default function HomePage({ onNavigate }) {
 
   return (
     <div style={styles.page} data-testid="elab-home-page" data-elab-mode="home" data-elab-routing={hash || 'root'}>
+      {/* Iter 35 PM Andrea fix "sfondo bianco fa schifo": SVG feColorMatrix
+          filter rimuove pixel bianchi PNG mascotte at runtime (no asset rebuild).
+          `feColorMatrix` matrix reduces alpha by sum(R+G+B) so puro white (1,1,1)
+          → alpha 0; Navy/Lime/Yellow mascotte colors stay opaque. */}
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' }}
+      >
+        <defs>
+          <filter id="elabRemoveWhite" colorInterpolationFilters="sRGB" x="0" y="0" width="100%" height="100%">
+            {/* Step 1: alpha = max(0, A - max(R,G,B)*0.95) approximation
+                via 2 nodes — feColorMatrix sets alpha from RGB, feComposite
+                clips to source bbox to avoid black outside source. */}
+            <feColorMatrix
+              type="matrix"
+              values="
+                1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                -1 -1 -1 1 1
+              "
+              result="alphaFix"
+            />
+            {/* Step 2: composite operator="in" w/ SourceGraphic limita risultato
+                a pixel dove SourceGraphic ha alpha>0 → outside-source rimane
+                trasparente (no black halo). */}
+            <feComposite in="alphaFix" in2="SourceGraphic" operator="in" />
+          </filter>
+        </defs>
+      </svg>
       {/* Iter 37 Atom A6 — Easter modal overlay quando hash = #about-easter */}
       {hash === HASH_ROUTES.ABOUT && (
         <Suspense fallback={null}>
@@ -587,7 +618,7 @@ export default function HomePage({ onNavigate }) {
             Tutor educativo elettronica + Arduino bambini 8-14.
             <br />
             <strong style={{ color: PALETTE.navy, fontWeight: 700 }}>
-              Kit fisici + volumi + software morfico.
+              Kit fisici, volumi e lezioni pronte per la classe.
             </strong>
           </p>
         </div>
@@ -657,7 +688,9 @@ export default function HomePage({ onNavigate }) {
                 objectFit: 'contain',
                 userSelect: 'none',
                 pointerEvents: 'none',
-                filter: 'drop-shadow(0 12px 24px rgba(30, 77, 140, 0.22))',
+                /* Drop-shadow + glow pulse driven by CSS keyframe
+                   elabMascotGlowPulse (see src/index.css). Inline filter
+                   removed iter 35 PM Andrea fix (was overriding CSS anim). */
               }}
             />
           </button>

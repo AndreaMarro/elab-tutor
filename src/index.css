@@ -364,23 +364,63 @@ body:has([data-elab-mode="chatbot-only"]),
 /* ═══════════════════════════════════════════════════════════════ */
 
 .elab-mascotte-vera {
-    animation: elabMascotIdleBob 3.6s ease-in-out infinite;
+    /* Iter 35 PM Andrea fix "sfondo bianco fa schifo /animate animalo proprio":
+       PNG `elab-mascot-vera.png` ha sfondo bianco baked-in (verified canvas
+       getImageData corners A255). SVG feColorMatrix filter `url(#elabRemoveWhite)`
+       (defined HomePage.jsx <svg style=display:none>) trasforma pixel bianchi
+       in alpha 0 keeping Navy/Lime/Yellow + soft borders SOLID. Filter chain
+       drop-shadow + glow pulse compose dopo color matrix → animation viva. */
+    animation:
+        elabMascotIdleBob 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+        elabMascotBreathe 4.8s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+        elabMascotGlowPulse 2.4s ease-in-out infinite;
     transform-origin: 50% 80%;
-    will-change: transform;
+    will-change: transform, filter;
 }
 
 @keyframes elabMascotIdleBob {
     0%, 100% {
-        transform: translateY(0) rotate(-1deg);
+        transform: translateY(0) rotate(-1.2deg);
     }
     25% {
-        transform: translateY(-6px) rotate(0.5deg);
+        transform: translateY(-6px) rotate(0.6deg);
     }
     50% {
-        transform: translateY(-10px) rotate(1.5deg);
+        transform: translateY(-10px) rotate(1.8deg);
     }
     75% {
-        transform: translateY(-4px) rotate(0.5deg);
+        transform: translateY(-4px) rotate(0.4deg);
+    }
+}
+
+@keyframes elabMascotBreathe {
+    0%, 100% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.025;
+    }
+}
+
+@keyframes elabMascotGlowPulse {
+    /* Filter chain: SVG removeWhite FIRST (white pixels → alpha 0) THEN
+       drop-shadow (computed on transparent silhouette only, not bianco bg).
+       Lampada in mano LED giallo glow rgb(232,148,28) Lime accent rgb(74,122,37). */
+    0%, 100% {
+        filter: url(#elabRemoveWhite)
+                drop-shadow(0 8px 16px rgba(30, 77, 140, 0.18))
+                drop-shadow(0 0 12px rgba(74, 122, 37, 0.0));
+    }
+    50% {
+        filter: url(#elabRemoveWhite)
+                drop-shadow(0 14px 28px rgba(30, 77, 140, 0.28))
+                drop-shadow(0 0 24px rgba(232, 148, 28, 0.45));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .elab-mascotte-vera {
+        animation: none !important;
     }
 }
 
