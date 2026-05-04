@@ -432,14 +432,18 @@ export function PaletteIcon(props) {
 // Identity: breadboard tile (kit Omaric grid 6×3 holes Lime body, Navy
 // component pad outline) + chalk pen overlay (Orange diagonal accent).
 // Morfismo Sense 2: identico al breadboard del kit fisico Omaric.
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow filter
+// + chalk pen rotated 8deg (asymmetry break) + Lime saturation boost.
 export function LavagnaCardIcon({ size = 48, ...props }) {
   return (
     <svg
       width={size} height={size} viewBox="0 0 48 48" fill="none"
-      role="img" aria-hidden="true" {...props}
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 3px rgba(30, 77, 140, 0.18))' }}
+      {...props}
     >
       {/* Breadboard body — Lime fill (Vol 1 elettronica base palette) */}
-      <rect x="6" y="14" width="36" height="22" rx="2.5" fill="#4A7A25" stroke="#1E4D8C" strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="6" y="14" width="36" height="22" rx="2.5" fill="#4A7A25" stroke="#1E4D8C" strokeWidth="3" strokeLinejoin="round" />
       {/* Power rails top + bottom — Navy bands */}
       <rect x="6" y="14" width="36" height="3" fill="#1E4D8C" />
       <rect x="6" y="33" width="36" height="3" fill="#1E4D8C" />
@@ -454,9 +458,12 @@ export function LavagnaCardIcon({ size = 48, ...props }) {
       <circle cx="23" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
       <circle cx="29" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
       <circle cx="35" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
-      {/* Chalk pen — Orange diagonal accent (lavagna libera "scrivere") */}
-      <path d="M30 4 L42 4 L42 10 L36 16 L30 10 Z" fill="#E8941C" stroke="#1E4D8C" strokeWidth="2" strokeLinejoin="round" />
-      <line x1="34" y1="6" x2="38" y2="6" stroke="#FFD700" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Chalk pen — Orange diagonal accent (lavagna libera "scrivere") +
+          rotated 8deg /impeccable:bolder asymmetry break */}
+      <g transform="rotate(8 36 10)">
+        <path d="M30 4 L42 4 L42 10 L36 16 L30 10 Z" fill="#E8941C" stroke="#1E4D8C" strokeWidth="2.5" strokeLinejoin="round" />
+        <line x1="34" y1="6" x2="38" y2="6" stroke="#FFD700" strokeWidth="1.8" strokeLinecap="round" />
+      </g>
     </svg>
   );
 }
@@ -466,27 +473,34 @@ export function LavagnaCardIcon({ size = 48, ...props }) {
 // pagine (Arduino kit + volumi + software triplet).
 // Palette: Navy spine (UNLIM brand) + Lime pages (Vol 1) + Orange trace
 // (Vol 2) + Red component (Vol 3) — i 3 volumi rappresentati in 1 icona.
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow filter
+// + LED glow halo + spine bookmark ribbon (asymmetry detail).
 export function TutorCardIcon({ size = 48, ...props }) {
   return (
     <svg
       width={size} height={size} viewBox="0 0 48 48" fill="none"
-      role="img" aria-hidden="true" {...props}
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 3px rgba(30, 77, 140, 0.18))' }}
+      {...props}
     >
       {/* Pages left — Lime (Vol 1) */}
-      <path d="M6 12 L24 8 L24 40 L6 38 Z" fill="#FFFEF5" stroke="#1E4D8C" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M6 12 L24 8 L24 40 L6 38 Z" fill="#FFFEF5" stroke="#1E4D8C" strokeWidth="3" strokeLinejoin="round" />
       {/* Pages right — Lime soft fill */}
-      <path d="M42 12 L24 8 L24 40 L42 38 Z" fill="#FFFEF5" stroke="#1E4D8C" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M42 12 L24 8 L24 40 L42 38 Z" fill="#FFFEF5" stroke="#1E4D8C" strokeWidth="3" strokeLinejoin="round" />
       {/* Spine center — Navy band UNLIM brand */}
-      <line x1="24" y1="8" x2="24" y2="40" stroke="#1E4D8C" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="24" y1="8" x2="24" y2="40" stroke="#1E4D8C" strokeWidth="3" strokeLinecap="round" />
+      {/* Bookmark ribbon — Red asymmetric detail iter 38 /impeccable:bolder */}
+      <path d="M21 8 L21 16 L23 14 L25 16 L25 8 Z" fill="#E54B3D" stroke="#1E4D8C" strokeWidth="1" strokeLinejoin="round" opacity="0.85" />
       {/* Circuit trace lhs — Lime ground rail */}
-      <line x1="9" y1="20" x2="20" y2="20" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" />
-      <line x1="9" y1="26" x2="20" y2="26" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" />
-      {/* Component LED rhs — Red Vol 3 Arduino */}
-      <circle cx="32" cy="22" r="2.5" fill="#E54B3D" stroke="#1E4D8C" strokeWidth="1.5" />
+      <line x1="9" y1="20" x2="20" y2="20" stroke="#4A7A25" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="9" y1="26" x2="20" y2="26" stroke="#4A7A25" strokeWidth="2.2" strokeLinecap="round" />
+      {/* Component LED rhs — Red Vol 3 Arduino + glow halo */}
+      <circle cx="32" cy="22" r="3.5" fill="#E54B3D" opacity="0.25" />
+      <circle cx="32" cy="22" r="2.5" fill="#E54B3D" stroke="#1E4D8C" strokeWidth="1.8" />
       {/* Resistor rhs — Orange Vol 2 componenti */}
-      <rect x="28" y="28" width="8" height="3" fill="#E8941C" stroke="#1E4D8C" strokeWidth="1.2" />
+      <rect x="28" y="28" width="8" height="3" fill="#E8941C" stroke="#1E4D8C" strokeWidth="1.5" />
       {/* Trace spine to LED */}
-      <line x1="24" y1="22" x2="29.5" y2="22" stroke="#1E4D8C" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="24" y1="22" x2="29.5" y2="22" stroke="#1E4D8C" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
@@ -496,28 +510,35 @@ export function TutorCardIcon({ size = 48, ...props }) {
 // Omaric pin coerenza) + LED yellow eye (mascotte signature).
 // Replaces previous brain-asymmetric (broke Morfismo Sense 2 — UNLIM
 // is mascotte robottino, not abstract brain).
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow + LED
+// eye glow halo + speech-bubble pulse (Orange ring outer).
 export function UNLIMCardIcon({ size = 48, ...props }) {
   return (
     <svg
       width={size} height={size} viewBox="0 0 48 48" fill="none"
-      role="img" aria-hidden="true" {...props}
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 4px rgba(14, 45, 92, 0.25))' }}
+      {...props}
     >
       {/* Head body — Navy primary UNLIM brand */}
-      <rect x="10" y="14" width="28" height="22" rx="3" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="10" y="14" width="28" height="22" rx="3" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="3" strokeLinejoin="round" />
       {/* Antenna left — Lime stroke + circle tip */}
-      <line x1="16" y1="14" x2="13" y2="6" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="13" cy="5" r="2" fill="#4A7A25" />
+      <line x1="16" y1="14" x2="13" y2="6" stroke="#4A7A25" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="13" cy="5" r="2.2" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
       {/* Antenna right — Lime symmetric */}
-      <line x1="32" y1="14" x2="35" y2="6" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="35" cy="5" r="2" fill="#4A7A25" />
-      {/* Eyes — yellow LED signature mascotte */}
-      <circle cx="19" cy="23" r="2.5" fill="#FFD700" stroke="#0E2D5C" strokeWidth="1" />
-      <circle cx="29" cy="23" r="2.5" fill="#FFD700" stroke="#0E2D5C" strokeWidth="1" />
+      <line x1="32" y1="14" x2="35" y2="6" stroke="#4A7A25" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="35" cy="5" r="2.2" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      {/* Eyes — yellow LED signature mascotte + glow halo */}
+      <circle cx="19" cy="23" r="3.5" fill="#FFD700" opacity="0.30" />
+      <circle cx="19" cy="23" r="2.5" fill="#FFD700" stroke="#0E2D5C" strokeWidth="1.2" />
+      <circle cx="29" cy="23" r="3.5" fill="#FFD700" opacity="0.30" />
+      <circle cx="29" cy="23" r="2.5" fill="#FFD700" stroke="#0E2D5C" strokeWidth="1.2" />
       {/* Smile — Lime curve (accogliente) */}
-      <path d="M18 30 Q24 33 30 30" fill="none" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" />
-      {/* Speech-bubble dot — Orange (chat indicator) */}
-      <circle cx="40" cy="13" r="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="1.5" />
-      <circle cx="40" cy="13" r="0.8" fill="#FFF" />
+      <path d="M18 30 Q24 33 30 30" fill="none" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Speech-bubble dot — Orange (chat indicator) + pulse outer ring */}
+      <circle cx="40" cy="13" r="4.2" fill="#E8941C" opacity="0.25" />
+      <circle cx="40" cy="13" r="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="1.8" />
+      <circle cx="40" cy="13" r="0.9" fill="#FFF" />
     </svg>
   );
 }
@@ -526,14 +547,18 @@ export function UNLIMCardIcon({ size = 48, ...props }) {
 // Identity: dictionary book + alphabetic A-Z divider tabs + Lime
 // magnifier lens (search vocabulary). Volumes Davide cartacei
 // reference: glossario è il riassunto termini chiave dei 3 volumi.
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow filter
+// + magnifier handle highlight (Orange→Yellow gradient asymmetry).
 export function GlossarioCardIcon({ size = 48, ...props }) {
   return (
     <svg
       width={size} height={size} viewBox="0 0 48 48" fill="none"
-      role="img" aria-hidden="true" {...props}
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 3px rgba(14, 45, 92, 0.20))' }}
+      {...props}
     >
       {/* Book cover — Navy */}
-      <rect x="6" y="6" width="26" height="36" rx="1.5" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="6" y="6" width="26" height="36" rx="1.5" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="3" strokeLinejoin="round" />
       {/* Spine highlight — Lime accent left edge */}
       <rect x="6" y="6" width="3" height="36" fill="#4A7A25" />
       {/* Title bar — White on Navy */}
