@@ -385,23 +385,35 @@ function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
 
 export default function LavagnaShell() {
   const { user, isDocente, isStudente } = useAuth();
-  // Iter 35 H2 (Maker-2 Phase 2): "Lavagna solo" mode — hash route #lavagna-solo
-  // (set by HomePage card click, owned by WebDesigner-1 H1). Hides GalileoAdapter
-  // panel + ComponentDrawer + LessonReader to leave ONLY canvas + FloatingToolbar
-  // + minimal AppHeader visible. Mandate 4: "card Lavagna libera → /lavagna route
-  // + Libero mode ONLY (no UNLIM panel auto-show, no other sections)".
-  const [lavagnaSoloMode, setLavagnaSoloMode] = useState(() => {
+  // Iter 36 fix Andrea: lavagnaSoloMode bound to BOTH hash #lavagna-solo OR
+  // localStorage launchMode='solo' (WebDesigner-1 H1 pivot — App.jsx VALID_HASHES
+  // rejects #lavagna-solo, fallback to localStorage flag set on HomePage card click).
+  // Hides simulator + ComponentDrawer + ExperimentPicker + BentornatiOverlay +
+  // ModalitaSwitch. KEEPS UNLIM (GalileoAdapter) + Volumi (AppHeader links) +
+  // DrawingOverlay (chalk via NewElabSimulator hideSimulatorBoard prop).
+  const readLavagnaSolo = () => {
+    if (typeof window === 'undefined') return false;
     try {
-      return typeof window !== 'undefined' && window.location.hash === '#lavagna-solo';
+      if (window.location.hash === '#lavagna-solo') return true;
+      const flag = localStorage.getItem('elab_lavagna_launch_mode');
+      return flag === 'solo';
     } catch { return false; }
-  });
+  };
+  const [lavagnaSoloMode, setLavagnaSoloMode] = useState(readLavagnaSolo);
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const onHashChange = () => {
-      setLavagnaSoloMode(window.location.hash === '#lavagna-solo');
+      setLavagnaSoloMode(readLavagnaSolo());
+    };
+    const onStorage = (e) => {
+      if (e.key === 'elab_lavagna_launch_mode') setLavagnaSoloMode(readLavagnaSolo());
     };
     window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener('hashchange', onHashChange);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
   const [activeTab, setActiveTab] = useState(() => {
     try {
