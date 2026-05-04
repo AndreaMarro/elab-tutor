@@ -160,6 +160,51 @@ const ComponentDrawer = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
+  // Iter 35 G2+G3 (Maker-2 Phase 2): gate guided UI when LavagnaShell modalita==='libero'.
+  // Defense-in-depth: NewElabSimulator already gates ComponentDrawer mount on
+  // currentExperiment.buildMode === 'guided', but Andrea bug "premo libera e
+  // circuito rimane" implies stale guided render slip-through. Read sentinel
+  // localStorage (single source of truth, real-time read NOT closure) +
+  // listen for `elab-lavagna-libero-enter` CustomEvent to flip immediately.
+  const [liberoActive, setLiberoActive] = useState(() => {
+    try {
+      return typeof window !== 'undefined'
+        && localStorage.getItem('elab-lavagna-libero-active') === 'true';
+    } catch { return false; }
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const onLiberoEnter = () => setLiberoActive(true);
+    const onStorage = (e) => {
+      if (e?.key === 'elab-lavagna-libero-active') {
+        setLiberoActive(e.newValue === 'true');
+      }
+    };
+    window.addEventListener('elab-lavagna-libero-enter', onLiberoEnter);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener('elab-lavagna-libero-enter', onLiberoEnter);
+      window.removeEventListener('storage', onStorage);
+    };
+  }, []);
+  // G3: also listen to remove sentinel (mode change away from libero)
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const t = setInterval(() => {
+      try {
+        const isLibero = localStorage.getItem('elab-lavagna-libero-active') === 'true';
+        setLiberoActive(prev => (prev === isLibero ? prev : isLibero));
+      } catch { /* noop */ }
+    }, 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  // G2: hard gate — when libero active, do NOT render guided UI (PRONTI banner included).
+  // sandbox mode unaffected; only guided mode is suppressed.
+  if (liberoActive && mode === 'guided') {
+    return null;
+  }
+
   // S89: Drag state for guided mode — right-side default, freely draggable
   const [dragPos, setDragPos] = useState(null); // null = default position (right side)
   const isDraggingRef = useRef(false);

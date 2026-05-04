@@ -380,6 +380,24 @@ function BentornatiOverlay({ visible, onStart, onPickExperiment }) {
 
 export default function LavagnaShell() {
   const { user, isDocente, isStudente } = useAuth();
+  // Iter 35 H2 (Maker-2 Phase 2): "Lavagna solo" mode — hash route #lavagna-solo
+  // (set by HomePage card click, owned by WebDesigner-1 H1). Hides GalileoAdapter
+  // panel + ComponentDrawer + LessonReader to leave ONLY canvas + FloatingToolbar
+  // + minimal AppHeader visible. Mandate 4: "card Lavagna libera → /lavagna route
+  // + Libero mode ONLY (no UNLIM panel auto-show, no other sections)".
+  const [lavagnaSoloMode, setLavagnaSoloMode] = useState(() => {
+    try {
+      return typeof window !== 'undefined' && window.location.hash === '#lavagna-solo';
+    } catch { return false; }
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const onHashChange = () => {
+      setLavagnaSoloMode(window.location.hash === '#lavagna-solo');
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
   const [activeTab, setActiveTab] = useState(() => {
     try {
       const saved = localStorage.getItem('elab_lavagna_active_tab');
@@ -451,6 +469,11 @@ export default function LavagnaShell() {
     } catch { return 'percorso'; }
   });
   const [drawingEnabled, setDrawingEnabled] = useState(false);
+  // Iter 35 N1 (Maker-2 Phase 2) — Mandate 10: Percorso 2-window state.
+  // When modalita==='percorso' AND user enters via ModalitaSwitch, open BOTH
+  // UNLIM (GalileoAdapter) AND Percorso panel (PercorsoPanel). Z-index hierarchy:
+  // PercorsoPanel z=10001 (FloatingWindow default) > GalileoAdapter z=10000.
+  const [percorso2WindowOpen, setPercorso2WindowOpen] = useState(false);
   const [bentornatiVisible, setBentornatiVisible] = useState(() => {
     try { return localStorage.getItem('elab_skip_bentornati') !== 'true'; } catch { return true; }
   });
@@ -638,6 +661,9 @@ export default function LavagnaShell() {
     // - clearAll() pulisce simulator MA currentExperiment riresta settato → re-render ripopola componenti
     // - setBuildMode('sandbox') NON è method API top-level → no-op
     // Fix: set currentExperiment = null (deselect) + clearAll + remove localStorage exp id
+    // Iter 35 G1 (Maker-2 Phase 2): also dispatch CustomEvent so NewElabSimulator + any
+    // other listener can reset internal stale state (buildMode/currentExperiment) that
+    // is NOT owned by LavagnaShell. Use try/catch to keep it best-effort defensive.
     if (nextMode === 'libero' && typeof window !== 'undefined') {
       const api = window.__ELAB_API;
       try {
@@ -646,6 +672,43 @@ export default function LavagnaShell() {
         try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
         try { localStorage.removeItem('elab-lavagna-last-expId'); } catch { /* noop */ }
         try { localStorage.setItem('elab-lavagna-libero-active', 'true'); } catch { /* noop */ }
+        // Iter 35 G1: notify simulator + listeners (event-based decoupled comms).
+        // CustomEvent payload includes timestamp so duplicate-guard logic can
+        // ignore replays. NO setBuildMode call (NOT in __ELAB_API surface).
+        try {
+          window.dispatchEvent(new CustomEvent('elab-lavagna-libero-enter', {
+            detail: { timestamp: Date.now() },
+          }));
+        } catch { /* CustomEvent unsupported (IE11) — no-op */ }
+      } catch { /* noop */ }
+    }
+    // Iter 35 N1 (Maker-2 Phase 2) — Mandate 10: Percorso = vecchia Libero +
+    // 2 window sovrapposte. Andrea: "Percorso deve corrispondere alla vecchia
+    // modalità libero ma ora ci sono 2 window sovrapposte".
+    // Architettura:
+    //   - Empty canvas (riusa logica Libero clearAll + clear sentinel/exp-id)
+    //   - Floating window 1: UNLIM panel (GalileoAdapter) z=10000
+    //   - Floating window 2: PercorsoPanel (capitolo + classe context Sense 1.5) z=10001
+    if (nextMode === 'percorso' && typeof window !== 'undefined') {
+      const api = window.__ELAB_API;
+      try {
+        // Riusa logica Libero per clear canvas senza il sentinel libero-active
+        // (modalita='percorso' è la modalità viva di Andrea: empty + 2 window).
+        setCurrentExperiment(null);
+        if (api?.clearAll) api.clearAll();
+        try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
+        try { localStorage.removeItem('elab-lavagna-last-expId'); } catch { /* noop */ }
+        // Apri sia UNLIM (GalileoAdapter) sia Percorso panel (PercorsoPanel).
+        manualOverridesRef.current.galileo = true;
+        setGalileoOpen(true);
+        setUnlimTab('chat');
+        setPercorso2WindowOpen(true);
+        // Notify listeners (parallel to libero-enter event for symmetry).
+        try {
+          window.dispatchEvent(new CustomEvent('elab-lavagna-percorso-enter', {
+            detail: { timestamp: Date.now() },
+          }));
+        } catch { /* CustomEvent unsupported — no-op */ }
       } catch { /* noop */ }
     }
   }, []);
@@ -1093,7 +1156,11 @@ export default function LavagnaShell() {
   }, [handleFumettoOpen]);
 
   return (
-    <div className={css.shell} data-elab-mode="lavagna" data-elab-modalita={modalita}>
+    <div
+      className={css.shell}
+      data-elab-mode={lavagnaSoloMode ? 'lavagna-solo' : 'lavagna'}
+      data-elab-modalita={modalita}
+    >
       {/*
         Screen-reader heading — lavagna route previously had zero <h1> elements
         (stress-test P2-007). Keep it visually hidden to preserve existing
@@ -1215,13 +1282,17 @@ export default function LavagnaShell() {
             </div>
           </main>
 
-          {/* Right — UNLIM AI in FloatingWindow */}
-          <GalileoAdapter
-            visible={galileoOpen}
-            onClose={() => { manualOverridesRef.current.galileo = true; setGalileoOpen(false); }}
-            onSpeakingChange={setUnlimSpeaking}
-            activeTab={unlimTab}
-          />
+          {/* Right — UNLIM AI in FloatingWindow.
+               Iter 35 H2 (Maker-2): hide entirely in lavagna-solo mode (Mandate 4
+               "card Lavagna libera → canvas ONLY, no UNLIM panel auto-show"). */}
+          {!lavagnaSoloMode && (
+            <GalileoAdapter
+              visible={galileoOpen}
+              onClose={() => { manualOverridesRef.current.galileo = true; setGalileoOpen(false); }}
+              onSpeakingChange={setUnlimSpeaking}
+              activeTab={unlimTab}
+            />
+          )}
         </div>
 
         {/* === DASHBOARD VIEW (docente o studente) === */}
@@ -1313,8 +1384,12 @@ export default function LavagnaShell() {
           </div>
         )}
 
-        {/* Sprint S iter 2 Task B — PercorsoCapitoloView overlay (side panel) */}
-        {activeCapitoloId && (
+        {/* Sprint S iter 2 Task B — PercorsoCapitoloView overlay (side panel).
+             Iter 35 K1 fix Andrea pain "qui ci sono sovrapposizioni... solo quello a destra resizabile":
+             hide LEFT side panel when modalita='passo-passo' (RIGHT FloatingWindowCommon already covers
+             via resizable LessonReader). Andrea screenshot evidence 2026-05-04 PM dual-render confirmed.
+             Iter 35 H2 (Maker-2): also hide entirely in lavagna-solo mode. */}
+        {activeCapitoloId && modalita !== 'passo-passo' && !lavagnaSoloMode && (
           <div
             className={css.percorsoCapitoloOverlay}
             data-testid="percorso-capitolo-view"
@@ -1333,8 +1408,9 @@ export default function LavagnaShell() {
 
         {/* Atom A5 iter 36 — Passo Passo: LessonReader in resizable/draggable FloatingWindow.
              Principio Zero: se nessun esperimento caricato, empty state plurale + kit reference.
-             Z-index 10001 > UNLIM panel (lavagna/FloatingWindow maximized = 10000). */}
-        {modalita === 'passo-passo' && (
+             Z-index 10001 > UNLIM panel (lavagna/FloatingWindow maximized = 10000).
+             Iter 35 H2 (Maker-2): hide entirely in lavagna-solo mode. */}
+        {modalita === 'passo-passo' && !lavagnaSoloMode && (
           <FloatingWindowCommon
             title="Passo Passo"
             initialPosition={{ x: 100, y: 100 }}
@@ -1365,6 +1441,25 @@ export default function LavagnaShell() {
               />
             )}
           </FloatingWindowCommon>
+        )}
+
+        {/* Iter 35 N1 (Maker-2 Phase 2) — Mandate 10: Percorso 2-window overlay.
+             Andrea: "Percorso deve corrispondere alla vecchia modalità libero ma
+             ora ci sono 2 window sovrapposte". When modalita==='percorso' AND
+             entered via ModalitaSwitch (sets percorso2WindowOpen=true), open
+             PercorsoPanel as second floating window alongside GalileoAdapter.
+             Z-index PercorsoPanel z=10001 (FloatingWindow default) > UNLIM 10000.
+             Hidden in lavagna-solo (Mandate 4 canvas-only). */}
+        {modalita === 'percorso' && percorso2WindowOpen && !lavagnaSoloMode && (
+          <ErrorBoundary>
+            <Suspense fallback={null}>
+              <PercorsoPanel
+                visible
+                experiment={currentExperiment}
+                onClose={() => setPercorso2WindowOpen(false)}
+              />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </div>
 

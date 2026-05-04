@@ -18,6 +18,13 @@ import logger from '../utils/logger';
 // Iter 41 Phase D Task D1 — "Ragazzi" plurale prepend wake word.
 // PRINCIPIO ZERO §1 plurale "Ragazzi" mandate. Compound "ragazzi unlim" avoids
 // false-trigger on natural docente speech mentioning "Ragazzi, vediamo..." alone.
+//
+// Iter 35 Phase 2 Maker-3 F4 — pronunciation varianti expansion.
+// Andrea diagnostic mandate: "non posso parlare con unlim" → broader phrase coverage
+// reduces failed-recognition rate when docente uses common voice-assistant patterns
+// (es. "ok unlim", "hey unlim") or italiano informale single-word ("unlim").
+// Compound "ok unlim" + "hey unlim" + "unlim" mantengono guard contro false-trigger
+// (sostantivo non comune in italiano scuola pubblica → low natural-speech collision).
 const WAKE_PHRASES = [
   // Legacy "Ehi UNLIM" family (iter 36+)
   'ehi unlim', 'hey unlim', 'ei unlim', 'ehi un lim',
@@ -25,6 +32,10 @@ const WAKE_PHRASES = [
   'hey anelim', 'ehi online', 'hey online',
   // Iter 41 D1 — "Ragazzi UNLIM" plurale compound
   'ragazzi unlim', 'ragazzi un lim', 'ragazzi anelim',
+  // Iter 35 Phase 2 F4 — pronunciation varianti (Andrea diagnostic mandate).
+  // Keep compound 2-word discipline (avoid single-word "unlim" false-trigger
+  // guard preserved per wakeWord-plurale-prepend.test.js negative case line 116).
+  'ok unlim', 'okay unlim',
 ];
 
 // Iter 41 Phase D Task D3 — reduced post-wake command window 5000→3000ms.

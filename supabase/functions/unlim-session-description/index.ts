@@ -1,11 +1,20 @@
 /**
- * unlim-session-description — iter 35 P0
+ * unlim-session-description — iter 35 P0 + iter 35 Phase 2 Atom I3 backfill
  *
- * POST { session_id }  →  { description: string }
+ * POST { session_id, transcript_excerpt? }  →  { description: string ≤80 chars }
  *
  * Genera (e cache su `unlim_sessions.description_unlim`) una descrizione
  * breve UNLIM-style di una sessione passata, da mostrare nella cronologia
  * homepage Google-style.
+ *
+ * Iter 35 Phase 2 Atom I3 — backfill input contract extension:
+ *   - body.session_id (required, uuid)
+ *   - body.transcript_excerpt (optional, string ≤500 chars) — when present
+ *     supplements `events` with verbatim user/UNLIM transcript snippet for
+ *     better LLM context. Useful for backfilling sessions where `events`
+ *     array is sparse but transcript history is rich.
+ *   - X-Elab-Api-Key header gate (verifyElabApiKey, fail-open when secret
+ *     not configured per guards.ts:67).
  *
  * Output: stringa fattuale ≤80 char, plurale "Ragazzi" non si addice qui
  * (è metadato lista, non istruzione docente). Es:
@@ -14,64 +23,23 @@
  * Cache: prima di chiamare LLM controlla `description_unlim` non null. Se
  * presente, ritorna direttamente. Update con UPDATE ... WHERE id=$1.
  *
- * Andrea Marro — 30/04/2026
+ * Andrea Marro — 30/04/2026 + iter 35 Phase 2 (2026-05-04)
  */
 
 import { serve } from 'https://deno.land/std@0.208.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
-import { getCorsHeaders, getSecurityHeaders, checkBodySize } from '../_shared/guards.ts';
+import { getCorsHeaders, getSecurityHeaders, checkBodySize, verifyElabApiKey } from '../_shared/guards.ts';
 import { callLLM } from '../_shared/llm-client.ts';
+// iter 35 Phase 2 Atom I3 — pure helpers extracted to companion module so
+// vitest unit tests (Node) can import without resolving deno.land https URLs.
+import { buildPrompt, fallbackSummary, MAX_CHARS, type SessionRow } from './_helpers.ts';
+// Re-export for documentation discoverability + integration test scope.
+export { buildPrompt, fallbackSummary, MAX_CHARS } from './_helpers.ts';
+export type { SessionRow } from './_helpers.ts';
 
-const MAX_CHARS = 80;
-
-interface SessionRow {
-  id: string;
-  experiment_id: string | null;
-  modalita: string | null;
-  started_at: string | null;
-  ended_at: string | null;
-  events: unknown;
-  description_unlim: string | null;
-}
-
-function fallbackSummary(row: SessionRow): string {
-  const expId = row.experiment_id || 'esperimento';
-  const events = Array.isArray(row.events) ? row.events.length : 0;
-  const dur = row.started_at && row.ended_at
-    ? Math.max(1, Math.round((new Date(row.ended_at).getTime() - new Date(row.started_at).getTime()) / 60000))
-    : 0;
-  const parts: string[] = [`Sessione su ${expId}`];
-  if (dur) parts.push(`${dur} min`);
-  if (events) parts.push(`${events} eventi`);
-  return parts.join(' · ').slice(0, MAX_CHARS);
-}
-
-function buildPrompt(row: SessionRow): { systemPrompt: string; message: string } {
-  const expId = row.experiment_id || 'sconosciuto';
-  const modalita = row.modalita || 'percorso';
-  const events = Array.isArray(row.events) ? row.events.slice(0, 12) : [];
-  const dur = row.started_at && row.ended_at
-    ? Math.max(1, Math.round((new Date(row.ended_at).getTime() - new Date(row.started_at).getTime()) / 60000))
-    : null;
-
-  const systemPrompt = [
-    'Sei UNLIM, tutor AI ELAB Tutor.',
-    'Genera UNA descrizione breve e fattuale della sessione (1-2 frasi, MAX 80 caratteri).',
-    'Tono: neutro, fattuale, plurale impersonale ("Esplorato", "Costruito", "Verificato").',
-    'NIENTE saluti, NIENTE imperativi al docente, NIENTE emoji.',
-    'Cita SOLO concetti realmente presenti negli eventi. Se non sai, ometti.',
-  ].join(' ');
-
-  const message = [
-    `Esperimento: ${expId}`,
-    `Modalità: ${modalita}`,
-    dur ? `Durata: ${dur} min` : '',
-    `Eventi recenti: ${JSON.stringify(events)}`,
-    'Restituisci SOLO la descrizione, senza prefissi.',
-  ].filter(Boolean).join('\n');
-
-  return { systemPrompt, message };
-}
+// iter 35 Phase 2 Atom I3 — buildPrompt + fallbackSummary + MAX_CHARS +
+// SessionRow imported from ./_helpers.ts above (re-exported for discoverability
+// + integration test scope). Helpers extracted to enable Node vitest import.
 
 serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -86,9 +54,25 @@ serve(async (req: Request) => {
   const bodyCheck = checkBodySize(req);
   if (bodyCheck) return bodyCheck;
 
+  // iter 35 Phase 2 Atom I3 — ELAB_API_KEY auth gate (defense-in-depth).
+  // verifyElabApiKey is fail-open when secret not configured, so this is
+  // safe to add even before secret is rolled out across all environments.
+  const apiKeyCheck = verifyElabApiKey(req);
+  if (!apiKeyCheck.ok) {
+    return new Response(JSON.stringify({ success: false, error: apiKeyCheck.reason || 'unauthorized' }), {
+      status: 401, headers: getSecurityHeaders(req),
+    });
+  }
+
   try {
     const body = await req.json().catch(() => ({}));
     const sessionId = typeof body?.session_id === 'string' ? body.session_id.trim() : '';
+    // iter 35 Phase 2 Atom I3 — optional transcript_excerpt input (≤500 chars
+    // enforced by buildPrompt MAX_TRANSCRIPT_CHARS slice). Defensive: non-string
+    // values are coerced to empty (no leak into prompt).
+    const transcriptExcerpt = typeof body?.transcript_excerpt === 'string'
+      ? body.transcript_excerpt
+      : '';
     if (!sessionId) {
       return new Response(JSON.stringify({ success: false, error: 'session_id required' }), {
         status: 400, headers: getSecurityHeaders(req),
@@ -130,7 +114,7 @@ serve(async (req: Request) => {
     // 3) Generate via LLM (weighted routing — fast Gemini Flash-Lite primary post iter 35)
     let description = '';
     try {
-      const { systemPrompt, message } = buildPrompt(row as SessionRow);
+      const { systemPrompt, message } = buildPrompt(row as SessionRow, transcriptExcerpt);
       const result = await callLLM({
         model: 'gemini-2.5-flash-lite',
         systemPrompt,

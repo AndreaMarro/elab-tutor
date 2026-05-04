@@ -787,7 +787,22 @@ function isMessageBlocked(message) {
  * @param {Array} images - Array di immagini [{base64, mimeType}] (opzionale)
  */
 export async function sendChat(message, images = [], options = {}) {
-    const { signal: externalSignal, socraticMode = false, experimentContext = null, circuitState = null, experimentId = null, simulatorContext = null } = options;
+    const {
+        signal: externalSignal,
+        socraticMode = false,
+        experimentContext = null,
+        circuitState = null,
+        experimentId = null,
+        simulatorContext = null,
+        // Iter 35 J1 (Maker-2 Phase 2) — Mandate 6: Percorso adaptive Sense 1.5.
+        // When provided (modalita==='percorso' on caller side), inject Percorso-
+        // specific contextual block: class memory + recent intents + lesson
+        // context (active capitolo + last completed esperimenti) + class_key.
+        // Caller (useGalileoChat or sendMessage) passes shape:
+        //   { classKey, recentIntents: [...], activeCapitolo: {...},
+        //     lastSessionDescriptions: [...], modalita: 'percorso' }
+        percorsoContext = null,
+    } = options;
 
     // Content moderation: blocca messaggi inappropriati
     if (isMessageBlocked(message)) {
@@ -885,6 +900,47 @@ export async function sendChat(message, images = [], options = {}) {
                 return r.text + src;
             });
             contextParts.push('[CONTESTO DAI VOLUMI ELAB]\n' + ragLines.join('\n---\n') + '\n[FINE CONTESTO]');
+        }
+    }
+
+    // Iter 35 J1 (Maker-2 Phase 2) — Mandate 6: Percorso adaptive Sense 1.5
+    // contextual block. Injects class memory + recent intents + capitolo lesson
+    // context so UNLIM responses adapt to docente + classe + livello + storia
+    // sessione. Defensively guarded: only emits when caller passes percorsoContext
+    // (i.e. modalita==='percorso'); other modes unchanged.
+    if (percorsoContext && typeof percorsoContext === 'object') {
+        const pcLines = ['[CONTESTO PERCORSO — MORFISMO SENSE 1.5]'];
+        if (percorsoContext.classKey) {
+            pcLines.push(`Classe: ${percorsoContext.classKey}`);
+        }
+        if (percorsoContext.activeCapitolo) {
+            const cap = percorsoContext.activeCapitolo;
+            const capTitle = cap.title || cap.titolo || cap.id || 'sconosciuto';
+            const capVol = cap.volume || cap.vol || '';
+            pcLines.push(`Capitolo corrente: ${capTitle}${capVol ? ` (Vol. ${capVol})` : ''}`);
+        }
+        if (Array.isArray(percorsoContext.recentIntents) && percorsoContext.recentIntents.length > 0) {
+            const intents = percorsoContext.recentIntents.slice(-5).map(i => {
+                if (typeof i === 'string') return i;
+                return i?.action || i?.type || JSON.stringify(i).slice(0, 80);
+            });
+            pcLines.push(`Ultime azioni docente: ${intents.join(' → ')}`);
+        }
+        if (Array.isArray(percorsoContext.lastSessionDescriptions) && percorsoContext.lastSessionDescriptions.length > 0) {
+            const sess = percorsoContext.lastSessionDescriptions.slice(0, 3).map(s => {
+                if (typeof s === 'string') return s;
+                return s?.description || s?.title || s?.experimentId || '';
+            }).filter(Boolean);
+            if (sess.length > 0) {
+                pcLines.push(`Memoria sessioni recenti classe: ${sess.join(' | ')}`);
+            }
+        }
+        if (percorsoContext.kitLevel) {
+            pcLines.push(`Kit dotazione classe: ${percorsoContext.kitLevel}`);
+        }
+        if (pcLines.length > 1) {
+            pcLines.push('Adatta tono + dettaglio + esempi a questo contesto. Cita Vol/pag VERBATIM. Italiano scuola plurale "Ragazzi,".');
+            contextParts.push(pcLines.join('\n'));
         }
     }
 

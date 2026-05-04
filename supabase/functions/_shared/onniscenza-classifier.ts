@@ -23,17 +23,19 @@
  *   - 'chit_chat'        <8 words AND greeting tokens → SKIP onniscenza (latency)
  *   - 'default'          fallback (none of the above) → onniscenza top-3 (preserve tests)
  *
- * Behavior matrix (capWords NEW iter 34, consumed by system-prompt
+ * Behavior matrix (capWords iter 35 Phase 2 Atom E2 Andrea-tuned, paired with
+ * llm-client DEFAULT_MAX_OUTPUT_TOKENS 350 default — Andrea mandate "longer
+ * responses, andare oltre il pappetta pronta"). Consumed by system-prompt
  * getCategoryCapWordsBlock helper, gated by ENABLE_CAP_CONDITIONAL env in
  * unlim-chat/index.ts wire-up):
- *   chit_chat        => skipOnniscenza=true,  topK=0, capWords=30  (1 frase secca)
- *   meta_question    => skipOnniscenza=true,  topK=0, capWords=50  (2 frasi self-intro)
- *   off_topic        => skipOnniscenza=true,  topK=0, capWords=40  (1 frase + soft deflect kit)
- *   citation_vol_pag => skipOnniscenza=false, topK=2, capWords=60  (cap default preserve)
- *   plurale_ragazzi  => skipOnniscenza=false, topK=2, capWords=60  (cap default preserve)
- *   deep_question    => skipOnniscenza=false, topK=3, capWords=120 (deep needs words)
- *   safety_warning   => skipOnniscenza=false, topK=3, capWords=80  (safety FIRST + kit)
- *   default          => skipOnniscenza=false, topK=3, capWords=60  (cap default preserve)
+ *   chit_chat        => skipOnniscenza=true,  topK=0, capWords=30  (1 frase secca, short preserved)
+ *   meta_question    => skipOnniscenza=true,  topK=0, capWords=80  (iter 35: 50→80, self-intro più ricca)
+ *   off_topic        => skipOnniscenza=true,  topK=0, capWords=80  (iter 35: 40→80, soft pivot + analogia)
+ *   citation_vol_pag => skipOnniscenza=false, topK=2, capWords=100 (iter 35: 60→100, citazione + spiegazione)
+ *   plurale_ragazzi  => skipOnniscenza=false, topK=2, capWords=100 (iter 35: 60→100, narrazione classe)
+ *   deep_question    => skipOnniscenza=false, topK=3, capWords=400 (iter 35: 120→400, "andare oltre")
+ *   safety_warning   => skipOnniscenza=false, topK=3, capWords=120 (iter 35: 80→120, safety + kit + ripartenza)
+ *   default          => skipOnniscenza=false, topK=3, capWords=200 (iter 35: 60→200, default ricco)
  *
  * NO LLM call. Pure regex + word count. Defensive: never throws. Empty/null
  * input => 'chit_chat' (cheapest path; a blank message implies a tap-test).
@@ -185,24 +187,26 @@ export function classifyPrompt(input: string | null | undefined): Classification
   const text = (input || '').trim();
 
   // 1. Safety warning beats everything (security trumps latency).
+  // iter 35 E2 Andrea-tuned: 80→120 (safety + kit + ripartenza needs space).
   if (SAFETY_RE.test(text)) {
-    return { category: 'safety_warning', skipOnniscenza: false, topK: 3, wordCount, capWords: 80 };
+    return { category: 'safety_warning', skipOnniscenza: false, topK: 3, wordCount, capWords: 120 };
   }
 
   // 2. NEW iter 34 Atom A1: meta-self questions ("chi sei", "come funzioni")
-  // → SKIP onniscenza, capWords=50 (2 frasi self-intro plurale "Ragazzi").
+  // → SKIP onniscenza, capWords=80 (iter 35 E2: 50→80, self-intro più ricca).
   if (META_RE.test(text)) {
-    return { category: 'meta_question', skipOnniscenza: true, topK: 0, wordCount, capWords: 50 };
+    return { category: 'meta_question', skipOnniscenza: true, topK: 0, wordCount, capWords: 80 };
   }
 
   // 3. NEW iter 34 Atom A1: off-topic non-educational (calcio, gaming, meteo)
-  // → SKIP onniscenza, capWords=40 (1 frase + soft deflect kit ELAB).
+  // → SKIP onniscenza, capWords=80 (iter 35 E2: 40→80, soft pivot + analogia).
   if (OFFTOPIC_RE.test(text)) {
-    return { category: 'off_topic', skipOnniscenza: true, topK: 0, wordCount, capWords: 40 };
+    return { category: 'off_topic', skipOnniscenza: true, topK: 0, wordCount, capWords: 80 };
   }
 
   // 4. Empty / very short / greeting → chit_chat (cheapest path).
-  // Empty or pure-whitespace inputs collapse here too.
+  // Empty or pure-whitespace inputs collapse here too. capWords=30 PRESERVED
+  // (Andrea-explicit "greeting short" — iter 35 E2 short preserved).
   if (wordCount === 0) {
     return { category: 'chit_chat', skipOnniscenza: true, topK: 0, wordCount, capWords: 30 };
   }
@@ -211,25 +215,30 @@ export function classifyPrompt(input: string | null | undefined): Classification
   }
 
   // 5. Explicit citation references → top-2 focused fetch (volume-anchored).
+  // iter 35 E2 Andrea-tuned: 60→100 (citazione + spiegazione + invito kit).
   if (CITATION_RE.test(text)) {
-    return { category: 'citation_vol_pag', skipOnniscenza: false, topK: 2, wordCount, capWords: 60 };
+    return { category: 'citation_vol_pag', skipOnniscenza: false, topK: 2, wordCount, capWords: 100 };
   }
 
   // 6. Plurale "ragazzi" addressing → top-2 (docente-to-class concise).
+  // iter 35 E2 Andrea-tuned: 60→100 (narrazione classe + Vol/pag + analogia).
   if (PLURALE_RE.test(text)) {
-    return { category: 'plurale_ragazzi', skipOnniscenza: false, topK: 2, wordCount, capWords: 60 };
+    return { category: 'plurale_ragazzi', skipOnniscenza: false, topK: 2, wordCount, capWords: 100 };
   }
 
   // 7. Deep question (>=20 words + question mark) → top-3 (full context).
+  // iter 35 E2 Andrea-tuned: 120→400 (Andrea mandate "andare oltre" — deep
+  // educational expansion con analogie multiple, paired con DEFAULT_MAX_OUTPUT_TOKENS=350).
   if (wordCount >= 20 && /\?\s*$/.test(text)) {
-    return { category: 'deep_question', skipOnniscenza: false, topK: 3, wordCount, capWords: 120 };
+    return { category: 'deep_question', skipOnniscenza: false, topK: 3, wordCount, capWords: 400 };
   }
 
   // 8. Fallback default → top-3 (preserve iter 37 test contract; Maker-1 cannot
   // edit tests/unit/onniscenza-classifier.test.js per file-ownership rigid).
   // Iter 38 A5 latency lift achieved via A3 Promise.all parallelization + A5
   // Cron warmup ping; default classifier topK kept at 3.
-  return { category: 'default', skipOnniscenza: false, topK: 3, wordCount, capWords: 60 };
+  // iter 35 E2 Andrea-tuned: 60→200 (default ricco 2-3 paragrafi educativi).
+  return { category: 'default', skipOnniscenza: false, topK: 3, wordCount, capWords: 200 };
 }
 
 /** Module version marker (orchestration handoff). Iter 38 maintained the

@@ -186,6 +186,49 @@ const styles = {
     width: 'fit-content',
     marginTop: 2,
   },
+  // Iter 35 I2 — Vol/cap metadata badge (Morfismo Sense 2 triplet
+  // citazione volume cartaceo). Lime palette = Vol 1 design-system.css
+  // alignment ma usato come accento citazione neutra.
+  volBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 4,
+    background: 'rgba(74, 122, 37, 0.10)',
+    color: PALETTE.lime,
+    fontSize: 11,
+    fontWeight: 700,
+    padding: '2px 8px',
+    borderRadius: 999,
+    letterSpacing: '0.05em',
+    width: 'fit-content',
+    marginTop: 2,
+    marginLeft: 6,
+  },
+  badgeRow: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: 0,
+  },
+  // Iter 35 I3 — "Genera descrizioni" CTA quando ≥1 session manca
+  // `description_unlim` ma ha `messages.length>0`. Triggera fetch batch.
+  generateBtn: {
+    minHeight: 36,
+    padding: '6px 14px',
+    fontSize: 13,
+    fontWeight: 600,
+    color: PALETTE.lime,
+    background: 'transparent',
+    border: `1.5px solid ${PALETTE.lime}`,
+    borderRadius: 8,
+    cursor: 'pointer',
+    fontFamily: 'inherit',
+    transition: 'background 120ms ease, color 120ms ease',
+  },
+  generateBtnActive: {
+    background: PALETTE.lime,
+    color: '#FFFFFF',
+  },
   resumeBtn: {
     minHeight: 44,
     minWidth: 44,
@@ -402,6 +445,11 @@ function HomeRow({ session, onResume }) {
   const title = session?.title || session?.experimentId || 'Sessione';
   const modalita = session?.modalita || session?.mode || 'percorso';
   const description = aiDescription || localFallbackSummary(session);
+  // Iter 35 I2 — Vol/cap citation extraction (Morfismo Sense 2). Try
+  // multiple fields where session payload may store the info.
+  const vol = session?.volume || session?.vol || null;
+  const cap = session?.capitolo || session?.cap || session?.chapter || null;
+  const volCapLabel = vol && cap ? `Vol. ${vol} · cap. ${cap}` : (vol ? `Vol. ${vol}` : null);
 
   return (
     <li
@@ -420,7 +468,12 @@ function HomeRow({ session, onResume }) {
         ) : (
           <p style={styles.description} data-testid="cronologia-desc">{description}</p>
         )}
-        <span style={styles.modeBadge}>{MODE_LABEL[modalita] || modalita}</span>
+        <div style={styles.badgeRow}>
+          <span style={styles.modeBadge}>{MODE_LABEL[modalita] || modalita}</span>
+          {volCapLabel && (
+            <span style={styles.volBadge} data-testid="cronologia-volcap">{volCapLabel}</span>
+          )}
+        </div>
       </div>
       <button
         type="button"
@@ -438,6 +491,8 @@ function HomeRow({ session, onResume }) {
 export default function HomeCronologia({ onResume }) {
   const [sessions, setSessions] = useState(() => loadLocalSessions());
   const [query, setQuery] = useState('');
+  // Iter 35 I3 — batch description generation state
+  const [batchFetching, setBatchFetching] = useState(false);
 
   useEffect(() => {
     const handler = (ev) => {
@@ -447,6 +502,48 @@ export default function HomeCronologia({ onResume }) {
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
   }, []);
+
+  // Iter 35 I3 — count sessions missing description_unlim that have messages.
+  // Only show "Genera descrizioni" button when there's something useful to do.
+  // Coordinate with Maker-1 (Edge Function `unlim-session-description`):
+  // see `automa/team-state/messages/webdesigner1-to-maker1-I3-coordinate-2026-05-04.md`.
+  const missingDescCount = useMemo(() => {
+    return sessions.filter((s) => {
+      if (s?.description_unlim) return false;
+      if (!Array.isArray(s?.messages) || s.messages.length === 0) return false;
+      // Need a real Supabase id to fetch — local-only sessions skipped.
+      const id = typeof s?.id === 'string' ? s.id.trim() : '';
+      return id && /^[0-9a-f-]{8,}$/i.test(id);
+    }).length;
+  }, [sessions]);
+
+  const canGenerate = missingDescCount > 0 && !!SUPABASE_URL && !!SUPABASE_ANON;
+
+  const handleGenerate = useCallback(async () => {
+    if (batchFetching) return;
+    setBatchFetching(true);
+    try {
+      const candidates = sessions.filter((s) => {
+        if (s?.description_unlim) return false;
+        if (!Array.isArray(s?.messages) || s.messages.length === 0) return false;
+        const id = typeof s?.id === 'string' ? s.id.trim() : '';
+        return id && /^[0-9a-f-]{8,}$/i.test(id);
+      }).slice(0, 10); // safety cap: 10 per batch
+
+      // Sequential to avoid Edge Function rate limiting.
+      for (const s of candidates) {
+        // eslint-disable-next-line no-await-in-loop
+        const desc = await fetchDescriptionAI(s);
+        if (desc) {
+          persistDescription(s.id || s.experimentId, desc);
+        }
+      }
+      // Reload sessions from localStorage post-batch.
+      setSessions(loadLocalSessions());
+    } finally {
+      setBatchFetching(false);
+    }
+  }, [batchFetching, sessions]);
 
   const handleResume = useCallback((experimentId) => {
     if (!experimentId) return;
@@ -486,6 +583,24 @@ export default function HomeCronologia({ onResume }) {
     <section style={styles.section} aria-labelledby="cronologia-heading" data-testid="home-cronologia">
       <div style={styles.headerRow}>
         <h2 id="cronologia-heading" style={styles.heading}>Cronologia recente</h2>
+        {canGenerate && (
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={batchFetching}
+            style={{
+              ...styles.generateBtn,
+              ...(batchFetching ? styles.generateBtnActive : {}),
+              opacity: batchFetching ? 0.7 : 1,
+              cursor: batchFetching ? 'wait' : 'pointer',
+            }}
+            data-testid="cronologia-generate-btn"
+            data-elab-action="generate-session-descriptions"
+            aria-label={`Genera descrizioni UNLIM per ${missingDescCount} sessioni`}
+          >
+            {batchFetching ? 'Generazione…' : `Genera descrizioni (${missingDescCount})`}
+          </button>
+        )}
         <div style={styles.searchWrap}>
           <svg
             style={styles.searchIcon}
@@ -515,9 +630,12 @@ export default function HomeCronologia({ onResume }) {
       </div>
 
       {sessions.length === 0 ? (
-        <div style={styles.empty}>
-          Nessuna sessione salvata ancora — le lezioni completate compariranno qui<br/>
-          con un breve riassunto di UNLIM così potete riprenderle facilmente.
+        <div style={styles.empty} data-testid="cronologia-empty">
+          {/* Iter 35 I4 — empty state plurale + invito kit + Lavagna libera
+              (PRINCIPIO ZERO §A13 plurale "Ragazzi" + kit ELAB invocato). */}
+          Ragazzi, ancora nessuna sessione salvata.<br/>
+          Aprite il <strong style={{ color: PALETTE.navy }}>kit ELAB</strong> e cliccate <strong style={{ color: PALETTE.navy }}>Lavagna libera</strong> per iniziare.<br/>
+          Ogni lezione completata compare qui con un breve riassunto di UNLIM.
         </div>
       ) : buckets.length === 0 ? (
         <div style={styles.empty} data-testid="cronologia-no-match">

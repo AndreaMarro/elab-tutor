@@ -89,6 +89,8 @@ test.describe('Wake word "Ragazzi" plurale — 9-cell STT matrix iter 41 D2', ()
             'hey un lim', 'ei un lim', 'e unlim', 'ehi anelim',
             'hey anelim', 'ehi online', 'hey online',
             'ragazzi unlim', 'ragazzi un lim', 'ragazzi anelim',
+            // Iter 35 Phase 2 F4 sync — Maker-3 prod added ok+okay variants
+            'ok unlim', 'okay unlim',
           ];
           const matched = WAKE_PHRASES.some((p) => lower.includes(p));
           let command = '';

@@ -220,11 +220,12 @@ describe('onniscenza-classifier — defensive', () => {
 
 describe('onniscenza-classifier — meta_question (NEW iter 34)', () => {
   it('classifies "Chi sei?" as meta_question with skipOnniscenza=true topK=0', () => {
+    // iter 35 E2 Andrea-tuned: 50→80 self-intro più ricca.
     const r = classifyPrompt('Chi sei?');
     expect(r.category).toBe('meta_question');
     expect(r.skipOnniscenza).toBe(true);
     expect(r.topK).toBe(0);
-    expect(r.capWords).toBe(50);
+    expect(r.capWords).toBe(80);
   });
 
   it('classifies "Come ti chiami?" as meta_question', () => {
@@ -252,12 +253,13 @@ describe('onniscenza-classifier — meta_question (NEW iter 34)', () => {
 });
 
 describe('onniscenza-classifier — off_topic (NEW iter 34)', () => {
-  it('classifies "parliamo di calcio" as off_topic with skipOnniscenza=true capWords=40', () => {
+  it('classifies "parliamo di calcio" as off_topic with skipOnniscenza=true capWords=80', () => {
+    // iter 35 E2 Andrea-tuned: 40→80 soft pivot + analogia educational.
     const r = classifyPrompt('Parliamo di calcio invece');
     expect(r.category).toBe('off_topic');
     expect(r.skipOnniscenza).toBe(true);
     expect(r.topK).toBe(0);
-    expect(r.capWords).toBe(40);
+    expect(r.capWords).toBe(80);
   });
 
   it('classifies "Juventus" / "Inter" / "Milan" as off_topic', () => {
@@ -293,33 +295,47 @@ describe('onniscenza-classifier — off_topic (NEW iter 34)', () => {
   });
 });
 
-describe('onniscenza-classifier — capWords field (NEW iter 34)', () => {
-  it('returns capWords=80 for safety_warning', () => {
-    expect(classifyPrompt('pericolo brucia').capWords).toBe(80);
+describe('onniscenza-classifier — capWords field (iter 35 E2 Andrea-tuned)', () => {
+  // iter 35 Phase 2 Atom E2: capWords retuned per Andrea mandate "longer
+  // responses, andare oltre". chit_chat=30 PRESERVED (greeting short).
+  // Other categories lifted to support 2-3 paragrafi educativi default.
+
+  it('returns capWords=120 for safety_warning (iter 35: 80→120)', () => {
+    expect(classifyPrompt('pericolo brucia').capWords).toBe(120);
   });
 
-  it('returns capWords=30 for chit_chat (shortest)', () => {
+  it('returns capWords=30 for chit_chat (PRESERVED short greeting)', () => {
     expect(classifyPrompt('Ciao').capWords).toBe(30);
     expect(classifyPrompt('').capWords).toBe(30);
   });
 
-  it('returns capWords=60 for citation_vol_pag (cap default preserve)', () => {
-    expect(classifyPrompt('Vol.1 pag.27 dimmi').capWords).toBe(60);
+  it('returns capWords=100 for citation_vol_pag (iter 35: 60→100)', () => {
+    expect(classifyPrompt('Vol.1 pag.27 dimmi').capWords).toBe(100);
   });
 
-  it('returns capWords=60 for plurale_ragazzi (cap default preserve)', () => {
-    expect(classifyPrompt('Ragazzi montiamo il LED').capWords).toBe(60);
+  it('returns capWords=100 for plurale_ragazzi (iter 35: 60→100)', () => {
+    expect(classifyPrompt('Ragazzi montiamo il LED').capWords).toBe(100);
   });
 
-  it('returns capWords=120 for deep_question (deep needs words)', () => {
+  it('returns capWords=400 for deep_question (iter 35: 120→400 "andare oltre")', () => {
     const text =
       'Mi puoi spiegare in dettaglio come funziona la legge di Ohm e perché ' +
       'è importante usare il resistore prima del LED quando colleghiamo ' +
       'la batteria nove volt al circuito sulla breadboard?';
-    expect(classifyPrompt(text).capWords).toBe(120);
+    expect(classifyPrompt(text).capWords).toBe(400);
   });
 
-  it('returns capWords=60 for default (cap default preserve)', () => {
-    expect(classifyPrompt('Spiega la breadboard nei nostri esperimenti').capWords).toBe(60);
+  it('returns capWords=200 for default (iter 35: 60→200 ricco)', () => {
+    expect(classifyPrompt('Spiega la breadboard nei nostri esperimenti').capWords).toBe(200);
+  });
+
+  it('returns capWords=80 for meta_question (iter 35: 50→80)', () => {
+    expect(classifyPrompt('Chi sei?').capWords).toBe(80);
+    expect(classifyPrompt('Come funzioni?').capWords).toBe(80);
+  });
+
+  it('returns capWords=80 for off_topic (iter 35: 40→80 soft pivot + analogia)', () => {
+    expect(classifyPrompt('Parliamo di calcio Serie A').capWords).toBe(80);
+    expect(classifyPrompt('Mi piace fortnite').capWords).toBe(80);
   });
 });

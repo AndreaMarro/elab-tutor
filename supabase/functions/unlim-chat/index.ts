@@ -824,13 +824,22 @@ serve(async (req: Request) => {
     // that we project to cappedText + parsed intents (replacing regex parse).
     let result;
     let preparsedIntents: unknown[] | null = null;
+    // iter 35 Phase 2 Atom P3 — per-provider telemetry. Captures wall-clock
+    // latency around the callLLM race so the response payload can surface
+    // llm_provider + llm_latency_ms + llm_cap_words for bench R5/R7 + canary
+    // monitoring (extends iter 34 prompt_class telemetry surface).
+    const llmStartTime = Date.now();
     try {
+      // iter 35 Phase 2 Atom E1: drop hardcoded 120, use llm-client.ts
+      // DEFAULT_MAX_OUTPUT_TOKENS=350 (Andrea mandate "longer responses").
+      // Conditional cap (E2 + ENABLE_CAP_CONDITIONAL=true) overrides per
+      // category via system-prompt getCategoryCapWordsBlock.
       const llmCallPromise = callLLM({
         model,
         systemPrompt,
         message: safeMessage,
         images: safeImages,
-        maxOutputTokens: 120,
+        // maxOutputTokens omitted → llm-client default 350 applies.
         temperature: 0.7,
         thinkingLevel,
         // Iter 38 A7: structured output for Mistral when opt-in. Defensive:
@@ -1149,6 +1158,15 @@ serve(async (req: Request) => {
       l2_skipped_category?: boolean;
       intent_schema_widen_active?: boolean;
       intent_schema_widen_triggered?: boolean;
+      // iter 35 Phase 2 Atom P3 — per-provider hit-rate + latency + cap +
+      // intent count telemetry. Top-level (NOT debug-gated) to enable bench
+      // R5/R7 measurement WITHOUT debug_retrieval flag overhead. Defensive:
+      // omitted gracefully when result is undefined (timeout/error path).
+      llm_provider?: string;
+      llm_latency_ms?: number;
+      llm_cap_words?: number;
+      llm_intent_count?: number;
+      llm_classifier_category?: string;
     } = {
       success: true,
       response: cleanText,
@@ -1189,6 +1207,21 @@ serve(async (req: Request) => {
     // via window.__ELAB_API. Empty array omitted to keep payload minimal.
     if (parsedIntents.length > 0) {
       response.intents_parsed = parsedIntents.map(i => ({ tool: i.tool, args: i.args }));
+    }
+
+    // iter 35 Phase 2 Atom P3 — per-provider telemetry surfaced top-level
+    // (NOT debug-gated). Bench R5/R7 + canary monitoring consume directly.
+    // Defensive: skip when result is missing (timeout/fallback path) to keep
+    // payload minimal. llmStartTime captured pre-callLLM at line 826.
+    if (result && typeof result === 'object') {
+      const llmRes = result as { provider?: string; model?: string };
+      response.llm_provider = llmRes.provider || 'unknown';
+      response.llm_latency_ms = Date.now() - llmStartTime;
+      // llm_cap_words mirrors cap_conditional_active path: when ENABLE_CAP_CONDITIONAL
+      // is on, classifier capWords applies; otherwise fall back to default 350.
+      response.llm_cap_words = capConditionalEnabled ? promptClass.capWords : 350;
+      response.llm_intent_count = parsedIntents.length;
+      response.llm_classifier_category = promptClass.category;
     }
 
     // iter 39 ralph A3: surface dispatcher_results when canary fired server-side.

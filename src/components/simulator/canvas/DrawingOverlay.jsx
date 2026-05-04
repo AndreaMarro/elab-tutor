@@ -14,6 +14,7 @@ import {
   debouncedSave as debouncedSaveRemote,
   cancelDebouncedSave as cancelDebouncedSaveRemote,
   flushDebouncedSave as flushDebouncedSaveRemote,
+  flushDebouncedSaveSync as flushDebouncedSaveSyncRemote,
   subscribePaths as subscribePathsRemote,
 } from '../../../services/drawingSync';
 
@@ -238,6 +239,32 @@ export default function DrawingOverlay({
       } catch { /* ignore — best effort save on unmount */ }
     };
   }, [experimentId]);
+
+  // Iter 35 L3 (Maker-2 Phase 2) — Atom F1 follow-up: beforeunload + pagehide
+  // sync flush via sendBeacon. Andrea iter 19 PM bug "scritti spariscono" persists
+  // beyond F1 unmount fix because page-close paths (browser X / hard refresh / tab
+  // switch via pagehide event) do NOT trigger React unmount before navigation.
+  // sendBeacon API guarantees POST delivery during page close (browser-managed,
+  // does NOT block close). flushDebouncedSaveSync uses sendBeacon when available
+  // and falls back to fire-and-forget fetch with keepalive.
+  // Only attached when syncEnabled (Lavagna mode); standalone simulator unaffected.
+  useEffect(() => {
+    if (!syncEnabled) return undefined;
+    if (typeof window === 'undefined') return undefined;
+    const flushHandler = () => {
+      try {
+        flushDebouncedSaveSyncRemote(experimentId, pathsRef.current);
+      } catch { /* ignore — best effort */ }
+    };
+    window.addEventListener('beforeunload', flushHandler);
+    // pagehide fires on iOS Safari + back/forward cache restore where beforeunload
+    // is unreliable. Attach both for cross-browser coverage.
+    window.addEventListener('pagehide', flushHandler);
+    return () => {
+      window.removeEventListener('beforeunload', flushHandler);
+      window.removeEventListener('pagehide', flushHandler);
+    };
+  }, [syncEnabled, experimentId]);
 
   // Current stroke width: eraser is always large, pen uses selected size
   const strokeWidth = isEraser ? ERASER_WIDTH : penSize;

@@ -40,6 +40,7 @@ import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 import {
   LavagnaCardIcon,
   TutorCardIcon,
+  RobotIcon,
   UNLIMCardIcon,
   GlossarioCardIcon,
 } from './common/ElabIcons';
@@ -308,7 +309,14 @@ const CARDS = [
     title: 'Lavagna libera',
     text: 'Spazio della classe: lavagna pulita, simulatore, costruite quello che volete con i ragazzi.',
     cta: 'Entra in Lavagna',
+    // Iter 35 H1 — Lavagna libera entry. App.jsx VALID_HASHES strict
+    // ['home','tutor','lavagna',...] — `#lavagna-solo` would fail route.
+    // Workaround: keep `#lavagna` href + set localStorage flag
+    // `elab_lavagna_launch_mode='solo'` su click (read by Maker-2
+    // LavagnaShell on mount; clear after consume → solo first launch).
+    // Pattern coordina con `data-elab-mode="lavagna-solo"` Maker-2 H2.
     href: '#lavagna',
+    launchMode: 'solo',
     target: 'internal',
     credit: null,
   },
@@ -360,8 +368,14 @@ function HomeCard({ card, onActivate }) {
       return;
     }
     e.preventDefault();
+    // Iter 35 H1 — set `elab_lavagna_launch_mode` localStorage flag if
+    // card declares launchMode (Lavagna libera = 'solo'). LavagnaShell
+    // reads + consumes (clears) on mount → applies data-elab-mode.
+    if (card.launchMode) {
+      try { localStorage.setItem('elab_lavagna_launch_mode', card.launchMode); } catch { /* best-effort */ }
+    }
     if (typeof onActivate === 'function') onActivate(card.href);
-  }, [card.href, card.target, onActivate]);
+  }, [card.href, card.launchMode, card.target, onActivate]);
 
   const sharedProps = {
     onMouseEnter: () => setHover(true),
@@ -816,7 +830,9 @@ export default function HomePage({ onNavigate }) {
             e.currentTarget.style.background = 'transparent';
           }}
         >
-          <span aria-hidden="true">🐒</span> Chi siamo
+          <span aria-hidden="true" style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 6 }}>
+            <RobotIcon size={20} />
+          </span> Chi siamo
         </button>
       </footer>
     </div>

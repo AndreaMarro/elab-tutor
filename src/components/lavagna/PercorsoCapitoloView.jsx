@@ -19,10 +19,13 @@
  *   onCitationClick?: ({ volume, page }) => void
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import VolumeCitation from '../common/VolumeCitation.jsx';
 import DocenteSidebar from './DocenteSidebar.jsx';
 import css from './PercorsoCapitoloView.module.css';
+
+// Iter 35 K3 — opt-in collapse sidebar localStorage key.
+const COLLAPSED_KEY = 'elab-lavagna-percorso-capitolo-collapsed';
 
 const INCREMENTAL_LABEL = {
   add_component: 'aggiunta componente',
@@ -43,6 +46,25 @@ function findTransitionFromPrev(capitolo, espIndex) {
 export default function PercorsoCapitoloView({ capitolo, onClose, onCitationClick }) {
   const [activeExpIndex, setActiveExpIndex] = useState(0);
   const [activePhaseIndex, setActivePhaseIndex] = useState(0);
+  // Iter 35 K3 — sidebar collapse state, persisted localStorage so
+  // docente preference survives reload (Morfismo Sense 1.5 docente memory).
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      if (typeof localStorage === 'undefined') return false;
+      return localStorage.getItem(COLLAPSED_KEY) === '1';
+    } catch { return false; }
+  });
+
+  useEffect(() => {
+    try {
+      if (typeof localStorage === 'undefined') return;
+      localStorage.setItem(COLLAPSED_KEY, sidebarCollapsed ? '1' : '0');
+    } catch { /* best-effort */ }
+  }, [sidebarCollapsed]);
+
+  const toggleSidebar = useCallback(() => {
+    setSidebarCollapsed((c) => !c);
+  }, []);
 
   if (!capitolo) {
     return (
@@ -68,6 +90,36 @@ export default function PercorsoCapitoloView({ capitolo, onClose, onCitationClic
             <span className={css.typeChip}>{capitolo.type}</span>
           </div>
           <h1 className={css.capTitle}>{capitolo.titolo}</h1>
+          {/* Iter 35 K3 — opt-in collapse capitolo overview / sidebar.
+              Persiste localStorage `elab-lavagna-percorso-capitolo-collapsed`.
+              Touch ≥44px (33+padding 12+12=44 effective), aria-pressed
+              riflette stato corrente. Inline style fallback se modulo CSS
+              non importato (Morfismo Sense 1.5 finestra adattiva). */}
+          <button
+            type="button"
+            className={css.collapseBtn || ''}
+            onClick={toggleSidebar}
+            aria-label={sidebarCollapsed ? 'Mostra sidebar capitolo' : 'Nascondi sidebar capitolo'}
+            aria-pressed={sidebarCollapsed}
+            title={sidebarCollapsed ? 'Mostra sidebar' : 'Nascondi sidebar'}
+            data-testid="percorso-capitolo-collapse-toggle"
+            style={{
+              minHeight: 44,
+              minWidth: 44,
+              padding: '8px 12px',
+              marginLeft: 8,
+              fontSize: 13,
+              fontWeight: 700,
+              border: '1.5px solid rgba(30, 77, 140, 0.30)',
+              background: sidebarCollapsed ? '#1E4D8C' : '#FFFFFF',
+              color: sidebarCollapsed ? '#FFFFFF' : '#1E4D8C',
+              borderRadius: 8,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            {sidebarCollapsed ? '▶' : '◀'}
+          </button>
           {onClose && (
             <button type="button" className={css.closeBtn} onClick={onClose} aria-label="Chiudi percorso">
               ×
@@ -182,11 +234,13 @@ export default function PercorsoCapitoloView({ capitolo, onClose, onCitationClic
         )}
       </main>
 
-      <DocenteSidebar
-        docenteSidebar={docenteSidebarData}
-        currentPhase={activePhase?.name ?? null}
-        currentExperiment={activeExp ? { id: activeExp.id, num: activeExp.num, title_docente: activeExp.title_docente } : null}
-      />
+      {!sidebarCollapsed && (
+        <DocenteSidebar
+          docenteSidebar={docenteSidebarData}
+          currentPhase={activePhase?.name ?? null}
+          currentExperiment={activeExp ? { id: activeExp.id, num: activeExp.num, title_docente: activeExp.title_docente } : null}
+        />
+      )}
     </div>
   );
 }

@@ -132,3 +132,69 @@ describe('Wake word permission denied iter 36 Atom A9 Bug 8', () => {
     expect(errorDispatches.length).toBe(0);
   });
 });
+
+/**
+ * Iter 35 Phase 2 F4 — WAKE_PHRASES pronunciation varianti detection.
+ * Andrea diagnostic mandate: "non posso parlare con unlim" → broader coverage.
+ * Verify each new variant triggers onWake when received in transcript.
+ */
+describe('Wake word F4 pronunciation varianti detection (iter 35 Phase 2)', () => {
+  /**
+   * Helper: simulate a SpeechRecognition result event with a single transcript
+   * and verify onWake is invoked.
+   */
+  function simulateTranscript(transcript) {
+    const onWake = vi.fn();
+    startWakeWordListener({ onWake, onCommand: vi.fn() });
+    const mockRecognition = global.__mockRecognition;
+    expect(mockRecognition).toBeTruthy();
+
+    // Build a SpeechRecognitionEvent-shape with a result whose alternative
+    // transcript matches the phrase under test.
+    const event = {
+      resultIndex: 0,
+      results: [
+        Object.assign(
+          [{ transcript, confidence: 0.95 }],
+          { isFinal: true, length: 1 },
+        ),
+      ],
+    };
+    mockRecognition.onresult(event);
+    return onWake;
+  }
+
+  it('detects "ok unlim" variant (common voice assistant pattern)', () => {
+    const onWake = simulateTranscript('ok unlim accendete il LED');
+    expect(onWake).toHaveBeenCalled();
+  });
+
+  it('detects "okay unlim" English-spelled variant', () => {
+    const onWake = simulateTranscript('okay unlim');
+    expect(onWake).toHaveBeenCalled();
+  });
+
+  it('does NOT trigger on single-word "unlim" (compound discipline preserved)', () => {
+    // F4 deliberately keeps 2-word compound guard to avoid false-trigger on
+    // unrelated speech mentioning "unlim" alone (low collision risk in IT
+    // scuola pubblica, but compound discipline is safer for production audio
+    // streams where misrecognized words may include "unlim" fragments).
+    const onWake = simulateTranscript('unlim');
+    expect(onWake).not.toHaveBeenCalled();
+  });
+
+  it('detects legacy "ehi unlim" baseline preserved', () => {
+    const onWake = simulateTranscript('ehi unlim ascoltate');
+    expect(onWake).toHaveBeenCalled();
+  });
+
+  it('detects "ragazzi unlim" PRINCIPIO ZERO plurale baseline preserved', () => {
+    const onWake = simulateTranscript('ragazzi unlim guardate qui');
+    expect(onWake).toHaveBeenCalled();
+  });
+
+  it('does NOT trigger onWake for unrelated phrase ("ciao ragazzi")', () => {
+    const onWake = simulateTranscript('ciao ragazzi vediamo l esperimento');
+    expect(onWake).not.toHaveBeenCalled();
+  });
+});
