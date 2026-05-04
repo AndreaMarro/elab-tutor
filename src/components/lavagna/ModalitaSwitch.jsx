@@ -21,30 +21,34 @@
  */
 import React from 'react';
 import css from './ModalitaSwitch.module.css';
+import { BookIcon, FootstepsIcon, CircuitIcon, PaletteIcon, StarIcon } from '../common/ElabIcons';
 
 export const MODALITA = ['percorso', 'passo-passo', 'gia-montato', 'libero'];
 
+// Iter 36 PM Andrea fix "NO emoticon" mandate (CLAUDE.md regola #11):
+// emoji 📖👣🧩🎨⭐ rimossi, sostituiti SVG ElabIcons stroke 1.6 + fill currentColor.
+// Icon size driven by CSS .modeIcon (parent), default Icon component 20px.
 const MODE_META = {
   'percorso': {
-    icon: '📖',
+    Icon: BookIcon,
     label: 'Percorso',
     tooltip: 'Ragazzi, leggiamo il libro insieme — modalità lettura narrativa.',
     isDefault: true,
   },
   'passo-passo': {
-    icon: '👣',
+    Icon: FootstepsIcon,
     label: 'Passo Passo',
     tooltip: 'Ragazzi, montiamo il circuito un componente alla volta.',
     isDefault: false,
   },
   'gia-montato': {
-    icon: '🧩',
+    Icon: CircuitIcon,
     label: 'Già Montato',
     tooltip: 'Ragazzi, guardate il circuito già pronto — sapete spiegarlo?',
     isDefault: false,
   },
   'libero': {
-    icon: '🎨',
+    Icon: PaletteIcon,
     label: 'Libero',
     tooltip: 'Ragazzi, esploriamo liberamente — UNLIM ci suggerisce variazioni.',
     isDefault: false,
@@ -92,10 +96,14 @@ export default function ModalitaSwitch({ activeMode = 'percorso', onModeChange, 
             className={`${css.modeBtn} ${active ? css.modeBtnActive : ''} ${meta.isDefault ? css.modeBtnDefault : ''}`}
             onClick={() => handleClick(mode)}
           >
-            <span className={css.modeIcon} aria-hidden="true">{meta.icon}</span>
+            <span className={css.modeIcon} aria-hidden="true">
+              <meta.Icon size={20} />
+            </span>
             <span className={css.modeLabel}>{meta.label}</span>
             {meta.isDefault && (
-              <span className={css.defaultStar} aria-label="Modalità predefinita" title="Modalità predefinita">⭐</span>
+              <span className={css.defaultStar} aria-label="Modalità predefinita" title="Modalità predefinita">
+                <StarIcon size={14} />
+              </span>
             )}
           </button>
         );
