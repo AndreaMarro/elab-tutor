@@ -1359,33 +1359,19 @@ export default function LavagnaShell() {
             ...(bottomPanelOpen ? { marginBottom: bottomPanelSize } : {}),
           }}>
             {/* Iter 36 fix Andrea "lavagna libera deve essere davvero libera senza
-                 circuiti, solo volumi e UNLIM": gate NewElabSimulator (breadboard +
-                 components) when lavagnaSoloMode active. DrawingOverlay (chalk)
-                 still renders via __ELAB_API toggleDrawing and is NOT dependent
-                 on simulator mount. Empty placeholder per Lavagna libera empty
-                 chalkboard look + Vision button kept hidden too. */}
-            {!lavagnaSoloMode && (
-              <Suspense fallback={
-                <div className={css.loading}>
-                  <span>Caricamento simulatore...</span>
-                </div>
-              }>
-                <NewElabSimulator hideLessonPath />
-              </Suspense>
-            )}
-            {lavagnaSoloMode && (
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(180deg, #FAFCFF 0%, #EEF3F8 100%)',
-                  pointerEvents: 'none',
-                }}
-                data-testid="lavagna-libera-empty-canvas"
-                data-elab-mode="lavagna-libera-empty"
-                aria-hidden="true"
-              />
-            )}
+                 circuiti, solo volumi e UNLIM": NewElabSimulator sempre montato
+                 (DrawingOverlay nested dipende da esso per chalk pen). lavagnaSoloMode
+                 propaga prop hideSimulatorBoard che dentro nasconde breadboard SVG +
+                 ComponentDrawer ma preserva DrawingOverlay. Pivot from full hide
+                 (rotture drawing layer) to internal-gate. iter 37 refactor extract
+                 DrawingOverlay standalone se ulteriore isolation richiesta. */}
+            <Suspense fallback={
+              <div className={css.loading}>
+                <span>Caricamento simulatore...</span>
+              </div>
+            }>
+              <NewElabSimulator hideLessonPath hideSimulatorBoard={lavagnaSoloMode} />
+            </Suspense>
 
             <FloatingToolbar
               activeTool={activeTool}
