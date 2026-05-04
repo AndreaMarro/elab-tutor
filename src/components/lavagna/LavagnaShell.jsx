@@ -1331,10 +1331,14 @@ export default function LavagnaShell() {
       <div className={css.body}>
         {/* === LAVAGNA VIEW (simulatore + pannelli) === */}
         <div className={css.lavagnaView} style={{ display: activeTab === 'lavagna' ? 'contents' : 'none' }}>
-          {/* ADR-025 iter 26 — Modalità switch 4 modes canonical (Percorso default + Passo Passo + Già Montato + Libero auto-Percorso) */}
-          <div className={css.modalitaSwitchSlot} data-testid="modalita-switch-slot">
-            <ModalitaSwitch activeMode={modalita} onModeChange={handleModalitaChange} />
-          </div>
+          {/* ADR-025 iter 26 — Modalità switch 4 modes canonical.
+               Iter 36 fix Andrea "lavagna libera senza circuiti, solo volumi e UNLIM":
+               hide ModalitaSwitch in lavagnaSoloMode (pure chalkboard mode no mode picker). */}
+          {!lavagnaSoloMode && (
+            <div className={css.modalitaSwitchSlot} data-testid="modalita-switch-slot">
+              <ModalitaSwitch activeMode={modalita} onModeChange={handleModalitaChange} />
+            </div>
+          )}
 
           {/* Left panel — quick component palette (hidden in Libero/sandbox: solo canvas pulito) */}
           {hasExperiment && buildMode !== 'sandbox' && (
@@ -1620,8 +1624,11 @@ export default function LavagnaShell() {
 
       {/* Bentornati Overlay — Principio Zero: auto-propose next experiment.
           Serializzato: attende ConsentBanner dismesso (route student-facing). */}
+      {/* Iter 36 fix Andrea "lavagna libera senza circuiti, solo volumi e UNLIM":
+           hide BentornatiOverlay in lavagnaSoloMode (pure chalkboard mode does NOT
+           propose experiments — Andrea wants empty chalkboard + UNLIM + Volumi). */}
       <BentornatiOverlay
-        visible={bentornatiVisible && !hasExperiment && bentornatiAllowed}
+        visible={!lavagnaSoloMode && bentornatiVisible && !hasExperiment && bentornatiAllowed}
         onStart={handleBentornatiStart}
         onPickExperiment={handleBentornatiPickExperiment}
       />
