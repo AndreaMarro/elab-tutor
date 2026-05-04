@@ -756,15 +756,9 @@ export default function HomePage({ onNavigate }) {
 
       <footer style={styles.footer} id="elab-home-footer" data-testid="home-footer">
         <p style={styles.footerCredits}>
-          <span style={styles.footerCreditsStrong}>Andrea Marro</span> coding
+          <span style={styles.footerCreditsStrong}>Andrea Marro</span>
           {' · '}
-          <span style={styles.footerCreditsStrong}>Teodora de Venere</span> co-dev / UX / QA
-          {' · '}
-          <span style={styles.footerCreditsStrong}>Davide Fagherazzi</span> volumi cartacei
-          {' · '}
-          <span style={styles.footerCreditsStrong}>Omaric Elettronica</span> kit
-          {' · '}
-          <span style={styles.footerCreditsStrong}>Giovanni Fagherazzi</span> network commerciale
+          <span style={styles.footerCreditsStrong}>Teodora de Venere</span>
         </p>
         <button
           type="button"
