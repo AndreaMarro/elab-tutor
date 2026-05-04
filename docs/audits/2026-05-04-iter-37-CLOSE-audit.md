@@ -22,7 +22,13 @@
 
 **Pre-commit hook**: 13887 PASS (≥11958 baseline gate).
 
-**Visual verify Andrea Chrome MCP post-deploy**: deferred (Vercel auto-build push BG b3gn0p0pd).
+**Visual verify Chrome MCP POST-DEPLOY VERIFIED ✓** (2026-05-04 PM session 3 close):
+- Vercel deploy `dpl_GDKryZkj2qiiJJhfHTxqDDaxHMrx` (`a1noij2zm`) Ready prod LIVE www.elabtutor.school
+- Chunk LIVE `index-B5fu_q9W.js` (NEW vs OLD `index-B_SoxLfV.js` pre-deploy)
+- Probe state: `galileoAdapterPresent: true` + `galileoVisibleNow: true` + `lavagnaMode: "lavagna-solo"` + `launchModeFlag: "solo"` + `hash: "#lavagna"`
+- Screenshot evidence ID `ss_1694xwqmb`: UNLIM panel auto-shown right side + chat history visible + input "Chiedi a UNLIM..." + ModalitaSwitch HIDDEN + Simulator HIDDEN
+- BONUS UNLIM prod LIVE quality: pompa d'acqua analogia + "Nel kit ELAB usiamo" plurale + Vol/pag style narrator IT register PRINCIPIO ZERO + MORFISMO Sense 2 visually compliant
+- Andrea spec "lavagna solo = lavagna + UNLIM + volumi visible" ACHIEVED prod LIVE
 
 ### P0.1 verify SHIPPED iter 36 (NO separate iter 37 atom)
 
