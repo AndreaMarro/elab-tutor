@@ -423,7 +423,10 @@ export default function LavagnaShell() {
   });
   const [activeTool, setActiveTool] = useState('select');
   const [toolToast, setToolToast] = useState(null);
-  const [galileoOpen, setGalileoOpen] = useState(false); // P0 fix: UNLIM parte minimizzato — il docente vede prima il circuito
+  // Iter 37 P0.5 fix: UNLIM auto-show in lavagnaSoloMode (Andrea explicit "lavagna solo = lavagna + UNLIM + volumi").
+  // Normal lavagna mode: galileoOpen=false default (iter 36 P0 baseline — docente vede prima il circuito).
+  // lavagnaSoloMode=true (hash #lavagna-solo OR localStorage flag): galileoOpen=true default per Andrea spec.
+  const [galileoOpen, setGalileoOpen] = useState(readLavagnaSolo);
   const [videoOpen, setVideoOpen] = useState(false);
   const [videoMinimized, setVideoMinimized] = useState(false);
   const [leftPanelOpen, setLeftPanelOpen] = useState(false);

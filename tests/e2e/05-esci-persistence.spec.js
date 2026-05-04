@@ -105,13 +105,76 @@ async function ensurePenActive(page) {
 }
 
 async function waitForDrawingSurface(page) {
-  const preferred = page.locator('canvas[data-testid="drawing-overlay"]').first();
-  const preferredVisible = await preferred.isVisible({ timeout: 3000 }).catch(() => false);
-  if (preferredVisible) return preferred;
+  const evidence = [];
+  const fail = async (reason) => {
+    const path = `test-results/l4-waitForDrawingSurface-failure-${Date.now()}.png`;
+    await page.screenshot({ path, fullPage: true }).catch((error) => {
+      console.error(`[waitForDrawingSurface] screenshot failed: ${error.message}`);
+    });
+    console.error(`[waitForDrawingSurface] ${reason}; evidence=${path}; notes=${evidence.join(' | ') || 'none'}`);
+    return null;
+  };
 
-  const fallback = page.locator('svg[xmlns="http://www.w3.org/2000/svg"], canvas').first();
-  await expect(fallback).toBeVisible({ timeout: 10000 });
-  return fallback;
+  const drawingEnabled = await page.evaluate(() => !!window.__ELAB_API?.isDrawingEnabled?.());
+  if (!drawingEnabled) {
+    const toolsBtn = page.getByRole('button', { name: /Strumenti e opzioni/i }).first();
+    const canOpenTools = await toolsBtn.isVisible({ timeout: 1500 }).catch((error) => {
+      evidence.push(`tools-btn-visible:${error.message}`);
+      return false;
+    });
+    if (canOpenTools) {
+      await toolsBtn.click({ timeout: 1500 }).catch((error) => evidence.push(`tools-btn-click:${error.message}`));
+      const penItem = page.getByRole('menuitem', { name: /Penna Circuito/i }).first();
+      const canClickPen = await penItem.isVisible({ timeout: 1500 }).catch((error) => {
+        evidence.push(`pen-item-visible:${error.message}`);
+        return false;
+      });
+      if (canClickPen) await penItem.click({ timeout: 1500 }).catch((error) => evidence.push(`pen-item-click:${error.message}`));
+      else evidence.push('pen-item-not-visible');
+    } else {
+      evidence.push('tools-btn-not-visible');
+    }
+    await page.keyboard.press('KeyP').catch((error) => evidence.push(`keyboard-KeyP:${error.message}`));
+    const toggled = await page.evaluate(() => {
+      const api = window.__ELAB_API;
+      if (!api || typeof api.toggleDrawing !== 'function') return false;
+      api.toggleDrawing(true);
+      return typeof api.isDrawingEnabled === 'function' ? !!api.isDrawingEnabled() : true;
+    });
+    if (!toggled) return fail('unable-to-activate-drawing-mode');
+  }
+
+  const selector = 'svg[xmlns="http://www.w3.org/2000/svg"]';
+  const match = await page.waitForFunction(
+    (svgSelector) => {
+      const index = [...document.querySelectorAll(svgSelector)].findIndex((el) => {
+        const style = window.getComputedStyle(el);
+        if (style.display === 'none' || style.visibility === 'hidden' || style.touchAction !== 'none') return false;
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 100 || rect.height <= 100) return false;
+        const parentStyle = window.getComputedStyle(el.parentElement);
+        return ['absolute', 'fixed'].includes(parentStyle.position)
+          && parentStyle.pointerEvents !== 'none'
+          && ['crosshair', 'not-allowed'].includes(parentStyle.cursor);
+      });
+      return index >= 0 ? index + 1 : false;
+    },
+    selector,
+    { timeout: 3000 }
+  ).catch((error) => {
+    evidence.push(`waitForFunction:${error.message}`);
+    return null;
+  });
+  if (!match) return fail('drawing-surface-not-visible');
+
+  const surfaceIndex = (await match.jsonValue()) - 1;
+  const surface = page.locator(selector).nth(surfaceIndex);
+  const visible = await surface.isVisible({ timeout: 3000 }).catch((error) => {
+    evidence.push(`surface-visible:${error.message}`);
+    return false;
+  });
+  if (!visible) return fail('drawing-surface-locator-not-visible');
+  return surface;
 }
 
 async function drawStroke(page, surface, startX, startY, endX, endY) {
