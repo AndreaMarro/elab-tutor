@@ -119,7 +119,9 @@ export async function callMistralChat(opts: MistralChatOptions): Promise<Mistral
       { role: 'system', content: opts.systemPrompt },
       { role: 'user', content: userContent },
     ],
-    max_tokens: opts.maxOutputTokens ?? 120,
+    // Iter 36 P0 Mandate 1 E1: fallback 120→350 align con llm-client callTogether.
+    // Caller fornisce maxOutputTokens via onniscenza-classifier per category.
+    max_tokens: opts.maxOutputTokens ?? 350,
     temperature: opts.temperature ?? 0.7,
   };
   if (opts.responseFormat) {
@@ -269,7 +271,8 @@ export async function callMistralChatStream(
       { role: 'system', content: opts.systemPrompt },
       { role: 'user', content: userContent },
     ],
-    max_tokens: opts.maxOutputTokens ?? 120,
+    // Iter 36 P0 Mandate 1 E1: fallback streaming 120→350 align consistency.
+    max_tokens: opts.maxOutputTokens ?? 350,
     temperature: opts.temperature ?? 0.7,
     stream: true,
   };

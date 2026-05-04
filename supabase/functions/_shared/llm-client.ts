@@ -82,10 +82,14 @@ async function callTogether(options: LLMOptions): Promise<LLMResult> {
     model,
     systemPrompt,
     message,
-    // Iter 31 P0 latency fix: cap output ~120 token (≈90 parole, fits ≤60 mandate
-    // PZ V3 + 50% safety) — was 256 = 192 parole = oltre limite + lento. Riduce
-    // output time ~40% (LLM gen ~50 token/s, 256→120 = 5s→2.4s).
-    maxOutputTokens = 120,
+    // Iter 36 P0 Andrea mandate "UNLIM non ebete pappette pronte":
+    // default cap bumped 120→350 (≈260 parole, 1-2 paragrafi educativi).
+    // Trade-off latency: 350 tok / 50 tok/s = 7s vs 2.4s old. Stream path
+    // (unlim-chat:714) mitiga via SSE first-token. Conditional cap atom E2
+    // (ENABLE_CAP_CONDITIONAL=true) override per category (chit_chat=30,
+    // deep=400, default=200, etc.) per onniscenza-classifier.ts.
+    // Iter 31 baseline 120 preserved come safety floor.
+    maxOutputTokens = 350,
     temperature = 0.7,
   } = options;
 
@@ -315,7 +319,10 @@ async function callRunPod(options: LLMOptions): Promise<LLMResult> {
           { role: 'system', content: options.systemPrompt },
           { role: 'user', content: options.message },
         ],
-        max_tokens: options.maxOutputTokens ?? 120,
+        // Iter 36 P0 Mandate 1 E1: align fallback default 120→350 con callTogether
+        // (Together-RunPod chain consistency). Caller fornisce maxOutputTokens
+        // via onniscenza-classifier (E2) per category; fallback safety floor.
+        max_tokens: options.maxOutputTokens ?? 350,
         temperature: options.temperature ?? 0.7,
         stream: false,
       }),
