@@ -623,6 +623,9 @@ export default function LavagnaShell() {
       return; // defensive: ignore unknown modes (e.g. legacy 'guida-da-errore')
     }
     setModalita(nextMode);
+    if (nextMode !== 'libero' && typeof window !== 'undefined') {
+      try { localStorage.removeItem('elab-lavagna-libero-active'); } catch { /* noop */ }
+    }
     // Già Montato NEW: signal pre-assembled diagnose mode to simulator if API present
     if (nextMode === 'gia-montato' && typeof window !== 'undefined') {
       const api = window.__ELAB_API;
@@ -641,6 +644,8 @@ export default function LavagnaShell() {
         setCurrentExperiment(null);
         if (api?.clearAll) api.clearAll();
         try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
+        try { localStorage.removeItem('elab-lavagna-last-expId'); } catch { /* noop */ }
+        try { localStorage.setItem('elab-lavagna-libero-active', 'true'); } catch { /* noop */ }
       } catch { /* noop */ }
     }
   }, []);
@@ -679,9 +684,18 @@ export default function LavagnaShell() {
         // intact (saved via handleMenuOpen on exit). NOT applied if user already
         // started a fresh experiment (currentExperiment !== null at restore time).
         try {
-          const savedExpId = localStorage.getItem('elab-lavagna-last-expId');
-          if (savedExpId && !currentExperiment && api.loadExperiment) {
-            api.loadExperiment(savedExpId);
+          // STEP 4 FIX iter 34 C1 Gemini CRITICAL: avoid stale closure of `modalita`/
+          // `currentExperiment`. useEffect deps=[] capture mount values. User actions
+          // BEFORE api ready (poll 500ms) would race. Sentinel localStorage = single
+          // source of truth (real-time read, not closure). api.getCurrentExperiment()
+          // = real-time check vs stale React closure.
+          const liberoActive = localStorage.getItem('elab-lavagna-libero-active') === 'true';
+          const apiCurrentExp = api.getCurrentExperiment?.()?.id;
+          if (!liberoActive && !apiCurrentExp) {
+            const savedExpId = localStorage.getItem('elab-lavagna-last-expId');
+            if (savedExpId && api.loadExperiment) {
+              api.loadExperiment(savedExpId);
+            }
           }
         } catch { /* localStorage quota OR private mode */ }
 
