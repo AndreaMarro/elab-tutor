@@ -35,6 +35,14 @@
  * Andrea Marro — iter 36 WebDesigner-1 Phase 1 — 2026-04-30
  */
 import React, { lazy, Suspense, useState, useCallback, useEffect } from 'react';
+// Iter 36 M1+Q1+O3 — Andrea mandate "SVG sostitutivi emoticon più belli
+// usa impeccable" + 4° card Glossario.
+import {
+  LavagnaCardIcon,
+  TutorCardIcon,
+  UNLIMCardIcon,
+  GlossarioCardIcon,
+} from './common/ElabIcons';
 
 // Cronologia sessioni — sezione sotto le card (iter 35 Task 2, preserved iter 36)
 const HomeCronologia = lazy(() => import('./HomeCronologia'));
@@ -295,6 +303,7 @@ const CARDS = [
   {
     id: 'lavagna',
     emoji: '⚡',
+    IconComponent: LavagnaCardIcon,
     accent: PALETTE.navy,
     title: 'Lavagna libera',
     text: 'Spazio della classe: lavagna pulita, simulatore, costruite quello che volete con i ragazzi.',
@@ -306,6 +315,7 @@ const CARDS = [
   {
     id: 'tutor',
     emoji: '📚',
+    IconComponent: TutorCardIcon,
     accent: PALETTE.lime,
     title: 'ELAB Tutor completo',
     text: 'App piena: Percorso dei volumi, esperimenti, UNLIM, voce, simulatore. Lezione completa con la classe.',
@@ -317,12 +327,27 @@ const CARDS = [
   {
     id: 'chatbot',
     emoji: '🧠',
+    IconComponent: UNLIMCardIcon,
     accent: PALETTE.red,
     title: 'UNLIM (solo chat)',
     text: 'Stile ChatGPT: parlate con UNLIM, citerà i volumi e suggerirà esperimenti pronti.',
     cta: 'Apri UNLIM',
     href: '#chatbot-only',
     target: 'internal',
+    credit: null,
+  },
+  // Iter 36 O1 — Andrea mandate "metti anche il glossario, ma solo glossario
+  // nella home page". 4° card link external Glossario Tea sviluppato.
+  {
+    id: 'glossario',
+    emoji: '📖',
+    IconComponent: GlossarioCardIcon,
+    accent: PALETTE.lime,
+    title: 'Glossario',
+    text: 'Tutti i termini di elettronica spiegati semplici: LED, resistore, breadboard, Arduino. Cercate parole + leggete con la classe.',
+    cta: 'Apri Glossario',
+    href: 'https://elab-tutor-glossario.vercel.app',
+    target: 'external',
     credit: null,
   },
 ];
@@ -354,7 +379,16 @@ function HomeCard({ card, onActivate }) {
 
   const innerContent = (
     <>
-      <span style={styles.cardEmoji} aria-hidden="true">{card.emoji}</span>
+      {/* Iter 36 M1+Q1 — Andrea mandate "fai svg sostitutivi delle emoticon
+          molto più belle usa impeccable". Render custom SVG component if
+          card.IconComponent present, fallback emoji legacy se non. */}
+      {card.IconComponent ? (
+        <span style={styles.cardEmoji} aria-hidden="true">
+          <card.IconComponent size={48} />
+        </span>
+      ) : (
+        <span style={styles.cardEmoji} aria-hidden="true">{card.emoji}</span>
+      )}
       <h2 style={styles.cardTitle}>{card.title}</h2>
       <p style={styles.cardText}>{card.text}</p>
       {card.credit && (

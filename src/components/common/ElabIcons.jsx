@@ -368,3 +368,99 @@ export function PaletteIcon(props) {
     </Icon>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ITER 36 M1+Q1+O3 — HomePage card icons /impeccable bolder
+   Andrea mandate "fai svg sostitutivi delle emoticon molto più belle
+   usa impeccable" (CLAUDE.md regola #11 NO emoji components).
+   Design approach: dual-tone Navy primary + Lime accent fill (NOT
+   stroke-only) per impatto visivo bold scuola K-12 LIM 5m projection.
+   Custom 48x48 viewBox per icone HomePage (vs 24x24 baseline UI).
+   ═══════════════════════════════════════════════════════════════════ */
+
+export function LavagnaCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true" {...props}
+    >
+      <path d="M28 4L8 28h12l-4 16 20-24H24l4-16Z" fill="#E8941C" stroke="#1E4D8C" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M28 4L8 28h12l-4 16" fill="none" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />
+    </svg>
+  );
+}
+
+export function TutorCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true" {...props}
+    >
+      <rect x="10" y="8" width="28" height="6" rx="1.5" fill="#4A7A25" stroke="#1E4D8C" strokeWidth="2" />
+      <line x1="14" y1="11" x2="22" y2="11" stroke="#FFF" strokeWidth="1" strokeLinecap="round" />
+      <rect x="8" y="16" width="32" height="8" rx="1.5" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2" />
+      <line x1="13" y1="20" x2="22" y2="20" stroke="#E8941C" strokeWidth="1.5" strokeLinecap="round" />
+      <rect x="11" y="26" width="26" height="14" rx="1.5" fill="#4A7A25" stroke="#1E4D8C" strokeWidth="2" />
+      <line x1="16" y1="32" x2="26" y2="32" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="16" y1="36" x2="22" y2="36" stroke="#FFF" strokeWidth="1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function UNLIMCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true" {...props}
+    >
+      <path d="M16 12c-4 0-7 3-7 7 0 2 1 4 2 5-1 1-2 3-2 5 0 4 3 7 7 7 1 3 4 5 7 5" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M32 12c4 0 7 3 7 7 0 2-1 4-2 5 1 1 2 3 2 5 0 4-3 7-7 7-1 3-4 5-7 5" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2" strokeLinejoin="round" />
+      <line x1="24" y1="8" x2="24" y2="44" stroke="#0E2D5C" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="14" cy="20" r="2" fill="#4A7A25" />
+      <circle cx="20" cy="28" r="1.6" fill="#4A7A25" />
+      <circle cx="34" cy="20" r="2" fill="#4A7A25" />
+      <circle cx="28" cy="28" r="1.6" fill="#4A7A25" />
+      <circle cx="24" cy="36" r="2" fill="#E8941C" />
+      <path d="M14 20 L20 28 L24 36" fill="none" stroke="#4A7A25" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
+      <path d="M34 20 L28 28 L24 36" fill="none" stroke="#4A7A25" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
+    </svg>
+  );
+}
+
+export function GlossarioCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true" {...props}
+    >
+      <path d="M8 10c0-1.1 0.9-2 2-2h22v28H10c-1.1 0-2-0.9-2-2V10Z" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2" strokeLinejoin="round" />
+      <line x1="14" y1="16" x2="26" y2="16" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14" y1="22" x2="28" y2="22" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14" y1="28" x2="22" y2="28" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="34" cy="28" r="7" fill="#FFF" stroke="#4A7A25" strokeWidth="3" />
+      <line x1="39" y1="33" x2="44" y2="38" stroke="#E8941C" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="34" cy="28" r="3" fill="#4A7A25" opacity="0.3" />
+    </svg>
+  );
+}
+
+export function CronologiaCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true" {...props}
+    >
+      <circle cx="24" cy="24" r="16" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2" />
+      <circle cx="24" cy="24" r="13" fill="#FFF" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="24" y1="13" x2="24" y2="15" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="35" y1="24" x2="33" y2="24" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="24" y1="35" x2="24" y2="33" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="13" y1="24" x2="15" y2="24" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="24" y1="24" x2="24" y2="17" stroke="#1E4D8C" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="24" y1="24" x2="30" y2="20" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="24" cy="24" r="1.5" fill="#0E2D5C" />
+      <path d="M10 8 L10 14 L16 14" fill="none" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 14 C10 9 14 6 18 6" fill="none" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+  );
+}
