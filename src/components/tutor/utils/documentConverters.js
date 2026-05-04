@@ -401,7 +401,13 @@ export const processDocumentUpload = async (files) => {
         else if (fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileName.endsWith('.docx')) {
 // © Andrea Marro — 17/04/2026 — ELAB Tutor — Tutti i diritti riservati
             try {
-                const mammoth = (await import('mammoth')).default;
+                // iter 34 carryover P0 CRASH FIX: mammoth v1.11.0 uses CommonJS
+                // `exports.X = X` (NOT `module.exports = X`). Vite ESM interop newer
+                // returns module namespace object, `.default` undefined → app crash
+                // 'Cannot read properties of undefined (reading default)'.
+                // Fallback: use namespace OR default depending on interop wrap.
+                const mammothModule = await import('mammoth');
+                const mammoth = mammothModule.default ?? mammothModule;
                 const arrayBuffer = await file.arrayBuffer();
                 const result = await mammoth.convertToHtml({ arrayBuffer });
                 const html = result.value;
