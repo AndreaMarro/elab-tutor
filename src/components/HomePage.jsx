@@ -314,7 +314,7 @@ const CARDS = [
     IconComponent: LavagnaCardIcon,
     accent: PALETTE.navy,
     title: 'Lavagna libera',
-    text: 'Spazio della classe: lavagna pulita, simulatore, costruite quello che volete con i ragazzi.',
+    text: 'Lavagna pulita per scrivere e parlare con UNLIM. Volumi sempre a portata. Niente circuiti.',
     cta: 'Entra in Lavagna',
     // Iter 35 H1 — Lavagna libera entry. App.jsx VALID_HASHES strict
     // ['home','tutor','lavagna',...] — `#lavagna-solo` would fail route.

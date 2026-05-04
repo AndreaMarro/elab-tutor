@@ -1358,13 +1358,34 @@ export default function LavagnaShell() {
             ...(leftPanelOpen ? { marginLeft: leftPanelSize } : {}),
             ...(bottomPanelOpen ? { marginBottom: bottomPanelSize } : {}),
           }}>
-            <Suspense fallback={
-              <div className={css.loading}>
-                <span>Caricamento simulatore...</span>
-              </div>
-            }>
-              <NewElabSimulator hideLessonPath />
-            </Suspense>
+            {/* Iter 36 fix Andrea "lavagna libera deve essere davvero libera senza
+                 circuiti, solo volumi e UNLIM": gate NewElabSimulator (breadboard +
+                 components) when lavagnaSoloMode active. DrawingOverlay (chalk)
+                 still renders via __ELAB_API toggleDrawing and is NOT dependent
+                 on simulator mount. Empty placeholder per Lavagna libera empty
+                 chalkboard look + Vision button kept hidden too. */}
+            {!lavagnaSoloMode && (
+              <Suspense fallback={
+                <div className={css.loading}>
+                  <span>Caricamento simulatore...</span>
+                </div>
+              }>
+                <NewElabSimulator hideLessonPath />
+              </Suspense>
+            )}
+            {lavagnaSoloMode && (
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, #FAFCFF 0%, #EEF3F8 100%)',
+                  pointerEvents: 'none',
+                }}
+                data-testid="lavagna-libera-empty-canvas"
+                data-elab-mode="lavagna-libera-empty"
+                aria-hidden="true"
+              />
+            )}
 
             <FloatingToolbar
               activeTool={activeTool}
@@ -1373,18 +1394,22 @@ export default function LavagnaShell() {
               leftPanelOpen={leftPanelOpen}
             />
 
-            <div className={css.visionButtonSlot}>
-              <VisionButton
-                onVisionResult={handleVisionResult}
-                onError={handleVisionError}
-              />
-            </div>
+            {!lavagnaSoloMode && (
+              <div className={css.visionButtonSlot}>
+                <VisionButton
+                  onVisionResult={handleVisionResult}
+                  onError={handleVisionError}
+                />
+              </div>
+            )}
           </main>
 
-          {/* Right — UNLIM AI in FloatingWindow.
-               Iter 35 H2 (Maker-2): hide entirely in lavagna-solo mode (Mandate 4
-               "card Lavagna libera → canvas ONLY, no UNLIM panel auto-show"). */}
-          {!lavagnaSoloMode && (
+          {/* Iter 36 fix Andrea "lavagna libera solo volumi e UNLIM" — INVERT
+               iter 35 H2 Maker-2 logic. UNLIM (GalileoAdapter) ALWAYS visible
+               (incluso lavagnaSoloMode), simulator-related UI hidden via
+               !lavagnaSoloMode gate above. Volumi via AppHeader Capitoli /
+               Manuale / Video / Fumetto links (always visible header). */}
+          {true && (
             <GalileoAdapter
               visible={galileoOpen}
               onClose={() => { manualOverridesRef.current.galileo = true; setGalileoOpen(false); }}
@@ -1626,10 +1651,18 @@ export default function LavagnaShell() {
           if (api?.unlim?.sendMessage) api.unlim.sendMessage(msg);
         }}
         onFreeMode={() => {
+          // Iter 36 fix Andrea "qui dovrei poter accedere a elabtutor con nessun
+          // circuito caricato": chiusura completa stato esperimento.
           const api = typeof window !== 'undefined' && window.__ELAB_API;
           if (api?.clearCircuit) api.clearCircuit();
+          if (api?.clearAll) api.clearAll();
+          setCurrentExperiment(null);
           setHasExperiment(false);
           setFreeMode(true);
+          if (typeof window !== 'undefined') {
+            try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
+            try { localStorage.removeItem('elab-lavagna-last-expId'); } catch { /* noop */ }
+          }
         }}
       />
     </div>
