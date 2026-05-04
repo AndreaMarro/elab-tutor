@@ -1464,4 +1464,85 @@ export function warmupRender() {
     }).catch(() => { }); // Silently ignore errors (service may be sleeping)
 }
 
+/**
+ * Iter 36 SessionSave Atom SS4 — Genera (o recupera dalla cache) il riassunto
+ * UNLIM di una sessione salvata via Edge Function `unlim-session-description`.
+ *
+ * Edge Function contract (iter 35):
+ *   POST { session_id, transcript_excerpt? } → { success, description, cached }
+ *
+ * Auth:
+ *   - Authorization: Bearer <SUPABASE_ANON> (mandatory per Supabase Edge Function)
+ *   - X-Elab-Api-Key: <ELAB_API_KEY> (defense-in-depth, fail-open server-side)
+ *
+ * Edge cases handled:
+ *   - SUPABASE_EDGE/ANON missing → throw 'edge_function_not_configured'
+ *   - HTTP 4xx/5xx → throw with status
+ *   - timeout 10s via AbortSignal
+ *   - body.success=false → throw with server error
+ *
+ * @param {string} sessionId — UUID della sessione (server-side)
+ * @param {string} [transcriptExcerpt] — opzionale snippet trascritto ≤500 char
+ * @returns {Promise<{description: string, cached: boolean}>}
+ */
+export async function generateSessionSummary(sessionId, transcriptExcerpt = '') {
+    if (!sessionId || typeof sessionId !== 'string') {
+        throw new Error('session_id required');
+    }
+    if (!_SUPABASE_EDGE || !_SUPABASE_ANON) {
+        throw new Error('edge_function_not_configured');
+    }
+
+    const url = `${_SUPABASE_EDGE}/unlim-session-description`;
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${_SUPABASE_ANON}`,
+        'X-Elab-Client': 'session-save',
+    };
+    if (_ELAB_API_KEY) {
+        headers['X-Elab-Api-Key'] = _ELAB_API_KEY;
+    }
+
+    const body = { session_id: sessionId.trim() };
+    if (transcriptExcerpt && typeof transcriptExcerpt === 'string') {
+        body.transcript_excerpt = transcriptExcerpt.slice(0, 500);
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(body),
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (res.status === 401 || res.status === 403) {
+            throw new Error(`auth_failed_${res.status}`);
+        }
+        if (!res.ok) {
+            throw new Error(`http_${res.status}`);
+        }
+
+        const data = await res.json();
+        if (!data?.success || typeof data?.description !== 'string') {
+            throw new Error(data?.error || 'invalid_response');
+        }
+
+        return {
+            description: data.description.trim().slice(0, 200),
+            cached: !!data.cached,
+        };
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err?.name === 'AbortError') {
+            throw new Error('timeout');
+        }
+        throw err;
+    }
+}
+
 export { API };

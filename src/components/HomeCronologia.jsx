@@ -16,8 +16,14 @@
  * fetch on-demand al primo render della row.
  *
  * Andrea Marro — iter 7 ralph iter 3 — 2026-05-01
+ *
+ * Iter 36 SessionSave Atom SS6 (2026-05-04): handleResume ora chiama
+ * `restoreSession(sessionId)` da services/sessionRestore prima di navigare,
+ * così LavagnaShell consuma l'evento 'elab-session-restore' e ripristina
+ * modalita + drawing + chat history. Toast di progresso plurale "Ragazzi…".
  */
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import { restoreSession } from '../services/sessionRestore';
 
 const SESSIONS_KEY = 'elab_unlim_sessions';
 const MAX_ITEMS = 30;
@@ -416,7 +422,9 @@ function HomeRow({ session, onResume }) {
 
   const handle = useCallback(() => {
     if (typeof onResume === 'function' && session?.experimentId) {
-      onResume(session.experimentId);
+      // Iter 36 SS6: pass full session reference (id + experimentId) so parent
+      // can call restoreSession() with UUID when available.
+      onResume(session.experimentId, session?.id || null);
     }
   }, [onResume, session]);
 
@@ -545,11 +553,41 @@ export default function HomeCronologia({ onResume }) {
     }
   }, [batchFetching, sessions]);
 
-  const handleResume = useCallback((experimentId) => {
+  // Iter 36 SS6: restore toast state (plurale "Ragazzi"). Auto-clear 2.5s.
+  const [restoreToast, setRestoreToast] = useState(null);
+
+  const handleResume = useCallback(async (experimentId, sessionId = null) => {
     if (!experimentId) return;
     try {
       localStorage.setItem('elab_resume_experiment', experimentId);
     } catch { /* best effort */ }
+
+    // If we have a session UUID, run full restore (dispatches 'elab-session-restore')
+    if (sessionId && typeof sessionId === 'string') {
+      setRestoreToast({ type: 'loading', message: 'Ripristino sessione…' });
+      try {
+        const result = await restoreSession(sessionId);
+        if (result?.success) {
+          setRestoreToast({
+            type: 'success',
+            message: 'Ragazzi, sessione ripristinata. Riprendete da dove avevate lasciato!',
+          });
+        } else {
+          setRestoreToast({
+            type: 'warning',
+            message: 'Sessione non trovata online — apertura esperimento.',
+          });
+        }
+      } catch {
+        setRestoreToast({
+          type: 'warning',
+          message: 'Errore ripristino — apertura esperimento.',
+        });
+      }
+      // Auto-clear toast after 2.5s
+      setTimeout(() => setRestoreToast(null), 2500);
+    }
+
     if (typeof onResume === 'function') {
       onResume('lavagna');
     } else if (typeof window !== 'undefined') {
@@ -581,6 +619,33 @@ export default function HomeCronologia({ onResume }) {
 
   return (
     <section style={styles.section} aria-labelledby="cronologia-heading" data-testid="home-cronologia">
+      {restoreToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          data-testid="cronologia-restore-toast"
+          data-toast-type={restoreToast.type}
+          style={{
+            position: 'fixed',
+            top: 24,
+            right: 24,
+            zIndex: 9100,
+            padding: '12px 18px',
+            borderRadius: 12,
+            background: restoreToast.type === 'success' ? PALETTE.lime
+              : restoreToast.type === 'warning' ? PALETTE.orange
+              : PALETTE.navy,
+            color: '#FFFFFF',
+            fontSize: 14,
+            fontWeight: 600,
+            boxShadow: '0 6px 20px rgba(15, 28, 50, 0.25)',
+            maxWidth: 360,
+            fontFamily: "'Open Sans', system-ui, sans-serif",
+          }}
+        >
+          {restoreToast.message}
+        </div>
+      )}
       <div style={styles.headerRow}>
         <h2 id="cronologia-heading" style={styles.heading}>Cronologia recente</h2>
         {canGenerate && (

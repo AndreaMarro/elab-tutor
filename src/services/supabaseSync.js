@@ -10,8 +10,19 @@
 
 import supabase, { isSupabaseConfigured } from './supabaseClient';
 import logger from '../utils/logger';
+// iter 36 SessionSave Atom SS3 — lazy-import generateSessionSummary to avoid
+// circular module init (api.js imports unrelated services). Resolve at call
+// time inside saveSession when generateSummary flag is true.
+let _apiModulePromise = null;
+async function _resolveApi() {
+  if (!_apiModulePromise) {
+    _apiModulePromise = import('./api.js').catch(() => null);
+  }
+  return _apiModulePromise;
+}
 
 const QUEUE_KEY = 'elab_sync_queue';
+const SUMMARY_RETRY_KEY = 'elab_session_summary_retry';
 const MAX_RETRIES = 5;
 const MAX_QUEUE_SIZE = 200;
 const QUEUE_EXPIRY_DAYS = 7;
@@ -46,11 +57,24 @@ function addToQueue(table, data, operation = 'insert') {
 
 /**
  * Salva una sessione strutturata in Supabase (upsert by session id).
- * @param {object} session — from useSessionTracker: {id, experimentId, startTime, endTime, messages, actions, errors, summary}
- * @returns {Promise<{success: boolean, error?: string}>}
+ *
+ * Iter 36 SessionSave Atom SS3 — extended with summary generation.
+ * Quando opts.generateSummary=true e session.id è UUID valido, dopo l'INSERT
+ * triggera apiClient.generateSessionSummary() per popolare description_unlim.
+ * Idempotente: se session.summary già non vuoto, skip generazione.
+ * Error path: se Edge Function fallisce, sessione resta salvata, summary
+ * task accodato in localStorage (`SUMMARY_RETRY_KEY`) per retry futuro.
+ *
+ * @param {object} session — {id, experimentId, startTime, endTime, messages, actions, errors, summary}
+ * @param {object} [opts]
+ * @param {boolean} [opts.generateSummary=false] — chiama Edge Function post-insert
+ * @param {string} [opts.transcriptExcerpt] — snippet trascritto da passare al LLM
+ * @returns {Promise<{success: boolean, error?: string, description?: string}>}
  */
-export async function saveSession(session) {
+export async function saveSession(session, opts = {}) {
   if (!session) return { success: false, error: 'No session data' };
+
+  const { generateSummary = false, transcriptExcerpt = '' } = opts;
 
   const row = {
     student_id: _getCurrentUserId(),
@@ -78,12 +102,68 @@ export async function saveSession(session) {
   try {
     const { error } = await supabase.from('student_sessions').insert(row);
     if (error) throw error;
-    return { success: true };
   } catch (err) {
     logger.warn('[Sync] saveSession failed, queued:', err.message);
     addToQueue('student_sessions', row);
     return { success: false, error: err.message };
   }
+
+  // Iter 36 SS3: optional summary generation (post-insert, idempotent, fail-safe)
+  let description;
+  if (generateSummary) {
+    const sessionId = typeof session.id === 'string' ? session.id.trim() : '';
+    const isValidUuid = sessionId && /^[0-9a-f-]{8,}$/i.test(sessionId);
+    const alreadyHasSummary = typeof session.summary === 'string' && session.summary.trim().length > 0;
+
+    if (isValidUuid && !alreadyHasSummary) {
+      try {
+        const apiMod = await _resolveApi();
+        if (apiMod?.generateSessionSummary) {
+          const result = await apiMod.generateSessionSummary(sessionId, transcriptExcerpt);
+          description = result?.description || '';
+          if (description) {
+            // Persist back to localStorage cache (HomeCronologia uses this)
+            _persistDescriptionLocal(sessionId, description);
+          }
+        }
+      } catch (err) {
+        logger.warn('[Sync] summary generation failed, queued:', err?.message || err);
+        _queueSummaryRetry(sessionId, transcriptExcerpt);
+      }
+    }
+  }
+
+  return { success: true, ...(description ? { description } : {}) };
+}
+
+// Iter 36 SS3 helpers —
+function _persistDescriptionLocal(sessionId, description) {
+  try {
+    if (typeof localStorage === 'undefined' || !sessionId) return;
+    const raw = localStorage.getItem('elab_unlim_sessions');
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return;
+    const next = parsed.map((s) =>
+      s && (s.id === sessionId || s.experimentId === sessionId)
+        ? { ...s, description_unlim: description }
+        : s
+    );
+    localStorage.setItem('elab_unlim_sessions', JSON.stringify(next));
+  } catch { /* best effort */ }
+}
+
+function _queueSummaryRetry(sessionId, transcriptExcerpt) {
+  try {
+    const raw = localStorage.getItem(SUMMARY_RETRY_KEY) || '[]';
+    const queue = JSON.parse(raw);
+    if (!Array.isArray(queue)) return;
+    // Cap at 50 to avoid unbounded growth
+    const next = queue.filter((q) => q?.session_id !== sessionId);
+    next.push({ session_id: sessionId, transcript_excerpt: transcriptExcerpt || '', queued_at: Date.now() });
+    if (next.length > 50) next.splice(0, next.length - 50);
+    localStorage.setItem(SUMMARY_RETRY_KEY, JSON.stringify(next));
+  } catch { /* silent */ }
 }
 
 /**

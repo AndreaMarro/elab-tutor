@@ -8,6 +8,11 @@
 import React, { lazy, Suspense, useState, useCallback, useEffect, useRef, useMemo, useId } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import AppHeader from './AppHeader';
+// Iter 36 SessionSave Atom SS1+SS2 — bottone + dialog salvataggio sessione
+import SaveSessionButton from './SaveSessionButton';
+import SaveSessionDialog from './SaveSessionDialog';
+// Iter 36 SS3 — saveSession con summary auto-generato via Edge Function
+import { saveSession as saveSessionToSupabase } from '../../services/supabaseSync';
 import FloatingToolbar from './FloatingToolbar';
 import RetractablePanel from './RetractablePanel';
 import GalileoAdapter from './GalileoAdapter';
@@ -483,6 +488,10 @@ export default function LavagnaShell() {
     try { return localStorage.getItem('elab-lavagna-wake-word') !== 'off'; } catch { return true; }
   });
   const [wakeWordActive, setWakeWordActive] = useState(false);
+  // Iter 36 SessionSave SS1+SS2: dialog open + save status
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState('idle'); // 'idle'|'saving'|'success'|'error'
+  const saveStatusTimerRef = useRef(null);
   // F2.B: serializzazione primo-accesso. ConsentBanner (se presente) ha
   // priorità su Bentornati/Picker. ExperimentPicker parte ultimo.
   const bentornatiAllowed = useOverlayQueue('bentornati');
@@ -1155,6 +1164,85 @@ export default function LavagnaShell() {
     return () => window.removeEventListener('elab-voice-command', onVoiceCommand);
   }, [handleFumettoOpen]);
 
+  // ── Iter 36 SessionSave SS1+SS2+SS3: save handlers ──
+  const handleSaveSessionOpen = useCallback(() => {
+    setSaveDialogOpen(true);
+  }, []);
+
+  const handleSaveSessionCancel = useCallback(() => {
+    setSaveDialogOpen(false);
+  }, []);
+
+  const _resetSaveStatusAfter = useCallback((status, ms) => {
+    if (saveStatusTimerRef.current) clearTimeout(saveStatusTimerRef.current);
+    setSaveStatus(status);
+    saveStatusTimerRef.current = setTimeout(() => setSaveStatus('idle'), ms);
+  }, []);
+
+  // Cleanup save status timer on unmount
+  useEffect(() => () => {
+    if (saveStatusTimerRef.current) clearTimeout(saveStatusTimerRef.current);
+  }, []);
+
+  const handleSaveSessionConfirm = useCallback(async (formPayload) => {
+    setSaveStatus('saving');
+    try {
+      // Build session payload from current Lavagna state
+      const now = new Date().toISOString();
+      const sessionPayload = {
+        id: typeof crypto !== 'undefined' && crypto?.randomUUID
+          ? crypto.randomUUID()
+          : `local-${Date.now()}`,
+        experimentId: currentExperiment?.id || null,
+        startTime: currentExperiment?.startedAt || now,
+        endTime: now,
+        summary: formPayload?.description || '',
+        title: formPayload?.title || '',
+        notes: formPayload?.notes || '',
+        students: formPayload?.students || '',
+        modalita,
+        currentVolume,
+        currentVolumePage,
+        messages: [],
+        actions: [],
+        errors: [],
+      };
+
+      // Persist to localStorage cronologia (immediate)
+      try {
+        const raw = localStorage.getItem('elab_unlim_sessions') || '[]';
+        const parsed = JSON.parse(raw);
+        const arr = Array.isArray(parsed) ? parsed : [];
+        arr.unshift({
+          ...sessionPayload,
+          description_unlim: formPayload?.description || '',
+        });
+        // Cap at 100 entries
+        const capped = arr.slice(0, 100);
+        localStorage.setItem('elab_unlim_sessions', JSON.stringify(capped));
+      } catch { /* best effort */ }
+
+      // Sync to Supabase + trigger summary if not already provided
+      const result = await saveSessionToSupabase(sessionPayload, {
+        generateSummary: !sessionPayload.summary,
+        transcriptExcerpt: '',
+      });
+
+      setSaveDialogOpen(false);
+      if (result?.success) {
+        showToastSync?.('Sessione salvata!', 'success');
+        _resetSaveStatusAfter('success', 2500);
+      } else {
+        showToastSync?.('Salvataggio in coda offline.', 'info');
+        _resetSaveStatusAfter('success', 2500);
+      }
+    } catch (err) {
+      logger.warn('[SaveSession] failed:', err?.message || err);
+      showToastSync?.('Errore salvataggio — riprovate.', 'error');
+      _resetSaveStatusAfter('error', 4000);
+    }
+  }, [currentExperiment, modalita, currentVolume, currentVolumePage, _resetSaveStatusAfter]);
+
   return (
     <div
       className={css.shell}
@@ -1222,11 +1310,22 @@ export default function LavagnaShell() {
         }}
         percorsoOpen={galileoOpen && unlimTab === 'percorso'}
         onFumettoOpen={handleFumettoOpen}
+        onSaveSession={handleSaveSessionOpen}
+        saveStatus={saveStatus}
         activeTab={activeTab}
         onTabChange={setActiveTab}
         showLezioneTab={isDocente}
         showClasseTab={isDocente}
         showProgressiTab={isStudente}
+      />
+      {/* Iter 36 SessionSave SS2 — modal dialog conferma + AI summary */}
+      <SaveSessionDialog
+        open={saveDialogOpen}
+        sessionId={currentExperiment?.sessionId || null}
+        experimentName={experimentName}
+        transcriptExcerpt=""
+        onConfirm={handleSaveSessionConfirm}
+        onCancel={handleSaveSessionCancel}
       />
 
       <div className={css.body}>

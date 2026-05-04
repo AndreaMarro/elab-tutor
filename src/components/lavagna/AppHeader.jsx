@@ -1,5 +1,7 @@
 import React from 'react';
 import css from './AppHeader.module.css';
+// Iter 36 SessionSave SS1 — save session button slot
+import SaveSessionButton from './SaveSessionButton';
 
 export default function AppHeader({
   experimentName = 'Scegli un esperimento...',
@@ -15,6 +17,9 @@ export default function AppHeader({
   onCapitoliOpen,
   capitoliOpen = false,
   onFumettoOpen,
+  // Iter 36 SS1 — Salva sessione
+  onSaveSession,
+  saveStatus = 'idle',
   activeTab = 'lavagna',
   onTabChange,
   showClasseTab = false,
@@ -154,6 +159,9 @@ export default function AppHeader({
             </svg>
             <span className={css.btnText}>Fumetto</span>
           </button>
+        )}
+        {onSaveSession && (
+          <SaveSessionButton onOpenDialog={onSaveSession} status={saveStatus} />
         )}
       </div>
     </header>

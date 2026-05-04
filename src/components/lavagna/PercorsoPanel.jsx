@@ -342,7 +342,12 @@ export default function PercorsoPanel({ visible = false, onClose, experiment: pr
       }}
       onClose={onClose}
     >
-      <div style={styles.scroll} data-testid="percorso-panel-scroll">
+      <div
+        style={styles.scroll}
+        data-testid="percorso-panel-scroll"
+        data-elab-panel="percorso"
+        className="elab-percorso-panel"
+      >
         {/* Iter 35 J3 — Vol switcher chips (Morfismo Sense 1 — mode active
             adatta presentation runtime). */}
         <div style={styles.capHeader} data-testid="percorso-cap-header">

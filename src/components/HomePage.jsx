@@ -151,7 +151,6 @@ const styles = {
     position: 'absolute',
     bottom: '100%',
     left: '50%',
-    transform: 'translateX(-50%)',
     background: PALETTE.cardBg,
     color: PALETTE.navy,
     padding: '10px 18px',
@@ -162,8 +161,14 @@ const styles = {
     whiteSpace: 'nowrap',
     boxShadow: '0 4px 16px rgba(30, 77, 140, 0.25)',
     border: `2px solid ${PALETTE.lime}`,
-    marginBottom: 12,
+    marginBottom: 24,
     pointerEvents: 'none',
+    // Iter 36 fix Andrea: nuvoletta animata + NON tocca bordo superiore.
+    // animation = float wave + scale pulse (4s loop). Apply via class fallback IF
+    // inline style animation property unsupported.
+    animation: 'elab-bubble-wave 4s ease-in-out infinite',
+    transformOrigin: 'bottom center',
+    willChange: 'transform',
   },
   speechBubbleArrow: {
     position: 'absolute',
@@ -212,9 +217,11 @@ const styles = {
     boxShadow: '0 16px 40px rgba(30, 77, 140, 0.22)',
   },
   cardEmoji: {
-    fontSize: 56,
+    fontSize: 88,
     lineHeight: 1,
-    marginBottom: 4,
+    marginBottom: 8,
+    display: 'inline-block',
+    filter: 'drop-shadow(0 2px 6px rgba(30, 77, 140, 0.18))',
   },
   cardTitle: {
     fontFamily: "'Oswald', system-ui, sans-serif",
@@ -398,7 +405,7 @@ function HomeCard({ card, onActivate }) {
           card.IconComponent present, fallback emoji legacy se non. */}
       {card.IconComponent ? (
         <span style={styles.cardEmoji} aria-hidden="true">
-          <card.IconComponent size={48} />
+          <card.IconComponent size={88} />
         </span>
       ) : (
         <span style={styles.cardEmoji} aria-hidden="true">{card.emoji}</span>
@@ -465,6 +472,16 @@ export default function HomePage({ onNavigate }) {
     const interval = setInterval(() => {
       setGreetingIdx((idx) => (idx + 1) % ROTATING_GREETINGS.length);
     }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Iter 36 fix Andrea — footer scimpanzè rotation 4 GIFs (public/easter/scimpanze-{1..4}.gif).
+  // Andrea drops GIFs later; src 404 → onError fallback emoji 🐒.
+  const [scimpanzeIdx, setScimpanzeIdx] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScimpanzeIdx((idx) => (idx + 1) % 4);
+    }, 4500);
     return () => clearInterval(interval);
   }, []);
 
@@ -607,6 +624,24 @@ export default function HomePage({ onNavigate }) {
 
   return (
     <div style={styles.page} data-testid="elab-home-page" data-elab-mode="home" data-elab-routing={hash || 'root'}>
+      {/* Iter 36 fix Andrea: nuvoletta animata (translateX(-50%) preservato in
+          keyframes per centratura). Wave + scale subtile + opacity respect
+          prefers-reduced-motion. */}
+      <style>{`
+        @keyframes elab-bubble-wave {
+          0%   { transform: translateX(-50%) translateY(0)    scale(1);    }
+          25%  { transform: translateX(-50%) translateY(-3px) scale(1.015); }
+          50%  { transform: translateX(-50%) translateY(0)    scale(1);    }
+          75%  { transform: translateX(-50%) translateY(2px)  scale(0.985); }
+          100% { transform: translateX(-50%) translateY(0)    scale(1);    }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-testid="home-mascotte-greeting"] {
+            animation: none !important;
+            transform: translateX(-50%) !important;
+          }
+        }
+      `}</style>
       {/* Iter 35 PM Andrea fix "sfondo bianco fa schifo": SVG feColorMatrix
           filter rimuove pixel bianchi PNG mascotte at runtime (no asset rebuild).
           `feColorMatrix` matrix reduces alpha by sum(R+G+B) so puro white (1,1,1)
@@ -804,6 +839,7 @@ export default function HomePage({ onNavigate }) {
 
       <footer style={styles.footer} id="elab-home-footer" data-testid="home-footer">
         <p style={styles.footerCredits}>
+          <span style={{ ...styles.footerCreditsStrong, fontWeight: 500 }}>Homepage a cura di </span>
           <span style={styles.footerCreditsStrong}>Andrea Marro</span>
           {' · '}
           <span style={styles.footerCreditsStrong}>Teodora de Venere</span>
@@ -812,27 +848,52 @@ export default function HomePage({ onNavigate }) {
           type="button"
           onClick={() => handleActivate('#about-easter')}
           style={{
-            ...styles.footerEasterLink,
             position: 'absolute',
             right: 16,
             bottom: 12,
+            background: 'transparent',
+            border: 'none',
+            padding: 4,
+            cursor: 'pointer',
+            borderRadius: 8,
+            transition: 'transform 200ms ease',
           }}
           data-testid="home-footer-easter-link"
           data-elab-action="open-about-easter"
-          aria-label="Chi siamo (modal iter 37)"
+          aria-label="Chi siamo"
           title="Chi siamo"
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = PALETTE.navy;
-            e.currentTarget.style.background = 'rgba(74, 122, 37, 0.08)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = PALETTE.textMuted;
-            e.currentTarget.style.background = 'transparent';
-          }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
         >
-          <span aria-hidden="true" style={{ display: 'inline-flex', verticalAlign: 'middle', marginRight: 6 }}>
-            <RobotIcon size={20} />
-          </span> Chi siamo
+          <img
+            src={`/easter/scimpanze-${(scimpanzeIdx % 4) + 1}.gif`}
+            alt=""
+            width={48}
+            height={48}
+            style={{
+              display: 'block',
+              objectFit: 'contain',
+              borderRadius: 8,
+              transition: 'opacity 600ms ease-in-out',
+            }}
+            onError={(e) => {
+              // Fallback: scimpanzè GIFs not yet dropped public/easter/. Use emoji placeholder.
+              e.currentTarget.style.display = 'none';
+              const sib = e.currentTarget.nextSibling;
+              if (sib) sib.style.display = 'inline-block';
+            }}
+          />
+          <span
+            aria-hidden="true"
+            style={{
+              display: 'none',
+              fontSize: 40,
+              lineHeight: 1,
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+            }}
+          >
+            🐒
+          </span>
         </button>
       </footer>
     </div>

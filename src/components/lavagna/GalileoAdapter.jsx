@@ -662,7 +662,12 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
       glass
       className={css.galileoWindow}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div
+        data-testid="galileo-adapter"
+        data-elab-panel="unlim"
+        className="elab-unlim-panel"
+        style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      >
         {/* Iter 34 P0 fix: removed PERCORSO + GUIDA tabs — duplicates with
              ModalitaSwitch top + GUIDA legacy iter 26 ADR-025 deprecated.
              UNLIM panel now CHAT only (single primary interaction). */}
