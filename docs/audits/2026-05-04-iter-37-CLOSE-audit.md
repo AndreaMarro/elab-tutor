@@ -147,4 +147,46 @@
 - ✅ NO destructive ops (NO `git reset --hard`, NO `rm -rf`, NO `DROP TABLE`)
 - ✅ NO debito tecnico nascosto (caveat §4 7 entries explicit + tech-debt cleanup mandate iter 38)
 
+## §8 Mechanism retroactive runs ONESTO (iter 38 entrance gates)
+
+**M-AI-03 claim-reality-gap-detector** retroactive scan:
+- 6 vitest_pass historical drift findings (iter 8 12599, iter 15 12718, iter 21 12290 ×2, iter 30 13233, iter 33 13233 — all pre-current 13887). Stale claims past audits.
+- Report: `automa/state/claim-reality-gap-2026-05-04.json`
+
+**M-AI-04 doc-drift-detector** retroactive scan:
+- 293 files scanned + 6 findings (3 HIGH + 3 MEDIUM)
+- Actuals verified: toolspec=57 + lesson-paths=94 + rag=SKIP env-gated
+- Report: `automa/state/doc-drift-report-2026-05-04.json`
+
+**M-AI-02 mechanical-cap-enforcer** dry-run iter 37 score 8.55:
+- No caps triggered (RAG_PAGE_COVERAGE missing_evidence + BUNDLE_SIZE missing_evidence)
+- iter 37 score 8.55 mechanically OK above 8.5 floor
+
+**4 claim/reality gaps caught iter 37 prompt vs file system reality** (CRITICAL anti-inflation):
+1. P0.2 NewElabSimulator hideSimulatorBoard internal impl — iter 37 prompt §3 claimed "NOT impl" — file:line `src/components/simulator/NewElabSimulator.jsx:879-891` ternary conditional + sr-only message GIÀ shipped commit 632b0c0 iter 36
+2. shouldUseIntentSchema heuristic widen — iter 37 prompt §3 implied gap — file:line `supabase/functions/_shared/clawbot-template-router.ts:351-385` 25+ regex 6 categories `SHOULD_USE_INTENT_SCHEMA_VERSION = '2.0-iter40-widened'` GIÀ shipped iter 40
+3. ComponentDrawer G3 PRONTI banner gate — master plan iter 35 G3 — file:line `src/components/simulator/panels/ComponentDrawer.jsx:204` `if (liberoActive && mode === 'guided') return null` GIÀ shipped iter 35 P2
+4. Wake word "Ragazzi" plurale prepend — iter 37 prompt §3 P0 carryover — file:line `src/services/wakeWord.js:33-35` WAKE_PHRASES `'ragazzi unlim' + 'ragazzi un lim' + 'ragazzi anelim'` GIÀ shipped iter 41 Phase D D1
+
+**Implication onesti**:
+- iter 37 prompt was authored from outdated state map (per gap pattern)
+- Real iter 38+ work scope corrected: P0.3 SVG redesign + P0.4 YouTube Data API + P0.6 Mac Mini SSH + L2 router scale fix + 92 esperimenti audit + Vol3 narrative
+- iter 38 entrance MUST run M-AI-03 + M-AI-04 + M-AI-02 mechanism retroactive PRE atom planning to avoid duplicate work
+- M-AI-XX mechanism `prompt-state-validator` candidate iter 39+ NEW (anti-inflation gate prompts iter close PRE prompt next session author)
+
+## §9 Kimi K2.6 auth fix iter 37 close (4-vendor pipeline FULL UNLOCK)
+
+**Cause onesto FAIL**:
+- `~/.elab-credentials.env` `KIMI_BASE_URL=https://api.moonshot.cn/anthropic` (Cina mainland region)
+- Andrea key `sk-vHa...` (len 51) registrata `api.moonshot.ai` (international region) — accounts separati 2 region Moonshot
+- Model name `kimi-k2-0905-preview` (legacy) non esiste — corretto `kimi-k2.6` (256K context, multimodal, reasoning)
+
+**Fix applied**: regex replace `cn → ai` in `~/.elab-credentials.env` (chmod 600 preservato, key NEVER printed).
+
+**Smoke test post-fix**: `content:"OK"` `stop:end_turn` `model:kimi-k2.6` ✓ PASS.
+
+**Memory file updated**: `kimi-api-reference.md` (endpoint corrected + model name + diagnostic note).
+
+**4-vendor pipeline ora FULLY UNLOCKED**: Codex + Gemini + Mistral + Kimi K2.6 tutti operational iter 38+ atomi >50 LOC.
+
 End iter 37 close audit ONESTO.
