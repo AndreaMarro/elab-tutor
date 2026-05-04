@@ -102,6 +102,7 @@ const NewElabSimulator = ({
   disclosureLevel = 1,
   activeVolume = null,
   hideLessonPath = false,
+  hideSimulatorBoard = false,
 }) => {
   // ─── UNLIM API highlight state (internal, merged with props) ───
   const [apiHighlightedComponents, setApiHighlightedComponents] = useState([]);
@@ -870,7 +871,25 @@ const NewElabSimulator = ({
         {/* CENTER: Canvas */}
         <div className="elab-simulator__main">
           <RotateDeviceOverlay />
-          {currentExperiment ? (
+          {/* Iter 36 Andrea fix "lavagna libera senza circuiti, solo volumi e UNLIM":
+               hideSimulatorBoard prop wraps content in pure-chalkboard layout. NO
+               SimulatorCanvas, NO breadboard, NO ComponentDrawer. Only DrawingOverlay
+               full-viewport for chalk pen. UNLIM (GalileoAdapter) rendered ABOVE
+               by LavagnaShell parent + Volumi via AppHeader. */}
+          {hideSimulatorBoard ? (
+            <div ref={canvasContainerRef} style={{ flex: 1, position: 'relative', minHeight: 0, overflow: 'hidden', background: 'linear-gradient(180deg, #FAFCFF 0%, #EEF3F8 100%)' }}>
+              <DrawingOverlay
+                drawingEnabled={drawingEnabled}
+                canvasWidth={canvasContainerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 1920)}
+                canvasHeight={canvasContainerRef.current?.offsetHeight || (typeof window !== 'undefined' ? window.innerHeight : 1080)}
+                onPathsChange={() => {}}
+                initialFullscreen
+                onClose={() => setDrawingEnabled(false)}
+                experimentId="lavagna-libera-default"
+              />
+              <div className="sr-only" role="status" aria-live="polite">Lavagna libera attiva. Cliccate la penna sulla toolbar in basso per scrivere.</div>
+            </div>
+          ) : currentExperiment ? (
             <>
               <div ref={canvasContainerRef} style={{ flex: 1, position: 'relative', minHeight: 0, overflow: 'hidden' }} onDragOver={handleCanvasDragOver}>
                 <SimulatorCanvas
