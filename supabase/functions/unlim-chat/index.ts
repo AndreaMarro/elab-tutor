@@ -522,9 +522,15 @@ serve(async (req: Request) => {
     // system prompt can include the schema override). Heuristic: action-verb
     // detector + env opt-in. When true, BASE_PROMPT's legacy [INTENT:...]
     // block is superseded by a JSON output instruction (see system-prompt.ts).
+    const intentSchemaWidenEnabled =
+      (Deno.env.get('ENABLE_INTENT_SCHEMA_WIDEN') || 'false').toLowerCase() === 'true';
+    const intentSchemaWidenTriggered = intentSchemaWidenEnabled
+      && ['plurale_ragazzi', 'deep_question', 'default'].includes(promptClass.category)
+      && !['chit_chat', 'meta_question', 'off_topic', 'safety_warning', 'citation_vol_pag'].includes(promptClass.category);
     const intentSchemaEnabled =
       (Deno.env.get('ENABLE_INTENT_TOOLS_SCHEMA') || 'false').toLowerCase() === 'true';
-    const useIntentSchema = intentSchemaEnabled && shouldUseIntentSchema(safeMessage);
+    const useIntentSchema = intentSchemaEnabled
+      && (shouldUseIntentSchema(safeMessage) || intentSchemaWidenTriggered);
 
     // iter 34 Atom A1 — Cap conditional per category injection.
     // ENABLE_CAP_CONDITIONAL=true env flag → append getCategoryCapWordsBlock
@@ -1141,6 +1147,8 @@ serve(async (req: Request) => {
       // skipped for this category (Mistral function calling fire-rate measurement).
       l2_narrow_active?: boolean;
       l2_skipped_category?: boolean;
+      intent_schema_widen_active?: boolean;
+      intent_schema_widen_triggered?: boolean;
     } = {
       success: true,
       response: cleanText,
@@ -1173,6 +1181,8 @@ serve(async (req: Request) => {
       // iter 34 A2: surface L2 narrow state + per-request skip decision.
       response.l2_narrow_active = l2NarrowEnabled;
       response.l2_skipped_category = skipL2ForCategory;
+      response.intent_schema_widen_active = intentSchemaWidenEnabled;
+      response.intent_schema_widen_triggered = intentSchemaWidenTriggered;
     }
 
     // iter 36 Phase 1 Atom A1: surface parsed intents for client-side dispatch
