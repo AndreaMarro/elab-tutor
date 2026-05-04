@@ -1,0 +1,28 @@
+{
+  "date": "2026-05-04",
+  "git_head": "c53f5cc0f151818d5d64430b48204d3cbcb7e339",
+  "targets_scanned": [
+    "docs/handoff/2026-05-04-iter-37-to-iter-38-handoff.md",
+    "docs/handoff/2026-05-04-iter-37-PROMPT-PASTE-READY.md",
+    "docs/handoff/2026-05-04-iter-36-to-iter-37-handoff.md",
+    "docs/handoff/2026-05-04-iter-35-to-iter-36-handoff.md"
+  ],
+  "summary": {
+    "total": 1,
+    "HIGH": 1,
+    "MEDIUM": 0
+  },
+  "findings": [
+    {
+      "severity": "HIGH",
+      "kind": "commit_exists_but_claimed_not_shipped",
+      "claim_excerpt": "7 entrance ✓\n\nIter 38 P0 atomi (4-vendor cycle Codex+Gemini+Mistral+Kimi MANDATORY atomi >50 LOC):\n\nP0.2 NewElabSimulator hideSimulatorBoard internal impl (~50 LOC)\n- iter 36 prop pass shipped commit ",
+      "commit_sha": "632b0c0",
+      "commit_msg": "632b0c0 feat(iter-36-Andrea-15-impl): NewElabSimulator hideSimulatorBoard prop chalkboard-only render + iter 37 handoff",
+      "source": "docs/handoff/2026-05-04-iter-37-to-iter-38-handoff.md",
+      "rationale": "Commit 632b0c0 exists in git log but claim says NOT shipped."
+    }
+  ],
+  "enforcer_version": 1,
+  "enforcer_source": "M-AI-06-prompt-state-validator.mjs"
+}

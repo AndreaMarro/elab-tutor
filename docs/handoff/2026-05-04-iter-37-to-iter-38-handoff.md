@@ -158,15 +158,18 @@ node --version  # v20+
 
 ## §3 Iter 38 P0 priorities cascade target 8.85/10 ONESTO
 
+**CORREZIONE iter 37 close audit §8 retroactive M-AI-06**: P0.2/G3/shouldUseIntentSchema/wake-word GIÀ shipped past iter (commits 632b0c0 + iter 35 P2 + iter 40 + iter 41 D1). M-AI-06 prompt-state-validator catches drift. RIMOSSI da iter 38 priorities.
+
 | # | Priority | Atom | Time | Owner | LOC | 4-vendor? | Lift |
 |---|---|---|---|---|---|---|---|
-| 1 | P0 | P0.2 hideSimulatorBoard internal | 1.5h | Maker-2 | 50 | YES | +0.05 |
-| 2 | P0 | P0.3 SVG ElabIcons /impeccable:bolder 4 redesign | 3h | WebDesigner-1 | 150 | YES | +0.05 |
-| 3 | P0 | P0.4 YouTube Data API search inline | 3h | Maker-2 | 120 | YES | +0.05 |
-| 4 | P0 | P0.6 Mac Mini SSH retry + Aider Kimi prep | 30m + 2h | Tester-1 | 80 | NO | +0.05 |
-| 5 | P0 | P0.7 Andrea ratify queue 8 entries sequential | 1h | Andrea | env | NO | +0.05 |
-| 6 | P1 | Lighthouse perf optim Atom 42-A | 4h | WebDesigner-1 | 100 | YES | +0.05 |
-| 7 | P1 | Tech-debt cleanup /codebase-cleanup scan + 2 mechanisms | 2h | Documenter | 50 | NO | — |
+| 1 | P0 | P0.3 SVG ElabIcons /impeccable:bolder ENHANCE existing 4 (NOT redesign — già esistono) | 2h | WebDesigner-1 | 30-50 | YES | +0.05 |
+| 2 | P0 | P0.4 YouTube Data API search inline (Andrea API key signup gate) | 3h | Maker-2 | 120 | YES | +0.05 |
+| 3 | P0 | P0.6 Mac Mini SSH retry + Aider Kimi backend prep | 30m + 2h | Tester-1 | 80 | NO | +0.05 |
+| 4 | P0 | P0.7 Andrea ratify queue 8 entries sequential | 1h | Andrea | env | NO | +0.05 |
+| 5 | P0 | L2 router catch-all SCALE narrow (Sprint T close gate 93/94 esperimenti broken) | 4h | Maker-1 | 100 | YES | +0.10 |
+| 6 | P1 | Lighthouse perf optim Atom 42-A modulePreload + lazy mount | 4h | WebDesigner-1 | 100 | YES | +0.05 |
+| 7 | P1 | M-AI-06 prompt-state-validator pre-publish gate (run on every iter close prompt PRE author next session) | 30m | Documenter | 0 | NO | preventive |
+| 8 | P1 | Tech-debt cleanup /codebase-cleanup scan + 2 mechanisms (M-AR-06 vercel-deploy-verifier + M-AI-07 atomi-shipped-vs-claimed) | 4h | Documenter | 200 | NO | — |
 
 **Iter 38 score target**: 8.55 → **8.85/10** (G45 cap conditional 4-vendor + cleanup + Mac Mini unblock).
 
