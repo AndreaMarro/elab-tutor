@@ -335,3 +335,70 @@ body,
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ITER 35 ATOM VII — Vera Mascotte ELAB animations                  */
+/* Andrea iter 31+ mandate "vera mascotte fighissima animata design  */
+/* perfetto" — robottino ELAB navy + antenna + LED giallo TRES JOLIE */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.elab-mascotte-vera {
+    animation: elabMascotIdleBob 3.6s ease-in-out infinite;
+    transform-origin: 50% 80%;
+    will-change: transform;
+}
+
+@keyframes elabMascotIdleBob {
+    0%, 100% {
+        transform: translateY(0) rotate(-1deg);
+    }
+    25% {
+        transform: translateY(-6px) rotate(0.5deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(1.5deg);
+    }
+    75% {
+        transform: translateY(-4px) rotate(0.5deg);
+    }
+}
+
+/* Hover state via parent button (HomePage hero mascot click target) */
+button[data-elab-action="click-mascotte"]:hover .elab-mascotte-vera {
+    animation: elabMascotWiggle 0.8s ease-in-out;
+}
+
+@keyframes elabMascotWiggle {
+    0%, 100% { transform: translateY(-6px) rotate(0deg) scale(1); }
+    20% { transform: translateY(-12px) rotate(-3deg) scale(1.05); }
+    40% { transform: translateY(-8px) rotate(3deg) scale(1.05); }
+    60% { transform: translateY(-12px) rotate(-2deg) scale(1.06); }
+    80% { transform: translateY(-8px) rotate(2deg) scale(1.05); }
+}
+
+/* Active state — bounce on click */
+button[data-elab-action="click-mascotte"]:active .elab-mascotte-vera {
+    animation: elabMascotBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes elabMascotBounce {
+    0% { transform: translateY(-6px) scale(1); }
+    50% { transform: translateY(-18px) scale(1.1); }
+    100% { transform: translateY(-6px) scale(1); }
+}
+
+/* Speech bubble companion mascotte greeting */
+.elab-mascotte-vera-greeting {
+    animation: elabSpeechBubblePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes elabSpeechBubblePop {
+    0% {
+        transform: scale(0.6) translateY(8px);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}

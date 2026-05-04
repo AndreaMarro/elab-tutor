@@ -637,44 +637,29 @@ export default function HomePage({ onNavigate }) {
             onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            <svg
-              viewBox="0 0 240 240"
-              width="100%"
-              height="100%"
-              aria-hidden="true"
-              role="img"
-            >
-              {/* Mascotte UNLIM — robottino ELAB enlarged from MascotPresence SVG.
-                  Iter 36 inlined per evitare position:fixed conflict in homepage layout. */}
-              <defs>
-                <linearGradient id="unlim-body-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2557A5" />
-                  <stop offset="100%" stopColor="#153d6f" />
-                </linearGradient>
-              </defs>
-              {/* Antenna */}
-              <line x1="120" y1="40" x2="120" y2="68" stroke="var(--elab-orange)" strokeWidth="6" strokeLinecap="round" />
-              <circle cx="120" cy="36" r="10" fill="var(--elab-orange)" />
-              <circle cx="120" cy="36" r="4" fill="#fff" opacity="0.5" />
-              {/* Headband / cuffie */}
-              <path d="M50 110 C 50 70 88 50 120 50 C 152 50 190 70 190 110" stroke="var(--elab-navy)" strokeWidth="10" fill="none" strokeLinecap="round" />
-              {/* Cuffie laterali */}
-              <rect x="30" y="100" width="32" height="50" rx="14" fill="var(--elab-lime)" />
-              <rect x="178" y="100" width="32" height="50" rx="14" fill="var(--elab-lime)" />
-              {/* Body / face */}
-              <rect x="56" y="84" width="128" height="106" rx="22" fill="url(#unlim-body-grad)" />
-              {/* Screen / face plate */}
-              <rect x="72" y="100" width="96" height="64" rx="12" fill="#0e2a4a" />
-              {/* Eyes */}
-              <circle cx="100" cy="130" r="13" fill="var(--elab-lime)" />
-              <circle cx="140" cy="130" r="13" fill="var(--elab-lime)" />
-              <circle cx="103" cy="126" r="4" fill="#fff" opacity="0.95" />
-              <circle cx="143" cy="126" r="4" fill="#fff" opacity="0.95" />
-              {/* Smile */}
-              <path d="M95 150 Q 120 168 145 150" stroke="var(--elab-lime)" strokeWidth="5" fill="none" strokeLinecap="round" />
-              {/* Chest decoration / badge */}
-              <rect x="100" y="172" width="40" height="10" rx="4" fill="var(--elab-red)" opacity="0.9" />
-            </svg>
+            {/* Iter 35 ATOM VII — Vera Mascotte ELAB UNLIM (Andrea iter 31+ mandate "vera mascotte fighissima animata design perfetto").
+                Replaces previous inline SVG (monitor face + headphones robot which Andrea explicitly said NOT vera mascotte)
+                with canonical robottino ELAB (navy body + lime accents + antenna + LED held in hands + ELAB logo)
+                imported from TRES JOLIE design source `manuale copia/elab-builder/public/elab-mascot.png`.
+                Animations CSS keyframes (no Framer Motion dep): idle bob 3.6s + hover scale + click pulse.
+                Respect prefers-reduced-motion via @media query in <style> below.
+                File: public/assets/mascot/elab-mascot-vera.png (30KB) — Andrea TRES JOLIE materiale ELAB completo unifica. */}
+            <img
+              src="/assets/mascot/elab-mascot-vera.png"
+              alt="Mascotte UNLIM — robottino ELAB navy con antenna e LED giallo, design ufficiale ELAB"
+              className="elab-mascotte-vera"
+              loading="eager"
+              decoding="async"
+              draggable={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                userSelect: 'none',
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 12px 24px rgba(30, 77, 140, 0.22))',
+              }}
+            />
           </button>
         </div>
       </header>
