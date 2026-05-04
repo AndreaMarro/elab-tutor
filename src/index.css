@@ -31,6 +31,27 @@ body,
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Iter 35 carryover hot-fix HomePage scroll — Andrea bug "homepage non
+   adattata schermo" 2026-05-04 PM. Global overflow:hidden serve LIM
+   full-screen no-scroll Lavagna/Simulator MA blocca HomePage cronologia
+   + footer credits + sezioni sotto cards (offset 705-1205px cutted).
+   Fix surgical via :has() (Chrome 105+ / Safari 15.4+ / Firefox 121+):
+   abilita scroll quando data-elab-mode="home" è mounted nell'app tree. */
+html:has([data-elab-mode="home"]),
+body:has([data-elab-mode="home"]),
+#root:has([data-elab-mode="home"]) {
+    overflow: auto;
+    height: auto;
+    min-height: 100%;
+}
+html:has([data-elab-mode="chatbot-only"]),
+body:has([data-elab-mode="chatbot-only"]),
+#root:has([data-elab-mode="chatbot-only"]) {
+    overflow: auto;
+    height: auto;
+    min-height: 100%;
+}
+
 /* ═══════════════════════════════════════════════════════════════ */
 /* TYPOGRAPHY                                                      */
 /* ═══════════════════════════════════════════════════════════════ */
