@@ -912,7 +912,15 @@ const NewElabSimulator = ({
                   className="elab-simulator__canvas" style={{ flex: 1 }}
                 />
                 <WhiteboardOverlay active={showWhiteboard} experimentId={currentExperiment?.id} onClose={() => setShowWhiteboard(false)} onSendToUNLIM={onSendImageToUNLIM ? (dataUrl) => { setShowWhiteboard(false); onSendImageToUNLIM(dataUrl, 'Analizza questo disegno dalla lavagna e dimmi cosa rappresenta. Se è uno schema elettrico, controlla se è corretto.'); } : undefined} />
-                <DrawingOverlay drawingEnabled={drawingEnabled} canvasWidth={canvasContainerRef.current?.offsetWidth || 800} canvasHeight={canvasContainerRef.current?.offsetHeight || 600} onPathsChange={() => {}} initialFullscreen={!!hideLessonPath} onClose={() => setDrawingEnabled(false)} experimentId={currentExperiment?.id || null} />
+                <DrawingOverlay
+                  drawingEnabled={drawingEnabled}
+                  canvasWidth={canvasContainerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 1920)}
+                  canvasHeight={canvasContainerRef.current?.offsetHeight || (typeof window !== 'undefined' ? window.innerHeight : 1080)}
+                  onPathsChange={() => {}}
+                  initialFullscreen={!!hideLessonPath}
+                  onClose={() => setDrawingEnabled(false)}
+                  experimentId={currentExperiment?.id || null}
+                />
                 <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">{simulationAnnouncement}</div>
                 {circuitWarning && (<div role="alert" aria-live="assertive" style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-vol3, #E54B3D)', color: 'var(--color-text, #1A1A2E)', padding: '8px 20px', borderRadius: 8, fontFamily: "var(--font-display, 'Oswald', sans-serif)", fontSize: 14, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', boxShadow: '0 4px 16px rgba(229,75,61,0.4)', zIndex: 100, display: 'flex', alignItems: 'center', gap: 8, animation: 'pulse 0.6s ease-in-out infinite alternate' }}><span style={{ fontSize: 20 }}>{'!'}</span><span>{circuitWarning.message}</span></div>)}
                 {showGuide && currentExperiment && (!currentExperiment.buildMode || currentExperiment.buildMode === 'sandbox') && (<ExperimentGuide experiment={currentExperiment} buildMode={currentExperiment.buildMode || 'complete'} onClose={() => setShowGuide(false)} onSendToUNLIM={onSendToUNLIM} />)}
