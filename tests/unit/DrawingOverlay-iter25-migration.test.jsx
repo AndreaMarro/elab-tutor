@@ -12,12 +12,39 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import DrawingOverlay from '../../src/components/simulator/canvas/DrawingOverlay.jsx';
 import { DRAWING_STORAGE_PREFIX } from '../../src/utils/drawingStorage.js';
 
 const SANDBOX_KEY = DRAWING_STORAGE_PREFIX + 'paths';
 const EXP_KEY = DRAWING_STORAGE_PREFIX + 'v1-cap6-esp1';
+const EXP_A_KEY = DRAWING_STORAGE_PREFIX + 'v1-cap6-esp1';
+const EXP_B_KEY = DRAWING_STORAGE_PREFIX + 'v2-cap1-esp1';
+
+function setupStorageMap(initial = {}) {
+  const store = { ...initial };
+  localStorage.getItem.mockImplementation((k) => (
+    Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null
+  ));
+  localStorage.setItem.mockImplementation((k, v) => { store[k] = String(v); });
+  localStorage.removeItem.mockImplementation((k) => { delete store[k]; });
+  return store;
+}
+
+function drawStroke(container, points, finalize = true) {
+  const svg = container.querySelector('svg');
+  expect(svg, 'drawing svg present').toBeTruthy();
+  svg.setPointerCapture = vi.fn();
+  const [start, ...rest] = points;
+  fireEvent.pointerDown(svg, { clientX: start[0], clientY: start[1], pointerId: 1 });
+  rest.forEach(([x, y]) => {
+    fireEvent.pointerMove(svg, { clientX: x, clientY: y, pointerId: 1 });
+  });
+  if (finalize) {
+    const end = rest[rest.length - 1] || start;
+    fireEvent.pointerUp(svg, { clientX: end[0], clientY: end[1], pointerId: 1 });
+  }
+}
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -99,5 +126,44 @@ describe('DrawingOverlay iter 25 — bucket migration sandbox → experiment', (
     const setCalls = localStorage.setItem.mock.calls.map(([k]) => k);
     expect(setCalls.includes(EXP_KEY), 'no spurious write on empty-sandbox transition').toBe(false);
     expect(localStorage.getItem).toHaveBeenCalledWith(EXP_KEY);
+  });
+
+  it('isolates saved strokes between real experiments with draw actions on both', async () => {
+    const store = setupStorageMap();
+    const { rerender, container } = render(
+      <DrawingOverlay drawingEnabled={true} experimentId="v1-cap6-esp1" />
+    );
+
+    drawStroke(container, [[10, 10], [40, 40]], true);
+    await waitFor(() => {
+      expect(store[EXP_A_KEY], 'expA storage exists').toBeTruthy();
+      expect(JSON.parse(store[EXP_A_KEY]).length, 'expA has one stroke').toBe(1);
+    });
+
+    rerender(<DrawingOverlay drawingEnabled={true} experimentId="v2-cap1-esp1" />);
+    drawStroke(container, [[60, 60], [90, 90]], true);
+    await waitFor(() => {
+      expect(store[EXP_B_KEY], 'expB storage exists').toBeTruthy();
+      expect(JSON.parse(store[EXP_B_KEY]).length, 'expB has one stroke').toBe(1);
+      expect(JSON.parse(store[EXP_A_KEY]).length, 'expA remains isolated').toBe(1);
+    });
+  });
+
+  it('persists in-progress stroke when switching experiment before pointerup', async () => {
+    const store = setupStorageMap();
+    const { rerender, container } = render(
+      <DrawingOverlay drawingEnabled={true} experimentId="v1-cap6-esp1" />
+    );
+
+    drawStroke(container, [[12, 12], [24, 24], [36, 36]], false); // no pointerup
+    rerender(<DrawingOverlay drawingEnabled={true} experimentId="v2-cap1-esp1" />);
+
+    await waitFor(() => {
+      expect(store[EXP_A_KEY], 'pending stroke saved into previous experiment').toBeTruthy();
+      expect(JSON.parse(store[EXP_A_KEY]).length).toBe(1);
+    });
+
+    const expB = store[EXP_B_KEY] ? JSON.parse(store[EXP_B_KEY]) : [];
+    expect(expB.length, 'no contamination in new experiment bucket').toBe(0);
   });
 });

@@ -12,7 +12,6 @@ import { loadDrawingPaths, saveDrawingPaths } from '../../../utils/drawingStorag
 import {
   loadPaths as loadPathsRemote,
   debouncedSave as debouncedSaveRemote,
-  cancelDebouncedSave as cancelDebouncedSaveRemote,
   flushDebouncedSave as flushDebouncedSaveRemote,
   flushDebouncedSaveSync as flushDebouncedSaveSyncRemote,
   subscribePaths as subscribePathsRemote,
@@ -227,18 +226,43 @@ export default function DrawingOverlay({
   // with current paths (captured via ref to avoid stale closure).
   // ref pattern guarantees latest paths value on cleanup invocation.
   const pathsRef = useRef(paths);
+  const strokeSnapshotRef = useRef({
+    isDrawing: false,
+    currentPath: null,
+    paths: [],
+  });
   useEffect(() => {
     pathsRef.current = paths;
   }, [paths]);
+  useEffect(() => {
+    strokeSnapshotRef.current = {
+      isDrawing,
+      currentPath,
+      paths,
+    };
+  }, [isDrawing, currentPath, paths]);
 
   useEffect(() => {
     return () => {
+      // Iter 39 fix: se il cambio esperimento/unmount avviene durante tratto
+      // attivo (pointerdown senza pointerup), persistiamo comunque il segmento
+      // sul bucket dell'esperimento corrente per evitare perdita silenziosa.
+      const snapshot = strokeSnapshotRef.current;
+      const hadPendingStroke = snapshot.isDrawing && snapshot.currentPath;
+      const finalPaths = hadPendingStroke
+        ? [...snapshot.paths, { ...snapshot.currentPath }]
+        : snapshot.paths;
+      if (hadPendingStroke) {
+        saveDrawingPaths(finalPaths, experimentId);
+        lastLocalSaveAtRef.current = Date.now();
+      }
+      if (!syncEnabled) return;
       try {
         // F1 fix: flush (NOT cancel) — preserves up-to-2s pending stroke
-        flushDebouncedSaveRemote(experimentId, pathsRef.current);
+        flushDebouncedSaveRemote(experimentId, finalPaths);
       } catch { /* ignore — best effort save on unmount */ }
     };
-  }, [experimentId]);
+  }, [syncEnabled, experimentId]);
 
   // Iter 35 L3 (Maker-2 Phase 2) — Atom F1 follow-up: beforeunload + pagehide
   // sync flush via sendBeacon. Andrea iter 19 PM bug "scritti spariscono" persists
@@ -374,13 +398,13 @@ export default function DrawingOverlay({
     // display:none) so unmount cleanup effect (line ~234) does NOT fire.
     // Pending debounced remote save would be cancelled if user navigates away
     // before debounce timer (2s default). Force IMMEDIATE remote flush here.
-    if (experimentId) {
+    if (syncEnabled && experimentId) {
       try {
         flushDebouncedSaveRemote(experimentId, finalPaths);
       } catch { /* network failure → unmount sync flush via sendBeacon */ }
     }
     onClose?.();
-  }, [isDrawing, currentPath, paths, experimentId, onPathsChange, onClose]);
+  }, [isDrawing, currentPath, paths, experimentId, onPathsChange, onClose, syncEnabled]);
 
   // Event handlers attached via JSX props (no useEffect timing issues)
 

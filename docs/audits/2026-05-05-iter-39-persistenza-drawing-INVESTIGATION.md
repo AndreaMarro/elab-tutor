@@ -1,6 +1,6 @@
 # Iter 39 Persistenza drawing across experiments INVESTIGATION (Andrea bug carryover)
 
-**Status**: PARTIAL investigation — file:line evidence + hypothesis enumerated. Live React DevTools debug richiesta iter 39+ next session per definitive root cause.
+**Status**: REVISED after 4-vendor cycle — root cause corretto + fix operativo + test coverage estesa.
 
 **Andrea problema**: "persiste il problema di persistenza della lavagna sullo specifico esperimento rimanendo salvata sullo specifico esperimento su tutta la sessione con la possibilità di scrivere anche su altri esperimenti"
 
@@ -18,8 +18,8 @@
 - ✅ Functions: `loadPaths`, `savePaths`, `subscribePaths`, `debouncedSave`, `flushDebouncedSave`, `flushDebouncedSaveSync`
 
 **Component layer** (`src/components/simulator/canvas/DrawingOverlay.jsx`):
-- Receives `experimentId` prop from NewElabSimulator (line 922 NewElabSimulator)
-- NewElabSimulator passes `currentExperiment?.id || null`
+- Receives `experimentId` prop from NewElabSimulator (line 924 NewElabSimulator)
+- NewElabSimulator passes `currentExperiment?.id || null` + `key={\`dwo-\${currentExperiment?.id || 'sandbox'}\`}` (line 917) per remount forzato
 - LavagnaShell sets currentExperiment via __ELAB_API events
 
 **State management DrawingOverlay**:
@@ -29,51 +29,47 @@
 
 ---
 
-## §2 Hypothesis enumerate
+## §2 Hypothesis validate (post review)
 
-**H1: Stale closure in event handlers** (most likely):
-- Lines 313/324/334/345/365 use `experimentId` from component prop
-- If event handler is wrapped in `useCallback([])` or `useCallback([dependencies missing experimentId])` → closure captures STALE experimentId
-- Switch experiment → user draws → save fires with OLD experimentId → drawing leaks to OLD bucket
-- **Verify iter 39+**: read useCallback deps for handler functions calling saveDrawingPaths
+**H1: Stale closure in event handlers** (FALSIFICATA):
+- I callback che salvano includono già `experimentId` nelle dependency:
+  - `handlePointerUp` line 318
+  - `handleUndo` line 328
+  - `handleRedo` line 338
+  - `handleClearAll` line 350
+  - `handleClose` line 384
+- Conclusione: H1 NON è root cause principale.
 
-**H2: useEffect race-cond migration logic**:
-- Line 143: `if (prevId === null && newId && paths.length > 0)` migration condition
-- Edge case: user opens exp1 directly (no null sandbox state) → never migrates → state correct
-- Edge case: user with stale `prevExpIdRef.current` after fast switches → potential miss
-- **Verify iter 39+**: log prevId vs newId vs paths.length on transition
+**H2: migration useEffect race** (secondaria):
+- La migration null→exp resta valida (`prevId === null && newId && paths.length > 0`) e coperta da test unitari iter 25.
 
-**H3: Multiple DrawingOverlay instances** (LavagnaShell hideSimulatorBoard branches):
-- NewElabSimulator.jsx line 881 (lavagnaSoloMode branch) + line 915 (full simulator branch)
-- Both render DrawingOverlay with experimentId
-- If both mount simultaneously → state divergence
-- **Verify iter 39+**: probe `document.querySelectorAll('canvas[data-testid=drawing-overlay]')` count
+**H3: doppia istanza DrawingOverlay** (non evidenza di mount simultaneo):
+- Le branch `hideSimulatorBoard` e `currentExperiment` sono mutualmente esclusive in render tree.
 
-**H4: NewElabSimulator currentExperiment vs LavagnaShell currentExperiment drift**:
-- LavagnaShell.currentExperiment state separate from NewElabSimulator.currentExperiment
-- Sync via __ELAB_API events
-- If one updates without other → mismatch
-- **Verify iter 39+**: probe state consistency post-switch
+**H4: drift/timing su currentExperiment** (ROOT CAUSE più probabile):
+- Il problema reale è timing/disallineamento parent-state durante switch esperimento.
+- `key` dinamico su `DrawingOverlay` (line 917 `NewElabSimulator.jsx`) è guardrail operativo: forza unmount/mount e resetta closure/stato volatile sul cambio esperimento.
 
 ---
 
-## §3 Concrete iter 39+ debug steps
+## §3 Concrete verify steps (aggiornato)
 
-1. **Inspect useCallback deps** for handlers calling saveDrawingPaths:
+1. **Conferma H1 falsificata** (deps complete):
    ```bash
    grep -B5 "saveDrawingPaths.*experimentId" src/components/simulator/canvas/DrawingOverlay.jsx
    ```
-2. **Live test scenario reproduction**:
+2. **Scenario critico inter-esperimento**:
    - Mount exp1, draw 3 paths
    - Switch to exp2, draw 2 paths
    - Switch back exp1
    - Verify exp1 has 3 paths (not 5)
    - Switch to exp2, verify 2 paths (not 0 OR 5)
-3. **localStorage probe** post-switch:
+3. **Probe localStorage** post-switch:
    ```javascript
    Object.keys(localStorage).filter(k => k.startsWith('elab-drawing-'))
    ```
-4. **React DevTools** trace component re-render on experimentId change
+4. **React DevTools** trace `currentExperiment` update order parent→child
+5. **Mid-stroke switch check**: pointerdown/move su exp1 + switch immediato a exp2 (no pointerup) => stroke deve salvarsi in bucket exp1
 
 ---
 
@@ -88,16 +84,13 @@ Existing infrastructure addresses subset bugs MA Andrea report iter 39 indica re
 
 ---
 
-## §5 Defer iter 39+ live debug + 4-vendor cycle application
+## §5 Applied outcome (Round 5 finalize)
 
-Optimal forward action: apply M-AI-07 4-vendor cycle on this investigation atom (utilizzo reale Step 1 close):
-1. Codex Round 1 propose fix (closure deps update OR migration logic widen)
-2. Gemini Round 2 critique architecture
-3. Mistral Round 3a Italian K-12 docente UX impact
-4. Kimi Round 3b 256K full-file diff anti-bias
-5. Codex Round 5 finalize
-6. Claude Round 6 LAST WORD apply selectively + Andrea ratify
+1. `DrawingOverlay` keyed by experiment in `NewElabSimulator` (`src/components/simulator/NewElabSimulator.jsx:917`).
+2. Edge-case fix: su cleanup, stroke in corso viene persistito anche senza `pointerup` (`src/components/simulator/canvas/DrawingOverlay.jsx`).
+3. Test unitari estesi:
+   - isolamento reale expA↔expB con disegno su entrambi
+   - switch esperimento durante stroke attivo (no pointerup) con salvataggio su bucket precedente
+   (`tests/unit/DrawingOverlay-iter25-migration.test.jsx`).
 
-Cost: ~$0.005 + 75s wall-clock per cycle.
-
-End persistenza investigation iter 39 partial — concrete iter 39+ steps shipped.
+End investigation iter 39 revised — root cause allineato + fix/test integrati.

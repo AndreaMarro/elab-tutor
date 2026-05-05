@@ -914,6 +914,8 @@ const NewElabSimulator = ({
                 />
                 <WhiteboardOverlay active={showWhiteboard} experimentId={currentExperiment?.id} onClose={() => setShowWhiteboard(false)} onSendToUNLIM={onSendImageToUNLIM ? (dataUrl) => { setShowWhiteboard(false); onSendImageToUNLIM(dataUrl, 'Analizza questo disegno dalla lavagna e dimmi cosa rappresenta. Se è uno schema elettrico, controlla se è corretto.'); } : undefined} />
                 <DrawingOverlay
+                  // Iter 39 persistenza fix: remount when experiment changes so
+                  // transient pen state is isolated per esperimento.
                   key={`dwo-${currentExperiment?.id || 'sandbox'}`}
                   drawingEnabled={drawingEnabled}
                   canvasWidth={canvasContainerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 1920)}

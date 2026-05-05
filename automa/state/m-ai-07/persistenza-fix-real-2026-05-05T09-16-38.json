@@ -1,0 +1,40 @@
+{
+  "atom": "persistenza-fix-real",
+  "date": "2026-05-05T09-16-38",
+  "git_head": "6c6e4fe049f55c2fb260c25fbd033dbbd08ee4d5",
+  "git_branch": "e2e-bypass-preview",
+  "rounds": {
+    "r1_codex_impl": {
+      "duration_s": 292,
+      "output_file": "/tmp/m-ai-07-persistenza-fix-real-r1.txt",
+      "lines":     2137
+    },
+    "r2_gemini_critique": {
+      "duration_s": 218,
+      "output_file": "/tmp/m-ai-07-persistenza-fix-real-r2.txt"
+    },
+    "r3a_mistral_it_k12": {
+      "duration_s": 23,
+      "output_file": "/tmp/m-ai-07-persistenza-fix-real-r3a.json"
+    },
+    "r3b_kimi_256k_antibias": {
+      "duration_s": 30,
+      "output_file": "/tmp/m-ai-07-persistenza-fix-real-r3b.json"
+    },
+    "r5_codex_iter2_finalize": {
+      "duration_s": 199,
+      "output_file": "/tmp/m-ai-07-persistenza-fix-real-r5.txt",
+      "lines":     3780
+    },
+    "r6_claude_last_word": "pending — orchestrator Claude session reads aggregate + applies Edit selectively + commits"
+  },
+  "metrics": {
+    "total_wall_clock_s": 762,
+    "wall_clock_target_s": 180,
+    "cost_estimate_usd": "0.005-0.015",
+    "vendors_called": 4
+  },
+  "next_action": "Claude session reads /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/automa/state/m-ai-07/persistenza-fix-real-2026-05-05T09-16-38.json + Round 5 output, applies Edit tool, commits with audit reference",
+  "orchestrator_version": 1,
+  "orchestrator_source": "M-AI-07-multi-vendor-anti-bias.sh"
+}
