@@ -339,18 +339,12 @@ const CARDS = [
     target: 'internal',
     credit: null,
   },
-  {
-    id: 'chatbot',
-    emoji: '🧠',
-    IconComponent: UNLIMCardIcon,
-    accent: PALETTE.red,
-    title: 'UNLIM (solo chat)',
-    text: 'Stile ChatGPT: parlate con UNLIM, citerà i volumi e suggerirà esperimenti pronti.',
-    cta: 'Apri UNLIM',
-    href: '#chatbot-only',
-    target: 'internal',
-    credit: null,
-  },
+  // Iter 38 P0.3 Kimi K2.6 4-vendor anti-bias finding ACCETTATO ONESTO:
+  // "UNLIM (solo chat)" card paritaria homepage VIOLA Principio Zero CLAUDE.md
+  // ("studenti NON interagiscono direttamente con UNLIM, vedono LIM docente").
+  // Card entry rimosso: route #chatbot-only + ChatbotOnly component (1749 LOC iter 37 A6)
+  // PRESERVATI accessibili da admin menu / Tutor interno / direct hash URL.
+  // NO regression Andrea iter 37 A6 work — solo entry semiotic homepage.
   // Iter 36 O1 — Andrea mandate "metti anche il glossario, ma solo glossario
   // nella home page". 4° card link external Glossario Tea sviluppato.
   {
