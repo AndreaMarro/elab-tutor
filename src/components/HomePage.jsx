@@ -365,6 +365,22 @@ const CARDS = [
     target: 'external',
     credit: null,
   },
+  // Iter 38 P0.3 hybrid — 5° card "Chi siamo" (Kimi K2.6 4-vendor anti-bias finding).
+  // Trust signal procurement scuola pubblica (Andrea iter 21+ "non centralizzare UNLIM").
+  // EasterModal route #about-easter già esiste iter 37 A6 (HomePage hash routing).
+  // Card attiva via onActivate('#about-easter') → mount EasterModal credits team.
+  {
+    id: 'about',
+    emoji: '🤝',
+    IconComponent: null,
+    accent: PALETTE.navy,
+    title: 'Chi siamo',
+    text: 'Team ELAB: Andrea + Tea + Davide Fagherazzi (volumi cartacei) + Omaric Elettronica (kit) + Giovanni Fagherazzi (network commerciale). Kit fisici Strambino (TO).',
+    cta: 'Conosciamoci',
+    href: '#about-easter',
+    target: 'internal',
+    credit: null,
+  },
 ];
 
 function HomeCard({ card, onActivate }) {
