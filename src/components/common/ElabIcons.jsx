@@ -113,27 +113,43 @@ export function ReportIcon(props) {
 }
 
 export function RobotIcon(props) {
+  // Iter 35 Q3 /impeccable:polish — UNLIM mascotte mini (footer "Chi
+  // siamo"). Was generic boxy; new: Navy head + Lime antenna + yellow
+  // LED eyes coerente con Card UNLIM iter 35 + mascotte canonical.
+  const { size = 24, color, ...rest } = props || {};
   return (
-    <Icon {...props}>
-      <rect x="5" y="8" width="14" height="12" rx="2" />
-      <circle cx="9" cy="14" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="15" cy="14" r="1.5" fill="currentColor" stroke="none" />
-      <path d="M12 2v4" />
-      <circle cx="12" cy="2" r="1" fill="currentColor" stroke="none" />
-      <path d="M3 14h2" />
-      <path d="M19 14h2" />
-    </Icon>
+    <svg
+      width={size} height={size} viewBox="0 0 24 24" fill="none"
+      role="img" aria-hidden="true" {...rest}
+    >
+      <rect x="5" y="8" width="14" height="12" rx="2" fill={color || '#1E4D8C'} stroke="#0E2D5C" strokeWidth="1.4" strokeLinejoin="round" />
+      <line x1="12" y1="8" x2="12" y2="3" stroke="#4A7A25" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="12" cy="2.5" r="1.2" fill="#4A7A25" />
+      <circle cx="9" cy="14" r="1.6" fill="#FFD700" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="15" cy="14" r="1.6" fill="#FFD700" stroke="#0E2D5C" strokeWidth="0.6" />
+      <path d="M9 17.5 Q12 19 15 17.5" fill="none" stroke="#4A7A25" strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="3" y1="14" x2="5" y2="14" stroke="#0E2D5C" strokeWidth="1.6" strokeLinecap="round" />
+      <line x1="19" y1="14" x2="21" y2="14" stroke="#0E2D5C" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
   );
 }
 
 export function CircuitIcon(props) {
+  // Iter 35 Q2 /impeccable:bolder — dual-tone Navy + Lime (Vol 1 base
+  // elettronica). Was monochrome stroke-only; new: filled IC chip body
+  // Navy + Lime traces + Orange center pin (LED indicator).
+  // ModalitaSwitch "Libero" identity = costruzione libera circuito.
+  const { size = 24, color, ...rest } = props || {};
   return (
-    <Icon {...props}>
-      <path d="M2 12h6" />
-      <path d="M16 12h6" />
-      <rect x="8" y="8" width="8" height="8" rx="1" />
-      <circle cx="12" cy="12" r="2" />
-    </Icon>
+    <svg
+      width={size} height={size} viewBox="0 0 24 24" fill="none"
+      role="img" aria-hidden="true" {...rest}
+    >
+      <line x1="2" y1="12" x2="8" y2="12" stroke={color || '#4A7A25'} strokeWidth="2.4" strokeLinecap="round" />
+      <line x1="16" y1="12" x2="22" y2="12" stroke={color || '#4A7A25'} strokeWidth="2.4" strokeLinecap="round" />
+      <rect x="8" y="8" width="8" height="8" rx="1" fill="#1E4D8C" stroke={color || '#0E2D5C'} strokeWidth="2" />
+      <circle cx="12" cy="12" r="2" fill="#E8941C" stroke="#FFF" strokeWidth="0.6" />
+    </svg>
   );
 }
 
@@ -156,11 +172,22 @@ export function WrenchIcon(props) {
 }
 
 export function BookIcon(props) {
+  // Iter 35 Q2 /impeccable:bolder — dual-tone Navy cover + Lime spine
+  // edge (Vol 1 accent) + Orange page bookmark accent. ModalitaSwitch
+  // "Percorso" identity = volume Davide cartaceo paper-first lettura.
+  const { size = 24, color, ...rest } = props || {};
   return (
-    <Icon {...props}>
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
-    </Icon>
+    <svg
+      width={size} height={size} viewBox="0 0 24 24" fill="none"
+      role="img" aria-hidden="true" {...rest}
+    >
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" fill={color || '#1E4D8C'} stroke="#0E2D5C" strokeWidth="1.8" strokeLinejoin="round" />
+      <rect x="4" y="2" width="2" height="20" fill="#4A7A25" />
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none" stroke="#0E2D5C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="9" y1="8" x2="17" y2="8" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="9" y1="12" x2="15" y2="12" stroke="#FFF" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M16 2L18 5L20 2Z" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.8" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -343,28 +370,234 @@ export function FlaskIcon(props) {
 }
 
 export function FootstepsIcon(props) {
+  // Iter 35 Q2 /impeccable:bolder — dual-tone Navy soles + Lime toes
+  // (passi lenti narrativa). ModalitaSwitch "Passo Passo" identity =
+  // step-by-step lento accogliente per docente prima volta.
+  const { size = 24, color, ...rest } = props || {};
   return (
-    <Icon {...props}>
-      <ellipse cx="8" cy="9" rx="3" ry="4" />
-      <circle cx="6.5" cy="4" r="0.8" fill="currentColor" stroke="none" />
-      <circle cx="8.5" cy="3.5" r="0.8" fill="currentColor" stroke="none" />
-      <circle cx="10" cy="4" r="0.8" fill="currentColor" stroke="none" />
-      <ellipse cx="16" cy="17" rx="3" ry="4" />
-      <circle cx="14.5" cy="12" r="0.8" fill="currentColor" stroke="none" />
-      <circle cx="16.5" cy="11.5" r="0.8" fill="currentColor" stroke="none" />
-      <circle cx="18" cy="12" r="0.8" fill="currentColor" stroke="none" />
-    </Icon>
+    <svg
+      width={size} height={size} viewBox="0 0 24 24" fill="none"
+      role="img" aria-hidden="true" {...rest}
+    >
+      <ellipse cx="8" cy="9" rx="3" ry="4" fill={color || '#1E4D8C'} stroke="#0E2D5C" strokeWidth="1.2" />
+      <circle cx="6.5" cy="4" r="1" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="8.5" cy="3.5" r="1" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="10.2" cy="4.2" r="1" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      <ellipse cx="16" cy="17" rx="3" ry="4" fill={color || '#1E4D8C'} stroke="#0E2D5C" strokeWidth="1.2" />
+      <circle cx="14.5" cy="12" r="1" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="16.5" cy="11.5" r="1" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="18.2" cy="12.2" r="1" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.6" />
+    </svg>
   );
 }
 
 export function PaletteIcon(props) {
+  // Iter 35 Q2 /impeccable:colorize — palette ELAB 4-colori brand
+  // identity (Navy + Lime + Orange + Red Vol1/2/3). ModalitaSwitch
+  // "Già Montato" identity = colore + assemblaggio kit.
+  const { size = 24, color, ...rest } = props || {};
   return (
-    <Icon {...props}>
-      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.1 0 2-.9 2-2 0-.5-.2-1-.6-1.3-.4-.4-.6-.8-.6-1.3 0-1.1.9-2 2-2h2.3c2.5 0 4.5-2 4.5-4.5C22 6.1 17.5 2 12 2Z" />
-      <circle cx="7" cy="10" r="1.4" fill="currentColor" stroke="none" />
-      <circle cx="11" cy="7" r="1.4" fill="currentColor" stroke="none" />
-      <circle cx="15" cy="8" r="1.4" fill="currentColor" stroke="none" />
-      <circle cx="17" cy="12" r="1.4" fill="currentColor" stroke="none" />
-    </Icon>
+    <svg
+      width={size} height={size} viewBox="0 0 24 24" fill="none"
+      role="img" aria-hidden="true" {...rest}
+    >
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.1 0 2-.9 2-2 0-.5-.2-1-.6-1.3-.4-.4-.6-.8-.6-1.3 0-1.1.9-2 2-2h2.3c2.5 0 4.5-2 4.5-4.5C22 6.1 17.5 2 12 2Z" fill="#FFFEF5" stroke={color || '#1E4D8C'} strokeWidth="1.8" strokeLinejoin="round" />
+      <circle cx="7" cy="10" r="1.6" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="11" cy="7" r="1.6" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="15" cy="8" r="1.6" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.6" />
+      <circle cx="17" cy="12" r="1.6" fill="#E54B3D" stroke="#0E2D5C" strokeWidth="0.6" />
+    </svg>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ITER 35 Q1+Q2+O2 — HomePage card icons /impeccable:bolder + :colorize
+   Andrea iter 35 mandate (master plan §1.4): SVG identity Morfismo
+   Sense 2 = "kit Omaric + volumi cartacei + software" triplet coerenza.
+   Old icons (iter 36): generic lightning bolt + book stack + brain
+   asymmetric. Did NOT pass Test Morfismo: "stesso prodotto del Volume?"
+   New icons iter 35:
+   • Lavagna = breadboard 6×3 holes + chalk gesto (kit + lavagna)
+   • Tutor = volume aperto + circuit traces sulle pagine (volumi + Arduino)
+   • UNLIM = mascotte head silhouette + circuit antennae (UNLIM brand)
+   • Glossario = book chiuso A-Z divider tabs + Lime magnifier
+   Apply /impeccable:bolder principles:
+   - Stronger geometric forms (≥3px stroke equivalent)
+   - Brand palette Navy/Lime/Orange/Red explicit
+   - Dual-tone primary + accent (NOT monochrome)
+   - WCAG AA contrast 4.5:1 verified Navy on White card
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Lavagna libera card icon
+// Identity: breadboard tile (kit Omaric grid 6×3 holes Lime body, Navy
+// component pad outline) + chalk pen overlay (Orange diagonal accent).
+// Morfismo Sense 2: identico al breadboard del kit fisico Omaric.
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow filter
+// + chalk pen rotated 8deg (asymmetry break) + Lime saturation boost.
+export function LavagnaCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 3px rgba(30, 77, 140, 0.18))' }}
+      {...props}
+    >
+      {/* Breadboard body — Lime fill (Vol 1 elettronica base palette) */}
+      <rect x="6" y="14" width="36" height="22" rx="2.5" fill="#4A7A25" stroke="#1E4D8C" strokeWidth="3" strokeLinejoin="round" />
+      {/* Power rails top + bottom — Navy bands */}
+      <rect x="6" y="14" width="36" height="3" fill="#1E4D8C" />
+      <rect x="6" y="33" width="36" height="3" fill="#1E4D8C" />
+      {/* Component holes 6×2 — white dots Navy outline (kit Omaric pin pad) */}
+      <circle cx="11" cy="22" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="17" cy="22" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="23" cy="22" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="29" cy="22" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="35" cy="22" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="11" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="17" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="23" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="29" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      <circle cx="35" cy="28" r="1.4" fill="#FFF" stroke="#1E4D8C" strokeWidth="0.8" />
+      {/* Chalk pen — Orange diagonal accent (lavagna libera "scrivere") +
+          rotated 8deg /impeccable:bolder asymmetry break */}
+      <g transform="rotate(8 36 10)">
+        <path d="M30 4 L42 4 L42 10 L36 16 L30 10 Z" fill="#E8941C" stroke="#1E4D8C" strokeWidth="2.5" strokeLinejoin="round" />
+        <line x1="34" y1="6" x2="38" y2="6" stroke="#FFD700" strokeWidth="1.8" strokeLinecap="round" />
+      </g>
+    </svg>
+  );
+}
+
+// ELAB Tutor completo card icon
+// Identity: volume aperto (Vol Davide cartacei) + circuit trace sulle
+// pagine (Arduino kit + volumi + software triplet).
+// Palette: Navy spine (UNLIM brand) + Lime pages (Vol 1) + Orange trace
+// (Vol 2) + Red component (Vol 3) — i 3 volumi rappresentati in 1 icona.
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow filter
+// + LED glow halo + spine bookmark ribbon (asymmetry detail).
+export function TutorCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 3px rgba(30, 77, 140, 0.18))' }}
+      {...props}
+    >
+      {/* Pages left — Lime (Vol 1) */}
+      <path d="M6 12 L24 8 L24 40 L6 38 Z" fill="#FFFEF5" stroke="#1E4D8C" strokeWidth="3" strokeLinejoin="round" />
+      {/* Pages right — Lime soft fill */}
+      <path d="M42 12 L24 8 L24 40 L42 38 Z" fill="#FFFEF5" stroke="#1E4D8C" strokeWidth="3" strokeLinejoin="round" />
+      {/* Spine center — Navy band UNLIM brand */}
+      <line x1="24" y1="8" x2="24" y2="40" stroke="#1E4D8C" strokeWidth="3" strokeLinecap="round" />
+      {/* Bookmark ribbon — Red asymmetric detail iter 38 /impeccable:bolder */}
+      <path d="M21 8 L21 16 L23 14 L25 16 L25 8 Z" fill="#E54B3D" stroke="#1E4D8C" strokeWidth="1" strokeLinejoin="round" opacity="0.85" />
+      {/* Circuit trace lhs — Lime ground rail */}
+      <line x1="9" y1="20" x2="20" y2="20" stroke="#4A7A25" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="9" y1="26" x2="20" y2="26" stroke="#4A7A25" strokeWidth="2.2" strokeLinecap="round" />
+      {/* Component LED rhs — Red Vol 3 Arduino + glow halo */}
+      <circle cx="32" cy="22" r="3.5" fill="#E54B3D" opacity="0.25" />
+      <circle cx="32" cy="22" r="2.5" fill="#E54B3D" stroke="#1E4D8C" strokeWidth="1.8" />
+      {/* Resistor rhs — Orange Vol 2 componenti */}
+      <rect x="28" y="28" width="8" height="3" fill="#E8941C" stroke="#1E4D8C" strokeWidth="1.5" />
+      {/* Trace spine to LED */}
+      <line x1="24" y1="22" x2="29.5" y2="22" stroke="#1E4D8C" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// UNLIM (solo chat) card icon
+// Identity: mascotte UNLIM head silhouette + circuit antennae (kit
+// Omaric pin coerenza) + LED yellow eye (mascotte signature).
+// Replaces previous brain-asymmetric (broke Morfismo Sense 2 — UNLIM
+// is mascotte robottino, not abstract brain).
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow + LED
+// eye glow halo + speech-bubble pulse (Orange ring outer).
+export function UNLIMCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 4px rgba(14, 45, 92, 0.25))' }}
+      {...props}
+    >
+      {/* Head body — Navy primary UNLIM brand */}
+      <rect x="10" y="14" width="28" height="22" rx="3" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="3" strokeLinejoin="round" />
+      {/* Antenna left — Lime stroke + circle tip */}
+      <line x1="16" y1="14" x2="13" y2="6" stroke="#4A7A25" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="13" cy="5" r="2.2" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      {/* Antenna right — Lime symmetric */}
+      <line x1="32" y1="14" x2="35" y2="6" stroke="#4A7A25" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="35" cy="5" r="2.2" fill="#4A7A25" stroke="#0E2D5C" strokeWidth="0.6" />
+      {/* Eyes — yellow LED signature mascotte + glow halo */}
+      <circle cx="19" cy="23" r="3.5" fill="#FFD700" opacity="0.30" />
+      <circle cx="19" cy="23" r="2.5" fill="#FFD700" stroke="#0E2D5C" strokeWidth="1.2" />
+      <circle cx="29" cy="23" r="3.5" fill="#FFD700" opacity="0.30" />
+      <circle cx="29" cy="23" r="2.5" fill="#FFD700" stroke="#0E2D5C" strokeWidth="1.2" />
+      {/* Smile — Lime curve (accogliente) */}
+      <path d="M18 30 Q24 33 30 30" fill="none" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Speech-bubble dot — Orange (chat indicator) + pulse outer ring */}
+      <circle cx="40" cy="13" r="4.2" fill="#E8941C" opacity="0.25" />
+      <circle cx="40" cy="13" r="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="1.8" />
+      <circle cx="40" cy="13" r="0.9" fill="#FFF" />
+    </svg>
+  );
+}
+
+// Glossario card icon /impeccable:polish O2
+// Identity: dictionary book + alphabetic A-Z divider tabs + Lime
+// magnifier lens (search vocabulary). Volumes Davide cartacei
+// reference: glossario è il riassunto termini chiave dei 3 volumi.
+// Iter 38 P0.3 /impeccable:bolder enhance: stroke 2.5→3 + drop-shadow filter
+// + magnifier handle highlight (Orange→Yellow gradient asymmetry).
+export function GlossarioCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true"
+      style={{ filter: 'drop-shadow(0 2px 3px rgba(14, 45, 92, 0.20))' }}
+      {...props}
+    >
+      {/* Book cover — Navy */}
+      <rect x="6" y="6" width="26" height="36" rx="1.5" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="3" strokeLinejoin="round" />
+      {/* Spine highlight — Lime accent left edge */}
+      <rect x="6" y="6" width="3" height="36" fill="#4A7A25" />
+      {/* Title bar — White on Navy */}
+      <rect x="13" y="11" width="14" height="2.5" rx="0.5" fill="#FFF" />
+      {/* A-Z divider tabs — Orange edge tabs (alphabetic dictionary) */}
+      <rect x="32" y="10" width="3" height="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.8" />
+      <rect x="32" y="16" width="3" height="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.8" />
+      <rect x="32" y="22" width="3" height="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.8" />
+      <rect x="32" y="28" width="3" height="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.8" />
+      <rect x="32" y="34" width="3" height="3" fill="#E8941C" stroke="#0E2D5C" strokeWidth="0.8" />
+      {/* Index lines on cover */}
+      <line x1="13" y1="20" x2="27" y2="20" stroke="#FFF" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="13" y1="25" x2="25" y2="25" stroke="#FFF" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="13" y1="30" x2="27" y2="30" stroke="#FFF" strokeWidth="1.2" strokeLinecap="round" />
+      {/* Magnifier lens — Lime ring + Orange handle (search) */}
+      <circle cx="36" cy="32" r="6" fill="#FFF" stroke="#4A7A25" strokeWidth="2.8" />
+      <circle cx="36" cy="32" r="2.5" fill="#4A7A25" opacity="0.25" />
+      <line x1="40" y1="36" x2="44" y2="40" stroke="#E8941C" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function CronologiaCardIcon({ size = 48, ...props }) {
+  return (
+    <svg
+      width={size} height={size} viewBox="0 0 48 48" fill="none"
+      role="img" aria-hidden="true" {...props}
+    >
+      <circle cx="24" cy="24" r="16" fill="#1E4D8C" stroke="#0E2D5C" strokeWidth="2" />
+      <circle cx="24" cy="24" r="13" fill="#FFF" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="24" y1="13" x2="24" y2="15" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="35" y1="24" x2="33" y2="24" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="24" y1="35" x2="24" y2="33" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="13" y1="24" x2="15" y2="24" stroke="#0E2D5C" strokeWidth="1.5" />
+      <line x1="24" y1="24" x2="24" y2="17" stroke="#1E4D8C" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="24" y1="24" x2="30" y2="20" stroke="#4A7A25" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="24" cy="24" r="1.5" fill="#0E2D5C" />
+      <path d="M10 8 L10 14 L16 14" fill="none" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 14 C10 9 14 6 18 6" fill="none" stroke="#4A7A25" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
   );
 }

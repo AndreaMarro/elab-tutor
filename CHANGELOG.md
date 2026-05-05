@@ -1,3 +1,30 @@
+## [iter 42 PM — HomePage prod regression revert + Bug 2 mountExperiment fix + UNLIM env tuning autonomous] — 2026-05-05
+
+iter 42 PM autonomous decisions for max quality + zero regression Andrea mandate. PR #62 cherry-pick HomePage corretta `e2e-bypass-preview` HEAD `86b9b52` over main regression `ade4ae3` ("Kit fisici + volumi + software morfico" version Andrea forbade). Step-Back v84 deployed prod (system-prompt.ts:167 HIDDEN CoT iter 41 P0.2). Env vars critical fix prod: INCLUDE_UI_STATE_IN_ONNISCENZA=true + CANARY_DENO_DISPATCH_PERCENT=100 + ONNISCENZA_VERSION=v1 (V2 reverted iter 39 was -1.0pp PZ V3 + 36% slower). Bug 2 mountExperiment surgical fix: accept BOTH positional string AND `{id}/{experimentId}` object (intentsDispatcher passes args object, was silent fail return false → "Caricato" pillola UI shown but simulator empty). 4 parallel debug agents (HIGH/MED confidence reports). Sprint contract iter 42 committed. Hook verification-evidence-gate.sh WIRED `.claude/settings.local.json` Stop block (G45 anti-inflation mechanical).
+
+### Added
+- `automa/team-state/sprint-contracts/sprint-T-iter-42-contract.md` — Phase 0 baseline + Andrea ratify queue P0 + 14 caveat outstanding cumulative
+- 3 NEW memoria feedback: `feedback_unlim_chat_broken_iter42.md` + `feedback_orchestrator_architecture_iter42.md` + `feedback_unlim_proactive_lesson_assistant_iter42.md` + `feedback_connettori_test_validation.md`
+- `src/services/sessionRestore.js` cherry-picked from e2e-bypass-preview (build dependency for HomeCronologia.jsx iter 36 SessionSave Atom SS6)
+
+### Changed
+- `src/components/HomePage.jsx` 1045+ insertions — cards LAVAGNA LIBERA / ELAB TUTOR COMPLETO / GLOSSARIO / Videolezioni + subtitle "Tutor educativo elettronica + Arduino bambini 8-14"
+- `src/components/HomeCronologia.jsx` Sprint U iter 7 ralph iter 3 version (Google/ChatGPT-style 30 sessioni + search + date buckets + AI brief)
+- `src/components/common/ElabIcons.jsx` NEW SVG impeccable LavagnaCardIcon + TutorCardIcon + RobotIcon + UNLIMCardIcon + GlossarioCardIcon
+- `src/services/simulator-api.js:264` mountExperiment dual-shape positional/object (Bug 2 ROOT CAUSE fix)
+- Edge Function `unlim-chat` v83→v84 deployed prod (Step-Back HIDDEN CoT iter 41 P0.2 LIVE)
+- Edge Function env vars LIVE prod: INCLUDE_UI_STATE_IN_ONNISCENZA=true + CANARY_DENO_DISPATCH_PERCENT=100 + ONNISCENZA_VERSION=v1
+
+### Honest caveats deferred
+- PR #62 build broken pre-fix `Could not resolve "../services/sessionRestore"` (FIXED this entry — cherry-pick + Governance Rule 5 CHANGELOG mandatory)
+- Vercel deploy preview FAILED (separate issue — `--archive=tgz` known iter 31-32)
+- claude-mem corpus elab-sprint-T BUILT EMPTY 0 obs (ingest pipeline broken Apr 23+, iter 36-41 NOT indexed)
+- repomix NOT installed + cegis-plus-orchestrator.sh NOT exist (P0 iter 41 ratify queue voce 5 NON eseguito)
+- 4 parallel debug agents reports: Bug 1 (Onniscenza UI snapshot HIGH 90%), Bug 2 (mountExperiment HIGH 85% — fix shipped this entry), Bug 4 (latency hypothesis FALSIFIED — R5 1807ms 2026-05-04 measured, NOT +3s drift), Bug 6 (HomePage regression HIGH 90% — fix shipped this entry)
+- Box 10 ClawBot 1.0 → 0.5 onesto recalibrate (INFLATED, dispatcher canary 0% pre-iter-42-PM env set)
+- Box 11 Onniscenza 0.85 → 0.5 onesto recalibrate (UI state NOT injected pre-iter-42-PM env set)
+- Cap iter 42 ricalibrato G45 ONESTO: **7.5/10** (NOT 8.5 inflated). Sprint T close 9.5 NOT achievable iter 42-43 single-shot — realistic iter 45+ post ADR-043 Morfismo Orchestrator ship + canary stable + Andrea Opus G45 indipendente review
+
 ## [Sprint U Cycle 1 — 94 esperimenti audit + 6 fix categories Mac Mini autonomous] — 2026-05-01
 
 Sprint U Cycle 1 ralph loop autonomous Mac Mini (5 iter + emergency fixers): 22 commits, 1465 file changed, 256K insertions, 5.4K deletions. Score onesto 6.5/10 (NOT 8.0 self-claim) post 6 quality gates indipendenti convergenti (PZ compliance + self-CoV v2 + inflation detector + engine protection + Opus indipendente review + bundle analysis).
