@@ -1,0 +1,40 @@
+{
+  "atom": "smoke-test-1",
+  "date": "2026-05-05T07-10-57",
+  "git_head": "779220f472ab66273d6be7e6d3360c58e359f913",
+  "git_branch": "e2e-bypass-preview",
+  "rounds": {
+    "r1_codex_impl": {
+      "duration_s": 14,
+      "output_file": "/tmp/m-ai-07-smoke-test-1-r1.txt",
+      "lines":      161
+    },
+    "r2_gemini_critique": {
+      "duration_s": 25,
+      "output_file": "/tmp/m-ai-07-smoke-test-1-r2.txt"
+    },
+    "r3a_mistral_it_k12": {
+      "duration_s": 4,
+      "output_file": "/tmp/m-ai-07-smoke-test-1-r3a.json"
+    },
+    "r3b_kimi_256k_antibias": {
+      "duration_s": 11,
+      "output_file": "/tmp/m-ai-07-smoke-test-1-r3b.json"
+    },
+    "r5_codex_iter2_finalize": {
+      "duration_s": 13,
+      "output_file": "/tmp/m-ai-07-smoke-test-1-r5.txt",
+      "lines":      366
+    },
+    "r6_claude_last_word": "pending — orchestrator Claude session reads aggregate + applies Edit selectively + commits"
+  },
+  "metrics": {
+    "total_wall_clock_s": 67,
+    "wall_clock_target_s": 180,
+    "cost_estimate_usd": "0.005-0.015",
+    "vendors_called": 4
+  },
+  "next_action": "Claude session reads /Users/andreamarro/VOLUME 3/PRODOTTO/elab-builder/automa/state/m-ai-07/smoke-test-1-2026-05-05T07-10-57.json + Round 5 output, applies Edit tool, commits with audit reference",
+  "orchestrator_version": 1,
+  "orchestrator_source": "M-AI-07-multi-vendor-anti-bias.sh"
+}
