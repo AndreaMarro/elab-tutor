@@ -5773,6 +5773,7 @@ void loop() {
       icon: "\u{1F4AC}",
       simulationMode: "avr",
       components: [
+        { type: "breadboard-half", id: "bb1" },
         { type: "nano-r4", id: "nano1" }
       ],
       connections: [],
@@ -5791,7 +5792,8 @@ void loop() {
   // Vuoto: il messaggio e nel setup, si invia una sola volta
 }`,
       layout: {
-        "nano1": { x: 320, y: 50 }
+        "nano1": { x: 230, y: 10, parentId: "bb1" },
+        "bb1": { x: 280, y: 10 }
       },
       concept: "Comunicazione seriale, Serial.begin(baud), Serial.println(), stringhe tra virgolette doppie, debug",
       layer: "schema",
