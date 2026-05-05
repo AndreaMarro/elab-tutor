@@ -22,7 +22,7 @@
 import React from 'react';
 import css from './ModalitaSwitch.module.css';
 
-export const MODALITA = ['percorso', 'passo-passo', 'gia-montato', 'libero'];
+export const MODALITA = ['percorso', 'passo-passo', 'gia-montato'];
 
 const MODE_META = {
   'percorso': {
@@ -41,12 +41,6 @@ const MODE_META = {
     icon: '🧩',
     label: 'Già Montato',
     tooltip: 'Ragazzi, guardate il circuito già pronto — sapete spiegarlo?',
-    isDefault: false,
-  },
-  'libero': {
-    icon: '🎨',
-    label: 'Libero',
-    tooltip: 'Ragazzi, esploriamo liberamente — UNLIM ci suggerisce variazioni.',
     isDefault: false,
   },
 };

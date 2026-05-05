@@ -438,12 +438,13 @@ export default function LavagnaShell() {
   // invalid filtered out → setModalita default 'percorso' attivo MA bottone non mostrato attivo
   // perché il browser ricaricava su modalità non più rendered. Forziamo cleanup al mount.
   const [modalita, setModalita] = useState(() => {
-    const CANONICAL = ['percorso', 'passo-passo', 'gia-montato', 'libero'];
+    const CANONICAL = ['percorso', 'passo-passo', 'gia-montato'];
+    const MIGRATED_TO_PERCORSO = ['libero'];
     try {
       const v = localStorage.getItem('elab-lavagna-modalita');
       if (CANONICAL.includes(v)) return v;
-      // Stale or unknown value (legacy 'guida-da-errore', 'complete', 'guided', 'sandbox', null)
-      // → reset localStorage + default to 'percorso' canonical default.
+      // 'libero' merged into 'percorso' (iter 42) — migrate silently.
+      // Also handles legacy 'guida-da-errore', 'complete', 'guided', 'sandbox', null.
       if (v != null) {
         try { localStorage.removeItem('elab-lavagna-modalita'); } catch {}
       }
@@ -614,34 +615,19 @@ export default function LavagnaShell() {
   }, [modalita]);
 
   // Iter 34 P0 fix Andrea bug "lavagna bianca quando selezionata non è mai vuota":
-  // ADR-025 §4.4 iter 26 forced Libero → auto-Percorso (NON sandbox). Andrea iter
-  // 34 ha invertito il mandate: Libero DEVE essere blank sandbox (true empty
-  // canvas) per consentire creazione libera senza esperimento pre-mounted.
   // Diagnose flow integrato dentro Già Montato + Passo Passo (mode 'guida-da-errore' REMOVED).
+  // 'libero' rimosso iter 42 — coincide con 'percorso', rimosso da ModalitaSwitch.
   const handleModalitaChange = useCallback((nextMode) => {
-    if (!['percorso', 'passo-passo', 'gia-montato', 'libero'].includes(nextMode)) {
-      return; // defensive: ignore unknown modes (e.g. legacy 'guida-da-errore')
+    if (!['percorso', 'passo-passo', 'gia-montato'].includes(nextMode)) {
+      return; // defensive: ignore unknown/legacy modes
     }
     setModalita(nextMode);
-    // Già Montato NEW: signal pre-assembled diagnose mode to simulator if API present
+    // Già Montato: signal pre-assembled diagnose mode to simulator if API present
     if (nextMode === 'gia-montato' && typeof window !== 'undefined') {
       const api = window.__ELAB_API;
       if (api?.unlim?.setDiagnoseMode) {
         try { api.unlim.setDiagnoseMode(true); } catch { /* noop */ }
       }
-    }
-    // Iter 34 P0 fix Andrea bug "lavagna bianca selezionata non è mai vuota".
-    // Iter 35 P1 fix Andrea bug "premo libera e circuito rimane":
-    // - clearAll() pulisce simulator MA currentExperiment riresta settato → re-render ripopola componenti
-    // - setBuildMode('sandbox') NON è method API top-level → no-op
-    // Fix: set currentExperiment = null (deselect) + clearAll + remove localStorage exp id
-    if (nextMode === 'libero' && typeof window !== 'undefined') {
-      const api = window.__ELAB_API;
-      try {
-        setCurrentExperiment(null);
-        if (api?.clearAll) api.clearAll();
-        try { localStorage.removeItem('elab-lavagna-exp-id'); } catch { /* noop */ }
-      } catch { /* noop */ }
     }
   }, []);
   useEffect(() => {
@@ -1316,41 +1302,6 @@ export default function LavagnaShell() {
           </div>
         )}
 
-        {/* Atom A5 iter 36 — Passo Passo: LessonReader in resizable/draggable FloatingWindow.
-             Principio Zero: se nessun esperimento caricato, empty state plurale + kit reference.
-             Z-index 10001 > UNLIM panel (lavagna/FloatingWindow maximized = 10000). */}
-        {modalita === 'passo-passo' && (
-          <FloatingWindowCommon
-            title="Passo Passo"
-            initialPosition={{ x: 100, y: 100 }}
-            initialSize={{ width: 480, height: 600 }}
-            minSize={{ width: 320, height: 400 }}
-            resizable
-            draggable
-            zIndex={10001}
-            onClose={() => setModalita('percorso')}
-          >
-            {!activeLessonId ? (
-              <div style={{
-                padding: 32, textAlign: 'center', color: 'var(--elab-hex-737373)',
-                fontFamily: "'Open Sans', sans-serif", fontSize: 16, lineHeight: 1.6,
-              }}>
-                <p style={{ fontFamily: "'Oswald', sans-serif", fontSize: 18, fontWeight: 700, color: 'var(--elab-navy)', marginBottom: 12 }}>
-                  Ragazzi, scegliete un esperimento dalla lista
-                </p>
-                <p style={{ fontSize: 15 }}>
-                  Aprite il kit ELAB e trovate l&apos;esperimento nel volume.
-                </p>
-              </div>
-            ) : (
-              <LessonReader
-                lessonId={activeLessonId}
-                currentExperimentId={currentExperiment?.id}
-                onExperimentSelect={handleLessonExperimentSelect}
-              />
-            )}
-          </FloatingWindowCommon>
-        )}
       </div>
 
       {/* Bottom panel — placeholder for code/serial (simulator handles its own) */}

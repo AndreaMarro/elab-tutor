@@ -355,22 +355,7 @@ const CARDS = [
     title: 'Glossario',
     text: 'Tutti i termini di elettronica spiegati semplici: LED, resistore, breadboard, Arduino. Cercate parole + leggete con la classe.',
     cta: 'Apri Glossario',
-    href: 'https://elab-tutor-glossario.vercel.app',
-    target: 'external',
-    credit: 'Fatto da Tea',
-  },
-  // Iter 39 Andrea direttiva: 4° card = Videolezioni canale diretto.
-  // Sostituisce "Chi siamo" (Andrea togli + replace).
-  // Href placeholder YouTube channel — Andrea ratify URL specifico.
-  {
-    id: 'videolezioni',
-    emoji: '🎬',
-    IconComponent: null,
-    accent: PALETTE.orange,
-    title: 'Videolezioni',
-    text: 'Lezioni video pronte: docente guarda + ragazzi seguono. Per ogni esperimento del kit ELAB con i volumi cartacei.',
-    cta: 'Apri Videolezioni',
-    href: 'https://www.youtube.com/@elabtutor',
+    href: 'https://elab-tutor-glossario.vercel.app/glossario',
     target: 'external',
     credit: null,
   },
@@ -799,11 +784,6 @@ export default function HomePage({ onNavigate }) {
           <HomeCard key={card.id} card={card} onActivate={handleActivate} />
         ))}
       </section>
-
-      {/* Cronologia sessioni preserved iter 35 */}
-      <Suspense fallback={null}>
-        <HomeCronologia onResume={handleResume} />
-      </Suspense>
 
       {/* Sprint U iter 7 — Diario del docente placeholder section.
           Full impl deferred iter 8+: persistent journal + AI summaries via
