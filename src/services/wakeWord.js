@@ -48,6 +48,19 @@ export function isWakeWordSupported() {
  */
 export function startWakeWordListener({ onWake, onCommand, lang = 'it-IT' } = {}) {
   if (!isWakeWordSupported()) {
+    // Sprint V iter 1 Atom A1.1: surface UI event so docente sees actionable
+    // feedback on Safari/Firefox (era silent — Andrea reported "non funziona").
+    // LavagnaShell:589-599 ascolta `elab-wake-word-error` per toast docente.
+    try {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('elab-wake-word-error', {
+          detail: {
+            code: 'unsupported',
+            message: 'Ragazzi, su Safari/Firefox la voce "Ehi UNLIM" non funziona, usate Chrome o Edge.',
+          },
+        }));
+      }
+    } catch (_) { /* ignore */ }
     logger.warn('[WakeWord] SpeechRecognition not supported');
     return false;
   }

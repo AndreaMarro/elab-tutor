@@ -44,6 +44,10 @@ import {
   UNLIMCardIcon,
   GlossarioCardIcon,
 } from './common/ElabIcons';
+// Sprint V iter 1 Phase 3 WebDesigner-1 Atom A10 — ElabMascotte SVG
+// inline impeccable (replaces PNG mascot — Andrea iter 42 PM mandate
+// "voglio mascotte e nessuna emoticon" + design strutturato).
+import ElabMascotte from './common/ElabMascotte';
 
 // Cronologia sessioni — sezione sotto le card (iter 35 Task 2, preserved iter 36)
 const HomeCronologia = lazy(() => import('./HomeCronologia'));
@@ -760,30 +764,20 @@ export default function HomePage({ onNavigate }) {
             onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            {/* Iter 35 ATOM VII — Vera Mascotte ELAB UNLIM (Andrea iter 31+ mandate "vera mascotte fighissima animata design perfetto").
-                Replaces previous inline SVG (monitor face + headphones robot which Andrea explicitly said NOT vera mascotte)
-                with canonical robottino ELAB (navy body + lime accents + antenna + LED held in hands + ELAB logo)
-                imported from TRES JOLIE design source `manuale copia/elab-builder/public/elab-mascot.png`.
-                Animations CSS keyframes (no Framer Motion dep): idle bob 3.6s + hover scale + click pulse.
-                Respect prefers-reduced-motion via @media query in <style> below.
-                File: public/assets/mascot/elab-mascot-vera.png (30KB) — Andrea TRES JOLIE materiale ELAB completo unifica. */}
-            <img
-              src="/assets/mascot/elab-mascot-vera.png"
-              alt="Mascotte UNLIM — robottino ELAB navy con antenna e LED giallo, design ufficiale ELAB"
-              className="elab-mascotte-vera"
-              loading="eager"
-              decoding="async"
-              draggable={false}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                userSelect: 'none',
-                pointerEvents: 'none',
-                /* Drop-shadow + glow pulse driven by CSS keyframe
-                   elabMascotGlowPulse (see src/index.css). Inline filter
-                   removed iter 35 PM Andrea fix (was overriding CSS anim). */
-              }}
+            {/* Sprint V iter 1 Phase 3 WebDesigner-1 Atom A10 — ElabMascotte
+                SVG inline IMPECCABLE (replaces public/assets/mascot/elab-mascot-vera.png).
+                Andrea iter 42 PM 2026-05-05 mandate: "nella homepage voglio mascotte
+                e nessuna emoticon e i crediti per teodora de venere" — design
+                impeccable, NO emoji, NO PNG generic. Identity: robottino Navy/Lime/Orange
+                con LED occhi gialli signature + antenna doppia con tip glow + cuore
+                Lime sul petto (Tea + team "fatto con cuore"). 3 stati comportamentali
+                (idle/speaks/listens) Morfismo Sense 1 runtime adattivo. WCAG AA
+                contrast Navy on Lime + prefers-reduced-motion respected. */}
+            <ElabMascotte
+              state="idle"
+              size="hero"
+              data-testid="home-mascotte-svg"
+              style={{ pointerEvents: 'none' }}
             />
           </button>
         </div>
@@ -847,11 +841,62 @@ export default function HomePage({ onNavigate }) {
       </section>
 
       <footer style={styles.footer} id="elab-home-footer" data-testid="home-footer">
-        <p style={styles.footerCredits}>
-          <span style={{ ...styles.footerCreditsStrong, fontWeight: 500 }}>Homepage a cura di </span>
+        {/* Sprint V iter 1 Phase 3 WebDesigner-1 Atom A11 — Tea credits
+            HomePage footer estesi. Andrea iter 42 PM 2026-05-05 mandate:
+            "nella homepage voglio mascotte e nessuna emoticon e i crediti
+            per teodora de venere". Triplet PRINCIPIO ZERO + Morfismo Sense 2
+            (Davide volumi cartacei + Omaric kit hardware + Giovanni
+            commerciale + Andrea founder/dev + Tea UX/tester/creativa) tutti
+            riconosciuti — NESSUNO è anonimo. */}
+        <p
+          style={styles.footerCredits}
+          data-testid="home-footer-credits-team"
+        >
+          <span>© 2026 ELAB Tutor</span>
+          <span style={{ margin: '0 8px', opacity: 0.5 }} aria-hidden="true">·</span>
           <span style={styles.footerCreditsStrong}>Andrea Marro</span>
+          <em style={{ marginLeft: 4, fontWeight: 500, color: PALETTE.textMuted }}>
+            founder + dev
+          </em>
+          <span style={{ margin: '0 8px', opacity: 0.5 }} aria-hidden="true">·</span>
+          <span style={styles.footerCreditsStrong}>Teodora De Venere</span>
+          <em style={{ marginLeft: 4, fontWeight: 500, color: PALETTE.textMuted }}>
+            (Tea) — UX + tester + creativa
+          </em>
+          <span style={{ margin: '0 8px', opacity: 0.5 }} aria-hidden="true">·</span>
+          <span style={styles.footerCreditsStrong}>Davide Fagherazzi</span>
+          <em style={{ marginLeft: 4, fontWeight: 500, color: PALETTE.textMuted }}>
+            volumi cartacei
+          </em>
+          <span style={{ margin: '0 8px', opacity: 0.5 }} aria-hidden="true">·</span>
+          <span style={styles.footerCreditsStrong}>Omaric Elettronica</span>
+          <em style={{ marginLeft: 4, fontWeight: 500, color: PALETTE.textMuted }}>
+            kit hardware
+          </em>
+          <span style={{ margin: '0 8px', opacity: 0.5 }} aria-hidden="true">·</span>
+          <span style={styles.footerCreditsStrong}>Giovanni Fagherazzi</span>
+          <em style={{ marginLeft: 4, fontWeight: 500, color: PALETTE.textMuted }}>
+            commerciale
+          </em>
+        </p>
+        <p
+          style={{
+            ...styles.footerCredits,
+            fontSize: 11,
+            marginTop: 4,
+            opacity: 0.85,
+          }}
+          data-testid="home-footer-credits-mascotte"
+        >
+          <span>Mascotte SVG</span>
           {' · '}
-          <span style={styles.footerCreditsStrong}>Teodora de Venere</span>
+          <span style={{ ...styles.footerCreditsStrong, fontWeight: 600 }}>
+            Andrea Marro
+          </span>
+          {' + design feedback '}
+          <span style={{ ...styles.footerCreditsStrong, fontWeight: 600 }}>
+            Teodora De Venere
+          </span>
         </p>
         <button
           type="button"

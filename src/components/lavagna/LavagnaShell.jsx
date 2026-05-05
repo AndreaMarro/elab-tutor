@@ -630,6 +630,25 @@ export default function LavagnaShell() {
         try { api.unlim.setDiagnoseMode(true); } catch { /* noop */ }
       }
     }
+    // Sprint V iter 1 Atom A5 — Percorso morphic Onniscenza Sense 1.5.
+    // Andrea mandate: vecchia "Libero" + adattamento contesto lezione+classe+sessioni.
+    // Trigger best-effort prefetch dell'aggregator Onniscenza (client-side bridge only;
+    // wire-up Edge Function chain decisione orchestratore Phase 4). NON muta
+    // currentExperiment — preserva canvas (no clearAll).
+    if (nextMode === 'percorso' && typeof window !== 'undefined') {
+      const api = window.__ELAB_API;
+      if (api?.unlim?.aggregateContext) {
+        try {
+          api.unlim.aggregateContext({
+            lesson: api?.unlim?.getActiveLessonId?.() || null,
+            class_key: (() => {
+              try { return localStorage.getItem('elab-class-key') || null; } catch { return null; }
+            })(),
+            recent_sessions_limit: 5,
+          });
+        } catch { /* noop */ }
+      }
+    }
     // Iter 34 P0 fix Andrea bug "lavagna bianca selezionata non è mai vuota".
     // Iter 35 P1 fix Andrea bug "premo libera e circuito rimane":
     // - clearAll() pulisce simulator MA currentExperiment riresta settato → re-render ripopola componenti
@@ -1183,7 +1202,11 @@ export default function LavagnaShell() {
                 <span>Caricamento simulatore...</span>
               </div>
             }>
-              <NewElabSimulator hideLessonPath />
+              <NewElabSimulator
+                hideLessonPath
+                hideComponentDrawer={modalita === 'passo-passo'}
+                enableDrawingSync
+              />
             </Suspense>
 
             <FloatingToolbar
