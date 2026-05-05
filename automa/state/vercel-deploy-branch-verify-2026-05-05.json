@@ -1,0 +1,12 @@
+{
+  "date": "2026-05-05",
+  "mode": "--post-deploy",
+  "git_head_branch": "e2e-bypass-preview",
+  "git_head_sha": "f7971c1b5552bb00ad364fcf198e36ea57022843",
+  "prod_deploy_url": "https://elab-tutor-nfzxjmuh9-andreas-projects-6d4e9791.vercel.app",
+  "deploy_branch": "archive_upload_no_git_link",
+  "deploy_sha": "",
+  "status": "ok",
+  "verifier_version": 1,
+  "verifier_source": "M-AR-06-vercel-deploy-branch-verifier.sh"
+}

@@ -1,0 +1,96 @@
+{
+  "date": "2026-05-05",
+  "git_head": "f7971c1b5552bb00ad364fcf198e36ea57022843",
+  "actuals_baseline": {
+    "toolspec_count": 57,
+    "lesson_paths_count": 94,
+    "rag_chunks_count": null,
+    "rag_chunks_skipped": true,
+    "rag_chunks_skip_reason": "SUPABASE_SERVICE_ROLE_KEY missing (advisory)"
+  },
+  "files_scanned": 296,
+  "files_with_drift": 6,
+  "total_findings": 6,
+  "severity_breakdown": {
+    "HIGH": 3,
+    "MEDIUM": 3,
+    "ADVISORY": 0
+  },
+  "results": [
+    {
+      "file": "docs/audits/2026-04-28-iter-21-AGGREGATE-FINDINGS.md",
+      "findings": [
+        {
+          "type": "lesson_paths",
+          "severity": "HIGH",
+          "claimed": 1,
+          "actual": 94,
+          "message": "lesson-paths drift: doc claims 1 vs actual 94"
+        }
+      ]
+    },
+    {
+      "file": "docs/audits/2026-04-28-iter-21-LINGUAGGIO-AUDIT.md",
+      "findings": [
+        {
+          "type": "lesson_paths",
+          "severity": "HIGH",
+          "claimed": 3,
+          "actual": 94,
+          "message": "lesson-paths drift: doc claims 3 vs actual 94"
+        }
+      ]
+    },
+    {
+      "file": "docs/audits/2026-05-03-iter-31-ralph5-skills-dry-run.md",
+      "findings": [
+        {
+          "type": "lesson_paths",
+          "severity": "MEDIUM",
+          "claimed": 87,
+          "actual": 94,
+          "message": "lesson-paths drift: doc claims 87 vs actual 94"
+        }
+      ]
+    },
+    {
+      "file": "docs/audits/G45-OPUS-INDIPENDENTE-2026-05-02.md",
+      "findings": [
+        {
+          "type": "iter_score",
+          "severity": "HIGH",
+          "iter": 39,
+          "claimed": 8.45,
+          "actual": 8,
+          "message": "iter 39 score drift: doc claims 8.45 vs history score_capped 8"
+        }
+      ]
+    },
+    {
+      "file": "docs/adrs/ADR-012-vision-flow-e2e-playwright-2026-04-26.md",
+      "findings": [
+        {
+          "type": "iter_score",
+          "severity": "MEDIUM",
+          "iter": 5,
+          "claimed": 6.55,
+          "actual": null,
+          "message": "iter 5 score 6.55 claimed but no entry in score-history.jsonl"
+        }
+      ]
+    },
+    {
+      "file": "docs/adrs/ADR-016-tts-isabella-websocket-deno-migration-2026-04-27.md",
+      "findings": [
+        {
+          "type": "iter_score",
+          "severity": "MEDIUM",
+          "iter": 7,
+          "claimed": 8.2,
+          "actual": null,
+          "message": "iter 7 score 8.2 claimed but no entry in score-history.jsonl"
+        }
+      ]
+    }
+  ]
+}
