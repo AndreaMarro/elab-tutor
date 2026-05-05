@@ -1,0 +1,14 @@
+{
+  "date": "2026-05-05",
+  "target": "/tmp/m-ai-07-smoke-test-1-r3b.json",
+  "vendor": "kimi-test",
+  "summary": {
+    "total": 0,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "ADVISORY": 0
+  },
+  "violations": [],
+  "verifier_version": 1,
+  "verifier_source": "M-AR-07-vendor-output-sanity-check.mjs"
+}
