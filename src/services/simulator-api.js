@@ -261,7 +261,11 @@ function createPublicAPI() {
      * @param {string} experimentId - e.g. 'v1-cap6-primo-circuito'
      * @returns {boolean} success
      */
-    mountExperiment(experimentId) {
+    mountExperiment(arg) {
+      // Iter 42 P0 BUG-2 FIX: accept BOTH positional string AND object {id}/{experimentId}
+      // (Mistral function calling intentsDispatcher passes args object, not positional string)
+      const experimentId = typeof arg === 'string' ? arg : (arg?.id || arg?.experimentId);
+      if (!experimentId) return false;
       if (!_simulatorRef?.selectExperiment) return false;
       const exp = findExperimentById(experimentId);
       if (!exp) return false;
