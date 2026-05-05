@@ -1,0 +1,19 @@
+# Supabase project config — Edge Functions auth bypass (iter 39 conservative)
+# Iter 39 fix: Edge Functions reject legacy HS256 anon JWT post Supabase JWT
+# signing key rotation ~30d ago (CURRENT KEY=ECC P-256, PREVIOUS=Legacy HS256
+# verified Settings/JWT page 2026-05-05). Edge Functions error code:
+# UNAUTHORIZED_LEGACY_JWT 401. Frontend sends legacy anon JWT bundled at build.
+#
+# Fix scope iter 39: ONLY unlim-session-description (Cronologia bug Andrea #3
+# RESOLVED at deploy level commit 86455c1). Function does own auth via
+# X-Elab-Api-Key header (verifyElabApiKey, guards.ts:67 fail-open absent
+# secret). verify_jwt=false skips Supabase platform JWT check; function-level
+# ELAB_API_KEY auth still enforced (Andrea iter 32 P0 rotation 32-hex random).
+#
+# Iter 40+ expansion: apply verify_jwt=false to all unlim-* functions if iter
+# 39 prod verify confirms unblock + zero security regression. Andrea ratify.
+
+project_id = "euqpdueopmlllqjmqnyb"
+
+[functions.unlim-session-description]
+verify_jwt = false
