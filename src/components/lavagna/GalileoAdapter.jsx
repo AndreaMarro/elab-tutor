@@ -92,7 +92,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
       color: colors.accent, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10,
     },
     phaseIcon: { fontSize: 28 },
-    message: { fontSize: 17, lineHeight: 1.7, color: '#1A1A2E', fontFamily: "'Open Sans', sans-serif", marginBottom: 14 },
+    message: { fontSize: 17, lineHeight: 1.7, color: 'var(--color-text, #1A1A2E)', fontFamily: "'Open Sans', sans-serif", marginBottom: 14 },
     tip: {
       background: 'rgba(255,255,255,0.7)', borderRadius: 12, padding: '12px 14px', marginBottom: 12,
       border: '1px dashed ' + colors.accent + '30', fontSize: 15, lineHeight: 1.6, color: '#555',
@@ -103,7 +103,7 @@ function EmbeddedPercorso({ experiment, onAskUNLIM }) {
     navBtn: (primary) => ({
       flex: 1, padding: '14px 16px', border: primary ? 'none' : `2px solid ${colors.accent}40`, borderRadius: 14,
       background: primary ? `linear-gradient(135deg, ${colors.accent} 0%, ${colors.accent}cc 100%)` : `${colors.accent}08`,
-      color: primary ? '#fff' : colors.accent,
+      color: primary ? 'var(--color-text-inverse, #FFFFFF)' : colors.accent,
       fontFamily: "'Oswald', sans-serif", fontSize: 16, fontWeight: 700, cursor: 'pointer',
       letterSpacing: '1px', textTransform: 'uppercase',
       boxShadow: primary ? `0 4px 16px ${colors.accent}30` : 'none',
@@ -251,13 +251,13 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     stepNum: {
       display: 'inline-flex', width: 48, height: 48, borderRadius: 14,
       background: 'linear-gradient(135deg, var(--elab-navy) 0%, #2a6bc4 100%)',
-      color: '#fff', alignItems: 'center', justifyContent: 'center',
+      color: 'var(--color-text-inverse, #FFFFFF)', alignItems: 'center', justifyContent: 'center',
       fontFamily: "'Oswald', sans-serif", fontSize: 22, fontWeight: 700,
       marginRight: 16, flexShrink: 0,
       boxShadow: '0 3px 12px rgba(30, 77, 140, 0.25)',
     },
     stepText: {
-      fontSize: 18, lineHeight: 1.65, color: '#1A1A2E', fontWeight: 500,
+      fontSize: 18, lineHeight: 1.65, color: 'var(--color-text, #1A1A2E)', fontWeight: 500,
       fontFamily: "'Open Sans', sans-serif",
     },
     sectionCard: {
@@ -276,7 +276,7 @@ function EmbeddedGuide({ experiment, onAskUNLIM }) {
     navBtn: (primary) => ({
       flex: 1, padding: '14px 16px', border: primary ? 'none' : '2px solid rgba(30, 77, 140, 0.3)', borderRadius: 14,
       background: primary ? 'linear-gradient(135deg, var(--elab-navy) 0%, #2a6bc4 100%)' : 'rgba(30, 77, 140, 0.04)',
-      color: primary ? '#fff' : 'var(--elab-navy)',
+      color: primary ? 'var(--color-text-inverse, #FFFFFF)' : 'var(--elab-navy)',
       fontFamily: "'Oswald', sans-serif", fontSize: 16, fontWeight: 700, cursor: 'pointer',
       letterSpacing: '1px', textTransform: 'uppercase', transition: 'all 150ms',
       boxShadow: primary ? '0 4px 16px rgba(30, 77, 140, 0.25)' : 'none',
@@ -636,7 +636,7 @@ export default function GalileoAdapter({ visible, onClose, onSpeakingChange, act
     flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer',
     fontFamily: "'Oswald', sans-serif", fontSize: 14, fontWeight: 600,
     letterSpacing: '0.5px', textTransform: 'uppercase',
-    background: active ? '#fff' : 'transparent',
+    background: active ? 'var(--color-text-inverse, #FFFFFF)' : 'transparent',
     color: active ? 'var(--elab-navy)' : '#737373',
     borderBottom: active ? '2px solid var(--elab-navy)' : '2px solid transparent',
     transition: 'all 150ms',
