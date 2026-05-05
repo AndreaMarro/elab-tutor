@@ -985,15 +985,23 @@ export default function LavagnaShell() {
 
   // Bentornati: teacher clicks "Inizia" → load suggested experiment + open UNLIM
   // Handles race condition: if __ELAB_API is not ready yet, retries with polling
+  // Iter 39 Andrea fix: defensive markOverlayDismissed + localStorage persist
+  // (utenti stuck regression segnalata Andrea: overlay non dismiss su click).
   const handleBentornatiStart = useCallback((suggestion) => {
+    // Iter 39 ANDREA fix defensive: force dismiss + localStorage persist + queue refresh
+    try { localStorage.setItem('elab_skip_bentornati', 'true'); } catch {}
     if (!suggestion?.experimentId) {
       setBentornatiVisible(false);
+      markOverlayDismissed();
+      // Fallback: open ExperimentPicker if no suggestion available
+      setTimeout(() => setPickerOpen(true), 100);
       return;
     }
     // Update UI immediately — no waiting
     setExperimentName(suggestion.title || suggestion.experimentId);
     setHasExperiment(true);
     setBentornatiVisible(false);
+    markOverlayDismissed();
     setPickerOpen(false);
     const volMatch = (suggestion.experimentId || '').match(/^v(\d)/);
     if (volMatch) setCurrentVolume(Number(volMatch[1]));
