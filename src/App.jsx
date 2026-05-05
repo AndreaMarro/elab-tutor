@@ -36,6 +36,10 @@ const VetrinaV2 = lazy(() => import('./components/lavagna/VetrinaV2'));
 const DashboardShell = lazy(() => import('./components/dashboard'));
 // iter 35 P0 — Tea HomePage integrata main app (5 card hero + cronologia)
 const HomePage = lazy(() => import('./components/HomePage'));
+// Iter 38 P0.10 fix — UpdatePrompt globale App.jsx (era solo LavagnaShell route-specific).
+// Andrea pagina bianca segnalata: SW stale cache su homepage senza toast update visibile.
+// Mount App-level rende toast "Ragazzi, c'è una nuova versione" visibile su TUTTE routes.
+const UpdatePrompt = lazy(() => import('./components/common/UpdatePrompt'));
 
 function LoadingFallback() {
     return (
@@ -446,6 +450,13 @@ function App() {
 
                 <GatedConsentBanner />
                 <ToastContainer />
+                {/* Iter 38 P0.10 — UpdatePrompt globale: SW update toast visibile
+                    su TUTTE routes (homepage + lavagna + tutor + dashboard).
+                    Andrea pagina bianca regression iter 38: SW stale cache senza
+                    toast surface (era mountato SOLO LavagnaShell). */}
+                <Suspense fallback={null}>
+                    <UpdatePrompt autoReloadSeconds={5} />
+                </Suspense>
             </AuthProvider>
         </ErrorBoundary>
     );

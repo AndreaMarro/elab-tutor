@@ -1296,9 +1296,11 @@ export default function LavagnaShell() {
           appare quando vite-plugin-pwa segnala onNeedRefresh (registerType:
           'prompt'). Self-managed: needRefresh flag interno; component
           returns null fino a SW update. */}
-      <Suspense fallback={null}>
-        <UpdatePrompt autoReloadSeconds={5} />
-      </Suspense>
+      {/* Iter 38 P0.10 — UpdatePrompt mountato globalmente App.jsx (dedup).
+          Era qui SOLO LavagnaShell route-specific iter 38 A12 — Andrea pagina
+          bianca regression: SW stale cache homepage senza toast visibile.
+          Mount globale App.jsx ora copre TUTTE routes. Lasciamo commento per
+          tracciamento storico — UpdatePrompt rimosso da qui dedup. */}
       <AppHeader
         experimentName={experimentName}
         totalSteps={totalSteps}
