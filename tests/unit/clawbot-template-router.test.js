@@ -64,10 +64,18 @@ describe('clawbot-templates registry', () => {
 });
 
 describe('selectTemplate', () => {
-  it('matches "spiega LED" → L2-explain-led-blink', () => {
-    const t = selectTemplate('Ragazzi, spiega LED Blink lampeggio', {});
+  it('matches "spiega LED" → L2-explain-led-blink (with matching experimentId)', () => {
+    // Iter 39 SCALE fix: lesson-explain templates require explicit experimentId match.
+    // Pass context.experimentId matching template's own inputs.experimentId.
+    const t = selectTemplate('Ragazzi, spiega LED Blink lampeggio', { experimentId: 'v1-cap6-esp1' });
     expect(t).toBeTruthy();
     expect(t.id).toBe('L2-explain-led-blink');
+  });
+
+  it('lesson-explain BLOCKED for generic queries without experimentId (Sprint U Cycle 1 fix)', () => {
+    // Iter 39 SCALE: 93/94 esperimenti broken → require experimentId for lesson-explain
+    const t = selectTemplate('Ragazzi, spiega LED Blink lampeggio', {});
+    expect(t).toBeNull();
   });
 
   it('matches "diagnose LED rovesciato" → L2-diagnose-led-rovesciato', () => {
@@ -82,8 +90,9 @@ describe('selectTemplate', () => {
     expect(t.id).toBe('L2-introduce-breadboard');
   });
 
-  it('matches "spiega PWM fade" → L2-explain-pwm-fade', () => {
-    const t = selectTemplate('spiega PWM analogWrite fade rubinetto', {});
+  it('matches "spiega PWM fade" → L2-explain-pwm-fade (with matching experimentId)', () => {
+    // Iter 39 SCALE fix: lesson-explain require explicit experimentId match.
+    const t = selectTemplate('spiega PWM analogWrite fade rubinetto', { experimentId: 'v2-cap8-esp1' });
     expect(t).toBeTruthy();
     expect(t.id).toBe('L2-explain-pwm-fade');
   });

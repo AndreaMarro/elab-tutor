@@ -140,11 +140,18 @@ export function selectTemplate(query: string, context: SelectContext = {}): Claw
     }
   }
 
-  // Sprint U fix: lesson-explain templates are experiment-specific.
-  // Only serve a lesson-explain template when the query's experimentId
-  // exactly matches the template's own inputs.experimentId. All other
-  // lesson-explain queries fall through to LLM+RAG (return null).
-  if (best.template.category === 'lesson-explain' && context.experimentId !== undefined) {
+  // Sprint U fix iter 39 SCALE — lesson-explain templates STRICTLY experiment-specific:
+  // 1. Require context.experimentId provided (fall-through LLM for generic queries)
+  // 2. Match template's own inputs.experimentId (block cross-experiment leak)
+  //
+  // Prior Sprint U fix only triggered when experimentId !== undefined → ALL
+  // generic queries (no experimentId) returned catch-all template `L2-explain-led-blink`
+  // → 93/94 esperimenti broken (Sprint U Cycle 1 audit findings).
+  //
+  // This stricter check ensures L2 lesson-explain only fires for direct experimentId
+  // matches, all other queries route to LLM+RAG (Onniscenza pipeline).
+  if (best.template.category === 'lesson-explain') {
+    if (context.experimentId === undefined) return null;
     const tplExpId = (best.template.inputs as Record<string, unknown> | undefined)?.experimentId;
     if (tplExpId !== context.experimentId) return null;
   }
