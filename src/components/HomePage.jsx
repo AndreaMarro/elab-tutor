@@ -357,7 +357,7 @@ const CARDS = [
     cta: 'Apri Glossario',
     href: 'https://elab-tutor-glossario.vercel.app',
     target: 'external',
-    credit: null,
+    credit: 'Fatto da Tea',
   },
   // Iter 39 Andrea direttiva: 4° card = Videolezioni canale diretto.
   // Sostituisce "Chi siamo" (Andrea togli + replace).
