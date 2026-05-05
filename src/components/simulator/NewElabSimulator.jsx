@@ -879,6 +879,7 @@ const NewElabSimulator = ({
           {hideSimulatorBoard ? (
             <div ref={canvasContainerRef} style={{ flex: 1, position: 'relative', minHeight: 0, overflow: 'hidden', background: 'linear-gradient(180deg, #FAFCFF 0%, #EEF3F8 100%)' }}>
               <DrawingOverlay
+                key="dwo-lavagna-libera"
                 drawingEnabled={drawingEnabled}
                 canvasWidth={canvasContainerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 1920)}
                 canvasHeight={canvasContainerRef.current?.offsetHeight || (typeof window !== 'undefined' ? window.innerHeight : 1080)}
@@ -913,6 +914,7 @@ const NewElabSimulator = ({
                 />
                 <WhiteboardOverlay active={showWhiteboard} experimentId={currentExperiment?.id} onClose={() => setShowWhiteboard(false)} onSendToUNLIM={onSendImageToUNLIM ? (dataUrl) => { setShowWhiteboard(false); onSendImageToUNLIM(dataUrl, 'Analizza questo disegno dalla lavagna e dimmi cosa rappresenta. Se è uno schema elettrico, controlla se è corretto.'); } : undefined} />
                 <DrawingOverlay
+                  key={`dwo-${currentExperiment?.id || 'sandbox'}`}
                   drawingEnabled={drawingEnabled}
                   canvasWidth={canvasContainerRef.current?.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 1920)}
                   canvasHeight={canvasContainerRef.current?.offsetHeight || (typeof window !== 'undefined' ? window.innerHeight : 1080)}
